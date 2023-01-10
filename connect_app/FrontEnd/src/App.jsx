@@ -21,6 +21,7 @@ import './css/appointment.css';
 import "./css/pharmacy.css";
 import "./css/bootstrap.css";
 import './css/patient.css';
+import './css/'
 import '../node_modules/bootstrap/js/dist/dropdown';
 //Notiflix
 import Notiflix from 'notiflix';
@@ -1035,7 +1036,7 @@ function Patients() {
                         {form == i ? (
 
 
-                          <section id={i} className={`scroll scroll-y position-absolute d-${tabindex == i ? updatepatient : 'none'} bg-seashell rounded shadow start-0 end-0 top-0 bottom-2 `} style={{width: '40rem', minHeight: '35rem' }}>
+                          <section id={i} className={`scroll scroll-y updatepatientform position-absolute d-${tabindex == i ? updatepatient : 'none'} bg-seashell rounded shadow start-0 end-0 top-0 bottom-2 `} style={{width: '40rem', minHeight: '35rem' }}>
                             <UpdatePatient index={i} getAllPatients={getAllPatients} CloseUpdatePatient={CloseUpdatePatient} patientid={data.id} data={data} phonecountrycode={data.phone_country_code ? data.phone_country_code : 'N/A'} PhoneNo={data.phone_number ? Number(data.phone_number) : ''} dob={data.dob ? data.dob : ''} gender={data.gender ? data.gender : ''} full_name={data.full_name ? data.full_name : ''} email={data.email ? data.email : ''} pincode={data.pin_code ? data.pin_code : ''} location={data.location ? data.location : ''} parent={data.parent} linkid={data.link_id ? data.link_id : ''} relation={data.relation} latitude={data.latitude} longitude={data.longitude} />
                           </section>
                         ) : (<></>)
