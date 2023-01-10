@@ -416,6 +416,7 @@ function Timecard(props) {
       setdisplaytimecardbtn('inline-flex');
     }
   }
+  const [cardindex, setcardindex] = useState()
   return (
     <div className="scroll align-items-center align-content-center my-auto mb-2">
       {
@@ -427,8 +428,8 @@ function Timecard(props) {
           </div>
         ) : (
 
-          doctime.map((data) => (
-            <div id="cardslot" className="d-inline-flex m-1">
+          doctime.map((data, i) => (
+            <div id="cardslot" key={i} className="d-inline-flex m-1">
               <div className="card p-0 m-0 text-center" id="card1">
                 <div className="card-body p-0 m-0">
                   <div className="d-flex p-0 m-0">
@@ -443,8 +444,8 @@ function Timecard(props) {
                   </div>
                   <div className="row justify-content-center m-0 p-0">
                     {
-                      refreshtimeslots ? (
-                        <div className="container-fliud pt-3">
+                      refreshtimeslots && i === cardindex ? (
+                        <div className="container-fliud pt-2">
                           <div className="d-flex fs-6 align-items-center justify-content-around">
                             <h6 className="text-burntumber">Updating...</h6>
                             <div className="text-burntumber spinner-border ml-auto" role="status" aria-hidden="true" ></div>
@@ -471,7 +472,7 @@ function Timecard(props) {
                               data.logout_time ? (
                                 <button disabled className="btn m-0 mb-1 p-1 btn-danger" id="endbtn">Time Ended</button>
                               ) : (
-                                <button className="btn btn-danger m-0 mb-1 p-1" id="endbtn" value={data.id} onClick={endtimeslot}>End Time</button>
+                                <button className="btn btn-danger m-0 mb-1 p-1" id={i} value={data.id} onClick={(e)=>{endtimeslot(e); setcardindex(i) }}>End Time</button>
                               )
                             }
 
