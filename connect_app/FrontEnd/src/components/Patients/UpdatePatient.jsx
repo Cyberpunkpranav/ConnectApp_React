@@ -76,9 +76,7 @@ const UpdatePatient = (props) => {
 
     }
     useEffect(() => {
-        console.log('current')
         currentvalue()
-
     }, [props.patient_id])
 
 
@@ -113,9 +111,9 @@ const UpdatePatient = (props) => {
 
     }
 
-    console.log(props.patientid, fullname, countrycode, phonenumber, DOB, gender, props.gender, email, address, pincode, props.location, place, main, adminid, props.linkid, props.relation)
+    // console.log(props.patientid, fullname, countrycode, phonenumber, DOB, gender, props.gender, email, address, pincode, props.location, place, main, adminid, props.linkid, props.relation)
     async function UpdatePatient() {
-        console.log(props.patientid, fullname, countrycode, phonenumber, DOB, gender, props.gender, email, address, pincode, props.location, place, main, adminid, props.linkid, props.relation)
+        // console.log(props.patientid, fullname, countrycode, phonenumber, DOB, gender, props.gender, email, address, pincode, props.location, place, main, adminid, props.linkid, props.relation)
         if (fullname && countrycode && phonenumber && DOB && email && address && pincode && main && adminid) {
             axios.post(`https://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/api/connect/update/patient`, {
                 patient_id: props.patientid,
