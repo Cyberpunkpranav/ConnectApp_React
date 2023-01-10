@@ -15,7 +15,7 @@ import './css/login.css';
 import { Navbar, Doctorsection, Appointments, Patients, Doctors, Pharmacy } from './App'
 import { WelcomeLoader } from './components/features/WelcomeLoader'
 //Notiflix
-import Notiflix from 'notiflix';
+import Notiflix, { Notify } from 'notiflix';
 //Context Apis
 const TodayDate = createContext();
 const URL = createContext();
@@ -158,7 +158,7 @@ function Connectapp(props) {
     </>
   );
 }
-export { TodayDate, URL, DoctorsList, Doctorapi,TodayDocs };
+export { TodayDate, URL, DoctorsList, Doctorapi, TodayDocs };
 
 
 function Switchpage() {
@@ -199,14 +199,22 @@ function Switchpage() {
       email: localemail || logininput.email,
       password: logininput.password
     }).then((response) => {
+      console.log(response)
       if (response.data.status === true) {
         localStorage.setItem('email', logininput.email);
         localStorage.setItem('name', response.data.data.name);
         localStorage.setItem('designation', response.data.data.roles.title);
         localStorage.setItem('id', response.data.data.id);
         localStorage.setItem('ClinicId', response.data.data.clinic_id)
+        window.location.reload(true);
+      } else {
+        Notiflix.Report.failure(
+          'Invalid Credentials',
+          'Check your username password and try again',
+          'Retry',
+        )
       }
-      window.location.reload(true);
+
     })
   }
 
