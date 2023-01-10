@@ -1,0 +1,182 @@
+@import url('https://fonts.googleapis.com/css2?family=Urbanist&display=swap');
+
+html{
+    font-family: 'Urbanist';
+}
+:root{
+--burntumber:#96351E;
+--brandy:#DBB98F;
+--Raffia:#DDC6A8;
+--pearl:#ffffff;
+--seashell:#f2f2f2;
+--charcoal:#222023;
+}
+
+.loginform{
+    font-family: 'Urbanist';
+    animation:bgtrans;
+    animation-duration: 10s;
+    animation-direction: normal;
+    animation-iteration-count: infinite;
+    background-position: center;
+    background-size:cover;
+    background-repeat: no-repeat;
+    background-image: url(/public/images/bg1.jpg);
+    height:780px;
+    width:100%;
+}
+.signinsection{
+    margin:0 auto;
+}
+.formbox{
+    position:relative;
+    font-family: 'Urbanist';
+    color:var(--charcoal);
+    font-size:1rem;
+}
+.userinput{
+    position: relative;
+    font-family: 'Urbanist';
+    color:var(--charcoal);
+   
+}
+.userinput p{
+    position: absolute;
+    bottom:0;
+    transition:all,0.3s;
+    z-index:-1;
+    font-family: 'Urbanist';
+    color:var(--charcoal);
+}
+.userinput:hover p{
+    bottom:100%;
+    z-index:0;
+    color:var(--charcoal); 
+    font-family: 'Urbanist';
+}
+#passinput{
+    transition: all,0.3s;
+    font-family: 'Urbanist';
+    color:var(--charcoal);
+}
+
+.next{
+    cursor: pointer;
+    transition:all,0.1s;
+    font-family: 'Urbanist';
+    color:var(--charcoal);
+    transition: all,0.3s;
+}
+.next:hover{
+    background-color:var(--charcoal);
+    color:var(--pearl);
+}
+.submit{
+
+    cursor: pointer;
+    border:none;
+    background-color: transparent;
+    transition:all,0.1s;
+    font-family: 'Urbanist';
+    color:var(--charcoal);
+}
+.submit:hover{
+    background-color:var(--charcoal);
+    color:var(--pearl);
+}
+
+.back{
+    cursor: pointer;
+    transition:all,0.1s;
+    font-family: 'Urbanist';
+    color:var(--charcoal);
+}
+.back:hover{
+    background-color:var(--charcoal);
+    color:var(--pearl);
+}
+#text1{
+    animation-name:toggle1;
+    animation-duration: 10s;
+    animation-direction: normal;
+    animation-iteration-count: infinite;
+    font-family: 'Urbanist';
+    color:var(--charcoal);
+}
+
+#text2{
+    top:-5%;
+    right:0;
+    left:25%;
+    animation-name: toggle2;
+    animation-duration: 10s;
+    animation-direction: normal;
+    animation-iteration-count: infinite;
+    font-family: 'Urbanist';
+    color:var(--charcoal);
+}
+
+
+@keyframes toggle1 {
+    0%{ 
+  opacity:1;
+}
+
+50%{
+    opacity:0;
+}
+
+100%{
+    opacity:1;
+
+}
+}
+
+@keyframes toggle2 {
+    0%{
+        opacity:0;
+    
+    }
+ 
+    50%{
+        opacity:1;
+    }
+
+    100%{
+        opacity:0;
+
+    }
+}
+@keyframes bgtrans {
+    
+    0%{
+        background-image: url(/public/images/bg2.jpg);
+    }
+ 
+    50%{
+        background-image: url(/public/images/bg1.jpg);
+    }
+ 
+    100%{
+        background-image: url(/public/images/bg2.jpg);
+    }
+
+}
+
+@media screen and (max-width: 1000px) and(min-width:769px){
+    .signinsection{
+        width:50%;
+    }
+}
+
+@media screen and(max-width:768px){
+    .signinsection{
+        margin:0;
+        width:100%;
+    }
+}
+@media screen and (min-width: 1000px){
+    .signinsection{
+        width:50%;
+    }
+}
