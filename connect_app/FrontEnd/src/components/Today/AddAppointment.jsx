@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useContext } from 'react'
-import { DoctorsList, URL, Doctorapi,TodayDate} from '../../index'
+import { DoctorsList, URL, Doctorapi, TodayDocs } from '../../index'
 import Notiflix from 'notiflix';
 import '../../css/bootstrap.css'
 import { customconfirm } from '../features/notiflix/customconfirm'
@@ -10,7 +10,7 @@ const AddAppointment = (props) => {
     const url = useContext(URL);
     const DocApi = useContext(Doctorapi)
     const Doclist = useContext(DoctorsList)
-    const CurrentDate = useContext(TodayDate)
+    const TodayDoctors = useContext(TodayDocs)
     const [cliniclist, setcliniclist] = useState([])
     const [searchinput, setsearchinput] = useState()
     const [searchlist, setsearchlist] = useState([])
@@ -20,6 +20,8 @@ const AddAppointment = (props) => {
     const [clinicid, setclinicid] = useState()
     const [time, settime] = useState()
     const [ischecked, setischecked] = useState()
+    const [load, setload] = useState()
+    const [searchload, setsearchload] = useState(false)
     let adminid = localStorage.getItem('id')
 
     function ClinicList() {
@@ -44,9 +46,11 @@ const AddAppointment = (props) => {
     }
 
     const searchpatient = (e) => {
+        setsearchload(true)
         setsearchinput(e.target.value)
         axios.get(`${url}/patient/list?search=${searchinput}&limit=5&offset=0`).then((response) => {
             setsearchlist(response.data.data)
+                    setsearchload(false)
         })
         if (searchinput && searchinput.length > 1) {
             setdisplaysearchlist('block');
@@ -90,7 +94,7 @@ const AddAppointment = (props) => {
         } else {
             Notiflix.Notify.info('Choose Doctor First')
         }
-    }   
+    }
 
     function resetform(e) {
         setsearchinput()
@@ -101,36 +105,34 @@ const AddAppointment = (props) => {
     }
 
     function BookAppointment(e) {
-            if (patientid && doctorid && clinicid && time && adminid) {
-                Notiflix.Loading.circle('Adding Appointment',{
-                    backgroundColor:'transparent',
-                    svgColor:'#96351E'
-                })
-                axios.post(`${url}/add/appointment`, {
-                    patient_id: patientid,
-                    doctor_id: doctorid,
-                    clinic_id: clinicid,
-                    timeslot_id: time,
-                    admin_id: adminid
-                }).then((response) => {
-                    Notiflix.Loading.remove()
-                    Notiflix.Notify.success(response.data.message);
-                    resetform()
-                    props.toggleappointmentform()
-                    props.fetchapi()
-                    getTimeslots()
-                    getTimefrom()
+        if (patientid && doctorid && clinicid && time && adminid) {
+            setload(true)
+            axios.post(`${url}/add/appointment`, {
+                patient_id: patientid,
+                doctor_id: doctorid,
+                clinic_id: clinicid,
+                timeslot_id: time,
+                admin_id: adminid
+            }).then((response) => {
+                setload(false)
+                Notiflix.Notify.success(response.data.message);
+                resetform()
+                props.toggleappointmentform()
+                props.fetchapi()
+                getTimeslots()
+                getTimefrom()
 
-                })
-            } else {
-                e.preventDefault()
-                Notiflix.Notify.warning('Please Fill all Detais');
-            }
-        
+            })
+        } else {
+            e.preventDefault()
+            setload(false)
+            Notiflix.Notify.warning('Please Fill all Detais');
+        }
+
     }
     const [timeindex, settimeindex] = useState()
 
-    const confirmmessage=(e)=>{
+    const confirmmessage = (e) => {
         e.preventDefault()
         customconfirm()
         Notiflix.Confirm.show(
@@ -140,41 +142,55 @@ const AddAppointment = (props) => {
             'No',
             () => {
                 BookAppointment()
-  
+
             },
             () => {
                 return 0
             },
             {
             },
-            );
+        );
+    }
+    const Avaliablemessage = (response) => {
+        for (let k = 0; k < TodayDoctors.length; k++) {
+            if (TodayDoctors[k][0] !== undefined) {
+                if (TodayDoctors[k][0] == response) {
+                    return '(Aval today) '
+                }
+            }
+        }
+
     }
     return (
         <>
             <h5 className="text-center mt-2">New Appointment</h5>
             {
-                props.closeAddAppointmentform ?(
-                    <button type="button" className="btn-close closebtn position-absolute" aria-label="Close" onClick={(e) => { props.closeAddAppointmentform()}} ></button>
-                ):(
-                    <button type="button" className="btn-close closebtn position-absolute" aria-label="Close" onClick={(e) => { props.toggleappointmentform(); }} ></button>
+                props.closeAddAppointmentform ? (
+                    <button type="button" disabled={load == true ? true : false} className="btn-close closebtn position-absolute" aria-label="Close" onClick={(e) => { props.closeAddAppointmentform() }} ></button>
+                ) : (
+                    <button type="button" disabled={load == true ? true : false} className="btn-close closebtn position-absolute" aria-label="Close" onClick={(e) => { props.toggleappointmentform(); }} ></button>
                 )
-            }   
+            }
             <hr />
             <div className="col-12">
                 <label className="m-0 mb-2">Search Using Phone or Name</label>
-                <input type="text" className="form-control selectpatient col-10 position-relative" value={searchinput ? searchinput : ''} onChange={searchpatient} onBlur={searchpatient} />
+                <input type="text" className="form-control selectpatient col-10 position-relative" value={searchinput ? searchinput : ''} onFocus={() => setsearchload(true)} onChange={searchpatient} onBlur={searchpatient} />
                 <div className={`col-8 d-${displaysearchlist} searchinput`}>
                     {
-                        searchlist.map((data ,i) => (
-                            <button className='col-12 p-0 m-0 border-0 bg-pearl text-charcoal text-start border border-1 shadow'key={i} name={data.id} value={data.full_name} onClick={get_value}>{data.full_name}  {data.phone_number}</button>
-                        ))
+                        searchload == true || searchinput == undefined ? (
+                            <p className="btn text-charcoal75 fs-6 p-0 m-0 ps-1">Loading... </p>
+                        ) : (
+                            searchlist.length == 0 ? (
+                                <p className="text-danger btn fs-6 p-0 m-0">Patient not found add as new user to book appointements</p>
+                            ) : (
+                                searchlist.map((data) => (
+                                    <button className='col-12 d-block p-0 m-0 ms-1 border-0 bg-pearl text-charcoal text-start border border-1' name={data.id} value={data.full_name} onClick={get_value}>{data.full_name}  {data.phone_number}</button>
+                                )))
+
+                        )
+
                     }
                 </div>
-                {
-                    searchlist && searchlist.length < 1 ? (
-                        <p className="text-danger btn fs-6 p-0 m-0">Patient not found. Add as new User to book an Appointment</p>
-                    ) : (<p className="text-danger btn fs-6 p-0 m-0"></p>)
-                }
 
                 <div className="col-12 p-0">
                     <a href="/#" className="btn text-decoration-none btn-sm done" onClick={props.formshift}> Add User </a>
@@ -183,9 +199,9 @@ const AddAppointment = (props) => {
                 <label>Select Location</label>
                 <div className="col-12 form-control location  border-0" >
                     {
-                        cliniclist.map((data,i) => (
+                        cliniclist.map((data, i) => (
                             <>
-                                <label><input type="checkbox" className="radio form me-1" key={i} checked={ischecked == i ? true:false} name={data.id} onClick={(e) => { setclinicid(e.target.name); setischecked(i); }} /> {data.title} {data.address}</label>
+                                <label><input type="checkbox" className="radio form me-1" key={i} checked={ischecked == i ? true : false} name={data.id} onClick={(e) => { setclinicid(e.target.name); setischecked(i); }} /> {data.title} {data.address}</label>
                                 <br /></>
                         ))
                     }
@@ -195,11 +211,11 @@ const AddAppointment = (props) => {
                     <div className="col-md-6">
                         <label>Select Doctor</label>
                         <div className="col-12">
-                            <select className="col-10 form-control selectdoctor" value={doctorid?doctorid:''} onChange={getTimeslots}>
+                            <select className="col-10 form-control selectdoctor" value={doctorid ? doctorid : ''} onChange={getTimeslots}>
                                 <option value="Select Doctor" >Select Doctor</option>
                                 {
-                                    Doclist.map((data,i) => (
-                                        <option className={`text-charcoal`} key={i} value={data[0]}>{data[0]}.{data[1]}</option>
+                                    Doclist.map((data, i) => (
+                                        <option className={`text-charcoal`} key={i} value={data[0]}>{data[0]}.{data[1]}{' '}{Avaliablemessage(data[0])}</option>
                                     ))
                                 }
                             </select>
@@ -239,12 +255,25 @@ const AddAppointment = (props) => {
                     }
                 </div>
                 <hr />
-                <div className="col-6 py-2 pb-2 m-auto text-center">
-                    <button  className="btn button button-burntumber px-5" onClick={confirmmessage}> Done </button>
-                </div>
-                <div className="col-6 pb-2 m-auto text-center">
-                    <button className="btn btn-light px-5" onClick={resetform}>Reset</button>
-                </div>
+                {
+                    load ? (
+                        <div className="col-6 py-2 pb-2 m-auto text-center">
+                            <div class="spinner-border" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+
+                    ) : (
+                        <>
+                            <div className="col-6 py-2 pb-2 m-auto text-center">
+                                <button className="btn button button-burntumber px-5" onClick={confirmmessage}> Done </button>
+                            </div>
+                            <div className="col-6 pb-2 m-auto text-center">
+                                <button className="btn btn-light px-5" onClick={resetform}>Reset</button>
+                            </div>
+                        </>
+                    )
+                }
             </div>
         </>
 

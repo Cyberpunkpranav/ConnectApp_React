@@ -183,7 +183,7 @@ function DoctorSchedule(props) {
                       <button className={`button button-${timeindex == i ? 'pearl' : 'lightgreen'} m-1`} onClick={(e) => { openAddApppointmentform(); settimeindex(i) }} key={i}>{tConvert(data[0])}</button>
                       {
                         timeindex == i ? (
-                          <section className={`d-${timeindex == i ? addappointmentform : 'none'} col-lg-5 col-md-8 col-sm-12 col-12 col-xl-5 appointmentinfosection position-absolute m-auto start-0 end-0 bg-seashell rounded-4 col-6 shadow overflow-auto`} style={{ zIndex: 4000, top: '-2rem' }}>
+                          <section className={`d-${timeindex == i ? addappointmentform : 'none'} col-lg-4 col-md-8 col-sm-10 col-10 col-xl-4 appointmentinfosection position-absolute m-auto start-0 end-0 bg-seashell rounded-4 col-6 shadow overflow-auto`} style={{ zIndex: 4000, top: '-2rem' }}>
                             <SelectedTimeAppointment fetchapi={props.fetchapi} closeAddAppointmentform={closeAddAppointmentform} DocClinic={props.DocClinic} DoctorID={props.DoctorID} DoctorName={props.DoctorName} timeindex={timeindex} selectedtime={data[0]} selectedtimeID={data[2]} />
                           </section>
                         ) : (
@@ -209,7 +209,7 @@ function DoctorSchedule(props) {
           </div>
           <div className="tablesection scroll scroll-y">
             <table className="table datatable text-center " style={{ minHeight: '8rem' }}>
-              <thead className="p-0 m-0">
+              <thead className="p-0 m-0 px-2">
                 <tr className="p-0 m-0">
                   <th className="p-0" key={0}>Update</th>
                   <th className="p-0" key={1}>Status</th>
@@ -472,7 +472,7 @@ function Timecard(props) {
                               data.logout_time ? (
                                 <button disabled className="btn m-0 mb-1 p-1 btn-danger" id="endbtn">Time Ended</button>
                               ) : (
-                                <button className="btn btn-danger m-0 mb-1 p-1" id={i} value={data.id} onClick={(e)=>{endtimeslot(e); setcardindex(i) }}>End Time</button>
+                                <button className="btn btn-danger m-0 mb-1 p-1" id={i} value={data.id} onClick={(e) => { endtimeslot(e); setcardindex(i) }}>End Time</button>
                               )
                             }
 

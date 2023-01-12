@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useContext } from 'react'
+//Context APis
 import { URL } from '../../index'
-// import {useJsApiLoader, Autocomplete } from '@react-google-maps/api'
-
+//Google maps
 import { geocodeByAddress, getLatLng } from 'react-google-places-autocomplete'
 import GooglePlacesAutocomplete from "react-google-places-autocomplete"
+//Notiflix
 import Notiflix from 'notiflix';
+import  {customconfirm} from '../features/notiflix/customconfirm'
+//Css
 import '../../css/bootstrap.css'
 
 const AddPatient = (props) => {
@@ -30,6 +33,7 @@ const AddPatient = (props) => {
     const [display, setdisplay] = useState("none")
     const [accountinput, setaccountinput] = useState()
     const [displaymainaccount, setdisplaymainaccount] = useState('none')
+    const[load,setload]=useState()
 
     const d = () => {
         if (main == 1) {
@@ -53,7 +57,6 @@ const AddPatient = (props) => {
         setaccountinput(e.target.value)
         axios.get(`${url}/patient/list?search=${accountinput}&limit=5&offset=0`).then((response) => {
             setmainaccount(response.data.data)
-            console.log(response.data.data)
         })
         if (accountinput && accountinput.length > 1) {
             setdisplaymainaccount('block');
@@ -64,8 +67,7 @@ const AddPatient = (props) => {
 
     }
 
-    const resetform = async (e) => {
-        e.preventDefault()
+    const resetform = async () => {
         setfullname()
         setphonenumber()
         setDOB()
@@ -78,11 +80,10 @@ const AddPatient = (props) => {
 
 
     let adminid = localStorage.getItem('id')
-    const NewPatient = (e) => {
-        e.preventDefault()
-        if (e.target.value === 'true') {
+    async function NewPatient(e){
             if (fullname && countrycode && phonenumber && DOB && gender && email && address && pincode && place && main && adminid) {
-                axios.post(`${url}/add/patient`, {
+                setload(true)
+           await    axios.post(`${url}/add/patient`, {
                     full_name: fullname,
                     phone_country_code: countrycode,
                     phone_number: phonenumber,
@@ -99,16 +100,17 @@ const AddPatient = (props) => {
                     link_id: main == 2 ? linkid : '',
                     admin_id: adminid
                 }).then((response) => {
-                    console.log(response)
+                    setload(false)
                     Notiflix.Notify.success('Added Patient Successfully');
+                    props.togglepatientform()
                     resetform(e)
+
                 })
             } else {
+                setload(false)
                 Notiflix.Notify.warning('Please Fill all Detais');
-            }
+            
         }
-
-
     }
 
     const [data, setData] = useState("");
@@ -121,12 +123,30 @@ const AddPatient = (props) => {
         geocodeByAddress(place).then(results => getLatLng(results[0])).then(({ lat, lng }) => { setlat(lat); setlng(lng) });
     }
 
+    const confirmmessage = () => {
+        customconfirm()
+        Notiflix.Confirm.show(
+            `Update Appointment Details`,
+            `Do you surely want to add ${fullname} as a New Patient`,
+            'Yes',
+            'No',
+            () => {
+                NewPatient()
+
+            },
+            () => {
+                return 0
+            },
+            {
+            },
+        );
+    }
     return (
         <>
             <h5 className="text-center mt-2 position-relative"> Patient Details </h5>
             <button type="button" className="btn-close closebtn position-absolute" aria-label="Close" onClick={props.togglepatientform} ></button>
             <hr />
-            <form className="col-12">
+            <div className="col-12">
                 <div className="form-group col-10 m-auto py-3">
                     <label htmlFor="inputEmail4" className="mb-2">Enter Number</label>
                     <div className="row m-0 p-0 justify-content-center">
@@ -383,7 +403,7 @@ const AddPatient = (props) => {
                     <input type="text" className="form-control" id="inputAddress" value={address ? address : ''} placeholder="Location" onChange={(e) => { setaddress(e.target.value) }} required />
                 </div>
                 <div className="row p-0 m-0 py-2">
-                    <div className="col-5 m-auto">
+                    <div className="col-6 m-auto">
                         <label htmlFor="inputAddress" className="">Select Location</label>
                         <GooglePlacesAutocomplete
                             apiKey='AIzaSyC4wk5k8E6jKkpJClZlXZ8oavuPyi0AMVE'
@@ -444,31 +464,26 @@ const AddPatient = (props) => {
                     </div>
 
                 </div>
-                <div className="col-6 py-2 pb-2 m-auto text-center">
-                    <button type="button" className="btn done px-5"  data-bs-toggle="modal" data-bs-target="#staticBackdrop" onClick={NewPatient} > Done </button>
+                {
+                    load ?(
+                        <div className="col-6 py-2 pb-2 m-auto text-center">
+                        <div class="spinner-border" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                    ):(
+                        <>
+                              <div className="col-6 py-2 pb-2 m-auto text-center">
+                    <button type="button" className="btn done px-5"  data-bs-toggle="modal" data-bs-target="#staticBackdrop" onClick={confirmmessage} > Done </button>
                 </div>
                 <div className="col-6 pb-2 m-auto text-center">
                     <button className="btn btn-light px-5" onClick={resetform}>Reset</button>
                 </div>
-            </form>
-
-            <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div className="modal-dialog">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h1 className="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
-                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div className="modal-body"> Do you Want to Add {fullname} as New Patient </div>
-                        <div className="modal-footer">
-                            <button type="button" className="btn btn-secondary" value='false' data-bs-dismiss="modal" onClick={NewPatient} >Close</button>
-                            <button type="button" className="btn btn-primary" value='true' data-bs-dismiss="modal" onClick={NewPatient}>Proceed</button>
-                        </div>
-                    </div>
-                </div>
+                        </>
+                    )
+                }
+          
             </div>
-
-
         </>
 
     )

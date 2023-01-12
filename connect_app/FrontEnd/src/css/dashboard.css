@@ -378,7 +378,8 @@ body::-webkit-scrollbar-thumb:hover {
     top: 0;
     box-shadow: 0px 0px 0px 1600px#22202370;
     overflow-y: scroll;
-    height: 40rem;
+    max-height: 45rem;
+    min-height: 30rem;
 }
 
 .closebtn {
@@ -467,9 +468,9 @@ body::-webkit-scrollbar-thumb:hover {
 
 .allappointmentsection .updateappointment {
     top: 0;
-    bottom:0;
+    bottom: 0;
     margin-top: 20rem;
-    margin-bottom:30rem;
+    margin-bottom: 30rem;
 }
 
 .allappointmentsection .tablesection {
@@ -642,7 +643,7 @@ body::-webkit-scrollbar-thumb:hover {
     .navsection .addbtn {
         font-size: 1rem;
         margin: 0;
-        padding: 0;
+        padding:0.4rem;
     }
 
     .menu p {

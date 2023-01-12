@@ -19,7 +19,7 @@ const SelectedTimeAppointment = (props) => {
     const [clinicid, setclinicid] = useState(props.DocClinic)
     const [time, settime] = useState()
     const [ischecked, setischecked] = useState()
-
+    const [searchload, setsearchload] = useState(false)
     const [load, setload] = useState()
     let adminid = localStorage.getItem('id')
 
@@ -42,11 +42,14 @@ const SelectedTimeAppointment = (props) => {
         return time.join('');
     }
 
-    const searchpatient = (e) => {
+    async function searchpatient(e) {
+        setsearchload(true)
         setsearchinput(e.target.value)
-        axios.get(`${url}/patient/list?search=${searchinput}&limit=5&offset=0`).then((response) => {
+        await axios.get(`${url}/patient/list?search=${searchinput}&limit=5&offset=0`).then((response) => {
             setsearchlist(response.data.data)
+            setsearchload(false)
         })
+    
         if (searchinput && searchinput.length > 1) {
             setdisplaysearchlist('block');
         } else {
@@ -88,23 +91,32 @@ const SelectedTimeAppointment = (props) => {
             <h5 className="text-center m-0 p-0 mt-2">Quick Appointment</h5>
             <button type="button" className="btn-close closebtn position-absolute" aria-label="Close" onClick={(e) => { props.closeAddAppointmentform() }} ></button>
             <div className="col-12 p-0 mt-2">
-                <input type="text" placeholder='Search Patient using Number or Name' className="form-control selectpatient col-10 position-relative" value={searchinput ? searchinput : ''} onChange={searchpatient} onBlur={searchpatient} />
+                <input type="text" placeholder='Search Patient using Number or Name' className="form-control selectpatient col-10 position-relative" value={searchinput ? searchinput : ''} onFocus={() => setsearchload(true)} onChange={(e) => { searchpatient(e); }} onBlur={searchpatient} />
                 <div className={`col-8  d-${displaysearchlist} `} style={{ minHeight: '4rem' }}>
                     {
-                        searchlist.map((data) => (
-                            <button className='col-12 d-block p-0 m-0 border-0 bg-pearl text-charcoal text-start border border-1 shadow' name={data.id} value={data.full_name} onClick={get_value}>{data.full_name}  {data.phone_number}</button>
-                        ))
+                        searchload == true || searchinput == undefined ? (
+                            <p className="btn text-charcoal75 fs-6 p-0 m-0 ps-1">Loading... </p>
+                        ) : (
+                            searchlist.length == 0 ? (
+                                <p className="text-danger btn fs-6 p-0 m-0">Patient not found add as new user to book appointements</p>
+                            ) : (
+                                searchlist.map((data) => (
+                                    <button className='col-12 d-block p-0 m-0 ms-1 border-0 bg-pearl text-charcoal text-start border border-1' name={data.id} value={data.full_name} onClick={get_value}>{data.full_name}  {data.phone_number}</button>
+                                )))
+
+                        )
+
                     }
                 </div>
-                {
+                {/* {
                     searchlist == undefined ? (
                         <p className="text-danger btn fs-6 p-0 m-0">Type to Search</p>) : (
-                        searchlist.length == 0 ? (
-                            <p className="text-danger btn fs-6 p-0 m-0">Patient not found. Add as new User to book an Appointment</p>
+                        searchlist.length == 0  ? (
+                            <p className="text-danger btn fs-6 p-0 m-0">Loading ... </p>
                         ) : (<p className="text-danger btn fs-6 p-0 m-0"></p>)
                     )
 
-                }
+                } */}
                 <hr className='p-0 m-0 mt-1' />
                 <div className="col-12 text-center py-1">
                     <input type='checkbox' checked value={1} /><label className='p-0 m-0 text-burntumber'>Aartas Clinishare Ring Road,Delhi </label>
@@ -124,9 +136,9 @@ const SelectedTimeAppointment = (props) => {
                 <hr className='p-0 m-0 mt-2' />{
                     load ? (
                         <div className="col-6 py-2 pb-2 m-auto text-center">
-                        <div class="spinner-border" role="status">
-                            <span class="visually-hidden">Loading...</span>
-                        </div>
+                            <div class="spinner-border" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
                         </div>
                     ) : (
                         <div className="col-6 py-2 pb-2 m-auto text-center">

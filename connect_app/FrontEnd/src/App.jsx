@@ -67,6 +67,7 @@ function Navbar(props) {
     setappointmentform("none");
     setpatientform("block");
   }
+
   function logout() {
     localStorage.removeItem('email');
     localStorage.removeItem('name');
@@ -75,6 +76,23 @@ function Navbar(props) {
     localStorage.removeItem('ClinicId');
     window.location.reload(true);
   }
+
+
+  function inactivelogout() {
+    window.addEventListener('touchmove', function (e) {
+      let screenx = 0;
+      let screeny = 0;
+      if (e.changedTouches.clientX && e.changedTouches.clientY) {
+        screenx = e.changedTouches.clientX;
+        screeny = e.changedTouches.clientY;
+        console.log(screenx, screeny, true)
+      } else {
+        console.log('false')
+      }
+    })
+  }
+
+
   const [logoutbtn, setlogoutbtn] = useState('none');
   const togglelogoutbtn = () => {
     if (logoutbtn === 'none') {
@@ -87,7 +105,7 @@ function Navbar(props) {
 
   const [Docval, setDocval] = useState()
 
-  const [highlighticon, sethighlighticon] = useState(0)
+  const [highlighticon, sethighlighticon] = useState('/')
 
   const NavbarIcons = [
     {
@@ -147,30 +165,11 @@ function Navbar(props) {
             <div className="col-lg-6 col-xl-5 col-sm-auto col-md-auto col-10 p-2 m-0 menu order-1 order-xl-0 order-sm-0 order-md-0 order-sm-0">
               <div className="row align-items-center justify-content-around">
                 {NavbarIcons.map((data, i) => (
-                  <div className={`col-auto bg-${highlighticon === i ? 'pearl' : 'seashell'} rounded-top border-bottom-${highlighticon === i ? 'burntumber' : 'seashell'}`} onClick={() => sethighlighticon(i)}>
+                  <div className={`col-auto bg-${highlighticon === data.path ? 'pearl' : 'seashell'} rounded-top border-bottom-${highlighticon === data.path ? 'burntumber' : 'seashell'}`} onClick={() => sethighlighticon(data.path)}>
                     <Link to={data.path} className="text-decoration-none"> <div className="text-center"> <img src={process.env.PUBLIC_URL + data.image} alt="displaying_image" className="img-fluid" style={{ width: `1.5rem` }} /><p className="col-12 m-0">{data.title}</p> </div> </Link>
                   </div>
                 ))
-
                 }
-                {/* <div className={`col-auto bg-${bgclr} rounded-top border-bottom-${border}`} ref={colorref} onClick={highlighticon}>
-                  <Link to={path} className="text-decoration-none"> <div className="text-center"> <img src={process.env.PUBLIC_URL + "/images/today.png"} alt="displaying_image" className="img-fluid" style={{ width: `1.5rem` }} /><p className="col-12 m-0">Today</p> </div> </Link>
-                </div>
-                <div className={`col-auto bg-${bgclr} rounded-top border-bottom-${border}`} onClick={highlighticon}>
-                  <Link to="/Appointments" className="text-decoration-none"> <div className="text-center"> <img src={process.env.PUBLIC_URL + "/images/appointment.png"} alt="displaying_image" className="img-fluid" style={{ width: `1.5rem` }} /> <p className="col-12 m-0">Appointments</p> </div> </Link>
-                </div>
-                <div className={`col-auto bg-${bgclr}rounded-top border-bottom-${border}`} onClick={highlighticon}>
-                  <Link to="/Patients" className="text-decoration-none"> <div className="text-center"> <img src={process.env.PUBLIC_URL + "/images/patient.png"} alt="displaying_image" className="img-fluid" style={{ width: "1.5rem" }} /> <p className="col-12 m-0">Patients</p> </div> </Link>
-                </div>
-                <div className={`col-auto bg-${bgclr}rounded-top border-bottom-${border}`} onClick={highlighticon}>
-                  <Link to="/Doctors" className="text-decoration-none"> <div className="text-center"> <img src={process.env.PUBLIC_URL + "/images/doctor.png"} alt="displaying_image" className="img-fluid" style={{ width: "1.5rem" }} /> <p className="col-12 m-0">Doctors</p> </div> </Link>
-                </div>
-                <div className={`col-auto bg-${bgclr}rounded-top border-bottom-${border}`} onClick={highlighticon}>
-                  <Link href="/#" className="text-decoration-none"> <div className="text-center"> <img src={process.env.PUBLIC_URL + "/images/dsr.png"} alt="displaying_image" className="img-fluid" style={{ width: "1.5rem" }} /> <p className="col-12 m-0">DSR</p> </div> </Link>
-                </div>
-                <div className={`col-auto bg-${bgclr}rounded-top border-bottom-${border}`} onClick={highlighticon}>
-                  <Link to="/Pharmacy" className="text-decoration-none"> <div className="text-center"> <img src={process.env.PUBLIC_URL + "/images/pharmacy.png"} alt="displaying_image" className="img-fluid" style={{ width: "1.5rem" }} /> <p className="col-12 m-0">Pharmacy</p> </div> </Link>
-                </div> */}
               </div>
             </div>
             <div className="col-lg-2 col-xl-1 col-md-1 col-6 col-sm-2 text-center position-relative">
@@ -191,17 +190,15 @@ function Navbar(props) {
         </div>
       </div>
 
-      <div className={`col-lg-5 col-md-6 col-sm-12 col-12 patientinfosection d-${patientform} border-start border-top border-2 position-absolute`} >
+      <div className={`col-lg-5 col-md-6 col-sm-12 col-12 rounded-4 p-2 me-2 mt-2 patientinfosection d-${patientform} border-start border-top border-2 position-absolute`} >
         <AddPatient togglepatientform={togglepatientform} />
       </div>
-
-
-      <div className={`col-lg-5 col-md-6 col-sm-12 rounded-4 p-2 col-12 appointmentinfosection d-${appointmentform} border-start border-top border-2 position-absolute`} >
+      <div className={`col-lg-5 col-md-6 col-sm-12 rounded-4 p-2 me-2 mt-2 col-12 appointmentinfosection d-${appointmentform} border-start border-top border-2 position-absolute`} >
         <AddAppointment toggleappointmentform={toggleappointmentform} formshift={formshift} fetchapi={props.fetchapi} />
       </div>
       {
         Docval == 1 ? (
-          <div className={`col-lg-5 col-md-6 col-sm-12 col-12 px-2 me-2 mt-2 shadow rounded-4 doctorinfosection d-${doctorform}  border-start border-top border-2 position-absolute`} >
+          <div className={`col-lg-5 col-md-6 col-sm-12 col-12 px-2 me-2 mt-2  rounded-4 doctorinfosection d-${doctorform}  border-start border-top border-2 position-absolute`} >
             <AddDoctorSlot toggledoctorform={toggledoctorform} staticBackdrop4={'staticBackdrop3'} fetchapi={props.fetchapi} />
 
           </div>
@@ -327,7 +324,7 @@ function Doctorsection(props) {
       </section>
       {
         Docval == 1 ? (
-          <div className={`col-lg-5 col-md-6 col-sm-12 col-12 doctorinfosection d-${doctorform} me-2 mt-2 rounded-4 shadow border-start border-top border-2 position-absolute`} >
+          <div className={`col-lg-5 col-md-6 col-sm-12 col-12 doctorinfosection d-${doctorform} me-2 mt-2 rounded-4  border-start border-top border-2 position-absolute`} >
             <AddDoctorSlot toggledoctorform={toggledoctorform} staticBackdrop4={'staticBackdrop4'} fetchapi={props.fetchapi} />
           </div>
         ) : (
@@ -380,7 +377,7 @@ function Appointments(props) {
           response.data.data.map((data) => {
             listdata.push(data.doctor.id)
           })
-          setvisibles(listdata)
+          setvisibles(listdata, [])
         })
         setisLoading(false)
       } catch (e) {
@@ -446,13 +443,16 @@ function Appointments(props) {
     settodate()
   }
 
-  const HighlightOptions = (response) => {
-    for (let k = 0; k <= visibles.length; k++) {
-      if (response == visibles[k]) {
-        return 'burntumber fw-bold'
+  function CountAppointments(response) {
+    let arr = []
+    for (let i = 0; i < visibles.length; i++) {
+      if (response === visibles[i]) {
+        arr.push(response)
       }
     }
-
+    if (arr.length != 0) {
+      return ' | ' + '('+arr.length + ' Appointments)'
+    }
   }
 
   return (
@@ -492,10 +492,10 @@ function Appointments(props) {
                   {
                     visibles != null ? (
                       docnames.map((response, i) => (
-                        <option className={`form-control text-${HighlightOptions(response[0]) ? HighlightOptions(response[0]) : 'charcoal75'}`} key={i} value={response[0]} >{response[0]}. Dr. {response[1]}</option>
+                        <option className={`form-control text-charcoal`} key={i} value={response[0]} >{response[0]}. Dr. {response[1]}{' '}{' '}{CountAppointments(response[0])}</option>
                       ))
 
-                    ) : (<div>Loading..</div>)
+                    ) : (<option>Loading..</option>)
                   }
 
                 </select>
@@ -1081,7 +1081,7 @@ function Patients() {
             }
           </div>
           <div className="col-4">
-            <button className={`button button-burntumber`} ref={nextref} value={nxtoffset} onClick={(e) => { getnextpages(e);}} style={{ marginTop: '0.15rem' }}>Next</button>
+            <button className={`button button-burntumber`} ref={nextref} value={nxtoffset} onClick={(e) => { getnextpages(e); }} style={{ marginTop: '0.15rem' }}>Next</button>
           </div>
         </div>
       </div>

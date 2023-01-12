@@ -23,6 +23,7 @@ const UpdateAppointment = (props) => {
     const [time, settime] = useState()
     const [timeindex, settimeindex] = useState()
     const [ischecked, setischecked] = useState()
+    const[load,setload]=useState()
 
 
     const [ApikeyDocTimeslots, setApikeyDocTimeslots] = useState()
@@ -124,7 +125,8 @@ const UpdateAppointment = (props) => {
     function UpdateAppointment(e) {
         if (props.appointmentid && doctorid && clinicid && time && adminid && props.patientid != null && props.patientid != 0) {
             try {
-                console.log(props.appointmentid, Number(doctorid), Number(clinicid), Number(time), Number(adminid), Number(props.patientid))
+                // console.log(props.appointmentid, Number(doctorid), Number(clinicid), Number(time), Number(adminid), Number(props.patientid))
+                setload(true)
                 axios.post(`${url}/update/appointment`, {
                     appointment_id: props.appointmentid,
                     doctor_id: doctorid,
@@ -142,17 +144,20 @@ const UpdateAppointment = (props) => {
                             props.fetchapi()
                         }
                         Notiflix.Notify.success(response.data.message);
-
+                        setload(false)
                     } else {
                         Notiflix.Notify.alert('Failed to Update')
+                        setload(false)
                     }
 
                 })
             } catch (e) {
                 alert(e)
+                setload(false)
             }
         } else {
             Notiflix.Notify.warning('Please Fill all Detais');
+            setload(false)
         }
     }
 
@@ -200,7 +205,7 @@ const UpdateAppointment = (props) => {
     return (
         <section className='bg-seashell text-start col-lg-6 col-md-8 col-sm-12 m-lg-auto position-relative rounded-5 p-2 shadow-lg updateappointment'>
             <h5 className="text-center mt-2">Update {props.patientname} Appointment Details</h5>
-            <button type="button" className="btn-close closebtn position-absolute" aria-label="Close" onClick={props.closeappointmentform} ></button>
+            <button type="button" className="btn-close closebtn position-absolute" disabled={load==true?true:false} aria-label="Close" onClick={props.closeappointmentform} ></button>
             <hr />
             <div className="col-12">
                 <label>Select Location</label>
@@ -274,12 +279,25 @@ const UpdateAppointment = (props) => {
                 </div>
                 <hr />
                 <div className="row m-0 p-0">
-                    <div className="col-6 py-2 pb-2 m-auto text-center">
-                        <button className='btn px-5 button-burntumber' onClick={confirmmessage}>Done</button>
-                    </div>
-                    <div className="col-6 py-2 pb-2 m-auto text-center">
-                        <button className="btn btn-light px-5 border border-2" onClick={getCurrentTimeslots}>Set Previous</button>
-                    </div>
+                    {
+                        load ? (
+                            <div className="col-6 py-2 pb-2 m-auto text-center">
+                            <div class="spinner-border" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                        ):(
+                            <>
+                            <div className="col-6 py-2 pb-2 m-auto text-center">
+                            <button className='btn px-5 button-burntumber' onClick={confirmmessage}>Done</button>
+                        </div>
+                        <div className="col-6 py-2 pb-2 m-auto text-center">
+                            <button className="btn btn-light px-5 border border-2" onClick={getCurrentTimeslots}>Set Previous</button>
+                        </div>
+                 
+                    </>
+                        )
+                    }
                 </div>
 
             </div>
