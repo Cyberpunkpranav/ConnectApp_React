@@ -16,6 +16,9 @@ import { SelectedAppointments } from './components/Appointments/SelectedAppointm
 import { Timer } from './components/features/Timer'
 import { UpdatePatient } from './components/Patients/UpdatePatient'
 import { UpdateDoctor } from "./components/Doctors/UpdateDoctor"
+import { Appointments_Dsr } from './components/Dsr/Appointments_Dsr'
+import { Doctors_Dsr } from './components/Dsr/Doctors_Dsr'
+import { Pharmacy_Dsr } from './components/Dsr/Pharmacy_Dsr'
 //CSS
 import './css/appointment.css';
 import "./css/pharmacy.css";
@@ -133,7 +136,7 @@ function Navbar(props) {
     },
     {
       title: 'DSR',
-      path: '/#',
+      path: '/DailySaleReport',
       image: '/images/dsr.png'
     },
     {
@@ -451,7 +454,7 @@ function Appointments(props) {
       }
     }
     if (arr.length != 0) {
-      return ' | ' + '('+arr.length + ' Appointments)'
+      return ' | ' + '(' + arr.length + ' Appointments)'
     }
   }
 
@@ -1111,7 +1114,6 @@ function Doctors() {
       setupdatedoctor('none')
     }
   }
-  console.log(Doctors)
   return (
     <section className="Doctorspage text-center position-relative">
       <div className="conatainer">
@@ -1191,9 +1193,73 @@ function Doctors() {
   )
 }
 
+
+function DailySaleReport(props) {
+
+  const options = ['Appointments', 'Doctors', 'Pharmacy']
+  const [menu, setmenu] = useState(0)
+  const [type, settype] = useState('text')
+
+  function ToggleOptions(_menu) {
+    if (_menu == 0) {
+      return <Appointments_Dsr />
+    }
+    if (_menu == 1) {
+      return <Doctors_Dsr />
+    }
+    if (menu == 2) {
+      return <Pharmacy_Dsr />
+    }
+    return <div>Nothing Selected</div>
+  }
+  return (
+
+    <div className="DSRsection mt-3">
+      <div className="container-fluid mb-2">
+        <div className="row p-0 m-0 gy-sm-2">
+          <div className="col-8 col-md-6">
+            {
+              options.map((data, i) => (
+                <button className={`button ms-1 button-${i == menu ? 'pearl' : 'charcoal'} shadow-${i == menu ? 'lg' : 'none'} border border-dark`} id={i} key={i} onClick={() => { setmenu(i) }}>{data}</button>
+              ))
+            }
+          </div>
+          <div className="col-auto col-md-2">
+          <select className="form-control">
+            <option value="Select Clinic">Select Clinic</option>
+            {
+              props.cliniclist ? (
+                props.cliniclist.map((data) => (
+                  <option>{data.id}.{' '}{data.title}</option>
+                ))
+              ) : (
+                <option>Loading</option>
+              )
+            }
+          </select>
+        </div>
+          <div className="col-auto col-4 Date align-items-center justify-content-center">
+            <div className="d-flex p-0 m-0 text-center">
+              <input type='date' placeholder="from Date" className='form-control' />
+              <div className="">_</div>
+              <input type='date' placeholder="to Date" className='form-control' />
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div className="container-fluid page m-0 p-0 ">
+        <div className="p-0 m-0">{ToggleOptions(menu)}</div>
+      </div>
+    </div>
+  )
+}
+
+
 export { Navbar };
 export { Doctorsection };
 export { Appointments };
 export { Pharmacy };
 export { Patients };
 export { Doctors };
+export { DailySaleReport };

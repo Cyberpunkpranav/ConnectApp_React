@@ -137,6 +137,9 @@
 .bg-brandy{
     background-color: var(--brandy);
 }
+.bg-lightyellow{
+    background-color:var(--lightyellow);
+}
 .bg-lightred{
     background-color:var(--lightred);
 }
@@ -171,7 +174,15 @@
 .text-lightgreen{
     color:var(--lightgreen);
 }
+.text-brandy{
+    color:var(--brandy);
+}
 /*Borders */
+.border-bottom-lightgreen{
+    border-bottom :2px solid var(--lightgreen);
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
 .border-bottom-burntumber{
     border-bottom :2px solid var(--burntumber);
 }

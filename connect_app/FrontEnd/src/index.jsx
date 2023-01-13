@@ -12,10 +12,10 @@ import './css/dashboard.css';
 import './css/appointment.css';
 import './css/pharmacy.css';
 import './css/login.css';
-import { Navbar, Doctorsection, Appointments, Patients, Doctors, Pharmacy } from './App'
+import { Navbar, Doctorsection, Appointments, Patients, Doctors, Pharmacy,DailySaleReport } from './App'
 import { WelcomeLoader } from './components/features/WelcomeLoader'
 //Notiflix
-import Notiflix, { Notify } from 'notiflix';
+import Notiflix from 'notiflix';
 //Context Apis
 const TodayDate = createContext();
 const URL = createContext();
@@ -138,6 +138,7 @@ function Connectapp(props) {
                             <Route path='/Appointments' element={<Appointments id={props.id} fetchapi={fetchapi} />} />
                             <Route path='/Patients' element={<Patients id={props.id} />} />
                             <Route path='/Doctors' element={<Doctors id={props.id} docapi={docapi} />} />
+                            <Route path='/DailySaleReport' element={<DailySaleReport id={props.id} cliniclist={cliniclist} docapi={docapi}/>}/>
                             <Route path='/Pharmacy' element={<Pharmacy id={props.id} />} />
                           </Routes>
                         </Router>
