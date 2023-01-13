@@ -167,6 +167,7 @@ function Switchpage() {
   const [next, setnext] = useState('none');
   const [password, setpassword] = useState('none');
   const [passvisibility, setpassvisibility] = useState('password');
+  const [load,setload]=useState()
   const topassword = () => {
     setpassword('flex');
     setemail('none');
@@ -194,12 +195,13 @@ function Switchpage() {
     setlogininput(logindata);
   }
   const localemail = localStorage.getItem("email");
-  function Submit() {
-    axios.post('https://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/api/connect/login', {
+  async function Submit() {
+    setload(true)
+   await axios.post('https://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/api/connect/login', {
       email: localemail || logininput.email,
       password: logininput.password
     }).then((response) => {
-      console.log(response)
+      setload(false)
       if (response.data.status === true) {
         localStorage.setItem('email', logininput.email);
         localStorage.setItem('name', response.data.data.name);
@@ -213,12 +215,11 @@ function Switchpage() {
           'Check your username password and try again',
           'Retry',
         )
+        setload(false)
       }
 
     })
   }
-
-  // superadmin@aartas.com
   if (localemail !== null && localemail !== '') {
     return <Connectapp username={localStorage.getItem('name')} designation={localStorage.getItem('designation')} id={localStorage.getItem('id')} />
   } else {
@@ -257,9 +258,11 @@ function Switchpage() {
                     <p className="m-0" id="inputheading">Enter your Password</p>
                     <input type={passvisibility} className="form-control" id="password" placeholder="examplepassword123" autoComplete="new-password" onChange={(e) => handleinput(e)} value={logininput.password} />
                   </div>
-                  <div className="col-1 align-items-center justify-content-center d-flex">
-                    <button type="button" className=" p-2 rounded submit text-center" onClick={Submit}>Submit</button>
-                  </div>
+                      <div className="col-1 align-items-center justify-content-center d-flex">
+                      <button type="button" className=" p-2 rounded submit text-center" onClick={Submit}>Submit</button>
+                    </div>
+                
+             
                   <div className="col-12">
                     <div className="col text-center">
                       <input className="form-check-input" onClick={passwordvisibility} type="checkbox" value="" id="flexCheckDefault" />
@@ -308,13 +311,24 @@ function Switchpage() {
                   <div className="col-lg-1 col-2 col-md-1 align-items-center d-flex">
                     <a className="back text-decoration-none text-center p-2 rounded" onClick={toemail}>Back</a>
                   </div>
+                  {
+                    load ? (
+                       <div className="col-lg-6 col-md-8 col-sm-10 col-10 py-1 pb-1 userinput text-center">
+                      <div class="spinner-border" role="status">
+                          <span class="visually-hidden">Loading...</span>
+                      </div>
+                  </div>):(
                   <div className="col-lg-6 col-md-8 col-sm-10 col-10 align-items-center d-flex userinput">
                     <p className="m-0" id="inputheading">Enter your Password</p>
                     <input type={passvisibility} className="form-control" id="password" placeholder="examplepassword123" autoComplete="new-password" onChange={(e) => handleinput(e)} value={logininput.password} />
                   </div>
-                  <div className="col-1 align-items-center justify-content-center d-flex">
-                    <button type="button" className=" p-2 rounded submit text-center" onClick={Submit}>Submit</button>
+                  )
+                  }
+                      <div className="col-1 align-items-center justify-content-center d-flex">
+                    <button type="button" className=" p-2 rounded submit text-center" disabled={load==true?true:false} onClick={Submit}>Submit</button>
                   </div>
+                    
+                  
                   <div className="col-12">
                     <div className="col text-center">
                       <input className="form-check-input" onClick={passwordvisibility} type="checkbox" value="" id="flexCheckDefault" />
