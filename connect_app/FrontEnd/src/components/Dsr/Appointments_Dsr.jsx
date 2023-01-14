@@ -76,8 +76,8 @@ const Appointments_Dsr = () => {
 
   return (
     <div className='Appointments_Dsrsection'>
-      <div className="container-fluid">
-        <div className="row p-0 m-0 justify-content-around m-auto ">
+      <div>
+        <div className="row p-0 m-0 justify-content-between m-auto px-2 ">
           <div className='col-lg-5 col-md-5 col-sm-5 col-5 CARD1 shadow-sm rounded-2' style={{ maxWidth: '25rem' }}>
             <h6 className="text-burntumber ms-3 mt-2">Payment Methods</h6>
             <div className='row p-0 m-0'>
@@ -109,137 +109,135 @@ const Appointments_Dsr = () => {
             <button className='button button-pearl border-bottom-lightgreen ms-lg-2'>CSV</button>
             <button className='button button-pearl border-bottom-lightgreen ms-lg-2'>Excel</button>
           </div>
-
-
         </div>
       </div>
-      <div className="container-fluid maintable">
-      <h5 className='my-2 text-charcoal75 fw-semibold ms-2 '>Appointments</h5>
-      <div className='container-fluid scroll scroll-y appointments'>
-        <table className='table'>
-          <thead>
-            <tr>
-              <th>Bill no.</th>
-              <th>Name</th>
-              <th>Mobile</th>
-              <th>Doctor Name</th>
-              <th>Date</th>
-              <th>Time</th>
-              <th>Payment Method</th>
-              <th>Amount</th>
-              <th>Discount</th>
-              <th>Pending Amt.</th>
-              <th> Grand Total</th>
-            </tr>
-          </thead>
-          <tbody>
+      <div className="container-fluid maintable scroll scroll-y">
+        <h5 className='my-2 text-charcoal75 fw-semibold ms-2 '>Appointments</h5>
+        <div className='container-fluid scroll scroll-y appointments'>
+          <table className='table'>
+            <thead>
+              <tr>
+                <th>Bill no.</th>
+                <th>Name</th>
+                <th>Mobile</th>
+                <th>Doctor Name</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Payment Method</th>
+                <th>Amount</th>
+                <th>Discount</th>
+                <th>Pending Amt.</th>
+                <th> Grand Total</th>
+              </tr>
+            </thead>
+            <tbody>
 
-            {
-              Appointments.map((data, i) => (
-                <tr>
-                  <td key={i}>{data.id}</td>
-                  <td>{data.name}</td>
-                  <td>{data.Mobile}</td>
-                  <td>{data.Doctorname}</td>
-                  <td>{data.Date}</td>
-                  <td>{data.Time}</td>
-                  <td>{data.Payment}</td>
-                  <td>{data.Amount}</td>
-                  <td>{data.Discount}</td>
-                  <td>{data.Pending}</td>
-                  <td>{data.Grand_total}</td>
-                </tr>
-              ))
-            }
+              {
+                Appointments.map((data, i) => (
+                  <tr>
+                    <td key={i}>{data.id}</td>
+                    <td>{data.name}</td>
+                    <td>{data.Mobile}</td>
+                    <td>{data.Doctorname}</td>
+                    <td>{data.Date}</td>
+                    <td>{data.Time}</td>
+                    <td>{data.Payment}</td>
+                    <td>{data.Amount}</td>
+                    <td>{data.Discount}</td>
+                    <td>{data.Pending}</td>
+                    <td>{data.Grand_total}</td>
+                  </tr>
+                ))
+              }
 
-          </tbody>
-        </table>
-      </div>
-      <h5 className='my-2 text-charcoal75 fw-semibold ms-2 '>Pending Payments Recieved</h5>
-      <div className='container-fluid scroll scroll-y pendingpayrecieve'>
-        <table className='table'>
-          <thead>
-            <tr>
-              <th>Bill no.</th>
-              <th>Name</th>
-              <th>Mobile</th>
-              <th>Doctor Name</th>
-              <th>Date</th>
-              <th>Time</th>
-              <th>Payment Method</th>
-              <th>Amount</th>
-              <th>Discount</th>
-              <th>Pending Amt.</th>
-              <th> Grand Total</th>
-            </tr>
-          </thead>
-          <tbody>
+            </tbody>
+          </table>
+        </div>
+        <h5 className='my-2 text-charcoal75 fw-semibold ms-2 '>Pending Payments Recieved</h5>
+        <div className='container-fluid scroll scroll-y pendingpayrecieve'>
+          <table className='table'>
+            <thead>
+              <tr>
+                <th>Bill no.</th>
+                <th>Name</th>
+                <th>Mobile</th>
+                <th>Doctor Name</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Payment Method</th>
+                <th>Amount</th>
+                <th>Discount</th>
+                <th>Pending Amt.</th>
+                <th> Grand Total</th>
+              </tr>
+            </thead>
+            <tbody>
 
-            {
-              Appointments.map((data, i) => (
-                <tr>
-                  <td key={i}>{data.id}</td>
-                  <td>{data.name}</td>
-                  <td>{data.Mobile}</td>
-                  <td>{data.Doctorname}</td>
-                  <td>{data.Date}</td>
-                  <td>{data.Time}</td>
-                  <td>{data.Payment}</td>
-                  <td>{data.Amount}</td>
-                  <td>{data.Discount}</td>
-                  <td>{data.Pending}</td>
-                  <td>{data.Grand_total}</td>
-                </tr>
-              ))
-            }
+              {
+                Appointments.map((data, i) => (
+                  <tr>
+                    <td key={i}>{data.id}</td>
+                    <td>{data.name}</td>
+                    <td>{data.Mobile}</td>
+                    <td>{data.Doctorname}</td>
+                    <td>{data.Date}</td>
+                    <td>{data.Time}</td>
+                    <td>{data.Payment}</td>
+                    <td>{data.Amount}</td>
+                    <td>{data.Discount}</td>
+                    <td>{data.Pending}</td>
+                    <td>{data.Grand_total}</td>
+                  </tr>
+                ))
+              }
 
-          </tbody>
-        </table>
-      </div>
-      <h5 className='my-2 text-charcoal75 fw-semibold ms-2 '>Advanced payemnts Recieved</h5>
-      <div className='container-fluid scroll scroll-y advancepayrecieve'>
-        <table className='table'>
-          <thead>
-            <tr>
-              <th>Bill no.</th>
-              <th>Name</th>
-              <th>Mobile</th>
-              <th>Doctor Name</th>
-              <th>Date</th>
-              <th>Time</th>
-              <th>Payment Method</th>
-              <th>Amount</th>
-              <th>Discount</th>
-              <th>Pending Amt.</th>
-              <th> Grand Total</th>
-            </tr>
-          </thead>
-          <tbody>
+            </tbody>
+          </table>
+        </div>
+        <h5 className='my-2 text-charcoal75 fw-semibold ms-2 '>Advanced Payments Recieved</h5>
+        <div className='container-fluid scroll scroll-y advancepayrecieve'>
+          <table className='table'>
+            <thead>
+              <tr>
+                <th>Bill no.</th>
+                <th>Name</th>
+                <th>Mobile</th>
+                <th>Doctor Name</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Payment Method</th>
+                <th>Amount</th>
+                <th>Discount</th>
+                <th>Pending Amt.</th>
+                <th> Grand Total</th>
+              </tr>
+            </thead>
+            <tbody>
 
-            {
-              Appointments.map((data, i) => (
-                <tr>
-                  <td key={i}>{data.id}</td>
-                  <td>{data.name}</td>
-                  <td>{data.Mobile}</td>
-                  <td>{data.Doctorname}</td>
-                  <td>{data.Date}</td>
-                  <td>{data.Time}</td>
-                  <td>{data.Payment}</td>
-                  <td>{data.Amount}</td>
-                  <td>{data.Discount}</td>
-                  <td>{data.Pending}</td>
-                  <td>{data.Grand_total}</td>
-                </tr>
-              ))
-            }
+              {
+                Appointments.map((data, i) => (
+                  <tr>
+                    <td key={i}>{data.id}</td>
+                    <td>{data.name}</td>
+                    <td>{data.Mobile}</td>
+                    <td>{data.Doctorname}</td>
+                    <td>{data.Date}</td>
+                    <td>{data.Time}</td>
+                    <td>{data.Payment}</td>
+                    <td>{data.Amount}</td>
+                    <td>{data.Discount}</td>
+                    <td>{data.Pending}</td>
+                    <td>{data.Grand_total}</td>
+                  </tr>
+                ))
+              }
 
-          </tbody>
-        </table>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
-      </div>
- 
+
 
 
   )

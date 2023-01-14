@@ -1195,7 +1195,7 @@ function Doctors() {
 
 
 function DailySaleReport(props) {
-
+  const Doctors= useContext(DoctorsList)
   const options = ['Appointments', 'Doctors', 'Pharmacy']
   const [menu, setmenu] = useState(0)
   const [type, settype] = useState('text')
@@ -1215,38 +1215,51 @@ function DailySaleReport(props) {
   return (
 
     <div className="DSRsection mt-3">
-      <div className="container-fluid mb-2">
-        <div className="row p-0 m-0 gy-sm-2">
-          <div className="col-8 col-md-6">
+      <div className="p-0 m-0 mb-2">
+        <div className="row p-0 m-0 options align-items-center">
+          <div className="col-4 col-lg-5 col-xl-4 col-md-5 col-md-4 p-0 m-0">
             {
               options.map((data, i) => (
                 <button className={`button ms-1 button-${i == menu ? 'pearl' : 'charcoal'} shadow-${i == menu ? 'lg' : 'none'} border border-dark`} id={i} key={i} onClick={() => { setmenu(i) }}>{data}</button>
               ))
             }
           </div>
-          <div className="col-auto col-md-2">
-          <select className="form-control">
-            <option value="Select Clinic">Select Clinic</option>
+          <div className="col-6 col-lg-7 col-xl-8 col-md-6 col-auto p-0 m-0 text-end">
+            <div className="row p-0 m-0">
+          <div className="col-auto col-xl-auto col-lg-3 col-md-3 p-0 m-0 text-end">
+          <select className="px-1 bg-pearl text-burntumber py-2 text-lg-center text-md-start text-sm-start clinic ">
+            <option value="Select Clinic">Clinic</option>
             {
               props.cliniclist ? (
                 props.cliniclist.map((data) => (
-                  <option>{data.id}.{' '}{data.title}</option>
+                  <option className="text-start" value={data.id}>{data.id}.{' '}{data.title}</option>
                 ))
               ) : (
                 <option>Loading</option>
               )
             }
           </select>
-        </div>
-          <div className="col-auto col-4 Date align-items-center justify-content-center">
+          </div>
+        <div className="col-2 col-lg-4 col-xl-auto col-md-3 p-0 m-0 text-xl-start">
+            <select className="bg-pearl text-sm-start text-lg-center  text-md-start border-md-start-0 text-burntumber px-1 py-2 doctor">
+            <option value='Doctors'>Doctor</option>
+            {
+              Doctors.map((data)=>(
+                <option className="text-start" value={data[0]}>{data[0]}. Dr.{data[1]} </option>
+              )) 
+            }
+            </select>
+          </div>
+          <div className="col-auto col-xl-auto col-lg-4 col-4 col-md-6 Date p-0 m-0">
             <div className="d-flex p-0 m-0 text-center">
-              <input type='date' placeholder="from Date" className='form-control' />
-              <div className="">_</div>
-              <input type='date' placeholder="to Date" className='form-control' />
+              <input type='date' placeholder="from Date" className='bg-pearl px-1 fromdate' />
+              <div className="bg-pearl fromdate fw-bolder">-</div>
+              <input type='date' placeholder="to Date" className='bg-pearl px-1 todate' />
             </div>
           </div>
+          </div>
         </div>
-
+        </div>
       </div>
       <div className="container-fluid page m-0 p-0 ">
         <div className="p-0 m-0">{ToggleOptions(menu)}</div>
