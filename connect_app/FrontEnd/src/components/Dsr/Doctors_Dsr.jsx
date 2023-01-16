@@ -245,7 +245,7 @@ const Doctors_Dsr = () => {
         </div>
       </div>
       <h5 className='my-2 text-charcoal75 fw-semibold ms-2 '>Appointments</h5>
-      <div className='container-fluid scroll scroll-y doctodsrtable'>
+      <div className='container-fluid scroll scroll-y doctordsrtable'>
         <table className='table text-center'>
           <thead>
             <tr>

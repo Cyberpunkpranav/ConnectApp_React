@@ -167,7 +167,7 @@ function DoctorSchedule(props) {
                     <button className="btn m-0 p-0">
                       <img src={process.env.PUBLIC_URL + "/images/addicon.png"} style={{ width: "2rem" }} alt="displaying_image" onClick={OpenAddQuickSlots} />
                     </button>
-                    <div className={`d-${addquickslots} rounded-2 bg-seashell shadow position-absolute top-0 mt-3`} style={{ zIndex: '3010', minWidth: '20rem', maxWidth: '50rem', marginLeft: '15rem' }}>
+                    <div className={`d-${addquickslots} rounded-2 bg-seashell shadow col-lg-6 col-md-8 col-sm-12 col-12 col-xl-4 position-absolute end-0 start-0 top-0 m-auto mt-3`} style={{ zIndex: '3010', minWidth: '10rem', maxWidth: '30rem'}}>
                       <AddSelectedDoctorSlot CloseAddQuickSlots={CloseAddQuickSlots} fetchapi={props.fetchapi} DocClinic={props.DocClinic} DoctorID={props.DoctorID} DoctorName={props.DoctorName} />
                     </div>
 
@@ -183,7 +183,7 @@ function DoctorSchedule(props) {
                       <button className={`button button-${timeindex == i ? 'pearl' : 'lightgreen'} m-1`} onClick={(e) => { openAddApppointmentform(); settimeindex(i) }} key={i}>{tConvert(data[0])}</button>
                       {
                         timeindex == i ? (
-                          <section className={`d-${timeindex == i ? addappointmentform : 'none'} col-lg-6 col-md-8 col-sm-10 col-10 col-xl-4 appointmentinfosection position-absolute m-auto start-0 end-0 bg-seashell rounded-4 col-6 shadow overflow-auto`} style={{ zIndex: 4000, top: '-2rem' }}>
+                          <section className={`d-${timeindex == i ? addappointmentform : 'none'} col-lg-6 col-md-8 col-sm-12 col-12 col-xl-4 appointmentinfosection position-absolute m-auto start-0 end-0 bg-seashell rounded-4 col-6 shadow overflow-auto`} style={{ zIndex: 4000, top: '-2rem' }}>
                             <SelectedTimeAppointment fetchapi={props.fetchapi} closeAddAppointmentform={closeAddAppointmentform} DocClinic={props.DocClinic} DoctorID={props.DoctorID} DoctorName={props.DoctorName} timeindex={timeindex} selectedtime={data[0]} selectedtimeID={data[2]} />
                           </section>
                         ) : (

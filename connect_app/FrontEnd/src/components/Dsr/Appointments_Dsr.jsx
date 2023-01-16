@@ -69,7 +69,47 @@ const Appointments_Dsr = () => {
       Discount: '0',
       Pending: '0',
       Grand_total: '1500'
-    }
+    },
+     {
+      id: 'c-102',
+      name: 'kabir',
+      Mobile: '9977665544',
+      Doctorname: 'Arushi Dudeja',
+      Date: '12-01-2023',
+      Time: '07:00 AM',
+      Payment: 'Cash-2000 Card-2000',
+      Amount: '1500',
+      Discount: '0',
+      Pending: '0',
+      Grand_total: '1500'
+    },
+    {
+      id: 'c-102',
+      name: 'kabir',
+      Mobile: '9977665544',
+      Doctorname: 'Arushi Dudeja',
+      Date: '12-01-2023',
+      Time: '07:00 AM',
+      Payment: 'Cash-2000 Card-2000',
+      Amount: '1500',
+      Discount: '0',
+      Pending: '0',
+      Grand_total: '1500'
+    },
+    {
+      id: 'c-102',
+      name: 'kabir',
+      Mobile: '9977665544',
+      Doctorname: 'Arushi Dudeja',
+      Date: '12-01-2023',
+      Time: '07:00 AM',
+      Payment: 'Cash-2000 Card-2000',
+      Amount: '1500',
+      Discount: '0',
+      Pending: '0',
+      Grand_total: '1500'
+    },
+
   ]
   const [Appointments, setAppointments] = useState(arr)
 

@@ -1219,17 +1219,17 @@ function DailySaleReport(props) {
     <div className="DSRsection mt-3">
       <div className="p-0 m-0 mb-2">
         <div className="row p-0 m-0 options align-items-center">
-          <div className="col-4 col-lg-5 col-xl-4 col-md-5 col-md-4 p-0 m-0">
+          <div className="col-auto col-lg-auto me-lg-2 col-xl-4 col-md-12 col-md-4 p-0 m-0">
             {
               options.map((data, i) => (
                 <button className={`button ms-1 button-${i == menu ? 'pearl' : 'charcoal'} shadow-${i == menu ? 'lg' : 'none'} border border-dark`} id={i} key={i} onClick={() => { setmenu(i) }}>{data}</button>
               ))
             }
           </div>
-          <div className="col-6 col-lg-7 col-xl-8 col-md-6 col-auto p-0 m-0 text-end">
+          <div className="col-5 col-lg-8 col-xl-7 col-md-12 p-0 m-0 mt-lg-0 mt-2 align-items-center  text-end">
             <div className="row p-0 m-0">
-              <div className="col-auto col-xl-auto col-lg-3 col-md-3 p-0 m-0 text-end">
-                <select className="px-1 bg-pearl text-burntumber py-2 text-lg-center text-md-start text-sm-start clinic ">
+              <div className="col-auto col-xl-auto col-lg-4 col-md-4 p-0 m-0 text-end">
+                <select className="px-1 bg-pearl text-burntumber py-2  py-md-1 text-center clinic ">
                   <option value="Select Clinic">Clinic</option>
                   {
                     props.cliniclist ? (
@@ -1242,8 +1242,8 @@ function DailySaleReport(props) {
                   }
                 </select>
               </div>
-              <div className="col-2 col-lg-4 col-xl-auto col-md-3 p-0 m-0 text-xl-start">
-                <select className="bg-pearl text-sm-start text-lg-center  text-md-start border-md-start-0 text-burntumber px-1 py-2 doctor">
+              <div className="col-2 col-lg-auto col-xl-auto col-md-auto p-0 m-0 text-xl-start">
+                <select className="bg-pearl text-center border-md-start-0 text-burntumber px-1 py-2 py-md-1 doctor">
                   <option value='Doctors'>Doctor</option>
                   {
                     Doctors.map((data) => (
@@ -1252,7 +1252,7 @@ function DailySaleReport(props) {
                   }
                 </select>
               </div>
-              <div className="col-auto col-xl-auto col-lg-4 col-4 col-md-6 Date p-0 m-0">
+              <div className="col-auto col-xl-auto col-lg-4 col-4 col-md-3 Date p-0 m-0">
                 <div className="d-flex p-0 m-0 text-center">
                   <input type='date' placeholder="from Date" className='bg-pearl px-1 fromdate' />
                   <div className="bg-pearl fromdate fw-bolder">-</div>
