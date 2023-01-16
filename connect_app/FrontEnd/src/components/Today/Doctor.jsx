@@ -167,7 +167,7 @@ function DoctorSchedule(props) {
                     <button className="btn m-0 p-0">
                       <img src={process.env.PUBLIC_URL + "/images/addicon.png"} style={{ width: "2rem" }} alt="displaying_image" onClick={OpenAddQuickSlots} />
                     </button>
-                    <div className={`d-${addquickslots} rounded-2 bg-seashell shadow col-lg-6 col-md-8 col-sm-12 col-12 col-xl-4 position-absolute end-0 start-0 top-0 m-auto mt-3`} style={{ zIndex: '3010', minWidth: '10rem', maxWidth: '30rem'}}>
+                    <div className={`d-${addquickslots} rounded-2 bg-seashell shadow col-lg-6 col-md-8 col-sm-12 col-12 col-xl-4 position-absolute end-0 start-0 top-0 m-auto mt-3`} style={{ zIndex: '3010', minWidth: '10rem', maxWidth: '30rem' }}>
                       <AddSelectedDoctorSlot CloseAddQuickSlots={CloseAddQuickSlots} fetchapi={props.fetchapi} DocClinic={props.DocClinic} DoctorID={props.DoctorID} DoctorName={props.DoctorName} />
                     </div>
 
@@ -259,8 +259,8 @@ function DoctorSchedule(props) {
                               </select>
                             </td>
 
-                            <td>{data.patient.full_name}</td>
-                            <td>{data.patient.phone_number}</td>
+                            <td>{data.patient ? data.patient.full_name !== null ? data.patient.full_name : 'N/A' : 'N/A'}</td>
+                            <td>{data.patient ? data.patient.phone_number != null ? data.patient.phone_number : 'N/A' : 'N/A'}</td>
                             <td>{tConvert(data.timeslot.time_from)}</td>
                             <td>{data.total_amount}</td>
                             <td><AmountPaid appointmentData={data} /> </td>

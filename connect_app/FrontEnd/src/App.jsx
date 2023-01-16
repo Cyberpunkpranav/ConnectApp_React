@@ -27,6 +27,7 @@ import './css/patient.css';
 import '../node_modules/bootstrap/js/dist/dropdown';
 //Notiflix
 import Notiflix from 'notiflix';
+import { customconfirm } from "./components/features/notiflix/customconfirm"
 //CSV
 // import {CSVLink} from 'react-csv'
 
@@ -937,6 +938,7 @@ function Newpurchaseentryform(props) {
 function Patients() {
   const url = useContext(URL)
   const nextref = useRef()
+  const adminid = localStorage.getItem('id')
   const previousref = useRef()
   const [nxtoffset, setnxtoffset] = useState(0)
   const [prevoffset, setprevoffset] = useState(0)
@@ -945,6 +947,7 @@ function Patients() {
   const [tabindex, settabindex] = useState(0)
   const [Loading, setLoading] = useState(false)
   const [patientsearch, setpatientsearch] = useState()
+  const [patientid, setpatientid] = useState()
 
 
   async function getAllPatients(i) {
@@ -977,7 +980,43 @@ function Patients() {
     getAllPatients()
   }, [patientsearch])
 
+  async function DeletePatient() {
+    if (adminid && patientid) {
+      try {
+        await axios.post(`${url}/delete/patient`, {
+          id: patientid,
+          admin_id: adminid
 
+        }).then((response) => {
+          console.log(response)
+          Notiflix.Notify.success(response.data.message)
+          getAllPatients()
+        })
+      } catch (e) {
+        Notiflix.Notify.alert(e)
+        alert(e)
+      }
+
+    }
+  }
+
+  function confirmmessage(name) {
+    customconfirm()
+    Notiflix.Confirm.show(
+      `Update Patient Details`,
+      `Do you surely want to Delete Patient ${name} `,
+      'Yes',
+      'No',
+      () => {
+        DeletePatient()
+      },
+      () => {
+        return 0
+      },
+      {
+      },
+    );
+  }
   const reversefunction = (date) => {
     date = date.split("-").reverse().join("-")
     return date
@@ -1056,7 +1095,7 @@ function Patients() {
                       <td>{data.pin_code ? data.pin_code : 'N/A'}</td>
                       <td>{data.phone_number ? data.phone_number : 'N/A'}</td>
                       <td>{data.parent ? ' No' : 'Yes'}</td>
-                      <td><button className="btn p-0 m-0"><img src={process.env.PUBLIC_URL + "/images/delete.png"} alt="displaying_image" style={{ width: "1.5rem" }} /></button></td>
+                      <td><button className="btn p-0 m-0" onClick={(e) => { setpatientid(data.id); confirmmessage(data.full_name); }}><img src={process.env.PUBLIC_URL + "/images/delete.png"} alt="displaying_image" style={{ width: "1.5rem" }} /></button></td>
                       <td><button className="btn p-0 m-0"><img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" style={{ width: "1.5rem" }} /></button></td>
                     </tr>
                   ))
@@ -1198,13 +1237,18 @@ function Doctors() {
 
 function DailySaleReport(props) {
   const Doctors = useContext(DoctorsList)
+  const CurrentDate = useContext(TodayDate)
   const options = ['Appointments', 'Doctors', 'Pharmacy']
   const [menu, setmenu] = useState(0)
   const [type, settype] = useState('text')
+  const [doctorid, setdoctorid] = useState()
+  const [fromdate, setfromdate] = useState(CurrentDate)
+  const [todate, settodate] = useState(CurrentDate)
+  const [clinic, setclinic] = useState()
 
   function ToggleOptions(_menu) {
     if (_menu == 0) {
-      return <Appointments_Dsr />
+      return <Appointments_Dsr doctorid={doctorid} fromdate={fromdate} todate={todate} clinic={clinic} />
     }
     if (_menu == 1) {
       return <Doctors_Dsr />
@@ -1243,7 +1287,7 @@ function DailySaleReport(props) {
                 </select>
               </div>
               <div className="col-2 col-lg-auto col-xl-auto col-md-auto p-0 m-0 text-xl-start">
-                <select className="bg-pearl text-center border-md-start-0 text-burntumber px-1 py-2 py-md-1 doctor">
+                <select className="bg-pearl text-center border-md-start-0 text-burntumber px-1 py-2 py-md-1 doctor" value={doctorid ? doctorid : ''} onChange={(e) => setdoctorid(e.target.value)}>
                   <option value='Doctors'>Doctor</option>
                   {
                     Doctors.map((data) => (

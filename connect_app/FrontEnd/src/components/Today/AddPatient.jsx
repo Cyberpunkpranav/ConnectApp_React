@@ -8,7 +8,7 @@ import { geocodeByAddress, getLatLng } from 'react-google-places-autocomplete'
 import GooglePlacesAutocomplete from "react-google-places-autocomplete"
 //Notiflix
 import Notiflix from 'notiflix';
-import  {customconfirm} from '../features/notiflix/customconfirm'
+import { customconfirm } from '../features/notiflix/customconfirm'
 //Css
 import '../../css/bootstrap.css'
 
@@ -33,7 +33,7 @@ const AddPatient = (props) => {
     const [display, setdisplay] = useState("none")
     const [accountinput, setaccountinput] = useState()
     const [displaymainaccount, setdisplaymainaccount] = useState('none')
-    const[load,setload]=useState()
+    const [load, setload] = useState()
 
     const d = () => {
         if (main == 1) {
@@ -80,36 +80,37 @@ const AddPatient = (props) => {
 
 
     let adminid = localStorage.getItem('id')
-    async function NewPatient(e){
-            if (fullname && countrycode && phonenumber && DOB && gender && email && address && pincode && place && main && adminid) {
-                setload(true)
-           await    axios.post(`${url}/add/patient`, {
-                    full_name: fullname,
-                    phone_country_code: countrycode,
-                    phone_number: phonenumber,
-                    dob: DOB,
-                    gender: gender,
-                    email: email,
-                    address: address,
-                    pin_code: pincode,
-                    location: place,
-                    is_main: main,
-                    latitude: lat,
-                    longitude: lng,
-                    relation: main == 2 ? relation : '',
-                    link_id: main == 2 ? linkid : '',
-                    admin_id: adminid
-                }).then((response) => {
-                    setload(false)
-                    Notiflix.Notify.success('Added Patient Successfully');
-                    props.togglepatientform()
-                    resetform(e)
-
-                })
-            } else {
+    async function NewPatient(e) {
+        if (fullname && countrycode && phonenumber && DOB && gender && email && address && pincode && place && main && adminid) {
+            setload(true)
+            await axios.post(`${url}/add/patient`, {
+                full_name: fullname,
+                phone_country_code: countrycode,
+                phone_number: phonenumber,
+                dob: DOB,
+                gender: gender,
+                email: email,
+                address: address,
+                pin_code: pincode,
+                location: place,
+                is_main: main,
+                latitude: lat,
+                longitude: lng,
+                relation: main == 2 ? relation : '',
+                link_id: main == 2 ? linkid : '',
+                admin_id: adminid
+            }).then((response) => {
                 setload(false)
-                Notiflix.Notify.warning('Please Fill all Detais');
-            
+                console.log(response)
+                Notiflix.Notify.success(response.data.message);
+                props.togglepatientform()
+                resetform(e)
+
+            })
+        } else {
+            setload(false)
+            Notiflix.Notify.warning('Please Fill all Detais');
+
         }
     }
 
@@ -465,24 +466,24 @@ const AddPatient = (props) => {
 
                 </div>
                 {
-                    load ?(
+                    load ? (
                         <div className="col-6 py-2 pb-2 m-auto text-center">
-                        <div class="spinner-border" role="status">
-                            <span class="visually-hidden">Loading...</span>
+                            <div class="spinner-border" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
                         </div>
-                    </div>
-                    ):(
+                    ) : (
                         <>
-                              <div className="col-6 py-2 pb-2 m-auto text-center">
-                    <button type="button" className="btn done px-5"  data-bs-toggle="modal" data-bs-target="#staticBackdrop" onClick={confirmmessage} > Done </button>
-                </div>
-                <div className="col-6 pb-2 m-auto text-center">
-                    <button className="btn btn-light px-5" onClick={resetform}>Reset</button>
-                </div>
+                            <div className="col-6 py-2 pb-2 m-auto text-center">
+                                <button type="button" className="btn done px-5" onClick={confirmmessage} > Done </button>
+                            </div>
+                            <div className="col-6 pb-2 m-auto text-center">
+                                <button className="btn btn-light px-5" onClick={resetform}>Reset</button>
+                            </div>
                         </>
                     )
                 }
-          
+
             </div>
         </>
 

@@ -1,10 +1,13 @@
 import React from 'react'
-import { useState } from 'react'
+import { useState, useEffect, useContext } from 'react'
+import axios from "axios"
+import { TodayDate, URL } from '../../index'
 import '../../css/dashboard.css'
 import '../../css/appointment.css'
 import '../../css/dsr.css'
+import Notiflix from 'notiflix'
 
-const Appointments_Dsr = () => {
+const Appointments_Dsr = (props) => {
   let arr = [
     {
       id: 'c-102',
@@ -70,7 +73,7 @@ const Appointments_Dsr = () => {
       Pending: '0',
       Grand_total: '1500'
     },
-     {
+    {
       id: 'c-102',
       name: 'kabir',
       Mobile: '9977665544',
@@ -111,7 +114,32 @@ const Appointments_Dsr = () => {
     },
 
   ]
+  const CurrentDate = useContext(TodayDate)
+  const url = useContext(URL)
+  //Use States
   const [Appointments, setAppointments] = useState(arr)
+
+
+  console.log(props.doctorid, props.fromdate, props.todate)
+
+  async function DSR_All_Appointments() {
+    if (props.doctorid || props.fromdate || props.todate) {
+      try {
+        await axios.get(`${url}/appointment/list?doctor_id=${props.doctorid}&from_date=${props.fromdate}&to_date=${props.todate}`).then((response) => {
+          setAppointments(response.data.data)
+        })
+      } catch (e) {
+        alert(e)
+      }
+    } else {
+      Notiflix.Notify.warning("please select any one field to search")
+    }
+
+  }
+  useEffect(() => {
+    DSR_All_Appointments()
+  }, [props.doctorid, props.fromdate, props.todate])
+
 
 
   return (
