@@ -80,8 +80,6 @@ function Connectapp(props) {
       setIsLoading(false);
       setisWelcomeLoading(1)
     } catch (e) {
-      alert(e)
-      setIsLoading(false);
       setisWelcomeLoading(1)
       Notiflix.Report.failure(
         'Network Failure',
