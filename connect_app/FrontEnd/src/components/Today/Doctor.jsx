@@ -10,6 +10,7 @@ import '../../css/bootstrap.css'
 import '../../css/dashboard.css'
 import { SelectedTimeAppointment } from '../Appointments/SelectedTimeAppointment'
 import { AddSelectedDoctorSlot } from './SelectedDoctorSlot'
+import { Vitalsoperation } from "./Vitals";
 
 function DoctorSchedule(props) {
   const url = useContext(URL)
@@ -152,6 +153,30 @@ function DoctorSchedule(props) {
       setaddquickslots('none')
     }
   }
+
+  //Vitals Section
+  const [vitalsform, setvitalsform] = useState('none')
+  const [vitalindex,setvitalindex]=useState()
+  function OpenVitals() {
+    if (vitalsform === 'none') {
+      setvitalsform('block')
+    }
+  }
+  function CloseVitals() {
+    if (vitalsform === 'block') {
+      setvitalsform('none')
+    }
+  }
+  const [appointmentvitalslist,setappointmentvitalslist]=useState([])
+  const[loadvitals,setloadvitals]=useState()
+ async function GetAppointmentVitals(id){
+    setloadvitals(true)
+ await axios.get(`${url}/appointment/vitals/list?appointment_id=${id}`).then((response)=>{
+      setappointmentvitalslist(response.data.data.vitals)
+      setloadvitals(false)
+    })
+  }
+ //Vitals Section 
   return (
     <>
       <section id="doctorscheduledata">
@@ -264,7 +289,7 @@ function DoctorSchedule(props) {
                             <td>{tConvert(data.timeslot.time_from)}</td>
                             <td>{data.total_amount}</td>
                             <td><AmountPaid appointmentData={data} /> </td>
-                            <td><img src={process.env.PUBLIC_URL + "/images/vitals.png"} alt="displaying_image" style={{ width: "1.5rem" }} /> </td>
+                            <td><button className="btn p-0 m-0" onClick={()=>{ setvitalindex(i); OpenVitals();GetAppointmentVitals(data.id) }}><img src={process.env.PUBLIC_URL + "/images/vitals.png"} alt="displaying_image" style={{ width: "1.5rem" }} /></button></td>
                             <td><img src={process.env.PUBLIC_URL + "/images/cart.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1" /> <img src={process.env.PUBLIC_URL + "/images/medicine.png"} alt="displaying_image" className="ms-1" style={{ width: "1.5rem" }} /> </td>
                             <td>
                               <button className="btn position-relative cursor-pointer more p-0 m-0">
@@ -278,9 +303,15 @@ function DoctorSchedule(props) {
                                 </tbody>
                               </table>
                             </td>
-                            {appointmentid === data.id ? (
-                              <td className={`updateappointment border-0 d-${tableindex == i ? appointmentform : 'none'} p-0 start-0 end-0 position-absolute`} style={{ zIndex: '3005' }}><UpdateAppointment fetchapi={props.fetchapi} fetchallAppointmentslist={props.fetchallAppointmentslist} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} patientid={data.patient != null && data.patient.id != null ? data.patient.id : ""} appointmentid={data.id} addappointmentform={addappointmentform} closeappointmentform={closeappointmentform} doctorid={props.doctorid} appointmentdoctorid={data.doctor.id} appointmentdate={data.appointment_date} appointmenttime={tConvert(data.timeslot.time_from)} /></td>
+                            {
+                            appointmentid === data.id ? (
+                              <td className={`updateappointment border-0  d-${tableindex == i ? appointmentform : 'none'} p-0 start-0 bottom-0 end-0 position-absolute`} style={{ zIndex: '3005' }}><UpdateAppointment fetchapi={props.fetchapi} fetchallAppointmentslist={props.fetchallAppointmentslist} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} patientid={data.patient != null && data.patient.id != null ? data.patient.id : ""} appointmentid={data.id} addappointmentform={addappointmentform} closeappointmentform={closeappointmentform} doctorid={props.doctorid} appointmentdoctorid={data.doctor.id} appointmentdate={data.appointment_date} appointmenttime={tConvert(data.timeslot.time_from)} /></td>
                             ) : (<></>)
+                            }
+                            {
+                              vitalindex === i ? (
+                                <td className={`vitals col-lg-6 col-md-8 col-sm-12 col-12 col-xl-4 position-absolute border border-1 shadow rounded-2 d-${vitalindex == i ? vitalsform:'none'}`} style={{zIndex:'3010'}}><Vitalsoperation vitalsform={vitalsform} GetAppointmentVitals={GetAppointmentVitals} CloseVitals={CloseVitals} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} appointmentid={data.id} appointmentvitalslist={appointmentvitalslist} loadvitals={loadvitals} patientid={data.patient && data.patient.id != null ? data.patient.id : ""} /></td>
+                              ) : (<></>)
                             }
                           </tr>
                         )))}

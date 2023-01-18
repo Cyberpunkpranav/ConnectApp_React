@@ -124,6 +124,10 @@
 .bg-seashell{
     background-color: var(--seashell);
 }
+.bg-seashell:focus{
+    background-color: var(--seashell);
+    outline:none;
+}
 .bg-pearl{
     background-color: var(--pearl);
 }
@@ -142,6 +146,9 @@
 }
 .bg-lightred{
     background-color:var(--lightred);
+}
+.bg-raffia{
+    background-color: var(--Raffia);
 }
 .bg-charcoal:hover{
     background-color: var(--charcoal);

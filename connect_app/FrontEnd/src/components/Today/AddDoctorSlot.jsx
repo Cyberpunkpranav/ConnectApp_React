@@ -78,8 +78,8 @@ const AddDoctorSlot = (props) => {
     e.preventDefault()
     customconfirm()
     Notiflix.Confirm.show(
-        `Update Appointment Details`,
-        `Do you surely want yo update ${props.patientname} Appointment Details`,
+        `Add Doctor Time Slots`,
+        `Do you surely want to add the following Doctor`,
         'Yes',
         'No',
         () => {
@@ -151,7 +151,7 @@ const Avaliablemessage = (response) => {
       ):(
         <>
             <div className="col-6 py-2 pb-2 m-auto text-center">
-            <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target={`#${props.staticBackdrop}`} class="btn done px-5" onClick={confirmmessage} > Done </button>
+            <button type="button"  className="btn done px-5" onClick={confirmmessage} > Done </button>
             </div>
             <div className="col-6 pb-2 m-auto text-center">
                 <button className="btn btn-light px-5" onClick={resetform}>Reset</button>

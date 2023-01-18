@@ -114,8 +114,9 @@ const UpdatePatient = (props) => {
     // console.log(props.patientid, fullname, countrycode, phonenumber, DOB, gender, props.gender, email, address, pincode, props.location, place, main, adminid, props.linkid, props.relation)
     async function UpdatePatient() {
         // console.log(props.patientid, fullname, countrycode, phonenumber, DOB, gender, props.gender, email, address, pincode, props.location, place, main, adminid, props.linkid, props.relation)
+      try{
         if (fullname && countrycode && phonenumber && DOB && email && address && pincode && main && adminid) {
-            axios.post(`https://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/api/connect/update/patient`, {
+         await  axios.post(`https://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/api/connect/update/patient`, {
                 patient_id: props.patientid,
                 full_name: fullname,
                 phone_country_code: countrycode,
@@ -140,6 +141,10 @@ const UpdatePatient = (props) => {
         } else {
             Notiflix.Notify.warning('Please Fill all Detais');
         }
+      }catch(e){
+        alert(e)
+      }
+ 
     }
     const confirmmessage = () => {
         customconfirm()

@@ -19,6 +19,7 @@ import { UpdateDoctor } from "./components/Doctors/UpdateDoctor"
 import { Appointments_Dsr } from './components/Dsr/Appointments_Dsr'
 import { Doctors_Dsr } from './components/Dsr/Doctors_Dsr'
 import { Pharmacy_Dsr } from './components/Dsr/Pharmacy_Dsr'
+
 //CSS
 import './css/appointment.css';
 import "./css/pharmacy.css";
@@ -947,8 +948,6 @@ function Patients() {
   const [tabindex, settabindex] = useState(0)
   const [Loading, setLoading] = useState(false)
   const [patientsearch, setpatientsearch] = useState()
-  const [patientid, setpatientid] = useState()
-
 
   async function getAllPatients(i) {
     if (i == undefined) {
@@ -980,35 +979,33 @@ function Patients() {
     getAllPatients()
   }, [patientsearch])
 
-  async function DeletePatient() {
+  async function DeletePatient(patientid) {
     if (adminid && patientid) {
       try {
+        console.log('hit')
         await axios.post(`${url}/delete/patient`, {
           id: patientid,
           admin_id: adminid
 
         }).then((response) => {
-          console.log(response)
           Notiflix.Notify.success(response.data.message)
           getAllPatients()
         })
-      } catch (e) {
-        Notiflix.Notify.alert(e)
+      }catch(e) {
         alert(e)
       }
-
     }
   }
 
-  function confirmmessage(name) {
+  function confirmmessage(name,patientid) {
     customconfirm()
     Notiflix.Confirm.show(
-      `Update Patient Details`,
+      `Delete Patient`,
       `Do you surely want to Delete Patient ${name} `,
       'Yes',
       'No',
       () => {
-        DeletePatient()
+        DeletePatient(patientid)
       },
       () => {
         return 0
@@ -1095,7 +1092,7 @@ function Patients() {
                       <td>{data.pin_code ? data.pin_code : 'N/A'}</td>
                       <td>{data.phone_number ? data.phone_number : 'N/A'}</td>
                       <td>{data.parent ? ' No' : 'Yes'}</td>
-                      <td><button className="btn p-0 m-0" onClick={(e) => { setpatientid(data.id); confirmmessage(data.full_name); }}><img src={process.env.PUBLIC_URL + "/images/delete.png"} alt="displaying_image" style={{ width: "1.5rem" }} /></button></td>
+                      <td><button className="btn p-0 m-0" onClick={(e) => { confirmmessage(data.full_name,data.id); }}><img src={process.env.PUBLIC_URL + "/images/delete.png"} alt="displaying_image" style={{ width: "1.5rem" }} /></button></td>
                       <td><button className="btn p-0 m-0"><img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" style={{ width: "1.5rem" }} /></button></td>
                     </tr>
                   ))
@@ -1242,13 +1239,14 @@ function DailySaleReport(props) {
   const [menu, setmenu] = useState(0)
   const [type, settype] = useState('text')
   const [doctorid, setdoctorid] = useState()
-  const [fromdate, setfromdate] = useState(CurrentDate)
-  const [todate, settodate] = useState(CurrentDate)
+  const [fromdate, setfromdate] = useState()
+  const [todate, settodate] = useState()
   const [clinic, setclinic] = useState()
+
 
   function ToggleOptions(_menu) {
     if (_menu == 0) {
-      return <Appointments_Dsr doctorid={doctorid} fromdate={fromdate} todate={todate} clinic={clinic} />
+      return <Appointments_Dsr doctorid={doctorid} fromdate={fromdate?fromdate:CurrentDate} todate={todate?todate:fromdate} clinic={clinic} />
     }
     if (_menu == 1) {
       return <Doctors_Dsr />
@@ -1258,6 +1256,8 @@ function DailySaleReport(props) {
     }
     return <div>Nothing Selected</div>
   }
+
+
   return (
 
     <div className="DSRsection mt-3">
@@ -1298,9 +1298,9 @@ function DailySaleReport(props) {
               </div>
               <div className="col-auto col-xl-auto col-lg-4 col-4 col-md-3 Date p-0 m-0">
                 <div className="d-flex p-0 m-0 text-center">
-                  <input type='date' placeholder="from Date" className='bg-pearl px-1 fromdate' />
+                  <input type='date' placeholder="from Date" value={fromdate?fromdate:''} className='bg-pearl px-1 fromdate' onChange={(e)=>setfromdate(e.target.value)} />
                   <div className="bg-pearl fromdate fw-bolder">-</div>
-                  <input type='date' placeholder="to Date" className='bg-pearl px-1 todate' />
+                  <input type='date' placeholder="to Date" disabled={fromdate?false:true} value={todate?todate:''} className='bg-pearl px-1 todate'onChange={(e)=>settodate(e.target.value)} />
                 </div>
               </div>
             </div>

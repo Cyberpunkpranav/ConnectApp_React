@@ -12,7 +12,7 @@ import './css/dashboard.css';
 import './css/appointment.css';
 import './css/pharmacy.css';
 import './css/login.css';
-import { Navbar, Doctorsection, Appointments, Patients, Doctors, Pharmacy,DailySaleReport } from './App'
+import { Navbar, Doctorsection, Appointments, Patients, Doctors, Pharmacy, DailySaleReport } from './App'
 import { WelcomeLoader } from './components/features/WelcomeLoader'
 //Notiflix
 import Notiflix from 'notiflix';
@@ -22,7 +22,7 @@ const URL = createContext();
 const DoctorsList = createContext();
 const Doctorapi = createContext();
 const TodayDocs = createContext();
-
+const Vitals = createContext();
 function Connectapp(props) {
   const d = new Date();
   const date = d.getDate() < 10 ? '0' + d.getDate() : d.getDate();
@@ -41,15 +41,27 @@ function Connectapp(props) {
   const [clinicid, setclinicid] = useState();
   const [ischecked, setischecked] = useState()
   const [cliniclist, setcliniclist] = useState([])
+  const [vitalslist, setvitalslist] = useState()
 
-  function ClinicList() {
-    axios.get(`${url}/clinic/list`).then((response) => {
+  async function ClinicList() {
+    await axios.get(`${url}/clinic/list`).then((response) => {
       setcliniclist(response.data.data)
     })
   }
   useEffect(() => {
     ClinicList()
   }, [])
+
+
+  async function VitalsList() {
+    await axios.get(`${url}/vitals/list`).then((response) => {
+      setvitalslist(response.data.data.vitals)
+    })
+  }
+useEffect(() => {
+  VitalsList()
+}, [])
+
 
   async function fetchapi() {
     try {
@@ -80,9 +92,10 @@ function Connectapp(props) {
       setIsLoading(false);
       setisWelcomeLoading(1)
     } catch (e) {
+      console.log(e.message)
       setisWelcomeLoading(1)
       Notiflix.Report.failure(
-        'Network Failure',
+        `${e.message}`,
         'Please Check your Internet Connection and retry',
         'Retry', (() => {
           window.location.reload()
@@ -124,27 +137,31 @@ function Connectapp(props) {
             </div>
           ) : (
             <>
-              <Doctorapi.Provider value={ConnectDoctorapi}>
-                <DoctorsList.Provider value={docapi}>
-                  <URL.Provider value={url}>
-                    <TodayDate.Provider value={APIDate}>
-                      <TodayDocs.Provider value={todayDoc}>
-                        <Router>
-                          <Navbar username={props.username} designation={props.designation} id={props.id} fetchapi={fetchapi} />
-                          <Routes>
-                            <Route path='/' element={<Doctorsection id={props.id} fetchapi={fetchapi} todayDoc={todayDoc} isLoading={isLoading} docapi={docapi} />} />
-                            <Route path='/Appointments' element={<Appointments id={props.id} fetchapi={fetchapi} />} />
-                            <Route path='/Patients' element={<Patients id={props.id} />} />
-                            <Route path='/Doctors' element={<Doctors id={props.id} docapi={docapi} />} />
-                            <Route path='/DailySaleReport' element={<DailySaleReport id={props.id} cliniclist={cliniclist} docapi={docapi}/>}/>
-                            <Route path='/Pharmacy' element={<Pharmacy id={props.id} />} />
-                          </Routes>
-                        </Router>
-                      </TodayDocs.Provider>
-                    </TodayDate.Provider>
-                  </URL.Provider>
-                </DoctorsList.Provider>
-              </Doctorapi.Provider>
+   
+                <Doctorapi.Provider value={ConnectDoctorapi}>
+                  <DoctorsList.Provider value={docapi}>
+                    <URL.Provider value={url}>
+                      <TodayDate.Provider value={APIDate}>
+                        <TodayDocs.Provider value={todayDoc}>
+                          <Vitals.Provider value={vitalslist}>
+                          <Router>
+                            <Navbar username={props.username} designation={props.designation} id={props.id} fetchapi={fetchapi} />
+                            <Routes>
+                              <Route path='/' element={<Doctorsection id={props.id} fetchapi={fetchapi} todayDoc={todayDoc} isLoading={isLoading} docapi={docapi} />} />
+                              <Route path='/Appointments' element={<Appointments id={props.id} fetchapi={fetchapi} />} />
+                              <Route path='/Patients' element={<Patients id={props.id} />} />
+                              <Route path='/Doctors' element={<Doctors id={props.id} docapi={docapi} />} />
+                              <Route path='/DailySaleReport' element={<DailySaleReport id={props.id} cliniclist={cliniclist} docapi={docapi} />} />
+                              <Route path='/Pharmacy' element={<Pharmacy id={props.id} />} />
+                            </Routes>
+                          </Router>
+                          </Vitals.Provider>
+                        </TodayDocs.Provider>
+                      </TodayDate.Provider>
+                    </URL.Provider>
+                  </DoctorsList.Provider>
+                </Doctorapi.Provider>
+         
             </>
           )
 
@@ -157,7 +174,7 @@ function Connectapp(props) {
     </>
   );
 }
-export { TodayDate, URL, DoctorsList, Doctorapi, TodayDocs };
+export { TodayDate, URL, DoctorsList, Doctorapi, TodayDocs, Vitals};
 
 
 function Switchpage() {
@@ -166,7 +183,7 @@ function Switchpage() {
   const [next, setnext] = useState('none');
   const [password, setpassword] = useState('none');
   const [passvisibility, setpassvisibility] = useState('password');
-  const [load,setload]=useState()
+  const [load, setload] = useState()
   const topassword = () => {
     setpassword('flex');
     setemail('none');
@@ -196,7 +213,7 @@ function Switchpage() {
   const localemail = localStorage.getItem("email");
   async function Submit() {
     setload(true)
-   await axios.post('https://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/api/connect/login', {
+    await axios.post('https://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/api/connect/login', {
       email: localemail || logininput.email,
       password: logininput.password
     }).then((response) => {
@@ -257,11 +274,11 @@ function Switchpage() {
                     <p className="m-0" id="inputheading">Enter your Password</p>
                     <input type={passvisibility} className="form-control" id="password" placeholder="examplepassword123" autoComplete="new-password" onChange={(e) => handleinput(e)} value={logininput.password} />
                   </div>
-                      <div className="col-1 align-items-center justify-content-center d-flex">
-                      <button type="button" className=" p-2 rounded submit text-center" onClick={Submit}>Submit</button>
-                    </div>
-                
-             
+                  <div className="col-1 align-items-center justify-content-center d-flex">
+                    <button type="button" className=" p-2 rounded submit text-center" onClick={Submit}>Submit</button>
+                  </div>
+
+
                   <div className="col-12">
                     <div className="col text-center">
                       <input className="form-check-input" onClick={passwordvisibility} type="checkbox" value="" id="flexCheckDefault" />
@@ -312,22 +329,22 @@ function Switchpage() {
                   </div>
                   {
                     load ? (
-                       <div className="col-lg-6 col-md-8 col-sm-10 col-10 py-1 pb-1 userinput text-center">
-                      <div class="spinner-border" role="status">
+                      <div className="col-lg-6 col-md-8 col-sm-10 col-10 py-1 pb-1 userinput text-center">
+                        <div class="spinner-border" role="status">
                           <span class="visually-hidden">Loading...</span>
+                        </div>
+                      </div>) : (
+                      <div className="col-lg-6 col-md-8 col-sm-10 col-10 align-items-center d-flex userinput">
+                        <p className="m-0" id="inputheading">Enter your Password</p>
+                        <input type={passvisibility} className="form-control" id="password" placeholder="examplepassword123" autoComplete="new-password" onChange={(e) => handleinput(e)} value={logininput.password} />
                       </div>
-                  </div>):(
-                  <div className="col-lg-6 col-md-8 col-sm-10 col-10 align-items-center d-flex userinput">
-                    <p className="m-0" id="inputheading">Enter your Password</p>
-                    <input type={passvisibility} className="form-control" id="password" placeholder="examplepassword123" autoComplete="new-password" onChange={(e) => handleinput(e)} value={logininput.password} />
-                  </div>
-                  )
+                    )
                   }
-                      <div className="col-1 align-items-center justify-content-center d-flex">
-                    <button type="button" className=" p-2 rounded submit text-center" disabled={load==true?true:false} onClick={Submit}>Submit</button>
+                  <div className="col-1 align-items-center justify-content-center d-flex">
+                    <button type="button" className=" p-2 rounded submit text-center" disabled={load == true ? true : false} onClick={Submit}>Submit</button>
                   </div>
-                    
-                  
+
+
                   <div className="col-12">
                     <div className="col text-center">
                       <input className="form-check-input" onClick={passwordvisibility} type="checkbox" value="" id="flexCheckDefault" />

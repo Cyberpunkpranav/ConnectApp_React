@@ -8,139 +8,187 @@ import '../../css/dsr.css'
 import Notiflix from 'notiflix'
 
 const Appointments_Dsr = (props) => {
-  let arr = [
-    {
-      id: 'c-102',
-      name: 'kabir',
-      Mobile: '9977665544',
-      Doctorname: 'Arushi Dudeja',
-      Date: '12-01-2023',
-      Time: '07:00 AM',
-      Payment: 'Cash-2000 Card-2000',
-      Amount: '1500',
-      Discount: '0',
-      Pending: '0',
-      Grand_total: '1500'
-    },
-    {
-      id: 'c-102',
-      name: 'kabir',
-      Mobile: '9977665544',
-      Doctorname: 'Arushi Dudeja',
-      Date: '12-01-2023',
-      Time: '07:00 AM',
-      Payment: 'Cash-2000 Card-2000',
-      Amount: '1500',
-      Discount: '0',
-      Pending: '0',
-      Grand_total: '1500'
-    },
-    {
-      id: 'c-102',
-      name: 'kabir',
-      Mobile: '9977665544',
-      Doctorname: 'Arushi Dudeja',
-      Date: '12-01-2023',
-      Time: '07:00 AM',
-      Payment: 'Cash-2000 Card-2000',
-      Amount: '1500',
-      Discount: '0',
-      Pending: '0',
-      Grand_total: '1500'
-    },
-    {
-      id: 'c-102',
-      name: 'kabir',
-      Mobile: '9977665544',
-      Doctorname: 'Arushi Dudeja',
-      Date: '12-01-2023',
-      Time: '07:00 AM',
-      Payment: 'Cash-2000 Card-2000',
-      Amount: '1500',
-      Discount: '0',
-      Pending: '0',
-      Grand_total: '1500'
-    }, {
-      id: 'c-102',
-      name: 'kabir',
-      Mobile: '9977665544',
-      Doctorname: 'Arushi Dudeja',
-      Date: '12-01-2023',
-      Time: '07:00 AM',
-      Payment: 'Cash-2000 Card-2000',
-      Amount: '1500',
-      Discount: '0',
-      Pending: '0',
-      Grand_total: '1500'
-    },
-    {
-      id: 'c-102',
-      name: 'kabir',
-      Mobile: '9977665544',
-      Doctorname: 'Arushi Dudeja',
-      Date: '12-01-2023',
-      Time: '07:00 AM',
-      Payment: 'Cash-2000 Card-2000',
-      Amount: '1500',
-      Discount: '0',
-      Pending: '0',
-      Grand_total: '1500'
-    },
-    {
-      id: 'c-102',
-      name: 'kabir',
-      Mobile: '9977665544',
-      Doctorname: 'Arushi Dudeja',
-      Date: '12-01-2023',
-      Time: '07:00 AM',
-      Payment: 'Cash-2000 Card-2000',
-      Amount: '1500',
-      Discount: '0',
-      Pending: '0',
-      Grand_total: '1500'
-    },
-    {
-      id: 'c-102',
-      name: 'kabir',
-      Mobile: '9977665544',
-      Doctorname: 'Arushi Dudeja',
-      Date: '12-01-2023',
-      Time: '07:00 AM',
-      Payment: 'Cash-2000 Card-2000',
-      Amount: '1500',
-      Discount: '0',
-      Pending: '0',
-      Grand_total: '1500'
-    },
-
-  ]
-  const CurrentDate = useContext(TodayDate)
   const url = useContext(URL)
+  const clinicid = localStorage.getItem('ClinicId')
+  const adminid = localStorage.getItem('id')
+  // let arr = [
+  //   {
+  //     id: 'c-102',
+  //     name: 'kabir',
+  //     Mobile: '9977665544',
+  //     Doctorname: 'Arushi Dudeja',
+  //     Date: '12-01-2023',
+  //     Time: '07:00 AM',
+  //     Payment: 'Cash-2000 Card-2000',
+  //     Amount: '1500',
+  //     Discount: '0',
+  //     Pending: '0',
+  //     Grand_total: '1500'
+  //   },
+  //   {
+  //     id: 'c-102',
+  //     name: 'kabir',
+  //     Mobile: '9977665544',
+  //     Doctorname: 'Arushi Dudeja',
+  //     Date: '12-01-2023',
+  //     Time: '07:00 AM',
+  //     Payment: 'Cash-2000 Card-2000',
+  //     Amount: '1500',
+  //     Discount: '0',
+  //     Pending: '0',
+  //     Grand_total: '1500'
+  //   },
+  //   {
+  //     id: 'c-102',
+  //     name: 'kabir',
+  //     Mobile: '9977665544',
+  //     Doctorname: 'Arushi Dudeja',
+  //     Date: '12-01-2023',
+  //     Time: '07:00 AM',
+  //     Payment: 'Cash-2000 Card-2000',
+  //     Amount: '1500',
+  //     Discount: '0',
+  //     Pending: '0',
+  //     Grand_total: '1500'
+  //   },
+  //   {
+  //     id: 'c-102',
+  //     name: 'kabir',
+  //     Mobile: '9977665544',
+  //     Doctorname: 'Arushi Dudeja',
+  //     Date: '12-01-2023',
+  //     Time: '07:00 AM',
+  //     Payment: 'Cash-2000 Card-2000',
+  //     Amount: '1500',
+  //     Discount: '0',
+  //     Pending: '0',
+  //     Grand_total: '1500'
+  //   }, {
+  //     id: 'c-102',
+  //     name: 'kabir',
+  //     Mobile: '9977665544',
+  //     Doctorname: 'Arushi Dudeja',
+  //     Date: '12-01-2023',
+  //     Time: '07:00 AM',
+  //     Payment: 'Cash-2000 Card-2000',
+  //     Amount: '1500',
+  //     Discount: '0',
+  //     Pending: '0',
+  //     Grand_total: '1500'
+  //   },
+  //   {
+  //     id: 'c-102',
+  //     name: 'kabir',
+  //     Mobile: '9977665544',
+  //     Doctorname: 'Arushi Dudeja',
+  //     Date: '12-01-2023',
+  //     Time: '07:00 AM',
+  //     Payment: 'Cash-2000 Card-2000',
+  //     Amount: '1500',
+  //     Discount: '0',
+  //     Pending: '0',
+  //     Grand_total: '1500'
+  //   },
+  //   {
+  //     id: 'c-102',
+  //     name: 'kabir',
+  //     Mobile: '9977665544',
+  //     Doctorname: 'Arushi Dudeja',
+  //     Date: '12-01-2023',
+  //     Time: '07:00 AM',
+  //     Payment: 'Cash-2000 Card-2000',
+  //     Amount: '1500',
+  //     Discount: '0',
+  //     Pending: '0',
+  //     Grand_total: '1500'
+  //   },
+  //   {
+  //     id: 'c-102',
+  //     name: 'kabir',
+  //     Mobile: '9977665544',
+  //     Doctorname: 'Arushi Dudeja',
+  //     Date: '12-01-2023',
+  //     Time: '07:00 AM',
+  //     Payment: 'Cash-2000 Card-2000',
+  //     Amount: '1500',
+  //     Discount: '0',
+  //     Pending: '0',
+  //     Grand_total: '1500'
+  //   },
+
+  // ]
   //Use States
-  const [Appointments, setAppointments] = useState(arr)
+  const [Appointments, setAppointments] = useState([])
+  const [visibles, setvisibles] = useState([])
+  const[loading,setloading]=useState()
+
+  const reversefunction = (date) => {
+    date = date.split("-").reverse().join("-")
+    return date
+  }
+
+  function tConvert(time) {
+    time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
+
+    if (time.length > 1) {
+      time = time.slice(1);
+      time[3] = +time[0] < 12 ? ' AM ' : ' PM ';
+      time[0] = +time[0] % 12 || 12;
+    }
+    return time.join('');
+  }
+  function payment_method_details(args) {
+    Object.values(JSON.parse(args))
+    console.log(args.id)
+    return args
+  }
 
 
-  console.log(props.doctorid, props.fromdate, props.todate)
 
+  console.log(Appointments, props.doctorid, props.fromdate, props.todate)
+let listdata = []
   async function DSR_All_Appointments() {
+    setloading(true)
     if (props.doctorid || props.fromdate || props.todate) {
       try {
-        await axios.get(`${url}/appointment/list?doctor_id=${props.doctorid}&from_date=${props.fromdate}&to_date=${props.todate}`).then((response) => {
-          setAppointments(response.data.data)
+        await axios.get(`${url}/DSR/appointemtnts?from_date=${props.fromdate}&to_date=${props.todate}&admin_id=${adminid}&clinic_id=${clinicid}`).then((response) => {
+          // console.log(response.data.data.appointments)
+          response.data.data.appointments.map((data) => {
+            listdata.push(data.doctor.id)
+          })
+          setvisibles(listdata, [])
+          setAppointments(response.data.data.appointments)
+          setloading(false)
         })
       } catch (e) {
-        alert(e)
+        Notiflix.Notify.failure(e.message)
+        setloading(false)
       }
     } else {
       Notiflix.Notify.warning("please select any one field to search")
+      setloading(false)
     }
 
   }
+  useEffect(()=>{
+    DSR_All_Appointments()
+
+  },[])
   useEffect(() => {
     DSR_All_Appointments()
   }, [props.doctorid, props.fromdate, props.todate])
-
-
+  console.log(visibles)
+  function CountAppointments(response) {
+    let arr = []
+    for (let i = 0; i < visibles.length; i++) {
+      if (response === visibles[i]) {
+        arr.push(response)
+      }
+    }
+    if (arr.length != 0) {
+      return ' | ' + '(' + arr.length + ' Appointments)'
+    }
+  }
 
   return (
     <div className='Appointments_Dsrsection'>
@@ -180,9 +228,9 @@ const Appointments_Dsr = (props) => {
         </div>
       </div>
       <div className="container-fluid maintable scroll scroll-y">
-        <h5 className='my-2 text-charcoal75 fw-semibold ms-2 '>Appointments</h5>
+        <h5 className='my-2 text-charcoal75 fw-semibold ms-2 '>Appointments{CountAppointments(27)}</h5>
         <div className='container-fluid scroll scroll-y appointments'>
-          <table className='table'>
+          <table className='table text-center'>
             <thead>
               <tr>
                 <th>Bill no.</th>
@@ -201,27 +249,41 @@ const Appointments_Dsr = (props) => {
             <tbody>
 
               {
-                Appointments.map((data, i) => (
-                  <tr>
-                    <td key={i}>{data.id}</td>
-                    <td>{data.name}</td>
-                    <td>{data.Mobile}</td>
-                    <td>{data.Doctorname}</td>
-                    <td>{data.Date}</td>
-                    <td>{data.Time}</td>
-                    <td>{data.Payment}</td>
-                    <td>{data.Amount}</td>
-                    <td>{data.Discount}</td>
-                    <td>{data.Pending}</td>
-                    <td>{data.Grand_total}</td>
-                  </tr>
-                ))
+                loading  ? (
+                  <tbody >
+                  <tr className='position-relative text-burntumber fs-3 mt-1 text-center m-auto'>
+                    <td className=' position-absolute start-0 end-0 text-burntumber fs-3 mt-1 text-center'>Loading Appointments</td></tr>
+                </tbody>
+                ):(
+                  Appointments.length == 0 ? (
+                    <tbody >
+                    <tr className=' position-relative text-burntumber fs-3 mt-1 text-center m-auto'>
+                      <td className=' position-absolute start-0 end-0 text-burntumber fs-3 mt-1 text-center'>No Appointments</td></tr>
+                  </tbody>
+                  ):(
+                    Appointments.map((data, i) => (
+                      <tr>
+                        <td key={i}>{data.bill_id && data.bill_id != null ? data.bill_id : 'N/A'}</td>
+                        <td>{data.patient && data.patient.full_name && data.patient.full_name != null ? data.patient.full_name : 'N/A'}</td>
+                        <td>{data.patient && data.patient.phone_number != null ? data.patient.phone_number : 'N/A'}</td>
+                        <td>{data.doctor && data.doctor.doctor_name && data.doctor.doctor_name != null ? data.doctor.doctor_name : 'N/A'}</td>
+                        <td>{data.timeslot && data.timeslot.date && data.timeslot.date != null ? reversefunction(data.timeslot.date) : 'N/A'}</td>
+                        <td>{data.timeslot && data.timeslot.time_from && data.timeslot.time_from != null ? tConvert(data.timeslot.time_from) : 'N/A'}</td>
+                        <td>{data.payment_method_details && data.payment_method_details != null ? payment_method_details(data.payment_method_details) : 'N/A'}</td>
+                        <td>{data.total_amount}</td>
+                        <td>{data.discount && data.discount != null ? data.discount : 'N/A'}</td>
+                        <td>{data.Pending}</td>
+                        <td>{data.Grand_total}</td>
+                      </tr>
+                    ))
+                  )
+         
+                )
               }
-
             </tbody>
           </table>
         </div>
-        <h5 className='my-2 text-charcoal75 fw-semibold ms-2 '>Pending Payments Recieved</h5>
+        {/* <h5 className='my-2 text-charcoal75 fw-semibold ms-2 '>Pending Payments Recieved</h5>
         <div className='container-fluid scroll scroll-y pendingpayrecieve'>
           <table className='table'>
             <thead>
@@ -302,7 +364,7 @@ const Appointments_Dsr = (props) => {
 
             </tbody>
           </table>
-        </div>
+        </div> */}
       </div>
     </div>
 
