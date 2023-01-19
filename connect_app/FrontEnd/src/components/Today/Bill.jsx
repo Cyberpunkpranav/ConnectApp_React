@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react'
 import '../../css/dashboard.css'
 const Bill = (props) => {
     const procedures = []
-    const [extrachargeid,setextrachargeid]=useState()
-    const[extrachargeamount,setextrachargeamount]=useState()
+    const [extrachargeid, setextrachargeid] = useState()
+    const [extrachargeamount, setextrachargeamount] = useState()
     const [saveextracharge, setsaveextracharge] = useState()
     const [updateextracharge, setupdatecharge] = useState('block')
     const [extrachargeindex, setextrachargeindex] = useState('none')
     const [extracharge, setextracharge] = useState()
-    const[extrachargeupdatevalue,setextrachargeupdatevalue]=useState()
-    const[loadextracharge,setloadextracharge]=useState()
+    const [extrachargeupdatevalue, setextrachargeupdatevalue] = useState()
+    const [loadextracharge, setloadextracharge] = useState()
     function refresh() {
     }
     function AddExtraCharges() {
@@ -18,8 +18,8 @@ const Bill = (props) => {
     }
     function DeleteExtraCharges() {
     }
-    function OpenSaveExtraCharge(){
-        
+    function OpenSaveExtraCharge() {
+
     }
     return (
         <div className='bg-seashell rounded-2 position-relative'>
@@ -80,7 +80,7 @@ const Bill = (props) => {
                 <div className="container-fluid text-start p-2">
                     <div className='bg-seashell rounded-2 position-relative pb-4'>
                         <h6 className='p-1 text-charcoal fw-bolder'>{props.patientname}ExtraCharges</h6>
-                     
+
                         <button className='btn p-0 m-0 position-absolute top-0 end-0 ms-2 m-1' onClick={refresh}><img src={process.env.PUBLIC_URL + '/images/refresh.png'} style={{ width: '1.8rem' }} /></button>
                         {
                             props.loadextracharge ? (
@@ -114,7 +114,7 @@ const Bill = (props) => {
                                                     ) : (<></>)
                                                 }
 
-                                     
+
                                                 <div className={`col-2 d-${i == extrachargeindex ? updateextracharge : 'block'}`}>
                                                     <button className='button py-0 button-lightbrown' value={data.id} onClick={() => { OpenSaveExtraCharge(); setextrachargeindex(i) }}>Update</button>
                                                 </div>
@@ -148,7 +148,7 @@ const Bill = (props) => {
                                     <div className="row p-0 m-0 justify-content-center">
                                         <div className="col-3 p-0 m-0">
                                             <label>Description</label>
-                                            <input className='form-control p-0 bg-seashell' value={extrachargeid ? extrachargeid : ''} onChange={(e) => { setextrachargeid(e.target.value) }}/>
+                                            <input className='form-control p-0 bg-seashell' value={extrachargeid ? extrachargeid : ''} onChange={(e) => { setextrachargeid(e.target.value) }} />
                                         </div>
                                         <div className="col-2">
                                             <label>Amount</label>
@@ -185,7 +185,7 @@ const Bill = (props) => {
                         </div>
                     </div>
                 </div>
-                <div className="container-fluid text-start position-relative p-2">    
+                <div className="container-fluid text-start position-relative p-2">
                     <h6 className='text-charcoal fw-bolder'>Payments</h6>
                     <button className='btn p-0 m-0 position-absolute top-0 end-0 ms-2 m-1' onClick={refresh}><img src={process.env.PUBLIC_URL + '/images/refresh.png'} style={{ width: '1.8rem' }} /></button>
 
@@ -193,7 +193,8 @@ const Bill = (props) => {
 
                     <div className="row p-0 m-0">
                         <div className="col-4">
-                            <select className='form-control bg-seashell'>
+                            <select className='form-control bg-seashell py-1 '>
+                                <option className='text-charcoal75 fw-bolder'>Payment Method</option>
                                 <option>Cash</option>
                                 <option>Card</option>
                                 <option>Paytm</option>
@@ -204,23 +205,23 @@ const Bill = (props) => {
                                 <option>Adjust-Advance Cash</option>
                             </select>
                         </div>
-                        <div className="col-4">
-                            <input className='form-control bg-seashell'/>
+                        <div className="col-auto">
+                            <input className='form-control bg-seashell py-1' />
                         </div>
-                        <div className="col-4 align-self-center">
-                            <button className='button button-burntumber py-0'>Add</button>
+                        <div className="col-3 align-self-center">
+                            <button className='button button-burntumber py-0 ms-2'>Add</button>
                         </div>
                     </div>
                 </div>
-                <hr/>
+                <hr />
                 <div className="container-fluid pb-2">
                     <div className="row p-0 m-0">
-                            <div className="col-6 justify-content-center">
+                        <div className="col-6 justify-content-center">
                             <button className='button button-burntumber'>Save</button>
-                            </div>
-                            <div className="col-6 justify-content-center">
+                        </div>
+                        <div className="col-6 justify-content-center">
                             <button className='button button-brandy'>Add to Cart</button>
-                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
