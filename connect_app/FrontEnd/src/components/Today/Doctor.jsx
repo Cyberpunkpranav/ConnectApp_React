@@ -4,6 +4,7 @@ import { useState, useEffect, useContext } from "react";
 import AmountPaid from './AmountPaid';
 import { URL, TodayDate } from '../../index'
 import Notiflix from 'notiflix';
+import { customconfirm } from "../features/notiflix/customconfirm";
 import { Loading } from 'notiflix/build/notiflix-loading-aio';
 import { UpdateAppointment } from './UpdateAppointment'
 import '../../css/bootstrap.css'
@@ -11,27 +12,32 @@ import '../../css/dashboard.css'
 import { SelectedTimeAppointment } from '../Appointments/SelectedTimeAppointment'
 import { AddSelectedDoctorSlot } from './SelectedDoctorSlot'
 import { Vitalsoperation } from "./Vitals";
+import { Bill } from "./Bill";
 
 function DoctorSchedule(props) {
   const url = useContext(URL)
   const Date = useContext(TodayDate)
+  const adminid = localStorage.getItem('id')
 
-  function ArraySum(arr) {
-    if (arr.length > 0) {
-      let sum = arr.reduce((accumulator, value) => {
-        return accumulator + value;
-      }, 0);
-      return sum;
-    } else {
-      return 0;
-    }
-
-  }
   const [appointmentdata, setappointmentdata] = useState([]);
   const [isLoading, setisLoading] = useState();
-  const [d_form, setd_form] = useState()
-  // for UpdateAppointment
+  const [tableindex, settableindex] = useState()
   const [appointmentform, setappointmentform] = useState("none");
+  const [addappointmentform, setaddappointmentform] = useState('none')
+  const [appointmentid, setappointmentid] = useState()
+  const [timeindex, settimeindex] = useState()
+  const [addquickslots, setaddquickslots] = useState('none')
+  const [vitalsform, setvitalsform] = useState('none')
+  const [vitalindex, setvitalindex] = useState()
+  const [appointmentvitalslist, setappointmentvitalslist] = useState([])
+  const [loadvitals, setloadvitals] = useState()
+  const [billindex,setbillindex]= useState()
+  const [billform,setbillform]=useState('none')
+  const[extrachargeslist,setextrachargeslist]=useState([])
+  const[loadextracharge,setloadextracharge]=useState()
+  const [d_form, setd_form] = useState()
+
+  // for UpdateAppointment
   const closeappointmentform = () => {
     if (appointmentform === "block") {
       setappointmentform("none");
@@ -44,7 +50,18 @@ function DoctorSchedule(props) {
       setd_form(true)
     }
   }
-  const [tableindex, settableindex] = useState()
+
+  function ArraySum(arr) {
+    if (arr.length > 0) {
+      let sum = arr.reduce((accumulator, value) => {
+        return accumulator + value;
+      }, 0);
+      return sum;
+    } else {
+      return 0;
+    }
+
+  }
 
   async function Appointmentlist() {
     Notiflix.Loading.dots({
@@ -58,7 +75,6 @@ function DoctorSchedule(props) {
     setisLoading(false);
     Notiflix.Loading.remove(500)
   }
-
   useEffect(() => {
     Appointmentlist();
   }, [props._selected]);
@@ -76,10 +92,7 @@ function DoctorSchedule(props) {
     }
     return time.join('');
   }
-
-
   let array = [[1, 'Pending', 'lightred'], [2, 'Booked', 'lightblue'], [3, 'Cancelled', 'lightred'], [4, 'QR Generated', 'light'], [5, 'Checked_in', 'brandy'], [6, 'Vitals Done', 'lightred'], [7, 'In_apppointment', 'lightyellow'], [8, 'Payment done', 'lightgreen'], [9, 'Unattained', 'lightyellow'], [10, 'Completed', 'lightgreen']]
-
   function status(number) {
     let status
     for (let i = 0; i < array.length; i++) {
@@ -102,7 +115,7 @@ function DoctorSchedule(props) {
     return status_color
   }
 
-  let adminid = localStorage.getItem('id')
+
 
   async function UpadteStatus(e) {
     if (e.target.value && adminid && e.target.name) {
@@ -129,8 +142,6 @@ function DoctorSchedule(props) {
     }
   }
 
-  const [addappointmentform, setaddappointmentform] = useState('none')
-  const [appointmentid, setappointmentid] = useState()
 
   const openAddApppointmentform = () => {
     setaddappointmentform('block')
@@ -140,9 +151,7 @@ function DoctorSchedule(props) {
     settimeindex()
   }
 
-  const [timeindex, settimeindex] = useState()
 
-  const [addquickslots, setaddquickslots] = useState('none')
   function OpenAddQuickSlots() {
     if (addquickslots === 'none') {
       setaddquickslots('block')
@@ -155,8 +164,6 @@ function DoctorSchedule(props) {
   }
 
   //Vitals Section
-  const [vitalsform, setvitalsform] = useState('none')
-  const [vitalindex,setvitalindex]=useState()
   function OpenVitals() {
     if (vitalsform === 'none') {
       setvitalsform('block')
@@ -167,16 +174,64 @@ function DoctorSchedule(props) {
       setvitalsform('none')
     }
   }
-  const [appointmentvitalslist,setappointmentvitalslist]=useState([])
-  const[loadvitals,setloadvitals]=useState()
- async function GetAppointmentVitals(id){
+
+  async function GetAppointmentVitals(id) {
     setloadvitals(true)
- await axios.get(`${url}/appointment/vitals/list?appointment_id=${id}`).then((response)=>{
+    await axios.get(`${url}/appointment/vitals/list?appointment_id=${id}`).then((response) => {
       setappointmentvitalslist(response.data.data.vitals)
       setloadvitals(false)
     })
   }
- //Vitals Section 
+  //Vitals Section 
+
+  //Send Notification
+  async function SendNotifcation(name,id) {
+    try{
+      await axios.post(`${url}/appointment/call/in`, {
+        appointment_id:id,
+        admin_id: adminid
+      }).then((response)=>{
+        Notiflix.Notify.success(response.data.message.slice(0,-1) +' to ' + name)
+      })
+    }catch(e){
+      Notiflix.Notify.warning(e.message)
+    }
+
+  }
+  const confirmmessage = (name,id) => {
+    customconfirm()
+    Notiflix.Confirm.show(
+      `Call Patient `,
+      `Do you surely want to call ${name}`,
+      'Yes',
+      'No',
+      () => {
+        SendNotifcation(name,id)
+      },
+      () => {
+        return 0
+      },
+      {
+      },
+    );
+  }
+  //Send Notification
+
+  //Bill
+  function OpenBillForm(){
+    if(billform === 'none'){
+      setbillform('block')
+    }
+  }
+  function CloseBillForm(){
+    if(billform=='block'){
+      setbillform('none')
+    }
+  }
+  function ExtraChargesList(){
+
+  }
+
   return (
     <>
       <section id="doctorscheduledata">
@@ -229,7 +284,7 @@ function DoctorSchedule(props) {
         </section>
 
         <section className="allappointmentsection">
-          <div className="col-auto m-0 p-0 my-1">
+          <div className="col-auto m-0 p-0 my-1 align-items-center">
             <h4 className="p-0 my-auto ps-3 text-charcoal75 fw-bold">Appointments</h4>
           </div>
           <div className="tablesection scroll scroll-y">
@@ -250,7 +305,7 @@ function DoctorSchedule(props) {
               </thead>
               {
                 isLoading ? (
-                  <tbody >
+                  <tbody>
                     <tr className=' position-relative text-burntumber fs-3 mt-1 text-center m-auto'>
                       <td className=' position-absolute start-0 end-0 text-burntumber fs-3 mt-1 text-center'>Loading Appointments</td></tr>
                   </tbody>
@@ -261,14 +316,13 @@ function DoctorSchedule(props) {
                         <tr><button className="text-center fs-4 position-absolute text-burntumber button-burntumber border-start-0 border-end-0 px-5 start-0 end-0">No Appointments Found</button></tr>
                       ) : (
                         appointmentdata.map((data, i) => (
-                          <tr>
+                          <tr className='appointmentsrow'>
                             <th scope="row">
                               <button className="btn btn-lg px-1 action position-relative bg-transparent confirmed position-relative m-0 p-0" key={i} onClick={(e) => { openapppointmentform(); settableindex(i); setappointmentid(data.id) }}>
                                 <img src={process.env.PUBLIC_URL + "/images/confirmed.png"} alt="displaying_image" className="img-fluid" style={{ width: "1.5rem" }} key={i} />
                               </button>
                             </th>
                             <td>
-
                               <select className={`p-2 fw-bolder rounded-5 text-center button-${status_color(data.appointment_status)}`} name={data.id} onChange={(e) => { UpadteStatus(e) }}>
                                 <option className="button" selected disabled>{status(data.appointment_status)}</option>
                                 <option key={0} className="button-lightred" value='1'>Pending</option>
@@ -283,14 +337,13 @@ function DoctorSchedule(props) {
                                 <option key={9} className="button-lightgreen" value='10'>Completed</option>
                               </select>
                             </td>
-
                             <td>{data.patient ? data.patient.full_name !== null ? data.patient.full_name : 'N/A' : 'N/A'}</td>
                             <td>{data.patient ? data.patient.phone_number != null ? data.patient.phone_number : 'N/A' : 'N/A'}</td>
                             <td>{tConvert(data.timeslot.time_from)}</td>
                             <td>{data.total_amount}</td>
                             <td><AmountPaid appointmentData={data} /> </td>
-                            <td><button className="btn p-0 m-0" onClick={()=>{ setvitalindex(i); OpenVitals();GetAppointmentVitals(data.id) }}><img src={process.env.PUBLIC_URL + "/images/vitals.png"} alt="displaying_image" style={{ width: "1.5rem" }} /></button></td>
-                            <td><img src={process.env.PUBLIC_URL + "/images/cart.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1" /> <img src={process.env.PUBLIC_URL + "/images/medicine.png"} alt="displaying_image" className="ms-1" style={{ width: "1.5rem" }} /> </td>
+                            <td><button className="btn p-0 m-0" onClick={() => {setvitalindex(i); OpenVitals(); GetAppointmentVitals(data.id) }}><img src={process.env.PUBLIC_URL + "/images/vitals.png"} alt="displaying_image" style={{ width: "1.5rem" }} /></button></td>
+                            <td><button className="btn p-0 m-0" onClick={()=>{setbillindex(i); OpenBillForm();}}><img src={process.env.PUBLIC_URL + "/images/rupee.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1" /></button> <button className="btn p-0 m-0" onClick={()=>confirmmessage(data.patient.full_name,data.id)}><img src={process.env.PUBLIC_URL + "/images/speaker.png"} alt="displaying_image" className="ms-1" style={{ width: "1.5rem" }} /></button> </td>
                             <td>
                               <button className="btn position-relative cursor-pointer more p-0 m-0">
                                 <img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" style={{ width: "1.5rem" }} />
@@ -304,16 +357,22 @@ function DoctorSchedule(props) {
                               </table>
                             </td>
                             {
-                            appointmentid === data.id ? (
-                              <td className={`updateappointment border-0  d-${tableindex == i ? appointmentform : 'none'} p-0 start-0 bottom-0 end-0 position-absolute`} style={{ zIndex: '3005' }}><UpdateAppointment fetchapi={props.fetchapi} fetchallAppointmentslist={props.fetchallAppointmentslist} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} patientid={data.patient != null && data.patient.id != null ? data.patient.id : ""} appointmentid={data.id} addappointmentform={addappointmentform} closeappointmentform={closeappointmentform} doctorid={props.doctorid} appointmentdoctorid={data.doctor.id} appointmentdate={data.appointment_date} appointmenttime={tConvert(data.timeslot.time_from)} /></td>
-                            ) : (<></>)
+                              appointmentid === data.id ? (
+                                <td className={`updateappointment border-0  d-${tableindex == i ? appointmentform : 'none'} p-0 start-0 bottom-0 end-0 position-absolute`} style={{ zIndex: '3005' }}><UpdateAppointment fetchapi={props.fetchapi} fetchallAppointmentslist={props.fetchallAppointmentslist} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} patientid={data.patient != null && data.patient.id != null ? data.patient.id : ""} appointmentid={data.id} addappointmentform={addappointmentform} closeappointmentform={closeappointmentform} doctorid={props.doctorid} appointmentdoctorid={data.doctor.id} appointmentdate={data.appointment_date} appointmenttime={tConvert(data.timeslot.time_from)} /></td>
+                              ) : (<></>)
                             }
                             {
                               vitalindex === i ? (
-                                <td className={`vitals col-lg-6 col-md-8 col-sm-12 col-12 col-xl-4 position-absolute border border-1 shadow rounded-2 d-${vitalindex == i ? vitalsform:'none'}`} style={{zIndex:'3010'}}><Vitalsoperation vitalsform={vitalsform} GetAppointmentVitals={GetAppointmentVitals} CloseVitals={CloseVitals} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} appointmentid={data.id} appointmentvitalslist={appointmentvitalslist} loadvitals={loadvitals} patientid={data.patient && data.patient.id != null ? data.patient.id : ""} /></td>
+                                <td className={`vitals col-lg-6 col-md-8 col-sm-12 col-12 col-xl-4 position-absolute border border-1 shadow rounded-2 d-${vitalindex == i ? vitalsform : 'none'}`} style={{ zIndex: '3010' }}><Vitalsoperation GetAppointmentVitals={GetAppointmentVitals} CloseVitals={CloseVitals} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} appointmentid={data.id} appointmentvitalslist={appointmentvitalslist} loadvitals={loadvitals} patientid={data.patient && data.patient.id != null ? data.patient.id : ""} /></td>
                               ) : (<></>)
                             }
+                            {
+                            billindex == i ?(
+                              <td className={`bill border-0 d-${billindex == i ? billform:'none'} col-lg-6 col-md-8 col-sm-12 col-12 col-xl-4 position-absolute border border-1 shadow `} style={{ zIndex: '3020' }}><Bill CloseBillForm={CloseBillForm} extrachargeslist={extrachargeslist} loadextracharge={loadextracharge}/></td>
+                              ):(<></>)
+                            }
                           </tr>
+                     
                         )))}
                   </tbody>
 

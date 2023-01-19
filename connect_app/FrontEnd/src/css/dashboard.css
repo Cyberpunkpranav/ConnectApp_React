@@ -465,13 +465,16 @@ body::-webkit-scrollbar-thumb:hover {
 .timeslotsection {
     font-family: 'Urbanist', sans-serif;
 }
-
+.allappointmentsection .datatable tr:nth-child(even) {
+    background-color: var(--seashell);
+}
 .allappointmentsection .updateappointment {
     top: 0;
     bottom: 0;
     margin-top: 20rem;
     margin-bottom: 30rem;
 }
+
 .allappointmentsection .vitals{
     max-width:40rem;
     left:0;
@@ -482,36 +485,26 @@ body::-webkit-scrollbar-thumb:hover {
     margin-top: 20rem;
     margin-bottom: 30rem;
 }
-
+.allappointmentsection .bill{
+    max-width:60rem;
+    left:0;
+    right:0;
+    padding:0;
+    margin:0 auto;
+    top:0;
+    margin-top: 20rem;
+    margin-bottom: 30rem;
+}
+.allappointmentsection .bill .scroll{
+    max-height:20rem;
+    overflow-y: auto;
+    min-height:20rem;
+}
 .allappointmentsection .tablesection {
     min-height: 10rem;
     max-height: 30rem;
 }
 
-.allappointmentsection .datatable tr:nth-child(even) {
-    background-color: var(--seashell);
-}
-
-.allappointmentsection .status_confirmed {
-    background-color: var(--lightblue);
-    font-weight: 800;
-}
-
-.allappointmentsection .status_completed {
-    background-color: var(--lightgreen);
-    font-weight: 800;
-}
-
-.allappointmentsection .status_vitalsdone {
-    background-color: var(--lightbrown);
-    font-weight: 800;
-}
-
-.allappointmentsection .status_pending {
-    background-color: var(--lightred);
-    font-weight: 800;
-
-}
 
 .allappointmentsection .actionoptions {
     display: none;
@@ -523,9 +516,6 @@ body::-webkit-scrollbar-thumb:hover {
     width: min-content;
 }
 
-.allappointmentsection .actionoptions tr:hover {
-    cursor: pointer;
-}
 
 .allappointmentsection .actionoptions:before {
     position: absolute;

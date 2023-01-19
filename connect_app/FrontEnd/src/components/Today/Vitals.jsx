@@ -114,7 +114,7 @@ const Vitalsoperation = (props) => {
       setvitalindex()
     }
   }
-  // console.log(props.appointmentvitalslist, vitalupdateid, vitalindex)
+  // console.log(props.appointmentvitalslist)
   return (
     <div className='bg-seashell rounded-2 position-relative pb-4'>
       <h5 className='p-1'>{props.patientname} Vitals</h5>
