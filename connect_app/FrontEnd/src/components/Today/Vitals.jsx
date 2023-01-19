@@ -56,7 +56,7 @@ const Vitalsoperation = (props) => {
     }
   }
 
-  async function UpdateVital(vitalid,appointmentvitalid) {
+  async function UpdateVital(vitalid, appointmentvitalid) {
     // console.log(vitalid, vitalupdatevalue, appointmentvitalid, props.appointmentid, props.patientid)
     try {
       if (vitalid && vitalupdatevalue && appointmentvitalid && props.appointmentid && props.patientid) {
@@ -118,7 +118,7 @@ const Vitalsoperation = (props) => {
   return (
     <div className='bg-seashell rounded-2 position-relative pb-4'>
       <h5 className='p-1'>{props.patientname} Vitals</h5>
-      <button className=' btn-close position-absolute top-0 end-0 m-1 me-2' disabled={props.loadvitals?true:false} onClick={props.CloseVitals}></button>
+      <button className=' btn-close position-absolute top-0 end-0 m-1 me-2' disabled={props.loadvitals ? true : false} onClick={props.CloseVitals}></button>
       <button className='btn p-0 m-0 position-absolute top-0 start-0 ms-2 m-1' onClick={refresh}><img src={process.env.PUBLIC_URL + '/images/refresh.png'} style={{ width: '1.8rem' }} /></button>
       {
         props.loadvitals ? (
@@ -168,7 +168,7 @@ const Vitalsoperation = (props) => {
                   {
                     i == vitalindex ? (
                       <div className={`col-2 d-${i == vitalindex ? savevital : 'none'}`}>
-                        <button className='button py-0 button-lightgreen' onClick={() => {UpdateVital(data.vital.id,data.id) }}>Save</button>
+                        <button className='button py-0 button-lightgreen' onClick={() => { UpdateVital(data.vital.id, data.id) }}>Save</button>
                       </div>
                     ) : (<></>)
                   }
@@ -219,10 +219,10 @@ const Vitalsoperation = (props) => {
                 {
                   loadvitals ? (
                     <div className="col-6 py-2 pb-2 m-auto text-center">
-                    <div class="spinner-border" role="status">
-                      <span class="visually-hidden">Loading...</span>
+                      <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                      </div>
                     </div>
-                  </div>
                   ) : (
                     <button className='btn py-0 button-burntumber' onClick={AddVitals}>Add</button>
                   )
