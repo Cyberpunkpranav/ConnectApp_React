@@ -12,6 +12,7 @@ const AddDoctorSlot = (props) => {
     const APIDate = useContext(TodayDate)
     const Doctors = useContext(DoctorsList)
     const TodayDoctors = useContext(TodayDocs)
+    const clinicID = localStorage.getItem('ClinicId')
     const [adddoctorfortoday, setadddoctorfortoday] = useState();
     const [docdate, setdocdate] = useState();
     const [fromtime, setfromtime] = useState();
@@ -125,9 +126,8 @@ const Avaliablemessage = (response) => {
     <div className="col-12">
         {
           cliniclist.map((data, i) => (
-            <>
-              <label><input type="checkbox" className="radio form me-1" checked={ischecked == i ? true : false} name={data.id} onClick={(e) => { setclinicid(e.target.name); setischecked(i); }} /> {data.title} {data.address}</label>
-              <br /></>
+              <label className={`d-${clinicID==data.id?'block':'none'}`}><input type="checkbox" className="radio form me-1" checked={clinicID == data.id ? true : false}/> {data.title} {data.address}</label>
+
           ))
         }
     </div>

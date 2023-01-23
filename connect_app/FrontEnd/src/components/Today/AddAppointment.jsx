@@ -11,13 +11,14 @@ const AddAppointment = (props) => {
     const DocApi = useContext(Doctorapi)
     const Doclist = useContext(DoctorsList)
     const TodayDoctors = useContext(TodayDocs)
+    const clinicID = localStorage.getItem('ClinicId')
     const [cliniclist, setcliniclist] = useState([])
     const [searchinput, setsearchinput] = useState()
     const [searchlist, setsearchlist] = useState([])
     const [displaysearchlist, setdisplaysearchlist] = useState('none')
     const [patientid, setpatientid] = useState()
     const [doctorid, setdoctorid] = useState()
-    const [clinicid, setclinicid] = useState()
+    const [clinicid, setclinicid] = useState(clinicID)
     const [time, settime] = useState()
     const [ischecked, setischecked] = useState()
     const [load, setload] = useState()
@@ -161,6 +162,7 @@ const AddAppointment = (props) => {
         }
 
     }
+    console.log(clinicid)
     return (
         <>
             <h5 className="text-center mt-2">New Appointment</h5>
@@ -197,12 +199,11 @@ const AddAppointment = (props) => {
                 </div>
                 <hr />
                 <label>Select Location</label>
-                <div className="col-12 form-control location  border-0" >
+                <div className="col-12 bg-seashell  border-0" >
                     {
                         cliniclist.map((data, i) => (
-                            <>
-                                <label><input type="checkbox" className="radio form me-1" key={i} checked={ischecked == i ? true : false} name={data.id} onClick={(e) => { setclinicid(e.target.name); setischecked(i); }} /> {data.title} {data.address}</label>
-                                <br /></>
+                                <label className={`d-${clinicID==data.id?'block':'none'}`}><input type="checkbox" className={`radio form me-1 `} key={i} checked={clinicID==data.id ? true : false} name={data.id} /> {data.title} {data.address}</label>
+                    
                         ))
                     }
                 </div>
