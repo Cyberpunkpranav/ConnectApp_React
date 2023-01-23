@@ -6,10 +6,11 @@ import Notiflix from 'notiflix';
 import '../../css/bootstrap.css'
 
 const SelectedTimeAppointment = (props) => {
+    //Global Variable
     const url = useContext(URL);
-    // const DocApi = useContext(Doctorapi)
-    // const Doclist = useContext(DoctorsList)
+    const adminid = localStorage.getItem('id')
     const APIDate = useContext(TodayDate)
+    //Local UseStates
     const [cliniclist, setcliniclist] = useState([])
     const [searchinput, setsearchinput] = useState()
     const [searchlist, setsearchlist] = useState([])
@@ -21,17 +22,9 @@ const SelectedTimeAppointment = (props) => {
     const [ischecked, setischecked] = useState()
     const [searchload, setsearchload] = useState(false)
     const [load, setload] = useState()
-    let adminid = localStorage.getItem('id')
+  
 
-    // function ClinicList() {
-    //     axios.get(`${url}/clinic/list`).then((response) => {
-    //         setcliniclist(response.data.data)
-    //     })
-    // }
-    // useEffect(() => {
-    //     ClinicList()
-    // }, [])
-
+// Functions
     function tConvert(time) {
         time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
         if (time.length > 1) {
@@ -64,7 +57,6 @@ const SelectedTimeAppointment = (props) => {
     const gettime_value = (e) => {
         settime(APIDate)
     }
-
     function BookAppointment() {
         setload(true)
         if (patientid && props.DoctorID && clinicid && props.selectedtimeID[0] && adminid) {
@@ -85,7 +77,7 @@ const SelectedTimeAppointment = (props) => {
             setload(false)
         }
     }
-
+// Functions
     return (
         <>
             <h5 className="text-center m-0 p-0 mt-2">Quick Appointment</h5>
@@ -108,15 +100,6 @@ const SelectedTimeAppointment = (props) => {
 
                     }
                 </div>
-                {/* {
-                    searchlist == undefined ? (
-                        <p className="text-danger btn fs-6 p-0 m-0">Type to Search</p>) : (
-                        searchlist.length == 0  ? (
-                            <p className="text-danger btn fs-6 p-0 m-0">Loading ... </p>
-                        ) : (<p className="text-danger btn fs-6 p-0 m-0"></p>)
-                    )
-
-                } */}
                 <hr className='p-0 m-0 mt-1' />
                 <div className="col-12 text-center py-1">
                     <input type='checkbox' checked value={1} /><label className='p-0 m-0 text-burntumber'>Aartas Clinishare Ring Road,Delhi </label>
@@ -149,61 +132,6 @@ const SelectedTimeAppointment = (props) => {
                 }
 
             </div>
-            {/* <div className="col-12 form-control location  border-0" >
-                    {
-                        cliniclist.map((data, i) => (
-                            <>
-                                <label><input type="checkbox" className="radio form me-1" checked={ischecked == i ? true : false} name={data.id} onClick={(e) => { setclinicid(e.target.name); setischecked(i); }} /> {data.title} {data.address}</label>
-                                <br /></>
-                        ))
-                    }
-                </div> */}
-            {/* <div className="row p-0 m-0">
-                    <div className="col-md-6">
-                        <label>Selected Doctor</label>
-                        <div className="col-12">
-                            <select className="col-10 form-control selectdoctor" value={props.DoctorID} >
-                                {
-                                    Doclist.map((data) => (
-                                        <option className='text-charcoal' value={data[0]}>{data[0]}.{data[1]} </option>
-                                    ))
-                                }
-                            </select>
-
-                        </div>
-                    </div>
-                    <div className="col-md-6">
-                        <label className="">Selected Date</label>
-                        <div className="col-12"><input type="date"  value={time ? time : APIDate}  className="form-control selectdate" />
-                        </div>
-                    </div>
-                </div> */}
-
-            {/* <p className="m-0 mb-2">Select Time Slot</p>
-                <div className="scroll align-items-center justify-content-around col-12">
-                    {props.timeslots ? (
-                        <>
-                            {
-                                props.timeslots.map((data, i) => (
-                                    data[1] == 0 ? (
-                                        <button className={`button button-${timeindex ? timeindex == i ? 'pearl' : 'lightgreen' : props.timeindex == i ? 'pearl':'lightgreen'} m-1`} value={data[2]} key={i}>{tConvert(data[0])}</button>
-                                    ) : (
-                                        <button disabled className='btn button-burntumber m-1' key={i} value={data[2]}>{tConvert(data[1])}</button>
-                                    )
-
-                                ))
-                            }
-                            <button className="btn btn-sm done m-1">
-                                <img src="/images/addicon.png" alt="displaying_image" className="mb-1 me-1" style={{ width: "1.2rem" }} /> Time Slot
-                            </button>
-
-                        </>
-                    ) : (
-                        <div className='p-2 rounded'>Choose Doctor and Date to get Time Slots</div>
-                    )
-                    }
-                </div> */}
-
         </>
 
     )

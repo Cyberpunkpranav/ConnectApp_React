@@ -34,7 +34,7 @@ function Connectapp(props) {
   const [ConnectDoctorapi, setConnectDoctorapi] = useState([]);
   let Doctorarray = [];
   let TodayDoctors = [];
-  const [isLoading, setIsLoading] = useState(false);
+  const [Loading, setLoading] = useState(false);
   const [docapi, setdocapi] = useState([]);
   const [todayDoc, settodaydoc] = useState([]);
   let ClinicId = localStorage.getItem('ClinicId')
@@ -52,7 +52,6 @@ function Connectapp(props) {
     ClinicList()
   }, [])
 
-
   async function VitalsList() {
     await axios.get(`${url}/vitals/list`).then((response) => {
       setvitalslist(response.data.data.vitals)
@@ -65,8 +64,8 @@ useEffect(() => {
 
   async function fetchapi() {
     try {
-      setIsLoading(true);
-      await axios.get(`${url}/doctor/list`).then(function (response) {
+      setLoading(true);
+      await axios.get(`${url}/doctor/list?clinic_id=${ClinicId}&limit=30&offset=0`).then(function (response) {
         let tempArray = response.data.data;
         setConnectDoctorapi(tempArray)
         for (let i = 0; i < tempArray.length; i++) {
@@ -89,10 +88,9 @@ useEffect(() => {
         }
         setdocapi(Doctorarray);
       });
-      setIsLoading(false);
+      setLoading(false);
       setisWelcomeLoading(1)
     } catch (e) {
-      console.log(e.message)
       setisWelcomeLoading(1)
       Notiflix.Report.failure(
         `${e.message}`,
@@ -106,12 +104,11 @@ useEffect(() => {
 
   useEffect(() => {
     fetchapi();
-  }, [])
+  }, [ClinicId])
 
-  const Gomain = () => {
+ async function Gomain(){
     localStorage.setItem('ClinicId', clinicid)
     setisWelcomeLoading(0)
-    fetchapi()
   }
 
   return (
@@ -147,7 +144,7 @@ useEffect(() => {
                           <Router>
                             <Navbar username={props.username} designation={props.designation} id={props.id} fetchapi={fetchapi} />
                             <Routes>
-                              <Route path='/' element={<Doctorsection id={props.id} fetchapi={fetchapi} todayDoc={todayDoc} isLoading={isLoading} docapi={docapi} />} />
+                              <Route path='/' element={<Doctorsection id={props.id} fetchapi={fetchapi} todayDoc={todayDoc} Loading={Loading} docapi={docapi} />} />
                               <Route path='/Appointments' element={<Appointments id={props.id} fetchapi={fetchapi} />} />
                               <Route path='/Patients' element={<Patients id={props.id} />} />
                               <Route path='/Doctors' element={<Doctors id={props.id} docapi={docapi} />} />

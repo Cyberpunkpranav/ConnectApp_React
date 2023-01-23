@@ -163,7 +163,7 @@ const Vitalsoperation = (props) => {
 
                   </div>
                   <div className={`col-2 d-${i == vitalindex ? updatevital : 'block'}`}>
-                    <button className='button py-0 button-lightbrown' value={data.id} onClick={() => { OpenSaveVital(); setvitalindex(i) }}>Update</button>
+                    <button className='button py-0 button-lightbrown' value={data.id} onClick={() => { OpenSaveVital(); setvitalindex(i) }}>Edit</button>
                   </div>
                   {
                     i == vitalindex ? (

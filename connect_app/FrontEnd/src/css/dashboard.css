@@ -469,7 +469,7 @@ body::-webkit-scrollbar-thumb:hover {
     background-color: var(--seashell);
 }
 .allappointmentsection .updateappointment {
-    top: 0;
+    top: -10rem;
     bottom: 0;
     margin-top: 20rem;
     margin-bottom: 30rem;
@@ -481,28 +481,30 @@ body::-webkit-scrollbar-thumb:hover {
     right:0;
     padding:0;
     margin:0 auto;
-    top:0;
+    top:-10rem;
     margin-top: 20rem;
     margin-bottom: 30rem;
 }
 .allappointmentsection .bill{
-    max-width:60rem;
+    width:40rem;
+    min-width:30rem;
+    max-width:50rem;
     left:0;
     right:0;
     padding:0;
     margin:0 auto;
-    top:0;
+    top:-15rem;
     margin-top: 20rem;
     margin-bottom: 30rem;
 }
 .allappointmentsection .bill .scroll{
-    max-height:20rem;
+    max-height:30rem;
     overflow-y: auto;
     min-height:20rem;
 }
 .allappointmentsection .tablesection {
     min-height: 10rem;
-    max-height: 30rem;
+    max-height: 12rem;
 }
 
 

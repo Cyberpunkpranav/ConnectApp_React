@@ -19,7 +19,6 @@ import { UpdateDoctor } from "./components/Doctors/UpdateDoctor"
 import { Appointments_Dsr } from './components/Dsr/Appointments_Dsr'
 import { Doctors_Dsr } from './components/Dsr/Doctors_Dsr'
 import { Pharmacy_Dsr } from './components/Dsr/Pharmacy_Dsr'
-
 //CSS
 import './css/appointment.css';
 import "./css/pharmacy.css";
@@ -220,7 +219,6 @@ function Navbar(props) {
 
 
 function Doctorsection(props) {
-
   const month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December",];
   var weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday",];
   const d = new Date();
@@ -257,7 +255,6 @@ function Doctorsection(props) {
   }
   getindexes()
   const [Docval, setDocval] = useState(0)
-
   return (
     <>
       <div className="container-fluid doctorcontainer">
@@ -293,17 +290,20 @@ function Doctorsection(props) {
           </div>
         </div>
         {
-          props.isLoading ? (
-            <>
-              {
-                Notiflix.Loading.dots(
-                  {
-                    backgroundColor: 'rgb(242, 242, 242,0.5)',
-                    svgColor: '#96351E'
-                  }
-                )
-              }
-            </>
+          props.Loading ? (
+            <div className=" position-absolute start-0 end-0 m-auto ">
+          <button class="button button-pearl shadow-none fs-3 fw-bolder text-charcoal75" type="button" disabled>
+          Please Be Patient While We are Fetching Data
+            <span class="spinner-grow spinner-grow ms-1 bg-brandy " role="status" aria-hidden="true"></span> 
+          </button>
+          <button class="button button-pearl shadow-none m-0 p-0 " type="button" disabled>
+            <span class="spinner-grow spinner-grow bg-raffia" role="status" aria-hidden="true"></span>
+            <span class="spinner-grow spinner-grow-md ms-1 bg-burntumber" role="status" aria-hidden="true"></span>
+            <span class="spinner-grow spinner-grow-lg ms-1 bg-charcoal75" role="status" aria-hidden="true"></span>
+            <span class="visually-hidden">Loading...</span>
+          </button>
+            </div>
+ 
           ) : (
             props.todayDoc && props.todayDoc.length != 0 ? (
               doctorindex.map((data, i) => (

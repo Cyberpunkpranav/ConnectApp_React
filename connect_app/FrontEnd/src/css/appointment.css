@@ -270,6 +270,7 @@ input[placeholder-shown] {
 
 /*-------------------------------------------------------------page2allappointment css------------------------------------------------------*/
 @media (max-width:769px) {
+
     .page2appointment .UpdateAppointment {
         margin-left: 4rem;
         margin-right:-2rem;

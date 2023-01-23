@@ -15,12 +15,14 @@ import { Vitalsoperation } from "./Vitals";
 import { Bill } from "./Bill";
 
 function DoctorSchedule(props) {
+  //Global Variables
   const url = useContext(URL)
   const Date = useContext(TodayDate)
   const adminid = localStorage.getItem('id')
-
+//Use States
   const [appointmentdata, setappointmentdata] = useState([]);
-  const [isLoading, setisLoading] = useState();
+  const [singleload,setsingleload]=useState(0)
+  const [isLoading, setisLoading] = useState(false);
   const [tableindex, settableindex] = useState()
   const [appointmentform, setappointmentform] = useState("none");
   const [addappointmentform, setaddappointmentform] = useState('none')
@@ -64,16 +66,12 @@ function DoctorSchedule(props) {
   }
 
   async function Appointmentlist() {
-    Notiflix.Loading.dots({
-      backgroundColor: 'transparent',
-      svgColor: '#96351E',
-    })
     setisLoading(true);
     await axios.get(`${url}/appointment/list?doctor_id=${props.todayDoc[props._selected][0]}&from_date=${Date}&to_date=${Date}`).then((response) => {
       setappointmentdata(response.data.data);
     })
     setisLoading(false);
-    Notiflix.Loading.remove(500)
+    setsingleload(1)
   }
   useEffect(() => {
     Appointmentlist();
@@ -150,8 +148,6 @@ function DoctorSchedule(props) {
     setaddappointmentform('none')
     settimeindex()
   }
-
-
   function OpenAddQuickSlots() {
     if (addquickslots === 'none') {
       setaddquickslots('block')
@@ -283,12 +279,12 @@ function DoctorSchedule(props) {
           </div>
         </section>
 
-        <section className="allappointmentsection">
+        <section className="allappointmentsection p-0 m-0">
           <div className="col-auto m-0 p-0 my-1 align-items-center">
             <h4 className="p-0 my-auto ps-3 text-charcoal75 fw-bold">Appointments</h4>
           </div>
           <div className="tablesection scroll scroll-y">
-            <table className="table datatable text-center " style={{ minHeight: '8rem' }}>
+            <table className="table datatable text-center">
               <thead className="p-0 m-0 px-2">
                 <tr className="p-0 m-0">
                   <th className="p-0" key={0}>Update</th>
@@ -304,10 +300,11 @@ function DoctorSchedule(props) {
                 </tr>
               </thead>
               {
-                isLoading ? (
-                  <tbody>
+                singleload == 0 ? (
+                  <tbody >
                     <tr className=' position-relative text-burntumber fs-3 mt-1 text-center m-auto'>
-                      <td className=' position-absolute start-0 end-0 text-burntumber fs-3 mt-1 text-center'>Loading Appointments</td></tr>
+                      <td className=' position-absolute start-0 end-0 text-burntumber fs-3 mt-1 text-center'>Loading Appointments</td>
+                    </tr>
                   </tbody>
                 ) : (
                   <tbody>
@@ -368,7 +365,7 @@ function DoctorSchedule(props) {
                             }
                             {
                             billindex == i ?(
-                              <td className={`bill border-0 d-${billindex == i ? billform:'none'} col-lg-6 col-md-8 col-sm-12 col-12 col-xl-4 position-absolute border border-1 shadow `} style={{ zIndex: '3020' }}><Bill CloseBillForm={CloseBillForm} extrachargeslist={extrachargeslist} loadextracharge={loadextracharge}/></td>
+                              <td className={`bill border-0 d-${billindex == i ? billform:'none'} rounded-4 col-lg-6 col-md-8 col-sm-12 col-12 col-xl-4 position-absolute border border-1 shadow `} style={{ zIndex: '3020' }}><Bill CloseBillForm={CloseBillForm} extrachargeslist={extrachargeslist} loadextracharge={loadextracharge}  patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} Appointmentlist={Appointmentlist} isLoading={isLoading} appointmentdata={appointmentdata} doctorfee = {data.doctor.consulationFee}/></td>
                               ):(<></>)
                             }
                           </tr>
