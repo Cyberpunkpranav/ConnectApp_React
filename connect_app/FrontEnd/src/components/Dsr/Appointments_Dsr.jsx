@@ -1,5 +1,6 @@
 import React from 'react'
-import { useState, useEffect, useContext } from 'react'
+import { useState, useEffect, useContext, useRef } from 'react'
+import { DownloadTableExcel } from 'react-export-table-to-excel';
 import axios from "axios"
 import { TodayDate, URL } from '../../index'
 import '../../css/dashboard.css'
@@ -11,15 +12,52 @@ const Appointments_Dsr = (props) => {
   const url = useContext(URL)
   const clinicid = localStorage.getItem('ClinicId')
   const adminid = localStorage.getItem('id')
-
+  const tableref = useRef()
   //Use States
   const [Appointments, setAppointments] = useState([])
+  const [pendingpaid, setpendingpaid] = useState([])
+  const [advancepaid, setadvancepaid] = useState([])
   const [visibles, setvisibles] = useState([])
   const [loading, setloading] = useState()
 
+  // props.doctorid, props.fromdate, props.todate
+  let listdata = []
+  async function DSR_All_Appointments() {
+    setloading(true)
+    if (props.doctorid || props.fromdate || props.todate) {
+      try {
+        await axios.get(`${url}/DSR/appointments?from_date=${props.fromdate}&to_date=${props.todate}&admin_id=${adminid}&clinic_id=${clinicid}`).then((response) => {
+          response.data.data.appointments.map((data) => {
+            listdata.push(data.doctor.id)
+          })
+          setvisibles(listdata, [])
+          setAppointments(response.data.data.appointments)
+          setpendingpaid(response.data.data.pending_paid)
+          setadvancepaid(response.data.data.advance_payments)
+          setloading(false)
+        })
+      } catch (e) {
+        Notiflix.Notify.failure(e.message)
+        setloading(false)
+      }
+    } else {
+      Notiflix.Notify.warning("please select any one field to search")
+      setloading(false)
+    }
 
+  }
+  useEffect(() => {
+    DSR_All_Appointments()
+  }, [])
+  useEffect(() => {
+    DSR_All_Appointments()
+  }, [props.doctorid, props.fromdate, props.todate])
+  // console.log(visibles)
+  // console.log(Appointments)
   const reversefunction = (date) => {
-    date = date.split("-").reverse().join("-")
+    if (date !== undefined) {
+      date = date.split("-").reverse().join("-")
+    }
     return date
   }
 
@@ -34,8 +72,7 @@ const Appointments_Dsr = (props) => {
     return time.join('');
   }
 
-  const [payments, setpayments] = useState([['Cash', '0'], ['Card', '0']])
-
+  const [payments, setpayments] = useState([])
   function payment_method_detailsForCash() {
     let casharr = []
     let cash = 0
@@ -127,36 +164,48 @@ const Appointments_Dsr = (props) => {
       return phonepe
     }
   }
-  // function payment_method_detailsForWireTransfer() {
-  //   let wiretransferarr = []
-  //   let wiretransfer = 0
-  //   for (let i = 0; i < Appointments.length; i++) {
-  //     console.log(JSON.parse(Appointments[i].payment_method_details))
-  //     // if (JSON.parse(Appointments[i].payment_method_details) != null && JSON.parse(Appointments[i].payment_method_details).WireTransfer != null) {
-
-  //     //   wiretransfer.push(Number(JSON.parse(Appointments[i].payment_method_details).Wire+'-'+Transfer))
-  //     // }
-  //   }
-  //   if (wiretransferarr.length != 0) {
-  //     wiretransferarr.forEach(item => {
-  //       wiretransfer += item
-  //     })
-  //     return wiretransfer
-  //   }
-  // }
+  function payment_method_detailsForWireTransfer() {
+    let wiretransferarr = []
+    let wiretransfer = 0
+    for (let i = 0; i < Appointments.length; i++) {
+      if (JSON.parse(Appointments[i].payment_method_details) != null && JSON.parse(Appointments[i].payment_method_details)['Wire-Transfer'] != null) {
+        wiretransferarr.push(Number(JSON.parse(Appointments[i].payment_method_details)['Wire-Transfer']))
+      }
+    }
+    if (wiretransferarr.length != 0) {
+      wiretransferarr.forEach(item => {
+        wiretransfer += item
+      })
+      return wiretransfer
+    }
+  }
+  function AdvancedAmountRecieved() {
+    let advancepayarr = []
+    let advancepay = 0
+    for (let i = 0; i < advancepaid.length; i++) {
+      advancepayarr.push(Number(advancepaid[i].credit_amount))
+    }
+    if (advancepayarr.length != 0) {
+      advancepayarr.forEach(item => {
+        advancepay += item
+      })
+      return advancepay
+    }
+  }
   function TotalPendingPayment() {
     let totalpendingarr = []
     let totalpending = 0;
     for (let i = 0; i < Appointments.length; i++) {
       for (let j = 0; j < Appointments[i].pending_payments.length; j++) {
-        totalpendingarr.push(JSON.parse(Appointments[i].pending_payments[j].pending_amount))
+        if (Appointments[i].pending_payments[j].is_paid == 0) {
+          totalpendingarr.push(JSON.parse(Appointments[i].pending_payments[j].pending_amount))
+        }
       }
     }
     if (totalpendingarr.length != 0) {
       totalpendingarr.forEach(item => {
         totalpending += item
       })
-      console.log(totalpendingarr)
     }
     return totalpending
   }
@@ -172,42 +221,10 @@ const Appointments_Dsr = (props) => {
       grandtotalarr.forEach(item => {
         grandtotal += item
       })
-      console.log(grandtotalarr)
     }
     return grandtotal
   }
-  console.log(Appointments, props.doctorid, props.fromdate, props.todate)
-  let listdata = []
-  async function DSR_All_Appointments() {
-    setloading(true)
-    if (props.doctorid || props.fromdate || props.todate) {
-      try {
-        await axios.get(`${url}/DSR/appointments?from_date=${props.fromdate}&to_date=${props.todate}&admin_id=${adminid}&clinic_id=${clinicid}`).then((response) => {
-          // console.log(response.data.data.appointments)
-          response.data.data.appointments.map((data) => {
-            listdata.push(data.doctor.id)
-          })
-          setvisibles(listdata, [])
-          setAppointments(response.data.data.appointments)
-          setloading(false)
-        })
-      } catch (e) {
-        Notiflix.Notify.failure(e.message)
-        setloading(false)
-      }
-    } else {
-      Notiflix.Notify.warning("please select any one field to search")
-      setloading(false)
-    }
 
-  }
-  useEffect(() => {
-    DSR_All_Appointments()
-  }, [])
-  useEffect(() => {
-    DSR_All_Appointments()
-  }, [props.doctorid, props.fromdate, props.todate])
-  // console.log(visibles)
   function CountAppointments(response) {
     let arr = []
     for (let i = 0; i < visibles.length; i++) {
@@ -219,10 +236,19 @@ const Appointments_Dsr = (props) => {
       return ' | ' + '(' + arr.length + ' Appointments)'
     }
   }
-  function TotalAppointments() {
-    return Appointments.length
-  }
-  let sum = 0
+
+  // function getsum(data){
+  //   let sum =0;
+  //   arr.push(data)
+  //   if(arr.length!=0){
+  //     arr.forEach(item=>{
+  //       sum +=Number(item)
+  //     })
+  //     console.log(arr)
+  //     return sum
+  //   }
+  // return arr
+  // }
   return (
     <div className='Appointments_Dsrsection'>
       <div>
@@ -232,11 +258,11 @@ const Appointments_Dsr = (props) => {
             <div className='row p-0 m-0'>
               <div className='col-lg-auto mb-lg-2 col-md-4 text-start'>Cash:{payment_method_detailsForCash()}</div>
               <div className='col-lg-auto mb-lg-2 col-md-auto text-center'>Card:{payment_method_detailsForCard()}</div>
-              <div className='col-lg-auto mb-lg-2 col-md-5 text-end'>WireTransfer:</div>
+              <div className='col-lg-auto mb-lg-2 col-md-5 text-end'>WireTransfer:{payment_method_detailsForWireTransfer()}</div>
               <div className='col-lg-auto mb-lg-2 col-md-4 text-start'>PhonePay:{payment_method_detailsForPhonepe()}</div>
               <div className='col-lg-auto mb-lg-2 col-md-4 text-start'>Points:{payment_method_detailsForPoints()}</div>
               <div className='col-lg-auto mb-lg-2 col-md-auto text-center'>RazorPay:{payment_method_detailsForRazorPay()}</div>
-              <div className='col-lg-auto mb-lg-2 col-md-4 text-end'>Paytm{' '}{payment_method_detailsForPaytm()}</div>
+              <div className='col-lg-auto mb-lg-2 col-md-4 text-start'>Paytm{' '}{payment_method_detailsForPaytm()}</div>
             </div>
           </div>
           <div className="col-lg-5 col-md-5 col-sm-5 col-5 CARD2 shadow-sm rounded-2" style={{ maxWidth: '25rem' }}>
@@ -244,7 +270,7 @@ const Appointments_Dsr = (props) => {
             <div className='bg-lightyellow rounded-2'>
               <p className='text-charcoal m-0 ps-3 fw-semibold border-bottom-burntumber p-0'>Recieved</p>
               <div className="row p-0 m-0">
-                <div className="col-5 col-md-6 text-lg-start">Advance Amount: {' '}0</div>
+                <div className="col-5 col-md-6 text-lg-start">Advance Amount:{AdvancedAmountRecieved()}</div>
                 <div className="col-5 col-md-6 text-lg-end">Pending Amount: {' '}0</div>
               </div>
             </div>
@@ -253,42 +279,60 @@ const Appointments_Dsr = (props) => {
               <div className="row m-0 p-0 my-1">
 
                 <p className='text-charcoal m-0 ps-3 fw-semibold border-bottom-burntumber p-0'>Total</p>
-                <div className="col-6 col-md-6 text-lg-start">Pending:{TotalPendingPayment()}</div>
+                <div className="col-6 col-md-6 text-lg-start">Pending:<span className='text-danger fw-bold'>{TotalPendingPayment()}</span></div>
                 <div className="col-4 col-md-6 text-lg-end ">Grand:<span className='text-success fw-bold'>{GrandTotal()}</span></div>
               </div>
             </div>
           </div>
           <div className="col-lg-2 col-md-2 col-sm-2 col-2 CARD3 rounded-2">
             <h6 className='text-lightgreen mt-2'>Exports</h6>
+            <DownloadTableExcel
+              filename={`${reversefunction(props.fromdate) + ' to ' + reversefunction(props.todate)} Appointments`}
+              sheet="Appointments"
+              currentTableRef={tableref.current}
+            >
+              <button className='button button-pearl border-bottom-lightgreen ms-lg-2'>Excel</button>
+
+            </DownloadTableExcel>
             <button className='button button-pearl border-bottom-lightgreen ms-lg-2'>CSV</button>
-            <button className='button button-pearl border-bottom-lightgreen ms-lg-2'>Excel</button>
+            {/* <button className='button button-pearl border-bottom-lightgreen ms-lg-2'>Excel</button> */}
           </div>
         </div>
       </div>
-      <div className="container-fluid maintable scroll scroll-y">
-        <h5 className='my-2 text-charcoal75 fw-semibold ms-2 '> Total Appointments :{TotalAppointments()}</h5>
-        <div className='container-fluid scroll scroll-y appointments'>
-          <table className='table text-center'>
-            <thead>
+      <div className="container-fluid " ref={tableref}>
+        <h5 className='my-2 text-charcoal75 fw-semibold ms-2 '> Total Appointments :{Appointments.length}</h5>
+        <div className='container-fluid maintable scroll scroll-y appointments'>
+          <table className='table  text-center' ref={tableref}>
+            <thead className='border table-bordered'>
               <tr>
-                <th>Bill no.</th>
-                <th>Name</th>
-                <th>Mobile</th>
-                <th>Doctor Name</th>
-                <th>Date</th>
-                <th>Time</th>
-                <th>Payment Method</th>
-                <th>Consultation Amount</th>
-                <th>Procedure Amount</th>
-                <th>Extra Charges</th>
-                <th>Discount</th>
-                <th>CGST</th>
-                <th>SGST</th>
-                <th>Pending Amt.</th>
-                <th> Grand Total</th>
+                <th className='border' rowspan='2'>Id</th>
+                <th className='border' rowspan='2'>Bill no.</th>
+                <th className='border' rowspan='2'>Name</th>
+                <th className='border' rowspan='2'>Mobile</th>
+                <th className='border' rowspan='2'>Doctor Name</th>
+                <th className='border' rowspan='2'>Date</th>
+                <th className='border' rowspan='2'>Time</th>
+                <th className='border' colspan='7' scope='colgroup'>Payment Method</th>
+                <th className='border' rowspan='2'>Consultation Amount</th>
+                <th className='border' rowspan='2'>Procedure Amount</th>
+                <th className='border' rowspan='2'>Extra Charges</th>
+                <th className='border' rowspan='2'>Discount</th>
+                <th className='border' rowspan='2'>CGST</th>
+                <th className='border' rowspan='2'>SGST</th>
+                <th className='border' rowspan='2'>Pending Amt.</th>
+                <th className='border' rowspan='2'> Grand Total</th>
+              </tr>
+              <tr>
+                <th className='bg-white border' scope='col'>Cash</th>
+                <th className='bg-white border' scope='col'>Card</th>
+                <th className='bg-white border' scope='col'>Paytm</th>
+                <th className='bg-white border' scope='col'>Phonepe</th>
+                <th className='bg-white border' scope='col'>Razorpay</th>
+                <th className='bg-white border' scope='col'>Wire-Transfer</th>
+                <th className='bg-white border' scope='col'>Points</th>
               </tr>
             </thead>
-            <tbody className=''>
+            <tbody className='align-items-center'>
 
               {
                 loading ? (
@@ -304,31 +348,29 @@ const Appointments_Dsr = (props) => {
                     </tbody>
                   ) : (
                     Appointments.map((data, i) => (
-                      <tr onClick={() => setpayments(Object.entries(JSON.parse(data.payment_method_details)))}>
-                        <td key={i}>{data.bill_id && data.bill_id != null ? data.bill_id : 'N/A'}</td>
-                        <td>{data.patient && data.patient.full_name != null ? data.patient.full_name : 'N/A'}</td>
-                        <td>{data.patient && data.patient.phone_number != null ? data.patient.phone_number : 'N/A'}</td>
-                        <td>{data.doctor && data.doctor.doctor_name && data.doctor.doctor_name != null ? data.doctor.doctor_name : 'N/A'}</td>
-                        <td>{data.timeslot && data.timeslot.date && data.timeslot.date != null ? reversefunction(data.timeslot.date) : 'N/A'}</td>
-                        <td>{data.timeslot && data.timeslot.time_from && data.timeslot.time_from != null ? tConvert(data.timeslot.time_from) : 'N/A'}</td>
-                        <td className='justify-content-center text-center align-items-cetner'>{data.payment_method_details && data.payment_method_details != null ?
-                          Object.entries(JSON.parse(data.payment_method_details)).map((data) => (
-                            <>
-                              <td className='text-center'>{data[0]}-</td>
-                              <td className=' text-center fw-bolder'>{data[1]}<span className='text-charcoal fw-bolder'> | </span></td>
-                            </>
-                          ))
-                          : 'N/A'}</td>
-                        <td>{data.doctor && data.doctor.consulationFee !== null ? data.doctor.consulationFee : 'N/A'}</td>
-                        <td>{data.procedure_cost && data.procedure_cost != null ? data.procedure_cost : 'N/A'}</td>
-                        <td>{data.other_charges.map((data) => (`${data.amount} `))}</td>
-                        <td>{data.discount && data.discount != null ? data.discount : 'N/A'}</td>
-                        <td>{data.CGST}</td>
-                        <td>{data.SGST}</td>
-                        <td>{data.pending_payments.map((data) => (
-                          data.pending_amount
-                        ))}</td>
-                        <td>{data.total_amount}</td>
+                      <tr className='border'>
+                        <td className='border'>{data.id ? data.id : 'N/A'}</td>
+                        <td className='border' key={i}>{data.bill_id && data.bill_id != null ? data.bill_id : 'N/A'}</td>
+                        <td className='border'>{data.patient && data.patient.full_name != null ? data.patient.full_name : 'N/A'}</td>
+                        <td className='border'>{data.patient && data.patient.phone_number != null ? data.patient.phone_number : 'N/A'}</td>
+                        <td className='border'>{data.doctor && data.doctor.doctor_name && data.doctor.doctor_name != null ? data.doctor.doctor_name : 'N/A'}</td>
+                        <td className='border'>{data.timeslot && data.timeslot.date && data.timeslot.date != null ? reversefunction(data.timeslot.date) : 'N/A'}</td>
+                        <td className='border'>{data.timeslot && data.timeslot.time_from && data.timeslot.time_from != null ? tConvert(data.timeslot.time_from) : 'N/A'}</td>
+                        <td className='border'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Cash : 'N/A'}</td>
+                        <td className='border'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Card : 'N/A'}</td>
+                        <td className='border'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Paytm : 'N/A'}</td>
+                        <td className='border'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Phonepe : 'N/A'}</td>
+                        <td className='border'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Razorpay : 'N/A'}</td>
+                        <td className='border'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details)['Wire-Transfer'] : 'N/A'}</td>
+                        <td className='border'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Points : 'N/A'}</td>
+                        <td className='border'>{data.doctor && data.doctor.consulationFee !== null ? data.doctor.consulationFee : 'N/A'}</td>
+                        <td className='border'>{data.procedure_cost && data.procedure_cost != null ? data.procedure_cost : 'N/A'}</td>
+                        <td className='border'>{data.other_charges.map((data) => (data.amount))}</td>
+                        <td className='border'>{data.discount && data.discount != null ? data.discount : 'N/A'}</td>
+                        <td className='border'>{data.CGST}</td>
+                        <td className='border'>{data.SGST}</td>
+                        <td className='border'>{data.pending_payments.map((data) => (data.pending_amount))}</td>
+                        <td className='border'>{data.total_amount}</td>
                       </tr>
                     ))
                   )
@@ -338,7 +380,7 @@ const Appointments_Dsr = (props) => {
             </tbody>
           </table>
         </div>
-        {/* <h5 className='my-2 text-charcoal75 fw-semibold ms-2 '>Pending Payments Recieved</h5>
+        <h5 className='my-2 text-charcoal75 fw-semibold ms-2 '>Pending Payments Recieved: {pendingpaid.length}</h5>
         <div className='container-fluid scroll scroll-y pendingpayrecieve'>
           <table className='table'>
             <thead>
@@ -347,19 +389,16 @@ const Appointments_Dsr = (props) => {
                 <th>Name</th>
                 <th>Mobile</th>
                 <th>Doctor Name</th>
-                <th>Date</th>
-                <th>Time</th>
+                <th>Appointment Date</th>
+                <th>Payment Recieved Date</th>
                 <th>Payment Method</th>
-                <th>Amount</th>
-                <th>Discount</th>
-                <th>Pending Amt.</th>
-                <th> Grand Total</th>
+                <th>Amount Received</th>
               </tr>
             </thead>
             <tbody>
 
               {
-                Appointments.map((data, i) => (
+                pendingpaid.map((data, i) => (
                   <tr>
                     <td key={i}>{data.id}</td>
                     <td>{data.name}</td>
@@ -379,47 +418,58 @@ const Appointments_Dsr = (props) => {
             </tbody>
           </table>
         </div>
-        <h5 className='my-2 text-charcoal75 fw-semibold ms-2 '>Advanced Payments Recieved</h5>
-        <div className='container-fluid scroll scroll-y advancepayrecieve'>
-          <table className='table'>
+        <h5 className='my-2 text-charcoal75 fw-semibold ms-2 '>Advanced Payments Recieved:{advancepaid.length}</h5>
+        <div className='container-fluid maintable scroll scroll-y advancepayrecieve'>
+          <table className='table text-center'>
             <thead>
               <tr>
-                <th>Bill no.</th>
-                <th>Name</th>
-                <th>Mobile</th>
-                <th>Doctor Name</th>
-                <th>Date</th>
-                <th>Time</th>
+                <th>Credit ID</th>
+                <th>Patient Name</th>
+                <th>Mobile No.</th>
+                <th>Description</th>
+                <th>Date Recieved</th>
                 <th>Payment Method</th>
-                <th>Amount</th>
-                <th>Discount</th>
-                <th>Pending Amt.</th>
-                <th> Grand Total</th>
+                <th>Amount Recieved</th>
               </tr>
             </thead>
             <tbody>
 
               {
-                Appointments.map((data, i) => (
+                advancepaid.map((data, i) => (
                   <tr>
-                    <td key={i}>{data.id}</td>
-                    <td>{data.name}</td>
-                    <td>{data.Mobile}</td>
-                    <td>{data.Doctorname}</td>
-                    <td>{data.Date}</td>
-                    <td>{data.Time}</td>
-                    <td>{data.Payment}</td>
-                    <td>{data.Amount}</td>
-                    <td>{data.Discount}</td>
-                    <td>{data.Pending}</td>
-                    <td>{data.Grand_total}</td>
+                    <td key={i}>{data.id ? data.id : 'N/A'}</td>
+                    <td>{data.patient.full_name}</td>
+                    <td>{data.patient.phone_number}</td>
+                    <td>{data.description}</td>
+                    <td>{reversefunction(data.date)}</td>
+                    <td className='text-center align-items-center'>{data.payment_method_details && data.payment_method_details != null ?
+                      <table className='table border'>
+                        <thead className='p-0 m-0'>
+                          <tr>
+                            {
+                              Object.keys(JSON.parse(data.payment_method_details)).map((data) => (
+                                <th className='p-0 m-0 px-1'>{data}</th>
+                              ))
+                            }
+                          </tr>
+                        </thead>
+                        <tbody className='p-0 m-0'>
+                          {
+                            Object.values(JSON.parse(data.payment_method_details)).map((data) => (
+                              <td className='border-0'>{data}</td>
+                            ))
+                          }
+                        </tbody>
+                      </table>
+                      : 'N/A'}</td>
+                    <td>{data.credit_amount}</td>
                   </tr>
                 ))
               }
 
             </tbody>
           </table>
-        </div> */}
+        </div>
       </div>
     </div>
 

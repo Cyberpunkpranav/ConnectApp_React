@@ -938,8 +938,8 @@ function Newpurchaseentryform(props) {
 
 function Patients() {
   const url = useContext(URL)
-  const nextref = useRef()
   const adminid = localStorage.getItem('id')
+  const nextref = useRef()
   const previousref = useRef()
   const [nxtoffset, setnxtoffset] = useState(0)
   const [prevoffset, setprevoffset] = useState(0)
@@ -1014,6 +1014,7 @@ function Patients() {
       },
     );
   }
+
   const reversefunction = (date) => {
     date = date.split("-").reverse().join("-")
     return date
@@ -1026,6 +1027,7 @@ function Patients() {
 
     getAllPatients(e.target.value - 1)
   }
+
   const [updatepatient, setupdatepatient] = useState('none')
   const [form, setform] = useState();
 
@@ -1134,13 +1136,57 @@ function Patients() {
 }
 
 function Doctors() {
+  const url = useContext(URL)
   const imagepath = 'https://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/assets/doctor/'
-  const Doctors = useContext(Doctorapi)
+  const nextref = useRef()
+  const previousref = useRef()
   const [Doctorssearch, setDoctorssearch] = useState()
+  const [Doctorslist,setDoctorslist] = useState([])
+  const [nxtoffset,setnxtoffset] = useState(0)
+  const [prevoffset,setprevoffset] = useState(0)
+  const [pages, setpages] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
   const [tabindex, settabindex] = useState()
   const [form, setform] = useState()
-
+  const [pageloading,setpageloading]=useState(false)
   const [updatedoctor, setupdatedoctor] = useState('none')
+
+  async function getAllDoctors(i) {
+    if (i == undefined) {
+      i = 0
+    }
+    setpageloading(true)
+    setDoctorslist()
+    
+    if (i == 0 || i == undefined || nxtoffset == 0) {
+      previousref.current.disabled = true
+    } else {
+      previousref.current.disabled = false
+    }
+    await axios.get(`${url}/doctor/list?search=${Doctorssearch ? Doctorssearch : ''}&limit=10&offset=${i * 10}`).then((response) => {
+      setDoctorslist(response.data.data)
+    })
+    let nxt = Number(i) + 1
+
+    setnxtoffset(nxt)
+    if (i != 0) {
+      let prev = i--
+      setprevoffset(prev)
+    }
+    setpageloading(false)
+  }
+  useEffect(() => {
+    getAllDoctors()
+  }, [])
+  useEffect(() => {
+    getAllDoctors()
+  }, [Doctorssearch])
+console.log(Doctorslist)
+async function getnextpages(e) {
+  getAllDoctors(e.target.value)
+}
+async function getpreviouspages(e) {
+  getAllDoctors(e.target.value - 1)
+}
   function OpenUpdateDoctor(i) {
     if (updatedoctor === 'none') {
       setupdatedoctor('block')
@@ -1173,11 +1219,11 @@ function Doctors() {
           </thead>
           <tbody>
             {
-              Doctors.length == 0 ? (
+              pageloading ? (
                 <div className='text-burntumber fs-4 position-absolute start-0 end-0 top-5'>Loading Doctors Info</div>
               ) : (
-                Doctors && Doctors.length != 0 ? (
-                  Doctors.map((data, i) => (
+                Doctorslist && Doctorslist.length != 0 ? (
+                  Doctorslist.map((data, i) => (
                     <tr onClick={() => console.log('clicked')}>
                       <td><button className="btn p-0 m-0" onClick={(e) => { settabindex(i); OpenUpdateDoctor(i) }}><img src={process.env.PUBLIC_URL + "/images/confirmed.png"} style={{ width: "1.5rem" }} /></button>
                         {form == i ? (
@@ -1204,7 +1250,7 @@ function Doctors() {
           </tbody>
         </table>
       </div>
-      {/* <div className="container-fluid mb-1">
+      <div className="container-fluid mb-1">
           <div className="d-flex text-center">
             <div className="col-4">
               <button className="button ms-1 button-seashell" ref={previousref} value={prevoffset} onClick={(e) => { getpreviouspages(e); console.log(e.target.value) }} style={{ marginTop: '0.15rem' }}>Previous</button>
@@ -1214,7 +1260,7 @@ function Doctors() {
               {
                 pages ? (
                   pages.map((page, i) => (
-                    <button className={`button ms-2 button-${nxtoffset - 1 == i ? 'pearl' : 'burntumber'} border  shadow-${nxtoffset - 1 == i ? 'lg' : 'none'}`} ref={nextref} value={page} id={page} onClick={(e) => { settabindex(i); getAllPatients(i) }} key={i}>{page}</button>
+                    <button className={`button ms-2 button-${nxtoffset - 1 == i ? 'pearl' : 'burntumber'} border  shadow-${nxtoffset - 1 == i ? 'lg' : 'none'}`} ref={nextref} value={page} id={page} onClick={(e) => { settabindex(i); getAllDoctors(i) }} key={i}>{page}</button>
                   ))
                 ) : (
                   <div>Loading...</div>
@@ -1226,7 +1272,7 @@ function Doctors() {
               <button className={`button button-burntumber`} ref={nextref} value={nxtoffset} onClick={(e) => { getnextpages(e); console.log(e.target.value) }} style={{ marginTop: '0.15rem' }}>Next</button>
             </div>
           </div>
-        </div> */}
+        </div>
     </section>
   )
 }

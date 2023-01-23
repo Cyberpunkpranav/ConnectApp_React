@@ -156,6 +156,10 @@ const Bill = (props) => {
                                             <input type='number' className='form-control bg-seashell p-0'onFocus={()=>setextrachargeindex(i)}onChange={(e) => { data.discount = e.target.value; data.gross_amount = data.total_amount(data.amount, data.discount);}}/>
                                         </div>
                                         <div className="col-2">
+                                            <label>GST %</label>
+                                            <input type='number' className='form-control bg-seashell p-0'onFocus={()=>setextrachargeindex(i)}onChange={(e) => { data.discount = e.target.value; data.gross_amount = data.total_amount(data.amount, data.discount);}}/>
+                                        </div>
+                                        <div className="col-2">
                                             <label>Total Amount</label>
                                             <div className=' bg-seashell p-0'>{data.gross_amount}</div>
                                         </div>
