@@ -1055,7 +1055,7 @@ function Patients() {
       <div className="conatainer">
         <input className="form-control m-auto mt-2" placeholder="Search Patient By Name or Number" style={{ width: '30rem' }} onChange={(e) => { setpatientsearch(e.target.value); getAllPatients(); }} onBlur={getAllPatients} />
       </div>
-      <div className="container-fluid p-0 m-0 scroll scroll-y" style={{ minHeight: '30rem' }}>
+      <div className="container-fluid p-0 m-0 scroll scroll-y " style={{ minHeight: '30rem' }}>
         <table className="table text-center p-0 m-0" >
           <thead>
             <tr>

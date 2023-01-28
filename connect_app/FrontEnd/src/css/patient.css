@@ -15,8 +15,12 @@
     --charcoal50: #22202331;
     --charcoal75: #222023ad;
 }
-
-
+.patientsection {
+    max-height:90vh
+}
+.patientsection .scroll-y{
+max-height:70vh
+}
 .patientsection tr:nth-child(even) {
     background-color: var(--seashell);
 }

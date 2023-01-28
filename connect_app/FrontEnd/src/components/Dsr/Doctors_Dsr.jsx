@@ -12,7 +12,7 @@ const Doctors_Dsr = (props) => {
   const AllDoctors = useContext(DoctorsList)
   const [load, setload] = useState(false)
   const [Appointments, setAppointments] = useState([])
-  const[DocTimetyp1,setDocTimetyp1]=useState()
+  const [DocTimetyp1, setDocTimetyp1] = useState()
   const tableref = useRef()
   const Doctorwisetable = useRef()
   async function GetDoctors() {
@@ -27,9 +27,9 @@ const Doctors_Dsr = (props) => {
     GetDoctors()
   }, [props.fromdate, props.todate])
 
-  let DoctorWisetotalarr =[]
+  let DoctorWisetotalarr = []
   async function DoctorwiseTable() {
-    let total,hr,min
+    let total, hr, min
     let doctorstime = {
       id: '',
       roomtype: '',
@@ -42,83 +42,93 @@ const Doctors_Dsr = (props) => {
       for (let i = 0; i < Appointments.length; i++) {
         if (Appointments[i].doctor && Appointments[i].doctor.id == DoctorWisetotalarr[k][0]) {
           if (Appointments[i].room && Appointments[i].room.room_type == 1) {
-             total =diff(Appointments[i].login_time, Appointments[i].logout_time)
-             hr = total.toString().substring(0,2)
-             min = total.toString().substring(5,7)
+            total = diff(Appointments[i].login_time, Appointments[i].logout_time)
+            hr = total.toString().substring(0, 2)
+            min = total.toString().substring(5, 7)
             DoctorWisetotalarr[k][2].push(doctorstime = {
               id: Appointments[i].id,
               roomtype: Appointments[i].room.room_type,
               totaltime: total,
               totalhours: Number(hr),
-              totalminutes:Number(min)
-            })      
-        }
+              totalminutes: Number(min)
+            })
+          }
           if (Appointments[i].room && Appointments[i].room_type == 2) {
             let total = diff(Appointments[i].login_time, Appointments[i].logout_time)
-            let hr = total.toString().substring(0,2)
-            let min = total.toString().substring(5,7)
+            let hr = total.toString().substring(0, 2)
+            let min = total.toString().substring(5, 7)
             DoctorWisetotalarr[k][3].push(doctorstime = {
               id: Appointments[i].id,
               roomtype: Appointments[i].room.room_type,
               totaltime: total,
               totalhours: hr,
-              totalminutes:min
-             })
+              totalminutes: min
+            })
           }
-        
+
         }
       }
     }
-    let Doctorwisetotalhrarr=[]
-    let Doctorwisetotalminarr=[]
-    if(DoctorWisetotalarr && DoctorWisetotalarr.length!=0){
-      for(let i=0;i<DoctorWisetotalarr.length;i++){
-        if(DoctorWisetotalarr[i][0]==AllDoctors[i][0]){
-          Doctorwisetotalhrarr.push([DoctorWisetotalarr[i][0],[]])
-          Doctorwisetotalminarr.push([DoctorWisetotalarr[i][0],[]])
-          if (DoctorWisetotalarr[i][2].length !=0){
-            for(let g=0;g<DoctorWisetotalarr[i][2].length;g++){
-                   if(DoctorWisetotalarr[i][2][g].length!=0 && DoctorWisetotalarr[i][2][g].totalhours && DoctorWisetotalarr[i][2][g].totalhours !=null && DoctorWisetotalarr[i][2][g].totalhours !=undefined){
-                     Doctorwisetotalhrarr[i][1].push(Number(DoctorWisetotalarr[i][2][g].totalhours))
-                   }else{
-                     Doctorwisetotalhrarr[i][1].push(0)
-                   }
-                   if(DoctorWisetotalarr[i][2][g].length!=0 && DoctorWisetotalarr[i][2][g].totalminutes && DoctorWisetotalarr[i][2][g].totalminutes !=null && DoctorWisetotalarr[i][2][g].totalminutes !=undefined){
-                    Doctorwisetotalminarr[i][1].push(Number(DoctorWisetotalarr[i][2][g].totalminutes))
-                  }else{
-                    Doctorwisetotalminarr[i][1].push(0)
-                  }
-               }  
+    let Doctorwisetotalhrarr = []
+    let Doctorwisetotalminarr = []
+    if (DoctorWisetotalarr && DoctorWisetotalarr.length != 0) {
+      for (let i = 0; i < DoctorWisetotalarr.length; i++) {
+        if (DoctorWisetotalarr[i][0] == AllDoctors[i][0]) {
+          Doctorwisetotalhrarr.push([DoctorWisetotalarr[i][0], []])
+          Doctorwisetotalminarr.push([DoctorWisetotalarr[i][0], []])
+          if (DoctorWisetotalarr[i][2].length != 0) {
+            for (let g = 0; g < DoctorWisetotalarr[i][2].length; g++) {
+              if (DoctorWisetotalarr[i][2][g].length != 0 && DoctorWisetotalarr[i][2][g].totalhours && DoctorWisetotalarr[i][2][g].totalhours != null && DoctorWisetotalarr[i][2][g].totalhours != undefined) {
+                Doctorwisetotalhrarr[i][1].push(Number(DoctorWisetotalarr[i][2][g].totalhours))
+              } else {
+                Doctorwisetotalhrarr[i][1].push(0)
+              }
+              if (DoctorWisetotalarr[i][2][g].length != 0 && DoctorWisetotalarr[i][2][g].totalminutes && DoctorWisetotalarr[i][2][g].totalminutes != null && DoctorWisetotalarr[i][2][g].totalminutes != undefined) {
+                Doctorwisetotalminarr[i][1].push(Number(DoctorWisetotalarr[i][2][g].totalminutes))
+              } else {
+                Doctorwisetotalminarr[i][1].push(0)
+              }
+            }
           }
         }
       }
 
-      for(let k=0;k<Doctorwisetotalhrarr.length;k++){
-        if(Doctorwisetotalhrarr[k][1].length==0){
+      for (let k = 0; k < Doctorwisetotalhrarr.length; k++) {
+        if (Doctorwisetotalhrarr[k][1].length == 0) {
           Doctorwisetotalhrarr[k].push(0)
-        }else{
+        } else {
           let Doctorwisehrtotal = 0
           let Doctorwisemintotal = 0
-          for(let h=0;h<Doctorwisetotalhrarr[k][1].length;h++){
-            Doctorwisehrtotal+=Number(Doctorwisetotalhrarr[k][1][h])
+          for (let h = 0; h < Doctorwisetotalhrarr[k][1].length; h++) {
+            Doctorwisehrtotal += Number(Doctorwisetotalhrarr[k][1][h])
           }
-          for(let a=0;a<Doctorwisetotalminarr[k][1].length;a++){
-            Doctorwisemintotal+=Number(Doctorwisetotalminarr[k][1][a])
+          for (let a = 0; a < Doctorwisetotalminarr[k][1].length; a++) {
+            Doctorwisemintotal += Number(Doctorwisetotalminarr[k][1][a])
+
           }
           DoctorWisetotalarr[k].push(Doctorwisehrtotal)
           DoctorWisetotalarr[k].push(Doctorwisemintotal)
         }
-      }  
+        if (DoctorWisetotalarr[k][5] >= 60) {
+          let remainsmin = DoctorWisetotalarr[k][5] % 60
+          let minhours = Math.floor(DoctorWisetotalarr[k][5]/60)
+          DoctorWisetotalarr[k][5] = remainsmin
+          DoctorWisetotalarr[k][4]+=minhours
+
+        }
+
+      }
+    }
+    console.log(DoctorWisetotalarr)
+    setDocTimetyp1(DoctorWisetotalarr)
+    console.log(Math.floor(69/60))
   }
-  console.log(DoctorWisetotalarr)
-  setDocTimetyp1(DoctorWisetotalarr)
-  }
-  useEffect(()=>{
-    async function load(){
+  useEffect(() => {
+    async function load() {
       DoctorwiseTable()
     }
     load()
-  },[props.fromdate,props.todate,load])
+  }, [props.fromdate, props.todate, load])
 
   const reversefunction = (date) => {
     if (date) {
@@ -236,15 +246,15 @@ const Doctors_Dsr = (props) => {
                   <button className='button button-brandy'>Export CSV </button>
                 </div>
                 <div className="col-5 col-lg-6 p-0 m-0">
-                <DownloadTableExcel
+                  <DownloadTableExcel
                     filename={`${reversefunction(props.fromdate) + ' to ' + reversefunction(props.todate)} Doctors Summary`}
                     sheet="Summary Report"
                     currentTableRef={Doctorwisetable.current}
                   >
-                      <button className='button button-lightgreen'>Export Excel </button>
+                    <button className='button button-lightgreen'>Export Excel </button>
 
                   </DownloadTableExcel>
-                
+
                 </div>
               </div>
             </div>
@@ -255,9 +265,10 @@ const Doctors_Dsr = (props) => {
           </div>
         </div>
       </div>
-      
-      <h5 className='my-2 text-charcoal75 fw-semibold ms-2 '>Doctors Login/Logout Details : {Appointments.length}</h5>
-      <div className='container-fluid scroll scroll-y doctordsrtable'ref={tableref}>
+
+      <h5 className='my-2 text-charcoal75 fw-semibold ms-2 '>Doctors Login/Logout Details : {Appointments.length}  </h5>
+      <div className='container-fluid scroll scroll-y doctordsrtable' ref={tableref}>
+      <span className='d-none'>Total Time:{TotalTime()}</span>
         <table className='table text-center border' >
           <thead>
             <tr>
@@ -312,46 +323,46 @@ const Doctors_Dsr = (props) => {
       </div>
       <h6 className='fs-5 text-charcoal75 fw-bolder my-3'>Doctor Summary</h6>
       <div className='container-fluid scroll scroll-y doctordsrtable' ref={Doctorwisetable}>
-      <table className='table text-center'>
+        <table className='table text-center'>
           <thead>
             <tr>
               <th className='border' rowspan='2'>Doctor Id</th>
               <th className='border' rowspan='2'>Doctor Name</th>
-              <th className='border' colspan='2'scope='colgroup'>Consultation</th>
+              <th className='border' colspan='2' scope='colgroup'>Consultation</th>
               <th className='border' colspan='2' scope='colgroup'>Procedure</th>
             </tr>
             <tr>
-              <th className='border bg-pearl'  scope='col'>Total Hours</th>
-              <th className='border bg-pearl'  scope='col'>Total Minutes</th>
-              <th className='border bg-pearl'  scope='col'>Total Hours</th>
-              <th className='border bg-pearl'  scope='col'>Total Minutes</th>
+              <th className='border bg-pearl' scope='col'>Total Hours</th>
+              <th className='border bg-pearl' scope='col'>Total Minutes</th>
+              <th className='border bg-pearl' scope='col'>Total Hours</th>
+              <th className='border bg-pearl' scope='col'>Total Minutes</th>
             </tr>
           </thead>
-            
-              {
-        DocTimetyp1==undefined || DocTimetyp1.length==0 ?(
-          <tbody>
-          <tr>Loading...</tr>
-        </tbody>
-        ):(
-          <tbody>{
-            DocTimetyp1.map((data)=>(
-            <tr className='border'>
-              <td className='border'>{data[0]}</td>
-              <td className='border'>{data[1]}</td>
-              <td className='border'>{data[4]}</td>
-              <td className='border'>{data[5]}</td>
-              <td className='border'>0</td>  
-              <td className='border'>0</td>
-            </tr>
-              ))
-            }
-            </tbody>
-        )
-        }
+
+          {
+            DocTimetyp1 == undefined || DocTimetyp1.length == 0 ? (
+              <tbody>
+                <tr>Loading...</tr>
+              </tbody>
+            ) : (
+              <tbody>{
+                DocTimetyp1.map((data) => (
+                  <tr className='border'>
+                    <td className='border'>{data[0]}</td>
+                    <td className='border'>{data[1]}</td>
+                    <td className='border'>{data[4]}</td>
+                    <td className='border'>{data[5]}</td>
+                    <td className='border'>0</td>
+                    <td className='border'>0</td>
+                  </tr>
+                ))
+              }
+              </tbody>
+            )
+          }
         </table>
       </div>
-      </div>
+    </div>
   )
 }
 

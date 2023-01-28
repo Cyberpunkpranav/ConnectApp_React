@@ -249,19 +249,33 @@ const Appointments_Dsr = (props) => {
       return ' | ' + '(' + arr.length + ' Appointments)'
     }
   }
- 
-async function SumExtraCharges(extracharges){
+
+ function SumExtraCharges(i){
   let ExtraChargeSumarr=[]
   let sum=0
-  extracharges.map((data)=>(
+  Appointments[i].other_charges.map((data)=>(
     ExtraChargeSumarr.push(data.amount)
   ))
 
 ExtraChargeSumarr.forEach(item=>{
-  sum+=item
+  sum+=Number(item)
 })
 return sum
   }
+  function SumPendingpayments(i){
+    let PendingPaymentsSumarr=[]
+    let sum=0
+
+      Appointments[i].pending_payments.map((data)=>{
+        if(data.is_paid==0){
+          PendingPaymentsSumarr.push(data.pending_amount)
+        }
+  })
+  PendingPaymentsSumarr.forEach(item=>{
+    sum+=Number(item)
+  })
+  return sum
+    }
 
 console.log(Appointments)
   return (
@@ -379,11 +393,11 @@ console.log(Appointments)
                         <td className='border'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Points : 'N/A'}</td>
                         <td className='border'>{data.doctor && data.doctor.consulationFee !== null ? data.doctor.consulationFee : 'N/A'}</td>
                         <td className='border'>{data.procedure_cost && data.procedure_cost != null ? data.procedure_cost : 'N/A'}</td>
-                        <td className='border'>{ data.other_charges.map((data)=>(data.amount))}</td>
+                        <td className='border'>{SumExtraCharges(i)}</td>
                         <td className='border'>{data.discount && data.discount != null ? data.discount : 'N/A'}</td>
                         <td className='border'>{data.CGST}</td>
                         <td className='border'>{data.SGST}</td>
-                        <td className='border'>{data.pending_payments.map((data) => (data.pending_amount))}</td>
+                        <td className='border'>{SumPendingpayments(i)}</td>
                         <td className='border'>{data.total_amount}</td>
                       </tr>
                     ))

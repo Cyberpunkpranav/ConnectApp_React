@@ -15,6 +15,9 @@
     --charcoal50: #22202331;
     --charcoal75: #222023ad;
 }
+.Doctorspage{
+    max-height:90vh;
+}
 .Doctorspage .scroll-y{
-    min-height:40rem;
+    max-height:70vh;
 }

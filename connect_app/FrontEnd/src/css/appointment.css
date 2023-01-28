@@ -78,8 +78,7 @@ body::-webkit-scrollbar-thumb:hover {
 }
 
 .page2allappointment {
-    height: min-content;
-    max-height: 40rem;
+    max-height: 62vh;
 }
 
 .page2appointment .UpdateAppointment {
@@ -119,7 +118,7 @@ input[placeholder-shown] {
     color: black;
 }
 
-.page2appointment .allbtn,
+/* .page2appointment .allbtn,
 .page2appointment .cancelledbtn,
 .page2appointment .completedbtn,
 .page2appointment .unattandedbtn {
@@ -145,7 +144,7 @@ input[placeholder-shown] {
     color: var(--pearl);
     box-shadow: 1px 0px 5px 1px var(--charcoal);
 
-}
+} */
 
 .page2appointment .daterangetitle {
     color: var(--burntumber);
