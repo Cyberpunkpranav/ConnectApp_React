@@ -224,9 +224,6 @@ function DoctorSchedule(props) {
       setbillform('none')
     }
   }
-  function ExtraChargesList(){
-
-  }
 
   return (
     <>
@@ -365,7 +362,7 @@ function DoctorSchedule(props) {
                             }
                             {
                             billindex == i ?(
-                              <td className={`bill border-0 d-${billindex == i ? billform:'none'} rounded-4 col-lg-6 col-md-8 col-sm-12 col-12 col-xl-4 position-absolute border border-1 shadow `} style={{ zIndex: '3020' }}><Bill CloseBillForm={CloseBillForm} extrachargeslist={extrachargeslist} loadextracharge={loadextracharge}  patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} Appointmentlist={Appointmentlist} isLoading={isLoading} appointmentdata={appointmentdata} doctorfee = {data.doctor.consulationFee}/></td>
+                              <td className={`bill border-0 d-${billindex == i ? billform:'none'} rounded-4 col-lg-6 col-md-8 col-sm-12 col-12 col-xl-4 position-absolute border border-1 shadow `} style={{ zIndex: '3020' }}><Bill fetchapi={props.fetchapi} CloseBillForm={CloseBillForm} extrachargeslist={extrachargeslist} loadextracharge={loadextracharge}  patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} Appointmentlist={Appointmentlist} isLoading={isLoading} appointmentdata={appointmentdata} appointmentid={data.id} doctorfee = {data.doctor.consulationFee}/></td>
                               ):(<></>)
                             }
                           </tr>

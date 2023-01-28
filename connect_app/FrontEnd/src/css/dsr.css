@@ -65,7 +65,7 @@
    background-color: var(--seashell);
 }
 .Appointments_Dsrsection .maintable {
-    max-height: 40rem;
+    max-height: 40vh;
 }
 .Appointments_Dsrsection .appointments{
     min-height:10rem;
@@ -73,8 +73,10 @@
 .Doctors_Dsrsection .doctordsrtable tr:nth-child(even){
     background-color:var(--seashell)
 }
-.Doctors_Dsrsection .doctordsrtable{
-    max-height:40rem;
+ .doctordsrtable{
+    min-height:20rem;
+    /* height:30rem; */
+    height:60vh
 }
 .Pharmacy_Dsrsection .maintable{
     max-height:32rem;

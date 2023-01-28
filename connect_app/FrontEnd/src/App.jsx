@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom"
 import { useState, useEffect, useContext, useRef } from "react"
 import axios from "axios"
+import { atom, useAtom } from 'jotai'
+import { atomWithStorage,createJSONStorage } from 'jotai/utils'
 //Context APIs
 import { URL, TodayDate, DoctorsList, Doctorapi } from '../src/index'
 //Components
@@ -24,6 +26,7 @@ import './css/appointment.css';
 import "./css/pharmacy.css";
 import "./css/bootstrap.css";
 import './css/patient.css';
+import './css/Doctors.css';
 import '../node_modules/bootstrap/js/dist/dropdown';
 //Notiflix
 import Notiflix from 'notiflix';
@@ -32,7 +35,7 @@ import { customconfirm } from "./components/features/notiflix/customconfirm"
 // import {CSVLink} from 'react-csv'
 
 function Navbar(props) {
-
+ 
   const [addoption, setaddoption] = useState("none");
   const toggleaddoption = () => {
     if (addoption === "none") {
@@ -110,9 +113,13 @@ function Navbar(props) {
   }
 
   const [Docval, setDocval] = useState()
+  const [highlighticon, sethighlighticon] = useState()
 
-  const [highlighticon, sethighlighticon] = useState('/')
-
+ const path =localStorage.getItem('path')
+useEffect(()=>{
+  localStorage.setItem('path',highlighticon)
+},[highlighticon])
+  console.log(highlighticon)
   const NavbarIcons = [
     {
       title: 'Today',
@@ -171,7 +178,7 @@ function Navbar(props) {
             <div className="col-lg-6 col-xl-5 col-sm-auto col-md-auto col-10 p-2 m-0 menu order-1 order-xl-0 order-sm-0 order-md-0 order-sm-0">
               <div className="row align-items-center justify-content-around">
                 {NavbarIcons.map((data, i) => (
-                  <div className={`col-auto bg-${highlighticon === data.path ? 'pearl' : 'seashell'} rounded-top border-bottom-${highlighticon === data.path ? 'burntumber' : 'seashell'}`} onClick={() => sethighlighticon(data.path)}>
+                  <div className={`col-auto bg-${highlighticon ? highlighticon === data.path ? 'pearl' : 'seashell':path === data.path ? 'pearl' : 'seashell'} rounded-top border-bottom-${highlighticon? highlighticon === data.path ? 'burntumber' : 'seashell': path === data.path ? 'burntumber' : 'seashell'}`} onClick={() => sethighlighticon(data.path)}>
                     <Link to={data.path} className="text-decoration-none"> <div className="text-center"> <img src={process.env.PUBLIC_URL + data.image} alt="displaying_image" className="img-fluid" style={{ width: `1.5rem` }} /><p className="col-12 m-0">{data.title}</p> </div> </Link>
                   </div>
                 ))
@@ -1239,7 +1246,7 @@ async function getpreviouspages(e) {
                       <td>{data.degree_suffix ? data.degree_suffix : 'N/A'}</td>
                       <td>{data.phone_number ? data.phone_number : 'N/A'}</td>
                       <td>{data.email}</td>
-                      <td><button className="btn p-0 m-0"><img src={process.env.PUBLIC_URL + "/images/delete.png"} alt="displaying_image" style={{ width: "1.5rem" }} /></button></td>
+                      <td><button className="btn p-0 m-0"><img src={process.env.PUBLIC_URL + "/images/info.png"} alt="displaying_image" style={{ width: "1.5rem" }} /></button></td>
                       <td><button className="btn p-0 m-0"><img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" style={{ width: "1.5rem" }} /></button></td>
                     </tr>
                   ))
@@ -1295,7 +1302,7 @@ function DailySaleReport(props) {
       return <Appointments_Dsr doctorid={doctorid} fromdate={fromdate?fromdate:CurrentDate} todate={todate?todate:fromdate} clinic={clinic} />
     }
     if (_menu == 1) {
-      return <Doctors_Dsr />
+      return <Doctors_Dsr doctorid={doctorid} fromdate={fromdate?fromdate:CurrentDate} todate={todate?todate:fromdate} />
     }
     if (menu == 2) {
       return <Pharmacy_Dsr />

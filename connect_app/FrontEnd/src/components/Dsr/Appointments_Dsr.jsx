@@ -192,6 +192,19 @@ const Appointments_Dsr = (props) => {
       return advancepay
     }
   }
+  function PendingAmountRecieved() {
+    let pendingpayarr = []
+    let pendingpay = 0
+    for (let i = 0; i < pendingpaid.length; i++) {
+      pendingpayarr.push(Number(pendingpaid[i].paid_amount))
+    }
+    if (pendingpayarr.length != 0) {
+      pendingpayarr.forEach(item => {
+        pendingpay += item
+      })
+      return pendingpay
+    }
+  }
   function TotalPendingPayment() {
     let totalpendingarr = []
     let totalpending = 0;
@@ -236,19 +249,21 @@ const Appointments_Dsr = (props) => {
       return ' | ' + '(' + arr.length + ' Appointments)'
     }
   }
+ 
+async function SumExtraCharges(extracharges){
+  let ExtraChargeSumarr=[]
+  let sum=0
+  extracharges.map((data)=>(
+    ExtraChargeSumarr.push(data.amount)
+  ))
 
-  // function getsum(data){
-  //   let sum =0;
-  //   arr.push(data)
-  //   if(arr.length!=0){
-  //     arr.forEach(item=>{
-  //       sum +=Number(item)
-  //     })
-  //     console.log(arr)
-  //     return sum
-  //   }
-  // return arr
-  // }
+ExtraChargeSumarr.forEach(item=>{
+  sum+=item
+})
+return sum
+  }
+
+console.log(Appointments)
   return (
     <div className='Appointments_Dsrsection'>
       <div>
@@ -271,13 +286,12 @@ const Appointments_Dsr = (props) => {
               <p className='text-charcoal m-0 ps-3 fw-semibold border-bottom-burntumber p-0'>Recieved</p>
               <div className="row p-0 m-0">
                 <div className="col-5 col-md-6 text-lg-start">Advance Amount:{AdvancedAmountRecieved()}</div>
-                <div className="col-5 col-md-6 text-lg-end">Pending Amount: {' '}0</div>
+                <div className="col-5 col-md-6 text-lg-end">Pending Amount:{PendingAmountRecieved()}</div>
               </div>
             </div>
 
             <div className='bg-raffia rounded-2'>
               <div className="row m-0 p-0 my-1">
-
                 <p className='text-charcoal m-0 ps-3 fw-semibold border-bottom-burntumber p-0'>Total</p>
                 <div className="col-6 col-md-6 text-lg-start">Pending:<span className='text-danger fw-bold'>{TotalPendingPayment()}</span></div>
                 <div className="col-4 col-md-6 text-lg-end ">Grand:<span className='text-success fw-bold'>{GrandTotal()}</span></div>
@@ -305,7 +319,7 @@ const Appointments_Dsr = (props) => {
           <table className='table  text-center' ref={tableref}>
             <thead className='border table-bordered'>
               <tr>
-                <th className='border' rowspan='2'>Id</th>
+                <th className='border' rowspan='2'>Appointment Id</th>
                 <th className='border' rowspan='2'>Bill no.</th>
                 <th className='border' rowspan='2'>Name</th>
                 <th className='border' rowspan='2'>Mobile</th>
@@ -365,7 +379,7 @@ const Appointments_Dsr = (props) => {
                         <td className='border'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Points : 'N/A'}</td>
                         <td className='border'>{data.doctor && data.doctor.consulationFee !== null ? data.doctor.consulationFee : 'N/A'}</td>
                         <td className='border'>{data.procedure_cost && data.procedure_cost != null ? data.procedure_cost : 'N/A'}</td>
-                        <td className='border'>{data.other_charges.map((data) => (data.amount))}</td>
+                        <td className='border'>{ data.other_charges.map((data)=>(data.amount))}</td>
                         <td className='border'>{data.discount && data.discount != null ? data.discount : 'N/A'}</td>
                         <td className='border'>{data.CGST}</td>
                         <td className='border'>{data.SGST}</td>
@@ -382,35 +396,49 @@ const Appointments_Dsr = (props) => {
         </div>
         <h5 className='my-2 text-charcoal75 fw-semibold ms-2 '>Pending Payments Recieved: {pendingpaid.length}</h5>
         <div className='container-fluid scroll scroll-y pendingpayrecieve'>
-          <table className='table'>
+          <table className='table text-center'>
             <thead>
               <tr>
-                <th>Bill no.</th>
-                <th>Name</th>
-                <th>Mobile</th>
-                <th>Doctor Name</th>
-                <th>Appointment Date</th>
-                <th>Payment Recieved Date</th>
-                <th>Payment Method</th>
-                <th>Amount Received</th>
+                <th className='border' rowspan='2'>Appointment Id</th>
+                <th className='border' rowspan='2'>Bill no.</th>
+                <th className='border' rowspan='2'>Name</th>
+                <th className='border' rowspan='2'>Mobile</th>
+                <th className='border' rowspan='2'>Doctor Name</th>
+                <th className='border' rowspan='2'>Appointment Date</th>
+                <th className='border' rowspan='2'>Payment Recieved Date</th>
+                <th className='border' colspan='7' scope='colgroup'>Payment Method</th>
+                <th className='border' rowspan='2'>Amount Received</th>
+              </tr>
+              <tr>
+                <th className='bg-white border' scope='col'>Cash</th>
+                <th className='bg-white border' scope='col'>Card</th>
+                <th className='bg-white border' scope='col'>Paytm</th>
+                <th className='bg-white border' scope='col'>Phonepe</th>
+                <th className='bg-white border' scope='col'>Razorpay</th>
+                <th className='bg-white border' scope='col'>Wire-Transfer</th>
+                <th className='bg-white border' scope='col'>Points</th>
               </tr>
             </thead>
             <tbody>
 
               {
                 pendingpaid.map((data, i) => (
-                  <tr>
-                    <td key={i}>{data.id}</td>
-                    <td>{data.name}</td>
-                    <td>{data.Mobile}</td>
-                    <td>{data.Doctorname}</td>
-                    <td>{data.Date}</td>
-                    <td>{data.Time}</td>
-                    <td>{data.Payment}</td>
-                    <td>{data.Amount}</td>
-                    <td>{data.Discount}</td>
-                    <td>{data.Pending}</td>
-                    <td>{data.Grand_total}</td>
+                  <tr key={i} className='table-bordered'>
+                    <td className='border'>{data.appointment && data.appointment.id != null ? data.appointment.id : 'N/A'}</td>
+                    <td className='border'>{data.id && data.id != null ? data.id : 'N/A'}</td>
+                    <td className='border'>{data.appointment && data.appointment != null && data.appointment.patient && data.appointment.patient.full_name != null ? data.appointment.patient.full_name : 'N/A'}</td>
+                    <td className='border'>{data.appointment && data.appointment != null && data.appointment.patient.phone_number && data.appointment.patient.phone_number != null ? data.appointment.patient.phone_number : 'N/A'}</td>
+                    <td className='border'>{data.appointment && data.appointment != null && data.appointment.doctor && data.appointment.doctor.doctor_name != null ? data.appointment.doctor.doctor_name : 'N/A'}</td>
+                    <td className='border'>{data.appointment && data.appointment != null && data.appointment.appointment_date != null ? reversefunction(data.appointment.appointment_date) : 'N/A'}</td>
+                    <td className='border'>{data.paid_date && data.paid_date != null ? reversefunction(data.paid_date) : 'N/A'}</td>
+                    <td className='border'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Cash : 'N/A'}</td>
+                    <td className='border'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Card : 'N/A'}</td>
+                    <td className='border'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Paytm : 'N/A'}</td>
+                    <td className='border'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Phonepe : 'N/A'}</td>
+                    <td className='border'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Razorpay : 'N/A'}</td>
+                    <td className='border'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details)['Wire-Transfer'] : 'N/A'}</td>
+                    <td className='border'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Points : 'N/A'}</td>
+                    <td className='border'>{data.paid_amount}</td>
                   </tr>
                 ))
               }
@@ -423,46 +451,44 @@ const Appointments_Dsr = (props) => {
           <table className='table text-center'>
             <thead>
               <tr>
-                <th>Credit ID</th>
-                <th>Patient Name</th>
-                <th>Mobile No.</th>
-                <th>Description</th>
-                <th>Date Recieved</th>
-                <th>Payment Method</th>
-                <th>Amount Recieved</th>
+                <th className='border' rowspan='2'>Credit ID</th>
+                <th className='border' rowspan='2'>Patient Name</th>
+                <th className='border' rowspan='2'>Doctor Name</th>
+                <th className='border' rowspan='2'>Mobile No.</th>
+                <th className='border' rowspan='2'>Description</th>
+                <th className='border' rowspan='2'>Date Recieved</th>
+                <th className='border' colspan='7' scope='colgroup'>Payment Method</th>
+                <th className='border' rowspan='2'>Amount Recieved</th>
+              </tr>
+              <tr>
+                <th className='bg-white border' scope='col'>Cash</th>
+                <th className='bg-white border' scope='col'>Card</th>
+                <th className='bg-white border' scope='col'>Paytm</th>
+                <th className='bg-white border' scope='col'>Phonepe</th>
+                <th className='bg-white border' scope='col'>Razorpay</th>
+                <th className='bg-white border' scope='col'>Wire-Transfer</th>
+                <th className='bg-white border' scope='col'>Points</th>
               </tr>
             </thead>
             <tbody>
 
               {
                 advancepaid.map((data, i) => (
-                  <tr>
-                    <td key={i}>{data.id ? data.id : 'N/A'}</td>
-                    <td>{data.patient.full_name}</td>
-                    <td>{data.patient.phone_number}</td>
-                    <td>{data.description}</td>
-                    <td>{reversefunction(data.date)}</td>
-                    <td className='text-center align-items-center'>{data.payment_method_details && data.payment_method_details != null ?
-                      <table className='table border'>
-                        <thead className='p-0 m-0'>
-                          <tr>
-                            {
-                              Object.keys(JSON.parse(data.payment_method_details)).map((data) => (
-                                <th className='p-0 m-0 px-1'>{data}</th>
-                              ))
-                            }
-                          </tr>
-                        </thead>
-                        <tbody className='p-0 m-0'>
-                          {
-                            Object.values(JSON.parse(data.payment_method_details)).map((data) => (
-                              <td className='border-0'>{data}</td>
-                            ))
-                          }
-                        </tbody>
-                      </table>
-                      : 'N/A'}</td>
-                    <td>{data.credit_amount}</td>
+                  <tr key={i} className='bordered table-bordered'>
+                    <td className='border'>{data.id ? data.id : 'N/A'}</td>
+                    <td className='border'>{data.patient.full_name}</td>
+                    <td className='border'>{data.patient.full_name}</td>
+                    <td className='border'>{data.patient.phone_number}</td>
+                    <td className='border'>{data.description}</td>
+                    <td className='border'>{reversefunction(data.date)}</td>
+                    <td className='border'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Cash : 'N/A'}</td>
+                    <td className='border'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Card : 'N/A'}</td>
+                    <td className='border'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Paytm : 'N/A'}</td>
+                    <td className='border'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Phonepe : 'N/A'}</td>
+                    <td className='border'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Razorpay : 'N/A'}</td>
+                    <td className='border'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details)['Wire-Transfer'] : 'N/A'}</td>
+                    <td className='border'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Points : 'N/A'}</td>
+                    <td className='border'>{data.credit_amount}</td>
                   </tr>
                 ))
               }

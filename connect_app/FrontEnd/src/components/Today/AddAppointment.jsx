@@ -162,7 +162,6 @@ const AddAppointment = (props) => {
         }
 
     }
-    console.log(clinicid)
     return (
         <>
             <h5 className="text-center mt-2">New Appointment</h5>

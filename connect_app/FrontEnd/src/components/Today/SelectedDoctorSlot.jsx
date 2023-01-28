@@ -5,20 +5,20 @@ import axios from "axios"
 import Notiflix from 'notiflix'
 import { customconfirm } from '../features/notiflix/customconfirm'
 //Context APIs
-import { URL, TodayDate, DoctorsList } from '../../index'
+import { URL, TodayDate, DoctorsList,Clinic } from '../../index'
 
 const AddSelectedDoctorSlot = (props) => {
     const url = useContext(URL)
     const APIDate = useContext(TodayDate)
     const Doctors = useContext(DoctorsList)
-
+    const cliniclist = useContext(Clinic)
+    const admin_id = localStorage.getItem('id');
+    const clinicID = localStorage.getItem('ClinicId')
     const [adddoctorfortoday, setadddoctorfortoday] = useState();
     const [docdate, setdocdate] = useState();
     const [fromtime, setfromtime] = useState();
     const [totime, settotime] = useState();
-    const [clinicid, setclinicid] = useState();
-
-    let admin_id = localStorage.getItem('id');
+    const [clinicid, setclinicid] = useState(clinicID);
 
     async function AddSelectedDoctorSlot() {
 
@@ -46,19 +46,7 @@ const AddSelectedDoctorSlot = (props) => {
         
     }
 
-    const [ischecked, setischecked] = useState()
-    const [cliniclist, setcliniclist] = useState([])
-    function ClinicList() {
-        axios.get(`${url}/clinic/list`).then((response) => {
-            setcliniclist(response.data.data)
-        })
-    }
-    useEffect(() => {
-        ClinicList()
-    }, [])
-
     const confirmmessage = () => {
-
         customconfirm()
         Notiflix.Confirm.show(
             `Update Appointment Details`,
@@ -83,14 +71,13 @@ const AddSelectedDoctorSlot = (props) => {
             <h5 className="text-center">Quick Add TimeSlots</h5>
             <button type="button" className="btn-close closebtn position-absolute" aria-label="Close" onClick={props.CloseAddQuickSlots} ></button>
             <hr />
-            <div className="col-12">
-                {
-                    cliniclist.map((data, i) => (
-                        <>
-                            <label><input type="checkbox" className="radio form me-1" checked={ischecked == i ? true : false} name={data.id} onClick={(e) => { setclinicid(e.target.name); setischecked(i); }} /> {data.title} {data.address}</label>
-                            <br /></>
-                    ))
-                }
+            <div className="col-12 text-center">
+              {
+          cliniclist.map((data, i) => (
+            <label className={`d-${clinicID == data.id ? 'block' : 'none'}`}><input type="checkbox" className="radio form me-1" checked={clinicID == data.id ? true : false} /> {data.title} {data.address}</label>
+
+          ))
+        }
             </div>
             <div className="row">
             <div className="col-6">

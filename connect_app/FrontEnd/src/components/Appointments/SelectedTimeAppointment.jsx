@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useContext } from 'react'
-import { DoctorsList, URL, Doctorapi, TodayDate } from '../../index'
+import { DoctorsList, URL, Doctorapi, TodayDate,Clinic } from '../../index'
 import Notiflix from 'notiflix';
 import '../../css/bootstrap.css'
 
 const SelectedTimeAppointment = (props) => {
     //Global Variable
     const url = useContext(URL);
-    const adminid = localStorage.getItem('id')
+    const cliniclist=useContext(Clinic)
     const APIDate = useContext(TodayDate)
+    const adminid = localStorage.getItem('id')
+    const clinicID = localStorage.getItem('ClinicId')
     //Local UseStates
-    const [cliniclist, setcliniclist] = useState([])
     const [searchinput, setsearchinput] = useState()
     const [searchlist, setsearchlist] = useState([])
     const [displaysearchlist, setdisplaysearchlist] = useState('none')
     const [patientid, setpatientid] = useState()
-    const [doctorid, setdoctorid] = useState()
-    const [clinicid, setclinicid] = useState(props.DocClinic)
+    const [clinicid, setclinicid] = useState(clinicID)
     const [time, settime] = useState()
     const [ischecked, setischecked] = useState()
     const [searchload, setsearchload] = useState(false)
@@ -78,6 +78,7 @@ const SelectedTimeAppointment = (props) => {
         }
     }
 // Functions
+console.log(cliniclist)
     return (
         <>
             <h5 className="text-center m-0 p-0 mt-2">Quick Appointment</h5>
@@ -102,7 +103,12 @@ const SelectedTimeAppointment = (props) => {
                 </div>
                 <hr className='p-0 m-0 mt-1' />
                 <div className="col-12 text-center py-1">
-                    <input type='checkbox' checked value={1} /><label className='p-0 m-0 text-burntumber'>Aartas Clinishare Ring Road,Delhi </label>
+                {
+                        cliniclist.map((data, i) => (
+                        <label className={`d-${clinicID == data.id ? 'block' : 'none'}`}><input type="checkbox" className="radio form me-1" checked={clinicID == data.id ? true : false} /> {data.title} {data.address}</label>
+
+                        ))
+                 }
                 </div>
                 <div className="row p-0 m-0 text-center">
                     <div className="col-5 p-0 m-0">

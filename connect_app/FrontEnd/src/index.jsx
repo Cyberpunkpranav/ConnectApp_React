@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom/client';
 import { useState, useEffect } from "react";
 import { createContext } from 'react'
 import axios from "axios";
+
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 //Css
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
@@ -23,6 +24,7 @@ const DoctorsList = createContext();
 const Doctorapi = createContext();
 const TodayDocs = createContext();
 const Vitals = createContext();
+const Clinic = createContext();
 function Connectapp(props) {
   const d = new Date();
   const date = d.getDate() < 10 ? '0' + d.getDate() : d.getDate();
@@ -43,13 +45,13 @@ function Connectapp(props) {
   const [cliniclist, setcliniclist] = useState([])
   const [vitalslist, setvitalslist] = useState()
 
-  async function ClinicList() {
+  async function Clinics() {
     await axios.get(`${url}/clinic/list`).then((response) => {
       setcliniclist(response.data.data)
     })
   }
   useEffect(() => {
-    ClinicList()
+    Clinics()
   }, [])
 
   async function VitalsList() {
@@ -57,9 +59,9 @@ function Connectapp(props) {
       setvitalslist(response.data.data.vitals)
     })
   }
-useEffect(() => {
-  VitalsList()
-}, [])
+  useEffect(() => {
+    VitalsList()
+  }, [])
 
 
   async function fetchapi() {
@@ -106,7 +108,7 @@ useEffect(() => {
     fetchapi();
   }, [ClinicId])
 
- async function Gomain(){
+  async function Gomain() {
     localStorage.setItem('ClinicId', clinicid)
     setisWelcomeLoading(0)
   }
@@ -134,44 +136,40 @@ useEffect(() => {
             </div>
           ) : (
             <>
-   
-                <Doctorapi.Provider value={ConnectDoctorapi}>
-                  <DoctorsList.Provider value={docapi}>
-                    <URL.Provider value={url}>
+
+              <Doctorapi.Provider value={ConnectDoctorapi}>
+                <DoctorsList.Provider value={docapi}>
+                  <URL.Provider value={url}>
+                    <Clinic.Provider value={cliniclist}>
                       <TodayDate.Provider value={APIDate}>
                         <TodayDocs.Provider value={todayDoc}>
                           <Vitals.Provider value={vitalslist}>
-                          <Router>
-                            <Navbar username={props.username} designation={props.designation} id={props.id} fetchapi={fetchapi} />
-                            <Routes>
-                              <Route path='/' element={<Doctorsection id={props.id} fetchapi={fetchapi} todayDoc={todayDoc} Loading={Loading} docapi={docapi} />} />
-                              <Route path='/Appointments' element={<Appointments id={props.id} fetchapi={fetchapi} />} />
-                              <Route path='/Patients' element={<Patients id={props.id} />} />
-                              <Route path='/Doctors' element={<Doctors id={props.id} docapi={docapi} />} />
-                              <Route path='/DailySaleReport' element={<DailySaleReport id={props.id} cliniclist={cliniclist} docapi={docapi} />} />
-                              <Route path='/Pharmacy' element={<Pharmacy id={props.id} />} />
-                            </Routes>
-                          </Router>
+                            <Router>
+                              <Navbar username={props.username} designation={props.designation} id={props.id} fetchapi={fetchapi} />
+                              <Routes>
+                                <Route path='/' element={<Doctorsection id={props.id} fetchapi={fetchapi} todayDoc={todayDoc} Loading={Loading} docapi={docapi} />} />
+                                <Route path='/Appointments' element={<Appointments id={props.id} fetchapi={fetchapi} />} />
+                                <Route path='/Patients' element={<Patients id={props.id} />} />
+                                <Route path='/Doctors' element={<Doctors id={props.id} docapi={docapi} />} />
+                                <Route path='/DailySaleReport' element={<DailySaleReport id={props.id} cliniclist={cliniclist} docapi={docapi} />} />
+                                <Route path='/Pharmacy' element={<Pharmacy id={props.id} />} />
+                              </Routes>
+                            </Router>
                           </Vitals.Provider>
                         </TodayDocs.Provider>
                       </TodayDate.Provider>
-                    </URL.Provider>
-                  </DoctorsList.Provider>
-                </Doctorapi.Provider>
-         
+                    </Clinic.Provider>
+                  </URL.Provider>
+                </DoctorsList.Provider>
+              </Doctorapi.Provider>
+
             </>
-          )
-
-
-
-        )
-
+          ))
       }
-
     </>
   );
 }
-export { TodayDate, URL, DoctorsList, Doctorapi, TodayDocs, Vitals};
+export { TodayDate, URL, DoctorsList, Doctorapi, TodayDocs, Vitals, Clinic };
 
 
 function Switchpage() {
