@@ -143,7 +143,9 @@ body::-webkit-scrollbar-thumb:hover {
     left: 5%;
     top: 15%;
 }
-
+.searchlist{
+    z-index: 5000;
+}
 .patientsearch input {
     text-align: center;
 }

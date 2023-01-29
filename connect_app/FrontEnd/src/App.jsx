@@ -191,10 +191,10 @@ const [searchtext,setsearchtext]=useState()
                 <input className="col-12 p-lg-2 doctorslot shadow-sm text-start" type="button" defaultValue="Doctor Slot" onClick={toggledoctorform} />
               </div>
             </div>
-            <div className="col-lg-3 col-xl-3 col-md-3 col-sm-2 ms-md-2 align-self-center order-sm-2 order-2 position-relative p-0 m-0">
-                <input type="text" className="bg-seashell form-control text-center border-0 position-relative m-auto py-1" placeholder="search" onChange={(e)=>setsearchtext(e.target.value)} />
+            <div className="col-lg-2 col-xl-3 col-md-3 col-sm-2 ms-md-2 align-self-center order-sm-2 order-2 position-relative p-0 m-0" style={{zIndex:'2000'}}>
+                <input type="text" className="bg-seashell form-control text-center border-0 position-relative m-auto py-1" placeholder="Type to search" onChange={(e)=>setsearchtext(e.target.value)} />
                 <div className="position-absolute bg-seashell end-0">
-              <SearchField searchtext={searchtext} toggleappointmentform={toggleappointmentform}/>
+              <SearchField searchtext={searchtext} fetchapi={props.fetchapi}/>
             </div>
             </div>
           </div>

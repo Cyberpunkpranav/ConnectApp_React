@@ -33,7 +33,14 @@ const AddAppointment = (props) => {
     useEffect(() => {
         ClinicList()
     }, [])
-
+    function setfromsearch(){
+        setpatientid(props.patientidfromsearch)
+        setsearchinput(props.patientnamefromsearch)
+    }
+    useEffect(()=>{
+        setfromsearch()
+    },[props.patientidfromsearch])
+    console.log(patientid,searchinput)
     function tConvert(time) {
 
         time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
@@ -125,7 +132,6 @@ const AddAppointment = (props) => {
 
             })
         } else {
-            e.preventDefault()
             setload(false)
             Notiflix.Notify.warning('Please Fill all Detais');
         }
@@ -134,16 +140,14 @@ const AddAppointment = (props) => {
     const [timeindex, settimeindex] = useState()
 
     const confirmmessage = (e) => {
-        e.preventDefault()
         customconfirm()
         Notiflix.Confirm.show(
-            `Update Appointment Details`,
-            `Do you surely want yo update ${props.patientname} Appointment Details`,
+            `Add Appointment`,
+            `Do you surely want to Add Appointment for ${searchinput}`,
             'Yes',
             'No',
             () => {
                 BookAppointment()
-
             },
             () => {
                 return 0
