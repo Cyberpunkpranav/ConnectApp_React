@@ -19,7 +19,6 @@ const SelectedTimeAppointment = (props) => {
     const [patientid, setpatientid] = useState()
     const [clinicid, setclinicid] = useState(clinicID)
     const [time, settime] = useState()
-    const [ischecked, setischecked] = useState()
     const [searchload, setsearchload] = useState(false)
     const [load, setload] = useState()
   
@@ -34,7 +33,6 @@ const SelectedTimeAppointment = (props) => {
         }
         return time.join('');
     }
-
     async function searchpatient(e) {
         setsearchload(true)
         setsearchinput(e.target.value)
@@ -78,20 +76,20 @@ const SelectedTimeAppointment = (props) => {
         }
     }
 // Functions
-console.log(cliniclist)
     return (
         <>
             <h5 className="text-center m-0 p-0 mt-2">Quick Appointment</h5>
             <button type="button" className="btn-close closebtn position-absolute" aria-label="Close" onClick={(e) => { props.closeAddAppointmentform() }} ></button>
             <div className="col-12 p-0 mt-2">
-                <input type="text" placeholder='Search Patient using Number or Name' className="form-control selectpatient col-10 position-relative" value={searchinput ? searchinput : ''} onFocus={() => setsearchload(true)} onChange={(e) => { searchpatient(e); }} onBlur={searchpatient} />
+    
+                <input type="text" placeholder='Search Patient using Number or Name' className="form-control selectpatient col-10 position-relative" value={searchinput ? searchinput : ''}  onChange={(e) => { searchpatient(e); }}  />
                 <div className={`col-8  d-${displaysearchlist} `} style={{ minHeight: '4rem' }}>
                     {
-                        searchload == true || searchinput == undefined ? (
+                        searchload ? (
                             <p className="btn text-charcoal75 fs-6 p-0 m-0 ps-1">Loading... </p>
                         ) : (
                             searchlist.length == 0 ? (
-                                <p className="text-danger btn fs-6 p-0 m-0">Patient not found add as new user to book appointements</p>
+                                <p className="text-danger btn fs-6 p-0 m-0">Patient not found add as new to book appointments</p>
                             ) : (
                                 searchlist.map((data) => (
                                     <button className='col-12 d-block p-0 m-0 ms-1 border-0 bg-pearl text-charcoal text-start border border-1' name={data.id} value={data.full_name} onClick={get_value}>{data.full_name}  {data.phone_number}</button>

@@ -77,8 +77,6 @@ function DoctorSchedule(props) {
     Appointmentlist();
   }, [props._selected]);
 
-
-
   function tConvert(time) {
 
     time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
@@ -130,6 +128,7 @@ function DoctorSchedule(props) {
         }).then((response) => {
           Appointmentlist()
           Loading.remove()
+          props.fetchapi()
           Notiflix.Notify.success(response.data.message)
         })
       } catch (e) {

@@ -24,9 +24,9 @@ const AmountPaid = (props) => {
     return (
         totalAmount !=null ? (
             totalAmount == props.appointmentData.total_amount ? (<>
-            <button className="ms-1 btn btn-sm button-lightgreen fw-bold">{totalAmount}|Done</button>
+            <button className="ms-1 btn btn-sm button-lightgreen fw-bold">{totalAmount} Done</button>
                                     </>) : (<>
-                                      <button className="ms-1 btn btn-sm button-lightred fw-bold">Pending</button>
+                                      <button className="ms-1 btn btn-sm button-lightred fw-bold">{props.appointmentData.total_amount-totalAmount} Pending</button>
                                     </>)
 
                                   ) : (

@@ -21,6 +21,7 @@ import { UpdateDoctor } from "./components/Doctors/UpdateDoctor"
 import { Appointments_Dsr } from './components/Dsr/Appointments_Dsr'
 import { Doctors_Dsr } from './components/Dsr/Doctors_Dsr'
 import { Pharmacy_Dsr } from './components/Dsr/Pharmacy_Dsr'
+import { SearchField } from "./components/features/SearchField"
 //CSS
 import './css/appointment.css';
 import "./css/pharmacy.css";
@@ -35,7 +36,7 @@ import { customconfirm } from "./components/features/notiflix/customconfirm"
 // import {CSVLink} from 'react-csv'
 
 function Navbar(props) {
- 
+  
   const [addoption, setaddoption] = useState("none");
   const toggleaddoption = () => {
     if (addoption === "none") {
@@ -119,7 +120,6 @@ function Navbar(props) {
 useEffect(()=>{
   localStorage.setItem('path',highlighticon)
 },[highlighticon])
-  console.log(highlighticon)
   const NavbarIcons = [
     {
       title: 'Today',
@@ -157,26 +157,24 @@ useEffect(()=>{
 
   ]
 
+//Searchfield input
+const [searchtext,setsearchtext]=useState()
+
   return (
     <>
       <button className={`parentclose d-none position-absolute`}></button>
-      <div className="navsection p-2">
+      <div className="navsection">
         <div className="container-fluid ">
-          <div className="row align-items-center justify-content-evenly">
-            <div className="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-6">
-              <div className="row">
-                <div className="col-md-auto col-auto user">
+          <div className="row m-0 p-0 justify-content-lg-center">
+            <div className="col-lg-auto col-xl-auto col-md-auto col-sm-2 col-6">
+                <button className="button button-seashell shadow-none col-md-auto col-auto user position-relative" onClick={togglelogoutbtn}>
                   <p className="m-0 username text-decoration-none text-lg-start text-md-start text-center"> {props.username} </p>
                   <p className="m-0 userstatus text-decoration-none text-lg-start text-md-start text-center"><small className="text-muted">{props.designation}</small> </p>
-                </div>
-                <div className="col-1 p-0 m-0 position-relative">
-                  <button className='btn  p-0 m-0' onClick={togglelogoutbtn}><img src={process.env.PUBLIC_URL + "/images/more.png"} style={{ width: '1rem' }} /></button>
-                  <button className={`logout d-${logoutbtn} btn button-brandy end-0 position-absolute`} onClick={logout}>Logout</button>
-                </div>
-              </div>
+                  <button className={`d-${logoutbtn} button button-lightred start-0 end-0 position-absolute text-burntumber w-75 fw-bolder`} onClick={logout}>Logout</button>
+                </button>
             </div>
-            <div className="col-lg-6 col-xl-5 col-sm-auto col-md-auto col-10 p-2 m-0 menu order-1 order-xl-0 order-sm-0 order-md-0 order-sm-0">
-              <div className="row align-items-center justify-content-around">
+            <div className="col-lg-6 col-xl-6 align-self-center col-sm-auto col-md-5 col-10 p-0 m-0 menu order-1 order-xl-0 order-sm-0 order-md-0 order-sm-0">
+              <div className="row p-0 m-0 gx-auto justify-content-center">
                 {NavbarIcons.map((data, i) => (
                   <div className={`col-auto bg-${highlighticon ? highlighticon === data.path ? 'pearl' : 'seashell':path === data.path ? 'pearl' : 'seashell'} rounded-top border-bottom-${highlighticon? highlighticon === data.path ? 'burntumber' : 'seashell': path === data.path ? 'burntumber' : 'seashell'}`} onClick={() => sethighlighticon(data.path)}>
                     <Link to={data.path} className="text-decoration-none"> <div className="text-center"> <img src={process.env.PUBLIC_URL + data.image} alt="displaying_image" className="img-fluid" style={{ width: `1.5rem` }} /><p className="col-12 m-0">{data.title}</p> </div> </Link>
@@ -185,19 +183,19 @@ useEffect(()=>{
                 }
               </div>
             </div>
-            <div className="col-lg-2 col-xl-1 col-md-1 col-6 col-sm-2 text-center position-relative">
-              <button className="btn col-12 addbtn" onClick={toggleaddoption}> {" "} +Add{" "} </button>
+            <div  className="col-lg-auto col-xl-auto col-md-auto col-6 col-sm-2 text-center align-self-center position-relative p-0 m-0 ">
+              <button className="btn col-12 col-lg-6 col-md-6 addbtn align-self-center" onClick={toggleaddoption}> {" "} +Add{" "} </button>
               <div className={`text-center addoptions d-${addoption} position-absolute`} >
                 <input className="col-12 p-lg-2 border-1 border-bottom text-start patient" type="button" defaultValue="Patient" onClick={togglepatientform} />
                 <input className="col-12 p-lg-2 text-start border-1 border-bottom appointment" type="button" defaultValue="Appointment" onClick={toggleappointmentform} />
                 <input className="col-12 p-lg-2 doctorslot shadow-sm text-start" type="button" defaultValue="Doctor Slot" onClick={toggledoctorform} />
               </div>
             </div>
-            <div className="col-10 col-lg-2 col-xl-2 col-md-3 col-sm-2 py-3  order-sm-2 order-2 Search position-relative">
-              <article className="Search-box">
-                <input type="text" className="Search-Text" placeholder="search" />
-                <img src={process.env.PUBLIC_URL + "/images/search.png"} alt="displaying_image" className="p-0 m-0 rounded-5" style={{ width: "2rem" }} />
-              </article>
+            <div className="col-lg-3 col-xl-3 col-md-3 col-sm-2 ms-md-2 align-self-center order-sm-2 order-2 position-relative p-0 m-0">
+                <input type="text" className="bg-seashell form-control text-center border-0 position-relative m-auto py-1" placeholder="search" onChange={(e)=>setsearchtext(e.target.value)} />
+                <div className="position-absolute bg-seashell end-0">
+              <SearchField searchtext={searchtext} toggleappointmentform={toggleappointmentform}/>
+            </div>
             </div>
           </div>
         </div>
