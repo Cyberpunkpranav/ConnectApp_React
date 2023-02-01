@@ -12,6 +12,7 @@ import '../../css/dashboard.css'
 import { SelectedTimeAppointment } from '../Appointments/SelectedTimeAppointment'
 import { AddSelectedDoctorSlot } from './SelectedDoctorSlot'
 import { Vitalsoperation } from "./Vitals";
+import { Payments } from "./Payments";
 import { Bill } from "./Bill";
 
 function DoctorSchedule(props) {
@@ -35,8 +36,9 @@ function DoctorSchedule(props) {
   const [loadvitals, setloadvitals] = useState()
   const [billindex,setbillindex]= useState()
   const [billform,setbillform]=useState('none')
-  const[extrachargeslist,setextrachargeslist]=useState([])
-  const[loadextracharge,setloadextracharge]=useState()
+  const [paymentsindex,setpaymentsindex]=useState()
+  const [paymentsform,setpaymentsform]= useState('none')
+
   const [d_form, setd_form] = useState()
 
   // for UpdateAppointment
@@ -223,6 +225,16 @@ function DoctorSchedule(props) {
       setbillform('none')
     }
   }
+  function OpenPaymentsForm(){
+    if(paymentsform==='none'){
+      setpaymentsform('block')
+    }
+  } 
+  function ClosePaymentsForm(){
+    if(paymentsform==='block'){
+      setpaymentsform('none')
+    }
+  }
 
   return (
     <>
@@ -279,20 +291,26 @@ function DoctorSchedule(props) {
           <div className="col-auto m-0 p-0 my-1 align-items-center">
             <h4 className="p-0 my-auto ps-3 text-charcoal75 fw-bold">Appointments</h4>
           </div>
-          <div className="tablesection scroll scroll-y">
+          <div className="tablesection scroll scroll-y align-content-center align-items-center">
             <table className="table datatable text-center">
               <thead className="p-0 m-0 px-2">
                 <tr className="p-0 m-0">
-                  <th className="p-0" key={0}>Update</th>
-                  <th className="p-0" key={1}>Status</th>
-                  <th className="p-0" key={2}>Patient Name</th>
-                  <th className="p-0" key={3}>Phone Number</th>
-                  <th className="p-0" key={4}>Time</th>
-                  <th className="p-0" key={5}>Total Amount</th>
-                  <th className="p-0" key={6}>Amount Status</th>
-                  <th className="p-0" key={7}>Vitals</th>
-                  <th className="p-0" key={8}>Actions</th>
-                  <th className="p-0" key={9}>More</th>
+                  <th className="p-0 m-0 border border-1" key={0} rowspan='2'>Update</th>
+                  <th className="p-0 m-0 border border-1" key={1} rowspan='2'>Status</th>
+                  <th className="p-0 m-0 border border-1" key={2} rowspan='2'>Patient Name</th>
+                  <th className="p-0 m-0 border border-1" key={3} rowspan='2'>Phone Number</th>
+                  <th className="p-0 m-0 border border-1" key={4} rowspan='2'>Time</th>
+                  <th className="p-0 m-0 border border-1" key={5} rowspan='2'>Total Amount</th>
+                  <th className="p-0 m-0 border border-1" key={6} rowspan='2'>Amount Status</th>
+                  <th className="p-0 m-0 border border-1" key={7} rowspan='2'>Vitals</th>
+                  <th className="p-0 m-0 border border-1" key={7} rowspan='2'>Bill</th>
+                  <th className="p-0 m-0 border border-1" key={8} rowspan='2'>Payments</th>
+                  <th className="p-0 m-0 border border-1" key={8} rowspan='2'>Call Patient</th>
+                  <th className="p-0 m-0 border border-1" key={9} colspan='2' scope='colgroup'>Pdfs</th>
+                </tr>
+                <tr>
+                  <th className="bg-white border p-0 m-0 border-1" scope='col' >Bill</th>
+                  <th className="bg-white border p-0 m-0 border-1"scope='col'>Prescription</th>
                 </tr>
               </thead>
               {
@@ -309,14 +327,14 @@ function DoctorSchedule(props) {
                         <tr><button className="text-center fs-4 position-absolute text-burntumber button-burntumber border-start-0 border-end-0 px-5 start-0 end-0">No Appointments Found</button></tr>
                       ) : (
                         appointmentdata.map((data, i) => (
-                          <tr className='appointmentsrow'>
-                            <th scope="row">
+                          <tr className='appointmentsrow align-content-center align-items-center align-self-center'>
+                            <th scope="row align-items-center">
                               <button className="btn btn-lg px-1 action position-relative bg-transparent confirmed position-relative m-0 p-0" key={i} onClick={(e) => { openapppointmentform(); settableindex(i); setappointmentid(data.id) }}>
                                 <img src={process.env.PUBLIC_URL + "/images/confirmed.png"} alt="displaying_image" className="img-fluid" style={{ width: "1.5rem" }} key={i} />
                               </button>
                             </th>
-                            <td>
-                              <select className={`p-2 fw-bolder rounded-5 text-center button-${status_color(data.appointment_status)}`} name={data.id} onChange={(e) => { UpadteStatus(e) }}>
+                            <td  className="align-items-center align-self-center border border-1">
+                              <select className={`p-2 fw-bolder rounded-5 text-center align-self-center align-items-center button-${status_color(data.appointment_status)}`} name={data.id} onChange={(e) => { UpadteStatus(e) }}>
                                 <option className="button" selected disabled>{status(data.appointment_status)}</option>
                                 <option key={0} className="button-lightred" value='1'>Pending</option>
                                 <option key={1} className="button-lightblue" value='2'>Booked</option>
@@ -330,25 +348,17 @@ function DoctorSchedule(props) {
                                 <option key={9} className="button-lightgreen" value='10'>Completed</option>
                               </select>
                             </td>
-                            <td>{data.patient ? data.patient.full_name !== null ? data.patient.full_name : 'N/A' : 'N/A'}</td>
-                            <td>{data.patient ? data.patient.phone_number != null ? data.patient.phone_number : 'N/A' : 'N/A'}</td>
-                            <td>{tConvert(data.timeslot.time_from)}</td>
-                            <td>{data.total_amount}</td>
-                            <td><AmountPaid appointmentData={data} /> </td>
-                            <td><button className="btn p-0 m-0" onClick={() => {setvitalindex(i); OpenVitals(); GetAppointmentVitals(data.id) }}><img src={process.env.PUBLIC_URL + "/images/vitals.png"} alt="displaying_image" style={{ width: "1.5rem" }} /></button></td>
-                            <td><button className="btn p-0 m-0" onClick={()=>{setbillindex(i); OpenBillForm();}}><img src={process.env.PUBLIC_URL + "/images/rupee.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1" /></button> <button className="btn p-0 m-0" onClick={()=>confirmmessage(data.patient.full_name,data.id)}><img src={process.env.PUBLIC_URL + "/images/speaker.png"} alt="displaying_image" className="ms-1" style={{ width: "1.5rem" }} /></button> </td>
-                            <td>
-                              <button className="btn position-relative cursor-pointer more p-0 m-0">
-                                <img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" style={{ width: "1.5rem" }} />
-                              </button>
-                              <table className="table p-2 moreoptions text-start rounded position-absolute">
-                                <tbody>
-                                  <tr key={0}><td>Action 1</td></tr>
-                                  <tr key={1}><td>Action 2</td></tr>
-                                  <tr key={2}><td>Action 3</td></tr>
-                                </tbody>
-                              </table>
-                            </td>
+                            <td className="border border-1">{data.patient ? data.patient.full_name !== null ? data.patient.full_name : 'N/A' : 'N/A'}</td>
+                            <td className="border border-1">{data.patient ? data.patient.phone_number != null ? data.patient.phone_number : 'N/A' : 'N/A'}</td>
+                            <td className="border border-1">{tConvert(data.timeslot.time_from)}</td>
+                            <td className="border border-1">{data.total_amount}</td>
+                            <td className="border border-1"><AmountPaid appointmentData={data} Appointmentlist={Appointmentlist} /> </td>
+                            <td className="border border-1"><button className="btn p-0 m-0" onClick={() => {setvitalindex(i); OpenVitals(); GetAppointmentVitals(data.id) }}><img src={process.env.PUBLIC_URL + "/images/vitals.png"} alt="displaying_image" style={{ width: "1.5rem" }} /></button></td>
+                            <td className="border border-1"> <button className="btn p-0 m-0" onClick={()=>{setbillindex(i); OpenBillForm();}}><img src={process.env.PUBLIC_URL + "/images/bill.png"} alt="displaying_image" style={{ width: "1.8rem" }} className="me-1" /></button>  </td>
+                            <td className="border border-1"><button className="btn p-0 m-0" onClick={()=>{setpaymentsindex(i); OpenPaymentsForm();}}><img src={process.env.PUBLIC_URL + "/images/rupee.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1" /></button></td>
+                            <td className="border border-1"><button className="btn p-0 m-0" onClick={()=>confirmmessage(data.patient.full_name,data.id)}><img src={process.env.PUBLIC_URL + "/images/speaker.png"} alt="displaying_image" className="ms-1" style={{ width: "1.8rem" }} /></button></td>
+                            <td className="border border-1"><a target='_blank' className='p-0 m-0 text-decoration-none text-burntumber fw-bold' href={`https://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/admin/appointment/generate/bill/${data.id}`}><img src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" style={{ width: "2rem" }} /></a></td>
+                            <td className="border border-1"><a target='_blank' className='p-0 m-0 text-decoration-none text-charcoal fw-bold' href={`Billhttps://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/assets/swift_pdf/prescription_pdf_${data.id}.pdf`}><img src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" style={{ width: "2rem" }} /></a></td>
                             {
                               appointmentid === data.id ? (
                                 <td className={`updateappointment border-0  d-${tableindex == i ? appointmentform : 'none'} p-0 start-0 bottom-0 end-0 position-absolute`} style={{ zIndex: '3005' }}><UpdateAppointment fetchapi={props.fetchapi} fetchallAppointmentslist={props.fetchallAppointmentslist} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} patientid={data.patient != null && data.patient.id != null ? data.patient.id : ""} appointmentid={data.id} addappointmentform={addappointmentform} closeappointmentform={closeappointmentform} doctorid={props.doctorid} appointmentdoctorid={data.doctor.id} appointmentdate={data.appointment_date} appointmenttime={tConvert(data.timeslot.time_from)} /></td>
@@ -361,8 +371,13 @@ function DoctorSchedule(props) {
                             }
                             {
                             billindex == i ?(
-                              <td className={`bill border-0 d-${billindex == i ? billform:'none'} rounded-4 col-lg-6 col-md-8 col-sm-12 col-12 col-xl-4 position-absolute border border-1 shadow `} style={{ zIndex: '3020' }}><Bill fetchapi={props.fetchapi} CloseBillForm={CloseBillForm} extrachargeslist={extrachargeslist} loadextracharge={loadextracharge}  patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} Appointmentlist={Appointmentlist} isLoading={isLoading} appointmentdata={appointmentdata} appointmentid={data.id} doctorfee = {data.doctor.consulationFee}/></td>
+                              <td className={`bill border-0 d-${billindex == i ? billform:'none'} rounded-4 col-lg-6 col-md-8 col-sm-12 col-12 col-xl-4 position-absolute border border-1 shadow `} style={{ zIndex: '3020' }}><Bill fetchapi={props.fetchapi} CloseBillForm={CloseBillForm} patientid={data.patient && data.patient.id != null ? data.patient.id : ""}  patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} Appointmentlist={Appointmentlist} setsingleload={setsingleload} isLoading={isLoading} appointmentdata={appointmentdata} appointmentid={data.id} doctorfee = {data.doctor.consulationFee}/></td>
                               ):(<></>)
+                            }
+                               {
+                              paymentsindex === i ? (
+                                <td className={`payments col-lg-6 col-md-8 col-sm-12 col-12 col-xl-4 position-absolute shadow border border-1 rounded-2 d-${paymentsindex == i ? paymentsform : 'none'}`} style={{ width:'40rem', zIndex: '3010' }}><Payments ClosePaymentsForm={ClosePaymentsForm} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} appointmentid={data.id} patientid={data.patient && data.patient.id != null ? data.patient.id : ""} Appointmentlist={Appointmentlist} setsingleload={setsingleload} isLoading={isLoading} appointmentdata={appointmentdata} /></td>
+                              ) : (<></>)
                             }
                           </tr>
                      

@@ -13,24 +13,27 @@ const Bill = (props) => {
         discount: 0,
         cgst: 0,
         sgst: 0,
-        gross_amount: 0
+        gross_amount: 0,
+        id:''
     }
     const paymentmethoddetails = {
         paymentmethod: '',
         amount: 0
     }
+    //Advance payments
+    const[loadadvancepayments,setloadadvancepayments] =useState(false)
+    const [advancepayments,setadvancepayments]=useState()
 
     //ExtraCharge
     const [extrachargedescription, setextrachargedescription] = useState()
     const [extrachargetotal, setextrachargetotal] = useState()
     const [extrachargeamount, setextrachargeamount] = useState()
-    const [extrachargefinalamt, setextrachargefinalamt] = useState([])
     const [saveextracharge, setsaveextracharge] = useState('none')
     const [updateextracharge, setupdateextracharge] = useState('block')
     const [extrachargeindex, setextrachargeindex] = useState(0)
     const [extrachargecount, setextrachargecount] = useState([])
     const [loadextracharge, setloadextracharge] = useState()
-  
+
     //Bill
     const [constext, setconstext] = useState('')
     const [docdiscount, setdocdiscount] = useState(0)
@@ -41,17 +44,7 @@ const Bill = (props) => {
     const [SGST, setSGST] = useState()
     const [CGST, setCGST] = useState()
     const [paymentmethods, setpaymentmethods] = useState([])
-    // console.log(paymentmethods)
-    function GSTinPercent(amount,discount,cgst,sgst) {
-        console.log(amount,discount,cgst,sgst)
-        let gstpercent = 0
-        if (amount && amount !== null && cgst && sgst && cgst !== null && sgst!==null) {
-            gstpercent = ((cgst+sgst)/(amount-discount))*100
-            return gstpercent
-        } else {
-            return gstpercent
-        }
-    }
+  
     async function AddExtraCharges() {
         let extracharges = []
         for (let i = 0; i < props.appointmentdata.length; i++) {
@@ -61,17 +54,20 @@ const Bill = (props) => {
                         description: props.appointmentdata[i].other_charges[j].description != null ? props.appointmentdata[i].other_charges[j].description : 'N/A',
                         amount: props.appointmentdata[i].other_charges[j].total_amount != null ? props.appointmentdata[i].other_charges[j].total_amount : 0,
                         discount: props.appointmentdata[i].other_charges[j].discount != null ? props.appointmentdata[i].other_charges[j].discount : 0,
-                        cgst: props.appointmentdata[i].CGST != null ? GSTinPercent(props.appointmentdata[i].other_charges[j].amount,props.appointmentdata[i].other_charges[j].discount, props.appointmentdata[i].CGST,props.appointmentdata[i].SGST)/2 : 0,
-                        sgst: props.appointmentdata[i].SGST != null ? GSTinPercent(props.appointmentdata[i].other_charges[j].amount,props.appointmentdata[i].other_charges[j].discount, props.appointmentdata[i].CGST, props.appointmentdata[i].SGST)/2 : 0,
-                        gross_amount: Number(props.appointmentdata[i].other_charges[j].amount) + Number(props.appointmentdata[i].SGST) + Number(props.appointmentdata[i].CGST)
+                        cgst: props.appointmentdata[i].other_charges[j] != null && props.appointmentdata[i].other_charges[j].gst_rate!=null?props.appointmentdata[i].other_charges[j].gst_rate/2 : 0,
+                        sgst: props.appointmentdata[i].other_charges[j] != null && props.appointmentdata[i].other_charges[j].gst_rate!=null?props.appointmentdata[i].other_charges[j].gst_rate/2 : 0,
+                        gross_amount: props.appointmentdata[i].other_charges[j].final_amount&&props.appointmentdata[i].other_charges[j].final_amount!==null?props.appointmentdata[i].other_charges[j].final_amount:'' ,
+                        id:props.appointmentdata[i].other_charges[j].id &&props.appointmentdata[i].other_charges[j].id!=null ? props.appointmentdata[i].other_charges[j].id:''
                     })
+
                 }
+                setaartasdiscount(props.appointmentdata[i].aartas_discount)
+                setdocdiscount(props.appointmentdata[i].doc_discount)
+                setconstext(props.appointmentdata[i].cons_text)
             }
         }
-          console.log(extracharges)
         setextrachargecount(extracharges)
     }
-
     async function AddPaymentMethods() {
         let Payments = []
         let amounts = []
@@ -79,8 +75,7 @@ const Bill = (props) => {
         for (let i = 0; i < props.appointmentdata.length; i++) {
             if (props.appointmentid == props.appointmentdata[i].id && props.appointmentdata[i].payment_method_details) {
                 Payments.push(Object.keys(JSON.parse(props.appointmentdata[i].payment_method_details)))
-                amounts.push(Object.values(JSON.parse(props.appointmentdata[i].payment_method_details)))
-                
+                amounts.push(Object.values(JSON.parse(props.appointmentdata[i].payment_method_details)))   
             }
         }
         let paymentobj = []
@@ -96,13 +91,15 @@ const Bill = (props) => {
             setpaymentmethods(allamounts)
         }
      
-        console.log(paymentmethods)
-        // paymentmethods.push(paymentobj)
+        paymentmethods.push(paymentobj)
     }
     useEffect(() => {
         AddExtraCharges()
         AddPaymentMethods()
     }, [])
+    useEffect(()=>{
+        AddExtraCharges()
+    },[props.isLoading])
 
     function OpenSaveExtraCharge() {
         if (updateextracharge === 'block') {
@@ -116,78 +113,34 @@ const Bill = (props) => {
             setupdateextracharge('block')
         }
     }
-    async function SaveBill() {
-        let GrandTotal = Get_Grand_Total()
-        GrandTotal= Number(GrandTotal)
-        let Docfee = Number(props.doctorfee)
-        let DoctorDiscount = Number(docdiscount)
-        let AartasDiscount = Number(aartasdiscount)
-        let TotalCGST = Get_total_Seperate_gsts();
-        let TotalSGST = Get_total_Seperate_gsts()
-        let Description = []
-        let TotalAmount = []
-        let Discount = []
-        let DiscountedAmount = []
-        for (let i = 0; i < extrachargecount.length; i++) {
-            Description.push(extrachargecount[i].description)
-            TotalAmount.push(Number(extrachargecount[i].amount))
-            Discount.push(Number(extrachargecount[i].discount))
-            DiscountedAmount.push(Number(extrachargecount[i].amount) - Number(extrachargecount[i].discount))
+   async function DeleteExtraCharges(i) {
+        if(extrachargecount[i].id){
+            setextrachargecount([])
+           await axios.post(`${url}/appointment/delete/extra/charges`,{
+                id: extrachargecount[i].id
+            }).then((response)=>{
+                setextrachargecount([])
+                extrachargecount.splice(i, i)
+               Notiflix.Notify.success(response.data.message)
+               props.Appointmentlist()
+            })
+        }else{
+            extrachargecount.splice(i, i)
         }
-        let Paymentmethod = [];
-        let Paymentmethodsvalue = []
-        for (let j = 0; j < paymentmethods.length; j++) {
-            Paymentmethod.push(paymentmethods[j].paymentmethod)
-            Paymentmethodsvalue.push(Number(paymentmethods[j].amount))
-        }
-        let Data={
-            appointment_id:props.appointmentid,
-            g_total_main: GrandTotal,
-            cons_fee: Docfee,
-            description: Description,
-            total_amount: TotalAmount,
-            discount: Discount,
-            amount: DiscountedAmount,
-            doc_dis: DoctorDiscount,
-            aartas_discount: AartasDiscount,
-            payment_method:Paymentmethod,
-            payment_method_main:Paymentmethod,
-            payment_method_details:Paymentmethodsvalue,
-            SGST: Number(TotalSGST),
-            CGST: Number(TotalCGST),
-            admin_id: Number(adminid),
-            cons_text: constext,
-            add_to_cart: AtC,
-            show_cons_fee:AddConsAmt==props.doctorfee ? 1:0,
-            // ot_id:[0]
-        }
-        async function Payment(){
-            await axios.post(`${url}/appointment/save/charges`, Data).then((response)=>{
-                console.log(response)
-                props.fetchapi()
-                Notiflix.Notify.success(response.data.message)
-        })
-        }
-        Payment()
-    }
-    function DeleteExtraCharges(i) {
-        extrachargecount.splice(i, i)
+    
     }
     function DeletePaymentMethods(i) {
         paymentmethods.splice(i, i)
     }
     function Calculate_gst(amount, discount, cgst, sgst) {
-        setextrachargeamount()
         setextrachargecount(prevState => [...prevState]);
         let AMOUNT = amount ? amount : 0
         let DISCOUNT = discount ? discount : 0
         let CGST = cgst ? cgst : 0
         let SGST = sgst ? sgst : 0
         let total = AMOUNT - DISCOUNT
-        // console.log(AMOUNT,DISCOUNT,CGST,SGST,total)
         CGST = (((CGST + SGST) * total) / 100)
         total = total + CGST
-        // console.log(AMOUNT,DISCOUNT,CGST,SGST,total)
         return total
     }
     function Get_total_Seperate_gsts() {
@@ -241,6 +194,76 @@ const Bill = (props) => {
 
 
     }
+        async function SaveBill() {
+        let GrandTotal = Get_Grand_Total()
+        GrandTotal= Number(GrandTotal)
+        let Docfee = Number(props.doctorfee)
+        let DoctorDiscount = Number(docdiscount)
+        let AartasDiscount = Number(aartasdiscount)
+        let TotalCGST = Get_total_Seperate_gsts();
+        let TotalSGST = Get_total_Seperate_gsts()
+        let Description = []
+        let TotalAmount = []
+        let Discount = []
+        let Grossamount = []
+        let DiscountedAmount = []
+        let ids = []
+        let gstrate=[];
+        console.log(gstrate)
+        for (let i = 0; i < extrachargecount.length; i++) {
+            Description.push(extrachargecount[i].description)
+            TotalAmount.push(Number(extrachargecount[i].amount))
+            Discount.push(Number(extrachargecount[i].discount))
+            DiscountedAmount.push(Number(extrachargecount[i].amount) - Number(extrachargecount[i].discount))
+            if(extrachargecount[i].id){
+            ids.push(Number(extrachargecount[i].id))
+            }
+            if(extrachargecount[i].cgst&&extrachargecount[i].sgst){
+                gstrate.push(Number(extrachargecount[i].cgst+extrachargecount[i].sgst))
+            }else{
+                gstrate.push(0)
+            }
+            Grossamount.push(extrachargecount[i].gross_amount)
+        }
+        let Paymentmethod = [];
+        let Paymentmethodsvalue = []
+        for (let j = 0; j < paymentmethods.length; j++) {
+            Paymentmethod.push(paymentmethods[j].paymentmethod)
+            Paymentmethodsvalue.push(Number(paymentmethods[j].amount))
+        }
+        let Data={
+            appointment_id:props.appointmentid,
+            g_total_main: GrandTotal,
+            cons_fee: Docfee,
+            description: Description,
+            total_amount: TotalAmount,
+            discount: Discount,
+            amount: DiscountedAmount,
+            doc_dis: DoctorDiscount,
+            aartas_discount: AartasDiscount,
+            payment_method:Paymentmethod,
+            payment_method_main:Paymentmethod,
+            payment_method_details:Paymentmethodsvalue,
+            SGST: Number(TotalSGST),
+            CGST: Number(TotalCGST),
+            admin_id: Number(adminid),
+            cons_text: constext,
+            add_to_cart: AtC,
+            show_cons_fee:AddConsAmt==props.doctorfee ? 1:0,
+            ot_id:ids,
+            gst_rate:gstrate,
+            final_amount:Grossamount
+        }
+        async function Payment(){
+            await axios.post(`${url}/appointment/save/charges`, Data).then((response)=>{
+                props.Appointmentlist()
+                props.setsingleload(0);
+                setextrachargecount([])
+                Notiflix.Notify.success(response.data.message)
+        })
+        }
+        Payment()
+    }
     const confirmmessage = (e) => {
         customconfirm()
         Notiflix.Confirm.show(
@@ -278,12 +301,34 @@ const Bill = (props) => {
             },
         );
     }
+    async function AdvancePayments(){
+        setloadadvancepayments(true)
+        axios.post(`${url}/advance/balance`,{
+            patient_id:props.patientid
+        }).then((response)=>{
+            setloadadvancepayments(false)
+            setadvancepayments(response.data.data)
+        })
+    } 
+    useEffect(() => {
+        AdvancePayments()
+      
+    }, [])
     return (
         <div className='bg-seashell rounded-4 position-relative'>
             <h5 className='p-1'>{props.patientname} Bill</h5>
-            <button className='btn btn-close position-absolute top-0 end-0 p-2 me-2' onClick={props.CloseBillForm}></button>
+            <button className='btn btn-close position-absolute top-0 end-0 p-2 me-2' onClick={()=>{props.CloseBillForm()}}></button>
             <div className='scroll'>
-                <div className="container-fluid text-start p-2 position-relative">
+                {
+                    props.isLoading ? (
+                        <div className="col-6 py-2 pb-2 m-auto text-center">
+                        <div class="spinner-border" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                    ):(
+                        <>
+        <div className="container-fluid text-start p-2 position-relative">
                     <h6 className='fw-bolder text-charcoal'>Consultation</h6>
                     <label className='position-absolute end-0 top-0 mt-1 me-4 text-cahrcoal fw-bolder'><input type='checkbox'  checked={AddConsAmt} onClick={AddConsAmt==props.doctorfee ? ()=>setAddConsAmt(0):()=>setAddConsAmt(props.doctorfee)}/>Add Consultation Amount</label>
                     <div className="row p-0 m-0">
@@ -304,62 +349,72 @@ const Bill = (props) => {
                     </div>
                 </div>
 
-                <div className="container-fluid text-start p-2">
-                    <h6 className='fw-bolder text-charcoal'>Discounts</h6>
-                    <div className="row p-0 m-0">
-                        <div className="col-6">
-                            <label className='text-charcoal75 fw-bold'>Coupon</label>
-                            <input className='form-control bg-seashell' onChange={(e) => setcoupondiscount(e.target.value)} />
-                        </div>
-                        <div className="col-6">
-                            <label className='text-charcoal75 fw-bold'>Doctor</label>
-                            <input className='form-control bg-seashell' onChange={(e) => setdocdiscount(e.target.value)} />
-                        </div>
-                    </div>
-                    <div className="row p-0 m-0">
-                        <div className="col-6">
-                            <label className='text-charcoal75 fw-bold'>Aartas</label>
-                            <input className='form-control bg-seashell' onChange={(e) => setaartasdiscount(e.target.value)} />
-                        </div>
-                    </div>
-                </div>
+                                <div className="container-fluid text-start p-2">
+                                <h6 className='fw-bolder text-charcoal'>Discounts</h6>
+                                <div className="row p-0 m-0">   
+                                    <div className="col-6">
+                                        <label className='text-charcoal75 fw-bold'>Coupon</label>
+                                        <input className='form-control bg-seashell' disabled value={coupondiscount?coupondiscount:''} onChange={(e) => setcoupondiscount(e.target.value)} />
+                                    </div>
+                                    <div className="col-6">
+                                        <label className='text-charcoal75 fw-bold'>Doctor</label>
+                                        <input className='form-control bg-seashell text-center' value={docdiscount?docdiscount:''} onChange={(e) => setdocdiscount(e.target.value)} />
+                                    </div>
+                                </div>
+                                <div className="row p-0 m-0">
+                                    <div className="col-6">
+                                        <label className='text-charcoal75 fw-bold'>Aartas</label>
+                                        <input className='form-control bg-seashell text-center' value={aartasdiscount?aartasdiscount:''} onChange={(e) => setaartasdiscount(e.target.value)} />
+                                    </div>
+                                </div>
+                            </div>
+
                 <div className="container-fluid text-start p-2">
                     <div className='bg-seashell rounded-2 position-relative'>
                         <h6 className='p-1 text-charcoal fw-bolder'>ExtraCharges</h6>
                         {
-                            extrachargecount.map((data, i) => (
-                                <div className="container-fluid p-0 m-0">
-                                    <div className="row p-0 m-0">
-                                        <div className="col-2">
-                                            <label>Description</label>
-                                            <input className='form-control p-0 bg-seashell' value={data.description ? data.description : ''} onChange={(e) => { data.description = e.target.value; Calculate_gst(data.amount, data.discount, data.cgst, data.sgst) }} />
-                                        </div>
-                                        <div className="col-2 p-0 m-0">
-                                            <label>Amount</label>
-                                            <input type='number' className='form-control bg-seashell p-0' value={data.amount ? data.amount : ''} onChange={(e) => { data.amount = e.target.value; data.gross_amount = Calculate_gst(data.amount, data.discount, data.cgst, data.sgst) }} />
-                                        </div>
-                                        <div className="col-2 m-0 p-0 ">
-                                            <label>Discount</label>
-                                            <input type='number' className='form-control bg-seashell p-0' value={data.discount ? data.discount : ''} onFocus={() => setextrachargeindex(i)} onChange={(e) => { data.discount = e.target.value; data.gross_amount = Calculate_gst(data.amount, data.discount, data.cgst, data.sgst); }} />
-                                        </div>
-                                        <div className="col-2 m-0 p-0">
-                                            <label>FinalAmount</label>
-                                            <input type='number' className='form-control bg-seashell p-0' value={data.amount && data.discount ? data.amount - data.discount : ''} onFocus={() => setextrachargeindex(i)} onChange={(e) => { data.gross_amount = Calculate_gst(data.amount, data.discount, data.cgst, data.sgst); }} />
-                                        </div>
-                                        <div className="col-1 p-0 m-0">
-                                            <label>GST %</label>
-                                            <input type='number' className='form-control bg-seashell p-0' value={data.cgst && data.sgst ? data.cgst + data.sgst : ''} onFocus={() => setextrachargeindex(i)} onChange={(e) => { data.cgst = (e.target.value / 2); data.sgst = (e.target.value / 2); data.gross_amount = Calculate_gst(data.amount, data.discount, data.cgst, data.sgst); }} />
-                                        </div>
-                                        <div className="col-2 p-0 m-0">
-                                            <label>Total Amount</label>
-                                            <input className=' form-control bg-seashell p-0' value={data.gross_amount ? data.gross_amount : ''} />
-                                        </div>
-                                        <div className="col-auto align-self-end">
-                                            <button className='btn btn-sm p-0 m-0' onClick={() => { DeleteExtraCharges(i); setpaymentmethods(prevState => [...prevState]) }}><img src={process.env.PUBLIC_URL + '/images/delete.png'} className='img-fluid' style={{ width: '1.5rem' }} /></button>
+                            props.isLoading ? (
+                                <div className="col-6 py-2 pb-2 m-auto text-center">
+                                <div class="spinner-border" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+                            ):(
+                                extrachargecount.map((data, i) => (
+                                    <div className="container-fluid p-0 m-0 text-center">
+                                        <div className="row p-0 m-0">
+                                            <div className="col-3 p-0 m-0">
+                                                <label className='fw-bold text-charcoal75'>Description</label>
+                                                <input className='form-control p-0 bg-seashell m-0 text-center' value={data.description ? data.description : ''} onChange={(e) => { data.description = e.target.value; Calculate_gst(data.amount, data.discount, data.cgst, data.sgst) }} />
+                                            </div>
+                                            <div className="col-2 p-0 m-0">
+                                                <label className='fw-bold text-charcoal75'>Amount</label>
+                                                <input type='number' className='form-control text-center bg-seashell p-0 m-0' value={data.amount ? data.amount : ''} onChange={(e) => { data.amount = e.target.value; data.gross_amount = Calculate_gst(data.amount, data.discount, data.cgst, data.sgst) }} />
+                                            </div>
+                                            <div className="col-2 m-0 p-0 ">
+                                                <label className='fw-bold text-charcoal75'>Discount</label>
+                                                <input type='number' className='form-control text-center bg-seashell p-0 m-0' value={data.discount ? data.discount : ''} onFocus={() => setextrachargeindex(i)} onChange={(e) => { data.discount = e.target.value; data.gross_amount = Calculate_gst(data.amount, data.discount, data.cgst, data.sgst); }} />
+                                            </div>
+                                            <div className="col-2 m-0 p-0">
+                                                <label className='fw-bold text-charcoal75'>FinalAmount</label>
+                                                <input type='number' className='form-control  text-center bg-seashell p-0 m-0' value={data.amount && data.discount ? data.amount - data.discount : ''} onFocus={() => setextrachargeindex(i)} onChange={(e) => { data.gross_amount = Calculate_gst(data.amount, data.discount, data.cgst, data.sgst); }} />
+                                            </div>
+                                            <div className="col-1 p-0 m-0">
+                                                <label className='fw-bold text-charcoal75'>GST %</label>
+                                                <input type='number' className='form-control text-center bg-seashell p-0 m-0' value={data.cgst && data.sgst ? data.cgst + data.sgst : ''} onFocus={() => setextrachargeindex(i)} onChange={(e) => { data.cgst = (e.target.value / 2); data.sgst = (e.target.value / 2); data.gross_amount = Calculate_gst(data.amount, data.discount, data.cgst, data.sgst); }} />
+                                            </div>
+                                            <div className="col-1 p-0 m-0">
+                                                <label className='text-center fw-bold text-charcoal75'>Total </label>
+                                                <input className=' form-control text-center bg-seashell p-0' value={data.gross_amount ? data.gross_amount : ''} />
+                                            </div>
+                                            <div className="col-auto align-self-end">
+                                                <button className='btn btn-sm p-0 m-0' onClick={() => { DeleteExtraCharges(i); setpaymentmethods(prevState => [...prevState]) }}><img src={process.env.PUBLIC_URL + '/images/delete.png'} className='img-fluid' style={{ width: '1.5rem' }} /></button>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            ))
+                                ))
+                            )
+                           
                         }
                         <div className="container-fluid text-center mt-2">
                             <button className='btn py-0' onClick={() => setextrachargecount(prevState => [...prevState, Charges])}><img src={process.env.PUBLIC_URL + '/images/add.png'} className='img-fluid' style={{ width: '2rem' }} /></button>
@@ -387,7 +442,23 @@ const Bill = (props) => {
                         </div>
                         <div className="col-4">
                             <label className=' fw-bolder text-charcoal'>Advance Amount Balance</label>
-                            <input className='form-control text-lightgreen text-center border-0 fw-bolder p-0 fs-5 bg-seashell' />
+                            {
+                            loadadvancepayments ? (
+                                <div className="col-6 py-2 pb-2 m-auto text-center">
+                                <div class="spinner-border" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+                            ):(
+                                advancepayments ? (
+                                        <input className='form-control text-lightgreen text-center border-0 fw-bolder p-0 fs-5 bg-seashell' value={advancepayments.advnace_total} />
+                                ):(
+                                    <div className='bg-lightred text-center fw-bolder rounded-2 p-2'>No Advance Payments Found</div>
+                                )
+                           
+                            )
+                        }
+                           
                         </div>
                         <div className="col-4">
                             <label className=' fw-bolder text-charcoal'>Consumables Amount</label>
@@ -427,7 +498,7 @@ const Bill = (props) => {
                                         <option value='Wire-Transfer'>Wire Transfer</option>
                                         <option value='Razorpay'>Razorpay</option>
                                         <option value='Points'>Points</option>
-                                        <option value='Adjust-Advance'>Adjust-Advance Cash</option>
+                                        <option value='Adjust-Advance'>Adjust-Advance</option>
                                     </select>
                                 </div>
                                 <div className="col-4 p-0 m-0">
@@ -443,6 +514,10 @@ const Bill = (props) => {
                         <button className='btn py-0' onClick={() => setpaymentmethods(prevState => [...prevState, paymentmethoddetails])}><img src={process.env.PUBLIC_URL + '/images/add.png'} className='img-fluid' style={{ width: '2rem' }} /></button>
                     </div>
                 </div>
+                        </>
+                    )
+                }
+        
                 <hr />
                 <div className="container-fluid pb-2">
                     <div className="row p-0 m-0">

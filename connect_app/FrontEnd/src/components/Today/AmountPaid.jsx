@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react'
 const AmountPaid = (props) => {
 
     const [totalAmount, setTotalAmount] = useState(0)
+    const [paidpendingtotal,setpaidpending] =useState(0)
     const calculate = () => {
         var data = props.appointmentData;
         if (data.payment_method != null) {
@@ -15,18 +16,33 @@ const AmountPaid = (props) => {
             }
         }
     }
+    const CalculatePaidPendings=()=>{
+      let totalpaidpendings = []
+      let pendingtotal = 0
+      if(props.appointmentData.pending_payments && props.appointmentData.pending_payments!=null){
+        for(let i = 0;i<props.appointmentData.pending_payments.length;i++){
+            if(props.appointmentData.pending_payments[i].is_paid == 1){
+              totalpaidpendings.push(props.appointmentData.pending_payments[i].paid_amount!==null?props.appointmentData.pending_payments[i].paid_amount:0)
+            }
+        }
+      }
 
+   totalpaidpendings.forEach(item=>{
+    pendingtotal +=Number(item)
+   })
+   setpaidpending(pendingtotal)
+    }
     useEffect(() => {
-        calculate()
-    }, [])
-
+      calculate()
+      CalculatePaidPendings()
+  }, [])
 
     return (
         totalAmount !=null ? (
-            totalAmount == props.appointmentData.total_amount ? (<>
-            <button className="ms-1 btn btn-sm button-lightgreen fw-bold">{totalAmount} Done</button>
+            totalAmount+paidpendingtotal == props.appointmentData.total_amount ? (<>
+            <button className="ms-1 btn btn-sm button-lightgreen fw-bold">{Number(totalAmount)+Number(paidpendingtotal)} Done</button>
                                     </>) : (<>
-                                      <button className="ms-1 btn btn-sm button-lightred fw-bold">{props.appointmentData.total_amount-totalAmount} Pending</button>
+                                      <button className="ms-1 btn btn-sm button-lightred fw-bold">{Number(props.appointmentData.total_amount)-(Number(totalAmount)+Number(paidpendingtotal))} Pending</button>
                                     </>)
 
                                   ) : (

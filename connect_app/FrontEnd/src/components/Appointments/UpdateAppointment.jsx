@@ -8,6 +8,8 @@ import { customconfirm } from '../features/notiflix/customconfirm'
 
 const UpdateAppointment = (props) => {
     const colorref = useRef(null)
+    const clinicID = localStorage.getItem('ClinicId')
+        let adminid = localStorage.getItem('id')
     const url = useContext(URL);
     const DocApi = useContext(Doctorapi)
     const Doclist = useContext(DoctorsList)
@@ -18,15 +20,14 @@ const UpdateAppointment = (props) => {
     const [displaysearchlist, setdisplaysearchlist] = useState('none')
     const [patientid, setpatientid] = useState()
     const [doctorid, setdoctorid] = useState()
-    const [clinicid, setclinicid] = useState()
+    const [clinicid, setclinicid] = useState(clinicID)
     const [time, settime] = useState()
     const [timeindex, settimeindex] = useState()
-    const [ischecked, setischecked] = useState()
     const[load,setload]=useState()
 
     const [ApikeyDocTimeslots, setApikeyDocTimeslots] = useState()
     const [ApiDocTimefrom, setApiDocTimefrom] = useState();
-    let adminid = localStorage.getItem('id')
+
 
     function ClinicList() {
         axios.get(`${url}/clinic/list`).then((response) => {
@@ -162,7 +163,7 @@ const UpdateAppointment = (props) => {
         customconfirm()
         Notiflix.Confirm.show(
             `Update Appointment Details`,
-            `Do you surely want yo update ${props.patientname} Appointment Details`,
+            `Do you surely want to update ${props.patientname} Appointment Details`,
             'Yes',
             'No',
             () => {
@@ -202,17 +203,17 @@ const UpdateAppointment = (props) => {
             <h5 className="text-center">Update {props.patientname} Appointment Details</h5>
             <button type="button" className="btn-close closebtn position-absolute" aria-label="Close" disabled={load==true?true:false} onClick={props.closeappointmentform} ></button>
             <hr />
-            <div className="col-12">
+            <div className="col-12 text-center">
                 <label>Select Location</label>
-                <div className="col-12 form-control location bg-seashell  border-0" >
+                <div className="col-12 bg-seashell  border-0" >
                     {
                         cliniclist.map((data, i) => (
-                            <>
-                                <label><input type="checkbox" className="radio form me-1" checked={ischecked == i ? true : false} name={data.id} onClick={(e) => { setclinicid(e.target.name); setischecked(i); }} /> {data.title} {data.address}</label>
-                                <br /></>
+                            <label key={i} className={`d-${clinicID==data.id?'block':'none'}`}><input type="checkbox" className={`radio me-1 `} checked={clinicID==data.id? true : false} name={data.id} /> {data.title} {data.address}</label>
+                              
                         ))
                     }
                 </div>
+                <hr className='p-0 m-0 my-1'/>
                 <div className="row p-0 m-0 text-center ms-5">
                     <div className="col-md-4">
                         <label>Selected Doctor</label>

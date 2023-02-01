@@ -6,6 +6,8 @@ import '../../../node_modules/bootstrap/js/dist/dropdown'
 import { UpdateAppointment } from './UpdateAppointment'
 import '../../css/appointment.css'
 import '../../css/bootstrap.css'
+import '../../../node_modules/bootstrap/js/dist/dropdown'
+
 import Notiflix from 'notiflix';
 //COntext APIs
 import { URL } from '../../index'
@@ -126,8 +128,17 @@ const AllAppointmentslist = (props) => {
                             <td><img src={process.env.PUBLIC_URL + "/images/vitals.png"} alt="displaying_image" style={{ width: "1.5rem" }} className='m-0 p-0' /> </td>
                             <td>{reversefunction(data.follow_up_date ? data.follow_up_date : '')}</td>
                             <td> <img src={process.env.PUBLIC_URL + "/images/cart.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1 m-0 p-0" /> </td>
-                            <td>
-                                <button className="btn position-relative cursor-pointer more p-0 m-0">
+                            <td><div class="dropdown text-decoration-none">
+                                <button class="btn btn-white dropdown-toggle text-decoration-none" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" style={{ width: "1.5rem" }} />
+                                </button>
+                                <ul class="dropdown-menu">
+                                  <li><a class="dropdown-item" href="#">Action</a></li>
+                                  <li><a class="dropdown-item" href="#">Another action</a></li>
+                                  <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                </ul>
+                                </div></td>
+                                {/* <button className="btn position-relative cursor-pointer more p-0 m-0">
                                     <img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" style={{ width: "1.5rem" }} />
                                 </button>
                                 <table className="table p-2 moreoptions text-start rounded position-absolute" style={{ width: "min-content" }} >
@@ -136,9 +147,9 @@ const AllAppointmentslist = (props) => {
                                         <tr className="bg-transparent"> <td>Action 2</td> </tr>
                                         <tr className="bg-transparent"> <td>Action 3</td> </tr>
                                     </tbody>
-                                </table>
-                            </td>
-                            <td className={`UpdateAppointment d-${tableindex == key ? appointmentform : 'none'} border-0 position-absolute`} style={{ zIndex: '3005' }}><UpdateAppointment fetchallAppointmentslist={props.fetchallAppointmentslist} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} patientid={data.patient != null && data.patient.id != null ? data.patient.id : ""} appointmentid={data.id} closeappointmentform={closeappointmentform} doctorid={props.doctorid} fetchapi={props.fetchapi} appointmentdoctorid={data.doctor.id} appointmentdate={data.appointment_date} appointmenttime={tConvert(data.timeslot.time_from)} /></td>
+                                </table> */}
+                          
+                            <td className={`UpdateAppointment d-${tableindex == key ? appointmentform : 'none'} border-0 position-absolute`} style={{ zIndex: '3005',top:'-10rem' }}><UpdateAppointment fetchallAppointmentslist={props.fetchallAppointmentslist} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} patientid={data.patient != null && data.patient.id != null ? data.patient.id : ""} appointmentid={data.id} closeappointmentform={closeappointmentform} doctorid={props.doctorid} fetchapi={props.fetchapi} appointmentdoctorid={data.doctor.id} appointmentdate={data.appointment_date} appointmenttime={tConvert(data.timeslot.time_from)} /></td>
                         </tr>
                     ))
                 )

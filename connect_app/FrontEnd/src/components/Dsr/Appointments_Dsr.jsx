@@ -10,7 +10,7 @@ import Notiflix from 'notiflix'
 
 const Appointments_Dsr = (props) => {
   const url = useContext(URL)
-  const clinicid = localStorage.getItem('ClinicId')
+
   const adminid = localStorage.getItem('id')
   const tableref = useRef()
   //Use States
@@ -26,7 +26,8 @@ const Appointments_Dsr = (props) => {
     setloading(true)
     if (props.doctorid || props.fromdate || props.todate) {
       try {
-        await axios.get(`${url}/DSR/appointments?from_date=${props.fromdate}&to_date=${props.todate}&admin_id=${adminid}&clinic_id=${clinicid}`).then((response) => {
+        await axios.get(`${url}/DSR/appointments?from_date=${props.fromdate}&to_date=${props.todate}&admin_id=${adminid}&clinic_id=${props.clinicid}&doctor_id=${props.doctorid?props.doctorid:''}`).then((response) => {
+          console.log(response.data.data)
           response.data.data.appointments.map((data) => {
             listdata.push(data.doctor.id)
           })
@@ -54,6 +55,7 @@ const Appointments_Dsr = (props) => {
   }, [props.doctorid, props.fromdate, props.todate])
   // console.log(visibles)
   // console.log(Appointments)
+  console.log(props.doctorid)
   const reversefunction = (date) => {
     if (date !== undefined) {
       date = date.split("-").reverse().join("-")
@@ -360,7 +362,7 @@ console.log(Appointments)
                 <th className='bg-white border' scope='col'>Points</th>
               </tr>
             </thead>
-            <tbody className='align-items-center'>
+
 
               {
                 loading ? (
@@ -375,6 +377,8 @@ console.log(Appointments)
                         <td className=' position-absolute start-0 end-0 text-burntumber fs-3 mt-1 text-center'>No Appointments</td></tr>
                     </tbody>
                   ) : (
+                    <tbody className='align-items-center'>
+                      {
                     Appointments.map((data, i) => (
                       <tr className='border'>
                         <td className='border'>{data.id ? data.id : 'N/A'}</td>
@@ -401,11 +405,13 @@ console.log(Appointments)
                         <td className='border'>{data.total_amount}</td>
                       </tr>
                     ))
+                      }
+                    </tbody>
                   )
 
                 )
               }
-            </tbody>
+       
           </table>
         </div>
         <h5 className='my-2 text-charcoal75 fw-semibold ms-2 '>Pending Payments Recieved: {pendingpaid.length}</h5>
@@ -490,10 +496,10 @@ console.log(Appointments)
                 advancepaid.map((data, i) => (
                   <tr key={i} className='bordered table-bordered'>
                     <td className='border'>{data.id ? data.id : 'N/A'}</td>
-                    <td className='border'>{data.patient.full_name}</td>
-                    <td className='border'>{data.patient.full_name}</td>
-                    <td className='border'>{data.patient.phone_number}</td>
-                    <td className='border'>{data.description}</td>
+                    <td className='border'>{data.patient &&data.patient.full_name!=null ? data.patient.full_name:'N/A'}</td>
+                    <td className='border'>{data.doctor && data.doctor.full_name!=null ?data.doctor.full_name :'N/A'}</td>
+                    <td className='border'>{data.patient&& data.patient.phone_number!==null?data.patient.phone_number:'N/A'}</td>
+                    <td className='border'>{data.description&&data.description!=null ?data.description:'N/A'}</td>
                     <td className='border'>{reversefunction(data.date)}</td>
                     <td className='border'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Cash : 'N/A'}</td>
                     <td className='border'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Card : 'N/A'}</td>

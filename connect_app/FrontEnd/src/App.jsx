@@ -1,8 +1,6 @@
 import { Link } from "react-router-dom"
 import { useState, useEffect, useContext, useRef } from "react"
 import axios from "axios"
-import { atom, useAtom } from 'jotai'
-import { atomWithStorage,createJSONStorage } from 'jotai/utils'
 //Context APIs
 import { URL, TodayDate, DoctorsList, Doctorapi } from '../src/index'
 //Components
@@ -36,7 +34,7 @@ import { customconfirm } from "./components/features/notiflix/customconfirm"
 // import {CSVLink} from 'react-csv'
 
 function Navbar(props) {
-  
+
   const [addoption, setaddoption] = useState("none");
   const toggleaddoption = () => {
     if (addoption === "none") {
@@ -116,10 +114,10 @@ function Navbar(props) {
   const [Docval, setDocval] = useState()
   const [highlighticon, sethighlighticon] = useState()
 
- const path =localStorage.getItem('path')
-useEffect(()=>{
-  localStorage.setItem('path',highlighticon)
-},[highlighticon])
+  const path = localStorage.getItem('path')
+  useEffect(() => {
+    localStorage.setItem('path', highlighticon)
+  }, [highlighticon])
   const NavbarIcons = [
     {
       title: 'Today',
@@ -157,8 +155,8 @@ useEffect(()=>{
 
   ]
 
-//Searchfield input
-const [searchtext,setsearchtext]=useState()
+  //Searchfield input
+  const [searchtext, setsearchtext] = useState()
 
   return (
     <>
@@ -167,23 +165,23 @@ const [searchtext,setsearchtext]=useState()
         <div className="container-fluid ">
           <div className="row m-0 p-0 justify-content-lg-center">
             <div className="col-lg-auto col-xl-auto col-md-auto col-sm-2 col-6">
-                <button className="button button-seashell shadow-none col-md-auto col-auto user position-relative" onClick={togglelogoutbtn}>
-                  <p className="m-0 username text-decoration-none text-lg-start text-md-start text-center"> {props.username} </p>
-                  <p className="m-0 userstatus text-decoration-none text-lg-start text-md-start text-center"><small className="text-muted">{props.designation}</small> </p>
-                  <button className={`d-${logoutbtn} button button-lightred start-0 end-0 position-absolute text-burntumber w-75 fw-bolder`} onClick={logout}>Logout</button>
-                </button>
+              <button className="button button-seashell shadow-none col-md-auto col-auto user position-relative" onClick={togglelogoutbtn}>
+                <p className="m-0 username text-decoration-none text-lg-start text-md-start text-center"> {props.username} </p>
+                <p className="m-0 userstatus text-decoration-none text-lg-start text-md-start text-center"><small className="text-muted">{props.designation}</small> </p>
+                <button className={`d-${logoutbtn} button button-lightred start-0 end-0 position-absolute text-burntumber w-75 fw-bolder`} onClick={logout}>Logout</button>
+              </button>
             </div>
             <div className="col-lg-6 col-xl-6 align-self-center col-sm-auto col-md-5 col-10 p-0 m-0 menu order-1 order-xl-0 order-sm-0 order-md-0 order-sm-0">
               <div className="row p-0 m-0 gx-auto justify-content-center">
                 {NavbarIcons.map((data, i) => (
-                  <div className={`col-auto bg-${highlighticon ? highlighticon === data.path ? 'pearl' : 'seashell':path === data.path ? 'pearl' : 'seashell'} rounded-top border-bottom-${highlighticon? highlighticon === data.path ? 'burntumber' : 'seashell': path === data.path ? 'burntumber' : 'seashell'}`} onClick={() => sethighlighticon(data.path)}>
+                  <div className={`col-auto bg-${highlighticon ? highlighticon === data.path ? 'pearl' : 'seashell' : path === data.path ? 'pearl' : 'seashell'} rounded-top border-bottom-${highlighticon ? highlighticon === data.path ? 'burntumber' : 'seashell' : path === data.path ? 'burntumber' : 'seashell'}`} onClick={() => sethighlighticon(data.path)}>
                     <Link to={data.path} className="text-decoration-none"> <div className="text-center"> <img src={process.env.PUBLIC_URL + data.image} alt="displaying_image" className="img-fluid" style={{ width: `1.5rem` }} /><p className="col-12 m-0">{data.title}</p> </div> </Link>
                   </div>
                 ))
                 }
               </div>
             </div>
-            <div  className="col-lg-auto col-xl-auto col-md-auto col-6 col-sm-2 text-center align-self-center position-relative p-0 m-0 ">
+            <div className="col-lg-auto col-xl-auto col-md-auto col-6 col-sm-2 text-center align-self-center position-relative p-0 m-0 ">
               <button className="btn col-12 col-lg-6 col-md-6 addbtn align-self-center" onClick={toggleaddoption}> {" "} +Add{" "} </button>
               <div className={`text-center addoptions d-${addoption} position-absolute`} >
                 <input className="col-12 p-lg-2 border-1 border-bottom text-start patient" type="button" defaultValue="Patient" onClick={togglepatientform} />
@@ -191,11 +189,11 @@ const [searchtext,setsearchtext]=useState()
                 <input className="col-12 p-lg-2 doctorslot shadow-sm text-start" type="button" defaultValue="Doctor Slot" onClick={toggledoctorform} />
               </div>
             </div>
-            <div className="col-lg-2 col-xl-3 col-md-3 col-sm-2 ms-md-2 align-self-center order-sm-2 order-2 position-relative p-0 m-0" style={{zIndex:'2000'}}>
-                <input type="text" className="bg-seashell form-control text-center border-0 position-relative m-auto py-1" placeholder="Type to search" onChange={(e)=>setsearchtext(e.target.value)} />
-                <div className="position-absolute bg-seashell end-0">
-              <SearchField searchtext={searchtext} fetchapi={props.fetchapi}/>
-            </div>
+            <div className="col-lg-2 col-xl-3 col-md-3 col-sm-2 ms-md-2 align-self-center order-sm-2 order-2 position-relative p-0 m-0" style={{ zIndex: '2500' }}>
+              <input type="text" className="bg-seashell form-control text-center border-0 position-relative m-auto py-1" placeholder="Type to search" onChange={(e) => setsearchtext(e.target.value)} />
+              <div className="position-absolute bg-seashell end-0">
+                <SearchField searchtext={searchtext} fetchapi={props.fetchapi} />
+              </div>
             </div>
           </div>
         </div>
@@ -221,7 +219,6 @@ const [searchtext,setsearchtext]=useState()
     </>
   );
 }
-
 
 function Doctorsection(props) {
   const month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December",];
@@ -274,7 +271,7 @@ function Doctorsection(props) {
               ) : (
                 props.todayDoc.map((data, i) => (
                   <>
-                    <button key={i} className={`button m-1 text-${i === Doctor ? 'light' : 'dark'} button-${i === Doctor ? "charcoal" : "seashell"} shadow-${i === Doctor ? 'lg' : 'sm'} border border-1 border-${i === Doctor ? 'secondary' : 'dark'}`} autoFocus={i === Doctor ? true : false} onFocus={() => { setDoctorID(data[0]); setDoctorName(data[1]); setDocClinic(data[2]) }} value={`${data[0]}.${data[1]}`} onClick={(a) => { setDoctor(i); }}>{`${data[0]}.${data[1]}`} </button>
+                    <button key={i} className={`button m-1 text-${i === Doctor ? 'light' : 'dark'} button-${i === Doctor ? "charcoal" : "seashell"} shadow-${i === Doctor ? 'lg' : 'sm'} border border-1 border-${i === Doctor ? 'secondary' : 'dark'}`} autoFocus={i === Doctor ? true : false} onFocus={() => { setDoctorID(data[0]); setDoctorName(data[1]); setDocClinic(data[2]) }} value={`${data[0]}.${data[1]}`} onClick={(a) => { setDoctor(i); }}>{`${data[0]}. Dr.${data[1]}`} </button>
                   </>
                 ))
               )}
@@ -297,18 +294,18 @@ function Doctorsection(props) {
         {
           props.Loading ? (
             <div className=" position-absolute start-0 end-0 m-auto ">
-          <button class="button button-pearl shadow-none fs-3 fw-bolder text-charcoal75" type="button" disabled>
-          Please Be Patient While We are Fetching Data
-            <span class="spinner-grow spinner-grow ms-1 bg-brandy " role="status" aria-hidden="true"></span> 
-          </button>
-          <button class="button button-pearl shadow-none m-0 p-0 " type="button" disabled>
-            <span class="spinner-grow spinner-grow bg-raffia" role="status" aria-hidden="true"></span>
-            <span class="spinner-grow spinner-grow-md ms-1 bg-burntumber" role="status" aria-hidden="true"></span>
-            <span class="spinner-grow spinner-grow-lg ms-1 bg-charcoal75" role="status" aria-hidden="true"></span>
-            <span class="visually-hidden">Loading...</span>
-          </button>
+              <button class="button button-pearl shadow-none fs-3 fw-bolder text-charcoal75" type="button" disabled>
+                Please Be Patient While We are Fetching Data
+                <span class="spinner-grow spinner-grow ms-1 bg-brandy " role="status" aria-hidden="true"></span>
+              </button>
+              <button class="button button-pearl shadow-none m-0 p-0 " type="button" disabled>
+                <span class="spinner-grow spinner-grow bg-raffia" role="status" aria-hidden="true"></span>
+                <span class="spinner-grow spinner-grow-md ms-1 bg-burntumber" role="status" aria-hidden="true"></span>
+                <span class="spinner-grow spinner-grow-lg ms-1 bg-charcoal75" role="status" aria-hidden="true"></span>
+                <span class="visually-hidden">Loading...</span>
+              </button>
             </div>
- 
+
           ) : (
             props.todayDoc && props.todayDoc.length != 0 ? (
               doctorindex.map((data, i) => (
@@ -349,11 +346,11 @@ function Doctorsection(props) {
 
 }
 
-
 function Appointments(props) {
   //Global Variables
   const APIDate = useContext(TodayDate)
   const url = useContext(URL)
+  const clinicID = localStorage.getItem('ClinicId')
   const docnames = useContext(DoctorsList)
   //Appointments use state
   const [doctorid, setdoctorid] = useState()
@@ -372,7 +369,7 @@ function Appointments(props) {
     if (doctorid) {
       try {
         setisselectedLoading(true);
-        await axios.get(`${url}/appointment/list?doctor_id=${doctorid}&from_date=${fromdate ? fromdate : APIDate}&to_date=${todate ? todate : fromdate ? fromdate : APIDate}&status=${type ? type : ''}`).then((response) => {
+        await axios.get(`${url}/appointment/list?clinic_id=${clinicID}&doctor_id=${doctorid}&from_date=${fromdate ? fromdate : APIDate}&to_date=${todate ? todate : fromdate ? fromdate : APIDate}&status=${type ? type : ''}`).then((response) => {
           setappointmentdata(response.data.data)
         })
         setisselectedLoading(false);
@@ -384,7 +381,7 @@ function Appointments(props) {
       try {
         setvisibles()
         setisLoading(true)
-        await axios.get(`${url}/appointment/list?from_date=${fromdate ? fromdate : APIDate}&to_date=${todate ? todate : fromdate ? fromdate : APIDate}&status=${type ? type : ''}`).then((response) => {
+        await axios.get(`${url}/appointment/list?clinic_id=${clinicID}&from_date=${fromdate ? fromdate : APIDate}&to_date=${todate ? todate : fromdate ? fromdate : APIDate}&status=${type ? type : ''}`).then((response) => {
           setgetAppointments(response.data.data)
           response.data.data.map((data) => {
             listdata.push(data.doctor.id)
@@ -466,7 +463,6 @@ function Appointments(props) {
       return ' | ' + '(' + arr.length + ' Appointments)'
     }
   }
-
   return (
     <>
       <section className="page2appointment ">
@@ -552,6 +548,432 @@ function Appointments(props) {
 
     </>
   );
+}
+
+function Patients() {
+  const url = useContext(URL)
+  const adminid = localStorage.getItem('id')
+  const nextref = useRef()
+  const previousref = useRef()
+  const [nxtoffset, setnxtoffset] = useState(0)
+  const [prevoffset, setprevoffset] = useState(0)
+  const [PatientsList, setPatientsList] = useState([])
+  const [pages, setpages] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+  const [tabindex, settabindex] = useState(0)
+  const [Loading, setLoading] = useState(false)
+  const [patientsearch, setpatientsearch] = useState()
+
+  async function getAllPatients(i) {
+    if (i == undefined) {
+      i = 0
+    }
+    setLoading(true)
+    setPatientsList()
+    if (i == 0 || i == undefined || nxtoffset == 0) {
+      previousref.current.disabled = true
+    } else {
+      previousref.current.disabled = false
+    }
+    await axios.get(`${url}/patient/list?search=${patientsearch ? patientsearch : ''}&limit=10&offset=${i * 10}`).then((response) => {
+      setPatientsList(response.data.data)
+    })
+    let nxt = Number(i) + 1
+
+    setnxtoffset(nxt)
+    if (i != 0) {
+      let prev = i--
+      setprevoffset(prev)
+    }
+    setLoading(false)
+  }
+  useEffect(() => {
+    getAllPatients()
+  }, [])
+  useEffect(() => {
+    getAllPatients()
+  }, [patientsearch])
+
+  async function DeletePatient(patientid) {
+    if (adminid && patientid) {
+      try {
+        console.log('hit')
+        await axios.post(`${url}/delete/patient`, {
+          id: patientid,
+          admin_id: adminid
+
+        }).then((response) => {
+          Notiflix.Notify.success(response.data.message)
+          getAllPatients()
+        })
+      } catch (e) {
+        alert(e)
+      }
+    }
+  }
+
+  function confirmmessage(name, patientid) {
+    customconfirm()
+    Notiflix.Confirm.show(
+      `Delete Patient`,
+      `Do you surely want to Delete Patient ${name} `,
+      'Yes',
+      'No',
+      () => {
+        DeletePatient(patientid)
+      },
+      () => {
+        return 0
+      },
+      {
+      },
+    );
+  }
+
+  const reversefunction = (date) => {
+    date = date.split("-").reverse().join("-")
+    return date
+  }
+
+  async function getnextpages(e) {
+    getAllPatients(e.target.value)
+  }
+  async function getpreviouspages(e) {
+
+    getAllPatients(e.target.value - 1)
+  }
+
+  const [updatepatient, setupdatepatient] = useState('none')
+  const [form, setform] = useState();
+
+  const OpenUpdatePatient = (i) => {
+    if (updatepatient === 'none') {
+      setupdatepatient('block')
+      setform(i)
+    }
+  }
+
+  const CloseUpdatePatient = () => {
+    if (updatepatient === 'block') {
+      setupdatepatient('none')
+    }
+  }
+  return (
+    <section className="patientsection text-center position-relative">
+      <div className="conatainer">
+        <input className="form-control m-auto mt-2" placeholder="Search Patient By Name or Number" style={{ width: '30rem' }} onChange={(e) => { setpatientsearch(e.target.value); getAllPatients(); }} onBlur={getAllPatients} />
+      </div>
+      <div className="container-fluid p-0 m-0 scroll scroll-y " style={{ minHeight: '30rem' }}>
+        <table className="table text-center p-0 m-0" >
+          <thead>
+            <tr>
+              <th>Update</th>
+              <th>Patient Name</th>
+              <th>Gender</th>
+              <th>DOB</th>
+              <th>Email</th>
+              {/* <th>Address</th>
+              <th>Location</th> */}
+              <th>Pincode</th>
+              <th>Phone Number</th>
+              <th>Is Main Account</th>
+              <th>Delete</th>
+              <th>More</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              Loading ? (
+                <div className='text-burntumber fs-4 position-absolute start-0 end-0 top-5'>Loading Patient Info</div>
+              ) : (
+                PatientsList && PatientsList.length != 0 ? (
+                  PatientsList.map((data, i) => (
+                    <tr>
+                      <td><button className="btn p-0 m-0" onClick={(e) => { settabindex(i); OpenUpdatePatient(i) }}><img src={process.env.PUBLIC_URL + "/images/confirmed.png"} style={{ width: "1.5rem" }} /></button>
+                        {form == i ? (
+
+
+                          <section id={i} className={`updatepatientform text-start position-absolute d-${tabindex == i ? updatepatient : 'none'} bg-seashell rounded-2 shadow`}>
+                            <UpdatePatient index={i} getAllPatients={getAllPatients} CloseUpdatePatient={CloseUpdatePatient} patientid={data.id} data={data} phonecountrycode={data.phone_country_code ? data.phone_country_code : 'N/A'} PhoneNo={data.phone_number ? Number(data.phone_number) : ''} dob={data.dob ? data.dob : ''} gender={data.gender ? data.gender : ''} full_name={data.full_name ? data.full_name : ''} email={data.email ? data.email : ''} pincode={data.pin_code ? data.pin_code : ''} location={data.location ? data.location : ''} parent={data.parent} linkid={data.link_id ? data.link_id : ''} relation={data.relation} latitude={data.latitude} longitude={data.longitude} />
+                          </section>
+                        ) : (<></>)
+                        }
+
+                      </td>
+                      <td>{data.full_name ? data.full_name : 'N/A'}</td>
+                      <td>{data.gender ? data.gender : 'N/A'}</td>
+                      <td>{data.dob ? reversefunction(data.dob) : 'N/A'}</td>
+                      <td>{data.email ? data.email : 'N/A'}</td>
+                      {/* <td>{data.address.length != 0 ? data.address[0].address_line1 ? data.address[0].address_line1 : 'N/A' : ''}{data.address.length != 0 ? data.address[0].address_line2 ? ' | ' + data.address[0].address_line2 : '' : 'N/A'} </td>
+                      <td>{data.location ? data.location : 'N/A'}</td> */}
+                      <td>{data.pin_code ? data.pin_code : 'N/A'}</td>
+                      <td>{data.phone_number ? data.phone_number : 'N/A'}</td>
+                      <td>{data.parent ? ' No' : 'Yes'}</td>
+                      <td><button className="btn p-0 m-0" onClick={(e) => { confirmmessage(data.full_name, data.id); }}><img src={process.env.PUBLIC_URL + "/images/delete.png"} alt="displaying_image" style={{ width: "1.5rem" }} /></button></td>
+                      <td><button className="btn p-0 m-0"><img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" style={{ width: "1.5rem" }} /></button></td>
+                    </tr>
+                  ))
+                ) : (
+                  <div className='text-burntumber fs-4 position-absolute start-0 end-0 top-5'>No patients found</div>
+                ))
+            }
+          </tbody>
+        </table>
+      </div>
+      <div className="container-fluid mb-1">
+        <div className="d-flex text-center">
+          <div className="col-4">
+            <button className="button ms-1 button-seashell" ref={previousref} value={prevoffset} onClick={(e) => { getpreviouspages(e) }} style={{ marginTop: '0.15rem' }}>Previous</button>
+          </div>
+          <div className="col-4">
+
+            {
+              pages ? (
+                pages.map((page, i) => (
+                  <button className={`button ms-2 button-${nxtoffset - 1 == i ? 'pearl' : 'burntumber'} border  shadow-${nxtoffset - 1 == i ? 'lg' : 'none'}`} ref={nextref} value={page} id={page} onClick={(e) => { settabindex(i); getAllPatients(i) }} key={i}>{page}</button>
+                ))
+              ) : (
+                <div>Loading...</div>
+              )
+
+            }
+          </div>
+          <div className="col-4">
+            <button className={`button button-burntumber`} ref={nextref} value={nxtoffset} onClick={(e) => { getnextpages(e); }} style={{ marginTop: '0.15rem' }}>Next</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+
+
+
+}
+
+function Doctors() {
+  const url = useContext(URL)
+  const clinicID = localStorage.getItem('ClinicId')
+  const imagepath = 'https://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/assets/doctor/'
+  const nextref = useRef()
+  const previousref = useRef()
+  const [Doctorssearch, setDoctorssearch] = useState()
+  const [Doctorslist, setDoctorslist] = useState([])
+  const [nxtoffset, setnxtoffset] = useState(0)
+  const [prevoffset, setprevoffset] = useState(0)
+  const [pages, setpages] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+  const [tabindex, settabindex] = useState()
+  const [form, setform] = useState()
+  const [pageloading, setpageloading] = useState(false)
+  const [updatedoctor, setupdatedoctor] = useState('none')
+
+  async function getAllDoctors(i) {
+    if (i == undefined) {
+      i = 0
+    }
+    setpageloading(true)
+    setDoctorslist()
+
+    if (i == 0 || i == undefined || nxtoffset == 0) {
+      previousref.current.disabled = true
+    } else {
+      previousref.current.disabled = false
+    }
+    await axios.get(`${url}/doctor/list?clinic_id=${clinicID}&search=${Doctorssearch ? Doctorssearch : ''}&limit=10&offset=${i * 10}`).then((response) => {
+      setDoctorslist(response.data.data)
+    })
+    let nxt = Number(i) + 1
+
+    setnxtoffset(nxt)
+    if (i != 0) {
+      let prev = i--
+      setprevoffset(prev)
+    }
+    setpageloading(false)
+  }
+  useEffect(() => {
+    getAllDoctors()
+  }, [])
+  useEffect(() => {
+    getAllDoctors()
+  }, [Doctorssearch])
+  console.log(Doctorslist)
+  async function getnextpages(e) {
+    getAllDoctors(e.target.value)
+  }
+  async function getpreviouspages(e) {
+    getAllDoctors(e.target.value - 1)
+  }
+  function OpenUpdateDoctor(i) {
+    if (updatedoctor === 'none') {
+      setupdatedoctor('block')
+      setform(i)
+    }
+  }
+  function CloseUpdateDoctor() {
+    if (updatedoctor === 'block') {
+      setupdatedoctor('none')
+    }
+  }
+  console.log(Doctorslist)
+  return (
+    <section className="Doctorspage text-center position-relative">
+      <div className="conatainer">
+        <input className="form-control m-auto mt-2" placeholder="Search Doctor" style={{ width: '30rem' }} onChange={(e) => { setDoctorssearch(e.target.value) }} />
+      </div>
+      <div className="container-fluid p-0 m-0 scroll scroll-y" style={{ height: '30rem' }}>
+        <table className="table text-center p-0 m-0" >
+          <thead>
+            <tr>
+              <th>Update</th>
+              <th>Name</th>
+              <th>Specialization</th>
+              <th>Degree</th>
+              <th>Mobile No.</th>
+              <th>Email Id</th>
+              <th>Procedures</th>
+              <th>More</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              pageloading ? (
+                <div className='text-burntumber fs-4 position-absolute start-0 end-0 top-5'>Loading Doctors Info</div>
+              ) : (
+                Doctorslist && Doctorslist.length != 0 ? (
+                  Doctorslist.map((data, i) => (
+                    <tr onClick={() => console.log('clicked')}>
+                      <td><button className="btn p-0 m-0" onClick={(e) => { settabindex(i); OpenUpdateDoctor(i) }}><img src={process.env.PUBLIC_URL + "/images/confirmed.png"} style={{ width: "1.5rem" }} /></button>
+                        {form == i ? (
+                          <section id={i} className={`scroll scroll-y position-absolute d-${tabindex == i ? updatedoctor : 'none'} bg-seashell rounded shadow top-0 bottom-2 `} style={{ marginLeft: '22.5rem', width: '40rem', height: '35rem' }}>
+                            <UpdateDoctor index={i} CloseUpdateDoctor={CloseUpdateDoctor} patientid={data.id} data={data} phonecountrycode={data.phone_country_code ? data.phone_country_code : 'N/A'} PhoneNo={data.phone_number ? Number(data.phone_number) : ''} dob={data.dob ? data.dob : ''} gender={data.gender ? data.gender : ''} full_name={data.full_name ? data.full_name : ''} email={data.email ? data.email : ''} pincode={data.pin_code ? data.pin_code : ''} location={data.location ? data.location : ''} parent={data.parent} linkid={data.link_id ? data.link_id : ''} relation={data.relation} latitude={data.latitude} longitude={data.longitude} />
+                          </section>
+                        ) : (<></>)
+                        }
+
+                      </td>
+                      <td className="text-start">{data.image ? <img className="img-fluid rounded-5" style={{ width: '2rem' }} src={imagepath + data.image} /> : 'Image not found'}{' '}{data.doctor_name ? data.doctor_name : 'N/A'}</td>
+                      <td>{data.speciality.name}</td>
+                      <td>{data.degree_suffix ? data.degree_suffix : 'N/A'}</td>
+                      <td>{data.phone_number ? data.phone_number : 'N/A'}</td>
+                      <td>{data.email}</td>
+                      <td><button className="btn p-0 m-0"><img src={process.env.PUBLIC_URL + "/images/info.png"} alt="displaying_image" style={{ width: "1.5rem" }} /></button></td>
+                      <td><button className="btn p-0 m-0"><img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" style={{ width: "1.5rem" }} /></button></td>
+                    </tr>
+                  ))
+                ) : (
+                  <div className='text-burntumber fs-4 position-absolute start-0 end-0 top-5'>No Doctors found</div>
+                ))
+            }
+          </tbody>
+        </table>
+      </div>
+      <div className="container-fluid mb-1">
+        <div className="d-flex text-center">
+          <div className="col-4">
+            <button className="button ms-1 button-seashell" ref={previousref} value={prevoffset} onClick={(e) => { getpreviouspages(e); console.log(e.target.value) }} style={{ marginTop: '0.15rem' }}>Previous</button>
+          </div>
+          <div className="col-4">
+
+            {
+              pages ? (
+                pages.map((page, i) => (
+                  <button className={`button ms-2 button-${nxtoffset - 1 == i ? 'pearl' : 'burntumber'} border  shadow-${nxtoffset - 1 == i ? 'lg' : 'none'}`} ref={nextref} value={page} id={page} onClick={(e) => { settabindex(i); getAllDoctors(i) }} key={i}>{page}</button>
+                ))
+              ) : (
+                <div>Loading...</div>
+              )
+
+            }
+          </div>
+          <div className="col-4">
+            <button className={`button button-burntumber`} ref={nextref} value={nxtoffset} onClick={(e) => { getnextpages(e); console.log(e.target.value) }} style={{ marginTop: '0.15rem' }}>Next</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function DailySaleReport(props) {
+  const Doctors = useContext(DoctorsList)
+  const CurrentDate = useContext(TodayDate)
+  const clinicid = localStorage.getItem('ClinicId')
+  const options = ['Appointments', 'Doctors', 'Pharmacy']
+  const [menu, setmenu] = useState(0)
+  const [type, settype] = useState('text')
+  const [doctorid, setdoctorid] = useState()
+  const [fromdate, setfromdate] = useState()
+  const [todate, settodate] = useState()
+  const [clinic, setclinic] = useState()
+
+
+  function ToggleOptions(_menu) {
+    if (_menu == 0) {
+      return <Appointments_Dsr clinicid={clinicid} doctorid={doctorid} fromdate={fromdate ? fromdate : CurrentDate} todate={todate ? todate : fromdate} clinic={clinic} />
+    }
+    if (_menu == 1) {
+      return <Doctors_Dsr clinicid={clinicid} doctorid={doctorid} fromdate={fromdate ? fromdate : CurrentDate} todate={todate ? todate : fromdate} />
+    }
+    if (menu == 2) {
+      return <Pharmacy_Dsr clinicid={clinicid} />
+    }
+    return <div>Nothing Selected</div>
+  }
+
+
+  return (
+
+    <div className="DSRsection mt-3">
+      <div className="p-0 m-0 mb-2">
+        <div className="row p-0 m-0 options align-items-center">
+          <div className="col-auto col-lg-auto me-lg-2 col-xl-4 col-md-12 col-md-4 p-0 m-0">
+            {
+              options.map((data, i) => (
+                <button className={`button ms-1 button-${i == menu ? 'pearl' : 'charcoal'} shadow-${i == menu ? 'lg' : 'none'} border border-dark`} id={i} key={i} onClick={() => { setmenu(i) }}>{data}</button>
+              ))
+            }
+          </div>
+          <div className="col-5 col-lg-8 col-xl-7 col-md-12 p-0 m-0 mt-lg-0 mt-2 align-items-center  text-end">
+            <div className="row p-0 m-0">
+              <div className="col-auto col-xl-auto col-lg-4 col-md-4 p-0 m-0 text-end">
+                <select className="px-1 bg-pearl text-burntumber py-2  py-md-1 text-center clinic ">
+                  <option value="Select Clinic">Clinic</option>
+                  {
+                    props.cliniclist ? (
+                      props.cliniclist.map((data) => (
+                        <option className="text-start" selected={clinicid == data.id ? true : false} value={data.id}>{data.id}.{' '}{data.title}</option>
+                      ))
+                    ) : (
+                      <option>Loading</option>
+                    )
+                  }
+                </select>
+              </div>
+              <div className="col-2 col-lg-auto col-xl-auto col-md-auto p-0 m-0 text-xl-start">
+                <select className="bg-pearl text-center border-md-start-0 text-burntumber px-1 py-2 py-md-1 doctor" value={doctorid ? doctorid : ''} onChange={(e) => setdoctorid(e.target.value)}>
+                  <option value='Doctors'>Doctor</option>
+                  {
+                    Doctors.map((data) => (
+                      <option className="text-start" value={data[0]}>{data[0]}. Dr.{data[1]} </option>
+                    ))
+                  }
+                </select>
+              </div>
+              <div className="col-auto col-xl-auto col-lg-4 col-4 col-md-3 Date p-0 m-0">
+                <div className="d-flex p-0 m-0 text-center">
+                  <input type='date' placeholder="from Date" value={fromdate ? fromdate : ''} className='bg-pearl px-1 fromdate' onChange={(e) => setfromdate(e.target.value)} />
+                  <div className="bg-pearl fromdate fw-bolder">-</div>
+                  <input type='date' placeholder="to Date" disabled={fromdate ? false : true} value={todate ? todate : ''} className='bg-pearl px-1 todate' onChange={(e) => settodate(e.target.value)} />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="container-fluid page m-0 p-0 ">
+        <div className="p-0 m-0">{ToggleOptions(menu)}</div>
+      </div>
+    </div>
+  )
 }
 
 function Pharmacy() {
@@ -940,431 +1362,6 @@ function Newpurchaseentryform(props) {
     </section>
   );
 }
-
-function Patients() {
-  const url = useContext(URL)
-  const adminid = localStorage.getItem('id')
-  const nextref = useRef()
-  const previousref = useRef()
-  const [nxtoffset, setnxtoffset] = useState(0)
-  const [prevoffset, setprevoffset] = useState(0)
-  const [PatientsList, setPatientsList] = useState([])
-  const [pages, setpages] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
-  const [tabindex, settabindex] = useState(0)
-  const [Loading, setLoading] = useState(false)
-  const [patientsearch, setpatientsearch] = useState()
-
-  async function getAllPatients(i) {
-    if (i == undefined) {
-      i = 0
-    }
-    setLoading(true)
-    setPatientsList()
-    if (i == 0 || i == undefined || nxtoffset == 0) {
-      previousref.current.disabled = true
-    } else {
-      previousref.current.disabled = false
-    }
-    await axios.get(`${url}/patient/list?search=${patientsearch ? patientsearch : ''}&limit=10&offset=${i * 10}`).then((response) => {
-      setPatientsList(response.data.data)
-    })
-    let nxt = Number(i) + 1
-
-    setnxtoffset(nxt)
-    if (i != 0) {
-      let prev = i--
-      setprevoffset(prev)
-    }
-    setLoading(false)
-  }
-  useEffect(() => {
-    getAllPatients()
-  }, [])
-  useEffect(() => {
-    getAllPatients()
-  }, [patientsearch])
-
-  async function DeletePatient(patientid) {
-    if (adminid && patientid) {
-      try {
-        console.log('hit')
-        await axios.post(`${url}/delete/patient`, {
-          id: patientid,
-          admin_id: adminid
-
-        }).then((response) => {
-          Notiflix.Notify.success(response.data.message)
-          getAllPatients()
-        })
-      }catch(e) {
-        alert(e)
-      }
-    }
-  }
-
-  function confirmmessage(name,patientid) {
-    customconfirm()
-    Notiflix.Confirm.show(
-      `Delete Patient`,
-      `Do you surely want to Delete Patient ${name} `,
-      'Yes',
-      'No',
-      () => {
-        DeletePatient(patientid)
-      },
-      () => {
-        return 0
-      },
-      {
-      },
-    );
-  }
-
-  const reversefunction = (date) => {
-    date = date.split("-").reverse().join("-")
-    return date
-  }
-
-  async function getnextpages(e) {
-    getAllPatients(e.target.value)
-  }
-  async function getpreviouspages(e) {
-
-    getAllPatients(e.target.value - 1)
-  }
-
-  const [updatepatient, setupdatepatient] = useState('none')
-  const [form, setform] = useState();
-
-  const OpenUpdatePatient = (i) => {
-    if (updatepatient === 'none') {
-      setupdatepatient('block')
-      setform(i)
-    }
-  }
-
-  const CloseUpdatePatient = () => {
-    if (updatepatient === 'block') {
-      setupdatepatient('none')
-    }
-  }
-  return (
-    <section className="patientsection text-center position-relative">
-      <div className="conatainer">
-        <input className="form-control m-auto mt-2" placeholder="Search Patient By Name or Number" style={{ width: '30rem' }} onChange={(e) => { setpatientsearch(e.target.value); getAllPatients(); }} onBlur={getAllPatients} />
-      </div>
-      <div className="container-fluid p-0 m-0 scroll scroll-y " style={{ minHeight: '30rem' }}>
-        <table className="table text-center p-0 m-0" >
-          <thead>
-            <tr>
-              <th>Update</th>
-              <th>Patient Name</th>
-              <th>Gender</th>
-              <th>DOB</th>
-              <th>Email</th>
-              {/* <th>Address</th>
-              <th>Location</th> */}
-              <th>Pincode</th>
-              <th>Phone Number</th>
-              <th>Is Main Account</th>
-              <th>Delete</th>
-              <th>More</th>
-            </tr>
-          </thead>
-          <tbody>
-            {
-              Loading ? (
-                <div className='text-burntumber fs-4 position-absolute start-0 end-0 top-5'>Loading Patient Info</div>
-              ) : (
-                PatientsList && PatientsList.length != 0 ? (
-                  PatientsList.map((data, i) => (
-                    <tr>
-                      <td><button className="btn p-0 m-0" onClick={(e) => { settabindex(i); OpenUpdatePatient(i) }}><img src={process.env.PUBLIC_URL + "/images/confirmed.png"} style={{ width: "1.5rem" }} /></button>
-                        {form == i ? (
-
-
-                          <section id={i} className={`updatepatientform text-start position-absolute d-${tabindex == i ? updatepatient : 'none'} bg-seashell rounded-2 shadow`}>
-                            <UpdatePatient index={i} getAllPatients={getAllPatients} CloseUpdatePatient={CloseUpdatePatient} patientid={data.id} data={data} phonecountrycode={data.phone_country_code ? data.phone_country_code : 'N/A'} PhoneNo={data.phone_number ? Number(data.phone_number) : ''} dob={data.dob ? data.dob : ''} gender={data.gender ? data.gender : ''} full_name={data.full_name ? data.full_name : ''} email={data.email ? data.email : ''} pincode={data.pin_code ? data.pin_code : ''} location={data.location ? data.location : ''} parent={data.parent} linkid={data.link_id ? data.link_id : ''} relation={data.relation} latitude={data.latitude} longitude={data.longitude} />
-                          </section>
-                        ) : (<></>)
-                        }
-
-                      </td>
-                      <td>{data.full_name ? data.full_name : 'N/A'}</td>
-                      <td>{data.gender ? data.gender : 'N/A'}</td>
-                      <td>{data.dob ? reversefunction(data.dob) : 'N/A'}</td>
-                      <td>{data.email ? data.email : 'N/A'}</td>
-                      {/* <td>{data.address.length != 0 ? data.address[0].address_line1 ? data.address[0].address_line1 : 'N/A' : ''}{data.address.length != 0 ? data.address[0].address_line2 ? ' | ' + data.address[0].address_line2 : '' : 'N/A'} </td>
-                      <td>{data.location ? data.location : 'N/A'}</td> */}
-                      <td>{data.pin_code ? data.pin_code : 'N/A'}</td>
-                      <td>{data.phone_number ? data.phone_number : 'N/A'}</td>
-                      <td>{data.parent ? ' No' : 'Yes'}</td>
-                      <td><button className="btn p-0 m-0" onClick={(e) => { confirmmessage(data.full_name,data.id); }}><img src={process.env.PUBLIC_URL + "/images/delete.png"} alt="displaying_image" style={{ width: "1.5rem" }} /></button></td>
-                      <td><button className="btn p-0 m-0"><img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" style={{ width: "1.5rem" }} /></button></td>
-                    </tr>
-                  ))
-                ) : (
-                  <div className='text-burntumber fs-4 position-absolute start-0 end-0 top-5'>No patients found</div>
-                ))
-            }
-          </tbody>
-        </table>
-      </div>
-      <div className="container-fluid mb-1">
-        <div className="d-flex text-center">
-          <div className="col-4">
-            <button className="button ms-1 button-seashell" ref={previousref} value={prevoffset} onClick={(e) => { getpreviouspages(e) }} style={{ marginTop: '0.15rem' }}>Previous</button>
-          </div>
-          <div className="col-4">
-
-            {
-              pages ? (
-                pages.map((page, i) => (
-                  <button className={`button ms-2 button-${nxtoffset - 1 == i ? 'pearl' : 'burntumber'} border  shadow-${nxtoffset - 1 == i ? 'lg' : 'none'}`} ref={nextref} value={page} id={page} onClick={(e) => { settabindex(i); getAllPatients(i) }} key={i}>{page}</button>
-                ))
-              ) : (
-                <div>Loading...</div>
-              )
-
-            }
-          </div>
-          <div className="col-4">
-            <button className={`button button-burntumber`} ref={nextref} value={nxtoffset} onClick={(e) => { getnextpages(e); }} style={{ marginTop: '0.15rem' }}>Next</button>
-          </div>
-        </div>
-      </div>
-    </section>
-  )
-
-
-
-}
-
-function Doctors() {
-  const url = useContext(URL)
-  const imagepath = 'https://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/assets/doctor/'
-  const nextref = useRef()
-  const previousref = useRef()
-  const [Doctorssearch, setDoctorssearch] = useState()
-  const [Doctorslist,setDoctorslist] = useState([])
-  const [nxtoffset,setnxtoffset] = useState(0)
-  const [prevoffset,setprevoffset] = useState(0)
-  const [pages, setpages] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
-  const [tabindex, settabindex] = useState()
-  const [form, setform] = useState()
-  const [pageloading,setpageloading]=useState(false)
-  const [updatedoctor, setupdatedoctor] = useState('none')
-
-  async function getAllDoctors(i) {
-    if (i == undefined) {
-      i = 0
-    }
-    setpageloading(true)
-    setDoctorslist()
-    
-    if (i == 0 || i == undefined || nxtoffset == 0) {
-      previousref.current.disabled = true
-    } else {
-      previousref.current.disabled = false
-    }
-    await axios.get(`${url}/doctor/list?search=${Doctorssearch ? Doctorssearch : ''}&limit=10&offset=${i * 10}`).then((response) => {
-      setDoctorslist(response.data.data)
-    })
-    let nxt = Number(i) + 1
-
-    setnxtoffset(nxt)
-    if (i != 0) {
-      let prev = i--
-      setprevoffset(prev)
-    }
-    setpageloading(false)
-  }
-  useEffect(() => {
-    getAllDoctors()
-  }, [])
-  useEffect(() => {
-    getAllDoctors()
-  }, [Doctorssearch])
-console.log(Doctorslist)
-async function getnextpages(e) {
-  getAllDoctors(e.target.value)
-}
-async function getpreviouspages(e) {
-  getAllDoctors(e.target.value - 1)
-}
-  function OpenUpdateDoctor(i) {
-    if (updatedoctor === 'none') {
-      setupdatedoctor('block')
-      setform(i)
-    }
-  }
-  function CloseUpdateDoctor() {
-    if (updatedoctor === 'block') {
-      setupdatedoctor('none')
-    }
-  }
-  return (
-    <section className="Doctorspage text-center position-relative">
-      <div className="conatainer">
-        <input className="form-control m-auto mt-2" placeholder="Search Doctor" style={{ width: '30rem' }} onChange={(e) => { setDoctorssearch(e.target.value) }} />
-      </div>
-      <div className="container-fluid p-0 m-0 scroll scroll-y" style={{ height: '30rem' }}>
-        <table className="table text-center p-0 m-0" >
-          <thead>
-            <tr>
-              <th>Update</th>
-              <th>Name</th>
-              <th>Specialization</th>
-              <th>Degree</th>
-              <th>Mobile No.</th>
-              <th>Email Id</th>
-              <th>Procedures</th>
-              <th>More</th>
-            </tr>
-          </thead>
-          <tbody>
-            {
-              pageloading ? (
-                <div className='text-burntumber fs-4 position-absolute start-0 end-0 top-5'>Loading Doctors Info</div>
-              ) : (
-                Doctorslist && Doctorslist.length != 0 ? (
-                  Doctorslist.map((data, i) => (
-                    <tr onClick={() => console.log('clicked')}>
-                      <td><button className="btn p-0 m-0" onClick={(e) => { settabindex(i); OpenUpdateDoctor(i) }}><img src={process.env.PUBLIC_URL + "/images/confirmed.png"} style={{ width: "1.5rem" }} /></button>
-                        {form == i ? (
-                          <section id={i} className={`scroll scroll-y position-absolute d-${tabindex == i ? updatedoctor : 'none'} bg-seashell rounded shadow top-0 bottom-2 `} style={{ marginLeft: '22.5rem', width: '40rem', height: '35rem' }}>
-                            <UpdateDoctor index={i} CloseUpdateDoctor={CloseUpdateDoctor} patientid={data.id} data={data} phonecountrycode={data.phone_country_code ? data.phone_country_code : 'N/A'} PhoneNo={data.phone_number ? Number(data.phone_number) : ''} dob={data.dob ? data.dob : ''} gender={data.gender ? data.gender : ''} full_name={data.full_name ? data.full_name : ''} email={data.email ? data.email : ''} pincode={data.pin_code ? data.pin_code : ''} location={data.location ? data.location : ''} parent={data.parent} linkid={data.link_id ? data.link_id : ''} relation={data.relation} latitude={data.latitude} longitude={data.longitude} />
-                          </section>
-                        ) : (<></>)
-                        }
-
-                      </td>
-                      <td className="text-start">{data.image ? <img className="img-fluid rounded-5" style={{ width: '2rem' }} src={imagepath + data.image} /> : 'Image not found'}{' '}{data.doctor_name ? data.doctor_name : 'N/A'}</td>
-                      <td>{data.speciality.name}</td>
-                      <td>{data.degree_suffix ? data.degree_suffix : 'N/A'}</td>
-                      <td>{data.phone_number ? data.phone_number : 'N/A'}</td>
-                      <td>{data.email}</td>
-                      <td><button className="btn p-0 m-0"><img src={process.env.PUBLIC_URL + "/images/info.png"} alt="displaying_image" style={{ width: "1.5rem" }} /></button></td>
-                      <td><button className="btn p-0 m-0"><img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" style={{ width: "1.5rem" }} /></button></td>
-                    </tr>
-                  ))
-                ) : (
-                  <div className='text-burntumber fs-4 position-absolute start-0 end-0 top-5'>No Doctors found</div>
-                ))
-            }
-          </tbody>
-        </table>
-      </div>
-      <div className="container-fluid mb-1">
-          <div className="d-flex text-center">
-            <div className="col-4">
-              <button className="button ms-1 button-seashell" ref={previousref} value={prevoffset} onClick={(e) => { getpreviouspages(e); console.log(e.target.value) }} style={{ marginTop: '0.15rem' }}>Previous</button>
-            </div>
-            <div className="col-4">
-  
-              {
-                pages ? (
-                  pages.map((page, i) => (
-                    <button className={`button ms-2 button-${nxtoffset - 1 == i ? 'pearl' : 'burntumber'} border  shadow-${nxtoffset - 1 == i ? 'lg' : 'none'}`} ref={nextref} value={page} id={page} onClick={(e) => { settabindex(i); getAllDoctors(i) }} key={i}>{page}</button>
-                  ))
-                ) : (
-                  <div>Loading...</div>
-                )
-  
-              }
-            </div>
-            <div className="col-4">
-              <button className={`button button-burntumber`} ref={nextref} value={nxtoffset} onClick={(e) => { getnextpages(e); console.log(e.target.value) }} style={{ marginTop: '0.15rem' }}>Next</button>
-            </div>
-          </div>
-        </div>
-    </section>
-  )
-}
-
-
-function DailySaleReport(props) {
-  const Doctors = useContext(DoctorsList)
-  const CurrentDate = useContext(TodayDate)
-  const options = ['Appointments', 'Doctors', 'Pharmacy']
-  const [menu, setmenu] = useState(0)
-  const [type, settype] = useState('text')
-  const [doctorid, setdoctorid] = useState()
-  const [fromdate, setfromdate] = useState()
-  const [todate, settodate] = useState()
-  const [clinic, setclinic] = useState()
-
-
-  function ToggleOptions(_menu) {
-    if (_menu == 0) {
-      return <Appointments_Dsr doctorid={doctorid} fromdate={fromdate?fromdate:CurrentDate} todate={todate?todate:fromdate} clinic={clinic} />
-    }
-    if (_menu == 1) {
-      return <Doctors_Dsr doctorid={doctorid} fromdate={fromdate?fromdate:CurrentDate} todate={todate?todate:fromdate} />
-    }
-    if (menu == 2) {
-      return <Pharmacy_Dsr />
-    }
-    return <div>Nothing Selected</div>
-  }
-
-
-  return (
-
-    <div className="DSRsection mt-3">
-      <div className="p-0 m-0 mb-2">
-        <div className="row p-0 m-0 options align-items-center">
-          <div className="col-auto col-lg-auto me-lg-2 col-xl-4 col-md-12 col-md-4 p-0 m-0">
-            {
-              options.map((data, i) => (
-                <button className={`button ms-1 button-${i == menu ? 'pearl' : 'charcoal'} shadow-${i == menu ? 'lg' : 'none'} border border-dark`} id={i} key={i} onClick={() => { setmenu(i) }}>{data}</button>
-              ))
-            }
-          </div>
-          <div className="col-5 col-lg-8 col-xl-7 col-md-12 p-0 m-0 mt-lg-0 mt-2 align-items-center  text-end">
-            <div className="row p-0 m-0">
-              <div className="col-auto col-xl-auto col-lg-4 col-md-4 p-0 m-0 text-end">
-                <select className="px-1 bg-pearl text-burntumber py-2  py-md-1 text-center clinic ">
-                  <option value="Select Clinic">Clinic</option>
-                  {
-                    props.cliniclist ? (
-                      props.cliniclist.map((data) => (
-                        <option className="text-start" value={data.id}>{data.id}.{' '}{data.title}</option>
-                      ))
-                    ) : (
-                      <option>Loading</option>
-                    )
-                  }
-                </select>
-              </div>
-              <div className="col-2 col-lg-auto col-xl-auto col-md-auto p-0 m-0 text-xl-start">
-                <select className="bg-pearl text-center border-md-start-0 text-burntumber px-1 py-2 py-md-1 doctor" value={doctorid ? doctorid : ''} onChange={(e) => setdoctorid(e.target.value)}>
-                  <option value='Doctors'>Doctor</option>
-                  {
-                    Doctors.map((data) => (
-                      <option className="text-start" value={data[0]}>{data[0]}. Dr.{data[1]} </option>
-                    ))
-                  }
-                </select>
-              </div>
-              <div className="col-auto col-xl-auto col-lg-4 col-4 col-md-3 Date p-0 m-0">
-                <div className="d-flex p-0 m-0 text-center">
-                  <input type='date' placeholder="from Date" value={fromdate?fromdate:''} className='bg-pearl px-1 fromdate' onChange={(e)=>setfromdate(e.target.value)} />
-                  <div className="bg-pearl fromdate fw-bolder">-</div>
-                  <input type='date' placeholder="to Date" disabled={fromdate?false:true} value={todate?todate:''} className='bg-pearl px-1 todate'onChange={(e)=>settodate(e.target.value)} />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="container-fluid page m-0 p-0 ">
-        <div className="p-0 m-0">{ToggleOptions(menu)}</div>
-      </div>
-    </div>
-  )
-}
-
 
 export { Navbar };
 export { Doctorsection };

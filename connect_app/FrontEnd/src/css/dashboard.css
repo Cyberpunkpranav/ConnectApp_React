@@ -487,6 +487,19 @@ body::-webkit-scrollbar-thumb:hover {
     margin-top: 20rem;
     margin-bottom: 30rem;
 }
+.allappointmentsection .payments{
+    max-width:50rem;
+    left:0;
+    right:0;
+    padding:0;
+    margin:0 auto;
+    top:-10rem;
+    margin-top: 20rem;
+    margin-bottom: 30rem;
+}
+.allappointmentsection .payments .scroll-y{
+    max-width:40rem;
+}
 .allappointmentsection .bill{
     width:40rem;
     min-width:30rem;
@@ -507,68 +520,6 @@ body::-webkit-scrollbar-thumb:hover {
 .allappointmentsection .tablesection {
     min-height: 10rem;
     max-height: 12rem;
-}
-
-
-.allappointmentsection .actionoptions {
-    display: none;
-    background: var(--seashell);
-    border: 1px solid var(--lightblue);
-    z-index: 2;
-    left: 2rem;
-    box-shadow: 1px 0px 5px 1px var(--charcoal);
-    width: min-content;
-}
-
-
-.allappointmentsection .actionoptions:before {
-    position: absolute;
-    content: "";
-    height: 20px;
-    width: 20px;
-    background: var(--seashell);
-    top: -0.7rem;
-    left: 0.6rem;
-    border-left: 1px solid var(--lightblue);
-    border-top: 1px solid var(--lightblue);
-    transform: rotate(45deg);
-}
-
-.allappointmentsection .action:focus+.actionoptions {
-    display: block;
-}
-
-.allappointmentsection .moreoptions {
-    display: none;
-    background: var(--seashell);
-    border: 1px solid var(--lightblue);
-    z-index: 2;
-    box-shadow: 1px 0px 5px 1px var(--charcoal);
-    font-weight: 800;
-    right: 2rem;
-    width: min-content;
-}
-
-.allappointmentsection .moreoptions tr:hover {
-    cursor: pointer;
-}
-
-.allappointmentsection .moreoptions:before {
-    position: absolute;
-    content: "";
-    height: 20px;
-    width: 20px;
-    background: var(--seashell);
-    top: -0.7rem;
-    right: 0.6rem;
-    border-left: 1px solid var(--lightblue);
-    border-top: 1px solid var(--lightblue);
-
-    transform: rotate(45deg);
-}
-
-.allappointmentsection .more:focus+.moreoptions {
-    display: block;
 }
 
 .allappointmentsection .timeslotbtns {

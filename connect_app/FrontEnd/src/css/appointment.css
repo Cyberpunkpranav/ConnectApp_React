@@ -75,11 +75,10 @@ body::-webkit-scrollbar-thumb:hover {
     font-family: 'Urbanist', sans-serif;
     color: var(--charcoal);
     z-index: -2;
+    max-height: 62vh;
+    min-height: 62vh;
 }
 
-.page2allappointment {
-    max-height: 62vh;
-}
 
 .page2appointment .UpdateAppointment {
     top: 0;

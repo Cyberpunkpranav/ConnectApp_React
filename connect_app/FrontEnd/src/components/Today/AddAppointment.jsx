@@ -33,6 +33,7 @@ const AddAppointment = (props) => {
     useEffect(() => {
         ClinicList()
     }, [])
+    
     function setfromsearch(){
         setpatientid(props.patientidfromsearch)
         setsearchinput(props.patientnamefromsearch)

@@ -144,6 +144,9 @@
 .bg-lightyellow{
     background-color:var(--lightyellow);
 }
+.bg-lightgreen{
+    background-color:var(--lightgreen); 
+}
 .bg-lightblue{
     background-color: var(--lightblue);
 }

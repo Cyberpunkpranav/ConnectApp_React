@@ -300,11 +300,10 @@ function Switchpage() {
 
         <section className="signinsection mb-5">
           <div className="container rounded py-5 bg-light bg-opacity-75">
-            <div className="col-5 m-auto position-relative pb-2">
-              <p className="text-center mt-2 m-auto col-6" id="text1"><img src={process.env.PUBLIC_URL + "/images/slogan1.png"} alt='image' className="img-fluid" /></p>
-              <p className="text-center mt-2 position-absolute col-6" id="text2"><img src={process.env.PUBLIC_URL + "/images/slogan2.png"} className="img-fluid" /></p>
-            </div>
+            <div className="container justify-content-center">
+            <p className="text-center mt-2 m-auto" id="text2"><img src={process.env.PUBLIC_URL + "/images/slogan2.png"} className="img-fluid" /></p>
 
+            </div>
             <form autoComplete="off" onSubmit={(e) => Submit(e)}>
               <div className="mt-4">
                 <div className={`row d-${email} justify-content-center mb-4`} id="userinput">

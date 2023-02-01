@@ -129,7 +129,7 @@ const SelectedAppointments = (props) => {
                     </tbody>
                   </table>
                 </td>
-                <td className={`UpdateAppointment d-${tableindex == key ? appointmentform : 'none'} position-absolute`}><UpdateAppointment fetchallAppointmentslist={props.fetchallAppointmentslist} patientname={ data.patient != null && data.patient.full_name != null ? data.patient.full_name : 'N/A'} patientid={data.patient && data.patient.id !== null ? data.patient.id : 'N/A'} appointmentid={data.id && data.id !== null ? data.id : 'N/A'} closeappointmentform={closeappointmentform} doctorid={props.doctorid ? props.doctorid : 'N/A'} fetchapi={props.fetchapi} appointmentdoctorid={data.doctor.id} appointmentdate={data.appointment_date} appointmenttime={tConvert(data.timeslot.time_from)} /></td>
+                <td className={`UpdateAppointment d-${tableindex == key ? appointmentform : 'none'} position-absolute`} style={{top:'-10rem'}}><UpdateAppointment fetchallAppointmentslist={props.fetchallAppointmentslist} patientname={ data.patient != null && data.patient.full_name != null ? data.patient.full_name : 'N/A'} patientid={data.patient && data.patient.id !== null ? data.patient.id : 'N/A'} appointmentid={data.id && data.id !== null ? data.id : 'N/A'} closeappointmentform={closeappointmentform} doctorid={props.doctorid ? props.doctorid : 'N/A'} fetchapi={props.fetchapi} appointmentdoctorid={data.doctor.id} appointmentdate={data.appointment_date} appointmenttime={tConvert(data.timeslot.time_from)} /></td>
               </tr>
             ))
           )
