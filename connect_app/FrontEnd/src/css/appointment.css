@@ -20,52 +20,6 @@ body {
     font-family: 'Urbanist', sans-serif;
 }
 
-/*---------------------------------------------------bodyscrollbar css-------------------------------------------------------------------- */
-body::-webkit-scrollbar {
-    height: 0.5rem;
-}
-
-body::-webkit-scrollbar-track {
-    background: var(--pearl);
-
-}
-
-body::-webkit-scrollbar-thumb {
-    background: var(--burntumber);
-    border-radius: 10px;
-}
-
-body::-webkit-scrollbar-thumb:hover {
-    background: #555;
-}
-
-/*---------------------------------------------------bodyscrollbar css-------------------------------------------------------------------- */
-
-/*--------------------------------------------------------scroolbar css------------------------------------------------------------------- */
-.scroll {
-    padding: 1px;
-    overflow-x: auto;
-    overflow-y: hidden;
-    white-space: nowrap;
-    height: min-content;
-}
-
-.scroll::-webkit-scrollbar {
-    height: 0.4rem;
-}
-
-.scroll::-webkit-scrollbar-track {
-    background: var(--seashell);
-}
-
-.scroll::-webkit-scrollbar-thumb {
-    background: var(--burntumber);
-    border-radius: 65rem;
-}
-
-.scroll::-webkit-scrollbar-thumb:hover {
-    background: #555;
-}
 
 
 
@@ -88,7 +42,7 @@ body::-webkit-scrollbar-thumb:hover {
     margin-bottom: 30rem;
     margin-top: 20rem;
     max-width: 40rem;
-    margin-left:30%;
+    margin-left: 30%;
 
 }
 
@@ -271,10 +225,11 @@ input[placeholder-shown] {
 
     .page2appointment .UpdateAppointment {
         margin-left: 4rem;
-        margin-right:-2rem;
+        margin-right: -2rem;
     }
 }
-@media (max-width:1024px){
+
+@media (max-width:1024px) {
     .page2appointment .UpdateAppointment {
         margin-left: 12rem;
     }

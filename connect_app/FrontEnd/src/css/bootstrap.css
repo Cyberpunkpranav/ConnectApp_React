@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Urbanist&display=swap');
 :root{
     --burntumber: #96351E;
+    --burntumber50:#96341e75;
     --brandy: #DBB98F;
     --Raffia: #DDC6A8;
     --pearl: #ffffff;
@@ -16,7 +17,54 @@
     --charcoal75:#222023ad;
     }
 
+/*---------------------------------------------------bodyscrollbar css-------------------------------------------------------------------- */
+body::-webkit-scrollbar {
+    height: 0.7rem;
+}
 
+body::-webkit-scrollbar-track {
+    background: var(--pearl);
+
+}
+
+body::-webkit-scrollbar-thumb {
+    background: var(--burntumber);
+    border-radius: 10px;
+}
+
+body::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/*---------------------------------------------------bodyscrollbar css-------------------------------------------------------------------- */
+
+/*--------------------------------------------------------scroolbar css------------------------------------------------------------------- */
+.scroll {
+    padding: 3px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    height: max-content;
+}
+
+.scroll::-webkit-scrollbar {
+    height: 0.4rem;
+}
+
+.scroll::-webkit-scrollbar-track {
+    background: var(--pearl);
+}
+
+.scroll::-webkit-scrollbar-thumb {
+    background: var(--burntumber);
+    border-radius: 65rem;
+}
+
+.scroll::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/*--------------------------------------------------------scroolbar css------------------------------------------------------------------- */
 .button{
     padding: 0.375rem 0.75rem;
     font-family: 'Urbanist', sans-serif;
@@ -98,9 +146,7 @@
     color:var(--charcoal);
     background-color: var(--lightgreen);
     border:1px solid var(--lightgreen);
-
 }
-
 .button-lightgreen:disabled{
     color:var(--seashell);
     background-color:var(--lightgreen);
@@ -137,6 +183,9 @@
 }
 .bg-burntumber{
     background-color: var(--burntumber);
+}
+.bg-burntumber50{
+    background-color: var(--burntumber50);
 }
 .bg-brandy{
     background-color: var(--brandy);
@@ -196,6 +245,7 @@
     border-bottom-left-radius: 0px;
     border-bottom-right-radius: 0px;
 }
-.border-bottom-burntumber{
-    border-bottom :2px solid var(--burntumber);
+.border-burntumber{
+    border :1px solid var(--burntumber);
 }
+

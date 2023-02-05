@@ -241,15 +241,15 @@ function DoctorSchedule(props) {
       <section id="doctorscheduledata">
         <section className="timeslotsection">
           <div className="container-fluid p-0 m-0 ">
-            <div className="row ps-md-3 p-0 m-0">
+            <div className="row p-0 m-0">
               <div className=" col-12 p-0 m-0 align-items-center">
-                <div className="d-flex p-2">
+                <div className="d-flex p-0 m-0">
                   <div className="col-auto">
-                    <h4 className="p-0 m-0 text-charcoal75 fw-bolder">Time Slots</h4>
+                    <h5 className="p-0 m-0 ms-1 text-charcoal75 fw-bolder">Time Slots Avaliable</h5>
                   </div>
                   <div className="col-2 ms-2">
                     <button className="btn m-0 p-0">
-                      <img src={process.env.PUBLIC_URL + "/images/addicon.png"} style={{ width: "2rem" }} alt="displaying_image" onClick={OpenAddQuickSlots} />
+                      <img src={process.env.PUBLIC_URL + "/images/addicon.png"} style={{ width: "1.5rem" }} alt="displaying_image" onClick={OpenAddQuickSlots} />
                     </button>
                     <div className={`d-${addquickslots} rounded-2 bg-seashell shadow col-lg-6 col-md-8 col-sm-12 col-12 col-xl-4 position-absolute end-0 start-0 top-0 m-auto mt-3`} style={{ zIndex: '3010', minWidth: '10rem', maxWidth: '30rem' }}>
                       <AddSelectedDoctorSlot CloseAddQuickSlots={CloseAddQuickSlots} fetchapi={props.fetchapi} DocClinic={props.DocClinic} DoctorID={props.DoctorID} DoctorName={props.DoctorName} />
@@ -264,7 +264,7 @@ function DoctorSchedule(props) {
                 props.todayDoc[props._selected][3].map((data, i) => (
                   data[1] == 0 ? (
                     <>
-                      <button className={`button button-${timeindex == i ? 'pearl' : 'lightgreen'} m-1`} onClick={(e) => { openAddApppointmentform(); settimeindex(i) }} key={i}>{tConvert(data[0])}</button>
+                      <button className={`button button-sm text-${timeindex == i ? 'light' : 'burntumber'} bg-${timeindex == i ? 'burntumber' : 'pearl'} border-${timeindex == i ? 'pearl' : 'burntumber'} m-1`} onClick={(e) => { openAddApppointmentform(); settimeindex(i) }} key={i}>{tConvert(data[0])}</button>
                       {
                         timeindex == i ? (
                           <section className={`d-${timeindex == i ? addappointmentform : 'none'} col-lg-6 col-md-8 col-sm-12 col-12 col-xl-4 appointmentinfosection position-absolute m-auto start-0 end-0 bg-seashell rounded-4 col-6 shadow overflow-auto`} style={{ zIndex: 4000, top: '-2rem' }}>
@@ -277,7 +277,7 @@ function DoctorSchedule(props) {
 
                     </>
                   ) : (
-                    <button disabled className="btn button-burntumber m-1" key={i}>{tConvert(data[0])}</button>
+                    <button disabled className="button button-sm button-burntumber m-1" key={i}>{tConvert(data[0])}</button>
                   )
 
                 ))
@@ -288,29 +288,26 @@ function DoctorSchedule(props) {
         </section>
 
         <section className="allappointmentsection p-0 m-0">
-          <div className="col-auto m-0 p-0 my-1 align-items-center">
-            <h4 className="p-0 my-auto ps-3 text-charcoal75 fw-bold">Appointments</h4>
+          <div className="col-auto m-0 p-0 align-items-center">
+            <h5 className="p-0 my-auto ms-1 text-charcoal75 fw-bold">Appointments</h5>
           </div>
           <div className="tablesection scroll scroll-y align-content-center align-items-center">
             <table className="table datatable text-center">
               <thead className="p-0 m-0 px-2">
                 <tr className="p-0 m-0">
-                  <th className="p-0 m-0 border border-1" key={0} rowspan='2'>Update</th>
-                  <th className="p-0 m-0 border border-1" key={1} rowspan='2'>Status</th>
-                  <th className="p-0 m-0 border border-1" key={2} rowspan='2'>Patient Name</th>
-                  <th className="p-0 m-0 border border-1" key={3} rowspan='2'>Phone Number</th>
-                  <th className="p-0 m-0 border border-1" key={4} rowspan='2'>Time</th>
-                  <th className="p-0 m-0 border border-1" key={5} rowspan='2'>Total Amount</th>
-                  <th className="p-0 m-0 border border-1" key={6} rowspan='2'>Amount Status</th>
-                  <th className="p-0 m-0 border border-1" key={7} rowspan='2'>Vitals</th>
-                  <th className="p-0 m-0 border border-1" key={7} rowspan='2'>Bill</th>
-                  <th className="p-0 m-0 border border-1" key={8} rowspan='2'>Payments</th>
-                  <th className="p-0 m-0 border border-1" key={8} rowspan='2'>Call Patient</th>
-                  <th className="p-0 m-0 border border-1" key={9} colspan='2' scope='colgroup'>Pdfs</th>
-                </tr>
-                <tr>
-                  <th className="bg-white border p-0 m-0 border-1" scope='col' >Bill</th>
-                  <th className="bg-white border p-0 m-0 border-1"scope='col'>Prescription</th>
+                  <th className="border-0" key={0}>Update</th>
+                  <th className="border-0" key={1}>Status</th>
+                  <th className="border-0" key={2}>Patient Name</th>
+                  <th className="border-0" key={3}>Phone Number</th>
+                  <th className="border-0" key={4}>Time</th>
+                  <th className="border-0" key={5}>Total Amount</th>
+                  <th className="border-0" key={6}>Amount Status</th>
+                  <th className="border-0" key={7}>Vitals</th>
+                  <th className="border-0" key={8}>Bill</th>
+                  <th className="border-0" key={9}>Payments</th>
+                  <th className="border-0" key={10}>Call Patient</th>
+                  <th className="border-0" key={11} >Bill</th>
+                  <th className="border-0" key={12}>Prescription</th>
                 </tr>
               </thead>
               {
@@ -327,14 +324,14 @@ function DoctorSchedule(props) {
                         <tr><button className="text-center fs-4 position-absolute text-burntumber button-burntumber border-start-0 border-end-0 px-5 start-0 end-0">No Appointments Found</button></tr>
                       ) : (
                         appointmentdata.map((data, i) => (
-                          <tr className='appointmentsrow align-content-center align-items-center align-self-center'>
-                            <th scope="row align-items-center">
-                              <button className="btn btn-lg px-1 action position-relative bg-transparent confirmed position-relative m-0 p-0" key={i} onClick={(e) => { openapppointmentform(); settableindex(i); setappointmentid(data.id) }}>
+                          <tr className='align-middle'>
+                            <td>
+                              <button className="btn btn-lg px-1 p-0 m-0 action position-relative bg-transparent confirmed position-relative m-0 p-0" key={i} onClick={(e) => { openapppointmentform(); settableindex(i); setappointmentid(data.id) }}>
                                 <img src={process.env.PUBLIC_URL + "/images/confirmed.png"} alt="displaying_image" className="img-fluid" style={{ width: "1.5rem" }} key={i} />
                               </button>
-                            </th>
-                            <td  className="align-items-center align-self-center border border-1">
-                              <select className={`p-2 fw-bolder rounded-5 text-center align-self-center align-items-center button-${status_color(data.appointment_status)}`} name={data.id} onChange={(e) => { UpadteStatus(e) }}>
+                            </td>
+                            <td  className="">
+                              <select className={` fw-bolder rounded-5 p-1 text-center button-${status_color(data.appointment_status)}`} name={data.id} onChange={(e) => { UpadteStatus(e) }}>
                                 <option className="button" selected disabled>{status(data.appointment_status)}</option>
                                 <option key={0} className="button-lightred" value='1'>Pending</option>
                                 <option key={1} className="button-lightblue" value='2'>Booked</option>
@@ -348,17 +345,17 @@ function DoctorSchedule(props) {
                                 <option key={9} className="button-lightgreen" value='10'>Completed</option>
                               </select>
                             </td>
-                            <td className="border border-1">{data.patient ? data.patient.full_name !== null ? data.patient.full_name : 'N/A' : 'N/A'}</td>
-                            <td className="border border-1">{data.patient ? data.patient.phone_number != null ? data.patient.phone_number : 'N/A' : 'N/A'}</td>
-                            <td className="border border-1">{tConvert(data.timeslot.time_from)}</td>
-                            <td className="border border-1">{data.total_amount}</td>
-                            <td className="border border-1"><AmountPaid appointmentData={data} Appointmentlist={Appointmentlist} /> </td>
-                            <td className="border border-1"><button className="btn p-0 m-0" onClick={() => {setvitalindex(i); OpenVitals(); GetAppointmentVitals(data.id) }}><img src={process.env.PUBLIC_URL + "/images/vitals.png"} alt="displaying_image" style={{ width: "1.5rem" }} /></button></td>
-                            <td className="border border-1"> <button className="btn p-0 m-0" onClick={()=>{setbillindex(i); OpenBillForm();}}><img src={process.env.PUBLIC_URL + "/images/bill.png"} alt="displaying_image" style={{ width: "1.8rem" }} className="me-1" /></button>  </td>
-                            <td className="border border-1"><button className="btn p-0 m-0" onClick={()=>{setpaymentsindex(i); OpenPaymentsForm();}}><img src={process.env.PUBLIC_URL + "/images/rupee.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1" /></button></td>
-                            <td className="border border-1"><button className="btn p-0 m-0" onClick={()=>confirmmessage(data.patient.full_name,data.id)}><img src={process.env.PUBLIC_URL + "/images/speaker.png"} alt="displaying_image" className="ms-1" style={{ width: "1.8rem" }} /></button></td>
-                            <td className="border border-1"><a target='_blank' className='p-0 m-0 text-decoration-none text-burntumber fw-bold' href={`https://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/admin/appointment/generate/bill/${data.id}`}><img src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" style={{ width: "2rem" }} /></a></td>
-                            <td className="border border-1"><a target='_blank' className='p-0 m-0 text-decoration-none text-charcoal fw-bold' href={`Billhttps://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/assets/swift_pdf/prescription_pdf_${data.id}.pdf`}><img src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" style={{ width: "2rem" }} /></a></td>
+                            <td className="py-0">{data.patient ? data.patient.full_name !== null ? data.patient.full_name : 'N/A' : 'N/A'}</td>
+                            <td className="py-0">{data.patient ? data.patient.phone_number != null ? data.patient.phone_number : 'N/A' : 'N/A'}</td>
+                            <td className="py-0">{tConvert(data.timeslot.time_from)}</td>
+                            <td className="py-0">{data.total_amount}</td>
+                            <td className="py-0"><AmountPaid appointmentData={data} Appointmentlist={Appointmentlist} /> </td>
+                            <td className="py-0"><button className="btn p-0 m-0" onClick={() => {setvitalindex(i); OpenVitals(); GetAppointmentVitals(data.id) }}><img src={process.env.PUBLIC_URL + "/images/vitals.png"} alt="displaying_image" style={{ width: "1.5rem" }} /></button></td>
+                            <td className="py-0"> <button className="btn p-0 m-0" onClick={()=>{setbillindex(i); OpenBillForm();}}><img src={process.env.PUBLIC_URL + "/images/bill.png"} alt="displaying_image" style={{ width: "1.8rem" }} className="me-1" /></button>  </td>
+                            <td className="py-0"><button className="btn p-0 m-0" onClick={()=>{setpaymentsindex(i); OpenPaymentsForm();}}><img src={process.env.PUBLIC_URL + "/images/rupee.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1" /></button></td>
+                            <td className="py-0"><button className="btn p-0 m-0" onClick={()=>confirmmessage(data.patient.full_name,data.id)}><img src={process.env.PUBLIC_URL + "/images/speaker.png"} alt="displaying_image" className="ms-1" style={{ width: "1.8rem" }} /></button></td>
+                            <td className="py-0"><a target='_blank' className='p-0 m-0 text-decoration-none text-burntumber fw-bold' href={`https://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/admin/appointment/generate/bill/${data.id}`}><img src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" style={{ width: "2rem" }} /></a></td>
+                            <td className="py-0"><a target='_blank' className='p-0 m-0 text-decoration-none text-charcoal fw-bold' href={`Billhttps://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/assets/swift_pdf/prescription_pdf_${data.id}.pdf`}><img src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" style={{ width: "2rem" }} /></a></td>
                             {
                               appointmentid === data.id ? (
                                 <td className={`updateappointment border-0  d-${tableindex == i ? appointmentform : 'none'} p-0 start-0 bottom-0 end-0 position-absolute`} style={{ zIndex: '3005' }}><UpdateAppointment fetchapi={props.fetchapi} fetchallAppointmentslist={props.fetchallAppointmentslist} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} patientid={data.patient != null && data.patient.id != null ? data.patient.id : ""} appointmentid={data.id} addappointmentform={addappointmentform} closeappointmentform={closeappointmentform} doctorid={props.doctorid} appointmentdoctorid={data.doctor.id} appointmentdate={data.appointment_date} appointmenttime={tConvert(data.timeslot.time_from)} /></td>

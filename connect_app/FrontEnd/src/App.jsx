@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom"
 import { useState, useEffect, useContext, useRef } from "react"
 import axios from "axios"
+import { w3cwebsocket as websocket } from 'websocket'
 //Context APIs
 import { URL, TodayDate, DoctorsList, Doctorapi } from '../src/index'
 //Components
@@ -21,11 +22,13 @@ import { Doctors_Dsr } from './components/Dsr/Doctors_Dsr'
 import { Pharmacy_Dsr } from './components/Dsr/Pharmacy_Dsr'
 import { SearchField } from "./components/features/SearchField"
 //CSS
+import './css/dashboard.css';
 import './css/appointment.css';
 import "./css/pharmacy.css";
 import "./css/bootstrap.css";
 import './css/patient.css';
 import './css/Doctors.css';
+
 import '../node_modules/bootstrap/js/dist/dropdown';
 //Notiflix
 import Notiflix from 'notiflix';
@@ -34,7 +37,24 @@ import { customconfirm } from "./components/features/notiflix/customconfirm"
 // import {CSVLink} from 'react-csv'
 
 function Navbar(props) {
+  // const [chat,setchat]=useState('')
+  // const [chatarr,setchatarr] =useState([''])
+  //  var client  =  new websocket('ws://localhost:3500/chat')
+  //  let chatarray =[]
+  //   function sendmessage(){
+  //     client.onopen = function Chatopened(){
+  //       console.log("connection established")
+  //    }
 
+  //     client.send(chat)
+
+  //    }
+  //    client.onmessage =function message(e){
+  //     console.log("message recieved")
+  //       chatarray.push(e.data)
+
+  //    }
+  //    console.log(chatarray)
   const [addoption, setaddoption] = useState("none");
   const toggleaddoption = () => {
     if (addoption === "none") {
@@ -160,21 +180,22 @@ function Navbar(props) {
 
   return (
     <>
-      <button className={`parentclose d-none position-absolute`}></button>
-      <div className="navsection">
-        <div className="container-fluid ">
-          <div className="row m-0 p-0 justify-content-lg-center">
-            <div className="col-lg-auto col-xl-auto col-md-auto col-sm-2 col-6">
-              <button className="button button-seashell shadow-none col-md-auto col-auto user position-relative" onClick={togglelogoutbtn}>
+      <button className='parentclose d-none position-absolute'></button>
+      <div className="navsection p-0 m-0 py-2">
+        <div className="container-fluid p-0 m-0 ">
+          <div className="row m-0 p-0 justify-content-evenly">
+            <div className="col-lg-auto col-xl-auto col-md-auto col-sm-2 col-6 p-0 m-0 text-start">
+              <button className="button button-seashell shadow-none col-md-auto col-auto user position-relative p-0 m-0 ms-2" onClick={togglelogoutbtn}>
                 <p className="m-0 username text-decoration-none text-lg-start text-md-start text-center"> {props.username} </p>
                 <p className="m-0 userstatus text-decoration-none text-lg-start text-md-start text-center"><small className="text-muted">{props.designation}</small> </p>
                 <button className={`d-${logoutbtn} button button-lightred start-0 end-0 position-absolute text-burntumber w-75 fw-bolder`} onClick={logout}>Logout</button>
               </button>
             </div>
-            <div className="col-lg-6 col-xl-6 align-self-center col-sm-auto col-md-5 col-10 p-0 m-0 menu order-1 order-xl-0 order-sm-0 order-md-0 order-sm-0">
+            <div className="col-lg-6 col-xl-6 align-self-center col-sm-auto col-md-auto col-10 p-0 m-0 menu order-1 order-xl-0 order-sm-0 order-md-0 order-sm-0">
               <div className="row p-0 m-0 gx-auto justify-content-center">
-                {NavbarIcons.map((data, i) => (
-                  <div className={`col-auto bg-${highlighticon ? highlighticon === data.path ? 'pearl' : 'seashell' : path === data.path ? 'pearl' : 'seashell'} rounded-top border-bottom-${highlighticon ? highlighticon === data.path ? 'burntumber' : 'seashell' : path === data.path ? 'burntumber' : 'seashell'}`} onClick={() => sethighlighticon(data.path)}>
+                {
+                  NavbarIcons.map((data, i) => (
+                  <div className={`col-auto bg-${highlighticon ? highlighticon === data.path ? 'burntumber50' : 'seashell' : path === data.path ? 'burntumber50' : 'seashell'} rounded-2 `} onClick={() => sethighlighticon(data.path)}>
                     <Link to={data.path} className="text-decoration-none"> <div className="text-center"> <img src={process.env.PUBLIC_URL + data.image} alt="displaying_image" className="img-fluid" style={{ width: `1.5rem` }} /><p className="col-12 m-0">{data.title}</p> </div> </Link>
                   </div>
                 ))
@@ -182,16 +203,16 @@ function Navbar(props) {
               </div>
             </div>
             <div className="col-lg-auto col-xl-auto col-md-auto col-6 col-sm-2 text-center align-self-center position-relative p-0 m-0 ">
-              <button className="btn col-12 col-lg-6 col-md-6 addbtn align-self-center" onClick={toggleaddoption}> {" "} +Add{" "} </button>
+              <button className="btn btn-sm p-0 m-0 py-1 col-12 col-lg-6 col-md-6 addbtn align-self-center" onClick={toggleaddoption}> +Add </button>
               <div className={`text-center addoptions d-${addoption} position-absolute`} >
                 <input className="col-12 p-lg-2 border-1 border-bottom text-start patient" type="button" defaultValue="Patient" onClick={togglepatientform} />
                 <input className="col-12 p-lg-2 text-start border-1 border-bottom appointment" type="button" defaultValue="Appointment" onClick={toggleappointmentform} />
                 <input className="col-12 p-lg-2 doctorslot shadow-sm text-start" type="button" defaultValue="Doctor Slot" onClick={toggledoctorform} />
               </div>
             </div>
-            <div className="col-lg-2 col-xl-3 col-md-3 col-sm-2 ms-md-2 align-self-center order-sm-2 order-2 position-relative p-0 m-0" style={{ zIndex: '2500' }}>
-              <input type="text" className="bg-seashell form-control text-center border-0 position-relative m-auto py-1" placeholder="Type to search" onChange={(e) => setsearchtext(e.target.value)} />
-              <div className="position-absolute bg-seashell end-0">
+            <div className="col-lg-2 col-xl-3 col-md-2 col-sm-2 ms-md-2 align-self-center order-sm-2 order-2 position-relative p-0 m-0" style={{ zIndex: '1000' }}>
+              <input type="text" className="bg-seashell border border-1 rounded-1 text-center border-0 position-relative" placeholder="search" onChange={(e) => setsearchtext(e.target.value)} />
+              <div className="position-absolute bg-seashell end-0 shadow rounded-2">
                 <SearchField searchtext={searchtext} fetchapi={props.fetchapi} />
               </div>
             </div>
@@ -216,6 +237,13 @@ function Navbar(props) {
         )
       }
 
+      {/* <div className="position-absolute bottom-0 end-0 me-2 mb-1 d-block" style={{zIndex:1000}}>
+      <div className="bg-seashell scroll" style={{maxHeight:'9rem'}}>{chatarr.map((data)=>(
+        <p>{data}</p>
+      ))}</div>
+        <input onChange={(e)=>{setchat(e.target.value)}}/>
+        <button className="btn ms-1 btn-sm btn-success" onClick={sendmessage}>Send</button>
+      </div> */}
     </>
   );
 }
@@ -259,36 +287,43 @@ function Doctorsection(props) {
   const [Docval, setDocval] = useState(0)
   return (
     <>
-      <div className="container-fluid doctorcontainer">
-        <section className="doctorsection ">
-          <div className="row shadow rounded-bottom-4">
-            <div className="d-flex pb-2 scroll doctortab">
-              {props.isLoading ? (
-                <> <div className="spinner-border my-auto" style={{ width: "2rem", height: "2rem" }} role="status" >
+      <div className="container-fluid bg-seashell p-0 m-0 mt-1 scroll">
+        <div className=" hstack gap-3 d-flex p-0 m-0 ms-1 p-1 align-items-center">
+          {
+            props.isLoading ? (
+              <div className='col-3'>
+                <div className="spinner-border my-auto" style={{ width: "2rem", height: "2rem" }} role="status" >
                   <span className="sr-only"></span> </div>
-                  <div className="spinner-grow my-auto" style={{ width: "1.5rem", height: "1.5rem" }} role="status" >
-                    <span className="sr-only"></span> </div> </>
-              ) : (
-                props.todayDoc.map((data, i) => (
-                  <>
-                    <button key={i} className={`button m-1 text-${i === Doctor ? 'light' : 'dark'} button-${i === Doctor ? "charcoal" : "seashell"} shadow-${i === Doctor ? 'lg' : 'sm'} border border-1 border-${i === Doctor ? 'secondary' : 'dark'}`} autoFocus={i === Doctor ? true : false} onFocus={() => { setDoctorID(data[0]); setDoctorName(data[1]); setDocClinic(data[2]) }} value={`${data[0]}.${data[1]}`} onClick={(a) => { setDoctor(i); }}>{`${data[0]}. Dr.${data[1]}`} </button>
-                  </>
-                ))
-              )}
-              <button className="btn bg-transparent border-0 d-inline-flex" id="adddoctorbtn" onClick={toggledoctorform} >
-                <img src={process.env.PUBLIC_URL + "/images/addicon.png"} alt="displaying_image" style={{ width: "2.5rem" }} />
-              </button>
-            </div>
+                <div className="spinner-grow my-auto" style={{ width: "1.5rem", height: "1.5rem" }} role="status" >
+                  <span className="sr-only"></span> </div> </div>
+            ) : (
+              props.todayDoc.map((data, i) => (
+                <>
+                <div className='col-auto p-0 m-0'>
+                  <button key={i} className={`button rounded-3 p-0 m-0 py-1 px-2 btn-sm col-auto shadow-none text-${i === Doctor ? 'light' : 'charcoal75 fw-bolder'} button-${i === Doctor ? "charcoal" : "seashell"} border-${i === Doctor ? 'secondary' : 'none'}`} autoFocus={i === Doctor ? true : false} onFocus={() => { setDoctorID(data[0]); setDoctorName(data[1]); setDocClinic(data[2]) }} value={`${data[0]}.${data[1]}`} onClick={(a) => { setDoctor(i); }}>{`${data[0]}. Dr.${data[1]}`} </button>
+        
+                </div>
+              <div className='vr rounded-2 h-75 align-self-center'style={{padding:'0.8px'}}></div>
+              </>
+              ))
+            )}
+          <div className='col-auto'>
+            <button className="btn bg-transparent border-0 d-inline-flex" id="adddoctorbtn" onClick={toggledoctorform} >
+              <img src={process.env.PUBLIC_URL + "/images/addicon.png"} alt="displaying_image" style={{ width: "1.5rem" }} />
+            </button>
           </div>
-        </section>
+
+
+        </div>
+
       </div>
-      <section className="patientsection border-start border-5 border-dark border-opacity-50 position-relative">
+      <section className="patientsection border-start p-0 m-0 border-5 border-dark border-opacity-50 position-relative">
         <div className="container-fluid p-0 m-0">
-          <div className="row m-0 p-0 ms-auto">
-            <div className="text-charcoal75" id="calender">
-              <span className='fs-3'>{currentDate}</span>
-              <span><Timer /></span>
-            </div>
+          <div className="row m-0 p-0 align-items-center">
+              <span className='col-auto fs-4 text-charcoal fw-bold'>{currentDate}</span>
+              <div className=' col-auto vr align-self-center h-75' style={{padding:'0.8px'}}></div>
+              <span className='col-auto fs-5'><Timer /></span>
+ 
           </div>
         </div>
         {
@@ -511,7 +546,7 @@ function Appointments(props) {
             </div>
           </div>
         </div>
-        <section className="container-fluid scroll scroll-y page2allappointment shadow mt-2 " style={{ minHeight: '10rem' }}>
+        <section className="container-fluid scroll scroll-y page2allappointment shadow mt-2 " style={{ minHeight: '10rem', maxHeight: '62vh' }}>
           <table className="table text-center ">
             <thead>
               <tr>
@@ -977,10 +1012,11 @@ function DailySaleReport(props) {
 }
 
 function Pharmacy() {
+  const url = useContext(URL)
   let menu = ["Sale Orders", "Stock Info", "Purchase"];
   const [menuindex, setmenuindex] = useState(1);
   const [npef, setnpef] = useState("none");
-  const [peidw, setpeidw] = useState("none");
+
   const [pharmacy, setpharmacy] = useState("block");
 
   const toggle_npef = () => {
@@ -993,16 +1029,7 @@ function Pharmacy() {
       setpharmacy("block");
     }
   };
-  const toggle_peidw = () => {
-    if (peidw === "none") {
-      setpeidw("block");
-      setpharmacy("none");
-    }
-    if (peidw === "block") {
-      setpeidw("none");
-      setpharmacy("block");
-    }
-  };
+
   const _selectedmenu = (_menu) => {
     if (_menu === 0) {
       return <div className="">{_menu}</div>;
@@ -1015,16 +1042,12 @@ function Pharmacy() {
       );
     }
     if (_menu === 2) {
-      return <Purchasesection func={toggle_npef} function={toggle_peidw} />;
+      return <Purchasesection func={toggle_npef} />;
     }
     return <div className="fs-2">Nothing Selected</div>;
   };
   return (
     <>
-      <section className={`PEdetailssection position-absolute mt-1 d-${peidw} bg-seashell`} >
-        {<PEitemdetailssection func={toggle_peidw} />}
-      </section>
-
       <section className={`pharmacy position-relative d-${pharmacy}`}>
         <div className="pharmacysection">
           <div className="container-fluid pharmacytabsection">
@@ -1032,27 +1055,19 @@ function Pharmacy() {
               {menu.map((e, i) => {
                 return (
                   <div className="col-auto">
-                    <button
-                      className={`btn text-${i === menuindex ? "light" : "dark"
-                        } bg-${i === menuindex ? "charcoal" : "seashell"}`}
-                      onClick={(a) => setmenuindex(i)}
-                    >
-                      {e}
-                    </button>
+                    <button className={`btn text-${i === menuindex ? "light" : "dark"} bg-${i === menuindex ? "charcoal" : "seashell"}`} onClick={(a) => setmenuindex(i)} > {e} </button>
                   </div>
                 );
               })}
             </div>
           </div>
         </div>
-        <div className="ps-md-3 pt-4 " id="calender">
+        <div className="ms-1 text-charcoal75 fs-4 " id="calender">
           {<Livetime />}
         </div>
         <div className="p-0 m-0">{_selectedmenu(menuindex)}</div>
       </section>
-      <section
-        className={`newpurchaseentrysection position-absolute d-${npef}`}
-      >
+      <section className={`newpurchaseentrysection position-absolute d-${npef}`} >
         {<Newpurchaseentryform func={toggle_npef} />}
       </section>
     </>

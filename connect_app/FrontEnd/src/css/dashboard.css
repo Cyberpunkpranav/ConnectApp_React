@@ -23,54 +23,7 @@ body {
     background-color: var(--pearl);
 }
 
-/*---------------------------------------------------bodyscrollbar css-------------------------------------------------------------------- */
-body::-webkit-scrollbar {
-    height: 0.7rem;
-}
 
-body::-webkit-scrollbar-track {
-    background: var(--pearl);
-
-}
-
-body::-webkit-scrollbar-thumb {
-    background: var(--burntumber);
-    border-radius: 10px;
-}
-
-body::-webkit-scrollbar-thumb:hover {
-    background: #555;
-}
-
-/*---------------------------------------------------bodyscrollbar css-------------------------------------------------------------------- */
-
-/*--------------------------------------------------------scroolbar css------------------------------------------------------------------- */
-.scroll {
-    padding: 1px;
-    overflow-x: auto;
-    overflow-y: hidden;
-    white-space: nowrap;
-    height: max-content;
-}
-
-.scroll::-webkit-scrollbar {
-    height: 0.4rem;
-}
-
-.scroll::-webkit-scrollbar-track {
-    background: var(--seashell);
-}
-
-.scroll::-webkit-scrollbar-thumb {
-    background: var(--burntumber);
-    border-radius: 65rem;
-}
-
-.scroll::-webkit-scrollbar-thumb:hover {
-    background: #555;
-}
-
-/*--------------------------------------------------------scroolbar css------------------------------------------------------------------- */
 
 /*---------------------------------------------------------navbar css----------------------------------------------------------------------*/
 .navsection {
@@ -87,8 +40,6 @@ body::-webkit-scrollbar-thumb:hover {
 .navsection .addbtn {
     background-color: var(--burntumber);
     color: var(--pearl);
-    letter-spacing: 0.078rem;
-    width: 90%;
     max-width: 5rem;
     min-width: 4rem;
 }
@@ -299,10 +250,7 @@ body::-webkit-scrollbar-thumb:hover {
 } */
 
 /*---------------------------------------------------------------Doctor Section css-----------------------------------------------------------*/
-.doctorcontainer {
-    background-color: var(--seashell);
-    margin-top: 0.25rem;
-}
+
 
 .doctorsection {
     font-family: 'Urbanist', sans-serif;
@@ -425,12 +373,9 @@ body::-webkit-scrollbar-thumb:hover {
     color: var(--charcoal);
 }
 
-
 .patientsection {
     font-family: 'Urbanist', sans-serif;
 }
-
-
 
 .patientsection #livetime {
     font-weight: 800;

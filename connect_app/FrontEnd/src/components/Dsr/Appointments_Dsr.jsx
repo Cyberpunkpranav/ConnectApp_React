@@ -27,7 +27,6 @@ const Appointments_Dsr = (props) => {
     if (props.doctorid || props.fromdate || props.todate) {
       try {
         await axios.get(`${url}/DSR/appointments?from_date=${props.fromdate}&to_date=${props.todate}&admin_id=${adminid}&clinic_id=${props.clinicid}&doctor_id=${props.doctorid?props.doctorid:''}`).then((response) => {
-          console.log(response.data.data)
           response.data.data.appointments.map((data) => {
             listdata.push(data.doctor.id)
           })
@@ -55,7 +54,7 @@ const Appointments_Dsr = (props) => {
   }, [props.doctorid, props.fromdate, props.todate])
   // console.log(visibles)
   // console.log(Appointments)
-  console.log(props.doctorid)
+
   const reversefunction = (date) => {
     if (date !== undefined) {
       date = date.split("-").reverse().join("-")
@@ -279,7 +278,6 @@ return sum
   return sum
     }
 
-console.log(Appointments)
   return (
     <div className='Appointments_Dsrsection'>
       <div>

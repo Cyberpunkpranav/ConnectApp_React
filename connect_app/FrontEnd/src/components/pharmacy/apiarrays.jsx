@@ -1,4 +1,9 @@
+import axios from 'axios';
+import React ,{useState,useEffect,useContext} from 'react';
+import { URL } from '../../index';
+
 import '../../css/pharmacy.css';
+import Notiflix from 'notiflix';
 
 function Purchaseorderarray(props){
     let purchaseorderarr =[{
@@ -75,83 +80,9 @@ function Purchaseorderarray(props){
 }
 
 function Purchaseentryarray(props) {
-    let purchaseentryarr = [{
-        id: 1,
-        c1: "PE-14",
-        c2: "PO-14",
-        c3: <button className='button button-lightgreen rounded-5'>Pharmacy</button>,
-        c4: 'LCY-12342',
-        c5: '10/10/2022',
-        c6: '10,000',
-        c7: 'Lucky Distributor'
-    },
-    {
-        id: 2,
-        c1: "PE-14",
-        c2: "PO-14",
-        c3: <button className='button button-lightbrown rounded-5'>Consumables</button>,
-        c4: 'LCY-12342',
-        c5: '10/10/2022',
-        c6: '10,000',
-        c7: 'Lucky Distributor'
-    },
-    {
-        id: 3,
-        c1: "PE-14",
-        c2: "PO-14",
-        c3: <button className='button button-lightbrown rounded-5'>Consumables</button>,
-        c4: 'LCY-12342',
-        c5: '10/10/2022',
-        c6: '10,000',
-        c7: 'Lucky Distributor'
-    },
-    {
-        id: 4,
-        c1: "PE-14",
-        c2: "PO-14",
-        c3: <button className='button button-lightgreen rounded-5'>Pharmacy</button>,
-        c4: 'LCY-12342',
-        c5: '10/10/2022',
-        c6: '10,000',
-        c7: 'Lucky Distributor'
-    },
-    {
-        id: 5,
-        c1: "PE-14",
-        c2: "PO-14",
-        c3: <button className='button button-lightgreen rounded-5'>Pharmacy</button>,
-        c4: 'LCY-12342',
-        c5: '10/10/2022',
-        c6: '10,000',
-        c7: 'Lucky Distributor'
-    },
-    {
-        id: 6,
-        c1: "PE-14",
-        c2: "PO-14",
-        c3: <button className='button button-lightgreen rounded-5'>Pharmacy</button>,
-        c4: 'LCY-12342',
-        c5: '10/10/2022',
-        c6: '10,000',
-        c7: 'Lucky Distributor'
-    }
-    ];
+
     return (
-        <>{
-            purchaseentryarr.map((item, _key) => {
-                return <tr key={item.id}>
-                    <td>{item.c1}</td>
-                    <td>{item.c2}</td>
-                    <td>{item.c3}</td>
-                    <td>{item.c4}</td>
-                    <td>{item.c5}</td>
-                    <td>{item.c6}</td>
-                    <td>{item.c7}</td>
-                    <td><button className='btn'><img src={process.env.PUBLIC_URL + "/images/cart.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1" /></button><buttton className="btn" onClick={props.function2}><img src={process.env.PUBLIC_URL + "/images/archivebox.png"} alt="displaying_image" className="ms-1" style={{ width: "1.5rem" }} /></buttton></td>
-                    <td><button className="btn position-relative cursor-pointer more p-0 m-0"><img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" style={{ width: "1.5rem" }} /></button></td>
-                </tr>
-            })
-        }
+        <>
         </>
     )
 }
@@ -415,27 +346,7 @@ let PEitemdetailsarr = [
     },
 ]
 return (
-    <>{
-        PEitemdetailsarr.map((item, _key) => {
-            return <tr key={item.id}>
-                <td>{item.c1}</td>
-                <td>{item.c2}</td>
-                <td>{item.c3}</td>
-                <td>{item.c4}</td>
-                <td>{item.c5}</td>
-                <td>{item.c6}</td>
-                <td>{item.c7}</td>
-                <td>{item.c8}</td>
-                <td>{item.c9}</td>
-                <td>{item.c10}</td>
-                <td>{item.c11}</td>
-                <td>{item.c12}</td>
-                <td>{item.c13}</td>
-                <td><button className='btn'><img src={process.env.PUBLIC_URL + "/images/qrcode.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1" /></button></td>
-              
-            </tr>
-        })
-    }
+    <>
     </>
 )
 }
