@@ -95,7 +95,7 @@ body {
     top: 15%;
 }
 .searchlist{
-    z-index: 5000;
+    z-index: 3000;
 }
 .patientsearch input {
     text-align: center;

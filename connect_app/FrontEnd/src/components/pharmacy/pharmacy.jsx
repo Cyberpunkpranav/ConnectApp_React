@@ -109,26 +109,26 @@ function Purchaseentrysection(props) {
     <>
       <button className="button addentrypurchase button-charcoal position-absolute" onClick={props.function}><img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt='displaying_image' className="img-fluid" style={{ width: `1.5rem` }} />Entry Purchase</button>
       <div className="row p-0 m-0">
-        <div className="col-3 col-lg-2 align-self-center">
-          <h5 className=''>Purchase Entry</h5>
+        <div className="col-3 col-md-2 col-lg-2 align-self-center text-charcoal fw-bolder fs-6">
+          Purchase Entry
         </div>
-        <div className="col-6 col-xl-6 col-lg-8">
-          <div className="row bg-lightblue fw-bolder rounded-2 p-1 text-center justify-content-center">
-            <div className="col-3">
-              <select className='p-0 m-0 border-0 bg-lightblue fw-bolder text-charcoal' value={channel ? channel : ''} onChange={(e) => { setchannel(e.target.value) }}>
-                <option className='border-0' value='1'>Pharmacy</option>
-                <option className='border-0' value='2'>Consumables</option>
+        <div className="col-6 col-xl-6 col-lg-7 col-md-auto align-self-center m-1 ">
+          <div className="row border-burntumber fw-bolder rounded-2 text-center justify-content-center ">
+            <div className="col-4">
+              <select className='p-0 m-0 border-0 text-burntumber fw-bolder' value={channel ? channel : ''} onChange={(e) => { setchannel(e.target.value) }}>
+                <option className='border-0 text-burntumber fw-bolder' value='1'>Pharmacy</option>
+                <option className='border-0 text-burntumber fw-bolder' value='2'>Consumables</option>
               </select>
             </div>
-            <div className="col-3 bg-lightblue">
-              <input type='date' className='p-0 m-0 border-0 bg-lightblue fw-bolder text-charcoal ' value={fromdate ? fromdate : ''} onChange={(e) => { setfromdate(e.target.value) }} />
+            <div className="col-4 text-burntumber fw-bolder">
+              <input type='date' className='p-0 m-0 border-0 text-burntumber fw-bolder ' value={fromdate ? fromdate : ''} onChange={(e) => { setfromdate(e.target.value) }} />
             </div>
-            <div className="col-3 bg-lightblue">
-              <input type='date' className='p-0 m-0 border-0 bg-lightblue fw-bolder text-charcoal ' value={todate ? todate : ''} onChange={(e) => { settodate(e.target.value) }} />
+            <div className="col-4 text-burntumber fw-bolder">
+              <input type='date' className='p-0 m-0 border-0 text-burntumber fw-bolder ' value={todate ? todate : ''} onChange={(e) => { settodate(e.target.value) }} />
             </div>
           </div>
         </div>
-        <div className="col-2">
+        <div className="col-2 align-self-center">
         <ExportPurchaseEntry purchaseentryarr={purchaseentryarr} fromdate={reversefunction(fromdate)} todate={reversefunction(todate)}/>
         </div>
       </div>

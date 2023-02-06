@@ -33,28 +33,36 @@ import '../node_modules/bootstrap/js/dist/dropdown';
 //Notiflix
 import Notiflix from 'notiflix';
 import { customconfirm } from "./components/features/notiflix/customconfirm"
-//CSV
-// import {CSVLink} from 'react-csv'
+
 
 function Navbar(props) {
-  // const [chat,setchat]=useState('')
-  // const [chatarr,setchatarr] =useState([''])
-  //  var client  =  new websocket('ws://localhost:3500/chat')
-  //  let chatarray =[]
-  //   function sendmessage(){
-  //     client.onopen = function Chatopened(){
-  //       console.log("connection established")
-  //    }
+  const chatinputref =useRef()
+  const [chat,setchat]=useState('')
+  const [chatarr,setchatarr] =useState([])
+  const[openchat,setopenchat]=useState('none')
+   var client  =  new websocket('ws://localhost:3500/chat')
+   let chatarray =[]
+   
+ 
+     function sendmessage(){
+      chatinputref.current.value=''
+      client.onopen = function Chatopened(){
+        console.log("connection established")
+              client.send(chat)
+     }
 
-  //     client.send(chat)
+      client.onmessage =function message(e){
+        console.log("message sent")
+          chatarray.push(e.data)
+          setchatarr(prevState=>[...prevState,chatarray])
+       }
+       client.close=function clientclosed(){
+        console.log('client closed')
+       }
+     }
 
-  //    }
-  //    client.onmessage =function message(e){
-  //     console.log("message recieved")
-  //       chatarray.push(e.data)
 
-  //    }
-  //    console.log(chatarray)
+     console.log(chatarr)
   const [addoption, setaddoption] = useState("none");
   const toggleaddoption = () => {
     if (addoption === "none") {
@@ -211,8 +219,8 @@ function Navbar(props) {
               </div>
             </div>
             <div className="col-lg-2 col-xl-3 col-md-2 col-sm-2 ms-md-2 align-self-center order-sm-2 order-2 position-relative p-0 m-0" style={{ zIndex: '1000' }}>
-              <input type="text" className="bg-seashell border border-1 rounded-1 text-center border-0 position-relative" placeholder="search" onChange={(e) => setsearchtext(e.target.value)} />
-              <div className="position-absolute bg-seashell end-0 shadow rounded-2">
+              <input type="text" className="bg-seashell border border-1 w-75 rounded-1 text-center border-0 position-relative" placeholder="search" onChange={(e) => setsearchtext(e.target.value)} />
+              <div className="position-absolute bg-pearl end-0 shadow rounded-2 mt-2">
                 <SearchField searchtext={searchtext} fetchapi={props.fetchapi} />
               </div>
             </div>
@@ -236,14 +244,21 @@ function Navbar(props) {
           <div></div>
         )
       }
-
-      {/* <div className="position-absolute bottom-0 end-0 me-2 mb-1 d-block" style={{zIndex:1000}}>
-      <div className="bg-seashell scroll" style={{maxHeight:'9rem'}}>{chatarr.map((data)=>(
-        <p>{data}</p>
-      ))}</div>
-        <input onChange={(e)=>{setchat(e.target.value)}}/>
-        <button className="btn ms-1 btn-sm btn-success" onClick={sendmessage}>Send</button>
-      </div> */}
+      
+      <div className="position-absolute bottom-0 end-0 me-5 mb-3 d-block" style={{zIndex:1000}}>
+       <button className={`btn p-0 m-0 d-${openchat=='block'?'none':'block'}`} onClick={()=>{openchat=='none'?setopenchat('block'):setopenchat('none')}}><img src={process.env.PUBLIC_URL + 'images/chat.png'} style={{width:'2.5rem'}}/></button> 
+        <div className={`container d-${openchat =='none'?'none':'block'}`}>
+        <div className="bg-lightgreen border border-1 rounded-2 overflow-scroll" style={{maxHeight:'15rem'}}>
+          {
+            chatarr.flat().map((data)=>(
+            <div className="text-end me-2">{data}</div>
+            ))}</div>
+      <button className="btn btn-close" onClick={()=>{openchat=='none'?setopenchat('block'):setopenchat('none')}}></button>
+        <input className="bg-seashell rounded-2 border border-1" ref={chatinputref} onBlur={(e)=>{setchat(e.target.value)}}/>
+        <button className="btn p-0 m-0" onClick={sendmessage}><img src={process.env.PUBLIC_URL + 'images/completed.png'} style={{width:'1.8rem'}}/></button>
+        </div>
+    
+      </div>
     </>
   );
 }
@@ -1081,26 +1096,13 @@ function Newpurchaseentryform(props) {
         <div className="container-fluid bg-seashell border border-2 border-top-0 border-start-0 border-end-0 ">
           <div className="row p-2">
             <div className="col-1">
-              <button
-                type="button"
-                className="btn-close closebtn m-auto"
-                onClick={props.func}
-                aria-label="Close"
-              ></button>
+              <button type="button" className="btn-close closebtn m-auto" onClick={props.func} aria-label="Close" ></button>
             </div>
             <div className="col-9">
-              <h6
-                className="text-center"
-                style={{ color: "var(--charcoal)", fontWeight: "600" }}
-              >
-                New Purchase Entry
-              </h6>
+              <h6 className="text-center" style={{ color: "var(--charcoal)", fontWeight: "600" }} > New Purchase Entry </h6>
             </div>
             <div className="col-auto">
-              <button className="button button-charcoal py-1 px-4">
-                <img />
-                Invoice
-              </button>
+              <button className="button button-charcoal py-1 px-4"> <img /> Invoice </button>
             </div>
           </div>
         </div>
