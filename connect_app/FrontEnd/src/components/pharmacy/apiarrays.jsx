@@ -79,13 +79,7 @@ function Purchaseorderarray(props){
     )
 }
 
-function Purchaseentryarray(props) {
 
-    return (
-        <>
-        </>
-    )
-}
 
 
 function Pharmacystocktable(){
@@ -113,104 +107,7 @@ function Pharmacystocktable(){
     )
 }
 
-function Newpurchaseentryarray(){
-    let Newpurchasearr = [{
-        c1:'M21',
-        c2:'Dolo 650',
-        c3:'LCY-12342',
-        c4:'10/10/2022',
-        c5:'300',
-        c6:'250',
-        c7:'10%',
-        c8:'280'
-    },
-    {
-        c1:'M21',
-        c2:'Metamucil Gel',
-        c3:'LCY-12342',
-        c4:'10/10/2022',
-        c5:'300',
-        c6:'250',
-        c7:'10%',
-        c8:'280'
-    },
-    {
-        c1:'M21',
-        c2:'Pentocid',
-        c3:'LCY-12342',
-        c4:'10/10/2022',
-        c5:'300',
-        c6:'250',
-        c7:'10%',
-        c8:'280'
-    },
-    {
-        c1:'M21',
-        c2:'Rizact 10',
-        c3:'LCY-12342',
-        c4:'10/10/2022',
-        c5:'300',
-        c6:'250',
-        c7:'10%',
-        c8:'280'
-    },
-    {
-        c1:'M21',
-        c2:'Dolo 650',
-        c3:'LCY-12342',
-        c4:'10/10/2022',
-        c5:'300',
-        c6:'250',
-        c7:'10%',
-        c8:'280'
-    },
-    {
-        c1:'M21',
-        c2:'Metamucil Gel',
-        c3:'LCY-12342',
-        c4:'10/10/2022',
-        c5:'300',
-        c6:'250',
-        c7:'10%',
-        c8:'280'
-    },
 
-];
-    return(
-        <>
-        <table className="table scroll datatable text-center">
-        <thead style={{color:'gray',fontWeight:'600'}}>
-          <tr>
-            <th></th>
-            <th>Item ID</th>
-            <th>Item Name</th>
-            <th>batch No.</th>
-            <th>Expiry Date</th>
-            <th>MRP</th>
-            <th>Rate</th>
-            <th>Total Disc</th>
-            <th>Cost</th>
-          </tr>
-        </thead>
-        <tbody style={{color:'var(--charcoal)',fontWeight:'600'}}>
-        {
-            Newpurchasearr.map((item,_key) => {
-            return<tr key={_key}>
-            <td><input type='checkbox' className='bg-seashell'/></td>
-            <td>{item.c1}</td>
-            <td>{item.c2}</td>
-            <td>{item.c3}</td>
-            <td>{item.c4}</td>
-            <td>{item.c5}</td>
-            <td>{item.c6}</td>
-            <td>{item.c7}</td>
-            <td>{item.c8}</td>
-          </tr>
-        })}
-        </tbody>
-      </table></> 
-    )
-}
 
 function POitemdetailsarray(){
     let POitemdetailsarr = [
@@ -351,9 +248,8 @@ return (
 )
 }
 export{Purchaseorderarray};
-export {Purchaseentryarray };
 export {Pharmacystocktable};
-export{Newpurchaseentryarray};
+
 export{POitemdetailsarray};
 export{PEitemdetailsarray};
 

@@ -6,7 +6,7 @@ import { w3cwebsocket as websocket } from 'websocket'
 import { URL, TodayDate, DoctorsList, Doctorapi } from '../src/index'
 //Components
 import { DoctorSchedule, Timecard } from "./components/Today/Doctor"
-import { Purchasesection, Stocksection, PEitemdetailssection, } from "./components/pharmacy/pharmacy"
+import { Salesection, Purchasesection, Stocksection, PEitemdetailssection, } from "./components/pharmacy/pharmacy"
 import { Livetime } from "./components/features/livetime"
 import { Newpurchaseentryarray } from "./components/pharmacy/apiarrays"
 import { AddAppointment } from './components/Today/AddAppointment'
@@ -36,33 +36,31 @@ import { customconfirm } from "./components/features/notiflix/customconfirm"
 
 
 function Navbar(props) {
-  const chatinputref =useRef()
-  const [chat,setchat]=useState('')
-  const [chatarr,setchatarr] =useState([])
-  const[openchat,setopenchat]=useState('none')
-   var client  =  new websocket('ws://localhost:3500/chat')
-   let chatarray =[]
-   
- 
-     function sendmessage(){
-      chatinputref.current.value=''
-      client.onopen = function Chatopened(){
-        console.log("connection established")
-              client.send(chat)
-     }
-
-      client.onmessage =function message(e){
-        console.log("message sent")
-          chatarray.push(e.data)
-          setchatarr(prevState=>[...prevState,chatarray])
-       }
-       client.close=function clientclosed(){
-        console.log('client closed')
-       }
-     }
+  const chatinputref = useRef()
+  const [chat, setchat] = useState('')
+  const [chatarr, setchatarr] = useState([])
+  const [openchat, setopenchat] = useState('none')
+  var client = new websocket('ws://localhost:3500/chat')
+  let chatarray = []
 
 
-     console.log(chatarr)
+  function sendmessage() {
+    chatinputref.current.value = ''
+    client.onopen = function Chatopened() {
+      console.log("connection established")
+      client.send(chat)
+    }
+
+    client.onmessage = function message(e) {
+      console.log("message sent")
+      chatarray.push(e.data)
+      setchatarr(prevState => [...prevState, chatarray])
+    }
+    client.close = function clientclosed() {
+      console.log('client closed')
+    }
+  }
+
   const [addoption, setaddoption] = useState("none");
   const toggleaddoption = () => {
     if (addoption === "none") {
@@ -203,10 +201,10 @@ function Navbar(props) {
               <div className="row p-0 m-0 gx-auto justify-content-center">
                 {
                   NavbarIcons.map((data, i) => (
-                  <div className={`col-auto bg-${highlighticon ? highlighticon === data.path ? 'burntumber50' : 'seashell' : path === data.path ? 'burntumber50' : 'seashell'} rounded-2 `} onClick={() => sethighlighticon(data.path)}>
-                    <Link to={data.path} className="text-decoration-none"> <div className="text-center"> <img src={process.env.PUBLIC_URL + data.image} alt="displaying_image" className="img-fluid" style={{ width: `1.5rem` }} /><p className="col-12 m-0">{data.title}</p> </div> </Link>
-                  </div>
-                ))
+                    <div className={`col-auto bg-${highlighticon ? highlighticon === data.path ? 'burntumber50' : 'seashell' : path === data.path ? 'burntumber50' : 'seashell'} rounded-2 `} onClick={() => sethighlighticon(data.path)}>
+                      <Link to={data.path} className="text-decoration-none"> <div className="text-center"> <img src={process.env.PUBLIC_URL + data.image} alt="displaying_image" className="img-fluid" style={{ width: `1.5rem` }} /><p className="col-12 m-0">{data.title}</p> </div> </Link>
+                    </div>
+                  ))
                 }
               </div>
             </div>
@@ -244,20 +242,20 @@ function Navbar(props) {
           <div></div>
         )
       }
-      
-      <div className="position-absolute bottom-0 end-0 me-5 mb-3 d-block" style={{zIndex:1000}}>
-       <button className={`btn p-0 m-0 d-${openchat=='block'?'none':'block'}`} onClick={()=>{openchat=='none'?setopenchat('block'):setopenchat('none')}}><img src={process.env.PUBLIC_URL + 'images/chat.png'} style={{width:'2.5rem'}}/></button> 
-        <div className={`container d-${openchat =='none'?'none':'block'}`}>
-        <div className="bg-lightgreen border border-1 rounded-2 overflow-scroll" style={{maxHeight:'15rem'}}>
-          {
-            chatarr.flat().map((data)=>(
-            <div className="text-end me-2">{data}</div>
-            ))}</div>
-      <button className="btn btn-close" onClick={()=>{openchat=='none'?setopenchat('block'):setopenchat('none')}}></button>
-        <input className="bg-seashell rounded-2 border border-1" ref={chatinputref} onBlur={(e)=>{setchat(e.target.value)}}/>
-        <button className="btn p-0 m-0" onClick={sendmessage}><img src={process.env.PUBLIC_URL + 'images/completed.png'} style={{width:'1.8rem'}}/></button>
+
+      <div className="position-absolute bottom-0 end-0 me-5 mb-3 d-block" style={{ zIndex: 1000 }}>
+        <button className={`btn p-0 m-0 d-${openchat == 'block' ? 'none' : 'block'}`} onClick={() => { openchat == 'none' ? setopenchat('block') : setopenchat('none') }}><img src={process.env.PUBLIC_URL + 'images/chat.png'} style={{ width: '2.5rem' }} /></button>
+        <div className={`container d-${openchat == 'none' ? 'none' : 'block'}`}>
+          <div className="bg-lightgreen border border-1 rounded-2 overflow-scroll" style={{ maxHeight: '15rem' }}>
+            {
+              chatarr.flat().map((data) => (
+                <div className="text-end me-2">{data}</div>
+              ))}</div>
+          <button className="btn btn-close" onClick={() => { openchat == 'none' ? setopenchat('block') : setopenchat('none') }}></button>
+          <input className="bg-seashell rounded-2 border border-1" ref={chatinputref} onBlur={(e) => { setchat(e.target.value) }} />
+          <button className="btn p-0 m-0" onClick={sendmessage}><img src={process.env.PUBLIC_URL + 'images/completed.png'} style={{ width: '1.8rem' }} /></button>
         </div>
-    
+
       </div>
     </>
   );
@@ -314,12 +312,12 @@ function Doctorsection(props) {
             ) : (
               props.todayDoc.map((data, i) => (
                 <>
-                <div className='col-auto p-0 m-0'>
-                  <button key={i} className={`button rounded-3 p-0 m-0 py-1 px-2 btn-sm col-auto shadow-none text-${i === Doctor ? 'light' : 'charcoal75 fw-bolder'} button-${i === Doctor ? "charcoal" : "seashell"} border-${i === Doctor ? 'secondary' : 'none'}`} autoFocus={i === Doctor ? true : false} onFocus={() => { setDoctorID(data[0]); setDoctorName(data[1]); setDocClinic(data[2]) }} value={`${data[0]}.${data[1]}`} onClick={(a) => { setDoctor(i); }}>{`${data[0]}. Dr.${data[1]}`} </button>
-        
-                </div>
-              <div className='vr rounded-2 h-75 align-self-center'style={{padding:'0.8px'}}></div>
-              </>
+                  <div className='col-auto p-0 m-0'>
+                    <button key={i} className={`button rounded-3 p-0 m-0 py-1 px-2 btn-sm col-auto shadow-none text-${i === Doctor ? 'light' : 'charcoal75 fw-bolder'} button-${i === Doctor ? "charcoal" : "seashell"} border-${i === Doctor ? 'secondary' : 'none'}`} autoFocus={i === Doctor ? true : false} onFocus={() => { setDoctorID(data[0]); setDoctorName(data[1]); setDocClinic(data[2]) }} value={`${data[0]}.${data[1]}`} onClick={(a) => { setDoctor(i); }}>{`${data[0]}. Dr.${data[1]}`} </button>
+
+                  </div>
+                  <div className='vr rounded-2 h-75 align-self-center' style={{ padding: '0.8px' }}></div>
+                </>
               ))
             )}
           <div className='col-auto'>
@@ -335,10 +333,10 @@ function Doctorsection(props) {
       <section className="patientsection border-start p-0 m-0 border-5 border-dark border-opacity-50 position-relative">
         <div className="container-fluid p-0 m-0">
           <div className="row m-0 p-0 align-items-center">
-              <span className='col-auto fs-4 text-charcoal fw-bold'>{currentDate}</span>
-              <div className=' col-auto vr align-self-center h-75' style={{padding:'0.8px'}}></div>
-              <span className='col-auto fs-5'><Timer /></span>
- 
+            <span className='col-auto fs-4 text-charcoal fw-bold'>{currentDate}</span>
+            <div className=' col-auto vr align-self-center h-75' style={{ padding: '0.8px' }}></div>
+            <span className='col-auto fs-5'><Timer /></span>
+
           </div>
         </div>
         {
@@ -845,7 +843,7 @@ function Doctors() {
   useEffect(() => {
     getAllDoctors()
   }, [Doctorssearch])
-  console.log(Doctorslist)
+
   async function getnextpages(e) {
     getAllDoctors(e.target.value)
   }
@@ -863,7 +861,7 @@ function Doctors() {
       setupdatedoctor('none')
     }
   }
-  console.log(Doctorslist)
+
   return (
     <section className="Doctorspage text-center position-relative">
       <div className="conatainer">
@@ -1028,26 +1026,13 @@ function DailySaleReport(props) {
 
 function Pharmacy() {
   const url = useContext(URL)
-  let menu = ["Sale Orders", "Stock Info", "Purchase"];
-  const [menuindex, setmenuindex] = useState(1);
-  const [npef, setnpef] = useState("none");
-
-  const [pharmacy, setpharmacy] = useState("block");
-
-  const toggle_npef = () => {
-    if (npef === "none") {
-      setnpef("block");
-      setpharmacy("none");
-    }
-    if (npef === "block") {
-      setnpef("none");
-      setpharmacy("block");
-    }
-  };
-
+  let menu = ["Sale", "Stock Info", "Purchase"];
+  const [menuindex, setmenuindex] = useState(2);
   const _selectedmenu = (_menu) => {
     if (_menu === 0) {
-      return <div className="">{_menu}</div>;
+      return <div className="">
+        <Salesection />
+      </div>;
     }
     if (_menu === 1) {
       return (
@@ -1057,13 +1042,13 @@ function Pharmacy() {
       );
     }
     if (_menu === 2) {
-      return <Purchasesection func={toggle_npef} />;
+      return <Purchasesection />;
     }
     return <div className="fs-2">Nothing Selected</div>;
   };
   return (
     <>
-      <section className={`pharmacy position-relative d-${pharmacy}`}>
+      <section className={`pharmacy position-relative`}>
         <div className="pharmacysection">
           <div className="container-fluid pharmacytabsection">
             <div className="row py-2">
@@ -1082,303 +1067,12 @@ function Pharmacy() {
         </div>
         <div className="p-0 m-0">{_selectedmenu(menuindex)}</div>
       </section>
-      <section className={`newpurchaseentrysection position-absolute d-${npef}`} >
-        {<Newpurchaseentryform func={toggle_npef} />}
-      </section>
+
     </>
   );
 }
 
-function Newpurchaseentryform(props) {
-  return (
-    <section className="newpurchaseentryform mt-1">
-      <div className="container-fluid p-0 m-0">
-        <div className="container-fluid bg-seashell border border-2 border-top-0 border-start-0 border-end-0 ">
-          <div className="row p-2">
-            <div className="col-1">
-              <button type="button" className="btn-close closebtn m-auto" onClick={props.func} aria-label="Close" ></button>
-            </div>
-            <div className="col-9">
-              <h6 className="text-center" style={{ color: "var(--charcoal)", fontWeight: "600" }} > New Purchase Entry </h6>
-            </div>
-            <div className="col-auto">
-              <button className="button button-charcoal py-1 px-4"> <img /> Invoice </button>
-            </div>
-          </div>
-        </div>
-        <div className="container-fluid entrydetails bg-pearl">
-          <div className="row">
-            <div className="col-8">
-              <div className="container m-2">
-                <div className="row align-items-center">
-                  <div className="col-auto">
-                    <div className="row">
-                      <div className="col-auto">
-                        <input type="checkbox" className="" />
-                      </div>
-                      <div className="col-auto">
-                        <span className="ms-0">Pharmacy</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-auto">
-                    <div className="row">
-                      <div className="col-auto">
-                        <input type="checkbox" className="" />
-                      </div>
-                      <div className="col-auto">
-                        <span className="ms-0">Clinic</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="col-8">
-                <div className="row g-4">
-                  <div className="col-5">
-                    <h6 className="p-0 m-0 ms-3 fw-bold">Select PO</h6>
-                    <select
-                      className="form-control ms-2 rounded-1"
-                      style={{ color: "gray" }}
-                    >
-                      <option defaultValue="Enter PO">Enter PO</option>
-                    </select>
-                  </div>
-                  <div className="col-5">
-                    <h6 className="p-0 m-0 ms-3 fw-bold">Select Vendor</h6>
-                    <select
-                      className="form-control ms-2 rounded-1"
-                      style={{ color: "gray" }}
-                    >
-                      <option defaultValue="Enter PO">Enter Name</option>
-                    </select>
-                  </div>
-                  <div className="col-5">
-                    <h6 className="p-0 m-0 ms-3 fw-bold">Invoice Number</h6>
-                    <input
-                      type="number"
-                      placeholder="Enter No."
-                      className="form-control ms-2 rounded-1"
-                      style={{ color: "gray" }}
-                    />
-                  </div>
-                  <div className="col-5">
-                    <h6 className="p-0 m-0 ms-3 fw-bold">Invoice Date</h6>
-                    <input
-                      type="date"
-                      className="form-control ms-2 rounded-1"
-                      style={{ color: "gray" }}
-                    />
-                  </div>
-                </div>
-                <div className="col-3 mt-3 ms-3">
-                  <button className="button button-charcoal py-1 px-4">
-                    <img
-                      src={process.env.PUBLIC_URL + "/images/addiconwhite.png"}
-                      alt="displaying_image"
-                      style={{ width: "1.5rem" }}
-                    />
-                    Medicine
-                  </button>
-                </div>
-              </div>
-              <div className="container newpurchaseentrytable mt-4">
-                {<Newpurchaseentryarray />}
-              </div>
-            </div>
-            <div className="col-4 medicineinfosection bg-seashell ps-2">
-              <h5 className="mt-2">Medicine</h5>
-              <form className="col-12">
-                <div className="form-group col-10 py-3">
-                  <label className="mb-2">Batch Number</label>
-                  <input
-                    type="number"
-                    max="10"
-                    className="form-control bg-seashell batchnumber rounded-1"
-                    id="inputEmail4"
-                    placeholder="Batch Number"
-                    required
-                  />
-                  <label className="pt-3 mb-2">Expiry Date</label>
-                  <input
-                    type="Date"
-                    className="form-control bg-seashell reounded-1 expirydate"
-                    required
-                  />
-                  <label className="pt-3 mb-2">Manufacturing Date</label>
-                  <input
-                    type="Date"
-                    className="form-control bg-seashell reounded-1 manufacturingdate"
-                    required
-                  />
-                </div>
-                <div className="col-12 form-group">
-                  <div className="row">
-                    <div className="col-5">
-                      <label className="mb-2">MRP</label>
-                      <input
-                        type="number"
-                        max="10"
-                        className="form-control bg-seashell mrp rounded-1  m-auto"
-                        placeholder="00"
-                        required
-                      />
-                    </div>
-                    <div className="col-5">
-                      <label className="mb-2"> Rate</label>
-                      <input
-                        type="number"
-                        max="10"
-                        className="form-control bg-seashell rate rounded-1  m-auto"
-                        placeholder="00"
-                        required
-                      />
-                    </div>
-                  </div>
-                  <div className="row mt-2">
-                    <div className="col-5">
-                      <label className="mb-2">Discount &#40;%&#41;</label>
-                      <input
-                        type="number"
-                        max="10"
-                        className="form-control bg-seashell mrp rounded-1  m-auto"
-                        placeholder="00"
-                        required
-                      />
-                    </div>
-                    <div className="col-5 pb-3">
-                      <label className="mb-2">Trade Discount &#40;%&#41;</label>
-                      <input
-                        type="number"
-                        max="10"
-                        className="form-control bg-seashell rate rounded-1  m-auto"
-                        placeholder="00"
-                        required
-                      />
-                    </div>
-                    <hr />
-                    <div className="col-12 ps-2 py-2">
-                      <div className="row align-items-center">
-                        <div className="col-2 ">
-                          <h6>SGST</h6>
-                        </div>
-                        <div className="col-5">
-                          <input
-                            type="number"
-                            max="10"
-                            className="form-control bg-seashell mrp rounded-1  m-auto"
-                            placeholder="00"
-                            required
-                          />
-                        </div>
-                        <div className="col-3">
-                          <input
-                            type="number"
-                            max="10"
-                            className="form-control bg-seashell mrp rounded-1  m-auto"
-                            placeholder="Rate"
-                            required
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-12 ps-2 py-2">
-                      <div className="row align-items-center">
-                        <div className="col-2">
-                          <h6>CGST</h6>
-                        </div>
-                        <div className="col-5">
-                          <input
-                            type="number"
-                            max="10"
-                            className="form-control bg-seashell mrp rounded-1  m-auto"
-                            placeholder="00"
-                            required
-                          />
-                        </div>
-                        <div className="col-3">
-                          <input
-                            type="number"
-                            max="10"
-                            className="form-control bg-seashell mrp rounded-1  m-auto"
-                            placeholder="Rate"
-                            required
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-12 ps-2 py-2">
-                      <div className="row align-items-center">
-                        <div className="col-2 ">
-                          <h6>IGST</h6>
-                        </div>
-                        <div className="col-5">
-                          <input
-                            type="number"
-                            max="10"
-                            className="form-control bg-seashell mrp rounded-1  m-auto"
-                            placeholder="00"
-                            required
-                          />
-                        </div>
-                        <div className="col-3">
-                          <input
-                            type="number"
-                            max="10"
-                            className="form-control bg-seashell mrp rounded-1  m-auto"
-                            placeholder="Rate"
-                            required
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <hr />
-                <div className="col-12 form-group">
-                  <div className="row g-3">
-                    <div className="col-5">
-                      <label className="mb-2">Cost/Unit</label>
-                      <input
-                        type="number"
-                        max="10"
-                        className="form-control bg-seashell costunit rounded-1"
-                        placeholder="00"
-                        required
-                      />
-                    </div>
-                    <div className="col-5">
-                      <label className="mb-2">Total Amount</label>
-                      <input
-                        type="number"
-                        max="10"
-                        className="form-control bg-seashell totalamount rounded-1"
-                        placeholder="00"
-                        required
-                      />
-                    </div>
-                  </div>
-                </div>
 
-                <div className="col-6 py-3 m-auto text-center">
-                  <button
-                    type="submit"
-                    className="btn  button-charcoal done px-5"
-                  >
-                    Done
-                  </button>
-                </div>
-                <div className="col-6 pb-2 m-auto text-center">
-                  <button className="btn btn-light px-5">Reset</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
 
 export { Navbar };
 export { Doctorsection };

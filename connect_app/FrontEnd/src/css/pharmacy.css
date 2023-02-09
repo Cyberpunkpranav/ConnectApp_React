@@ -56,27 +56,25 @@ margin-top: 0.25rem;
     left:25%;
     right:25%;
     top:-25%;
-
     box-shadow: 0px 0px 0px 1600px#22202370;
-
 }
 
 .closebtn{
     top:0.35rem;
     right:1rem;
 }
+.newpurchaseentrysection{
+    margin-top: -14vh;
+}
 .newpurchaseentryform{
     z-index: 2;
 }
-.newpurchaseentrytable{
-    overflow-y: scroll;
-    height:17rem;
-}
-.medicineinfosection{
-    overflow-y:scroll;
-    height:33rem;
-}
 
+.medicineinfosection{
+    overflow-y: scroll;
+    height:83vh;
+
+}
 .medicinesearch,.vaccinesearch,.PEsearch{
     box-sizing: border-box;
     padding-left:3rem;
@@ -94,4 +92,19 @@ margin-top: 0.25rem;
     left:0;
     right:0;
     box-shadow: 100vh 100vh 100vh 100vh var(--charcoal50);
+}
+@media  (max-width:768px) {
+    .newpurchaseentrysection{
+        margin-top:-13vh;
+    }
+}
+@media (min-width:769px) and (max-width:1024px) {
+    .newpurchaseentrysection{
+        margin-top:-18vh;
+    }
+}
+@media (min-width:1025px) and (max-width:1300px ) {
+    .newpurchaseentrysection{
+        margin-top:-16vh;
+    }
 }

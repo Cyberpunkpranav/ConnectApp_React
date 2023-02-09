@@ -12,7 +12,7 @@
     "bootstrap": "^5.2.2",
     "file-saver": "^2.0.5",
     "jotai": "^1.12.1",
-    "netlify-cli": "^12.7.2",
+    "netlify-cli": "^12.10.0",
     "notiflix": "^3.2.5",
     "popper.js": "^1.16.1",
     "react": "^18.2.0",

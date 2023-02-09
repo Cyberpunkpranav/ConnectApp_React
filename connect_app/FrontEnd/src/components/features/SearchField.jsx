@@ -22,7 +22,7 @@ const SearchField = (props) => {
             setsearchload(false)
         })
 
-        if (props.searchtext.length > 1) {
+        if (props.searchtext && props.searchtext.length > 1) {
             setdisplaysearchlist('block');
         } else {
             setdisplaysearchlist('none');
@@ -52,7 +52,7 @@ const SearchField = (props) => {
                     <div className="row p-0 m-0 text-charcoal75 fs-6 rounded-2" style={{width:'50vh'}}>Loading... </div>
                 ) : (
                     searchlist.length == 0 ? (
-                        <div className="text-danger btn fs-6 p-0 m-0" style={{width:'50vh'}}>Patient not found add as new to book appointments</div>
+                        <div className="text-danger btn fs-6 p-0 m-0" style={{width:'50vh'}}>Patient not found. Add as new to book appointments</div>
                     ) : (
                         searchlist.map((data) => (
                             <div className='row p-0 m-0 bg-pearl p-1 border-top rounded-bottom' style={{width:'50vh'}}>
