@@ -757,9 +757,8 @@ function SaleEntryForm(props) {
   const [products, setproducts] = useState([])
   const [itemsearch, setitemsearch] = useState([''])
   const [itemname, setitemname] = useState()
-  const[item,setitem]=useState()
+  const [item,setitem]=useState()
   const [itemid, setitemid] = useState()
-  const [itemqty, setitemqty] = useState()
   const [loadsearch, setloadsearch] = useState()
   const searchpatient = (e) => {
     setsearchload(true)
@@ -774,7 +773,13 @@ function SaleEntryForm(props) {
       setdisplaysearchlist('none');
     }
   }
+  const reversefunction = (date) => {
+    if (date) {
+      date = date.split("-").reverse().join("-")
+      return date
+    }
 
+  }
   const get_value = (id, name) => {
     setsearchinput(name)
     setpatientid(id)
@@ -814,16 +819,17 @@ function SaleEntryForm(props) {
 
   function AddProducts() {
     let ProductDetails = {
-      productid: products.id,
-      product : products.name,
-      quantity: '',
-      discount: '',
-      discmrp: '',
-      mainmrp: '',
-      gst: '',
-      totalamt: ''
+      productid: item.id,
+      product : itemname,
+      expiry : item.expiry_date,
+      quantity: item.current_stock,
+      discount: item.discount,
+      discmrp: item.cost,
+      mainmrp: item.mrp,
+      gst: Number(item.CGST_rate) + Number(item.SGST_rate) + Number(item.IGST_rate),
 
     }
+    console.log(ProductDetails)
     let ProductArr = []
     for (let i = 0; i < products.length; i++) {
     }
@@ -860,7 +866,7 @@ function SaleEntryForm(props) {
     }
   }
   console.log(patientid, doctorid, doctorname, Dc, itemname, itemid)
-  console.log(products)
+  console.log(item)
   return (
     <>
       <div className="container-fluid p-0 m-0 p-2 rounded-2">
@@ -987,7 +993,7 @@ function SaleEntryForm(props) {
               <div className="col-4">
                 <label>Search Product </label>
                 <input className='form-control bg-seashell' placeholder='Search Product' onChange={(e) => { searchmeds(e.target.value); setitemname(e.target.value); setitemid();setproducts();stockref.current.style.display = 'none' }} />
-                <div ref={medicinesref} className='position-absolute  rounded-2 bg-pearl mt-1' style={{ Width: 'max-content' }} >
+                <div ref={medicinesref} className='position-absolute scroll scroll-y overflow-scroll rounded-2 mt-1' style={{ Width: 'max-content',zIndex:'1',maxHeight:'10rem' }} >
                   {
                     itemsearch ? (
                       loadsearch ? (
@@ -1008,11 +1014,11 @@ function SaleEntryForm(props) {
                     ) : (<></>)
                   }
                 </div>
-                <div ref={stockref} className="position-absolute rounded-2 shadow bg-pearl border border-1" style={{marginLeft:'13.5rem',marginTop:'2rem'}}>
+                <div ref={stockref} className="position-absolute scroll scroll-y overflow-scroll" style={{marginLeft:'13.5rem',marginTop:'2rem',maxHeight:'10rem',zIndex:'2'}}>
                   {
                     products && products.length !==0 ? (
                       products.stock_info.map((data,i)=>(
-                        <div className={`bg-${((i % 2) == 0) ? 'pearl' : 'lightblue'}`} onClick={()=>{setitem(data)}}>{itemname}| {data.batch_no && data.batch_no!==null?data.batch_no:''} | {data.current_stock&&data.current_stock?data.current_stock:''} | {data.expiry_date?data.expiry_date:''}</div>
+                        <div className={`bg-${((i % 2) == 0) ? 'pearl' : 'lightblue'}`} onClick={()=>{setitem(data);AddProducts()}}>{itemname}| batchNo.-: {data.batch_no && data.batch_no!==null?data.batch_no:''} | stock-:{data.current_stock&&data.current_stock?data.current_stock:''} | expiry-:{data.expiry_date?reversefunction(data.expiry_date):''}</div>
                       ))
                     ):(<></>)
                  
