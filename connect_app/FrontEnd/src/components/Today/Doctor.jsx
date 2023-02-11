@@ -38,7 +38,6 @@ function DoctorSchedule(props) {
   const [billform,setbillform]=useState('none')
   const [paymentsindex,setpaymentsindex]=useState()
   const [paymentsform,setpaymentsform]= useState('none')
-
   const [d_form, setd_form] = useState()
 
   // for UpdateAppointment

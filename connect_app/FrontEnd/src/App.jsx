@@ -1025,9 +1025,9 @@ function DailySaleReport(props) {
 }
 
 function Pharmacy() {
-  const url = useContext(URL)
+
   let menu = ["Sale", "Stock Info", "Purchase"];
-  const [menuindex, setmenuindex] = useState(2);
+  const [menuindex, setmenuindex] = useState(0);
   const _selectedmenu = (_menu) => {
     if (_menu === 0) {
       return <div className="">

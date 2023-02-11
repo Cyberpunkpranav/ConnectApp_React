@@ -19,6 +19,9 @@ html {
     --charcoal50: #22202331;
 }
 
+.select::after {
+    content: none;
+}
 
 .pharmacysection{
 background-color: var(--seashell);
@@ -92,6 +95,9 @@ margin-top: 0.25rem;
     left:0;
     right:0;
     box-shadow: 100vh 100vh 100vh 100vh var(--charcoal50);
+}
+.newsaleentryform{
+    top:-9rem;
 }
 @media  (max-width:768px) {
     .newpurchaseentrysection{

@@ -11,6 +11,7 @@
     --lightblue: #A2B9C9;
     --lightgreen: #95B3AB;
     --lightyellow: #EFD78D;
+    --lightyellow50:#efd68d80;
     --lightbrown: #D5AD70;
     --lightred: #E8AD98;
     --charcoal50: #22202331;
@@ -157,6 +158,11 @@ body::-webkit-scrollbar-thumb:hover {
     background-color: var(--lightyellow);
     border:var(--lightyellow);
 }
+.button-lightyellow:disabled{
+    color:var(--charcoal50);
+    background-color: var(--lightyellow);
+    border:var(--lightyellow);
+}
 .button-lightbrown{
     color:var(--charcoal);
     background-color: var(--lightbrown);
@@ -238,6 +244,9 @@ body::-webkit-scrollbar-thumb:hover {
 }
 .text-brandy{
     color:var(--brandy);
+}
+.text-lightred{
+    color:var(--lightred);
 }
 /*Borders */
 .border-bottom-lightgreen{
