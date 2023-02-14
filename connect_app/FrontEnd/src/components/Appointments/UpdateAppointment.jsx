@@ -27,8 +27,6 @@ const UpdateAppointment = (props) => {
 
     const [ApikeyDocTimeslots, setApikeyDocTimeslots] = useState()
     const [ApiDocTimefrom, setApiDocTimefrom] = useState();
-
-
     function ClinicList() {
         axios.get(`${url}/clinic/list`).then((response) => {
             setcliniclist(response.data.data)

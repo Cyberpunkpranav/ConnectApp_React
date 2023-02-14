@@ -36,30 +36,30 @@ import { customconfirm } from "./components/features/notiflix/customconfirm"
 
 
 function Navbar(props) {
-  const chatinputref = useRef()
-  const [chat, setchat] = useState('')
-  const [chatarr, setchatarr] = useState([])
-  const [openchat, setopenchat] = useState('none')
-  var client = new websocket('ws://localhost:3500/chat')
-  let chatarray = []
+  // const chatinputref = useRef()
+  // const [chat, setchat] = useState('')
+  // const [chatarr, setchatarr] = useState([])
+  // const [openchat, setopenchat] = useState('none')
+  // var client = new websocket('ws://localhost:3500/chat')
+  // let chatarray = []
 
 
-  function sendmessage() {
-    chatinputref.current.value = ''
-    client.onopen = function Chatopened() {
-      console.log("connection established")
-      client.send(chat)
-    }
+  // function sendmessage() {
+  //   chatinputref.current.value = ''
+  //   client.onopen = function Chatopened() {
+  //     console.log("connection established")
+  //     client.send(chat)
+  //   }
 
-    client.onmessage = function message(e) {
-      console.log("message sent")
-      chatarray.push(e.data)
-      setchatarr(prevState => [...prevState, chatarray])
-    }
-    client.close = function clientclosed() {
-      console.log('client closed')
-    }
-  }
+  //   client.onmessage = function message(e) {
+  //     console.log("message sent")
+  //     chatarray.push(e.data)
+  //     setchatarr(prevState => [...prevState, chatarray])
+  //   }
+  //   client.close = function clientclosed() {
+  //     console.log('client closed')
+  //   }
+  // }
 
   const [addoption, setaddoption] = useState("none");
   const toggleaddoption = () => {
@@ -243,7 +243,7 @@ function Navbar(props) {
         )
       }
 
-      <div className="position-absolute bottom-0 end-0 me-5 mb-3 d-block" style={{ zIndex: 1000 }}>
+      {/* <div className="position-absolute bottom-0 end-0 me-5 mb-3 d-block" style={{ zIndex: 1000 }}>
         <button className={`btn p-0 m-0 d-${openchat == 'block' ? 'none' : 'block'}`} onClick={() => { openchat == 'none' ? setopenchat('block') : setopenchat('none') }}><img src={process.env.PUBLIC_URL + 'images/chat.png'} style={{ width: '2.5rem' }} /></button>
         <div className={`container d-${openchat == 'none' ? 'none' : 'block'}`}>
           <div className="bg-lightgreen border border-1 rounded-2 overflow-scroll" style={{ maxHeight: '15rem' }}>
@@ -256,7 +256,7 @@ function Navbar(props) {
           <button className="btn p-0 m-0" onClick={sendmessage}><img src={process.env.PUBLIC_URL + 'images/completed.png'} style={{ width: '1.8rem' }} /></button>
         </div>
 
-      </div>
+      </div> */}
     </>
   );
 }
@@ -678,8 +678,11 @@ function Patients() {
   }
 
   const reversefunction = (date) => {
-    date = date.split("-").reverse().join("-")
-    return date
+    if(date){
+      date = date.split("-").reverse().join("-")
+      return date
+    }
+
   }
 
   async function getnextpages(e) {

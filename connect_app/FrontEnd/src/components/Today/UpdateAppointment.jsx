@@ -9,6 +9,8 @@ import { customconfirm } from '../features/notiflix/customconfirm'
 
 const UpdateAppointment = (props) => {
     const colorref = useRef(null)
+    const clinicID = localStorage.getItem('ClinicId')
+    let adminid = localStorage.getItem('id')
     const url = useContext(URL);
     const DocApi = useContext(Doctorapi)
     const Doclist = useContext(DoctorsList)
@@ -28,7 +30,7 @@ const UpdateAppointment = (props) => {
 
     const [ApikeyDocTimeslots, setApikeyDocTimeslots] = useState()
     const [ApiDocTimefrom, setApiDocTimefrom] = useState();
-    let adminid = localStorage.getItem('id')
+
 
     function ClinicList() {
         axios.get(`${url}/clinic/list`).then((response) => {
@@ -210,11 +212,10 @@ const UpdateAppointment = (props) => {
             <div className="col-12">
                 <label>Select Location</label>
                 <div className="col-12 form-control location bg-seashell  border-0" >
-                    {
+                {
                         cliniclist.map((data, i) => (
-                            <>
-                                <label><input type="checkbox" className="radio form me-1" checked={ischecked == i ? true : false} name={data.id} onClick={(e) => { setclinicid(e.target.name); setischecked(i); }} /> {data.title} {data.address}</label>
-                                <br /></>
+                            <label key={i} className={`d-${clinicID==data.id?'block':'none'}`}><input type="checkbox" className={`radio me-1 `} checked={clinicID==data.id? true : false} name={data.id} /> {data.title} {data.address}</label>
+                              
                         ))
                     }
                 </div>

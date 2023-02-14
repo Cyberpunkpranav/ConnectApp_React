@@ -1,9 +1,9 @@
 import axios from 'axios';
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import { URL, TodayDate, DoctorsList, Clinic } from '../../index';
-import { ExportPurchaseEntry, ExportSaleEntry } from '../pharmacy/Exports'
+import { ExportPurchaseEntry, ExportSaleEntry,ExportSaleReturn } from '../pharmacy/Exports'
 import Notiflix from 'notiflix';
-import { customconfirm } from '../features/notiflix/customconfirm';
+import { customconfirm, customnotify } from '../features/notiflix/customconfirm';
 import '../../css/bootstrap.css';
 import '../../css/pharmacy.css';
 import '../../css/dashboard.css'
@@ -12,14 +12,14 @@ import { Purchaseorderarray, Pharmacystocktable, Stockvaccinearray, Stockmedicin
 //-------------------------------------------------Sales------------------------------------------------------------------------------------------
 function Salesection(props) {
   const first = ["Sale Entry", "Sale Returns"];
-  const [second, setSecond] = useState(0);
+  const [second, setSecond] = useState(1);
 
   const _selectedScreen = (_selected) => {
     if (_selected === 0) {
       return <Saleentrysection function={props.func} function2={props.function} />
     }
     if (_selected === 1) {
-      return <SaleReturns/>
+      return <SaleReturns />
     }
     return <div className='fs-2'>Nothing Selected</div>
 
@@ -186,6 +186,7 @@ function Saleentrysection(props) {
       Notiflix.Notify.alert('Please try Again')
     }
   }
+
   return (
     <>
       <button className="button addentrypurchase button-charcoal position-absolute" onClick={toggle_nsef}><img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt='displaying_image' className="img-fluid" style={{ width: `1.5rem` }} />Entry Sale</button>
@@ -320,18 +321,17 @@ function Saleentrysection(props) {
             }
           </div>
           <div className="col-3 col-xl-4 col-md-2 col-sm-2 p-0 m-0">
-            <button className={`button button-burntumber`} ref={nextref} value={nxtoffset} onClick={(e) => { getnextpages(e); console.log(e.target.value) }} style={{ marginTop: '0.15rem' }}>Next</button>
+            <button className={`button button-burntumber`} ref={nextref} value={nxtoffset} onClick={(e) => { getnextpages(e); }} style={{ marginTop: '0.15rem' }}>Next</button>
           </div>
         </div>
       </div>
-      <section className={`newsaleentryform position-absolute d-${nsef} start-0 end-0 bg-seashell m-2 rounded-2 shadow`} style={{ height: '90vh' }}>
-        <SaleEntryForm toggle_nsef={toggle_nsef} />
+      <section className={`newsaleentryform position-absolute d-${nsef} start-0 end-0 bg-seashell m-2 rounded-4 shadow`} style={{ height: '90vh' }}>
+        <SaleEntryForm toggle_nsef={toggle_nsef} GETSalesList={GETSalesList} />
       </section>
     </>
   )
 }
 function SEitemdetailssection(props) {
-  console.log(props.saleentryarr)
   const [medicine, setmedicine] = useState('block')
   const [vaccine, setvaccine] = useState('none')
   const [index, setindex] = useState(0)
@@ -354,14 +354,17 @@ function SEitemdetailssection(props) {
 
   function TotalTaxPercent(cgst, sgst, igst) {
     if (cgst && sgst && igst !== null || undefined) {
-      return Number(cgst) + Number(sgst) + Number(igst)
+      let e = Number(cgst) + Number(sgst) + Number(igst)
+      return e
     }
   }
-  function TotalTaxRate(cgst, sgst, igst) {
+  function TotalTaxRate(cgst, sgst, igst, qty) {
     if (cgst && sgst && igst !== null || undefined) {
-      return Number(cgst) + Number(sgst) + Number(igst)
+      let e = Number(Number(cgst) + Number(sgst) + Number(igst)) * Number(qty)
+      return e
     }
   }
+  console.log(props.saleentryarr)
   return (
     <div className="container-fluid p-0 m-0 bg-seashell ">
       <div className="container-fluid bg-seashell p-0 m-0">
@@ -410,6 +413,7 @@ function SEitemdetailssection(props) {
               <th rowspan='2' className='border p-0 m-0 px-1'>MRP in Rs.</th>
               <th rowspan='2' className='border p-0 m-0 px-1'>Discount %</th>
               <th rowspan='2' className='border p-0 m-0 px-1'>Discounted MRP in Rs.</th>
+              <th rowspan='2' className='border p-0 m-0 px-1'>Amount in Rs.</th>
               <th colspan={Taxon == true ? '8' : '2'} scope='col-group' className='border p-0 m-0 px-1'>Total Tax</th>
               <th rowspan='2' className='border p-0 m-0 px-1'>Total in Rs.</th>
             </tr>
@@ -436,14 +440,15 @@ function SEitemdetailssection(props) {
                       <td className='border p-0 m-0 align-middle'>{item.main_mrp ? item.main_mrp : ''}</td>
                       <td className='border p-0 m-0 align-middle'>{item.discount != null ? item.discount : ''}</td>
                       <td className='border p-0 m-0 align-middle'>{item.disc_mrp ? item.disc_mrp : ''}</td>
-                      <td className={`border p-0 m-0 align-middle d-${Taxon == true ? '' : 'none'}`}>{item.SGST_rate ? item.SGST_rate : ''}</td>
-                      <td className={`border p-0 m-0 align-middle d-${Taxon == true ? '' : 'none'}`}>{item.SGST ? item.SGST : ''}</td>
-                      <td className={`border p-0 m-0 align-middle d-${Taxon == true ? '' : 'none'}`}>{item.CGST_rate ? item.CGST_rate : ''}</td>
-                      <td className={`border p-0 m-0 align-middle d-${Taxon == true ? '' : 'none'}`}>{item.CGST ? item.CGST : ''}</td>
-                      <td className={`border p-0 m-0 align-middle d-${Taxon == true ? '' : 'none'}`}>{item.IGST_rate ? item.IGST_rate : ''}</td>
-                      <td className={`border p-0 m-0 align-middle d-${Taxon == true ? '' : 'none'}`}>{item.IGST ? item.IGST : ''}</td>
+                      <td className='border p-0 m-0 align-middle'>{item.medicine_stocks && item.medicine_stocks.total_amount ? item.medicine_stocks.total_amount : ''}</td>
+                      <td className={`border p-0 m-0 align-middle d-${Taxon == true ? '' : 'none'}`}>{item.SGST_rate ? Number(item.SGST_rate) : ''}</td>
+                      <td className={`border p-0 m-0 align-middle d-${Taxon == true ? '' : 'none'}`}>{item.SGST ? Number(item.SGST) * Number(item.qty) : ''}</td>
+                      <td className={`border p-0 m-0 align-middle d-${Taxon == true ? '' : 'none'}`}>{item.CGST_rate ? Number(item.CGST_rate) : ''}</td>
+                      <td className={`border p-0 m-0 align-middle d-${Taxon == true ? '' : 'none'}`}>{item.CGST ? Number(item.CGST) * Number(item.qty) : ''}</td>
+                      <td className={`border p-0 m-0 align-middle d-${Taxon == true ? '' : 'none'}`}>{item.IGST_rate ? Number(item.IGST_rate) : ''}</td>
+                      <td className={`border p-0 m-0 align-middle d-${Taxon == true ? '' : 'none'}`}>{item.IGST ? Number(item.IGST) * Number(item.qty) : ''}</td>
                       <td className='border p-0 m-0 align-middle'>{TotalTaxPercent(item.CGST_rate, item.SGST_rate, item.IGST_rate)}</td>
-                      <td className='border p-0 m-0 align-middle'>{TotalTaxRate(item.CGST, item.SGST, item.IGST)}</td>
+                      <td className='border p-0 m-0 align-middle'>{TotalTaxRate(item.CGST, item.SGST, item.IGST, item.qty)}</td>
                       <td className='border p-0 m-0 align-middle'>{item.total_amount ? item.total_amount : ''}</td>
                     </tr>
                   ))
@@ -500,14 +505,14 @@ function SEitemdetailssection(props) {
                       <td className='border p-0 m-0 align-middle'>{item.main_mrp ? item.main_mrp : ''}</td>
                       <td className='border p-0 m-0 align-middle'>{item.discount != null ? item.discount : ''}</td>
                       <td className='border p-0 m-0 align-middle'>{item.disc_mrp ? item.disc_mrp : ''}</td>
-                      <td className={`border p-0 m-0 align-middle d-${Taxon == true ? '' : 'none'}`}>{item.SGST_rate ? item.SGST_rate : ''}</td>
-                      <td className={`border p-0 m-0 align-middle d-${Taxon == true ? '' : 'none'}`}>{item.SGST ? item.SGST : ''}</td>
-                      <td className={`border p-0 m-0 align-middle d-${Taxon == true ? '' : 'none'}`}>{item.CGST_rate ? item.CGST_rate : ''}</td>
-                      <td className={`border p-0 m-0 align-middle d-${Taxon == true ? '' : 'none'}`}>{item.CGST ? item.CGST : ''}</td>
-                      <td className={`border p-0 m-0 align-middle d-${Taxon == true ? '' : 'none'}`}>{item.IGST_rate ? item.IGST_rate : ''}</td>
-                      <td className={`border p-0 m-0 align-middle d-${Taxon == true ? '' : 'none'}`}>{item.IGST ? item.IGST : ''}</td>
+                      <td className={`border p-0 m-0 align-middle d-${Taxon == true ? '' : 'none'}`}>{item.SGST_rate ? Number(item.SGST_rate) : ''}</td>
+                      <td className={`border p-0 m-0 align-middle d-${Taxon == true ? '' : 'none'}`}>{item.SGST ? Number(item.SGST) * Number(item.qty) : ''}</td>
+                      <td className={`border p-0 m-0 align-middle d-${Taxon == true ? '' : 'none'}`}>{item.CGST_rate ? Number(item.CGST_rate) : ''}</td>
+                      <td className={`border p-0 m-0 align-middle d-${Taxon == true ? '' : 'none'}`}>{item.CGST ? Number(item.CGST) * Number(item.qty) : ''}</td>
+                      <td className={`border p-0 m-0 align-middle d-${Taxon == true ? '' : 'none'}`}>{item.IGST_rate ? Number(item.IGST_rate) : ''}</td>
+                      <td className={`border p-0 m-0 align-middle d-${Taxon == true ? '' : 'none'}`}>{item.IGST ? Number(item.IGST) * Number(item.qty) : ''}</td>
                       <td className='border p-0 m-0 align-middle'>{TotalTaxPercent(item.CGST_rate, item.SGST_rate, item.IGST_rate)}</td>
-                      <td className='border p-0 m-0 align-middle'>{TotalTaxRate(item.CGST, item.SGST, item.IGST)}</td>
+                      <td className='border p-0 m-0 align-middle'>{TotalTaxRate(item.CGST, item.SGST, item.IGST, item.qty)}</td>
                       <td className='border p-0 m-0 align-middle'>{item.total_amount ? item.total_amount : ''}</td>
                     </tr>
                   ))
@@ -523,8 +528,6 @@ function SEitemdetailssection(props) {
 
               </body>
             )
-
-
           }
         </table>
       </div>
@@ -534,16 +537,15 @@ function SEitemdetailssection(props) {
 }
 function SaleReturns() {
   const currentDate = useContext(TodayDate)
-  const ClinicID = localStorage.getItem('ClinicId')
   const url = useContext(URL)
-  const [pridw, setpridw] = useState("none");
+  const [sridw, setsridw] = useState("none");
   const nextref = useRef()
   const previousref = useRef()
   const [channel, setchannel] = useState(1)
   const [fromdate, setfromdate] = useState()
   const [todate, settodate] = useState()
   const [Loading, setLoading] = useState(false)
-  const [purchasereturnarr, setpurchasereturnarr] = useState([])
+  const [salereturnarr, setsalereturnarr] = useState([])
   const [index, setindex] = useState()
   const [nref, setnref] = useState("none");
   const [nxtoffset, setnxtoffset] = useState(0)
@@ -551,7 +553,7 @@ function SaleReturns() {
   const [pages, setpages] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
   const [tabindex, settabindex] = useState()
 
-  function GETPurchaseReturns(i) {
+  function GETSaleReturns(i) {
     if (i == undefined) {
       i = 0
     }
@@ -562,8 +564,10 @@ function SaleReturns() {
       previousref.current.disabled = false
     }
     try {
-      axios.get(`${url}/purchase/return?clinic_id=${ClinicID}&channel=${channel}&limit=25&offset=${i * 25}&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`).then((response) => {
-        setpurchasereturnarr(response.data.data)
+      // /sale/return?from_date=2023-01-01&to_date=2023-01-31&limit=2&offset=0
+      axios.get(`${url}/sale/return?limit=25&offset=${i * 25}&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`).then((response) => {
+        console.log(response)
+        setsalereturnarr(response.data.data)
         let nxt = Number(i) + 1
         setnxtoffset(nxt)
         if (i != 0) {
@@ -581,15 +585,15 @@ function SaleReturns() {
     }
   }
   useEffect(() => {
-    GETPurchaseReturns()
+    GETSaleReturns()
   }, [channel, fromdate, todate])
 
-  const toggle_pridw = () => {
-    if (pridw === "none") {
-      setpridw("block");
+  const toggle_sridw = () => {
+    if (sridw === "none") {
+      setsridw("block");
     }
-    if (pridw === "block") {
-      setpridw("none");
+    if (sridw === "block") {
+      setsridw("none");
     }
   };
   const toggle_nref = () => {
@@ -606,23 +610,23 @@ function SaleReturns() {
       date = date.split("-").reverse().join("-")
       return date
     }
-
   }
   async function getnextpages(e) {
-    GETPurchaseReturns(e.target.value)
+    GETSaleReturns(e.target.value)
   }
   async function getpreviouspages(e) {
-    GETPurchaseReturns(e.target.value - 1)
+    GETSaleReturns(e.target.value - 1)
   }
+  console.log(salereturnarr)
   return (
     <>
       <button className="button addentrypurchase button-charcoal position-absolute" onClick={toggle_nref}><img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt='displaying_image' className="img-fluid" style={{ width: `1.5rem` }} />Entry Return</button>
       <div classsName='p-0 m-0'>
         <div className="row p-0 m-0">
-          <div className="col-3 col-md-2 col-lg-2 align-self-center text-charcoal fw-bolder fs-6">Purchase Return </div>
+          <div className="col-3 col-md-2 col-lg-2 align-self-center text-charcoal fw-bolder fs-6">Sale Return </div>
           <div className="col-6 col-xl-6 col-lg-7 col-md-auto align-self-center m-1 ">
             <div className="row border-burntumber fw-bolder rounded-2 text-center justify-content-center ">
-              <div className="col-4">
+              <div className="col-4 d-none">
                 <select className='p-0 m-0 border-0 text-burntumber fw-bolder' value={channel ? channel : ''} onChange={(e) => { setchannel(e.target.value) }}>
                   <option className='border-0 text-burntumber fw-bolder' value='1'>Pharmacy</option>
                   <option className='border-0 text-burntumber fw-bolder' value='2'>Consumables</option>
@@ -636,16 +640,17 @@ function SaleReturns() {
               </div>
             </div>
           </div>
-          {/* <div className="col-2 align-self-center">
-          <ExportPurchaseEntry purchasereturnarr={purchasereturnarr} fromdate={reversefunction(fromdate)} todate={reversefunction(todate)} />
-        </div> */}
+          <div className="col-2 align-self-center d-none">
+            <ExportSaleReturn salereturnarr={salereturnarr} fromdate={reversefunction(fromdate)} todate={reversefunction(todate)} />
+          </div>
         </div>
         <div className='scroll scroll-y overflow-scroll p-0 m-0' style={{ minHeight: '55vh', height: '55vh' }}>
           <table className="table text-center p-0 m-0">
             <thead className='p-0 m-0 align-middle'>
               <tr>
-                <th className='fw-bolder text-charcoal75' scope='col'>PR ID</th>
-                <th className='fw-bolder text-charcoal75' scope='col'>Distributor</th>
+                <th className='fw-bolder text-charcoal75' scope='col'>Return No.</th>
+                <th className='fw-bolder text-charcoal75' scope='col'>Name</th>
+                <th className='fw-bolder text-charcoal75' scope='col'>Sale Entry ID</th>
                 <th className='fw-bolder text-charcoal75' scope='col'>Return Date</th>
                 <th className='fw-bolder text-charcoal75' scope='col'>Return Amount</th>
                 <th className='fw-bolder text-charcoal75' scope='col'>Actions</th>
@@ -665,23 +670,24 @@ function SaleReturns() {
                 </body>
 
               ) : (
-                purchasereturnarr && purchasereturnarr.length != 0 ? (
+                salereturnarr && salereturnarr.length != 0 ? (
                   <tbody>
                     {
-                      purchasereturnarr.map((item, i) => (
+                      salereturnarr.map((item, i) => (
                         <tr key={i} className={`bg-${((i % 2) == 0) ? 'seashell' : 'pearl'} align-middle`}>
-                          <td className='p-0 m-0 text-charcoal fw-bold'>PR-{item.return_no}</td>
-                          <td className='p-0 m-0 text-charcoal fw-bold'>{item.distributor && item.distributor != null && item.distributor.entity_name && item.distributor.entity_name != null ? item.distributor.entity_name : 'N/A'}</td>
+                          <td className='p-0 m-0 text-charcoal fw-bold'>SR-{item.return_no}</td>
+                          <td className='p-0 m-0 text-charcoal fw-bold'>{item.sale_entry && item.sale_entry.patient && item.sale_entry.patient.full_name  != null ? item.sale_entry.patient.full_name : 'N/A'}</td>
+                          <td className='p-0 m-0 text-charcoal fw-bold'>{item.sale_entry && item.sale_entry && item.sale_entry.id  != null ? 'P-'+ item.sale_entry.id  : 'N/A'}</td>
                           <td className='p-0 m-0 text-charcoal fw-bold'>{item.return_date ? reversefunction(item.return_date) : ''}</td>
                           <td className='p-0 m-0 text-charcoal fw-bold'>{item.grand_total ? item.grand_total : 'N/A'}</td>
                           <td className='p-0 m-0 text-charcoal fw-bold'>
                             {/* <button className='btn'><img src={process.env.PUBLIC_URL + "/images/cart.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1" /></button> */}
-                            <buttton className="btn" onClick={() => { setindex(i); toggle_pridw() }}><img src={process.env.PUBLIC_URL + "/images/archivebox.png"} alt="displaying_image" className="ms-1" style={{ width: "1.5rem" }} /></buttton></td>
+                            <buttton className="btn" onClick={() => { setindex(i); toggle_sridw() }}><img src={process.env.PUBLIC_URL + "/images/archivebox.png"} alt="displaying_image" className="ms-1" style={{ width: "1.5rem" }} /></buttton></td>
                           <td className='p-0 m-0 text-charcoal fw-bold'><button className="btn position-relative cursor-pointer more p-0 m-0"><img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" style={{ width: "1.5rem" }} /></button></td>
-                          <td className={`PEdetailssection position-absolute mt-1 d-${i == index ? pridw : 'none'} bg-seashell p-0 m-0`} style={{ top: '-8.5rem' }} >
+                          <td className={`PEdetailssection position-absolute mt-1 d-${i == index ? sridw : 'none'} bg-seashell p-0 m-0`} style={{ top: '-8.5rem' }} >
                             {
                               i == index ? (
-                                <PRitemdetailssection purchasereturnarr={purchasereturnarr[i]} itembillid={"PR-" + item.return_no} toggle_pridw={toggle_pridw} />
+                                <SRitemdetailssection salereturnarr={salereturnarr[i]} toggle_sridw={toggle_sridw} />
                               ) : (<></>)
                             }
                           </td>
@@ -696,7 +702,7 @@ function SaleReturns() {
                 ) : (
                   <tbody className='text-center position-relative p-0 m-0 ' style={{ minHeight: '55vh' }}>
                     <tr className=''>
-                      <td className='fw-bolder text-charcoal text-center position-absolute border-0 start-0 end-0 mx-3 p-2 border-0'>No Purchase Returns</td>
+                      <td className='fw-bolder text-charcoal text-center position-absolute border-0 start-0 end-0 mx-3 p-2 border-0'>No Sale Returns</td>
                     </tr>
                   </tbody>
                 )
@@ -708,14 +714,14 @@ function SaleReturns() {
         <div className="container-fluid mb-1">
           <div className="row p-0 m-0 text-center">
             <div className="col-3 col-xl-4 col-md-2 col-lg-2 col-sm-4 p-0 m-0">
-              <button className="button ms-1 button-seashell" ref={previousref} value={prevoffset} onClick={(e) => { getpreviouspages(e); console.log(e.target.value) }} style={{ marginTop: '0.15rem' }}>Previous</button>
+              <button className="button ms-1 button-seashell" ref={previousref} value={prevoffset} onClick={(e) => { getpreviouspages(e); }} style={{ marginTop: '0.15rem' }}>Previous</button>
             </div>
             <div className="col-auto col-xl-auto col-md-8 col-lg-8 col-sm-auto p-0 m-0">
 
               {
                 pages ? (
                   pages.map((page, i) => (
-                    <button className={`button ms-2 button-${nxtoffset - 1 == i ? 'pearl' : 'burntumber'} border  shadow-${nxtoffset - 1 == i ? 'lg' : 'none'}`} ref={nextref} value={page} id={page} onClick={(e) => { settabindex(i); GETPurchaseReturns(i) }} key={i}>{page}</button>
+                    <button className={`button ms-2 button-${nxtoffset - 1 == i ? 'pearl' : 'burntumber'} border  shadow-${nxtoffset - 1 == i ? 'lg' : 'none'}`} ref={nextref} value={page} id={page} onClick={(e) => { settabindex(i); GETSaleReturns(i) }} key={i}>{page}</button>
                   ))
                 ) : (
                   <div>Loading...</div>
@@ -724,13 +730,13 @@ function SaleReturns() {
               }
             </div>
             <div className="col-3 col-xl-4 col-md-2 col-lg-2 col-sm-4 p-0 m-0">
-              <button className={`button button-burntumber`} ref={nextref} value={nxtoffset} onClick={(e) => { getnextpages(e); console.log(e.target.value) }} style={{ marginTop: '0.15rem' }}>Next</button>
+              <button className={`button button-burntumber`} ref={nextref} value={nxtoffset} onClick={(e) => { getnextpages(e); }} style={{ marginTop: '0.15rem' }}>Next</button>
             </div>
           </div>
         </div>
       </div>
-      <section className={`newreturnentrysection position-absolute start-0 end-0 top-0 bottom-0 d-${nref}`}  >
-        {<Newreturnentryform toggle_nref={toggle_nref} GETPurchaseReturns={GETPurchaseReturns} />}
+      <section className={`newreturnentrysection position-absolute start-0 end-0 top-0 bottom-0 d-${nref}`} style={{ marginTop: '-8.5rem' }}  >
+        {<NewSaleReturnentryform toggle_nref={toggle_nref} GETSaleReturns={GETSaleReturns} />}
       </section>
     </>
   )
@@ -741,25 +747,31 @@ function SaleEntryForm(props) {
   const Doclist = useContext(DoctorsList)
   const clinicID = localStorage.getItem('ClinicId')
   const medicinesref = useRef(null)
+  const patientaddref = useRef(null)
   const stockref = useRef(null)
   const [searchinput, setsearchinput] = useState()
   const [searchlist, setsearchlist] = useState([])
   const [displaysearchlist, setdisplaysearchlist] = useState('none')
   const [patientid, setpatientid] = useState()
+  const [patientdata, setpatientdata] = useState([])
   const [doctorid, setdoctorid] = useState()
   const [doctorname, setdoctorname] = useState()
   const [clinicid, setclinicid] = useState(clinicID)
   const [ischecked, setischecked] = useState()
-  const [grandtotal, setgrandtotal] = useState()
   const [Dc, setDc] = useState(0)
+  const [AtC, setAtC] = useState(0)
   const [load, setload] = useState()
   const [searchload, setsearchload] = useState(false)
   const [products, setproducts] = useState([])
   const [itemsearch, setitemsearch] = useState([''])
   const [itemname, setitemname] = useState()
-  const [item,setitem]=useState()
   const [itemid, setitemid] = useState()
+  const [SelectedProducts, setSelectedProducts] = useState([])
+  const [Grandtotal, setGrandtotal] = useState()
   const [loadsearch, setloadsearch] = useState()
+  const [addressid, setaddressid] = useState()
+  const [addressform, setaddressform] = useState('none')
+
   const searchpatient = (e) => {
     setsearchload(true)
     setsearchinput(e.target.value)
@@ -780,14 +792,36 @@ function SaleEntryForm(props) {
     }
 
   }
-  const get_value = (id, name) => {
+  const get_value = (id, name, data) => {
     setsearchinput(name)
     setpatientid(id)
+    setpatientdata(data)
     setdisplaysearchlist('none');
+  }
+  const selectaddress = (data) => {
+    if (data) {
+      setaddressid(data.id)
+      setDc(1)
+    } else {
+      setaddressid()
+      setDc(0)
+    }
+  }
+  const DC = () => {
+    if (Dc == 0) {
+      setaddressform('block')
+    }
+    if (Dc == 1) {
+      if (addressid) {
+        setDc(0)
+        setaddressform('none')
+      } else {
+        setaddressform('block')
+      }
+    }
   }
   const searchmeds = async (search) => {
     setloadsearch(true)
-    https://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/api/connect/stock/list?search=med&limit=20&offset=0
     try {
       await axios.get(`${url}/stock/list?search=${search}`).then((response) => {
         let medicines = []
@@ -817,59 +851,194 @@ function SaleEntryForm(props) {
     ))
   }, [doctorid])
 
-  function AddProducts() {
-    let ProductDetails = {
-      productid: item.id,
-      product : itemname,
-      expiry : item.expiry_date,
-      quantity: item.current_stock,
-      discount: item.discount,
-      discmrp: item.cost,
-      mainmrp: item.mrp,
-      gst: Number(item.CGST_rate) + Number(item.SGST_rate) + Number(item.IGST_rate),
-
-    }
-    console.log(ProductDetails)
-    let ProductArr = []
-    for (let i = 0; i < products.length; i++) {
+  function CalSellingCost(mrp, disc) {
+    let cost = mrp
+    if (!disc) {
+      cost = Number(mrp)
+      return cost
+    } else {
+      cost = Number(mrp) - ((Number(mrp) * Number(disc)) / 100)
+      cost = cost.toFixed(2)
+      return cost
     }
   }
+  function CalTotalAmount(qty, cst) {
+    let cost = cst
+    if (!qty) {
+      cost = Number(cst)
+      return cost
+    } else {
+      cost = Number(cst) * Number(qty)
+      cost = cost.toFixed(2)
+      return cost
+    }
+  }
+  function CalGrandttl() {
+    let ttl = 0
+    SelectedProducts.map((data) => (
+      ttl += Number(data.totalamt)
+    ))
+    setGrandtotal(ttl)
+  }
+  function CaltotalDiscount(data) {
+    let total = 0
+    if (data) {
+      data.forEach(item => {
+        total += Number(item.discount)
+      })
+      return total
+    } else {
+      return total
+    }
 
+  }
+  useEffect(() => {
+    CalGrandttl()
+  }, [SelectedProducts])
+  function AddProducts(data) {
+    let T = ''
+    if (data.vaccine_brand_id) {
+      T = 'v'
+    } else {
+      T = 'm'
+    }
+    let ProductDetails = {
+      productid: data.id,
+      type: T,
+      product: itemname,
+      batch: data.batch_no,
+      expiry: data.expiry_date,
+      quantity: data.current_stock,
+      qtytoSale: 1,
+      discount: 0,
+      cost: data.cost,
+      mainmrp: data.mrp,
+      disccost: data.mrp,
+      gst: Number(data.CGST_rate) + Number(data.SGST_rate) + Number(data.IGST_rate),
+      totalamt: data.mrp
+
+    }
+
+    if (SelectedProducts && SelectedProducts.length == 0) {
+      setSelectedProducts([ProductDetails])
+    } else {
+      setSelectedProducts(prevState => [...prevState, ProductDetails])
+    }
+
+  }
+
+  async function DeleteProduct(Batch) {
+    let obj = []
+    obj.push(SelectedProducts.filter(function (e) {
+      return e.batch !== Batch
+    }))
+    obj = obj.flat()
+    setSelectedProducts(obj)
+  }
   async function SubmitSaleEntry() {
-    let grand = [];
+    let productids = [];
+    let proquantity = [];
+    let Discount = [];
+    let discountonmrp = [];
+    let mrp = [];
+    let GST = [];
+    let Totalamount = []
+    for (let i = 0; i < SelectedProducts.length; i++) {
+      productids.push(SelectedProducts[i].type + SelectedProducts[i].productid)
+      proquantity.push(SelectedProducts[i].qtytoSale)
+      Discount.push(SelectedProducts[i].discount)
+      discountonmrp.push(SelectedProducts[i].disccost)
+      mrp.push(SelectedProducts[i].mainmrp)
+      GST.push(SelectedProducts[i].gst)
+      Totalamount.push(SelectedProducts[i].totalamt)
+    }
     let Data = {
       clinic_id: clinicid,
       doctor_id: doctorid,
       doctor_name: doctorname,
       patient_id: patientid,
-      pro_id: [],
-      qty: [],
-      discount: [],
-      disc_mrp: [],
-      main_mrp: [],
-      gst: [],
-      total_amount: [],
-      grand_total: grandtotal,
-      appointment_id: 1,
-      add_to_cart: 0,
-      deliver: 1,
-      address_id: 8,
+      pro_id: productids,
+      qty: proquantity,
+      discount: Discount,
+      disc_mrp: discountonmrp,
+      main_mrp: mrp,
+      gst: GST,
+      total_amount: Totalamount,
+      grand_total: Grandtotal,
+      appointment_id: '',
+      add_to_cart: AtC,
+      deliver: Dc,
+      address_id: addressid,
     }
     try {
       await axios.post(`${url}/sale/entry/save`, Data).then((response) => {
+        props.toggle_nsef()
+        ClearForm()
+        props.GETSalesList()
         Notiflix.Notify.success(response.data.message)
       }).catch(function error(e) {
+        console.log(e)
         Notiflix.Notify.failure(e)
       })
     } catch (e) {
       Notiflix.Notify.failure(e)
     }
   }
-  console.log(patientid, doctorid, doctorname, Dc, itemname, itemid)
-  console.log(item)
+  function confirmmessage() {
+    customconfirm()
+    Notiflix.Confirm.show(
+      `Save Sale Entry`,
+      `Do you surely want to add total ${SelectedProducts.length} Sale ${SelectedProducts.length <= 1 ? 'entry' : 'entries'}  `,
+      'Yes',
+      'No',
+      () => {
+        SubmitSaleEntry()
+      },
+      () => {
+        return 0
+      },
+      {
+      },
+    );
+  }
+  function confirmmessage2() {
+    customconfirm()
+    Notiflix.Confirm.show(
+      `Add to Cart`,
+      `Do you surely want to add the following Sale entries to the Cart  `,
+      'Yes',
+      'No',
+      () => {
+        setAtC(1)
+      },
+      () => {
+        setAtC(0)
+      },
+      {
+      },
+    );
+  }
+  const ClearForm = async () => {
+    setSelectedProducts([])
+    setaddressid()
+    setitemname()
+    setdoctorname()
+    setdoctorid()
+    setpatientid()
+    setGrandtotal()
+    setAtC()
+    setDc(0)
+    setsearchinput()
+    setpatientdata()
+  }
+  // console.log(patientid, doctorid, doctorname, Dc, itemname, itemid)
+  // console.log(SelectedProducts, Grandtotal)
+  // console.log(patientdata)
+  let c = 0
+  console.log(products, addressid, Dc, SelectedProducts)
   return (
     <>
-      <div className="container-fluid p-0 m-0 p-2 rounded-2">
+      <div className="container-fluid p-0 m-0 p-2 rounded-4">
         <div className='position-relative mb-3'>
           <h5 className='text-center fw-bolder text-charcoal '>Sale Entry Form</h5>
           <button className='btn btn-close position-absolute end-0 top-0 me-2' onClick={props.toggle_nsef}></button>
@@ -885,10 +1054,33 @@ function SaleEntryForm(props) {
         </div>
         <hr className='p-0 m-0' />
         <div className='my-2 text-center align-self-center'>
-          <div className=" form-switch justify-content-center">
+          <div className=" form-switch justify-content-center position-relative">
             <label className="form-check-label text-charcoal fw-bolder" for="flexSwitchCheckDefault">Deliver to Customer</label>
-            <input className="form-check-input ms-2 outline-none text-center" type="checkbox" role="switch" id="flexSwitchCheckDefault" checked={Dc == 1 ? true : false} onChange={() => { Dc == 1 ? setDc(0) : setDc(1) }} />
-
+            <input className="form-check-input ms-2 outline-none text-center" type="checkbox" role="switch" id="flexSwitchCheckDefault" checked={Dc == 1 ? true : false} onChange={() => { DC() }} />
+            <div className={`d-${addressform} position-absolute start-0 end-0 m-5 mt-0 top-0 bg-pearl shadow rounded-2 `} style={{ zIndex: 2 }} ref={patientaddref}>
+              <div className='p-0 m-0 position-relative text-wrap'>
+                <button className='btn btn-close position-absolute end-0 p-1 m-1' onClick={() => { addressid ? setaddressform('none') : setaddressform('none') }}></button>
+                {
+                  patientdata && patientdata.address && patientdata.address.length !== 0 ? (
+                    <div className="row p-0 m-0 gx-2  ">
+                      <h6 className='ms-1 text-burntumber fw-bold text-start'>Choose Address for Delivery</h6>
+                      {
+                        patientdata.address.map((data) => (
+                          <div className={`col-12 px-1 m-2 text-start card bg-${addressid == data.id ? 'lightgreen' : 'lightyellow'} text-charcoal fw-bold`} onClick={() => { addressid ? selectaddress() : selectaddress(data) }}>
+                            <div>Patient Name:- {data.full_name}</div>
+                            <div>Address:-{data.address_line1 && data.address_line1 !== null ? data.address_line1 : ''}</div>
+                            <div>{data.address_line2 && data.address_line2 !== null ? data.address_line2 : ''}</div>
+                            <div>PinCode:-{data.zip_code && data.zip_code !== null ? data.zip_code : ''}</div>
+                          </div>
+                        ))
+                      }
+                    </div>
+                  ) : (
+                    <div className='text-danger fw-bold'>Addresses not found.Update Patient Details to get Address </div>
+                  )
+                }
+              </div>
+            </div>
           </div>
         </div>
         <div className="row">
@@ -901,10 +1093,10 @@ function SaleEntryForm(props) {
                   <p className="btn text-charcoal75 fs-6 p-0 m-0 ps-1">Loading... </p>
                 ) : (
                   searchlist.length == 0 ? (
-                    <p className="text-danger btn fs-6 p-0 m-0">Patient not found add as new user to book appointements</p>
+                    <p className="text-danger btn fs-6 p-0 m-0">Patient not found</p>
                   ) : (
                     searchlist.map((data) => (
-                      <div className='col-auto p-0 m-0 ms-1 bg-pearl text-charcoal text-start' style={{ width: 'max-content' }} onClick={() => { get_value(data.id, data.full_name) }}>{data.full_name} {data.phone_number}</div>
+                      <div className='col-auto p-0 m-0 ms-1 bg-pearl text-charcoal text-start' style={{ width: 'max-content' }} onClick={() => { get_value(data.id, data.full_name, data) }}>{data.full_name} {data.phone_number}</div>
                     )))
 
                 )
@@ -934,66 +1126,395 @@ function SaleEntryForm(props) {
 
         </div>
         <div className="container-fluid mt-4 text-center p-0 m-0">
+          <div className="col-12 p-0 m-0 justify-content-center">
+            <h6 className='text-charcoal p-0 m-0 fw-bolder text-start'>Add Products</h6>
+            <hr className='p-0 m-0' />
+            {/* <div className="col-12">
+              <button className='button button-seashell text-burntumber border-burntumber '>Scan to Add Product</button>
+            </div>
+            <h4 className='my-2'>OR</h4> */}
+            <div className="row p-0 m-0 my-2">
+              {/* <div className="col-4 d-none">
+                <label>Product ID</label>
+                <input className='form-control bg-seashell border border-1 rounded-2' placeholder='Enter Product ID' />
+              </div> */}
+              <div className="col-4">
+                <input className='form-control bg-seashell' placeholder='Search Product'
+                  value={itemname ? itemname : ''}
+                  onChange={(e) => {
+                    searchmeds(e.target.value);
+                    setitemname(e.target.value);
+                    setitemid();
+                    setproducts();
+                    stockref.current.style.display = 'none'
+                  }} />
+                <div ref={medicinesref} className='position-absolute rounded-2 mt-1' style={{ Width: 'max-content', zIndex: '1' }} >
+                  {
+                    itemsearch ? (
+                      loadsearch ? (
+                        <div className='rounded-2 p-1 bg-pearl'>
+                          Searching Please wait....
+                          <div className="spinner-border my-auto" style={{ width: "1rem", height: "1rem" }} role="status" >
+                            <span className="sr-only"> </span> </div>
+                        </div>
+                      ) : (
+                        itemsearch.length == 0 ? (
+                          <div className="bg-burntumber text-light rounded-2 p-1">Oops! Not Avaliable</div>
+                        ) : (
+                          itemsearch.map((data, i) => (
+                            <div style={{ cursor: 'pointer', Width: 'max-content' }} className={`p-0 ps-1 shadow bg-${((i % 2) == 0) ? 'pearl' : 'seashell'} fs-6 `} onClick={(e) => { setproducts(data); setitemname(data.display_name ? data.display_name : data.name); setitemid(data.id); stockref.current.style.display = 'block' }}>{data.display_name ? data.display_name : data.name}</div>
+                          ))
+                        )
+                      )
+                    ) : (<div className='bg-seashell'></div>)
+                  }
+                </div>
+                <div ref={stockref} className="position-absolute" style={{ marginLeft: '13.5rem', marginTop: '2rem', zIndex: '2' }}>
+                  {
+                    products && products.length !== 0 ? (
+                      products.stock_info.map((data, i) => (
+                        <div style={{ cursor: 'pointer', Width: 'max-content' }} className={`bg-${((i % 2) == 0) ? 'pearl' : 'seashell'}`} onClick={() => { AddProducts(data); setitemname(); setitemid(); setproducts(); setitemsearch(['']) }}>{itemname}| batchNo.-: {data.batch_no && data.batch_no !== null ? data.batch_no : ''} | stock-:{data.current_stock && data.current_stock ? data.current_stock : ''} | expiry-:{data.expiry_date ? reversefunction(data.expiry_date) : ''}</div>
+                      ))
+                    ) : (<div className='bg-seashell'></div>)
+
+                  }
+                </div>
+                <div></div>
+              </div>
+            </div>
+          </div>
           <div className="col-12 m-0 p-0">
             <div className="d-flex p-0 m-0 justify-content-between">
               <h6 className='text-charcoal p-0 m-0 fw-bolder text-start'>Product Added</h6>
-              <h6 className='text-burntumber p-0 m-0 fw-bolder text-end me-5'> Grand Total :{0} </h6>
+
             </div>
 
             <hr className='p-0 m-0' />
-            <div className='p-0 m-0 scroll scroll-y' style={{ height: '15vh' }}>
+            <div className='p-0 m-0 scroll scroll-y overflow-scroll' style={{ height: '35vh' }}>
               <table className='table p-0 m-0'>
                 <thead className='p-0 m-0'>
                   <tr className='p-0 m-0'>
+                    <th className='p-0 m-0 px-2' rowSpan='2'>Item ID</th>
                     <th className='p-0 m-0 px-2' rowSpan='2'>Item Name</th>
+                    <th className='p-0 m-0 px-2' rowSpan='2'>BatchNo.</th>
                     <th className='p-0 m-0 px-2' rowSpan='2'>Expiry Date</th>
-                    <th className='p-0 m-0 px-2' rowSpan='2'>Quantity</th>
+                    <th className='p-0 m-0 px-2' rowSpan='2'>Avl.Stock</th>
+                    <th className='p-0 m-0 px-2' rowSpan='2'>Qty To Sale</th>
                     <th className='p-0 m-0 px-2' rowSpan='2'>Discount %</th>
                     <th className='p-0 m-0 px-2' colSpan='4' scope='col-group'>Costing</th>
+                    <th className='p-0 m-0 px-2' rowSpan='2'>Total Amount</th>
                     <th className='p-0 m-0 px-2' rowSpan='2'>Delete</th>
                   </tr>
                   <tr className='p-0 m-0'>
                     <th className='p-0 m-0 px-2' scope='col'>MRP</th>
-                    <th className='p-0 m-0 px-2' scope='col'>Selling Cost</th>
-                    <th className='p-0 m-0 px-2' scope='col'>GST Rate</th>
                     <th className='p-0 m-0 px-2' scope='col'>Cost</th>
+                    <th className='p-0 m-0 px-2' scope='col'>GST Rate</th>
+                    <th className='p-0 m-0 px-2' scope='col'>Selling Cost/Unit</th>
                   </tr>
                 </thead>
                 {
-                  products == undefined || products.length == 0 ? (
+                  SelectedProducts && SelectedProducts.length !== 0 ? (
+                    <tbody className='p-0 m-0'>
+                      {
+                        SelectedProducts.map((data) => (
+                          <tr className='p-0 m-0 align-middle'>
+                            <td>{data.productid}</td>
+                            <td>{data.product}</td>
+                            <td>{data.batch}</td>
+                            <td>{reversefunction(data.expiry)}</td>
+                            <td>{data.quantity}</td>
+
+                            <td><input className='border border-1 rounded-1 w-25 text-center p-0 m-0 bg-seashell'
+                              value={data.qtytoSale ? data.qtytoSale : ''}
+                              onChange={(e) => {
+                                data.qtytoSale = e.target.value;
+                                data.totalamt = CalTotalAmount(e.target.value, data.disccost)
+                                setSelectedProducts(prevState => [...prevState])
+                              }} /> </td>
+
+                            <td className='text-center p-0 m-0' style={{ Width: '0rem' }}>
+                              <input className='border border-1 rounded-1 w-25 text-center p-0 m-0 bg-seashell'
+                                value={data.discount ? data.discount : ''}
+                                onChange={(e) => {
+                                  data.discount = e.target.value;
+                                  data.disccost = CalSellingCost(data.mainmrp, e.target.value);
+                                  data.totalamt = CalTotalAmount(data.qtytoSale, data.disccost)
+                                  setSelectedProducts(prevState => [...prevState])
+                                }} /> </td>
+                            <td>{data.mainmrp}</td>
+                            <td>{data.cost}</td>
+                            <td>{data.gst + '%'}</td>
+                            <td>{data.disccost}</td>
+                            <td>{data.totalamt}</td>
+                            <td><button className='btn p-0 m-0' onClick={() => { DeleteProduct(data.batch) }}><img src={process.env.PUBLIC_URL + 'images/delete.png'} style={{ width: '1.5rem' }} /></button></td>
+                          </tr>
+                        ))
+                      }
+                    </tbody>
+                  ) : (
                     <tbody className='p-0 m-0 position-relative'>
                       <tr className='p-0 m-0'>
                         <td className='p-0 m-0 position-absolute text-charcoal fw-bold start-0 end-0'>No Product Added</td>
-                      </tr>
-                    </tbody>
-                  ) : (
-                    <tbody className='p-0 m-0'>
-                      <tr className='p-0 m-0'>
-                        <td></td>
                       </tr>
                     </tbody>
                   )
                 }
               </table>
             </div>
-
           </div>
-          <div className="col-12 p-0 m-0 justify-content-center">
-            <h6 className='text-charcoal p-0 m-0 fw-bolder text-start mt-3'>Add Products</h6>
-            <hr className='pt-0 mt-0' />
-            {/* <div className="col-12">
-              <button className='button button-seashell text-burntumber border-burntumber '>Scan to Add Product</button>
+
+        </div>
+        <div className='col-12 position-absolute start-0 end-0 bottom-0 text-center bg-pearl align-items-center rounded-bottom'>
+          <div className="row p-0 m-0">
+            <div className="col-6">
+              <div className="row">
+                <div className="col-3">
+                  <p className='text-charcoal75 p-0 m-0 fw-bolder card-title text-start ms-3'> Order Total </p>
+                  <h4 className='text-charcoal  p-0 m-0 fw-bolder card-header text-start ps-3'>{Grandtotal}</h4>
+                </div>
+                <div className="col-3">
+                  <p className='text-charcoal75 p-0 m-0 fw-bolder card-title text-start ms-3'> Discount %</p>
+                  <h4 className='text-charcoal  p-0 m-0 fw-bolder card-header text-start ps-3'>{CaltotalDiscount(SelectedProducts)}</h4>
+                </div>
+                <div className="col-3">
+                  <p className='text-charcoal75 p-0 m-0 fw-bolder card-title text-start ms-3'> Total Items</p>
+                  <h4 className='text-charcoal  p-0 m-0 fw-bolder card-header text-start ps-3'>{SelectedProducts.length}</h4>
+                </div>
+              </div>
             </div>
-            <h4 className='my-2'>OR</h4> */}
-            <div className="row p-0 m-0">
-              {/* <div className="col-4 d-none">
-                <label>Product ID</label>
-                <input className='form-control bg-seashell border border-1 rounded-2' placeholder='Enter Product ID' />
-              </div> */}
-              <div className="col-4">
-                <label>Search Product </label>
-                <input className='form-control bg-seashell' placeholder='Search Product' onChange={(e) => { searchmeds(e.target.value); setitemname(e.target.value); setitemid();setproducts();stockref.current.style.display = 'none' }} />
-                <div ref={medicinesref} className='position-absolute scroll scroll-y overflow-scroll rounded-2 mt-1' style={{ Width: 'max-content',zIndex:'1',maxHeight:'10rem' }} >
+            <div className="col-3 align-self-center">
+              <button className='button button-charcoal px-5' onClick={() => { confirmmessage() }}>Save Entry</button>
+            </div>
+            <div className="col-3 align-self-center">
+              <button className='button button-pearl border-charcoal text-charcoal px-4' onClick={() => { confirmmessage2() }}>Add To Cart</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  )
+}
+function NewSaleReturnentryform(props){
+  const url = useContext(URL)
+  const medicinesref = useRef(null)
+  const vendorsref = useRef(null)
+  const [vendorname, setvendorname] = useState()
+  const [vendorid, setvendorid] = useState()
+  const [loadvendors, setloadvendors] = useState()
+  const [vendorsearch, setvendorsearch] = useState([''])
+  const [itemsearch, setitemsearch] = useState([''])
+  const [itemname, setitemname] = useState()
+  const [loadsearch, setloadsearch] = useState()
+  const [MedicineentriesArr, setMedicineentriesArr] = useState([])
+
+  const CalculateCost = (cost, currentstock, qtytotreturn) => {
+    let costing = 0;
+    if (cost && qtytotreturn && currentstock >= qtytotreturn) {
+      costing = 0
+      costing = Number(cost) * Number(qtytotreturn)
+      return costing.toFixed(2)
+    } else {
+      return costing
+    }
+  }
+  const reversefunction = (date) => {
+    if (date) {
+      date = date.split("-").reverse().join("-")
+      return date
+    }
+
+  }
+  async function InsertMedicines(data) {
+    let MedicineentriesObj = {
+      Itemid: data.id,
+      Type: data.type,
+      Item: data.item_name,
+      batchno: data.batch_no,
+      expirydate: data.expiry_date,
+      cost: data.cost,
+      totalcost: 0,
+      currentstock: data.current_stock,
+      qtytoReturn: 0,
+    }
+
+    if (MedicineentriesArr == undefined || MedicineentriesArr.length == 0) {
+      setMedicineentriesArr([MedicineentriesObj])
+    } else {
+      setMedicineentriesArr(prevState => [...prevState, MedicineentriesObj])
+    }
+  }
+  const searchmeds = async () => {
+    setloadsearch(true)
+    try {
+      await axios.get(`${url}/purchase/item/search/by/id?item=${itemname}&distributor_id=${vendorid}`).then((response) => {
+        console.log(response.data.data)
+        setitemsearch([response.data.data])
+        setloadsearch(false)
+        if (itemname.length >= 1) {
+          medicinesref.current.style.display = 'block';
+        } else {
+          medicinesref.current.style.display = 'none';
+        }
+      }).catch(function (error) {
+        if (error.response) {
+          Notiflix.Notify.failure(error.response.data);
+          Notiflix.Notify.failure(error.response.status);
+          Notiflix.Notify.failure(error.response.headers);
+        }
+      })
+
+    } catch (e) {
+      Notiflix.Notify.failure(e);
+    }
+  }
+  const searchvendors = async (search) => {
+    setloadvendors(true)
+    try {
+      await axios.get(`${url}/kyc/list?limit=10&offset=0&search=${search}`).then((response) => {
+        setvendorsearch(response.data.data)
+        setloadvendors(false)
+        if (search.length > 1) {
+          vendorsref.current.style.display = 'block';
+        } else {
+          vendorsref.current.style.display = 'none';
+        }
+      }).catch(function (error) {
+        if (error.response) {
+          Notiflix.Notify.failure(error.response.data);
+          Notiflix.Notify.failure(error.response.status);
+          Notiflix.Notify.failure(error.response.headers);
+        }
+      })
+
+    } catch (e) {
+      Notiflix.Notify.failure(e);
+    }
+  }
+  const SaveReturnEntry = async () => {
+    let ProductId = []
+    let Totalamount = []
+    let quantity = []
+
+    let grosstotal = 0
+    for (let i = 0; i < MedicineentriesArr.length; i++) {
+      ProductId.push(MedicineentriesArr[i].Itemid ? `${MedicineentriesArr[i].Type}${MedicineentriesArr[i].Itemid}` : '')
+      Totalamount.push(MedicineentriesArr[i].totalcost ? MedicineentriesArr[i].totalcost : '')
+      quantity.push(MedicineentriesArr[i].qtytoReturn ? MedicineentriesArr[i].qtytoReturn : '')
+    }
+
+    Totalamount.forEach(item => {
+      grosstotal += Number(item)
+    })
+
+    var Data = {
+      distributor_id: vendorid,
+      pro_id: ProductId,
+      qty: quantity,
+      total_amount: Totalamount,
+      grand_total: grosstotal
+    }
+    console.log(Data)
+
+    try {
+      await axios.post(`${url}/purchase/return/save`, Data).then((response) => {
+        Notiflix.Notify.success(response.data.message)
+        props.GETPurchaseReturns()
+        setMedicineentriesArr()
+        setvendorname()
+        setvendorid()
+        setitemname()
+        props.toggle_nref()
+      })
+    } catch (e) {
+      Notiflix.Notify.warning(e)
+      console.log(e)
+    }
+
+  }
+
+  function confirmmessage() {
+    customconfirm()
+    Notiflix.Confirm.show(
+      `Save Purchase Return `,
+      `Do you surely want to add total ${MedicineentriesArr.length} Purchase ${MedicineentriesArr.length <= 1 ? 'Return ' : 'Returns'} of Distributor ${vendorname}  `,
+      'Yes',
+      'No',
+      () => {
+        SaveReturnEntry()
+      },
+      () => {
+        return 0
+      },
+      {
+      },
+    );
+  }
+
+  async function DeleteMedicine(id) {
+    let obj = []
+    obj.push(MedicineentriesArr.filter(function (e) {
+      return e.Itemid !== id
+    }))
+    obj = obj.flat()
+    setMedicineentriesArr(obj)
+  }
+  function Grand() {
+    let c = 0
+    if (MedicineentriesArr && MedicineentriesArr.length > 0) {
+      MedicineentriesArr.map((data) => (
+        c += Number(data.totalcost)
+      ))
+    }
+    return c
+  }
+  return (
+    <section className="newpurchaseentryform mt-1 position-relative bg-seashell m-2 shadow rounded-4 " style={{ 'height': '90vh' }}>
+      <div className="container-fluid p-0 m-0 rounded-4">
+        <div className="container-fluid bg-seashell rounded-4 position-relative  ">
+          <div className="row p-2 pe-1">
+            <div className="col-1 position-absolute end-0">
+              <button type="button" className="btn-close closebtn m-auto" onClick={props.toggle_nref} aria-label="Close" ></button>
+            </div>
+            <div className="col-12 justify-content-center">
+              <h6 className="text-center" style={{ color: "var(--charcoal)", fontWeight: "600" }} >New Sale Return Entry</h6>
+            </div>
+          </div>
+        </div>
+        <div className="container-fluid p-0 m-0 w-100 entrydetails bg-seashell">
+          <div className="row p-0 m-0 justify-content-center">
+            <div className="col-5">
+              <h6 className="p-0 m-0 ms-3 fw-bold">Select Bill</h6>
+              <input className="form-control ms-2 rounded-1 bg-seashell" placeholder='Search Vendors' value={vendorname ? vendorname : ''} onChange={(e) => { searchvendors(e.target.value); setvendorname(e.target.value); setvendorid(); setMedicineentriesArr([]) }} />
+              <div ref={vendorsref} className='position-absolute ms-2 rounded-2 bg-pearl col-2' style={{ display: 'none', zIndex: '1' }} >
+                {
+                  vendorsearch ? (
+                    loadvendors ? (
+                      <div className='rounded-2 p-1'>
+                        Searching Please wait....
+                        <div className="spinner-border my-auto" style={{ width: "1rem", height: "1rem" }} role="status" >
+                          <span className="sr-only"> </span> </div>
+                      </div>
+                    ) : (
+                      vendorsearch.length == 0 ? (
+                        <div className="bg-burntumber text-light rounded-2 p-1">Oops! Not Avaliable</div>
+                      ) : (
+                        vendorsearch.map((data, i) => (
+                          <div style={{ cursor: 'pointer' }} className={`p-0 p-1  bg-${((i % 2) == 0) ? 'pearl' : 'lightblue'} fs-6 `} name={data.id} onClick={(e) => { setvendorname(data.entity_name); setvendorid(data.id); vendorsref.current.style.display = 'none'; }}>{data.entity_name}</div>
+                        ))
+                      )
+                    )
+                  ) : (<div className='bg-seashell'></div>)
+                }
+              </div>
+            </div>
+            <div className="col-5">
+              <div className='position-relative'>
+                <h6 className="p-0 m-0 ms-3 fw-bold">Product ID</h6>
+                <input className='form-control bg-seashell' placeholder='Product Id' value={itemname ? itemname : ''}
+                  onChange={(e) => {
+                    vendorid ? setitemname(e.target.value) : Notiflix.Notify.failure('Please Add Vendor First')
+                  }} />
+                <div ref={medicinesref} className='position-absolute rounded-2 bg-pearl col-12' style={{ zIndex: '1' }}>
                   {
                     itemsearch ? (
                       loadsearch ? (
@@ -1007,44 +1528,342 @@ function SaleEntryForm(props) {
                           <div className="bg-burntumber text-light rounded-2 p-1">Oops! Not Avaliable</div>
                         ) : (
                           itemsearch.map((data, i) => (
-                            <div style={{ cursor: 'pointer', Width: 'max-content' }} className={`p-0 ps-1 shadow bg-${((i % 2) == 0) ? 'pearl' : 'lightyellow'} fs-6 `} onClick={(e) => { setproducts(data); setitemname(data.display_name ? data.display_name : data.name); setitemid(data.id); stockref.current.style.display = 'block' }}>{data.display_name ? data.display_name : data.name}</div>
+                            <div style={{ cursor: 'pointer' }} className={`p-0 ps-1 shadow bg-${((i % 2) == 0) ? 'pearl' : 'lightyellow'} fs-6 `} name={data.id}
+                              onClick={(e) => {
+                                setitemname(data.item_name);
+                                InsertMedicines(data);
+                                medicinesref.current.style.display = 'none';
+                              }}>{data.item_name}</div>
                           ))
                         )
                       )
-                    ) : (<></>)
+                    ) : (<div className='bg-seashell'></div>)
                   }
                 </div>
-                <div ref={stockref} className="position-absolute scroll scroll-y overflow-scroll" style={{marginLeft:'13.5rem',marginTop:'2rem',maxHeight:'10rem',zIndex:'2'}}>
-                  {
-                    products && products.length !==0 ? (
-                      products.stock_info.map((data,i)=>(
-                        <div className={`bg-${((i % 2) == 0) ? 'pearl' : 'lightblue'}`} onClick={()=>{setitem(data);AddProducts()}}>{itemname}| batchNo.-: {data.batch_no && data.batch_no!==null?data.batch_no:''} | stock-:{data.current_stock&&data.current_stock?data.current_stock:''} | expiry-:{data.expiry_date?reversefunction(data.expiry_date):''}</div>
-                      ))
-                    ):(<></>)
-                 
-                  }
-                </div>
-                <div></div>
+
               </div>
+
+            </div>
+            <div className="col-2 align-self-center ">
+              <p></p>
+              <button className='p-0 m-0 btn' onClick={searchmeds}><img src={process.env.PUBLIC_URL + 'images/search.png'} style={{ width: '1.8rem' }} /></button>
             </div>
           </div>
-        </div>
-        <div className='col-12 position-absolute start-0 end-0 bottom-0 text-center p-2'>
-          <div className="row">
-            <div className="col-6">
-              <button className='button button-burntumber'>Generate Bill</button>
-            </div>
-            <div className="col-6">
-              <button className='button button-pearl border-burntumber text-burntumber'>Add To Cart</button>
-            </div>
+          <div className=" p-0 m-0 mt-2 scroll scroll-y" style={{ Height: '65vh' }}>
+            <table className="table datatable text-center position-relative">
+              <thead style={{ color: 'gray', fontWeight: '600' }}>
+                <tr>
+
+                  <th className='p-0 m-0 px-1'>Item ID</th>
+                  <th className='p-0 m-0 px-1'>Item Name</th>
+                  <th className='p-0 m-0 px-1'>batch No.</th>
+                  <th className='p-0 m-0 px-1'>Expiry Date</th>
+                  <th className='p-0 m-0 px-1'>Avl. Stock</th>
+                  <th className='p-0 m-0 px-1'>Qty to Return</th>
+                  <th className='p-0 m-0 px-1'>Purchase Rate/Unit</th>
+                  <th className='p-0 m-0 px-1'>Purchase Rate</th>
+                  <th className='p-0 m-0 px-1'>Delete</th>
+                </tr>
+              </thead>
+              {
+                MedicineentriesArr ? (
+                  <tbody style={{ maxHeight: '65vh', minHeight: '65vh', color: 'var(--charcoal)', fontWeight: '600' }}>
+                    {
+                      MedicineentriesArr.map((item, _key) => (
+                        <tr key={_key} className=''>
+                          <td>{item.Itemid}</td>
+                          <td>{item.Item}</td>
+                          <td>{item.batchno}</td>
+                          <td>{reversefunction(item.expirydate)}</td>
+                          <td>{item.currentstock}</td>
+                          <td className='p-0 m-0' style={{ 'width': '0px', 'height': '0px' }}>
+                            <input className='border border-1 rounded-1 w-25 text-center p-0 m-0 bg-seashell  mt-2' value={item.qtytoReturn ? item.qtytoReturn : ''}
+                              onChange={(e) => {
+                                e.target.value <= item.currentstock ? item.qtytoReturn = e.target.value : Notiflix.Notify.failure("Quantity Cannot be Greater then Current Stock Available")
+                                item.totalcost = CalculateCost(item.cost, item.currentstock, e.target.value)
+                                setMedicineentriesArr(prevState => [...prevState])
+                              }} /></td>
+                          <td>{item.cost}</td>
+                          <td>{item.totalcost}</td>
+                          <td ><button onClick={() => { DeleteMedicine(item.Itemid); }} className='btn btn-sm button-burntumber'>Delete</button></td>
+                        </tr>
+                      ))
+                    }
+                  </tbody>
+                ) : (
+                  MedicineentriesArr && MedicineentriesArr.length == 0 ? (
+                    <tbody className="position-relative" style={{ height: '65vh', maxHeight: '65vh', color: 'var(--charcoal)', fontWeight: '600' }}>
+                      <tr >
+                        <td className="position-absolute start-0 end-0 top-0">No items Added</td>
+                      </tr>
+                    </tbody>
+                  ) : (
+                    <tbody className="position-relative" style={{ height: '65vh', maxHeight: '65vh', color: 'var(--charcoal)', fontWeight: '600' }}>
+                      <tr className=""  >
+                        <td className="position-absolute start-0 end-0 top-0" >No items Added</td>
+                      </tr>
+                    </tbody>
+                  )
+
+                )
+              }
+            </table>
           </div>
+
+
 
         </div>
       </div>
-    </>
+      <div className='col-12 position-absolute start-0 end-0 bottom-0 text-center bg-pearl align-items-center rounded-bottom p-2'>
+        <div className="row p-0 m-0">
+          <div className="col-6">
+            <div className="row">
+              <div className="col-3">
+                <p className='text-charcoal75 p-0 m-0 fw-bolder card-title text-start ms-3'> Order Total </p>
+                <h4 className='text-charcoal  p-0 m-0 fw-bolder card-header text-start ps-3'>{Grand()}</h4>
+              </div>
+              <div className="col-3">
+                <p className='text-charcoal75 p-0 m-0 fw-bolder card-title text-start ms-3'> Total Items</p>
+                <h4 className='text-charcoal  p-0 m-0 fw-bolder card-header text-start ps-3'>{MedicineentriesArr ? MedicineentriesArr.length : 0}</h4>
+              </div>
+            </div>
+          </div>
+          <div className="col-3 align-self-center">
+            <button className='button button-charcoal px-5' onClick={confirmmessage}>Save Entry</button>
+          </div>
+          <div className="col-3 align-self-center">
+            <button className='button button-pearl border-charcoal text-charcoal px-4' >Add To Cart</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+function SRitemdetailssection(props) {
+  const [medicine, setmedicine] = useState('block')
+  const [vaccine, setvaccine] = useState('none')
+  const [index, setindex] = useState(0)
+  const Items = ['Medicine', 'Vaccine']
+  if (index == 0) {
+    if (medicine == 'none') {
+      setmedicine('block')
+      setvaccine('none')
+    }
+  }
+  if (index == 1) {
+    if (vaccine == 'none') {
+      setvaccine('block')
+      setmedicine('none')
+    }
+  }
+  const [Taxon, setTaxon] = useState(false)
+
+  function TotalTaxPercent(cgst, sgst, igst) {
+    if (cgst && sgst && igst !== null || undefined) {
+      return Number(cgst) + Number(sgst) + Number(igst)
+    }
+  }
+  function TotalTaxRate(cgst, sgst, igst) {
+    if (cgst && sgst && igst !== null || undefined) {
+      return Number(cgst) + Number(sgst) + Number(igst)
+    }
+  }
+  const reversefunction = (date) => {
+    if (date) {
+      date = date.split("-").reverse().join("-")
+      return date
+    }
+  }
+
+  console.log(props.purchasereturnarr)
+  return (
+    <div className="container-fluid p-0 m-0 bg-seashell ">
+      <div className="container-fluid bg-seashell p-0 m-0">
+        <div className="row p-0 m-0">
+          <div className="col-1">
+            <button type="button" className="btn-close closebtn m-auto" onClick={props.toggle_sridw} aria-label="Close"></button>
+          </div>
+          <div className="col-9">
+            <h4 className='text-center' style={{ color: 'var(--charcoal)', fontWeight: '600' }}>{props.itembillid} Sale Return Item Details</h4>
+          </div>
+          <div className="col-2 d-none">
+            <div className=' position-relative searchbutton' style={{ top: '0.25rem', right: '1rem' }}>
+              <input type="text" className=" form-control d-inline PEsearch bg-seashell" placeholder="Search PE" />
+              <button className="btn p-0 m-0 bg-transparent border-0 position-absolute" style={{ width: '2rem', right: '0', left: '0', top: '0.25rem' }}><img src={process.env.PUBLIC_URL + "/images/search.png"} alt="displaying_image" className="img-fluid p-0 m-0" /></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className='row p-0 m-0 mb-3'>
+        {
+          Items.map((data, i) => (
+            <div className="col-3 col-xl-2 col-lg-2 col-md-4 col-sm-6 p-0 m-0">
+              <button className={`button border button-${i == index ? 'charcoal' : 'seashell'}`} onClick={() => { setindex(i) }}>{data}</button>
+            </div>
+          ))
+        }
+
+      </div>
+
+
+      <div className={`scroll bg-seashell scroll-y d-${medicine}`} style={{ minHeight: '82vh', maxHeight: '82vh' }}>
+        <div className="row">
+          <div className="col-9"><h5 className='ps-1'>Medicine</h5></div>
+          <div className="col-3"><input type='checkbox' className='' value={Taxon ? Taxon : ''} onChange={() => { Taxon == true ? setTaxon(false) : setTaxon(true) }} /><label>Show Tax Details</label></div>
+        </div>
+
+        <table className="table datatable table-responsive text-center bg-seashell"><thead>
+          <tr>
+            <th rowspan='2' className='border p-0 m-0 px-1'>Item ID</th>
+            <th rowspan='2' className='border p-0 m-0 px-1'>Item Name</th>
+            <th rowspan='2' className='border p-0 m-0 px-1'>Batch No.</th>
+            <th rowspan='2' className='border p-0 m-0 px-1'>Expiry Date</th>
+            <th rowspan='2' className='border p-0 m-0 px-1'>MRP in Rs.</th>
+            <th rowspan='2' className='border p-0 m-0 px-1'>Rate in Rs.</th>
+            <th rowspan='2' className='border p-0 m-0 px-1'>Disc%</th>
+            <th rowspan='2' className='border p-0 m-0 px-1'>Trade Disc%</th>
+            <th colspan={Taxon == true ? '8' : '2'} scope='col-group' className='border p-0 m-0 px-1'>Total Tax</th>
+            <th rowspan='2' className='border p-0 m-0 px-1'>Cost in Rs.</th>
+            <th rowspan='2' className='border p-0 m-0 px-1'>Qty.</th>
+            <th rowspan='2' className='border p-0 m-0 px-1'>Total in Rs.</th>
+            <th rowspan='2' className='border p-0 m-0 px-1'>Print QR</th>
+          </tr>
+          <tr>
+            <th scope='col' className={`border p-0 m-0 px-1 d-${Taxon == true ? '' : 'none'}`}>CGST%</th>
+            <th scope='col' className={`border p-0 m-0 px-1 d-${Taxon == true ? '' : 'none'}`}>CGST in Rs.</th>
+            <th scope='col' className={`border p-0 m-0 px-1 d-${Taxon == true ? '' : 'none'}`}>SGST%</th>
+            <th scope='col' className={`border p-0 m-0 px-1 d-${Taxon == true ? '' : 'none'}`}>SGST in Rs.</th>
+            <th scope='col' className={`border p-0 m-0 px-1 d-${Taxon == true ? '' : 'none'}`}>IGST%</th>
+            <th scope='col' className={`border p-0 m-0 px-1 d-${Taxon == true ? '' : 'none'}`}>IGST in Rs.</th>
+            <th scope='col' className={`border p-0 m-0 px-1`}>Total%</th>
+            <th scope='col' className={`border p-0 m-0 px-1`}>Total in Rs.</th>
+          </tr>
+        </thead>
+          {
+            props.salereturnarr.sale_medicines && props.salereturnarr.sale_medicines.length !== 0 ? (
+              <tbody className='border align-items-center p-0 m-0'>
+                {
+                  props.salereturnarr.purchase_medicines.map((item, _key) => (
+                    <tr className='border p-0 m-0 align-middle' key={_key}>
+                      <td className='border p-0 m-0 align-middle'>{item && item.id !== null ? 'SR-'+ item.id : 'N/A'}</td>
+                      <td className='border p-0 m-0 align-middle'>{item.medicine && item.medicine.name !== null ? item.medicine.name : 'N/A'}</td>
+                      <td className='border p-0 m-0 align-middle'>{item.batch_no && item.batch_no != null ? item.batch_no : 'N/A'}</td>
+                      <td className='border p-0 m-0 align-middle'>{item.expiry_date && item.expiry_date != null ? reversefunction(item.expiry_date) : 'N/A'}</td>
+                      <td className='border p-0 m-0 align-middle'>{item.mrp ? item.mrp : 'N/A'}</td>
+                      <td className='border p-0 m-0 align-middle'>{item.rate ? item.rate : 'N/A'}</td>
+                      <td className='border p-0 m-0 align-middle'>{item.discount ? item.discount : 'N/A'}</td>
+                      <td className='border p-0 m-0 align-middle'>{item.trade_discount ? item.trade_discount : 'N/A'}</td>
+                      <td className={`border p-0 m-0 align-middle d-${Taxon == true ? '' : 'none'}`}>{item.SGST_rate ? item.SGST_rate : 'N/A'}</td>
+                      <td className={`border p-0 m-0 align-middle d-${Taxon == true ? '' : 'none'}`}>{item.SGST ? item.SGST : 'N/A'}</td>
+                      <td className={`border p-0 m-0 align-middle d-${Taxon == true ? '' : 'none'}`}>{item.CGST_rate ? item.CGST_rate : 'N/A'}</td>
+                      <td className={`border p-0 m-0 align-middle d-${Taxon == true ? '' : 'none'}`}>{item.CGST ? item.CGST : 'N/A'}</td>
+                      <td className={`border p-0 m-0 align-middle d-${Taxon == true ? '' : 'none'}`}>{item.IGST_rate ? item.IGST_rate : 'N/A'}</td>
+                      <td className={`border p-0 m-0 align-middle d-${Taxon == true ? '' : 'none'}`}>{item.IGST ? item.IGST : 'N/A'}</td>
+                      <td className='border p-0 m-0 align-middle'>{TotalTaxPercent(item.CGST_rate, item.SGST_rate, item.IGST_rate)}</td>
+                      <td className='border p-0 m-0 align-middle'>{TotalTaxRate(item.CGST, item.SGST, item.IGST)}</td>
+                      <td className='border p-0 m-0 align-middle'>{item.cost ? item.cost : 'N/A'}</td>
+                      <td className='border p-0 m-0 align-middle'>{item.qty ? item.qty : 'N/A'}</td>
+                      <td className='border p-0 m-0 align-middle'>{item.total_amount ? item.total_amount : 'N/A'}</td>
+                      <td className='border p-0 m-0 align-middle'><button className='btn'><img src={process.env.PUBLIC_URL + "/images/qrcode.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1" /></button></td>
+                    </tr>
+                  ))
+                }
+
+              </tbody>
+
+            ) : (
+              <body className='text-center p-0 m-0 border border-1 '>
+                <div className='position-absolute border-0 start-0 end-0 mx-3 p-2 bg-lightred'>
+                  <strong className='fs-5 text-center bg-lightred'>No Medicines Found</strong>
+                </div>
+
+              </body>
+            )
+
+
+          }
+        </table>
+      </div>
+      <div className={`scroll bg-seashell scroll-y d-${vaccine}`} style={{ minHeight: '82vh', maxHeight: '82vh' }}>
+        <div className="row">
+          <div className="col-9"><h5 className='ps-1'>Vaccine</h5></div>
+          <div className="col-3"><input type='checkbox' className='' value={Taxon ? Taxon : ''} onChange={() => { Taxon == true ? setTaxon(false) : setTaxon(true) }} /><label>Show Tax Details</label></div>
+        </div>
+        <table className="table datatable table-responsive text-center bg-seashell"><thead>
+          <tr>
+            <th rowspan='2' className='border p-0 m-0 px-1'>Item ID</th>
+            <th rowspan='2' className='border p-0 m-0 px-1'>Item Name</th>
+            <th rowspan='2' className='border p-0 m-0 px-1'>Batch No.</th>
+            <th rowspan='2' className='border p-0 m-0 px-1'>Expiry Date</th>
+            <th rowspan='2' className='border p-0 m-0 px-1'>MRP in Rs.</th>
+            <th rowspan='2' className='border p-0 m-0 px-1'>Rate in Rs.</th>
+            <th rowspan='2' className='border p-0 m-0 px-1'>Disc%</th>
+            <th rowspan='2' className='border p-0 m-0 px-1'>Trade Disc%</th>
+            <th colspan={Taxon == true ? '8' : '2'} scope='col-group' className={`border p-0 m-0 px-1`}>Total Tax</th>
+            <th rowspan='2' className='border p-0 m-0 px-1'>Cost in Rs.</th>
+            <th rowspan='2' className='border p-0 m-0 px-1'>Qty.</th>
+            <th rowspan='2' className='border p-0 m-0 px-1'>Total in Rs.</th>
+            <th rowspan='2' className='border p-0 m-0 px-1'>Print QR</th>
+          </tr>
+          <tr>
+            <th scope='col' className={`border p-0 m-0 px-1 d-${Taxon == true ? '' : 'none'}`}>CGST%</th>
+            <th scope='col' className={`border p-0 m-0 px-1 d-${Taxon == true ? '' : 'none'}`}>CGST Rs.</th>
+            <th scope='col' className={`border p-0 m-0 px-1 d-${Taxon == true ? '' : 'none'}`}>SGST%</th>
+            <th scope='col' className={`border p-0 m-0 px-1 d-${Taxon == true ? '' : 'none'}`}>SGST in Rs.</th>
+            <th scope='col' className={`border p-0 m-0 px-1 d-${Taxon == true ? '' : 'none'}`}>IGST%</th>
+            <th scope='col' className={`border p-0 m-0 px-1 d-${Taxon == true ? '' : 'none'}`}>IGST in Rs.</th>
+            <th scope='col' className={`border p-0 m-0 px-1`}>Total%</th>
+            <th scope='col' className={`border p-0 m-0 px-1`}>Total in Rs.</th>
+          </tr>
+        </thead>
+          {
+            props.salereturnarr.purchase_vaccines && props.salereturnarr.purchase_vaccines.length !== 0 ? (
+              <tbody className='border align-items-center p-0 m-0'>
+                {
+                  props.salereturnarr.purchase_vaccines.map((item, _key) => (
+                    <tr className='border p-0 m-0 align-middle' key={_key}>
+                      <td className='border p-0 m-0 align-middle'>{item && item.id !== null ? item.id : 'N/A'}</td>
+                      <td className='border p-0 m-0 align-middle'>{item.vaccine && item.vaccine.name !== null ? item.vaccine.name : 'N/A'}</td>
+                      <td className='border p-0 m-0 align-middle'>{item.batch_no && item.batch_no != null ? item.batch_no : 'N/A'}</td>
+                      <td className='border p-0 m-0 align-middle'>{item.expiry_date && item.expiry_date != null ? reversefunction(item.expiry_date) : 'N/A'}</td>
+                      <td className='border p-0 m-0 align-middle'>{item.mrp ? item.mrp : 'N/A'}</td>
+                      <td className='border p-0 m-0 align-middle'>{item.rate ? item.rate : 'N/A'}</td>
+                      <td className='border p-0 m-0 align-middle'>{item.discount ? item.discount : 'N/A'}</td>
+                      <td className='border p-0 m-0 align-middle'>{item.trade_discount ? item.trade_discount : 'N/A'}</td>
+                      <td className={`border p-0 m-0 align-middle d-${Taxon == true ? '' : 'none'}`}>{item.SGST_rate ? item.SGST_rate : 'N/A'}</td>
+                      <td className={`border p-0 m-0 align-middle d-${Taxon == true ? '' : 'none'}`}>{item.SGST ? item.SGST : 'N/A'}</td>
+                      <td className={`border p-0 m-0 align-middle d-${Taxon == true ? '' : 'none'}`}>{item.CGST_rate ? item.CGST_rate : 'N/A'}</td>
+                      <td className={`border p-0 m-0 align-middle d-${Taxon == true ? '' : 'none'}`}>{item.CGST ? item.CGST : 'N/A'}</td>
+                      <td className={`border p-0 m-0 align-middle d-${Taxon == true ? '' : 'none'}`}>{item.IGST_rate ? item.IGST_rate : 'N/A'}</td>
+                      <td className={`border p-0 m-0 align-middle d-${Taxon == true ? '' : 'none'}`}>{item.IGST ? item.IGST : 'N/A'}</td>
+                      <td className='border p-0 m-0 align-middle'>{TotalTaxPercent(item.CGST_rate, item.SGST_rate, item.IGST_rate)}</td>
+                      <td className='border p-0 m-0 align-middle'>{TotalTaxRate(item.CGST, item.SGST, item.IGST)}</td>
+                      <td className='border p-0 m-0 align-middle'>{item.cost ? item.cost : 'N/A'}</td>
+                      <td className='border p-0 m-0 align-middle'>{item.qty ? item.qty : 'N/A'}</td>
+                      <td className='border p-0 m-0 align-middle'>{item.total_amount ? item.total_amount : 'N/A'}</td>
+                      <td className='border p-0 m-0 align-middle'><button className='btn'><img src={process.env.PUBLIC_URL + "/images/qrcode.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1" /></button></td>
+                    </tr>
+                  ))
+                }
+
+              </tbody>
+
+            ) : (
+              <body className='text-center p-0 m-0 border border-1 '>
+                <div className='position-absolute border-0 start-0 end-0 mx-3 p-2 bg-lightred'>
+                  <strong className='fs-5 text-center bg-lightred'>No Vaccines Found</strong>
+                </div>
+
+              </body>
+            )
+
+
+          }
+        </table>
+      </div>
+    </div>
   )
 }
-
 export { Salesection }
 
 // ---------------------------------------------------------------purchase------------------------------------------------------------------
@@ -1720,7 +2539,7 @@ function Newpurchaseentryform(props) {
       igstpercent.push(MedicineentriesArr[i].igstper ? Number(MedicineentriesArr[i].igstper) : 0)
       costperunit.push(MedicineentriesArr[i].costperunit ? MedicineentriesArr[i].costperunit : '')
       totalamount.push(MedicineentriesArr[i].totalamount ? MedicineentriesArr[i].totalamount : '')
-      quantity.push(MedicineentriesArr[i].quantity ? MedicineentriesArr[i].quantity : '')
+      quantity.push(MedicineentriesArr[i].Qty ? MedicineentriesArr[i].Qty : '')
       freequantity.push(MedicineentriesArr[i].freeQty ? MedicineentriesArr[i].freeQty : '')
     }
 
@@ -2506,7 +3325,7 @@ function PurchaseReturns() {
                 <th className='fw-bolder text-charcoal75' scope='col'>Distributor</th>
                 <th className='fw-bolder text-charcoal75' scope='col'>Return Date</th>
                 <th className='fw-bolder text-charcoal75' scope='col'>Return Amount</th>
-                <th className='fw-bolder text-charcoal75' scope='col'>Actions</th>
+                <th className='fw-bolder text-charcoal75' scope='col'>Inventory</th>
                 <th className='fw-bolder text-charcoal75' scope='col'>more</th>
               </tr>
             </thead>
@@ -2587,8 +3406,8 @@ function PurchaseReturns() {
           </div>
         </div>
       </div>
-      <section className={`newreturnentrysection position-absolute start-0 end-0 top-0 bottom-0 d-${nref}`}  >
-        {<Newreturnentryform toggle_nref={toggle_nref} GETPurchaseReturns={GETPurchaseReturns} />}
+      <section className={`newreturnentrysection position-absolute start-0 end-0 top-0 bottom-0 d-${nref}`} style={{ marginTop: '-8.5rem', 'height': '90vh' }}  >
+        {<NewPurchaseReturnentryform toggle_nref={toggle_nref} GETPurchaseReturns={GETPurchaseReturns} />}
       </section>
     </>
   )
@@ -2622,6 +3441,13 @@ function PRitemdetailssection(props) {
       return Number(cgst) + Number(sgst) + Number(igst)
     }
   }
+  const reversefunction = (date) => {
+    if (date) {
+      date = date.split("-").reverse().join("-")
+      return date
+    }
+  }
+
   console.log(props.purchasereturnarr)
   return (
     <div className="container-fluid p-0 m-0 bg-seashell ">
@@ -2631,9 +3457,9 @@ function PRitemdetailssection(props) {
             <button type="button" className="btn-close closebtn m-auto" onClick={props.toggle_pridw} aria-label="Close"></button>
           </div>
           <div className="col-9">
-            <h4 className='text-center' style={{ color: 'var(--charcoal)', fontWeight: '600' }}>{props.itembillid} Purchase Entry Item Details</h4>
+            <h4 className='text-center' style={{ color: 'var(--charcoal)', fontWeight: '600' }}>{props.itembillid} Purchase Return Item Details</h4>
           </div>
-          <div className="col-2">
+          <div className="col-2 d-none">
             <div className=' position-relative searchbutton' style={{ top: '0.25rem', right: '1rem' }}>
               <input type="text" className=" form-control d-inline PEsearch bg-seashell" placeholder="Search PE" />
               <button className="btn p-0 m-0 bg-transparent border-0 position-absolute" style={{ width: '2rem', right: '0', left: '0', top: '0.25rem' }}><img src={process.env.PUBLIC_URL + "/images/search.png"} alt="displaying_image" className="img-fluid p-0 m-0" /></button>
@@ -2695,7 +3521,7 @@ function PRitemdetailssection(props) {
                       <td className='border p-0 m-0 align-middle'>{item && item.id !== null ? item.id : 'N/A'}</td>
                       <td className='border p-0 m-0 align-middle'>{item.medicine && item.medicine.name !== null ? item.medicine.name : 'N/A'}</td>
                       <td className='border p-0 m-0 align-middle'>{item.batch_no && item.batch_no != null ? item.batch_no : 'N/A'}</td>
-                      <td className='border p-0 m-0 align-middle'>{item.expiry_date && item.expiry_date != null ? item.expiry_date : 'N/A'}</td>
+                      <td className='border p-0 m-0 align-middle'>{item.expiry_date && item.expiry_date != null ? reversefunction(item.expiry_date) : 'N/A'}</td>
                       <td className='border p-0 m-0 align-middle'>{item.mrp ? item.mrp : 'N/A'}</td>
                       <td className='border p-0 m-0 align-middle'>{item.rate ? item.rate : 'N/A'}</td>
                       <td className='border p-0 m-0 align-middle'>{item.discount ? item.discount : 'N/A'}</td>
@@ -2770,9 +3596,9 @@ function PRitemdetailssection(props) {
                   props.purchasereturnarr.purchase_vaccines.map((item, _key) => (
                     <tr className='border p-0 m-0 align-middle' key={_key}>
                       <td className='border p-0 m-0 align-middle'>{item && item.id !== null ? item.id : 'N/A'}</td>
-                      <td className='border p-0 m-0 align-middle'>{item.medicine && item.medicine.name !== null ? item.medicine.name : 'N/A'}</td>
+                      <td className='border p-0 m-0 align-middle'>{item.vaccine && item.vaccine.name !== null ? item.vaccine.name : 'N/A'}</td>
                       <td className='border p-0 m-0 align-middle'>{item.batch_no && item.batch_no != null ? item.batch_no : 'N/A'}</td>
-                      <td className='border p-0 m-0 align-middle'>{item.expiry_date && item.expiry_date != null ? item.expiry_date : 'N/A'}</td>
+                      <td className='border p-0 m-0 align-middle'>{item.expiry_date && item.expiry_date != null ? reversefunction(item.expiry_date) : 'N/A'}</td>
                       <td className='border p-0 m-0 align-middle'>{item.mrp ? item.mrp : 'N/A'}</td>
                       <td className='border p-0 m-0 align-middle'>{item.rate ? item.rate : 'N/A'}</td>
                       <td className='border p-0 m-0 align-middle'>{item.discount ? item.discount : 'N/A'}</td>
@@ -2811,136 +3637,81 @@ function PRitemdetailssection(props) {
     </div>
   )
 }
-function Newreturnentryform(props) {
+function NewPurchaseReturnentryform(props) {
   const url = useContext(URL)
   const ClinicId = localStorage.getItem('ClinicId')
   const ClinicList = useContext(Clinic)
   const medicinesref = useRef(null)
   const vendorsref = useRef(null)
-  const [channel, setchannel] = useState()
-  const [po, setpo] = useState()
-  const [invoice, setinvoice] = useState()
-  const [invoicedate, setinvoicedate] = useState()
+
   const [vendorname, setvendorname] = useState()
   const [vendorid, setvendorid] = useState()
   const [loadvendors, setloadvendors] = useState()
-  const [vendorcode, setvendorcode] = useState()
   const [vendorsearch, setvendorsearch] = useState([''])
   const [itemsearch, setitemsearch] = useState([''])
   const [itemname, setitemname] = useState()
-  const [itemid, setitemid] = useState()
-  const [itemtype, setitemtype] = useState()
-  const [batchno, setbatchno] = useState()
-  const [expdate, setexpdate] = useState()
-  const [manufdate, setmanufdate] = useState()
-  const [mrp, setmrp] = useState()
-  const [rate, setrate] = useState()
-  const [qty, setqty] = useState()
-  const [freeqty, setfreeqty] = useState()
-  const [disc, setdisc] = useState(0)
-  const [trddisc, settrddisc] = useState(0)
-  const [cgst, setcgst] = useState(0)
-  const [cgstprcnt, setcgstprcnt] = useState(0)
-  const [sgst, setsgst] = useState(0)
-  const [sgstprcnt, setsgstprcnt] = useState(0)
-  const [igst, setigst] = useState(0)
-  const [igstprcnt, setigstprcnt] = useState(0)
-  const [cpu, setcpu] = useState(0)
-  const [totalamt, settotalamt] = useState()
   const [loadsearch, setloadsearch] = useState()
-  const [MedicineentriesArr, setMedicineentriesArr] = useState()
-  const [tableindex, settableindex] = useState()
-  const [clinicstatecode, setclinicstatecode] = useState()
+  const [MedicineentriesArr, setMedicineentriesArr] = useState([])
 
-  async function filterclinic() {
-    for (let i = 0; i < ClinicList.length; i++) {
-      if (ClinicList[i].id == ClinicId) {
-        setclinicstatecode(ClinicList[i].state_code)
-      }
-    }
-  }
-  let MedicineentriesObj = {
-    type: '',
-    Itemid: '',
-    Itemname: '',
-    batchno: '',
-    expirydate: '',
-    manufacturingDate: '',
-    quantity: '',
-    freeQty: '',
-    MRP: '',
-    Rate: '',
-    Discount: '',
-    tradeDiscount: '',
-    sgst: '',
-    sgstpercent: '',
-    cgst: '',
-    cgstper: '',
-    igst: '',
-    igstper: '',
-    costperunit: '',
-    totalamount: ''
-  }
-  async function InsertMedicines() {
-    MedicineentriesObj = {
-      type: itemtype,
-      Itemid: itemid,
-      Itemname: itemname,
-      batchno: batchno,
-      expirydate: expdate,
-      manufacturingDate: manufdate,
-      MRP: mrp,
-      Rate: rate,
-      Qty: qty,
-      freeQty: freeqty,
-      Discount: disc,
-      tradeDiscount: trddisc,
-      sgstper: sgstprcnt,
-      sgst: sgst,
-      cgstper: cgstprcnt,
-      cgst: cgst,
-      igstper: igstprcnt,
-      igst: igst,
-      costperunit: cpu,
-      totalamount: totalamt
-    }
-    if (qty) {
-      if (MedicineentriesArr == undefined || MedicineentriesArr.length == 0) {
-        setMedicineentriesArr([MedicineentriesObj])
-      } else {
-        setMedicineentriesArr(prevState => [...prevState, MedicineentriesObj])
-      }
+  const CalculateCost = (cost, currentstock, qtytotreturn) => {
+    let costing = 0;
+    if (cost && qtytotreturn && currentstock >= qtytotreturn) {
+      costing = 0
+      costing = Number(cost) * Number(qtytotreturn)
+      return costing.toFixed(2)
     } else {
-      Notiflix.Notify.warning("please choose quantity")
+      return costing
+    }
+  }
+  const reversefunction = (date) => {
+    if (date) {
+      date = date.split("-").reverse().join("-")
+      return date
     }
 
-    resetfields()
   }
-  const searchmeds = async (search) => {
+  async function InsertMedicines(data) {
+    let MedicineentriesObj = {
+      Itemid: data.id,
+      Type: data.type,
+      Item: data.item_name,
+      batchno: data.batch_no,
+      expirydate: data.expiry_date,
+      cost: data.cost,
+      totalcost: 0,
+      currentstock: data.current_stock,
+      qtytoReturn: 0,
+    }
+
+    if (MedicineentriesArr == undefined || MedicineentriesArr.length == 0) {
+      setMedicineentriesArr([MedicineentriesObj])
+    } else {
+      setMedicineentriesArr(prevState => [...prevState, MedicineentriesObj])
+    }
+  }
+  const searchmeds = async () => {
     setloadsearch(true)
     try {
-      await axios.get(`${url}/item/search?search=${search}`).then((response) => {
-        let medicines = []
-        let vaccines = []
-        let items = []
-        medicines.push(response.data.data.medicines ? response.data.data.medicines : [])
-        vaccines.push(response.data.data.vaccines ? response.data.data.vaccines : [])
-        items = medicines.concat(vaccines)
-        items = items.flat()
-        console.log(items)
-        setitemsearch(items)
+      await axios.get(`${url}/purchase/item/search/by/id?item=${itemname}&distributor_id=${vendorid}`).then((response) => {
+        console.log(response.data.data)
+        setitemsearch([response.data.data])
         setloadsearch(false)
-        if (search.length > 1) {
+        if (itemname.length >= 1) {
           medicinesref.current.style.display = 'block';
         } else {
           medicinesref.current.style.display = 'none';
         }
-
+      }).catch(function (error) {
+        if (error.response) {
+          Notiflix.Notify.failure(error.response.data);
+          Notiflix.Notify.failure(error.response.status);
+          Notiflix.Notify.failure(error.response.headers);
+        }
       })
-    } catch (e) {
-      Notiflix.Notify.warning(e.data.message)
-    }
 
+    } catch (e) {
+      Notiflix.Notify.failure(e);
+    }
   }
   const searchvendors = async (search) => {
     setloadvendors(true)
@@ -2953,107 +3724,52 @@ function Newreturnentryform(props) {
         } else {
           vendorsref.current.style.display = 'none';
         }
-      }).catch(
-        function error(e) {
-          Notiflix.Notify.warning(e.data.message)
-          setloadvendors(false)
+      }).catch(function (error) {
+        if (error.response) {
+          Notiflix.Notify.failure(error.response.data);
+          Notiflix.Notify.failure(error.response.status);
+          Notiflix.Notify.failure(error.response.headers);
         }
-      )
+      })
+
     } catch (e) {
-      setloadvendors(false)
-      Notiflix.Notify.warning(e.data.message)
+      Notiflix.Notify.failure(e);
     }
   }
-  const SavePurchase = async () => {
-    let MedId = []
-    let medname = []
-    let Type = []
-    let batches = []
-    let expirydate = []
-    let manufacturingDate = []
-    let MRP = []
-    let Rate = []
-    let Discount = []
-    let tradeDiscount = []
-    let sgst = []
-    let sgstpercent = []
-    let cgst = []
-    let cgstpercent = []
-    let igst = []
-    let igstpercent = []
-    let costperunit = []
-    let totalamount = []
+  const SaveReturnEntry = async () => {
+    let ProductId = []
+    let Totalamount = []
     let quantity = []
-    let freequantity = []
+
     let grosstotal = 0
     for (let i = 0; i < MedicineentriesArr.length; i++) {
-      Type.push(MedicineentriesArr[i].type ? MedicineentriesArr[i].type : '')
-      MedId.push(MedicineentriesArr[i].Itemid ? MedicineentriesArr[i].Itemid : '')
-      medname.push(MedicineentriesArr[i].Itemname ? MedicineentriesArr[i].Itemname : '')
-      batches.push(MedicineentriesArr[i].batchno ? MedicineentriesArr[i].batchno : '')
-      expirydate.push(MedicineentriesArr[i].expirydate ? MedicineentriesArr[i].expirydate : '')
-      manufacturingDate.push(MedicineentriesArr[i].manufacturingDate ? MedicineentriesArr[i].manufacturingDate : '')
-      MRP.push(MedicineentriesArr[i].MRP ? MedicineentriesArr[i].MRP : '')
-      Rate.push(MedicineentriesArr[i].Rate ? MedicineentriesArr[i].Rate : '')
-      Discount.push(MedicineentriesArr[i].Discount ? MedicineentriesArr[i].Discount : 0)
-      tradeDiscount.push(MedicineentriesArr[i].tradeDiscount ? MedicineentriesArr[i].tradeDiscount : 0)
-      sgst.push(MedicineentriesArr[i].sgst ? MedicineentriesArr[i].sgst : '')
-      sgstpercent.push(MedicineentriesArr[i].sgstper ? Number(MedicineentriesArr[i].sgstper) : 0)
-      cgst.push(MedicineentriesArr[i].cgst ? MedicineentriesArr[i].cgst : '')
-      cgstpercent.push(MedicineentriesArr[i].cgstper ? Number(MedicineentriesArr[i].cgstper) : 0)
-      igst.push(MedicineentriesArr[i].igst ? MedicineentriesArr[i].igst : '')
-      igstpercent.push(MedicineentriesArr[i].igstper ? Number(MedicineentriesArr[i].igstper) : 0)
-      costperunit.push(MedicineentriesArr[i].costperunit ? MedicineentriesArr[i].costperunit : '')
-      totalamount.push(MedicineentriesArr[i].totalamount ? MedicineentriesArr[i].totalamount : '')
-      quantity.push(MedicineentriesArr[i].quantity ? MedicineentriesArr[i].quantity : '')
-      freequantity.push(MedicineentriesArr[i].freeQty ? MedicineentriesArr[i].freeQty : '')
+      ProductId.push(MedicineentriesArr[i].Itemid ? `${MedicineentriesArr[i].Type}${MedicineentriesArr[i].Itemid}` : '')
+      Totalamount.push(MedicineentriesArr[i].totalcost ? MedicineentriesArr[i].totalcost : '')
+      quantity.push(MedicineentriesArr[i].qtytoReturn ? MedicineentriesArr[i].qtytoReturn : '')
     }
 
-    totalamount.forEach(item => {
+    Totalamount.forEach(item => {
       grosstotal += Number(item)
     })
-    console.log(grosstotal, Type, MedId, medname, batches, expirydate, manufacturingDate, MRP, Rate, Discount, tradeDiscount, sgst, sgstpercent, cgst, cgstpercent, igst, igstpercent, costperunit, totalamount, quantity, freequantity)
+
     var Data = {
       distributor_id: vendorid,
-      purchase_order_id: po,
-      invoice_no: invoice,
-      bill_date: invoicedate,
-      clinic_id: ClinicId,
-      channel: channel,
-      bill_total: grosstotal,
-      id: MedId,
-      type: Type,
+      pro_id: ProductId,
       qty: quantity,
-      free_qty: freequantity,
-      mrp: MRP,
-      rate: Rate,
-      trade_discount: tradeDiscount,
-      discount: Discount,
-      SGST_rate: sgstpercent,
-      SGST: sgst,
-      CGST_rate: cgstpercent,
-      CGST: cgst,
-      IGST_rate: igstpercent,
-      IGST: igst,
-      cost: costperunit,
-      total_amount: totalamount,
-      expiry_date: expirydate,
-      mfd_date: manufacturingDate,
-      batch_no: batches,
+      total_amount: Totalamount,
+      grand_total: grosstotal
     }
+    console.log(Data)
 
     try {
-      await axios.post(`${url}/purchase/entry/save`, Data).then((response) => {
+      await axios.post(`${url}/purchase/return/save`, Data).then((response) => {
         Notiflix.Notify.success(response.data.message)
-        props.GETPurchaseList()
+        props.GETPurchaseReturns()
         setMedicineentriesArr()
-        setchannel()
-        setpo()
-        setinvoice()
-        setinvoicedate()
         setvendorname()
         setvendorid()
-        props.toggle_npef()
+        setitemname()
+        props.toggle_nref()
       })
     } catch (e) {
       Notiflix.Notify.warning(e)
@@ -3061,37 +3777,16 @@ function Newreturnentryform(props) {
     }
 
   }
-  const resetfields = async () => {
-    setitemname()
-    setitemid()
-    setbatchno()
-    setexpdate()
-    setmanufdate()
-    setmrp()
-    setrate()
-    setqty()
-    setfreeqty()
-    setdisc()
-    settrddisc()
-    setcgst()
-    setsgst()
-    setigst()
-    setcgstprcnt()
-    setsgstprcnt()
-    setigstprcnt()
-    setcpu()
-    settotalamt()
-    setloadsearch()
-  }
-  function confirmmessage(entries, vendor) {
+
+  function confirmmessage() {
     customconfirm()
     Notiflix.Confirm.show(
-      `Save Purchase Entry`,
-      `Do you surely want to add total ${entries.length} purchase ${entries.length <= 1 ? 'entry' : 'entries'} of Distributor ${vendor}  `,
+      `Save Purchase Return `,
+      `Do you surely want to add total ${MedicineentriesArr.length} Purchase ${MedicineentriesArr.length <= 1 ? 'Return ' : 'Returns'} of Distributor ${vendorname}  `,
       'Yes',
       'No',
       () => {
-        SavePurchase()
+        SaveReturnEntry()
       },
       () => {
         return 0
@@ -3100,91 +3795,7 @@ function Newreturnentryform(props) {
       },
     );
   }
-  function indexing(i) {
-    console.log(i)
-    if (tableindex == i) {
-      settableindex(-1)
-      Emptytableindex()
-    } else {
-      settableindex(i)
-      EditTableEntry(i)
-    }
-  }
-  function EditTableEntry(index) {
-    setitemid(MedicineentriesArr[index].Itemid)
-    setitemname(MedicineentriesArr[index].Itemname)
-    setbatchno(MedicineentriesArr[index].batchno)
-    setexpdate(MedicineentriesArr[index].expirydate)
-    setmanufdate(MedicineentriesArr[index].manufacturingDate)
-    setmrp(MedicineentriesArr[index].MRP)
-    setrate(MedicineentriesArr[index].Rate)
-    setqty(MedicineentriesArr[index].Qty)
-    setfreeqty(MedicineentriesArr[index].freeQty)
-    setdisc(MedicineentriesArr[index].Discount)
-    settrddisc(MedicineentriesArr[index].tradeDiscount)
-    setcgst(MedicineentriesArr[index].cgst)
-    setcgstprcnt(MedicineentriesArr[index].cgstper)
-    setsgst(MedicineentriesArr[index].sgst)
-    setsgstprcnt(MedicineentriesArr[index].sgstper)
-    setigst(MedicineentriesArr[index].igst)
-    setigstprcnt(MedicineentriesArr[index].igstper)
-    setcpu(MedicineentriesArr[index].costperunit)
-    settotalamt(MedicineentriesArr[index].totalamount)
-  }
-  function Emptytableindex() {
 
-    setitemid()
-    setitemname()
-    setbatchno()
-    setexpdate()
-    setmanufdate()
-    setmrp()
-    setrate()
-    setqty()
-    setfreeqty()
-    setdisc()
-    settrddisc()
-    setcgst()
-    setcgstprcnt()
-    setsgst()
-    setsgstprcnt()
-    setigst()
-    setigstprcnt()
-    setcpu()
-    settotalamt()
-
-  }
-  async function UpdateMedicines() {
-    for (let j = 0; j < MedicineentriesArr.length; j++) {
-      if (tableindex == j) {
-        MedicineentriesArr[j] = {
-          type: itemtype,
-          Itemid: itemid,
-          Itemname: itemname,
-          batchno: batchno,
-          expirydate: expdate,
-          manufacturingDate: manufdate,
-          MRP: mrp,
-          Rate: rate,
-          Qty: qty,
-          freeQty: freeqty,
-          Discount: disc,
-          tradeDiscount: trddisc,
-          sgstper: sgstprcnt,
-          sgst: sgst,
-          cgstper: cgstprcnt,
-          cgst: cgst,
-          igstper: igstprcnt,
-          igst: igst,
-          costperunit: cpu,
-          totalamount: totalamt
-        }
-        Notiflix.Notify.success(`Item Number ${tableindex + 1} Updated Successfully`)
-        Emptytableindex()
-        settableindex(-1)
-      }
-    }
-  }
   async function DeleteMedicine(id) {
     let obj = []
     obj.push(MedicineentriesArr.filter(function (e) {
@@ -3193,321 +3804,181 @@ function Newreturnentryform(props) {
     obj = obj.flat()
     setMedicineentriesArr(obj)
   }
-  let total = 0;
-  function Calculate() {
-    total = qty ? rate * qty : rate
-    // total = freeqty ? total - (rate * freeqty) : total
-    total = disc ? total - (total * disc) / 100 : total
-    total = trddisc ? total - (total * trddisc) / 100 : total
-    total = sgstprcnt ? Number(total) + Number((((total * sgstprcnt) / 100) + ((total * sgstprcnt) / 100))) : total
-    total = igstprcnt ? Number(total) + Number((total * Number(igstprcnt) / 100)) : total
-    total = total ? Math.round(parseFloat(total).toFixed(2)) : total
-    return total
+  function Grand() {
+    let c = 0
+    if (MedicineentriesArr && MedicineentriesArr.length > 0) {
+      MedicineentriesArr.map((data) => (
+        c += Number(data.totalcost)
+      ))
+    }
+    return c
   }
-  let CostPerUnit = 0
-  function CalculateCPU() {
-    let newqty = Number(qty) + Number(freeqty)
-    CostPerUnit = Number(parseFloat(Calculate() / newqty))
-    // console.log(Calculate(), CostPerUnit, qty, freeqty)
-    CostPerUnit = parseFloat(CostPerUnit).toFixed(2)
-    return CostPerUnit
-  }
-  let GsT = 0
-  function CalculateGst() {
-    total = qty ? rate * qty : rate
-    total = disc ? total - (total * disc) / 100 : total
-    total = trddisc ? total - (total * trddisc) / 100 : total
-    GsT = sgstprcnt ? Number((((rate * sgstprcnt) / 100) + ((rate * sgstprcnt) / 100)) / 2) : GsT
-    GsT = parseFloat(GsT).toFixed(2)
-    return GsT
-  }
-  let IgsT = 0
-  function CalculateIGst() {
-    total = qty ? rate * qty : rate
-    total = disc ? total - (total * disc) / 100 : total
-    total = trddisc ? total - (total * trddisc) / 100 : total
-    IgsT = igstprcnt ? Number((rate * igstprcnt) / 100) : IgsT
-    IgsT = parseFloat(IgsT).toFixed(2)
-    return IgsT
-  }
-
-  useEffect(() => {
-    CalculateGst()
-    setsgst(CalculateGst())
-    setcgst(CalculateGst())
-  }, [sgstprcnt])
-
-  useEffect(() => {
-    CalculateIGst()
-    setigst(CalculateIGst())
-  }, [igstprcnt])
-  useEffect(() => {
-    settotalamt(Calculate())
-  }, [Calculate()])
-
-  useEffect(() => {
-    setcpu(CalculateCPU())
-  }, [CalculateCPU(), Calculate()])
-
-  // console.log(totalamt,cpu)
-  // console.log(sgst,cgst)
-  console.log(MedicineentriesArr, ClinicList)
-  console.log(clinicstatecode, vendorcode)
-
-
   return (
-    <section className="newpurchaseentryform mt-1">
-      <div className="container-fluid p-0 m-0">
-        <div className="container-fluid bg-seashell border border-2 border-top-0 border-start-0 border-end-0 ">
-          <div className="row p-2">
-            <div className="col-1">
+    <section className="newpurchaseentryform mt-1 position-relative bg-seashell m-2 shadow rounded-4 " style={{ 'height': '90vh' }}>
+      <div className="container-fluid p-0 m-0 rounded-4">
+        <div className="container-fluid bg-seashell rounded-4 position-relative  ">
+          <div className="row p-2 pe-1">
+            <div className="col-1 position-absolute end-0">
               <button type="button" className="btn-close closebtn m-auto" onClick={props.toggle_nref} aria-label="Close" ></button>
             </div>
-            <div className="col-9">
-              <h6 className="text-center" style={{ color: "var(--charcoal)", fontWeight: "600" }} >New Return Entry</h6>
-            </div>
-            <div className="col-auto">
-              <button disabled={MedicineentriesArr == undefined || MedicineentriesArr && MedicineentriesArr.length == 0 ? true : false} className="button button-burntumber" onClick={() => { confirmmessage(MedicineentriesArr, vendorname) }}>Save All</button>
+            <div className="col-12 justify-content-center">
+              <h6 className="text-center" style={{ color: "var(--charcoal)", fontWeight: "600" }} >New Purchase Return Entry</h6>
             </div>
           </div>
         </div>
-        <div className="container-fluid entrydetails bg-pearl">
-          <div className="row">
-            <div className={`col-${vendorid ? '8' : '12'} p-0 m-0`}>
-              <div className="col-8 p-0 m-0">
-                <div className="row g-4">
-                  <div className="col-5">
-                    <h6 className="p-0 m-0 ms-3 fw-bold">Select Vendor</h6>
-                    <input className="form-control ms-2 rounded-1" placeholder='Search Vendors' value={vendorname ? vendorname : ''} onChange={(e) => { searchvendors(e.target.value); setvendorname(e.target.value); setvendorid(); setvendorcode() }} />
-                    <div ref={vendorsref} className='position-absolute ms-2 rounded-2 bg-pearl col-2' >
-                      {
-                        vendorsearch ? (
-                          loadvendors ? (
-                            <div className='rounded-2 p-1'>
-                              Searching Please wait....
-                              <div className="spinner-border my-auto" style={{ width: "1rem", height: "1rem" }} role="status" >
-                                <span className="sr-only"> </span> </div>
-                            </div>
-                          ) : (
-                            vendorsearch.length == 0 ? (
-                              <div className="bg-burntumber text-light rounded-2 p-1">Oops! Not Avaliable</div>
-                            ) : (
-                              vendorsearch.map((data, i) => (
-                                <div style={{ cursor: 'pointer' }} className={`p-0 p-1  bg-${((i % 2) == 0) ? 'pearl' : 'lightblue'} fs-6 `} name={data.id} onClick={(e) => { setvendorname(data.entity_name); setvendorid(data.id); setvendorcode(data.state_code); filterclinic(); vendorsref.current.style.display = 'none'; }}>{data.entity_name}</div>
-                              ))
-                            )
-                          )
-                        ) : (<></>)
-                      }
-                    </div>
-                  </div>
-                  <div className="col-5">
-                    <h6 className="p-0 m-0 ms-3 fw-bold">Invoice Number</h6>
-                    <input type="text" placeholder="Enter No." className="form-control ms-2 rounded-1" value={invoice ? invoice : ''} onChange={(e) => { setinvoice(e.target.value) }} style={{ color: "gray" }} />
-                  </div>
-                  <div className="col-5">
-                    <h6 className="p-0 m-0 ms-3 fw-bold">Invoice Date</h6>
-                    <input type="date" className="form-control ms-2 rounded-1" value={invoicedate ? invoicedate : ''} onChange={(e) => { setinvoicedate(e.target.value) }} style={{ color: "gray" }} />
-                  </div>
-                </div>
-                <div className="row p-0 m-0 align-items-center mt-2">
-                  <div className="col-6 col-lg-5 col-md-5 p-0 m-0 align-self-center ms-1">
-                    <button className="button button-charcoal m-0 p-0 py-1 px-4"> <img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt="displaying_image" style={{ width: "1.5rem" }} /> Medicine </button>
-                  </div>
-
-                </div>
-              </div>
-              <div className=" p-0 m-0  mt-2 scroll scroll-y" style={{ maxHeight: '53vh' }}>
-                <table className="table datatable text-center position-relative">
-                  <thead style={{ color: 'gray', fontWeight: '600' }}>
-                    <tr>
-                      <th>Edit</th>
-                      <th>Item ID</th>
-                      <th>Item Name</th>
-                      <th>batch No.</th>
-                      <th>Expiry Date</th>
-                      <th>MRP</th>
-                      <th>Rate</th>
-                      <th>Total Disc</th>
-                      <th>Cost</th>
-                      <th>Delete</th>
-                    </tr>
-                  </thead>
-                  {
-                    MedicineentriesArr ? (
-                      <tbody style={{ Height: '50vh', maxHeight: '50vh', color: 'var(--charcoal)', fontWeight: '600' }}>
-                        {
-                          MedicineentriesArr.map((item, _key) => (
-                            <tr key={_key}>
-                              <td><input type='checkbox' checked={_key == tableindex ? true : false} onClick={() => { indexing(_key) }} className='bg-seashell' /></td>
-                              <td>{item.Itemid}</td>
-                              <td>{item.Itemname}</td>
-                              <td>{item.batchno}</td>
-                              <td>{item.expirydate}</td>
-                              <td>{item.MRP}</td>
-                              <td>{item.Rate}</td>
-                              <td>{Number(item.Discount) + Number(item.tradeDiscount)}</td>
-                              <td>{item.costperunit}</td>
-                              <td ><button onClick={() => { DeleteMedicine(item.Itemid); }} className='btn btn-sm button-burntumber'>Delete</button></td>
-                            </tr>
-                          ))
-                        }
-                      </tbody>
+        <div className="container-fluid p-0 m-0 w-100 entrydetails bg-seashell">
+          <div className="row p-0 m-0 justify-content-center">
+            <div className="col-5">
+              <h6 className="p-0 m-0 ms-3 fw-bold">Select Distributor</h6>
+              <input className="form-control ms-2 rounded-1 bg-seashell" placeholder='Search Vendors' value={vendorname ? vendorname : ''} onChange={(e) => { searchvendors(e.target.value); setvendorname(e.target.value); setvendorid(); setMedicineentriesArr([]) }} />
+              <div ref={vendorsref} className='position-absolute ms-2 rounded-2 bg-pearl col-2' style={{ display: 'none', zIndex: '1' }} >
+                {
+                  vendorsearch ? (
+                    loadvendors ? (
+                      <div className='rounded-2 p-1'>
+                        Searching Please wait....
+                        <div className="spinner-border my-auto" style={{ width: "1rem", height: "1rem" }} role="status" >
+                          <span className="sr-only"> </span> </div>
+                      </div>
                     ) : (
-                      MedicineentriesArr && MedicineentriesArr.length == 0 ? (
-                        <tbody className="position-relative" style={{ height: '50vh', maxHeight: '50vh', color: 'var(--charcoal)', fontWeight: '600' }}>
-                          <tr >
-                            <td className="position-absolute start-0 end-0 top-0">No items Added</td>
-                          </tr>
-                        </tbody>
+                      vendorsearch.length == 0 ? (
+                        <div className="bg-burntumber text-light rounded-2 p-1">Oops! Not Avaliable</div>
                       ) : (
-                        <tbody className="position-relative" style={{ height: '50vh', maxHeight: '50vh', color: 'var(--charcoal)', fontWeight: '600' }}>
-                          <tr className=""  >
-                            <td className="position-absolute start-0 end-0 top-0" >No items Added</td>
-                          </tr>
-                        </tbody>
+                        vendorsearch.map((data, i) => (
+                          <div style={{ cursor: 'pointer' }} className={`p-0 p-1  bg-${((i % 2) == 0) ? 'pearl' : 'lightblue'} fs-6 `} name={data.id} onClick={(e) => { setvendorname(data.entity_name); setvendorid(data.id); vendorsref.current.style.display = 'none'; }}>{data.entity_name}</div>
+                        ))
                       )
-
                     )
-                  }
-                </table>
+                  ) : (<div className='bg-seashell'></div>)
+                }
               </div>
             </div>
-            <div className={`col-4 m-0 p-0 medicineinfosection d-${vendorid ? 'block' : 'none'} bg-seashell ps-2`} id='medicineinfosection'>
-              <h5 className="mt-2">Add Items</h5>
-              <div className="col-12">
-                <div className="form-group col-10 col-md-11">
-                  <div className='position-relative'>
-                    <label>Search Items </label>
-                    <input className='form-control bg-seashell' placeholder='Items' value={itemname ? itemname : ''} onChange={(e) => { searchmeds(e.target.value); setitemname(e.target.value); setitemtype() }} />
-                    <div ref={medicinesref} className='position-absolute rounded-2 bg-pearl col-12' >
-                      {
-                        itemsearch ? (
-                          loadsearch ? (
-                            <div className='rounded-2 p-1'>
-                              Searching Please wait....
-                              <div className="spinner-border my-auto" style={{ width: "1rem", height: "1rem" }} role="status" >
-                                <span className="sr-only"> </span> </div>
-                            </div>
-                          ) : (
-                            itemsearch.length == 0 ? (
-                              <div className="bg-burntumber text-light rounded-2 p-1">Oops! Not Avaliable</div>
-                            ) : (
-                              itemsearch.map((data, i) => (
-                                <div style={{ cursor: 'pointer' }} className={`p-0 ps-1 shadow bg-${((i % 2) == 0) ? 'pearl' : 'lightyellow'} fs-6 `} name={data.id} onClick={(e) => { setitemname(data.display_name ? data.display_name : data.name); setitemid(data.id); setitemtype(data.vaccines_id ? 'v' : 'm'); medicinesref.current.style.display = 'none'; }}>{data.display_name ? data.display_name : data.name}</div>
-                              ))
-                            )
-                          )
-                        ) : (<></>)
-                      }
-                    </div>
-                  </div>
-
-                  <label className="mb-2 pt-2">Batch Number</label>
-                  <input type="text" max="10" className="form-control bg-seashell batchnumber rounded-1" id="inputEmail4" placeholder="Batch Number" value={batchno ? batchno : ''} onChange={(e) => setbatchno(e.target.value)} required />
-                  <label className="pt-3 mb-2">Expiry Date</label>
-                  <input type="Date" className="form-control bg-seashell reounded-1 expirydate" value={expdate ? expdate : ''} onChange={(e) => { setexpdate(e.target.value) }} required />
-                  <label className="pt-3 mb-2">Manufacturing Date</label>
-                  <input type="Date" className="form-control bg-seashell reounded-1 manufacturingdate" value={manufdate ? manufdate : ''} onChange={(e) => { setmanufdate(e.target.value) }} required />
-                </div>
-                <div className="col-12 form-group col-md-11 col-lg-11">
-                  <div className="row p-0 m-0">
-                    <div className="col-5">
-                      <label className="mb-2">MRP</label>
-                      <input type="number" max="10" className="form-control bg-seashell mrp rounded-1  m-auto" placeholder="00" value={mrp ? mrp : ''} onChange={(e) => { setmrp(e.target.value) }} required />
-                    </div>
-                    <div className="col-5">
-                      <label className="mb-2"> Rate</label>
-                      <input type="number" max="10" className="form-control bg-seashell rate rounded-1  m-auto" placeholder="00" value={rate ? rate : ''} onChange={(e) => { setrate(e.target.value); Calculate(e.target.value) }} required />
-                    </div>
-                  </div>
-                  <div className="row p-0 m-0">
-                    <div className="col-5">
-                      <label className="mb-2">Qty</label>
-                      <input type="number" max="10" className="form-control bg-seashell mrp rounded-1  m-auto" placeholder="00" value={qty ? qty : ''} onChange={(e) => { setqty(e.target.value); Calculate(rate, e.target.value) }} required />
-                    </div>
-                    <div className="col-5">
-                      <label className="mb-2">Free Qty</label>
-                      <input type="number" max="10" className="form-control bg-seashell rate rounded-1  m-auto" placeholder="00" value={freeqty ? freeqty : ''} onChange={(e) => { setfreeqty(e.target.value) }} required />
-                    </div>
-                  </div>
-                  <div className="row p-0 m-0 mt-2">
-                    <div className="col-5">
-                      <label className="mb-2">Discount &#40;%&#41;</label>
-                      <input type="number" max="10" className="form-control bg-seashell mrp rounded-1  m-auto" placeholder="00" value={disc ? disc : ''} onChange={(e) => { setdisc(e.target.value) }} required />
-                    </div>
-                    <div className="col-5 pb-3">
-                      <label className="mb-2">Trade Disc. &#40;%&#41;</label>
-                      <input type="number" max="10" className="form-control bg-seashell rate rounded-1  m-auto" placeholder="00" value={trddisc ? trddisc : ''} onChange={(e) => { settrddisc(e.target.value) }} required />
-                    </div>
-                    <hr />
-                    <div className={`col-12 ps-2 py-2 d-${vendorcode == clinicstatecode ? 'block' : 'none'}`}>
-                      <div className="row align-items-center p-0 m-0">
-                        <div className="col-2 ">
-                          <h6>SGST</h6>
-                        </div>
-                        <div className="col-5">
-                          <input type="number" max="10" className="form-control bg-seashell mrp rounded-1  m-auto" placeholder="00" disabled={true} value={sgst ? sgst : ''} required />
-                        </div>
-                        <div className="col-3">
-                          <input type="number" max="10" className="form-control bg-seashell mrp rounded-1  m-auto" placeholder="Rate" value={sgstprcnt ? sgstprcnt : ''} onChange={(e) => { setsgstprcnt(e.target.value); setcgstprcnt(e.target.value); CalculateGst() }} required />
-                        </div>
-                      </div>
-                    </div>
-                    <div className={`col-12 ps-2 py-2 d-${vendorcode == clinicstatecode ? 'block' : 'none'}`}>
-                      <div className="row p-0 m-0 align-items-center">
-                        <div className="col-2">
-                          <h6>CGST</h6>
-                        </div>
-                        <div className="col-5">
-                          <input type="number" max="10" className="form-control bg-seashell mrp rounded-1  m-auto" disabled={true} placeholder="00" value={cgst ? cgst : sgst ? sgst : ''} required />
-                        </div>
-                        <div className="col-3">
-                          <input type="number" max="10" className="form-control bg-seashell mrp rounded-1  m-auto" disabled={true} placeholder="Rate" value={cgstprcnt ? cgstprcnt : sgstprcnt ? sgstprcnt : ''} required />
-                        </div>
-                      </div>
-                    </div>
-                    <div className={`col-12 ps-2 py-2 d-${vendorcode == clinicstatecode ? 'none' : 'block'}`}>
-                      <div className="row p-0 m-0 align-items-center">
-                        <div className="col-2 ">
-                          <h6>IGST</h6>
-                        </div>
-                        <div className="col-5">
-                          <input type="number" max="10" className="form-control bg-seashell mrp rounded-1  m-auto" placeholder="00" disabled={true} value={CalculateIGst() ? CalculateIGst() : ''} />
-                        </div>
-                        <div className="col-3">
-                          <input type="number" max="10" className="form-control bg-seashell mrp rounded-1  m-auto" placeholder="Rate" value={igstprcnt ? igstprcnt : ''} onChange={(e) => { setigstprcnt(e.target.value) }} required />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <hr />
-                <div className="col-12 form-group">
-                  <div className="row p-0 m-0 g-3">
-                    <div className="col-5">
-                      <label className="mb-2">Cost/Unit</label>
-                      <input type="number" max="10" className="form-control bg-seashell costunit rounded-1" placeholder="00" disabled value={CalculateCPU() ? CalculateCPU() : ''} onChange={(e) => { setcpu(e.target.value) }} required />
-                    </div>
-                    <div className="col-5">
-                      <label className="mb-2">Total Amount</label>
-                      <input type="number" max="10" className="form-control bg-seashell totalamount rounded-1" placeholder="00" disabled value={Calculate() ? Calculate() : ''} onChange={(e) => { settotalamt(e.target.value) }} required />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="col-6 py-3 m-auto text-center">
+            <div className="col-5">
+              <div className='position-relative'>
+                <h6 className="p-0 m-0 ms-3 fw-bold">Product ID</h6>
+                <input className='form-control bg-seashell' placeholder='Product Id' value={itemname ? itemname : ''}
+                  onChange={(e) => {
+                    vendorid ? setitemname(e.target.value) : Notiflix.Notify.failure('Please Add Vendor First')
+                  }} />
+                <div ref={medicinesref} className='position-absolute rounded-2 bg-pearl col-12' style={{ zIndex: '1' }}>
                   {
-                    tableindex == -1 || tableindex == undefined ? (
-                      <button type="submit" className="btn  button-charcoal done px-5" onClick={InsertMedicines} > Add </button>
-                    ) : (
-                      <button type="submit" className="btn  button-charcoal done px-5" onClick={UpdateMedicines} > Update </button>
-                    )
+                    itemsearch ? (
+                      loadsearch ? (
+                        <div className='rounded-2 p-1'>
+                          Searching Please wait....
+                          <div className="spinner-border my-auto" style={{ width: "1rem", height: "1rem" }} role="status" >
+                            <span className="sr-only"> </span> </div>
+                        </div>
+                      ) : (
+                        itemsearch.length == 0 ? (
+                          <div className="bg-burntumber text-light rounded-2 p-1">Oops! Not Avaliable</div>
+                        ) : (
+                          itemsearch.map((data, i) => (
+                            <div style={{ cursor: 'pointer' }} className={`p-0 ps-1 shadow bg-${((i % 2) == 0) ? 'pearl' : 'lightyellow'} fs-6 `} name={data.id}
+                              onClick={(e) => {
+                                setitemname(data.item_name);
+                                InsertMedicines(data);
+                                medicinesref.current.style.display = 'none';
+                              }}>{data.item_name}</div>
+                          ))
+                        )
+                      )
+                    ) : (<div className='bg-seashell'></div>)
                   }
-
                 </div>
+
+              </div>
+
+            </div>
+            <div className="col-2 align-self-center ">
+              <p></p>
+              <button className='p-0 m-0 btn' onClick={searchmeds}><img src={process.env.PUBLIC_URL + 'images/search.png'} style={{ width: '1.8rem' }} /></button>
+            </div>
+          </div>
+          <div className=" p-0 m-0 mt-2 scroll scroll-y" style={{ Height: '65vh' }}>
+            <table className="table datatable text-center position-relative">
+              <thead style={{ color: 'gray', fontWeight: '600' }}>
+                <tr>
+
+                  <th className='p-0 m-0 px-1'>Item ID</th>
+                  <th className='p-0 m-0 px-1'>Item Name</th>
+                  <th className='p-0 m-0 px-1'>batch No.</th>
+                  <th className='p-0 m-0 px-1'>Expiry Date</th>
+                  <th className='p-0 m-0 px-1'>Avl. Stock</th>
+                  <th className='p-0 m-0 px-1'>Qty to Return</th>
+                  <th className='p-0 m-0 px-1'>Purchase Rate/Unit</th>
+                  <th className='p-0 m-0 px-1'>Purchase Rate</th>
+                  <th className='p-0 m-0 px-1'>Delete</th>
+                </tr>
+              </thead>
+              {
+                MedicineentriesArr ? (
+                  <tbody style={{ maxHeight: '65vh', minHeight: '65vh', color: 'var(--charcoal)', fontWeight: '600' }}>
+                    {
+                      MedicineentriesArr.map((item, _key) => (
+                        <tr key={_key} className=''>
+                          <td>{item.Itemid}</td>
+                          <td>{item.Item}</td>
+                          <td>{item.batchno}</td>
+                          <td>{reversefunction(item.expirydate)}</td>
+                          <td>{item.currentstock}</td>
+                          <td className='p-0 m-0' style={{ 'width': '0px', 'height': '0px' }}>
+                            <input className='border border-1 rounded-1 w-25 text-center p-0 m-0 bg-seashell  mt-2' value={item.qtytoReturn ? item.qtytoReturn : ''}
+                              onChange={(e) => {
+                                e.target.value <= item.currentstock ? item.qtytoReturn = e.target.value : Notiflix.Notify.failure("Quantity Cannot be Greater then Current Stock Available")
+                                item.totalcost = CalculateCost(item.cost, item.currentstock, e.target.value)
+                                setMedicineentriesArr(prevState => [...prevState])
+                              }} /></td>
+                          <td>{item.cost}</td>
+                          <td>{item.totalcost}</td>
+                          <td ><button onClick={() => { DeleteMedicine(item.Itemid); }} className='btn btn-sm button-burntumber'>Delete</button></td>
+                        </tr>
+                      ))
+                    }
+                  </tbody>
+                ) : (
+                  MedicineentriesArr && MedicineentriesArr.length == 0 ? (
+                    <tbody className="position-relative" style={{ height: '65vh', maxHeight: '65vh', color: 'var(--charcoal)', fontWeight: '600' }}>
+                      <tr >
+                        <td className="position-absolute start-0 end-0 top-0">No items Added</td>
+                      </tr>
+                    </tbody>
+                  ) : (
+                    <tbody className="position-relative" style={{ height: '65vh', maxHeight: '65vh', color: 'var(--charcoal)', fontWeight: '600' }}>
+                      <tr className=""  >
+                        <td className="position-absolute start-0 end-0 top-0" >No items Added</td>
+                      </tr>
+                    </tbody>
+                  )
+
+                )
+              }
+            </table>
+          </div>
+
+
+
+        </div>
+      </div>
+      <div className='col-12 position-absolute start-0 end-0 bottom-0 text-center bg-pearl align-items-center rounded-bottom p-2'>
+        <div className="row p-0 m-0">
+          <div className="col-6">
+            <div className="row">
+              <div className="col-3">
+                <p className='text-charcoal75 p-0 m-0 fw-bolder card-title text-start ms-3'> Order Total </p>
+                <h4 className='text-charcoal  p-0 m-0 fw-bolder card-header text-start ps-3'>{Grand()}</h4>
+              </div>
+              <div className="col-3">
+                <p className='text-charcoal75 p-0 m-0 fw-bolder card-title text-start ms-3'> Total Items</p>
+                <h4 className='text-charcoal  p-0 m-0 fw-bolder card-header text-start ps-3'>{MedicineentriesArr ? MedicineentriesArr.length : 0}</h4>
               </div>
             </div>
+          </div>
+          <div className="col-3 align-self-center">
+            <button className='button button-charcoal px-5' onClick={confirmmessage}>Save Entry</button>
+          </div>
+          <div className="col-3 align-self-center">
+            <button className='button button-pearl border-charcoal text-charcoal px-4' >Add To Cart</button>
           </div>
         </div>
       </div>
@@ -3627,7 +4098,15 @@ function Stockvaccinesection() {
       return date
     }
   }
+  const CalculateBStock = (data) => {
+    let total = 0
+    data.map((item) => (
+      total += Number(item.current_stock)
+    ))
+    return total
+  }
   console.log(searchname)
+  let c = 0
   return (
     <>
       {/* <button className="button exportstock button-charcoal position-absolute"><img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt='displaying_image' className="img-fluid" style={{ width: `1.5rem` }} />Export Stock</button> */}
@@ -3685,7 +4164,7 @@ function Stockvaccinesection() {
                         <td className='p-0 m-0 px-1 text-charcoal fw-bold'>{data.stock_info.map((Data, f) => (<><tr> <tr className='p-0 m-0 text-charcoal text-start fw-bold'>{f + 1}{')'}{' '}{' '}{Data.expiry_date && Data.expiry_date !== null ? reversefunction(Data.expiry_date) : ''}</tr></tr></>))} </td>
                         <td className='p-0 m-0 px-1 text-charcoal fw-bold'>{data.stock_info.map((Data, f) => (<><tr> <tr className='p-0 m-0 text-charcoal text-start fw-bold'>{f + 1}{')'}{' '}{' '}{Data.mrp && Data.mrp !== null ? Data.mrp : ''}</tr> </tr></>))} </td>
                         <td className='p-0 m-0 px-1 text-charcoal fw-bold'>{data.stock_info.map((Data, f) => (<><tr> <tr className='p-0 m-0 text-charcoal text-start fw-bold'>{f + 1}{')'}{' '}{' '}{Data.cost && Data.cost !== null ? Data.cost : ''}</tr> </tr></>))} </td>
-                        <td className='p-0 m-0 px-1 text-charcoal fw-bold'>{ }</td>
+                        <td className='p-0 m-0 px-1 text-charcoal fw-bold'>{CalculateBStock(data.stock_info)}</td>
                         <td className='p-0 m-0 px-1 text-charcoal fw-bold'>{ }</td>
                         <td className='p-0 m-0 px-1 text-charcoal fw-bold'>{data.status}</td>
                       </tr>
