@@ -94,9 +94,11 @@ body {
     left: 5%;
     top: 15%;
 }
-.searchlist{
+
+.searchlist {
     z-index: 3000;
 }
+
 .patientsearch input {
     text-align: center;
 }
@@ -412,56 +414,75 @@ body {
 .timeslotsection {
     font-family: 'Urbanist', sans-serif;
 }
+
 .allappointmentsection .datatable tr:nth-child(even) {
     background-color: var(--seashell);
 }
+
 .allappointmentsection .updateappointment {
+    max-width: 90rem;
+    left: 0;
+    right: 0;
+    padding: 0;
+    margin: 0 auto;
     top: -10rem;
-    bottom: 0;
+    margin-top: 20rem;
+    margin-bottom: 30rem;
+    z-index: 3003;
+}
+
+.allappointmentsection .vitals {
+    max-width: 40rem;
+    left: 0;
+    right: 0;
+    padding: 0;
+    margin: 0 auto;
+    top: -10rem;
     margin-top: 20rem;
     margin-bottom: 30rem;
 }
 
-.allappointmentsection .vitals{
-    max-width:40rem;
-    left:0;
-    right:0;
-    padding:0;
-    margin:0 auto;
-    top:-10rem;
+.allappointmentsection .payments {
+    max-width: 40rem;
+    min-width: auto;
+    left: 0;
+    right: 0;
+    padding: 0;
+    margin: 0 auto;
+    top: -10rem;
     margin-top: 20rem;
     margin-bottom: 30rem;
+    z-index:3010;
+    height:50vh;
+    background: var(--seashell);
+
 }
-.allappointmentsection .payments{
-    max-width:50rem;
-    left:0;
-    right:0;
-    padding:0;
-    margin:0 auto;
-    top:-10rem;
+
+.allappointmentsection .payments .scroll-y {
+    max-width: 40rem;
+}
+
+.allappointmentsection .bill {
+    max-width: 40rem;
+    min-width: auto;
+    left: 0;
+    right: 0;
+    padding: 0;
+    margin: 0 auto;
+    top: -10rem;
     margin-top: 20rem;
     margin-bottom: 30rem;
+    z-index:3010;
+    height:50vh;
+    background: var(--seashell);
 }
-.allappointmentsection .payments .scroll-y{
-    max-width:40rem;
-}
-.allappointmentsection .bill{
-    width:40rem;
-    min-width:30rem;
-    max-width:50rem;
-    left:0;
-    right:0;
-    padding:0;
-    margin:0 auto;
-    top:-15rem;
-    margin-top: 20rem;
-    margin-bottom: 30rem;
-}
-.allappointmentsection .bill .scroll{
-    max-height:30rem;
+
+.allappointmentsection .bill .scroll {
+    max-height: 30rem;
     overflow-y: auto;
-    min-height:20rem;
+    min-height: 20rem;
 }
+
 .allappointmentsection .tablesection {
     min-height: 10rem;
     max-height: 12rem;
@@ -516,11 +537,6 @@ body {
         height: 0.6rem;
     }
 
-    .allappointmentsection .updateappointment {
-        margin-left: 10%;
-        margin-top: 10%;
-    }
-
 }
 
 @media (max-width:790px) {
@@ -543,7 +559,7 @@ body {
     .navsection .addbtn {
         font-size: 1rem;
         margin: 0;
-        padding:0.4rem;
+        padding: 0.4rem;
     }
 
     .menu p {

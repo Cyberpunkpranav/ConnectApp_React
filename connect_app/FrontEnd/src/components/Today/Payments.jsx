@@ -139,15 +139,15 @@ const Payments = (props) => {
     }
     console.log(advancepaymentmethods)
     return (
-        <div className='bg-seashell p-2 rounded-2'>
+        <div className='bg-seashell rounded-2'>
             <h5 className='fs-4'>{props.patientname} Payments Section</h5>
             <button className='btn-close position-absolute end-0 p-2 top-0' onClick={props.ClosePaymentsForm}></button>
             <hr />
-            <div className="row p-0 m-0">
+            <div className="row p-0 m-0 gx-2">
                 {
                     blocks.map((Data, i) => (
-                        <div className="col-3 col-lg-4 col-md-4 col-xl-3 col-sm-6 ms-3">
-                            <button className={`button button-${i === blocksindex ? 'charcoal' : 'seashell'} shadow border border-dark`} onClick={() => { setblocksindex(i) }}>{Data}</button>
+                        <div className="col-6 col-lg-4 col-md-6 col-xl-4 col-sm-6">
+                            <button className={`button button-${i === blocksindex ? 'charcoal' : 'seashell'} border border-dark`} onClick={() => { setblocksindex(i) }}>{Data}</button>
                         </div>
                     ))
                 }
@@ -155,7 +155,6 @@ const Payments = (props) => {
             </div>
             <hr />
                 <div className={`container-fluid p-0 m-0 text-center d-${blocksindex === 0 ? 'block' : 'none'}`}>
-                    <hr className='p-0 m-0 my-1' />
                     <h5 className='text-burntumber fw-bolder mb-3 mt-2'>Advance Payment from {props.patientname}</h5>
                     {
                         loadadvancepayments || props.isLoading ? (

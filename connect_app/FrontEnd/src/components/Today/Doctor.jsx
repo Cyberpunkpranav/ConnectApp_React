@@ -20,9 +20,9 @@ function DoctorSchedule(props) {
   const url = useContext(URL)
   const Date = useContext(TodayDate)
   const adminid = localStorage.getItem('id')
-//Use States
+  //Use States
   const [appointmentdata, setappointmentdata] = useState([]);
-  const [singleload,setsingleload]=useState(0)
+  const [singleload, setsingleload] = useState(0)
   const [isLoading, setisLoading] = useState(false);
   const [tableindex, settableindex] = useState()
   const [appointmentform, setappointmentform] = useState("none");
@@ -34,10 +34,10 @@ function DoctorSchedule(props) {
   const [vitalindex, setvitalindex] = useState()
   const [appointmentvitalslist, setappointmentvitalslist] = useState([])
   const [loadvitals, setloadvitals] = useState()
-  const [billindex,setbillindex]= useState()
-  const [billform,setbillform]=useState('none')
-  const [paymentsindex,setpaymentsindex]=useState()
-  const [paymentsform,setpaymentsform]= useState('none')
+  const [billindex, setbillindex] = useState()
+  const [billform, setbillform] = useState('none')
+  const [paymentsindex, setpaymentsindex] = useState()
+  const [paymentsform, setpaymentsform] = useState('none')
   const [d_form, setd_form] = useState()
 
   // for UpdateAppointment
@@ -181,20 +181,20 @@ function DoctorSchedule(props) {
   //Vitals Section 
 
   //Send Notification
-  async function SendNotifcation(name,id) {
-    try{
+  async function SendNotifcation(name, id) {
+    try {
       await axios.post(`${url}/appointment/call/in`, {
-        appointment_id:id,
+        appointment_id: id,
         admin_id: adminid
-      }).then((response)=>{
-        Notiflix.Notify.success(response.data.message.slice(0,-1) +' to ' + name)
+      }).then((response) => {
+        Notiflix.Notify.success(response.data.message.slice(0, -1) + ' to ' + name)
       })
-    }catch(e){
+    } catch (e) {
       Notiflix.Notify.warning(e.message)
     }
 
   }
-  const confirmmessage = (name,id) => {
+  const confirmmessage = (name, id) => {
     customconfirm()
     Notiflix.Confirm.show(
       `Call Patient `,
@@ -202,7 +202,7 @@ function DoctorSchedule(props) {
       'Yes',
       'No',
       () => {
-        SendNotifcation(name,id)
+        SendNotifcation(name, id)
       },
       () => {
         return 0
@@ -214,23 +214,23 @@ function DoctorSchedule(props) {
   //Send Notification
 
   //Bill
-  function OpenBillForm(){
-    if(billform === 'none'){
+  function OpenBillForm() {
+    if (billform === 'none') {
       setbillform('block')
     }
   }
-  function CloseBillForm(){
-    if(billform=='block'){
+  function CloseBillForm() {
+    if (billform == 'block') {
       setbillform('none')
     }
   }
-  function OpenPaymentsForm(){
-    if(paymentsform==='none'){
+  function OpenPaymentsForm() {
+    if (paymentsform === 'none') {
       setpaymentsform('block')
     }
-  } 
-  function ClosePaymentsForm(){
-    if(paymentsform==='block'){
+  }
+  function ClosePaymentsForm() {
+    if (paymentsform === 'block') {
       setpaymentsform('none')
     }
   }
@@ -266,7 +266,7 @@ function DoctorSchedule(props) {
                       <button className={`button button-sm text-${timeindex == i ? 'light' : 'burntumber'} bg-${timeindex == i ? 'burntumber' : 'pearl'} border-${timeindex == i ? 'pearl' : 'burntumber'} m-1`} onClick={(e) => { openAddApppointmentform(); settimeindex(i) }} key={i}>{tConvert(data[0])}</button>
                       {
                         timeindex == i ? (
-                          <section className={`d-${timeindex == i ? addappointmentform : 'none'} col-lg-6 col-md-8 col-sm-12 col-12 col-xl-4 appointmentinfosection position-absolute m-auto start-0 end-0 bg-seashell rounded-4 col-6 shadow overflow-auto`} style={{ zIndex: 4000, top: '-2rem' }}>
+                          <section className={`d-${timeindex == i ? addappointmentform : 'none'} col-lg-6 col-md-8 col-sm-8 col-12 col-xl-4 appointmentinfosection position-absolute m-auto start-0 end-0 bg-seashell rounded-4 col-6 shadow overflow-auto`} style={{ zIndex: 4000, top: '-2rem' }}>
                             <SelectedTimeAppointment fetchapi={props.fetchapi} closeAddAppointmentform={closeAddAppointmentform} DocClinic={props.DocClinic} DoctorID={props.DoctorID} DoctorName={props.DoctorName} timeindex={timeindex} selectedtime={data[0]} selectedtimeID={data[2]} />
                           </section>
                         ) : (
@@ -329,7 +329,7 @@ function DoctorSchedule(props) {
                                 <img src={process.env.PUBLIC_URL + "/images/confirmed.png"} alt="displaying_image" className="img-fluid" style={{ width: "1.5rem" }} key={i} />
                               </button>
                             </td>
-                            <td  className="">
+                            <td className="">
                               <select className={` fw-bolder rounded-5 p-1 text-center button-${status_color(data.appointment_status)}`} name={data.id} onChange={(e) => { UpadteStatus(e) }}>
                                 <option className="button" selected disabled>{status(data.appointment_status)}</option>
                                 <option key={0} className="button-lightred" value='1'>Pending</option>
@@ -349,34 +349,38 @@ function DoctorSchedule(props) {
                             <td className="py-0">{tConvert(data.timeslot.time_from)}</td>
                             <td className="py-0">{data.total_amount}</td>
                             <td className="py-0"><AmountPaid appointmentData={data} Appointmentlist={Appointmentlist} /> </td>
-                            <td className="py-0"><button className="btn p-0 m-0" onClick={() => {setvitalindex(i); OpenVitals(); GetAppointmentVitals(data.id) }}><img src={process.env.PUBLIC_URL + "/images/vitals.png"} alt="displaying_image" style={{ width: "1.5rem" }} /></button></td>
-                            <td className="py-0"> <button className="btn p-0 m-0" onClick={()=>{setbillindex(i); OpenBillForm();}}><img src={process.env.PUBLIC_URL + "/images/bill.png"} alt="displaying_image" style={{ width: "1.8rem" }} className="me-1" /></button>  </td>
-                            <td className="py-0"><button className="btn p-0 m-0" onClick={()=>{setpaymentsindex(i); OpenPaymentsForm();}}><img src={process.env.PUBLIC_URL + "/images/rupee.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1" /></button></td>
-                            <td className="py-0"><button className="btn p-0 m-0" onClick={()=>confirmmessage(data.patient.full_name,data.id)}><img src={process.env.PUBLIC_URL + "/images/speaker.png"} alt="displaying_image" className="ms-1" style={{ width: "1.8rem" }} /></button></td>
+                            <td className="py-0"><button className="btn p-0 m-0" onClick={() => { setvitalindex(i); OpenVitals(); GetAppointmentVitals(data.id) }}><img src={process.env.PUBLIC_URL + "/images/vitals.png"} alt="displaying_image" style={{ width: "1.5rem" }} /></button></td>
+                            <td className="py-0"> <button className="btn p-0 m-0" onClick={() => { setbillindex(i); OpenBillForm(); }}><img src={process.env.PUBLIC_URL + "/images/bill.png"} alt="displaying_image" style={{ width: "1.8rem" }} className="me-1" /></button>  </td>
+                            <td className="py-0"><button className="btn p-0 m-0" onClick={() => { setpaymentsindex(i); OpenPaymentsForm(); }}><img src={process.env.PUBLIC_URL + "/images/rupee.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1" /></button></td>
+                            <td className="py-0"><button className="btn p-0 m-0" onClick={() => confirmmessage(data.patient.full_name, data.id)}><img src={process.env.PUBLIC_URL + "/images/speaker.png"} alt="displaying_image" className="ms-1" style={{ width: "1.8rem" }} /></button></td>
                             <td className="py-0"><a target='_blank' className='p-0 m-0 text-decoration-none text-burntumber fw-bold' href={`https://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/admin/appointment/generate/bill/${data.id}`}><img src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" style={{ width: "2rem" }} /></a></td>
                             <td className="py-0"><a target='_blank' className='p-0 m-0 text-decoration-none text-charcoal fw-bold' href={`Billhttps://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/assets/swift_pdf/prescription_pdf_${data.id}.pdf`}><img src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" style={{ width: "2rem" }} /></a></td>
                             {
                               appointmentid === data.id ? (
-                                <td className={`updateappointment border-0  d-${tableindex == i ? appointmentform : 'none'} p-0 start-0 bottom-0 end-0 position-absolute`} style={{ zIndex: '3005' }}><UpdateAppointment fetchapi={props.fetchapi} fetchallAppointmentslist={props.fetchallAppointmentslist} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} patientid={data.patient != null && data.patient.id != null ? data.patient.id : ""} appointmentid={data.id} addappointmentform={addappointmentform} closeappointmentform={closeappointmentform} doctorid={props.doctorid} appointmentdoctorid={data.doctor.id} appointmentdate={data.appointment_date} appointmenttime={tConvert(data.timeslot.time_from)} /></td>
+                                <td className={`updateappointment border-0 col-lg-8 col-md-10 col-sm-10 col-10 col-xl-6 d-${tableindex == i ? appointmentform : 'none'} position-absolute`}>
+                                  <UpdateAppointment fetchapi={props.fetchapi} fetchallAppointmentslist={props.fetchallAppointmentslist} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} patientid={data.patient != null && data.patient.id != null ? data.patient.id : ""} appointmentid={data.id} addappointmentform={addappointmentform} closeappointmentform={closeappointmentform} doctorid={props.doctorid} appointmentdoctorid={data.doctor.id} appointmentdate={data.appointment_date} appointmenttime={tConvert(data.timeslot.time_from)} /></td>
                               ) : (<></>)
                             }
                             {
                               vitalindex === i ? (
-                                <td className={`vitals col-lg-6 col-md-8 col-sm-12 col-12 col-xl-4 position-absolute border border-1 shadow rounded-2 d-${vitalindex == i ? vitalsform : 'none'}`} style={{ zIndex: '3010' }}><Vitalsoperation GetAppointmentVitals={GetAppointmentVitals} CloseVitals={CloseVitals} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} appointmentid={data.id} appointmentvitalslist={appointmentvitalslist} loadvitals={loadvitals} patientid={data.patient && data.patient.id != null ? data.patient.id : ""} /></td>
+                                <td className={`vitals col-lg-6 col-md-8 col-sm-12 col-12 col-xl-4 position-absolute border border-1 shadow rounded-2 d-${vitalindex == i ? vitalsform : 'none'}`} style={{ zIndex: '3010' }}>
+                                  <Vitalsoperation GetAppointmentVitals={GetAppointmentVitals} CloseVitals={CloseVitals} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} appointmentid={data.id} appointmentvitalslist={appointmentvitalslist} loadvitals={loadvitals} patientid={data.patient && data.patient.id != null ? data.patient.id : ""} /></td>
                               ) : (<></>)
                             }
                             {
-                            billindex == i ?(
-                              <td className={`bill border-0 d-${billindex == i ? billform:'none'} rounded-4 col-lg-6 col-md-8 col-sm-12 col-12 col-xl-4 position-absolute border border-1 shadow `} style={{ zIndex: '3020' }}><Bill fetchapi={props.fetchapi} CloseBillForm={CloseBillForm} patientid={data.patient && data.patient.id != null ? data.patient.id : ""}  patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} Appointmentlist={Appointmentlist} setsingleload={setsingleload} isLoading={isLoading} appointmentdata={appointmentdata} appointmentid={data.id} doctorfee = {data.doctor.consulationFee}/></td>
-                              ):(<></>)
+                              billindex == i ? (
+                                <td className={`bill border-0 d-${billindex == i ? billform : 'none'} col-lg-6 col-md-8 start-0 m-auto end-0 top-0 col-sm-12 col-12 col-xl-4 position-absolute`} style={{ zIndex: '3020' }}>
+                                  <Bill fetchapi={props.fetchapi} CloseBillForm={CloseBillForm} patientid={data.patient && data.patient.id != null ? data.patient.id : ""} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} Appointmentlist={Appointmentlist} setsingleload={setsingleload} isLoading={isLoading} appointmentdata={appointmentdata} appointmentid={data.id} doctorfee={data.doctor.consulationFee} /></td>
+                              ) : (<></>)
                             }
-                               {
+                            {
                               paymentsindex === i ? (
-                                <td className={`payments col-lg-6 col-md-8 col-sm-12 col-12 col-xl-4 position-absolute shadow border border-1 rounded-2 d-${paymentsindex == i ? paymentsform : 'none'}`} style={{ width:'40rem', zIndex: '3010' }}><Payments ClosePaymentsForm={ClosePaymentsForm} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} appointmentid={data.id} patientid={data.patient && data.patient.id != null ? data.patient.id : ""} Appointmentlist={Appointmentlist} setsingleload={setsingleload} isLoading={isLoading} appointmentdata={appointmentdata} /></td>
+                                <td className={`payments start-0 end-0 col-lg-6 col-md-8 col-sm-10 col-10 col-xl-6 position-absolute shadow border border-1 rounded-2 d-${paymentsindex == i ? paymentsform : 'none'}`}>
+                                  <Payments ClosePaymentsForm={ClosePaymentsForm} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} appointmentid={data.id} patientid={data.patient && data.patient.id != null ? data.patient.id : ""} Appointmentlist={Appointmentlist} setsingleload={setsingleload} isLoading={isLoading} appointmentdata={appointmentdata} /></td>
                               ) : (<></>)
                             }
                           </tr>
-                     
+
                         )))}
                   </tbody>
 

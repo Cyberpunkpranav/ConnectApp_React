@@ -623,8 +623,8 @@ function SaleReturns() {
       <button className="button addentrypurchase button-charcoal position-absolute" onClick={toggle_nref}><img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt='displaying_image' className="img-fluid" style={{ width: `1.5rem` }} />Entry Return</button>
       <div classsName='p-0 m-0'>
         <div className="row p-0 m-0">
-          <div className="col-3 col-md-2 col-lg-2 align-self-center text-charcoal fw-bolder fs-6">Sale Return </div>
-          <div className="col-6 col-xl-6 col-lg-7 col-md-auto align-self-center m-1 ">
+          <div className="col-3 col-md-2 col-lg-3 align-self-center text-charcoal fw-bolder fs-6">Sale Return </div>
+          <div className="col-6 col-xl-6 col-lg-7 col-md-auto col-sm-auto align-self-center m-1 ">
             <div className="row border-burntumber fw-bolder rounded-2 text-center justify-content-center ">
               <div className="col-4 d-none">
                 <select className='p-0 m-0 border-0 text-burntumber fw-bolder' value={channel ? channel : ''} onChange={(e) => { setchannel(e.target.value) }}>
@@ -632,11 +632,11 @@ function SaleReturns() {
                   <option className='border-0 text-burntumber fw-bolder' value='2'>Consumables</option>
                 </select>
               </div>
-              <div className="col-4 text-burntumber fw-bolder">
-                <input type='date' className='p-0 m-0 border-0 text-burntumber fw-bolder ' value={fromdate ? fromdate : ''} onChange={(e) => { setfromdate(e.target.value) }} />
+              <div className="col-4 col-md-6 col-sm-6 text-burntumber bg-pearl fw-bolder">
+                <input type='date' className='p-0 m-0 border-0 text-burntumber  bg-pearl fw-bolder'  placeholder='fromdate' value={fromdate ? fromdate : ''} onChange={(e) => { setfromdate(e.target.value) }} />
               </div>
-              <div className="col-4 text-burntumber fw-bolder">
-                <input type='date' className='p-0 m-0 border-0 text-burntumber fw-bolder ' value={todate ? todate : ''} onChange={(e) => { settodate(e.target.value) }} />
+              <div className="col-4 col-md-6 col-sm-6 text-burntumber bg-pearl fw-bolder">
+                <input type='date' className='p-0 m-0 border-0 text-burntumber fw-bolder bg-pearl'   placeholder='fromdate' value={todate ? todate : ''} onChange={(e) => { settodate(e.target.value) }} />
               </div>
             </div>
           </div>

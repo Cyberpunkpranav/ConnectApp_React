@@ -32,7 +32,6 @@ const UpdatePatient = (props) => {
     const [display, setdisplay] = useState("none")
     const [accountinput, setaccountinput] = useState()
     const [displaymainaccount, setdisplaymainaccount] = useState('none')
-    const genderref = useRef()
     const ismainref = useRef()
 
     function capitalizeFirstLetter(string) {
@@ -40,7 +39,7 @@ const UpdatePatient = (props) => {
     }
 
     async function currentvalue() {
-        genderref.current.value = capitalizeFirstLetter(props.gender)
+        setgender(props.data.gender)
         if (props.data.address[0] && props.data.address[0].address_line2) {
             setaddress(props.data.address[0].address_line1 + props.data.address[0].address_line2)
         } else if (props.data.address[0] && props.data.address[0].address_line1) {
@@ -113,38 +112,38 @@ const UpdatePatient = (props) => {
 
     // console.log(props.patientid, fullname, countrycode, phonenumber, DOB, gender, props.gender, email, address, pincode, props.location, place, main, adminid, props.linkid, props.relation)
     async function UpdatePatient() {
-        // console.log(props.patientid, fullname, countrycode, phonenumber, DOB, gender, props.gender, email, address, pincode, props.location, place, main, adminid, props.linkid, props.relation)
-      try{
-        if (fullname && countrycode && phonenumber && DOB && email && address && pincode && main && adminid) {
-         await  axios.post(`https://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/api/connect/update/patient`, {
-                patient_id: props.patientid,
-                full_name: fullname,
-                phone_country_code: countrycode,
-                phone_number: phonenumber,
-                dob: DOB,
-                gender: props.gender ? props.gender : gender,
-                email: email,
-                address: address,
-                pin_code: pincode,
-                location: props.location ? props.location : place,
-                is_main: main,
-                latitude: props.latitude ? props.latitude : lat,
-                longitude: props.longitude ? props.longitude : lat,
-                relation: main == 2 ? props.relation ? props.relation : relation : '',
-                link_id: main == 2 ? props.linkid ? props.linkid : linkid : '',
-                admin_id: adminid
-            }).then((response) => {
-                Notiflix.Notify.success(response.data.message);
-                props.getAllPatients(0)
-                props.CloseUpdatePatient()
-            })
-        } else {
-            Notiflix.Notify.warning('Please Fill all Detais');
+        console.log(props.patientid, fullname, countrycode, phonenumber, DOB, gender, email, address, pincode, props.location, place, main, adminid, props.linkid, props.relation)
+        try {
+            if (fullname && countrycode && phonenumber && DOB && email && address && pincode && main && adminid) {
+                await axios.post(`https://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/api/connect/update/patient`, {
+                    patient_id: props.patientid,
+                    full_name: fullname,
+                    phone_country_code: countrycode,
+                    phone_number: phonenumber,
+                    dob: DOB,
+                    gender: gender,
+                    email: email,
+                    address: address,
+                    pin_code: pincode,
+                    location: props.location ? props.location : place,
+                    is_main: main,
+                    latitude: props.latitude ? props.latitude : lat,
+                    longitude: props.longitude ? props.longitude : lat,
+                    relation: main == 2 ? props.relation ? props.relation : relation : '',
+                    link_id: main == 2 ? props.linkid ? props.linkid : linkid : '',
+                    admin_id: adminid
+                }).then((response) => {
+                    Notiflix.Notify.success(response.data.message);
+                    props.getAllPatients(0)
+                    props.CloseUpdatePatient()
+                })
+            } else {
+                Notiflix.Notify.warning('Please Fill all Detais');
+            }
+        } catch (e) {
+            alert(e)
         }
-      }catch(e){
-        alert(e)
-      }
- 
+
     }
     const confirmmessage = () => {
         customconfirm()
@@ -173,7 +172,7 @@ const UpdatePatient = (props) => {
     if (place) {
         geocodeByAddress(place).then(results => getLatLng(results[0])).then(({ lat, lng }) => { setlat(lat); setlng(lng) });
     }
-
+    console.log(props.data)
     return (
         <>
             <h5 className="text-center mt-2 position-relative">Update Patient Details </h5>
@@ -413,11 +412,21 @@ const UpdatePatient = (props) => {
                 <hr />
                 <div className="col-10 m-auto">
                     <p className="m-0 mb-2">Gender</p>
-                    <select name="work_days" id="id_work_days" ref={genderref} multiple onChange={(e) => { setgender(e.target.value) }}>
+                    {/* <select name="work_days" id="id_work_days" ref={genderref} multiple onChange={(e) => { setgender(e.target.value) }}>
                         <option selected className='px-3 button rounded-0' value="Male">Male</option>
                         <option className='px-3 button rounded-0' value="Female">Female</option>
                         <option className='px-3 button rounded-0' value="others">Others</option>
-                    </select>
+                    </select> */}
+                    <div class="btn-group " role="group" aria-label="Basic radio toggle button group">
+                        <input type="radio" onClick={(e) => { setgender(e.target.value) }} className={`btn-check border-${gender == 'Male' || gender == 'male' ? 'burntumber' : ''} bg-${gender == 'Male' || gender == 'male' ? 'burntumber' : 'seashell'} text-${gender == 'Male' || gender == 'male' ? 'light' : 'charcoal'}`} value='Male' name="btnradio" id="btnradio1" autocomplete="off" />
+                        <label className={`button rounded-0 shadow-0 border-${gender == 'Male' || gender == 'male' ? 'burntumber' : ''} bg-${gender == 'Male' || gender == 'male' ? 'burntumber' : 'seashell'} text-${gender == 'Male' || gender == 'male' ? 'light' : 'charcoal'}`} for="btnradio1">Male</label>
+
+                        <input type="radio" onClick={(e) => { setgender(e.target.value) }} className={`btn-check border-${gender == 'Female' || gender == 'female' ? 'burntumber' : ''} bg-${gender == 'Female' || gender == 'female' ? 'burntumber' : 'seashell'} text-${gender == 'Female' || gender == 'female' ? 'light' : 'charcoal'}`} value='Female' name="btnradio" id="btnradio2" autocomplete="off" />
+                        <label className={`button rounded-0 shadow-0 border-${gender == 'Female' || gender == 'female' ? 'burntumber' : ''} bg-${gender == 'Female' || gender == 'female' ? 'burntumber' : 'seashell'} text-${gender == 'Female' || gender == 'female' ? 'light' : 'charcoal'}`} for="btnradio2">Female</label>
+
+                        <input type="radio" onClick={(e) => { setgender(e.target.value) }} className={`btn-check border-${gender == 'Others' || gender == 'others' ? '' : 'burntumber'} bg-${gender == 'Others' || gender == 'others' ? '' : 'burntumber'} text-${gender == 'Others' || gender == 'others' ? 'light' : 'charcoal'}`} value='Others' name="btnradio" id="btnradio3" autocomplete="off" />
+                        <label className={`button rounded-0 shadow-0 border-${gender == 'Others' || gender == 'others' ? 'burntumber' : ''} bg-${gender == 'Others' || gender == 'others' ? 'burntumber' : 'seashell'} text-${gender == 'Others' || gender == 'others' ? 'light' : 'charcoal'}`} for="btnradio3">Others</label>
+                    </div>
                 </div>
                 <hr />
                 <div className="row p-0 m-0">
