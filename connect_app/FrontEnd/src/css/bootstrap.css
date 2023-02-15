@@ -39,17 +39,18 @@ body::-webkit-scrollbar-thumb:hover {
 
 /*---------------------------------------------------bodyscrollbar css-------------------------------------------------------------------- */
 
-/*--------------------------------------------------------scroolbar css------------------------------------------------------------------- */
+/*--------------------------------------------------------scrollbar css------------------------------------------------------------------- */
 .scroll {
-    padding: 3px;
+    padding: 0px;
     overflow-x: auto;
-    overflow-y: hidden;
+    overflow-y: auto;
     white-space: nowrap;
     height: max-content;
 }
 
 .scroll::-webkit-scrollbar {
-    height: 0.4rem;
+    height: 0rem;
+    width:0rem;
 }
 
 .scroll::-webkit-scrollbar-track {
@@ -57,13 +58,14 @@ body::-webkit-scrollbar-thumb:hover {
 }
 
 .scroll::-webkit-scrollbar-thumb {
-    background: transparent;
+    background: var(--charcoal75);
     border-radius: 65rem;
 }
 
 .scroll::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
+
 
 /*--------------------------------------------------------scrollbar css------------------------------------------------------------------- */
 .button{
