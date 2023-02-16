@@ -3,7 +3,8 @@ import React, { useState, useEffect, useContext, useRef } from 'react';
 import { URL, TodayDate, DoctorsList, Clinic } from '../../index';
 import { ExportPurchaseEntry, ExportSaleEntry, ExportSaleReturn } from '../pharmacy/Exports'
 import Notiflix from 'notiflix';
-import { customconfirm, customnotify } from '../features/notiflix/customconfirm';
+import { customconfirm } from '../features/notiflix/customconfirm';
+import { customnotify } from '../features/notiflix/customnotify';
 import '../../css/bootstrap.css';
 import '../../css/pharmacy.css';
 import '../../css/dashboard.css'
@@ -12,7 +13,7 @@ import { Purchaseorderarray, Pharmacystocktable, Stockvaccinearray, Stockmedicin
 //-------------------------------------------------Sales------------------------------------------------------------------------------------------
 function Salesection(props) {
   const first = ["Sale Entry", "Sale Returns"];
-  const [second, setSecond] = useState(1);
+  const [second, setSecond] = useState(0);
 
   const _selectedScreen = (_selected) => {
     if (_selected === 0) {
@@ -215,10 +216,10 @@ function Saleentrysection(props) {
           <ExportSaleEntry saleentryarr={saleentryarr} fromdate={reversefunction(fromdate)} todate={reversefunction(todate)} />
         </div>
       </div>
-      <div className='scroll scroll-y overflow-scroll p-0 m-0' style={{ minHeight: '55vh', height: '55vh' }}>
+      <div className='scroll scroll-y p-0 m-0' style={{ minHeight: '55vh', height: '55vh' }}>
         <table className="table text-center table-responsive p-0 m-0">
-          <thead className='border border-1 p-0 m-0'>
-            <tr className='border border-1 p-0 m-0'>
+          <thead className=' p-0 m-0'>
+            <tr className=' p-0 m-0'>
               <th className='text-charcoal75 fw-bolder p-0 m-0 px-1' rowspan='2'>Bill ID</th>
               <th className='text-charcoal75 fw-bolder p-0 m-0 px-1' rowspan='2'>Patient Name</th>
               <th className='text-charcoal75 fw-bolder p-0 m-0 px-1' rowspan='2'>Bill Date</th>
@@ -228,7 +229,7 @@ function Saleentrysection(props) {
               <th className='text-charcoal75 fw-bolder p-0 m-0 px-1' rowspan='2'>Actions</th>
               <th className='text-charcoal75 fw-bolder p-0 m-0 px-1' rowspan='2'>more</th>
             </tr>
-            <tr className='border border-1 p-0 m-0'>
+            <tr className='p-0 m-0'>
               <th className='text-charcoal75 fw-bolder p-0 m-0 px-1' scope='col'>Appointment Date</th>
               <th className='text-charcoal75 fw-bolder p-0 m-0 px-1' scope='col'>Doctor Name</th>
               <th className='text-charcoal75 fw-bolder p-0 m-0 px-1' scope='col'>Invoice No.</th>
@@ -748,6 +749,7 @@ function SaleEntryForm(props) {
   const Doclist = useContext(DoctorsList)
   const clinicID = localStorage.getItem('ClinicId')
   const medicinesref = useRef(null)
+  const medbyidref = useRef(null);
   const patientaddref = useRef(null)
   const stockref = useRef(null)
   const [searchinput, setsearchinput] = useState()
@@ -765,6 +767,8 @@ function SaleEntryForm(props) {
   const [searchload, setsearchload] = useState(false)
   const [products, setproducts] = useState([])
   const [itemsearch, setitemsearch] = useState([''])
+  const [itembyid, setitembyid] = useState([''])
+  const [loadbyId, setloadbyId] = useState()
   const [itemname, setitemname] = useState()
   const [itemid, setitemid] = useState()
   const [SelectedProducts, setSelectedProducts] = useState([])
@@ -844,8 +848,24 @@ function SaleEntryForm(props) {
     } catch (e) {
       Notiflix.Notify.warning(e.data.message)
     }
+  }
+
+  const searchmedbyId = async (search) => {
+    if (search.length > 0) {
+      setloadbyId(true)
+      try {
+        await axios.get(`${url}/sale/item/search/by/id?item=${search}`).then((response) => {
+          setloadbyId(false)
+          setitembyid([response.data.data])
+        })
+      } catch (e) {
+        setloadbyId(false)
+        Notiflix.Notify.failure(e.message)
+      }
+    }
 
   }
+
   useEffect(() => {
     Doclist.map((data) => (
       data[0] == doctorid ? setdoctorname(data[1]) : ''
@@ -897,6 +917,7 @@ function SaleEntryForm(props) {
     CalGrandttl()
   }, [SelectedProducts])
   function AddProducts(data) {
+    console.log(data)
     let T = ''
     if (data.vaccine_brand_id) {
       T = 'v'
@@ -905,8 +926,8 @@ function SaleEntryForm(props) {
     }
     let ProductDetails = {
       productid: data.id,
-      type: T,
-      product: itemname,
+      type: data.type?data.type:T,
+      product: data.item_name?data.item_name:itemname,
       batch: data.batch_no,
       expiry: data.expiry_date,
       quantity: data.current_stock,
@@ -1037,6 +1058,7 @@ function SaleEntryForm(props) {
   // console.log(patientdata)
   let c = 0
   console.log(products, addressid, Dc, SelectedProducts)
+  console.log(itembyid)
   return (
     <>
       <div className="container-fluid p-0 m-0 p-2 rounded-4">
@@ -1134,13 +1156,11 @@ function SaleEntryForm(props) {
               <button className='button button-seashell text-burntumber border-burntumber '>Scan to Add Product</button>
             </div>
             <h4 className='my-2'>OR</h4> */}
-            <div className="row p-0 m-0 my-2">
-              {/* <div className="col-4 d-none">
-                <label>Product ID</label>
-                <input className='form-control bg-seashell border border-1 rounded-2' placeholder='Enter Product ID' />
-              </div> */}
+            <div className="row p-0 m-0 my-2 justify-content-center">
+
+
               <div className="col-4">
-                <input className='form-control bg-seashell' placeholder='Search Product'
+                <input className='form-control bg-seashell' placeholder='Search Product by Name'
                   value={itemname ? itemname : ''}
                   onChange={(e) => {
                     searchmeds(e.target.value);
@@ -1170,17 +1190,63 @@ function SaleEntryForm(props) {
                     ) : (<div className='bg-seashell'></div>)
                   }
                 </div>
-                <div ref={stockref} className="position-absolute" style={{ marginLeft: '13.5rem', marginTop: '2rem', zIndex: '2' }}>
+                <div ref={stockref} className="position-absolute scroll scroll-y p-2 " style={{ marginLeft: '13.5rem', marginTop: '2rem', zIndex: '2', 'width': '20rem', 'height': '30rem' }}>
                   {
                     products && products.length !== 0 ? (
                       products.stock_info.map((data, i) => (
-                        <div style={{ cursor: 'pointer', Width: 'max-content' }} className={`bg-${((i % 2) == 0) ? 'pearl' : 'seashell'}`} onClick={() => { AddProducts(data); setitemname(); setitemid(); setproducts(); setitemsearch(['']) }}>{itemname}| batchNo.-: {data.batch_no && data.batch_no !== null ? data.batch_no : ''} | stock-:{data.current_stock && data.current_stock ? data.current_stock : ''} | expiry-:{data.expiry_date ? reversefunction(data.expiry_date) : ''}</div>
+                        <div style={{ cursor: 'pointer', Width: 'max-content' }} className={`bg-${((i % 2) == 0) ? 'pearl' : 'seashell'} rounded-2 p-2 border border-bottom text-wrap`}
+                          onClick={
+                            () => {
+                              AddProducts(data);
+                              setitemname();
+                              setitemid();
+                              setproducts();
+                              setitemsearch([''])
+                            }}>
+                          <p className='text-center m-0 p-0 fw-bold'>{itemname}</p>
+                          <p className='p-0 m-0 '>BatchNo. {data.batch_no && data.batch_no !== null ? data.batch_no : ''}</p>
+                          <p className='p-0 m-0 '>Stock {data.current_stock && data.current_stock ? data.current_stock : ''}</p>
+                          <p className='p-0 m-0 '>Expiry {data.expiry_date ? reversefunction(data.expiry_date) : ''}</p>
+                        </div>
                       ))
                     ) : (<div className='bg-seashell'></div>)
 
                   }
                 </div>
                 <div></div>
+              </div>
+              <div className='col-1 text-burntumber fw-bold align-self-center'>
+                OR
+              </div>
+              <div className="col-4 ">
+                <input className='form-control bg-seashell border border-1 rounded-2' value={itemid ? itemid : ''} placeholder='Search Product by ID' onChange={(e) => { searchmedbyId(e.target.value); setitemid(e.target.value) }} />
+                <div ref={medbyidref} className='position-absolute rounded-2 mt-1' style={{ Width: 'max-content', zIndex: '2' }} >
+                  {
+                    itembyid ? (
+                      loadbyId ? (
+                        <div className='rounded-2 p-1 bg-pearl'>
+                          Searching Please wait....
+                          <div className="spinner-border my-auto" style={{ width: "1rem", height: "1rem" }} role="status" >
+                            <span className="sr-only"> </span> </div>
+                        </div>
+                      ) : (
+                        itembyid.length == 0 ? (
+                          <div className="bg-burntumber text-light rounded-2 p-1">Oops! Not Avaliable</div>
+                        ) : (
+                          itembyid.map((data, i) => (
+                            <div style={{ cursor: 'pointer', Width: 'max-content' }} className={`p-0 ps-1 shadow bg-${((i % 2) == 0) ? 'pearl' : 'seashell'} fs-6 `}
+                              onClick={(e) => {
+                                setitemid(data.type + data.id);
+                                AddProducts(data)
+                                medbyidref.current.style.display = 'none';
+                              }}>{data.item_name ? data.item_name : ''}</div>
+                          ))
+                        )
+                      )
+                    ) : (<div className='bg-seashell'></div>)
+                  }
+                </div>
+
               </div>
             </div>
           </div>
@@ -1191,7 +1257,7 @@ function SaleEntryForm(props) {
             </div>
 
             <hr className='p-0 m-0' />
-            <div className='p-0 m-0 scroll scroll-y overflow-scroll' style={{ height: '35vh' }}>
+            <div className='p-0 m-0 scroll scroll-y' style={{ height: '35vh' }}>
               <table className='table p-0 m-0'>
                 <thead className='p-0 m-0'>
                   <tr className='p-0 m-0'>
@@ -1219,7 +1285,7 @@ function SaleEntryForm(props) {
                       {
                         SelectedProducts.map((data) => (
                           <tr className='p-0 m-0 align-middle'>
-                            <td>{data.productid}</td>
+                            <td>{data.type} {data.productid}</td>
                             <td>{data.product}</td>
                             <td>{data.batch}</td>
                             <td>{reversefunction(data.expiry)}</td>
@@ -3996,7 +4062,8 @@ function Stockvaccinesection() {
   const [vaccineslist, setvaccineslist] = useState([])
   const [load, setload] = useState()
   const [searchname, setsearchname] = useState('')
-  const [tabindex, settabindex] = useState()
+  const [index, setindex] = useState()
+  const [detailsform, setdetailsform] = useState('none')
 
   const GetVaccines = async (i) => {
     if (i == undefined) {
@@ -4020,12 +4087,12 @@ function Stockvaccinesection() {
         }
         setload(false)
       }).catch(function error(e) {
-        Notiflix.Notify.failure(e)
-        setload(false)
+        Notiflix.Notify.failure(e.message)
+        // setload(false)
       })
     } catch (e) {
-      Notiflix.Notify.failure(e)
-      setload(false)
+      Notiflix.Notify.failure(e.message)
+      // setload(false)
     }
   }
   useEffect(() => {
@@ -4037,12 +4104,7 @@ function Stockvaccinesection() {
   async function getpreviouspages(e) {
     GetVaccines(e.target.value - 1)
   }
-  const reversefunction = (date) => {
-    if (date) {
-      date = date.split("-").reverse().join("-")
-      return date
-    }
-  }
+
   const CalculateBStock = (data) => {
     let total = 0
     data.map((item) => (
@@ -4050,33 +4112,52 @@ function Stockvaccinesection() {
     ))
     return total
   }
-  console.log(searchname)
+  const CalculateTStock = (data) => {
+    let total = 0
+    data.map((item) => (
+      total += Number(item.qty)
+    ))
+    return total
+  }
+  const GetStatus = (data) => {
+    let currentstock = 0
+    data.stock_info.map((item) => (
+      currentstock += Number(item.current_stock)
+    ))
+    if (currentstock <= data.alert_stock_count) {
+      return 1
+    } else {
+      return 0
+    }
+  }
   let c = 0
+  const toggle_detailsform = () => {
+    if (detailsform == 'none') {
+      setdetailsform('block')
+    }
+    if (detailsform === 'block') {
+      setdetailsform('none')
+      setindex()
+    }
+  }
   return (
-    <>
+    <div className='p-0 m-0 vaccinestockinfo'>
       {/* <button className="button exportstock button-charcoal position-absolute"><img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt='displaying_image' className="img-fluid" style={{ width: `1.5rem` }} />Export Stock</button> */}
       <div className='position-absolute searchbutton' style={{ top: '0.25rem', right: '1rem' }}>
         <input type="text" className=" form-control d-inline vaccinesearch bg-pearl" placeholder="Vaccine Name" onChange={(e) => { setsearchname(e.target.value); }} />
         <button className="btn p-0 m-0 bg-transparent border-0 position-absolute" style={{ width: '2rem', right: '0', left: '0', top: '0.25rem' }}><img src={process.env.PUBLIC_URL + "/images/search.png"} alt="displaying_image" className="img-fluid p-0 m-0" /></button>
       </div>
       <h3 className='ps-3'>Vaccine Stock Info</h3>
-      <div className='scroll scroll-y' style={{'height':'52vh', minHeight: '52vh', maxHeight: '52vh' }}>
+      <div className='scroll scroll-y' style={{ 'height': '52vh', minHeight: '52vh', maxHeight: '52vh' }}>
         <table className="table datatable text-center" >
           <thead>
             <tr>
               <th rowSpan='2' className='p-0 m-0 px-1 text-charcoal75 fw-bold'>ID</th>
-              <th rowSpan='2' className='p-0 m-0 px-1 text-charcoal75 fw-bold'>Medicine Name</th>
-              <th colSpan='4' scope='colgroup' className='p-0 m-0 px-1 text-charcoal75 fw-bold'>Stock Info.</th>
+              <th rowSpan='2' className='p-0 m-0 px-1 text-charcoal75 fw-bold'>Vaccine Name</th>
               <th rowSpan='2' className='p-0 m-0 px-1 text-charcoal75 fw-bold'>B.Stock</th>
               <th rowSpan='2' className='p-0 m-0 px-1 text-charcoal75 fw-bold'>T.Stock</th>
               <th rowSpan='2' className='p-0 m-0 px-1 text-charcoal75 fw-bold'>Status</th>
               <th rowSpan='2' className='p-0 m-0 px-1 text-charcoal75 fw-bold'></th>
-            </tr>
-            <tr>
-              <th scope='col' className='p-0 m-0 px-1 text-charcoal75 fw-bold'>Batch No.</th>
-              <th scope='col' className='p-0 m-0 px-1 text-charcoal75 fw-bold'>Expiry Date</th>
-              <th scope='col' className='p-0 m-0 px-1 text-charcoal75 fw-bold'>MRP</th>
-              <th scope='col' className='p-0 m-0 px-1 text-charcoal75 fw-bold'>Cost/Unit</th>
             </tr>
           </thead>
           {
@@ -4088,42 +4169,44 @@ function Stockvaccinesection() {
                 <td className='placeholder-glow'><div className='placeholder col-12 p-0 m-0 w-100 px-1'>Loading..</div></td>
                 <td className='placeholder-glow'><div className='placeholder col-12 p-0 m-0 w-100 px-1'>Loading..</div></td>
                 <td className='placeholder-glow'><div className='placeholder col-12 p-0 m-0 w-100 px-1'>Loading..</div></td>
-                <td className='placeholder-glow'><div className='placeholder col-12 p-0 m-0 w-100 px-1'>Loading..</div></td>
-                <td className='placeholder-glow'><div className='placeholder col-12 p-0 m-0 w-100 px-1'>Loading..</div></td>
-                <td className='placeholder-glow'><div className='placeholder col-12 p-0 m-0 w-100 px-1'>Loading..</div></td>
+
               </tr>
             ) : (
               vaccineslist == undefined || vaccineslist.length == 0 ? (
-                <tbody className='position-relative' >
+                <tbody className='' >
                   <tr>
                     <td className='position-absolute text-charcoal fw-bolder start-0 end-0'>No Vaccines Found</td>
                   </tr>
                 </tbody>
               ) : (
-                <tbody>   
+                <tbody className=''>
                   {
                     vaccineslist.map((data, i) => (
-                      <tr className={`bg-${((i % 2) == 0) ? 'seashell' : 'pearl'} p-0 m-0 px-1 align-middle text-center`}>
-                        <td className='p-0 m-0 px-1 text-charcoal fw-bold'>{data.id}</td>
-                        <td className='p-0 m-0 px-1 text-charcoal fw-bold'>{data.name && data.name !== null ? data.name : ''}</td>
-                        <td className='p-0 m-0 px-1 text-charcoal fw-bold'>{data.stock_info.map((Data, f) => (<><tr> <tr className='p-0 m-0 text-charcoal text-start fw-bold'>{f + 1}{')'}{' '}{' '}{Data.batch_no && Data.batch_no !== null ? Data.batch_no : ''}</tr></tr></>))} </td>
-                        <td className='p-0 m-0 px-1 text-charcoal fw-bold'>{data.stock_info.map((Data, f) => (<><tr> <tr className='p-0 m-0 text-charcoal text-start fw-bold'>{f + 1}{')'}{' '}{' '}{Data.expiry_date && Data.expiry_date !== null ? reversefunction(Data.expiry_date) : ''}</tr></tr></>))} </td>
-                        <td className='p-0 m-0 px-1 text-charcoal fw-bold'>{data.stock_info.map((Data, f) => (<><tr> <tr className='p-0 m-0 text-charcoal text-start fw-bold'>{f + 1}{')'}{' '}{' '}{Data.mrp && Data.mrp !== null ? Data.mrp : ''}</tr> </tr></>))} </td>
-                        <td className='p-0 m-0 px-1 text-charcoal fw-bold'>{data.stock_info.map((Data, f) => (<><tr> <tr className='p-0 m-0 text-charcoal text-start fw-bold'>{f + 1}{')'}{' '}{' '}{Data.cost && Data.cost !== null ? Data.cost : ''}</tr> </tr></>))} </td>
-                        <td className='p-0 m-0 px-1 text-charcoal fw-bold'>{CalculateBStock(data.stock_info)}</td>
-                        <td className='p-0 m-0 px-1 text-charcoal fw-bold'>{ }</td>
-                        <td className='p-0 m-0 px-1 text-charcoal fw-bold'>{data.status}</td>
-                        <td className='p-0 m-0 px-1 text-charcoal fw-bold align-items-center '>
-                        <div className='vr rounded-2 align-self-center' style={{ padding: '0.8px' }}></div>
+                      <tr className={`align-middle text-center`}>
+                        <td className=' text-charcoal fw-bold'>{data.id}</td>
+                        <td className=' text-charcoal fw-bold'>{data.name && data.name !== null ? data.name : ''}</td>
+                        <td className=' text-charcoal fw-bold'>{CalculateBStock(data.stock_info)}</td>
+                        <td className=' text-charcoal fw-bold'>{CalculateTStock(data.stock_info)}</td>
+                        <td className=' text-charcoal fw-bold'>{
+                          GetStatus(data) == 1 ? (
+                            <img src={process.env.PUBLIC_URL + 'images/exclamation.png'} style={{ 'width': '1.5rem' }} />
+                          ) : (<></>)
+                        }</td>
+                        <td className='p-0 m-0 text-charcoal fw-bold align-items-center '>
+                          <div className='vr rounded-2 align-self-center' style={{ padding: '0.8px' }}></div>
                         </td>
-                       <td className='p-0 m-0 px-1 text-charcoal fw-bold'>
-                        <button className='btn p-0 m-0'>
-                        <img src={process.env.PUBLIC_URL + 'images/archivebox.png'} style={{ 'width': '1.5rem' }} />
-                        </button>
+                        <td className={` bg-${index == i ? 'lightred' : ''} p-0 m-0 text-charcoal fw-bold`}>
+                          <button className='btn p-0 m-0' onClick={() => { setindex(i); toggle_detailsform() }}>
+                            <img src={process.env.PUBLIC_URL + 'images/archivebox.png'} style={{ 'width': '1.5rem' }} />
+                          </button>
                         </td>
-                       <td className='p-0 m-0 px-1 text-charcoal fw-bold align-items-center'>
-                        <div className='vr rounded-2 align-self-center' style={{ padding: '0.8px' }}></div>
-                      </td>
+                        {
+                          index == i ? (
+                            <td className={`stockdetailsfrom bg-white border border-1 col-lg-10 rounded-4 shadow p-0 col-md-10 col-sm-10 col-10 col-xl-6 d-${index == i ? detailsform : 'none'} position-absolute start-0 end-0 top-0`}>
+                              <VaccinesectionItemDetails toggle_detailsform={toggle_detailsform} name={vaccineslist[i].name} data={vaccineslist[i].stock_info} />
+                            </td>
+                          ) : (<></>)
+                        }
                       </tr>
 
                     ))
@@ -4146,7 +4229,7 @@ function Stockvaccinesection() {
             {
               pages ? (
                 pages.map((page, i) => (
-                  <button className={`button ms-2 button-${nxtoffset - 1 == i ? 'pearl' : 'burntumber'} border  shadow-${nxtoffset - 1 == i ? 'lg' : 'none'}`} ref={nextref} value={page} id={page} onClick={(e) => { settabindex(i); GetVaccines(i) }} key={i}>{page}</button>
+                  <button className={`button ms-2 button-${nxtoffset - 1 == i ? 'pearl' : 'burntumber'} border  shadow-${nxtoffset - 1 == i ? 'lg' : 'none'}`} ref={nextref} value={page} id={page} onClick={(e) => { GetVaccines(i) }} key={i}>{page}</button>
                 ))
               ) : (
                 <div>Loading...</div>
@@ -4159,38 +4242,302 @@ function Stockvaccinesection() {
           </div>
         </div>
       </div>
-    </>
+    </div>
   )
 }
 function Stockmedicinesection() {
+  const url = useContext(URL)
+  const nextref = useRef()
+  const previousref = useRef()
+  const [nxtoffset, setnxtoffset] = useState(0)
+  const [prevoffset, setprevoffset] = useState(0)
+  const [pages, setpages] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+  const [vaccineslist, setvaccineslist] = useState([])
+  const [load, setload] = useState()
+  const [searchname, setsearchname] = useState('')
+  const [index, setindex] = useState()
+  const [detailsform, setdetailsform] = useState('none')
+
+  const GetVaccines = async (i) => {
+    if (i == undefined) {
+      i = 0
+    }
+    setload(true)
+    if (i == 0 || i == undefined || nxtoffset == 0) {
+      previousref.current.disabled = true
+    } else {
+      previousref.current.disabled = false
+    }
+    try {
+      axios.get(`${url}/stock/list?search=${searchname}&limit=20&offset=${i * 10}`).then((response) => {
+        console.log(response.data.data.medicines)
+        setvaccineslist(response.data.data.medicines)
+        let nxt = Number(i) + 1
+        setnxtoffset(nxt)
+        if (i != 0) {
+          let prev = i--
+          setprevoffset(prev)
+        }
+        setload(false)
+      }).catch(function error(e) {
+        Notiflix.Notify.failure(e.message)
+        // setload(false)
+      })
+    } catch (e) {
+      Notiflix.Notify.failure(e.message)
+      // setload(false)
+    }
+  }
+  useEffect(() => {
+    GetVaccines()
+  }, [searchname])
+  async function getnextpages(e) {
+    GetVaccines(e.target.value)
+  }
+  async function getpreviouspages(e) {
+    GetVaccines(e.target.value - 1)
+  }
+
+  const CalculateBStock = (data) => {
+    let total = 0
+    data.map((item) => (
+      total += Number(item.current_stock)
+    ))
+    return total
+  }
+  const CalculateTStock = (data) => {
+    let total = 0
+    data.map((item) => (
+      total += Number(item.qty)
+    ))
+    return total
+  }
+  const GetStatus = (data) => {
+    let currentstock = 0
+    data.stock_info.map((item) => (
+      currentstock += Number(item.current_stock)
+    ))
+    if (currentstock <= data.alert_stock_count) {
+      return 1
+    } else {
+      return 0
+    }
+  }
+  let c = 0
+  const toggle_detailsform = () => {
+    if (detailsform == 'none') {
+      setdetailsform('block')
+    }
+    if (detailsform === 'block') {
+      setdetailsform('none')
+      setindex()
+    }
+  }
   return (
-    <>
-      <button className="button exportstock button-charcoal position-absolute"><img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt='displaying_image' className="img-fluid" style={{ width: `1.5rem` }} />Export Stock</button>
+    <div className='p-0 m-0 vaccinestockinfo'>
+      {/* <button className="button exportstock button-charcoal position-absolute"><img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt='displaying_image' className="img-fluid" style={{ width: `1.5rem` }} />Export Stock</button> */}
       <div className='position-absolute searchbutton' style={{ top: '0.25rem', right: '1rem' }}>
-        <input type="text" className=" form-control d-inline itemsearch bg-pearl" placeholder="Medicine Name" />
+        <input type="text" className=" form-control d-inline vaccinesearch bg-pearl" placeholder="Medicine Name" onChange={(e) => { setsearchname(e.target.value); }} />
         <button className="btn p-0 m-0 bg-transparent border-0 position-absolute" style={{ width: '2rem', right: '0', left: '0', top: '0.25rem' }}><img src={process.env.PUBLIC_URL + "/images/search.png"} alt="displaying_image" className="img-fluid p-0 m-0" /></button>
       </div>
-      <h3 className='ps-3'>Medicine Stock Info</h3>
-      <table className="table datatable text-center">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Medicine Name</th>
-            <th>Batch No.</th>
-            <th>Expiry Date</th>
-            <th>MRP</th>
-            <th>Cost/Unit</th>
-            <th>B.Stock</th>
-            <th>T.Stock</th>
-            <th>Status</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {<Stockmedicinearray />}
-        </tbody>
-      </table>
-    </>
+      <h3 className='ps-3'>Vaccine Stock Info</h3>
+      <div className='scroll scroll-y' style={{ 'height': '52vh', minHeight: '52vh', maxHeight: '52vh' }}>
+        <table className="table datatable text-center" >
+          <thead>
+            <tr>
+              <th rowSpan='2' className='p-0 m-0 px-1 text-charcoal75 fw-bold'>ID</th>
+              <th rowSpan='2' className='p-0 m-0 px-1 text-charcoal75 fw-bold'>Medicine Name</th>
+              <th rowSpan='2' className='p-0 m-0 px-1 text-charcoal75 fw-bold'>B.Stock</th>
+              <th rowSpan='2' className='p-0 m-0 px-1 text-charcoal75 fw-bold'>T.Stock</th>
+              <th rowSpan='2' className='p-0 m-0 px-1 text-charcoal75 fw-bold'>Status</th>
+              <th rowSpan='2' className='p-0 m-0 px-1 text-charcoal75 fw-bold'></th>
+            </tr>
+          </thead>
+          {
+            load ? (
+              <tr className='p-0 m-0'>
+                <td className='placeholder-glow'><div className='placeholder col-12 p-0 m-0 w-100 px-1'>Loading..</div></td>
+                <td className='placeholder-glow'><div className='placeholder col-12 p-0 m-0 w-100 px-1'>Loading..</div></td>
+                <td className='placeholder-glow'><div className='placeholder col-12 p-0 m-0 w-100 px-1'>Loading..</div></td>
+                <td className='placeholder-glow'><div className='placeholder col-12 p-0 m-0 w-100 px-1'>Loading..</div></td>
+                <td className='placeholder-glow'><div className='placeholder col-12 p-0 m-0 w-100 px-1'>Loading..</div></td>
+                <td className='placeholder-glow'><div className='placeholder col-12 p-0 m-0 w-100 px-1'>Loading..</div></td>
+
+              </tr>
+            ) : (
+              vaccineslist == undefined || vaccineslist.length == 0 ? (
+                <tbody className='' >
+                  <tr>
+                    <td className='position-absolute text-charcoal fw-bolder start-0 end-0'>No Vaccines Found</td>
+                  </tr>
+                </tbody>
+              ) : (
+                <tbody className=''>
+                  {
+                    vaccineslist.map((data, i) => (
+                      <tr className={`align-middle text-center`}>
+                        <td className=' text-charcoal fw-bold'>{data.id}</td>
+                        <td className=' text-charcoal fw-bold'>{data.name && data.name !== null ? data.name : ''}</td>
+                        <td className=' text-charcoal fw-bold'>{CalculateBStock(data.stock_info)}</td>
+                        <td className=' text-charcoal fw-bold'>{CalculateTStock(data.stock_info)}</td>
+                        <td className=' text-charcoal fw-bold'>{
+                          GetStatus(data) == 1 ? (
+                            <img src={process.env.PUBLIC_URL + 'images/exclamation.png'} style={{ 'width': '1.5rem' }} />
+                          ) : (<></>)
+                        }</td>
+                        <td className='p-0 m-0 text-charcoal fw-bold align-items-center '>
+                          <div className='vr rounded-2 align-self-center' style={{ padding: '0.8px' }}></div>
+                        </td>
+                        <td className={` bg-${index == i ? 'lightred' : ''} p-0 m-0 text-charcoal fw-bold`}>
+                          <button className='btn p-0 m-0' onClick={() => { setindex(i); toggle_detailsform() }}>
+                            <img src={process.env.PUBLIC_URL + 'images/archivebox.png'} style={{ 'width': '1.5rem' }} />
+                          </button>
+                        </td>
+                        {
+                          index == i ? (
+                            <td className={`stockdetailsfrom bg-white border border-1 col-lg-10 rounded-4 shadow p-0 col-md-10 col-sm-10 col-10 col-xl-6 d-${index == i ? detailsform : 'none'} position-absolute start-0 end-0 top-0`}>
+                              <MedicinesectionItemDetails toggle_detailsform={toggle_detailsform} name={vaccineslist[i].name} data={vaccineslist[i].stock_info} />
+                            </td>
+                          ) : (<></>)
+                        }
+                      </tr>
+
+                    ))
+                  }
+
+                </tbody>
+              )
+
+            )
+          }
+        </table>
+      </div>
+      <div className="container-fluid mb-1">
+        <div className="row p-0 m-0 text-center">
+          <div className="col-3 col-xl-4 col-md-2 col-lg-2 col-sm-4 p-0 m-0">
+            <button className="button ms-1 button-seashell" ref={previousref} value={prevoffset} onClick={(e) => { getpreviouspages(e); }} style={{ marginTop: '0.15rem' }}>Previous</button>
+          </div>
+          <div className="col-auto col-xl-auto col-md-8 col-lg-8 col-sm-auto p-0 m-0">
+
+            {
+              pages ? (
+                pages.map((page, i) => (
+                  <button className={`button ms-2 button-${nxtoffset - 1 == i ? 'pearl' : 'burntumber'} border  shadow-${nxtoffset - 1 == i ? 'lg' : 'none'}`} ref={nextref} value={page} id={page} onClick={(e) => { GetVaccines(i) }} key={i}>{page}</button>
+                ))
+              ) : (
+                <div>Loading...</div>
+              )
+
+            }
+          </div>
+          <div className="col-3 col-xl-4 col-md-2 col-lg-2 col-sm-4 p-0 m-0">
+            <button className={`button button-burntumber`} ref={nextref} value={nxtoffset} onClick={(e) => { getnextpages(e); }} style={{ marginTop: '0.15rem' }}>Next</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+function VaccinesectionItemDetails(props) {
+  const reversefunction = (date) => {
+    if (date) {
+      date = date.split("-").reverse().join("-")
+      return date
+    }
+  }
+  return (
+    <div className=' p-0 m-0 position-relative bg-pearl rounded-4'>
+      <h6 className='text-center text-charcoal fw-bold pt-2'>{props.name}</h6>
+      <hr className='p-0 m-0' />
+      <button className='btn-close position-absolute end-0 top-0 p-1 m-1' onClick={props.toggle_detailsform}></button>
+      <div className='p-0 m-0 scroll'>
+        <table className='table text-center scroll'>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Channel</th>
+              <th>Batch No.</th>
+              <th>Manuf. Date</th>
+              <th>Expiry Date</th>
+              <th>Avl Stock</th>
+              <th>MRP in Rs.</th>
+              <th>Cost in Rs.</th>
+
+            </tr>
+          </thead>
+          <tbody>
+            {
+              props.data.map((Data) => (
+                <tr className='p-0 m-0 px-1'>
+                  <td className='p-0 m-0 px-1'>{Data.id ? 'v' + Data.id : ''}</td>
+                  <td className='p-0 m-0 px-1'>{Data.channel == 1 ? 'Pharmacy' : 'Clinic'}</td>
+                  <td className='p-0 m-0 px-1'>{Data.batch_no ? Data.batch_no : ''}</td>
+                  <td className='p-0 m-0 px-1'>{Data.mfd_date ? reversefunction(Data.mfd_date) : ''}</td>
+                  <td className='p-0 m-0 px-1'>{Data.expiry_date ? reversefunction(Data.expiry_date) : ''}</td>
+                  <td className='p-0 m-0 px-1'>{Data.current_stock ? Data.current_stock : ''}</td>
+                  <td className='p-0 m-0 px-1'>{Data.mrp ? Data.mrp : ''}</td>
+                  <td className='p-0 m-0 px-1'>{Data.cost ? Data.cost : ''}</td>
+                </tr>
+              ))
+            }
+
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  )
+}
+function MedicinesectionItemDetails(props) {
+  const reversefunction = (date) => {
+    if (date) {
+      date = date.split("-").reverse().join("-")
+      return date
+    }
+  }
+  return (
+    <div className=' p-0 m-0 position-relative bg-pearl rounded-4'>
+      <h6 className='text-center text-charcoal fw-bold pt-2'>{props.name}</h6>
+      <hr className='p-0 m-0' />
+      <button className='btn-close position-absolute end-0 top-0 p-1 m-1' onClick={props.toggle_detailsform}></button>
+      <div className='p-0 m-0 scroll'>
+        <table className='table text-center scroll'>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Channel</th>
+              <th>Batch No.</th>
+              <th>Manuf. Date</th>
+              <th>Expiry Date</th>
+              <th>Avl Stock</th>
+              <th>MRP in Rs.</th>
+              <th>Cost in Rs.</th>
+
+            </tr>
+          </thead>
+          <tbody>
+            {
+              props.data.map((Data) => (
+                <tr className='p-0 m-0 px-1'>
+                  <td className='p-0 m-0 px-1'>{Data.id ? 'm' + Data.id : ''}</td>
+                  <td className='p-0 m-0 px-1'>{Data.channel == 1 ? 'Pharmacy' : 'Clinic'}</td>
+                  <td className='p-0 m-0 px-1'>{Data.batch_no ? Data.batch_no : ''}</td>
+                  <td className='p-0 m-0 px-1'>{Data.mfd_date ? reversefunction(Data.mfd_date) : ''}</td>
+                  <td className='p-0 m-0 px-1'>{Data.expiry_date ? reversefunction(Data.expiry_date) : ''}</td>
+                  <td className='p-0 m-0 px-1'>{Data.current_stock ? Data.current_stock : ''}</td>
+                  <td className='p-0 m-0 px-1'>{Data.mrp ? Data.mrp : ''}</td>
+                  <td className='p-0 m-0 px-1'>{Data.cost ? Data.cost : ''}</td>
+                </tr>
+              ))
+            }
+
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+
   )
 }
 export { Stocksection };

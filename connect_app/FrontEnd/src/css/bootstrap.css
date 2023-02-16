@@ -1,22 +1,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Urbanist&display=swap');
-:root{
+
+:root {
     --burntumber: #96351E;
-    --burntumber50:#96341e75;
+    --burntumber50: #96341e75;
     --brandy: #DBB98F;
     --Raffia: #DDC6A8;
     --pearl: #ffffff;
     --seashell: #f2f2f2;
-    --seashell50:#f2f2f280;
+    --seashell50: #f2f2f280;
     --charcoal: #222023;
     --lightblue: #A2B9C9;
     --lightgreen: #95B3AB;
     --lightyellow: #EFD78D;
-    --lightyellow50:#efd68d80;
+    --lightyellow50: #efd68d80;
     --lightbrown: #D5AD70;
     --lightred: #E8AD98;
     --charcoal50: #22202331;
-    --charcoal75:#222023ad;
-    }
+    --charcoal75: #222023ad;
+}
 
 /*---------------------------------------------------bodyscrollbar css-------------------------------------------------------------------- */
 body::-webkit-scrollbar {
@@ -29,7 +30,7 @@ body::-webkit-scrollbar-track {
 }
 
 body::-webkit-scrollbar-thumb {
-    background:transparent;
+    background: transparent;
     border-radius: 10px;
 }
 
@@ -50,11 +51,11 @@ body::-webkit-scrollbar-thumb:hover {
 
 .scroll::-webkit-scrollbar {
     height: 0rem;
-    width:0rem;
+    width: 0rem;
 }
 
 .scroll::-webkit-scrollbar-track {
-    background:transparent;
+    background: transparent;
 }
 
 .scroll::-webkit-scrollbar-thumb {
@@ -68,197 +69,241 @@ body::-webkit-scrollbar-thumb:hover {
 
 
 /*--------------------------------------------------------scrollbar css------------------------------------------------------------------- */
-.button{
+.button {
     padding: 0.375rem 0.75rem;
     font-family: 'Urbanist', sans-serif;
     font-size: 1rem;
     font-weight: 400;
     line-height: 1.5;
     border-width: 1px;
-    border-radius:0.375rem;
+    border-radius: 0.375rem;
     display: inline-block;
     text-align: center;
     text-decoration: none;
     cursor: pointer;
     vertical-align: middle;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15),0 1px 1px rgba(0, 0, 0, 0.075) ;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075);
 }
-.button-lg{
+
+.button-lg {
     padding: 0.5rem 1rem;
     font-size: 1.25rem;
     border-radius: 0.5rem;
 }
-.button-sm{
-    padding:0.2rem 0.5rem;
-    font-size:1rem;
+
+.button-sm {
+    padding: 0.2rem 0.5rem;
+    font-size: 1rem;
     border-radius: 0.5rem;
 }
-.button-pearl{
-    color:var(--charcoal);
+
+.button-pearl {
+    color: var(--charcoal);
     background-color: var(--pearl);
-    border:var(--pearl);
+    border: var(--pearl);
 }
-.button-charcoal{
-    color:var(--pearl);
+
+.button-charcoal {
+    color: var(--pearl);
     background-color: var(--charcoal);
-    border:var(--charcoal);
-}  
-.button-seashell{
-    color:var(--charcoal);
-    background-color: var(--seashell);
-    border:var(--seashell);
+    border: var(--charcoal);
 }
-.button-seashell:disabled{
-    color:var(--charcoal50);
+
+.button-seashell {
+    color: var(--charcoal);
     background-color: var(--seashell);
-    border:1px solid var(--charcoal50);
-}  
-.button-burntumber{
-    color:var(--seashell);
-    background-color: var(--burntumber);
-    border:1px solid var(--burntumber);
-} 
-.button-burntumber:disabled{
-    color:var(--seashell);
-    background-color: var(--burntumber);
-    border:1px solid var(--burntumber);
-    opacity:0.5;
+    border: var(--seashell);
 }
+
+.button-seashell:disabled {
+    color: var(--charcoal50);
+    background-color: var(--seashell);
+    border: 1px solid var(--charcoal50);
+}
+
+.button-burntumber {
+    color: var(--seashell);
+    background-color: var(--burntumber);
+    border: 1px solid var(--burntumber);
+}
+
+.button-burntumber:disabled {
+    color: var(--seashell);
+    background-color: var(--burntumber);
+    border: 1px solid var(--burntumber);
+    opacity: 0.5;
+}
+
 /* .button-burntumber:focus{
     color:var(--seashell);
     background-color: var(--burntumber);
     border:1px solid yellow;
     opacity:0.5;
 } */
-.button-brandy{
-    color:var(--charcoal);
+.button-brandy {
+    color: var(--charcoal);
     background-color: var(--brandy);
-    border:var(--brandy);
-} 
-.button-Raffia{
-    color:var(--charcoal);
+    border: var(--brandy);
+}
+
+.button-Raffia {
+    color: var(--charcoal);
     background-color: var(--Raffia);
-    border:var(--Raffia);
-} 
-.button-lightblue{
-    color:var(--charcoal);
+    border: var(--Raffia);
+}
+
+.button-lightblue {
+    color: var(--charcoal);
     background-color: var(--lightblue);
-    border:var(--lightblue);
-} 
-.button-lightgreen{
-    color:var(--charcoal);
+    border: var(--lightblue);
+}
+
+.button-lightgreen {
+    color: var(--charcoal);
     background-color: var(--lightgreen);
-    border:1px solid var(--lightgreen);
+    border: 1px solid var(--lightgreen);
 }
-.button-lightgreen:disabled{
-    color:var(--seashell);
-    background-color:var(--lightgreen);
-    border:1px solid var(--lightgreen); 
+
+.button-lightgreen:disabled {
+    color: var(--seashell);
+    background-color: var(--lightgreen);
+    border: 1px solid var(--lightgreen);
 }
-.button-lightyellow{
-    color:var(--charcoal);
+
+.button-lightyellow {
+    color: var(--charcoal);
     background-color: var(--lightyellow);
-    border:var(--lightyellow);
+    border: var(--lightyellow);
 }
-.button-lightyellow:disabled{
-    color:var(--charcoal50);
+
+.button-lightyellow:disabled {
+    color: var(--charcoal50);
     background-color: var(--lightyellow);
-    border:var(--lightyellow);
+    border: var(--lightyellow);
 }
-.button-lightbrown{
-    color:var(--charcoal);
+
+.button-lightbrown {
+    color: var(--charcoal);
     background-color: var(--lightbrown);
-    border:var(--lightbrown);
+    border: var(--lightbrown);
 }
-.button-lightred{
-    color:var(--charcoal);
+
+.button-lightred {
+    color: var(--charcoal);
     background-color: var(--lightred);
-    border:var(--lightred);
+    border: var(--lightred);
 }
-.bg-seashell{
+
+.bg-seashell {
     background-color: var(--seashell);
 }
-.bg-seashell:focus{
+
+.bg-seashell:focus {
     background-color: var(--seashell);
-    outline:none;
+    outline: none;
 }
-.bg-pearl{
-    background-color: var(--pearl);
+
+.bg-pearl {
+    background-color: var(--pearl) !important
 }
-.bg-charcoal{
-    background-color: var(--charcoal);
-    color:var(--pearl);
+
+.bg-charcoal {
+    background-color: var(--charcoal) !important;
+    color: var(--pearl);
 }
-.bg-burntumber{
-    background-color: var(--burntumber);
+
+.bg-burntumber {
+    background-color: var(--burntumber) !important
 }
-.bg-burntumber50{
-    background-color: var(--burntumber50);
+
+.bg-burntumber50 {
+    background-color: var(--burntumber50) !important
 }
-.bg-brandy{
+
+.bg-brandy {
     background-color: var(--brandy);
 }
-.bg-lightyellow{
-    background-color:var(--lightyellow);
+
+.bg-lightyellow {
+    background-color: var(--lightyellow) !important
 }
-.bg-lightgreen{
-    background-color:var(--lightgreen); 
+
+.bg-lightgreen {
+    background-color: var(--lightgreen) !important
 }
-.bg-lightblue{
-    background-color: var(--lightblue);
+
+.bg-lightblue {
+    background-color: var(--lightblue) !important
 }
-.bg-lightred{
-    background-color:var(--lightred);
+
+.bg-lightred {
+    background-color: var(--lightred) !important
 }
-.bg-raffia{
-    background-color: var(--Raffia);
+
+.bg-raffia {
+    background-color: var(--Raffia) !important
 }
-.bg-charcoal:hover{
+
+.bg-charcoal:hover {
     background-color: var(--charcoal);
-    color:var(--pearl);
+    color: var(--pearl);
 }
-.text-burntumber{
+
+.text-burntumber {
     color: var(--burntumber);
 }
-.text-charcoal{
-    color:var(--charcoal);
+
+.text-charcoal {
+    color: var(--charcoal);
 }
-.text-seashell{
-    color:var(--seashell);
+
+.text-seashell {
+    color: var(--seashell);
 }
-.text-charcoal75{
-    color:var(--charcoal75);
+
+.text-charcoal75 {
+    color: var(--charcoal75);
 }
-.text-charcoal50{
-   color: var(--charcoal50);
+
+.text-charcoal50 {
+    color: var(--charcoal50);
 }
-.text-lightviolet{
+
+.text-lightviolet {
     color: #c58af9;
 }
-.text-brightblue{
-    color:#8ab4f8;
+
+.text-brightblue {
+    color: #8ab4f8;
 }
-.text-lightyellow{
-    color:var(--lightyellow);
+
+.text-lightyellow {
+    color: var(--lightyellow);
 }
-.text-lightgreen{
-    color:var(--lightgreen);
+
+.text-lightgreen {
+    color: var(--lightgreen);
 }
-.text-brandy{
-    color:var(--brandy);
+
+.text-brandy {
+    color: var(--brandy);
 }
-.text-lightred{
-    color:var(--lightred);
+
+.text-lightred {
+    color: var(--lightred);
 }
+
 /*Borders */
-.border-bottom-lightgreen{
-    border-bottom :2px solid var(--lightgreen);
+.border-bottom-lightgreen {
+    border-bottom: 2px solid var(--lightgreen);
     border-bottom-left-radius: 0px;
     border-bottom-right-radius: 0px;
 }
-.border-burntumber{
-    border :1px solid var(--burntumber);
+
+.border-burntumber {
+    border: 1px solid var(--burntumber);
 }
-.border-charcoal{
-    border :1px solid var(--charcoal);
+
+.border-charcoal {
+    border: 1px solid var(--charcoal);
 }

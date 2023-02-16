@@ -23,9 +23,9 @@ html {
     content: none;
 }
 
-.pharmacysection{
-background-color: var(--seashell);
-margin-top: 0.25rem;
+.pharmacysection {
+    background-color: var(--seashell);
+    margin-top: 0.25rem;
 }
 
 /* .tablesrender .datatable th ,h3{
@@ -39,78 +39,107 @@ margin-top: 0.25rem;
     font-weight: 600;
 } */
 
- #calender{
+#calender {
     font-weight: 800;
     font-size: 2rem;
 }
-.addentrypurchase , .viewcart ,.exportstock{
-    top:-2.5rem;
-    right:3rem;
+
+.addentrypurchase,
+.viewcart,
+.exportstock {
+    top: -2.5rem;
+    right: 3rem;
 }
-.cartform{
-    left:25%;
-    right:25%;
-    top:-25%;
-    z-index:2000;
+
+.cartform {
+    left: 25%;
+    right: 25%;
+    top: -25%;
+    z-index: 2000;
     box-shadow: 0px 0px 0px 1600px#22202370;
 
 }
-.itemdetailsform{
-    left:25%;
-    right:25%;
-    top:-25%;
+
+.vaccinestockinfo .datatable tr:nth-child(even) {
+    background-color: var(--seashell);
+}
+
+.itemdetailsform {
+    left: 25%;
+    right: 25%;
+    top: -25%;
     box-shadow: 0px 0px 0px 1600px#22202370;
 }
 
-.closebtn{
-    top:0.35rem;
-    right:1rem;
+.stockdetailsfrom {
+    max-width: 90rem;
+    z-index: 3012;
+    margin:0 auto;
+    margin-top:10rem;
+    
 }
-.newpurchaseentrysection{
+
+.closebtn {
+    top: 0.35rem;
+    right: 1rem;
+}
+
+.newpurchaseentrysection {
     margin-top: -14vh;
 }
-.newpurchaseentryform{
+
+.newpurchaseentryform {
     z-index: 2;
 }
 
-.medicineinfosection{
+.medicineinfosection {
     overflow-y: scroll;
-    height:83vh;
+    height: 83vh;
 
 }
-.medicinesearch,.vaccinesearch,.PEsearch{
+
+.medicinesearch,
+.vaccinesearch,
+.PEsearch {
     box-sizing: border-box;
-    padding-left:3rem;
+    padding-left: 3rem;
 }
-.medicinesearch::placeholder{
-    padding-left:0.5rem;
-    
+
+.medicinesearch::placeholder {
+    padding-left: 0.5rem;
+
 }
-.exportstock .searchbutton{
-    top:0rem;
-    right:0rem;
+
+.exportstock .searchbutton {
+    top: 0rem;
+    right: 0rem;
 }
-.PEdetailssection{
-    z-index:2;
-    left:0;
-    right:0;
+
+.PEdetailssection {
+    z-index: 2;
+    left: 0;
+    right: 0;
     box-shadow: 100vh 100vh 100vh 100vh var(--charcoal50);
 }
-.newsaleentryform{
-    top:-9rem;
+
+.newsaleentryform {
+    top: -9rem;
 }
-@media  (max-width:768px) {
-    .newpurchaseentrysection{
-        margin-top:-13vh;
+
+@media (max-width:768px) {
+    .newpurchaseentrysection {
+        margin-top: -13vh;
     }
 }
+
 @media (min-width:769px) and (max-width:1024px) {
-    .newpurchaseentrysection{
-        margin-top:-18vh;
+    .newpurchaseentrysection {
+        margin-top: -18vh;
     }
 }
-@media (min-width:1025px) and (max-width:1300px ) {
-    .newpurchaseentrysection{
-        margin-top:-16vh;
+
+@media (min-width:1025px) and (max-width:1300px) {
+    .newpurchaseentrysection {
+        margin-top: -16vh;
     }
 }
