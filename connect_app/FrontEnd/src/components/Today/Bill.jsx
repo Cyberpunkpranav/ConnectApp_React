@@ -93,10 +93,10 @@ const Bill = (props) => {
 
         paymentmethods.push(paymentobj)
     }
-    // useEffect(() => {
-    //     AddExtraCharges()
-    //     AddPaymentMethods()
-    // }, [])
+    useEffect(() => {
+        AddExtraCharges()
+        AddPaymentMethods()
+    }, [])
     // useEffect(() => {
     //     AddExtraCharges()
     // }, [props.isLoading])
@@ -318,7 +318,6 @@ const Bill = (props) => {
     }
     useEffect(() => {
         AdvancePayments()
-
     }, [])
     return (
         <div className='bg-seashell rounded-4 position-relative'>

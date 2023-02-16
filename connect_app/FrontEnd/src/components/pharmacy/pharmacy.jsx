@@ -77,6 +77,7 @@ function Saleentrysection(props) {
   const [nxtoffset, setnxtoffset] = useState(0)
   const [prevoffset, setprevoffset] = useState(0)
   const [pages, setpages] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+  const [paymentsapage, setpaymentsapage] = useState('none')
   const [tabindex, settabindex] = useState()
   console.log(saleentryarr)
   const toggle_nsef = () => {
@@ -93,8 +94,19 @@ function Saleentrysection(props) {
     }
     if (seidw === "block") {
       setseidw("none");
+      setindex()
     }
   };
+  const toggle_payments = () => {
+    if (paymentsapage === 'none') {
+      setpaymentsapage('block')
+    }
+    if (paymentsapage === 'block') {
+      setpaymentsapage('none')
+      settabindex()
+    }
+
+  }
   function GETSalesList(i) {
     if (i == undefined) {
       i = 0
@@ -134,6 +146,7 @@ function Saleentrysection(props) {
   useEffect(() => {
     GETSalesList()
   }, [channel, fromdate, todate])
+
   const reversefunction = (date) => {
     if (date) {
       date = date.split("-").reverse().join("-")
@@ -275,8 +288,20 @@ function Saleentrysection(props) {
                             <option key={9} className="text-lightgreen" value='10'>Completed</option>
                           </select>
                         </td>
-                        <td className='text-charcoal fw-bold p-0 m-0 px-1'><button className='btn'><img src={process.env.PUBLIC_URL + "/images/cart.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1" /></button><buttton className="btn" onClick={() => { setindex(i); toggle_seidw() }}><img src={process.env.PUBLIC_URL + "/images/archivebox.png"} alt="displaying_image" className="ms-1" style={{ width: "1.5rem" }} /></buttton></td>
-                        <td className='text-charcoal fw-bold p-0 m-0 px-1'><button className="btn position-relative cursor-pointer more p-0 m-0"><img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" style={{ width: "1.5rem" }} /></button></td>
+
+                        <td className={`text-charcoal fw-bold p-0 m-0 px-1 `}>
+                          <button className={`btn bg-${tabindex == i ? 'lightred' : ''}`} onClick={() => { settabindex(i); toggle_payments() }}>
+                            <img src={process.env.PUBLIC_URL + "/images/rupee.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1" />
+                          </button>
+                          <buttton className="btn" onClick={() => { setindex(i); toggle_seidw() }}>
+                            <img src={process.env.PUBLIC_URL + "/images/archivebox.png"} alt="displaying_image" className="ms-1" style={{ width: "1.5rem" }} />
+                          </buttton> </td>
+
+                        <td className={`text-charcoal fw-bold p-0 m-0 px-1 `}>
+                          <button className="btn position-relative cursor-pointer more p-0 m-0">
+                            <img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" style={{ width: "1.5rem" }} />
+                          </button></td>
+
                         <td className={`PEdetailssection position-absolute mt-1 d-${i == index ? seidw : 'none'} bg-seashell p-0 m-0`} style={{ top: '-8.5rem' }} >
                           {
                             i == index ? (
@@ -285,12 +310,16 @@ function Saleentrysection(props) {
                           }
                         </td>
 
+                        <td className={`col-lg-8 col-xl-6 col-md-8 col-sm-10 start-0 end-0 top-0 mx-auto shadow rounded-4 position-absolute bg-pearl d-${tabindex == i ? paymentsapage : 'none'}`} style={{ marginTop: '10rem' }}>
+                          {
+                            i == tabindex ? (
+                              <SaleEntrypayments GETSalesList={GETSalesList} saleentryarr={saleentryarr[i]} toggle_payments={toggle_payments} itembillid={"P-" + item.bill_id} />
+                            ) : (<></>)
+                          }
+                        </td>
                       </tr>
-
                     ))
-
                   }
-
                 </tbody>
               ) : (
                 <body className='text-center p-0 m-0' style={{ minHeight: '55vh', maxHeight: '55vh' }}>
@@ -301,20 +330,18 @@ function Saleentrysection(props) {
               )
             )
           }
-
         </table>
       </div>
       <div className="container-fluid mb-1 p-0 m-0">
         <div className="row p-0 m-0 text-center">
           <div className="col-3 col-xl-4 col-md-2 col-sm-2 p-0 m-0">
-            <button className="button ms-1 button-seashell" ref={previousref} value={prevoffset} onClick={(e) => { getpreviouspages(e); console.log(e.target.value) }} style={{ marginTop: '0.15rem' }}>Previous</button>
+            <button className="button ms-1 button-seashell" ref={previousref} value={prevoffset} onClick={(e) => { getpreviouspages(e); }} style={{ marginTop: '0.15rem' }}>Previous</button>
           </div>
           <div className="col-auto col-xl-auto col-sm-8 col-md-8 p-0 m-0">
-
             {
               pages ? (
                 pages.map((page, i) => (
-                  <button className={`button ms-2 button-${nxtoffset - 1 == i ? 'pearl' : 'burntumber'} border  shadow-${nxtoffset - 1 == i ? 'lg' : 'none'}`} ref={nextref} value={page} id={page} onClick={(e) => { settabindex(i); GETSalesList(i) }} key={i}>{page}</button>
+                  <button className={`button ms-2 button-${nxtoffset - 1 == i ? 'pearl' : 'burntumber'} border  shadow-${nxtoffset - 1 == i ? 'lg' : 'none'}`} ref={nextref} value={page} id={page} onClick={(e) => { GETSalesList(i) }} key={i}>{page}</button>
                 ))
               ) : (
                 <div>Loading...</div>
@@ -331,6 +358,179 @@ function Saleentrysection(props) {
         <SaleEntryForm toggle_nsef={toggle_nsef} GETSalesList={GETSalesList} />
       </section>
     </>
+  )
+}
+
+function SaleEntrypayments(props) {
+  const url = useContext(URL)
+  const adminid = localStorage.getItem('id')
+  const [paymentmethods, setpaymentmethods] = useState([])
+  const [previouspayments, setpreviouspayments] = useState([])
+  const [loading, setloading] = useState()
+  const paymentmethoddetails = {
+    paymentmethod: '',
+    amount: 0
+  }
+  async function AddPaymentMethods() {
+    let Payments = []
+    let amounts = []
+    let allamounts = []
+    Payments.push(Object.keys(JSON.parse(props.saleentryarr.payment_method_details)))
+    amounts.push(Object.values(JSON.parse(props.saleentryarr.payment_method_details)))
+    let paymentobj = []
+    let p = {
+      paymentmethod: '',
+      amount: 0
+    }
+    if (Payments[0]) {
+      for (let j = 0; j < Payments[0].length; j++) {
+        allamounts.push(p = { paymentmethod: Payments[0][j], amount: amounts[0][j] })
+      }
+      setpreviouspayments(allamounts)
+    }
+
+    paymentmethods.push(paymentobj)
+  }
+  useEffect(() => {
+    AddPaymentMethods()
+  }, [])
+  function DeletePaymentMethods(i) {
+    paymentmethods.splice(i, i)
+  }
+  const confirmmessage = (e) => {
+    customconfirm()
+    Notiflix.Confirm.show(
+      `Add Charges and Payments`,
+      `Do you surely want to add the following Charges and Payments of  ${props.itembillid}`,
+      'Yes',
+      'No',
+      () => {
+        SaveSaleEntryCharges()
+      },
+      () => {
+        return 0
+      },
+      {
+      },
+    );
+  }
+  async function SaveSaleEntryCharges() {
+    let PaymentMethod = []
+    let PaymentMethodDetails = []
+    for (let i = 0; i < paymentmethods.length; i++) {
+      PaymentMethod.push(paymentmethods[i].amount)
+      PaymentMethodDetails.push(paymentmethods[i].paymentmethod)
+    }
+    let Data = {
+      sale_entry_id: props.saleentryarr.id,
+      g_total_main: props.saleentryarr.grand_total,
+      payment_method: PaymentMethodDetails,
+      payment_method_main: PaymentMethodDetails,
+      payment_method_details: PaymentMethod,
+      admin_id: adminid
+    }
+    try {
+      setloading(true)
+      await axios.post(`${url}/sale/entry/save/charges`, Data).then((response) => {
+        props.GETSalesList()
+        setloading(false)
+        Notiflix.Notify.success(response.data.message)
+      })
+    } catch (e) {
+      setloading(false)
+      Notiflix.Notify.failure(e.message)
+    }
+  }
+  console.log(props.saleentryarr, paymentmethods)
+
+  return (
+    <div className='p-0 m-0'>
+      <h6 className='text-center mt-2 fw-bold'>{props.itembillid} Payments</h6>
+      <hr className='p-0 m-0 mt-1' />
+      <button className='btn-close position-absolute top-0 end-0 p-2 m-2 ' onClick={() => props.toggle_payments()}></button>
+
+      <p className='text-charcoal p-0 m-auto fw-bolder'>Grand Total : <span className='text-burntumber'>Rs {props.saleentryarr.grand_total}</span></p>
+      <hr className='p-0 m-0 mb-1' />
+      <div className="container-fluid text-start position-relative">
+        <h6 className='text-charcoal fw-bolder text-center'>Payments</h6>
+        {
+          previouspayments.map((data, i) => (
+            <div className="row p-0 m-0 justify-content-end g-2">
+              <div className="col-4 ">
+                <select className='form-control border-secondary py-1 text-center' disabled={true} value={data.paymentmethod} onChange={(e) => { data.paymentmethod = e.target.value; setpaymentmethods(prevState => [...prevState]) }}>
+                  <option className='text-charcoal75 fw-bolder'>Payment Method</option>
+                  <option value='Cash'>Cash</option>
+                  <option value='Card'>Card</option>
+                  <option value='Paytm'>Paytm</option>
+                  <option value='Phonepe'>Phone Pe</option>
+                  <option value='Wire-Transfer'>Wire Transfer</option>
+                  <option value='Razorpay'>Razorpay</option>
+                  <option value='Points'>Points</option>
+                  <option value='Adjust-Advance'>Adjust-Advance</option>
+                </select>
+              </div>
+              <div className="col-4 text-center ">
+                <input className='form-control border-secondary py-1 text-center' disabled={true} value={data.amount} onChange={(e) => { data.amount = e.target.value; setpaymentmethods(prevState => [...prevState]) }} />
+              </div>
+              <div className="col-2 text-center">
+
+              </div>
+            </div>
+          ))
+        }
+        {
+          paymentmethods.map((data, i) => (
+            <div className="row p-0 m-0 justify-content-end g-2">
+              <div className="col-4 ">
+                <select className='form-control border-success py-1 text-center' value={data.paymentmethod} onChange={(e) => { data.paymentmethod = e.target.value; setpaymentmethods(prevState => [...prevState]) }}>
+                  <option className='text-charcoal75 fw-bolder'>Payment Method</option>
+                  <option value='Cash'>Cash</option>
+                  <option value='Card'>Card</option>
+                  <option value='Paytm'>Paytm</option>
+                  <option value='Phonepe'>Phone Pe</option>
+                  <option value='Wire-Transfer'>Wire Transfer</option>
+                  <option value='Razorpay'>Razorpay</option>
+                  <option value='Points'>Points</option>
+                  <option value='Adjust-Advance'>Adjust-Advance</option>
+                </select>
+              </div>
+              <div className="col-4 text-center ">
+                <input className='form-control border-success py-1 text-center' value={data.amount} onChange={(e) => { data.amount = e.target.value; setpaymentmethods(prevState => [...prevState]) }} />
+              </div>
+              <div className="col-2 text-center">
+                <button className='btn btn-sm p-0 m-0' onClick={() => { DeletePaymentMethods(i); setpaymentmethods(prevState => [...prevState]) }}><img src={process.env.PUBLIC_URL + '/images/delete.png'} className='img-fluid' style={{ width: '1.5rem' }} /></button>
+              </div>
+            </div>
+          ))
+        }
+        <div className="container-fluid text-center mt-2">
+          <button className='btn py-0' onClick={() => setpaymentmethods(prevState => [...prevState, paymentmethoddetails])}><img src={process.env.PUBLIC_URL + '/images/add.png'} className='img-fluid' style={{ width: '2rem' }} /></button>
+        </div>
+      </div>
+
+      <div className='mt-2'>
+        {
+          loading ? (
+            <div className="container-fliud pt-2">
+              <div className="d-flex fs-6 align-items-center justify-content-around">
+                <h6 className="text-burntumber">Updating...</h6>
+                <div className="text-burntumber spinner-border ml-auto" role="status" aria-hidden="true" ></div>
+              </div>
+            </div>
+          ) : (
+            <div className="row">
+              <div className="col-6">
+                <button className='button button-burntumber m-0 p-0 py-1 px-5' onClick={confirmmessage}>Save</button>
+              </div>
+              <div className="col-6">
+                <button className='button button-pearl border-charcoal p-0 m-0 py-1 px-5' onClick={() => { setpaymentmethods(); props.toggle_payments() }}>Cancel</button>
+              </div>
+            </div>
+          )
+        }
+
+      </div>
+    </div>
   )
 }
 function SEitemdetailssection(props) {
@@ -926,8 +1126,8 @@ function SaleEntryForm(props) {
     }
     let ProductDetails = {
       productid: data.id,
-      type: data.type?data.type:T,
-      product: data.item_name?data.item_name:itemname,
+      type: data.type ? data.type : T,
+      product: data.item_name ? data.item_name : itemname,
       batch: data.batch_no,
       expiry: data.expiry_date,
       quantity: data.current_stock,
