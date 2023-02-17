@@ -195,7 +195,7 @@ body::-webkit-scrollbar-thumb:hover {
 }
 
 .bg-seashell {
-    background-color: var(--seashell);
+    background-color: var(--seashell) !important;
 }
 
 .bg-seashell:focus {
@@ -204,7 +204,7 @@ body::-webkit-scrollbar-thumb:hover {
 }
 
 .bg-pearl {
-    background-color: var(--pearl) !important
+    background-color: var(--pearl) !important;
 }
 
 .bg-charcoal {

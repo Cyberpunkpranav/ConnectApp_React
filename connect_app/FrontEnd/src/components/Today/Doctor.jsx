@@ -369,13 +369,13 @@ function DoctorSchedule(props) {
                             }
                             {
                               billindex == i ? (
-                                <td className={`bill border-0 d-${billindex == i ? billform : 'none'} col-lg-6 col-md-8 start-0 m-auto end-0 top-0 col-sm-12 col-12 col-xl-4 position-absolute`} style={{ zIndex: '3020' }}>
+                                <td className={`bill d-${billindex == i ? billform : 'none'} col-lg-8 col-md-10 start-0 mx-auto mt-2 end-0 top-0 col-sm-12 col-12 col-xl-6 border border-2 rounded-2 shadow position-absolute`} style={{ zIndex: '3020' }}>
                                   <Bill fetchapi={props.fetchapi} CloseBillForm={CloseBillForm} patientid={data.patient && data.patient.id != null ? data.patient.id : ""} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} Appointmentlist={Appointmentlist} setsingleload={setsingleload} isLoading={isLoading} appointmentdata={appointmentdata} appointmentid={data.id} doctorfee={data.doctor.consulationFee} /></td>
                               ) : (<></>)
                             }
                             {
                               paymentsindex === i ? (
-                                <td className={`payments start-0 end-0 col-lg-6 col-md-8 col-sm-10 col-10 col-xl-6 position-absolute shadow border border-1 rounded-2 d-${paymentsindex == i ? paymentsform : 'none'}`}>
+                                <td className={`payments start-0 end-0 col-lg-6 col-md-8 col-sm-10 col-10 col-xl-8 position-absolute shadow border border-1 rounded-2 d-${paymentsindex == i ? paymentsform : 'none'}`}>
                                   <Payments ClosePaymentsForm={ClosePaymentsForm} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} appointmentid={data.id} patientid={data.patient && data.patient.id != null ? data.patient.id : ""} Appointmentlist={Appointmentlist} setsingleload={setsingleload} isLoading={isLoading} appointmentdata={appointmentdata} /></td>
                               ) : (<></>)
                             }

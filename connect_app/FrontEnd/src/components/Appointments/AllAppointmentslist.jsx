@@ -7,15 +7,19 @@ import { UpdateAppointment } from './UpdateAppointment'
 import '../../css/appointment.css'
 import '../../css/bootstrap.css'
 import '../../../node_modules/bootstrap/js/dist/dropdown'
-
+import { Payments } from './Payments.jsx'
 import Notiflix from 'notiflix';
 //COntext APIs
 import { URL } from '../../index'
 
 const AllAppointmentslist = (props) => {
     const url = useContext(URL);
+    let adminid = localStorage.getItem('id')
     const [appointmentform, setappointmentform] = useState("none");
     const [d_form, setd_form] = useState()
+    const [paymentsform, setpaymentsform] = useState('none')
+    const [paymentindex, setpaymentindex] = useState()
+    const [tableindex, settableindex] = useState()
 
     const closeappointmentform = () => {
 
@@ -30,17 +34,19 @@ const AllAppointmentslist = (props) => {
             setd_form(true)
         }
     }
-
-
-    const [tableindex, settableindex] = useState()
-
+    const toggle_payments = () => {
+        if (paymentsform === 'none') {
+            setpaymentsform('block')
+        }
+        if (paymentsform === 'block') {
+            setpaymentsform('none')
+            setpaymentindex()
+        }
+    }
     const reversefunction = (date) => {
         date = date.split("-").reverse().join("-")
         return date
     }
-
-    let adminid = localStorage.getItem('id')
-
     async function UpadteStatus(e) {
         if (e.target.value && adminid && e.target.name) {
             try {
@@ -66,19 +72,18 @@ const AllAppointmentslist = (props) => {
             Notiflix.Notify.alert('Please try Again')
         }
     }
-
     function tConvert(time) {
 
         time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
-    
+
         if (time.length > 1) {
-          time = time.slice(1);
-          time[3] = +time[0] < 12 ? ' AM ' : ' PM ';
-          time[0] = +time[0] % 12 || 12;
+            time = time.slice(1);
+            time[3] = +time[0] < 12 ? ' AM ' : ' PM ';
+            time[0] = +time[0] % 12 || 12;
         }
         return time.join('');
-      }
-    
+    }
+ console.log(paymentindex)
     return (
         <>
             {
@@ -99,7 +104,7 @@ const AllAppointmentslist = (props) => {
                 ) : (
 
                     props.getAppointments.map((data, key) => (
-                        <tr id={key} key={key}>
+                        <tr id={key} key={key} className='align-middle'>
                             <th scope="row">
                                 <img src={process.env.PUBLIC_URL + "/images/confirmed.png"} style={{ width: "1.5rem" }} onClick={(e) => { openapppointmentform(); settableindex(key) }} className="btn p-0 m-0" />
                             </th>
@@ -128,28 +133,36 @@ const AllAppointmentslist = (props) => {
                             <td><img src={process.env.PUBLIC_URL + "/images/vitals.png"} alt="displaying_image" style={{ width: "1.5rem" }} className='m-0 p-0' /> </td>
                             <td>{reversefunction(data.follow_up_date ? data.follow_up_date : '')}</td>
                             <td> <img src={process.env.PUBLIC_URL + "/images/cart.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1 m-0 p-0" /> </td>
-                            <td><div class="dropdown text-decoration-none">
-                                <button class="btn btn-white dropdown-toggle text-decoration-none" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" style={{ width: "1.5rem" }} />
-                                </button>
-                                <ul class="dropdown-menu">
-                                  <li><a class="dropdown-item" href="#">Action</a></li>
-                                  <li><a class="dropdown-item" href="#">Another action</a></li>
-                                  <li><a class="dropdown-item" href="#">Something else here</a></li>
-                                </ul>
-                                </div></td>
-                                {/* <button className="btn position-relative cursor-pointer more p-0 m-0">
+                            <td><div className="dropdown text-decoration-none bg-transparent">
+                                <button className="btn btn-white dropdown-toggle text-decoration-none" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" style={{ width: "1.5rem" }} />
                                 </button>
-                                <table className="table p-2 moreoptions text-start rounded position-absolute" style={{ width: "min-content" }} >
-                                    <tbody>
-                                        <tr className="bg-transparent"> <td>Action 1</td> </tr>
-                                        <tr className="bg-transparent"> <td>Action 2</td> </tr>
-                                        <tr className="bg-transparent"> <td>Action 3</td> </tr>
-                                    </tbody>
-                                </table> */}
-                          
-                            <td className={`UpdateAppointment d-${tableindex == key ? appointmentform : 'none'} border-0 position-absolute`} style={{ zIndex: '3005',top:'-10rem' }}><UpdateAppointment fetchallAppointmentslist={props.fetchallAppointmentslist} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} patientid={data.patient != null && data.patient.id != null ? data.patient.id : ""} appointmentid={data.id} closeappointmentform={closeappointmentform} doctorid={props.doctorid} fetchapi={props.fetchapi} appointmentdoctorid={data.doctor.id} appointmentdate={data.appointment_date} appointmenttime={tConvert(data.timeslot.time_from)} /></td>
+                                <ul className="dropdown-menu text-decoration-none" style={{ '-webkit-appearance': 'none' }}>
+                                    <li><button className="dropdown-item" onClick={() => { setpaymentindex(key); toggle_payments(); }}>Payments</button></li>
+                                    <li><a className="dropdown-item" href="#">Another action</a></li>
+                                    <li><a className="dropdown-item" href="#">Something else here</a></li>
+                                </ul>
+                            </div></td>
+                            {
+                                tableindex == key ? (
+                                    <td className={`UpdateAppointment d-${tableindex == key ? appointmentform : 'none'} border-0 position-absolute`} style={{ zIndex: '3005', top: '-10rem' }}>
+                                    <UpdateAppointment fetchallAppointmentslist={props.fetchallAppointmentslist} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} patientid={data.patient != null && data.patient.id != null ? data.patient.id : ""} appointmentid={data.id} closeappointmentform={closeappointmentform} doctorid={props.doctorid} fetchapi={props.fetchapi} appointmentdoctorid={data.doctor.id} appointmentdate={data.appointment_date} appointmenttime={tConvert(data.timeslot.time_from)} />
+                                </td>
+                                ):(<></>)
+                            }
+                            {
+                                paymentindex == key ? (
+                                    <td className={`top-0 start-0 end-0 mx-auto bg-seashell col-lg-6 col-md-8 col-sm-10 col-10 col-xl-6 rounded-2 border border-1 position-absolute shadow  d-${paymentindex == key ? paymentsform : 'none'}`} style={{ marginTop: '10rem' }}>
+                                    <Payments 
+                                    toggle_payments={toggle_payments}
+                                    appointmentdata={props.getAppointments[key]}
+                                    fetchallAppointmentslist={props.fetchallAppointmentslist} 
+                                    patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""}
+                                    patientid={data.patient != null && data.patient.id != null ? data.patient.id : ""} />
+                                </td>
+                                ):(<></>)
+                            }
+                  
                         </tr>
                     ))
                 )
@@ -158,5 +171,4 @@ const AllAppointmentslist = (props) => {
         </>
     )
 }
-
 export { AllAppointmentslist }

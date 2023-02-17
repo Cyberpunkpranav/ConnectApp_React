@@ -559,7 +559,7 @@ function Appointments(props) {
             </div>
           </div>
         </div>
-        <section className="container-fluid scroll scroll-y page2allappointment shadow mt-2 " style={{ minHeight: '10rem', maxHeight: '62vh' }}>
+        <section className="container-fluid scroll scroll-y page2allappointment shadow mt-2 " style={{ minHeight: '15rem', maxHeight: '68vh' }}>
           <table className="table text-center ">
             <thead>
               <tr>
