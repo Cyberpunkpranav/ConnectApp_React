@@ -209,12 +209,22 @@ function Navbar(props) {
               </div>
             </div>
             <div className="col-lg-auto col-xl-auto col-md-auto col-6 col-sm-2 text-center align-self-center position-relative p-0 m-0 ">
-              <button className="btn btn-sm p-0 m-0 py-1 col-12 col-lg-6 col-md-6 addbtn align-self-center" onClick={toggleaddoption}> +Add </button>
+            <div class="dropdown">
+               <button class="button button p-0 m-0 px-1 py-1 button-burntumber dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  +Add
+               </button>
+               <ul class="dropdown-menu">
+                 <li><button class="dropdown-item border-bottom" onClick={()=>{togglepatientform()}}>+ Patient</button></li>
+                 <li><button class="dropdown-item border-bottom" onClick={()=>{toggleappointmentform()}}>+ Appointment</button></li>
+                 <li><button class="dropdown-item " onClick={()=>{toggledoctorform()}}>+ Doctor</button></li>
+               </ul>
+              </div>
+              {/* <button className="btn btn-sm p-0 m-0 py-1 col-12 col-lg-6 col-md-6 addbtn align-self-center" onClick={toggleaddoption}> +Add </button>
               <div className={`text-center addoptions d-${addoption} position-absolute start-0  `} >
                 <input className="col-12 p-lg-2 border-1 border-bottom text-start patient" type="button" defaultValue="Patient" onClick={togglepatientform} />
                 <input className="col-12 p-lg-2 text-start border-1 border-bottom appointment" type="button" defaultValue="Appointment" onClick={toggleappointmentform} />
                 <input className="col-12 p-lg-2 doctorslot shadow-sm text-start" type="button" defaultValue="Doctor Slot" onClick={toggledoctorform} />
-              </div>
+              </div> */}
             </div>
             <div className="col-lg-2 col-xl-3 col-md-2 col-sm-2 ms-md-2 align-self-center order-sm-2 order-2 position-relative p-0 m-0" style={{ zIndex: '1000' }}>
               <input type="text" className="bg-seashell border border-1 w-75 rounded-1 text-center border-0 position-relative" placeholder="search" onChange={(e) => setsearchtext(e.target.value)} />
