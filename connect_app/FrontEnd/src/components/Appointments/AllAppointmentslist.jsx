@@ -4,6 +4,7 @@ import axios from "axios"
 import AmountPaid from '../Today/AmountPaid'
 import '../../../node_modules/bootstrap/js/dist/dropdown'
 import { UpdateAppointment } from './UpdateAppointment'
+import  {Bill} from './Bill'
 import '../../css/appointment.css'
 import '../../css/bootstrap.css'
 import '../../../node_modules/bootstrap/js/dist/dropdown'
@@ -20,6 +21,8 @@ const AllAppointmentslist = (props) => {
     const [paymentsform, setpaymentsform] = useState('none')
     const [paymentindex, setpaymentindex] = useState()
     const [tableindex, settableindex] = useState()
+    const[billindex,setbillindex]=useState()
+    const [billform,setbillform]=useState('none')
 
     const closeappointmentform = () => {
 
@@ -41,6 +44,15 @@ const AllAppointmentslist = (props) => {
         if (paymentsform === 'block') {
             setpaymentsform('none')
             setpaymentindex()
+        }
+    }
+    const toggle_bill = ()=>{
+        if(billform==='none'){
+            setbillform('block')
+        }
+        if(billform==='block'){
+            setbillform('none')
+            setbillindex()
         }
     }
     const reversefunction = (date) => {
@@ -138,8 +150,8 @@ const AllAppointmentslist = (props) => {
                                     <img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" style={{ width: "1.5rem" }} />
                                 </button>
                                 <ul className="dropdown-menu text-decoration-none" style={{ '-webkit-appearance': 'none' }}>
+                                    <li><button className="dropdown-item" onClick={()=>{setbillindex(key);toggle_bill()}}>Bill</button></li>
                                     <li><button className="dropdown-item" onClick={() => { setpaymentindex(key); toggle_payments(); }}>Payments</button></li>
-                                    <li><a className="dropdown-item" href="#">Another action</a></li>
                                     <li><a className="dropdown-item" href="#">Something else here</a></li>
                                 </ul>
                             </div></td>
@@ -149,6 +161,18 @@ const AllAppointmentslist = (props) => {
                                     <UpdateAppointment fetchallAppointmentslist={props.fetchallAppointmentslist} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} patientid={data.patient != null && data.patient.id != null ? data.patient.id : ""} appointmentid={data.id} closeappointmentform={closeappointmentform} doctorid={props.doctorid} fetchapi={props.fetchapi} appointmentdoctorid={data.doctor.id} appointmentdate={data.appointment_date} appointmenttime={tConvert(data.timeslot.time_from)} />
                                 </td>
                                 ):(<></>)
+                            }
+                                {
+                              billindex == key ? (
+                                <td className={`bill d-${billindex == key ? billform : 'none'} bg-seashell col-lg-8 col-md-10 start-0 mx-auto end-0 top-0 col-sm-12 col-12 col-xl-6 border border-2 rounded-2 shadow position-absolute`} style={{ zIndex: '3020', marginTop: '6rem' }}>
+                                  <Bill fetchallAppointmentslist={props.fetchallAppointmentslist} 
+                                   toggle_bill={toggle_bill} 
+                                   patientid={data.patient && data.patient.id != null ? data.patient.id : ""} 
+                                   patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} 
+                                   appointmentdata={props.getAppointments[key]} 
+                                   appointmentid={data.id} 
+                                   doctorfee={data.doctor.consulationFee} /></td>
+                              ) : (<></>)
                             }
                             {
                                 paymentindex == key ? (

@@ -194,7 +194,7 @@ function Navbar(props) {
               <button className="button button-seashell shadow-none col-md-auto col-auto user position-relative p-0 m-0 ms-2" onClick={togglelogoutbtn}>
                 <p className="m-0 username text-decoration-none text-lg-start text-md-start text-center"> {props.username} </p>
                 <p className="m-0 userstatus text-decoration-none text-lg-start text-md-start text-center"><small className="text-muted">{props.designation}</small> </p>
-                <button className={`d-${logoutbtn} button button-lightred start-0 end-0 position-absolute text-burntumber w-75 fw-bolder`} onClick={logout}>Logout</button>
+                <button className={`d-${logoutbtn} button button-lightred start-0 end-0 position-absolute text-burntumber w-75 fw-bolder`} style={{ zIndex: '1000' }} onClick={logout}>Logout</button>
               </button>
             </div>
             <div className="col-lg-6 col-xl-6 align-self-center col-sm-auto col-md-auto col-10 p-0 m-0 menu order-1 order-xl-0 order-sm-0 order-md-0 order-sm-0">
@@ -210,7 +210,7 @@ function Navbar(props) {
             </div>
             <div className="col-lg-auto col-xl-auto col-md-auto col-6 col-sm-2 text-center align-self-center position-relative p-0 m-0 ">
               <button className="btn btn-sm p-0 m-0 py-1 col-12 col-lg-6 col-md-6 addbtn align-self-center" onClick={toggleaddoption}> +Add </button>
-              <div className={`text-center addoptions d-${addoption} position-absolute`} >
+              <div className={`text-center addoptions d-${addoption} position-absolute start-0  `} >
                 <input className="col-12 p-lg-2 border-1 border-bottom text-start patient" type="button" defaultValue="Patient" onClick={togglepatientform} />
                 <input className="col-12 p-lg-2 text-start border-1 border-bottom appointment" type="button" defaultValue="Appointment" onClick={toggleappointmentform} />
                 <input className="col-12 p-lg-2 doctorslot shadow-sm text-start" type="button" defaultValue="Doctor Slot" onClick={toggledoctorform} />
@@ -678,7 +678,7 @@ function Patients() {
   }
 
   const reversefunction = (date) => {
-    if(date){
+    if (date) {
       date = date.split("-").reverse().join("-")
       return date
     }

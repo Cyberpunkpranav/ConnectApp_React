@@ -8,7 +8,7 @@ import Notiflix from 'notiflix';
 import { URL } from '../../index'
 import '../../css/bootstrap.css'
 import '../../css/appointment.css'
-
+import  {Bill} from './Bill'
 
 const SelectedAppointments = (props) => {
   const url = useContext(URL);
@@ -17,6 +17,8 @@ const SelectedAppointments = (props) => {
   const [d_form, setd_form] = useState()
   const [paymentsform, setpaymentsform] = useState('none')
   const [paymentindex, setpaymentindex] = useState()
+  const[billindex,setbillindex]=useState()
+  const [billform,setbillform]=useState('none')
 
   const openapppointmentform = () => {
     if (appointmentform === "none") {
@@ -40,6 +42,15 @@ const SelectedAppointments = (props) => {
       setpaymentindex()
     }
   }
+  const toggle_bill = ()=>{
+    if(billform==='none'){
+        setbillform('block')
+    }
+    if(billform==='block'){
+        setbillform('none')
+        setbillindex()
+    }
+}
   function tConvert(time) {
 
     time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
@@ -132,9 +143,9 @@ const SelectedAppointments = (props) => {
                   <button className="btn btn-white dropdown-toggle text-decoration-none" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" style={{ width: "1.5rem" }} />
                   </button>
-                  <ul className="dropdown-menu text-decoration-none" style={{ '-webkit-appearance': 'none' }}>
+                  <ul className="dropdown-menu text-decoration-none bg-white" style={{ '-webkit-appearance': 'none','appearance':'none' }}>
+                    <li><button className="dropdown-item" onClick={()=>{setbillindex(key);toggle_bill()}}>Bill</button></li>
                     <li><button className="dropdown-item" onClick={() => { setpaymentindex(key); toggle_payments(); }}>Payments</button></li>
-                    <li><a className="dropdown-item" href="#">Another action</a></li>
                     <li><a className="dropdown-item" href="#">Something else here</a></li>
                   </ul>
                 </div></td>
@@ -151,7 +162,18 @@ const SelectedAppointments = (props) => {
                         appointmenttime={tConvert(data.timeslot.time_from)} /></td>
                   ) : (<></>)
                 }
-
+                {
+                  billindex == key ? (
+                    <td className={`bill d-${billindex == key ? billform : 'none'} bg-seashell col-lg-8 col-md-10 start-0 mx-auto end-0 top-0 col-sm-12 col-12 col-xl-6 border border-2 rounded-2 shadow position-absolute`} style={{ zIndex: '3020', marginTop: '6rem' }}>
+                      <Bill fetchallAppointmentslist={props.fetchallAppointmentslist} 
+                       toggle_bill={toggle_bill} 
+                       patientid={data.patient && data.patient.id != null ? data.patient.id : ""} 
+                       patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} 
+                       appointmentdata={props.getAppointments[key]} 
+                       appointmentid={data.id} 
+                       doctorfee={data.doctor.consulationFee} /></td>
+                  ) : (<></>)
+                }
                 {
                   paymentindex == key ? (
                     <td className={`top-0 start-0 end-0 mx-auto bg-seashell col-lg-6 col-md-8 col-sm-10 col-10 col-xl-6 rounded-2 border border-1 position-absolute shadow  d-${paymentindex == key ? paymentsform : 'none'}`} style={{ marginTop: '10rem' }}>

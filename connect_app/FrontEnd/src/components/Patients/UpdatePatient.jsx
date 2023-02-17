@@ -412,11 +412,6 @@ const UpdatePatient = (props) => {
                 <hr />
                 <div className="col-10 m-auto">
                     <p className="m-0 mb-2">Gender</p>
-                    {/* <select name="work_days" id="id_work_days" ref={genderref} multiple onChange={(e) => { setgender(e.target.value) }}>
-                        <option selected className='px-3 button rounded-0' value="Male">Male</option>
-                        <option className='px-3 button rounded-0' value="Female">Female</option>
-                        <option className='px-3 button rounded-0' value="others">Others</option>
-                    </select> */}
                     <div class="btn-group " role="group" aria-label="Basic radio toggle button group">
                         <input type="radio" onClick={(e) => { setgender(e.target.value) }} className={`btn-check border-${gender == 'Male' || gender == 'male' ? 'burntumber' : ''} bg-${gender == 'Male' || gender == 'male' ? 'burntumber' : 'seashell'} text-${gender == 'Male' || gender == 'male' ? 'light' : 'charcoal'}`} value='Male' name="btnradio" id="btnradio1" autocomplete="off" />
                         <label className={`button rounded-0 shadow-0 border-${gender == 'Male' || gender == 'male' ? 'burntumber' : ''} bg-${gender == 'Male' || gender == 'male' ? 'burntumber' : 'seashell'} text-${gender == 'Male' || gender == 'male' ? 'light' : 'charcoal'}`} for="btnradio1">Male</label>

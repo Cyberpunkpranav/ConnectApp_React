@@ -219,7 +219,11 @@ input[placeholder-shown] {
 .page2allappointment .status_pending:hover {
     box-shadow: 1px 0px 5px 1px var(--charcoal);
 }
-
+    .bill .scroll {
+    max-height: 30rem;
+    overflow-y: auto;
+    min-height: 20rem;
+}
 /*-------------------------------------------------------------page2allappointment css------------------------------------------------------*/
 @media (max-width:769px) {
 

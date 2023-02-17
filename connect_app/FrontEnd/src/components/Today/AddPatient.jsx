@@ -381,11 +381,16 @@ const AddPatient = (props) => {
                 <hr />
                 <div className="col-10 m-auto">
                     <p className="m-0 mb-2">Gender</p>
-                    <select name="work_days" id="id_work_days" multiple onChange={(e) => { setgender(e.target.value) }}>
-                        <option className='px-3 button rounded-0' value="male">Male</option>
-                        <option className='px-3 button rounded-0' value="female">Female</option>
-                        <option className='px-3 button rounded-0' value="others">Others</option>
-                    </select>
+                    <div class="btn-group " role="group" aria-label="Basic radio toggle button group">
+                        <input type="radio" onClick={(e) => { setgender(e.target.value) }} className={`btn-check border-${gender == 'Male' || gender == 'male' ? 'burntumber' : ''} bg-${gender == 'Male' || gender == 'male' ? 'burntumber' : 'seashell'} text-${gender == 'Male' || gender == 'male' ? 'light' : 'charcoal'}`} value='Male' name="btnradio" id="btnradio1" autocomplete="off" />
+                        <label className={`button rounded-0 shadow-0 border-${gender == 'Male' || gender == 'male' ? 'burntumber' : ''} bg-${gender == 'Male' || gender == 'male' ? 'burntumber' : 'seashell'} text-${gender == 'Male' || gender == 'male' ? 'light' : 'charcoal'}`} for="btnradio1">Male</label>
+
+                        <input type="radio" onClick={(e) => { setgender(e.target.value) }} className={`btn-check border-${gender == 'Female' || gender == 'female' ? 'burntumber' : ''} bg-${gender == 'Female' || gender == 'female' ? 'burntumber' : 'seashell'} text-${gender == 'Female' || gender == 'female' ? 'light' : 'charcoal'}`} value='Female' name="btnradio" id="btnradio2" autocomplete="off" />
+                        <label className={`button rounded-0 shadow-0 border-${gender == 'Female' || gender == 'female' ? 'burntumber' : ''} bg-${gender == 'Female' || gender == 'female' ? 'burntumber' : 'seashell'} text-${gender == 'Female' || gender == 'female' ? 'light' : 'charcoal'}`} for="btnradio2">Female</label>
+
+                        <input type="radio" onClick={(e) => { setgender(e.target.value) }} className={`btn-check border-${gender == 'Others' || gender == 'others' ? '' : 'burntumber'} bg-${gender == 'Others' || gender == 'others' ? '' : 'burntumber'} text-${gender == 'Others' || gender == 'others' ? 'light' : 'charcoal'}`} value='Others' name="btnradio" id="btnradio3" autocomplete="off" />
+                        <label className={`button rounded-0 shadow-0 border-${gender == 'Others' || gender == 'others' ? 'burntumber' : ''} bg-${gender == 'Others' || gender == 'others' ? 'burntumber' : 'seashell'} text-${gender == 'Others' || gender == 'others' ? 'light' : 'charcoal'}`} for="btnradio3">Others</label>
+                    </div>
                 </div>
                 <hr />
                 <div className="row p-0 m-0">
