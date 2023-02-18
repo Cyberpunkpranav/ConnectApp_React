@@ -109,6 +109,12 @@ body::-webkit-scrollbar-thumb:hover {
     border: var(--charcoal);
 }
 
+.button-charcoal:disabled {
+    color: var(--pearl);
+    background-color: var(--charcoal75);
+    border: var(--charcoal75);
+}
+
 .button-seashell {
     color: var(--charcoal);
     background-color: var(--seashell);

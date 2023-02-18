@@ -209,7 +209,7 @@ function Saleentrysection(props) {
         <div className="col-3 col-md-2 col-lg-2 align-self-center text-charcoal fw-bolder fs-6">
           Sale Entry
         </div>
-        <div className="col-6 col-xl-6 col-lg-7 col-md-auto align-self-center m-1 ">
+        <div className="col-6 col-xl-7 col-lg-7 col-md-8 align-self-center m-1 ">
           <div className="row border-burntumber fw-bolder rounded-2 text-center justify-content-center ">
             <div className="col-4">
               <select className='p-0 m-0 border-0 text-burntumber fw-bolder' value={channel ? channel : ''} onChange={(e) => { setchannel(e.target.value) }}>
@@ -266,7 +266,7 @@ function Saleentrysection(props) {
                   {
                     saleentryarr.map((item, i) => (
                       <tr className={` bg-${((i % 2) == 0) ? 'seashell' : 'pearl'} align-middle`} key={i}>
-                        <td className='text-charcoal fw-bold p-0 m-0 px-1'>{item.bill_id && item.bill_id !== null ? "P-" + item.bill_id : ''}</td>
+                        <td className='text-charcoal fw-bold p-0 m-0 px-1'>{item.id && item.id !== null ? "P-" + item.id : ''}</td>
                         <td className='text-charcoal fw-bold p-0 m-0 px-1'>{item.patient && item.patient && item.patient.full_name != null ? item.patient.full_name : ''}</td>
                         <td className='text-charcoal fw-bold p-0 m-0 px-1'>{item.bill_date && item.bill_date ? reversefunction(item.bill_date) : ''}</td>
                         <td className='text-charcoal fw-bold p-0 m-0 px-1'>{item.grand_total && item.grand_total ? "Rs. " + item.grand_total : ''}</td>
@@ -293,9 +293,9 @@ function Saleentrysection(props) {
                           <button className={`btn bg-${tabindex == i ? 'lightred' : ''}`} onClick={() => { settabindex(i); toggle_payments() }}>
                             <img src={process.env.PUBLIC_URL + "/images/rupee.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1" />
                           </button>
-                          <buttton className="btn" onClick={() => { setindex(i); toggle_seidw() }}>
+                          <button className="btn" onClick={() => { setindex(i); toggle_seidw() }}>
                             <img src={process.env.PUBLIC_URL + "/images/archivebox.png"} alt="displaying_image" className="ms-1" style={{ width: "1.5rem" }} />
-                          </buttton> </td>
+                          </button> </td>
 
                         <td className={`text-charcoal fw-bold p-0 m-0 px-1 `}>
                           <button className="btn position-relative cursor-pointer more p-0 m-0">
@@ -354,13 +354,12 @@ function Saleentrysection(props) {
           </div>
         </div>
       </div>
-      <section className={`newsaleentryform position-absolute d-${nsef} start-0 end-0 bg-seashell m-2 rounded-4 shadow`} style={{ height: '90vh' }}>
+      <section className={`newsaleentryform position-absolute d-${nsef} start-0 end-0 bg-seashell border border-1 m-2 rounded-4 shadow`} style={{ height: '90vh' }}>
         <SaleEntryForm toggle_nsef={toggle_nsef} GETSalesList={GETSalesList} />
       </section>
     </>
   )
 }
-
 function SaleEntrypayments(props) {
   const url = useContext(URL)
   const adminid = localStorage.getItem('id')
@@ -825,8 +824,8 @@ function SaleReturns() {
       <button className="button addentrypurchase button-charcoal position-absolute" onClick={toggle_nref}><img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt='displaying_image' className="img-fluid" style={{ width: `1.5rem` }} />Entry Return</button>
       <div classsName='p-0 m-0'>
         <div className="row p-0 m-0">
-          <div className="col-3 col-md-2 col-lg-3 align-self-center text-charcoal fw-bolder fs-6">Sale Return </div>
-          <div className="col-6 col-xl-6 col-lg-7 col-md-auto col-sm-auto align-self-center m-1 ">
+          <div className="col-2 col-md-2 col-lg-3 align-self-center text-charcoal fw-bolder fs-6">Sale Return </div>
+          <div className="col-6 col-xl-6 col-lg-7 col-md-8 col-sm-auto align-self-center m-1 justify-content-center ">
             <div className="row border-burntumber fw-bolder rounded-2 text-center justify-content-center ">
               <div className="col-4 d-none">
                 <select className='p-0 m-0 border-0 text-burntumber fw-bolder' value={channel ? channel : ''} onChange={(e) => { setchannel(e.target.value) }}>
@@ -884,7 +883,7 @@ function SaleReturns() {
                           <td className='p-0 m-0 text-charcoal fw-bold'>{item.grand_total ? item.grand_total : 'N/A'}</td>
                           <td className='p-0 m-0 text-charcoal fw-bold'>
                             {/* <button className='btn'><img src={process.env.PUBLIC_URL + "/images/cart.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1" /></button> */}
-                            <buttton className="btn" onClick={() => { setindex(i); toggle_sridw() }}><img src={process.env.PUBLIC_URL + "/images/archivebox.png"} alt="displaying_image" className="ms-1" style={{ width: "1.5rem" }} /></buttton></td>
+                            <button className="btn" onClick={() => { setindex(i); toggle_sridw() }}><img src={process.env.PUBLIC_URL + "/images/archivebox.png"} alt="displaying_image" className="ms-1" style={{ width: "1.5rem" }} /></button></td>
                           <td className='p-0 m-0 text-charcoal fw-bold'><button className="btn position-relative cursor-pointer more p-0 m-0"><img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" style={{ width: "1.5rem" }} /></button></td>
                           <td className={`PEdetailssection position-absolute mt-1 d-${i == index ? sridw : 'none'} bg-seashell p-0 m-0`} style={{ top: '-8.5rem' }} >
                             {
@@ -937,7 +936,7 @@ function SaleReturns() {
           </div>
         </div>
       </div>
-      <section className={`newreturnentrysection position-absolute start-0 end-0 top-0 bottom-0 d-${nref}`} style={{ marginTop: '-8.5rem' }}  >
+      <section className={`newreturnentrysection position-absolute start-0 end-0 top-0 border border-1 mx-2 bg-seashell shadow rounded-4 bottom-0 d-${nref}`} style={{ marginTop: '-8.5rem', 'height': '90vh' }}  >
         {<NewSaleReturnentryform toggle_nref={toggle_nref} GETSaleReturns={GETSaleReturns} />}
       </section>
     </>
@@ -966,7 +965,7 @@ function SaleEntryForm(props) {
   const [load, setload] = useState()
   const [searchload, setsearchload] = useState(false)
   const [products, setproducts] = useState([])
-  const [itemsearch, setitemsearch] = useState([''])
+  const [itemsearch, setitemsearch] = useState([])
   const [itembyid, setitembyid] = useState([''])
   const [loadbyId, setloadbyId] = useState()
   const [itemname, setitemname] = useState()
@@ -1117,7 +1116,6 @@ function SaleEntryForm(props) {
     CalGrandttl()
   }, [SelectedProducts])
   function AddProducts(data) {
-    console.log(data)
     let T = ''
     if (data.vaccine_brand_id) {
       T = 'v'
@@ -1192,18 +1190,22 @@ function SaleEntryForm(props) {
       deliver: Dc,
       address_id: addressid,
     }
+    setload(true)
     try {
       await axios.post(`${url}/sale/entry/save`, Data).then((response) => {
-        props.toggle_nsef()
-        ClearForm()
+        setload(false)
         props.GETSalesList()
+        props.toggle_nsef()
         Notiflix.Notify.success(response.data.message)
+        ClearForm()
       }).catch(function error(e) {
         console.log(e)
         Notiflix.Notify.failure(e)
+        setload(false)
       })
     } catch (e) {
       Notiflix.Notify.failure(e)
+      setload(false)
     }
   }
   function confirmmessage() {
@@ -1259,12 +1261,13 @@ function SaleEntryForm(props) {
   let c = 0
   console.log(products, addressid, Dc, SelectedProducts)
   console.log(itembyid)
+  console.log(itemsearch)
   return (
     <>
       <div className="container-fluid p-0 m-0 p-2 rounded-4">
         <div className='position-relative mb-3'>
           <h5 className='text-center fw-bolder text-charcoal '>Sale Entry Form</h5>
-          <button className='btn btn-close position-absolute end-0 top-0 me-2' onClick={props.toggle_nsef}></button>
+          <button className='btn btn-close position-absolute end-0 top-0 me-2' disabled={load ? true : false} onClick={props.toggle_nsef}></button>
         </div>
         <hr className='p-0 m-0' />
         <div className="p-0 m-0 text-center bg-seashell">
@@ -1379,37 +1382,52 @@ function SaleEntryForm(props) {
                             <span className="sr-only"> </span> </div>
                         </div>
                       ) : (
-                        itemsearch.length == 0 ? (
+                        loadsearch == false && itemsearch.length == 0 ? (
                           <div className="bg-burntumber text-light rounded-2 p-1">Oops! Not Avaliable</div>
                         ) : (
-                          itemsearch.map((data, i) => (
-                            <div style={{ cursor: 'pointer', Width: 'max-content' }} className={`p-0 ps-1 shadow bg-${((i % 2) == 0) ? 'pearl' : 'seashell'} fs-6 `} onClick={(e) => { setproducts(data); setitemname(data.display_name ? data.display_name : data.name); setitemid(data.id); stockref.current.style.display = 'block' }}>{data.display_name ? data.display_name : data.name}</div>
-                          ))
+                          <div className={`rounded-4 border border-1 bg-pearl p-1 d-${itemsearch && itemsearch.length > 0 ? 'block' : 'none'}`}>
+                            <p className={`text-start p-0 m-0 m-1 fw-bold text-charcoal75`} style={{ fontSize: '0.8rem' }}>Search Results</p>
+                            {
+                              itemsearch.map((data, i) => (
+                                <div style={{ cursor: 'pointer', Width: 'max-content' }} className={`bg-${((i % 2) == 0) ? 'pearl' : 'seashell'} p-0 ps-1 border-bottom text-charcoal `} onClick={(e) => { setproducts(data); setitemname(data.display_name ? data.display_name : data.name); setitemid(data.id); stockref.current.style.display = 'block' }}>{data.display_name ? data.display_name : data.name}</div>
+                              ))
+                            }
+                          </div>
                         )
                       )
                     ) : (<div className='bg-seashell'></div>)
                   }
                 </div>
-                <div ref={stockref} className="position-absolute scroll scroll-y p-2 " style={{ marginLeft: '13.5rem', marginTop: '2rem', zIndex: '2', 'width': '20rem', 'height': '30rem' }}>
+                <div ref={stockref} className={`position-absolute bg-pearl scroll scroll-y align-self-center rounded-4 border border-1 p-1 d-${products && products.stock_info && products.stock_info.length > 0 ? 'block' : 'none'}`} style={{ marginLeft: '15.7rem', marginTop: '2rem', zIndex: '2', 'width': '13rem', 'height': '10rem' }}>
+                  <p className={`text-start p-0 m-0 m-1 fw-bold text-charcoal75`} style={{ fontSize: '0.8rem' }}>Batch Stock</p>
                   {
-                    products && products.length !== 0 ? (
-                      products.stock_info.map((data, i) => (
-                        <div style={{ cursor: 'pointer', Width: 'max-content' }} className={`bg-${((i % 2) == 0) ? 'pearl' : 'seashell'} rounded-2 p-2 border border-bottom text-wrap`}
-                          onClick={
-                            () => {
-                              AddProducts(data);
-                              setitemname();
-                              setitemid();
-                              setproducts();
-                              setitemsearch([''])
-                            }}>
-                          <p className='text-center m-0 p-0 fw-bold'>{itemname}</p>
-                          <p className='p-0 m-0 '>BatchNo. {data.batch_no && data.batch_no !== null ? data.batch_no : ''}</p>
-                          <p className='p-0 m-0 '>Stock {data.current_stock && data.current_stock ? data.current_stock : ''}</p>
-                          <p className='p-0 m-0 '>Expiry {data.expiry_date ? reversefunction(data.expiry_date) : ''}</p>
-                        </div>
-                      ))
-                    ) : (<div className='bg-seashell'></div>)
+                    products && products.length == 0 ? (
+                      <div className='bg-seashell'>Not Avaliable</div>
+                    ) : (
+
+                      products ? (
+
+                        products.stock_info.map((data, i) => (
+                          <div style={{ cursor: 'pointer', Width: 'max-content' }} className={`bg-${((i % 2) == 0) ? 'pearl' : 'seashell'} border-bottom text-wrap`}
+                            onClick={
+                              () => {
+                                AddProducts(data);
+                                setitemname();
+                                setitemid();
+                                setproducts();
+                                setitemsearch()
+                              }}>
+                            <p className='text-center m-0 p-0 fw-bold'>{itemname}</p>
+                            <p className='p-0 m-0 '>BatchNo. - {data.batch_no && data.batch_no !== null ? data.batch_no : ''}</p>
+                            <p className='p-0 m-0 '>Stock - {data.current_stock && data.current_stock ? data.current_stock : ''}</p>
+                            <p className='p-0 m-0 '>Expiry Date - {data.expiry_date ? reversefunction(data.expiry_date) : ''}</p>
+                          </div>
+                        ))
+
+                      ) : (<div>Not available</div>)
+
+
+                    )
 
                   }
                 </div>
@@ -1550,10 +1568,20 @@ function SaleEntryForm(props) {
               </div>
             </div>
             <div className="col-3 align-self-center">
-              <button className='button button-charcoal px-5' onClick={() => { confirmmessage() }}>Save Entry</button>
+              {
+                load ? (
+                  <div className="col-6 py-2 pb-2 m-auto text-center">
+                    <div class="spinner-border" role="status">
+                      <span class="visually-hidden">Loading...</span>
+                    </div>
+                  </div>
+                ) : (
+                  <button className='button button-charcoal px-5' onClick={() => { confirmmessage() }}>Save Entry</button>
+                )
+              }
             </div>
             <div className="col-3 align-self-center">
-              <button className='button button-pearl border-charcoal text-charcoal px-4' onClick={() => { confirmmessage2() }}>Add To Cart</button>
+              <button className='button button-pearl border-charcoal text-charcoal px-4' disabled={load ? true : false} onClick={() => { confirmmessage2() }}>Add To Cart</button>
             </div>
           </div>
         </div>
@@ -1571,7 +1599,7 @@ function NewSaleReturnentryform(props) {
   const [billsearch, setbillsearch] = useState([''])
   const [itemsearch, setitemsearch] = useState([''])
   const [itemname, setitemname] = useState('')
-  const [loadsearch, setloadsearch] = useState()
+  const [load, setload] = useState()
   const [MedicineentriesArr, setMedicineentriesArr] = useState([])
 
   const CalculateCost = (cost, currentstock, qtytotreturn) => {
@@ -1660,7 +1688,7 @@ function NewSaleReturnentryform(props) {
       grand_total: grosstotal
     }
     console.log(Data)
-
+    setload(true)
     try {
       await axios.post(`${url}/sale/return/save`, Data).then((response) => {
         Notiflix.Notify.success(response.data.message)
@@ -1668,11 +1696,13 @@ function NewSaleReturnentryform(props) {
         setMedicineentriesArr()
         setbillid()
         setbillname()
+        setload(false)
         props.toggle_nref()
       })
     } catch (e) {
       Notiflix.Notify.warning(e)
       console.log(e)
+      setload(false)
     }
 
   }
@@ -1681,7 +1711,7 @@ function NewSaleReturnentryform(props) {
     customconfirm()
     Notiflix.Confirm.show(
       `Save Purchase Return `,
-      `Do you surely want to add total ${MedicineentriesArr.length} Purchase ${MedicineentriesArr.length <= 1 ? 'Return ' : 'Returns'} of item ${itemname}  `,
+      `Do you surely want to add total ${MedicineentriesArr.length} Sale ${MedicineentriesArr.length <= 1 ? 'Return ' : 'Returns'} of Bill P-${billid} `,
       'Yes',
       'No',
       () => {
@@ -1714,28 +1744,21 @@ function NewSaleReturnentryform(props) {
   }
   console.log(billid, itemname, billsearch)
   return (
-    <section className="newpurchaseentryform mt-1 position-relative bg-seashell m-2 shadow rounded-4 " style={{ 'height': '90vh' }}>
-      <div className="container-fluid p-0 m-0 rounded-4">
-        <div className="container-fluid bg-seashell rounded-4 position-relative  ">
-          <div className="row p-2 pe-1">
-            <div className="col-1 position-absolute end-0">
-              <button type="button" className="btn-close closebtn m-auto" onClick={props.toggle_nref} aria-label="Close" ></button>
-            </div>
-            <div className="col-12 justify-content-center">
-              <h6 className="text-center" style={{ color: "var(--charcoal)", fontWeight: "600" }} >New Sale Return Entry</h6>
-            </div>
-          </div>
-        </div>
+    <section className="newpurchaseentryform ">
+      <div className="container-fluid p-0 m-0 border border-1 ">
+        <h5 className="text-center pt-3" style={{ color: "var(--charcoal)" }} >New Sale Return Entry</h5>
+        <button type="button" className="btn-close closebtn position-absolute end-0 p-2 me-2" onClick={props.toggle_nref} disabled={load ? true : false} aria-label="Close" ></button>
+        <hr />
         <div className="container-fluid p-0 m-0 w-100 entrydetails bg-seashell">
-          <div className="row p-0 m-0 justify-content-center">
+          <div className="row p-0 m-0 justify-content-end">
             <div className="col-5">
               <h6 className="p-0 m-0 ms-3 fw-bold">Select Bill</h6>
-              <input className="form-control ms-2 rounded-1 bg-seashell" placeholder='Bill Id' value={billid ? billid : ''} onChange={(e) => { setbillid(e.target.value); setMedicineentriesArr([]) }} />
+              <input className="form-control ms-2 rounded-1 bg-seashell" placeholder='Bill Id (Does not require initials)' value={billid ? billid : ''} onChange={(e) => { setbillid(e.target.value); setMedicineentriesArr([]) }} />
             </div>
             <div className="col-5">
               <div className='position-relative'>
                 <h6 className="p-0 m-0 ms-3 fw-bold">Product ID</h6>
-                <input className='form-control bg-seashell' placeholder='Product Id' value={itemname ? itemname : ''}
+                <input className='form-control bg-seashell' placeholder='Product Id (Require initials)' value={itemname ? itemname : ''}
                   onChange={(e) => {
                     billid ? setitemname(e.target.value) : Notiflix.Notify.failure('Please Add Bill id First')
                   }} />
@@ -1771,12 +1794,14 @@ function NewSaleReturnentryform(props) {
             </div>
             <div className="col-2 align-self-center ">
               <p></p>
-              <button className='p-0 m-0 btn' onClick={searchProduct}><img src={process.env.PUBLIC_URL + 'images/search.png'} style={{ width: '1.8rem' }} /></button>
+              <button className='p-0 m-0 btn' onClick={searchProduct}>
+                <img src={process.env.PUBLIC_URL + 'images/search.png'} style={{ width: '1.8rem' }} /></button>
             </div>
           </div>
-          <div className=" p-0 m-0 mt-2 scroll scroll-y" style={{ Height: '65vh' }}>
+          <div className=" p-0 m-0 mt-2 scroll scroll-y" style={{ Height: '65vh', zIndex: '2' }}>
+            <p className='text-center fw-bold text-burntumber p-0 m-0  mt-2 mb-1'>Items Selected</p>
             <table className="table datatable text-center position-relative">
-              <thead style={{ color: 'gray', fontWeight: '600' }}>
+              <thead className='text-charcoal75 fw-bold'>
                 <tr>
                   <th className='p-0 m-0 px-1'>Item ID</th>
                   <th className='p-0 m-0 px-1'>Item Name</th>
@@ -1833,12 +1858,10 @@ function NewSaleReturnentryform(props) {
               }
             </table>
           </div>
-
-
-
         </div>
       </div>
-      <div className='col-12 position-absolute start-0 end-0 bottom-0 text-center bg-pearl align-items-center rounded-bottom p-2'>
+      <div className='col-12 position-absolute start-0 end-0 bottom-0 text-center bg-pearl  border border-1 rounded-bottom p-2 py-4'>
+
         <div className="row p-0 m-0">
           <div className="col-6">
             <div className="row">
@@ -1853,10 +1876,20 @@ function NewSaleReturnentryform(props) {
             </div>
           </div>
           <div className="col-3 align-self-center">
-            <button className='button button-charcoal px-5' onClick={confirmmessage}>Save Entry</button>
+            {
+              load ? (
+                <div className="col-6 py-2 pb-2 m-auto text-center">
+                  <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                </div>
+              ) : (
+                <button className='button button-charcoal px-5' onClick={confirmmessage}>Save Entry</button>
+              )
+            }
           </div>
           <div className="col-3 align-self-center">
-            <button className='button button-pearl border-charcoal text-charcoal px-4' >Add To Cart</button>
+            <button className='button button-pearl border-charcoal text-charcoal px-4' disabled={load ? true : false} >Add To Cart</button>
           </div>
         </div>
       </div>
@@ -2276,7 +2309,7 @@ function Purchaseentrysection(props) {
                           <td className='p-0 m-0 text-charcoal fw-bold'>{item.bill_date && item.bill_date ? reversefunction(item.bill_date) : 'N/A'}</td>
                           <td className='p-0 m-0 text-charcoal fw-bold'>{item.bill_total && item.bill_total ? "Rs. " + item.bill_total : 'N/A'}</td>
                           <td className='p-0 m-0 text-charcoal fw-bold'>{item.distributor && item.distributor != null && item.distributor.entity_name && item.distributor.entity_name != null ? item.distributor.entity_name : 'N/A'}</td>
-                          <td className='p-0 m-0 text-charcoal fw-bold'><button className='btn'><img src={process.env.PUBLIC_URL + "/images/cart.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1" /></button><buttton className="btn" onClick={() => { setindex(i); toggle_peidw() }}><img src={process.env.PUBLIC_URL + "/images/archivebox.png"} alt="displaying_image" className="ms-1" style={{ width: "1.5rem" }} /></buttton></td>
+                          <td className='p-0 m-0 text-charcoal fw-bold'><button className='btn'><img src={process.env.PUBLIC_URL + "/images/cart.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1" /></button><button className="btn" onClick={() => { setindex(i); toggle_peidw() }}><img src={process.env.PUBLIC_URL + "/images/archivebox.png"} alt="displaying_image" className="ms-1" style={{ width: "1.5rem" }} /></button></td>
                           <td className='p-0 m-0 text-charcoal fw-bold'><button className="btn position-relative cursor-pointer more p-0 m-0"><img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" style={{ width: "1.5rem" }} /></button></td>
                           <td className={`PEdetailssection position-absolute mt-1 d-${i == index ? peidw : 'none'} bg-seashell p-0 m-0`} style={{ top: '-8.5rem' }} >
                             {
@@ -2596,6 +2629,7 @@ function Newpurchaseentryform(props) {
   const [MedicineentriesArr, setMedicineentriesArr] = useState()
   const [tableindex, settableindex] = useState()
   const [clinicstatecode, setclinicstatecode] = useState()
+  const [load, setload] = useState()
 
   async function filterclinic() {
     for (let i = 0; i < ClinicList.length; i++) {
@@ -2786,9 +2820,10 @@ function Newpurchaseentryform(props) {
       mfd_date: manufacturingDate,
       batch_no: batches,
     }
-
+    setload(true)
     try {
       await axios.post(`${url}/purchase/entry/save`, Data).then((response) => {
+        setload(false)
         Notiflix.Notify.success(response.data.message)
         props.GETPurchaseList()
         setMedicineentriesArr()
@@ -2798,11 +2833,12 @@ function Newpurchaseentryform(props) {
         setinvoicedate()
         setvendorname()
         setvendorid()
+        setload(false)
         props.toggle_npef()
       })
     } catch (e) {
-      Notiflix.Notify.warning(e)
-      console.log(e)
+      setload(false)
+      Notiflix.Notify.warning(e.message)
     }
 
   }
@@ -3012,7 +3048,17 @@ function Newpurchaseentryform(props) {
               <h6 className="text-center" style={{ color: "var(--charcoal)", fontWeight: "600" }} > New Purchase Entry </h6>
             </div>
             <div className="col-auto">
-              <button disabled={MedicineentriesArr == undefined || MedicineentriesArr && MedicineentriesArr.length == 0 ? true : false} className="button button-burntumber" onClick={() => { confirmmessage(MedicineentriesArr, vendorname) }}>Save All</button>
+              {
+                load ? (
+                  <div className="col-6 py-2 pb-2 m-auto text-center">
+                    <div class="spinner-border" role="status">
+                      <span class="visually-hidden">Loading...</span>
+                    </div>
+                  </div>
+                ) : (
+                  <button disabled={MedicineentriesArr == undefined || MedicineentriesArr && MedicineentriesArr.length == 0 ? true : false} className="button button-charcoal" onClick={() => { confirmmessage(MedicineentriesArr, vendorname) }}>Save All</button>
+                )
+              }
             </div>
           </div>
         </div>
@@ -3149,26 +3195,31 @@ function Newpurchaseentryform(props) {
             <div className={`col-4 m-0 p-0 medicineinfosection d-${vendorid ? 'block' : 'none'} bg-seashell ps-2`} id='medicineinfosection'>
               <h5 className="mt-2">Add Items</h5>
               <div className="col-12">
-                <div className="form-group col-10 col-md-11">
+                <div className=" col-10 col-md-11">
                   <div className='position-relative'>
                     <label>Search Items </label>
                     <input className='form-control bg-seashell' placeholder='Items' value={itemname ? itemname : ''} onChange={(e) => { searchmeds(e.target.value); setitemname(e.target.value); setitemtype() }} />
-                    <div ref={medicinesref} className='position-absolute rounded-2 bg-pearl col-12' >
+                    <div ref={medicinesref} className='position-absolute rounded-4 col-12' style={{ zIndex: '2' }}  >
                       {
                         itemsearch ? (
                           loadsearch ? (
-                            <div className='rounded-2 p-1'>
+                            <div className='rounded-2 p-1 bg-pearl'>
                               Searching Please wait....
                               <div className="spinner-border my-auto" style={{ width: "1rem", height: "1rem" }} role="status" >
                                 <span className="sr-only"> </span> </div>
                             </div>
                           ) : (
                             itemsearch.length == 0 ? (
-                              <div className="bg-burntumber text-light rounded-2 p-1">Oops! Not Avaliable</div>
+                              <div className="bg-burntumber text-light rounded-2 p-1 text-wrap">Oops! Not Avaliable</div>
                             ) : (
-                              itemsearch.map((data, i) => (
-                                <div style={{ cursor: 'pointer' }} className={`p-0 ps-1 shadow bg-${((i % 2) == 0) ? 'pearl' : 'lightyellow'} fs-6 `} name={data.id} onClick={(e) => { setitemname(data.display_name ? data.display_name : data.name); setitemid(data.id); setitemtype(data.vaccines_id ? 'v' : 'm'); medicinesref.current.style.display = 'none'; }}>{data.display_name ? data.display_name : data.name}</div>
-                              ))
+                              <div className={`mt-1 rounded-4 bg-pearl shadow px-1 pb-2 d-${itemsearch && itemsearch.length > 1 ? 'block' : 'none'}`}>
+                                <p className={`p-0 m-0 bg-pearl fw-bold text-charcoal75 rounded-4 ps-2 `} style={{ fontSize: '0.8rem' }}>{itemsearch.length} Search Results</p>
+                                {
+                                  itemsearch.map((data, i) => (
+                                    <div style={{ cursor: 'pointer' }} className={`p-0 ps-1 text-wrap  bg-${((i % 2) == 0) ? '' : 'lightyellow'}`} name={data.id} onClick={(e) => { setitemname(data.display_name ? data.display_name : data.name); setitemid(data.id); setitemtype(data.vaccines_id ? 'v' : 'm'); medicinesref.current.style.display = 'none'; }}>{data.display_name ? data.display_name : data.name}</div>
+                                  ))
+                                }
+                              </div>
                             )
                           )
                         ) : (<></>)
@@ -3564,7 +3615,7 @@ function PurchaseReturns() {
                           <td className='p-0 m-0 text-charcoal fw-bold'>{item.grand_total ? item.grand_total : 'N/A'}</td>
                           <td className='p-0 m-0 text-charcoal fw-bold'>
                             {/* <button className='btn'><img src={process.env.PUBLIC_URL + "/images/cart.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1" /></button> */}
-                            <buttton className="btn" onClick={() => { setindex(i); toggle_pridw() }}><img src={process.env.PUBLIC_URL + "/images/archivebox.png"} alt="displaying_image" className="ms-1" style={{ width: "1.5rem" }} /></buttton></td>
+                            <button className="btn" onClick={() => { setindex(i); toggle_pridw() }}><img src={process.env.PUBLIC_URL + "/images/archivebox.png"} alt="displaying_image" className="ms-1" style={{ width: "1.5rem" }} /></button></td>
                           <td className='p-0 m-0 text-charcoal fw-bold'><button className="btn position-relative cursor-pointer more p-0 m-0"><img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" style={{ width: "1.5rem" }} /></button></td>
                           <td className={`PEdetailssection position-absolute mt-1 d-${i == index ? pridw : 'none'} bg-seashell p-0 m-0`} style={{ top: '-8.5rem' }} >
                             {
@@ -3863,6 +3914,7 @@ function NewPurchaseReturnentryform(props) {
   const [itemname, setitemname] = useState()
   const [loadsearch, setloadsearch] = useState()
   const [MedicineentriesArr, setMedicineentriesArr] = useState([])
+  const [load,setload]=useState()
 
   const CalculateCost = (cost, currentstock, qtytotreturn) => {
     let costing = 0;
@@ -3971,7 +4023,7 @@ function NewPurchaseReturnentryform(props) {
       grand_total: grosstotal
     }
     console.log(Data)
-
+    setload(true)
     try {
       await axios.post(`${url}/purchase/return/save`, Data).then((response) => {
         Notiflix.Notify.success(response.data.message)
@@ -3980,10 +4032,12 @@ function NewPurchaseReturnentryform(props) {
         setvendorname()
         setvendorid()
         setitemname()
+        setload(false)
         props.toggle_nref()
       })
     } catch (e) {
-      Notiflix.Notify.warning(e)
+      Notiflix.Notify.warning(e.message)
+      setload(false)
       console.log(e)
     }
 
@@ -4186,7 +4240,18 @@ function NewPurchaseReturnentryform(props) {
             </div>
           </div>
           <div className="col-3 align-self-center">
+            {
+              load ? (
+                <div className="col-6 py-2 pb-2 m-auto text-center">
+                <div class="spinner-border" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+              </div>
+              ):(
             <button className='button button-charcoal px-5' onClick={confirmmessage}>Save Entry</button>
+              )
+       
+            }
           </div>
           <div className="col-3 align-self-center">
             <button className='button button-pearl border-charcoal text-charcoal px-4' >Add To Cart</button>
