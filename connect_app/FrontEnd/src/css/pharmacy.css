@@ -74,9 +74,9 @@ html {
 .stockdetailsfrom {
     max-width: 90rem;
     z-index: 3012;
-    margin:0 auto;
-    margin-top:10rem;
-    
+    margin: 0 auto;
+    margin-top: 10rem;
+
 }
 
 .closebtn {
@@ -92,11 +92,6 @@ html {
     z-index: 2;
 }
 
-.medicineinfosection {
-    overflow-y: scroll;
-    height: 83vh;
-
-}
 
 .medicinesearch,
 .vaccinesearch,
@@ -123,23 +118,14 @@ html {
 }
 
 .newsaleentryform {
-    top: -9rem;
+    top: -7.15rem;
 }
 
-@media (max-width:768px) {
-    .newpurchaseentrysection {
-        margin-top: -13vh;
-    }
+.newreturnentrysection {
+    top: -7.15rem;
+    height:90vh;
 }
 
-@media (min-width:769px) and (max-width:1024px) {
-    .newpurchaseentrysection {
-        margin-top: -18vh;
-    }
-}
-
-@media (min-width:1025px) and (max-width:1300px) {
-    .newpurchaseentrysection {
-        margin-top: -16vh;
-    }
+.newpurchaseentrysection {
+    top: -1.5rem;
 }

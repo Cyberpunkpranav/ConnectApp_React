@@ -209,15 +209,15 @@ function Navbar(props) {
               </div>
             </div>
             <div className="col-lg-auto col-xl-auto col-md-auto col-6 col-sm-2 text-center align-self-center position-relative p-0 m-0 ">
-            <div class="dropdown">
-               <button class="button button p-0 m-0 px-1 py-1 button-burntumber dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <div class="dropdown">
+                <button class="button button p-0 m-0 px-1 py-1 button-burntumber dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                   +Add
-               </button>
-               <ul class="dropdown-menu">
-                 <li><button class="dropdown-item border-bottom" onClick={()=>{togglepatientform()}}>+ Patient</button></li>
-                 <li><button class="dropdown-item border-bottom" onClick={()=>{toggleappointmentform()}}>+ Appointment</button></li>
-                 <li><button class="dropdown-item " onClick={()=>{toggledoctorform()}}>+ Doctor</button></li>
-               </ul>
+                </button>
+                <ul class="dropdown-menu">
+                  <li><button class="dropdown-item border-bottom" onClick={() => { togglepatientform() }}>+ Patient</button></li>
+                  <li><button class="dropdown-item border-bottom" onClick={() => { toggleappointmentform() }}>+ Appointment</button></li>
+                  <li><button class="dropdown-item " onClick={() => { toggledoctorform() }}>+ Doctor</button></li>
+                </ul>
               </div>
               {/* <button className="btn btn-sm p-0 m-0 py-1 col-12 col-lg-6 col-md-6 addbtn align-self-center" onClick={toggleaddoption}> +Add </button>
               <div className={`text-center addoptions d-${addoption} position-absolute start-0  `} >
@@ -1064,18 +1064,21 @@ function Pharmacy() {
       <section className={`pharmacy position-relative`}>
         <div className="pharmacysection">
           <div className="container-fluid pharmacytabsection">
-            <div className="row py-2">
+            <div className=" hstack gap-3 d-flex p-0 m-0 ms-1 p-1 align-items-center">
               {menu.map((e, i) => {
                 return (
-                  <div className="col-auto">
-                    <button className={`btn text-${i === menuindex ? "light" : "dark"} bg-${i === menuindex ? "charcoal" : "seashell"}`} onClick={(a) => setmenuindex(i)} > {e} </button>
-                  </div>
+                  <>
+                    <div className="col-auto p-0 m-0">
+                      <button className={`button rounded-2 p-0 m-0 py-1 px-4 btn-sm col-auto shadow-none text-${i === menuindex ? 'light' : 'charcoal75 fw-bolder'} button-${i === menuindex ? "charcoal" : "seashell"} border-${i === menuindex ? 'secondary' : 'none'}`} onClick={(a) => setmenuindex(i)} > {e} </button>
+                    </div>
+                    <div className='vr rounded-2 h-75 align-self-center' style={{ padding: '0.8px' }}></div>
+                  </>
                 );
               })}
             </div>
           </div>
         </div>
-        <div className="ms-1 text-charcoal75 fs-4 " id="calender">
+        <div className="p-0 m-0 ms-1 text-charcoal75 fs-4 ">
           {<Livetime />}
         </div>
         <div className="p-0 m-0">{_selectedmenu(menuindex)}</div>

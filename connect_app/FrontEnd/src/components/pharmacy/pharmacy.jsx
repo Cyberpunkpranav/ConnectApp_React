@@ -28,10 +28,10 @@ function Salesection(props) {
   return (
     <>
 
-      <section className='purchasesection pt-3'>
-        <div className="container-fluid">
-          <div className="row g-3">
-            <div className="col-10">
+      <section className='purchasesection pt-1'>
+        <div className="container-fluid p-0 m-0">
+          <div className="row gx-3 p-0 m-0">
+            <div className="col-10  ">
               <div className='row'>
                 {
                   first.map((e, i) => {
@@ -50,7 +50,7 @@ function Salesection(props) {
         </div>
       </section>
       <section className="tablesrender position-relative">
-        <div className='container-fluid pt-5'>
+        <div className='container-fluid p-0 m-0 pt-3'>
           <div className="scroll scroll-y">
             {_selectedScreen(second)}
           </div>
@@ -205,31 +205,31 @@ function Saleentrysection(props) {
   return (
     <>
       <button className="button addentrypurchase button-charcoal position-absolute" onClick={toggle_nsef}><img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt='displaying_image' className="img-fluid" style={{ width: `1.5rem` }} />Entry Sale</button>
-      <div className="row p-0 m-0">
-        <div className="col-3 col-md-2 col-lg-2 align-self-center text-charcoal fw-bolder fs-6">
+      <div className="row p-0 m-0 justify-content-lg-between">
+        <div className="col-2 col-md-2 col-lg-2 align-self-center text-center text-charcoal fw-bolder fs-6">
           Sale Entry
         </div>
-        <div className="col-6 col-xl-7 col-lg-7 col-md-8 align-self-center m-1 ">
+        <div className="col-6 col-xl-7 col-lg-7 col-md-7 align-self-center m-1 ">
           <div className="row border-burntumber fw-bolder rounded-2 text-center justify-content-center ">
-            <div className="col-4">
-              <select className='p-0 m-0 border-0 text-burntumber fw-bolder' value={channel ? channel : ''} onChange={(e) => { setchannel(e.target.value) }}>
+            <div className="col-4 bg-pearl">
+              <select className='p-0 m-0 bg-pearl border-0 text-burntumber fw-bolder' value={channel ? channel : ''} onChange={(e) => { setchannel(e.target.value) }}>
                 <option className='border-0 text-burntumber fw-bolder' value='1'>Pharmacy</option>
                 <option className='border-0 text-burntumber fw-bolder' value='2'>Consumables</option>
               </select>
             </div>
-            <div className="col-4 text-burntumber fw-bolder">
-              <input type='date' className='p-0 m-0 border-0 text-burntumber fw-bolder ' value={fromdate ? fromdate : ''} onChange={(e) => { setfromdate(e.target.value) }} />
+            <div className="col-4 text-burntumber fw-bolder bg-pearl">
+              <input type='date' className='p-0 m-0 border-0 bg-pearl text-burntumber fw-bolder ' value={fromdate ? fromdate : ''} onChange={(e) => { setfromdate(e.target.value) }} />
             </div>
-            <div className="col-4 text-burntumber fw-bolder">
-              <input type='date' className='p-0 m-0 border-0 text-burntumber fw-bolder ' value={todate ? todate : ''} onChange={(e) => { settodate(e.target.value) }} />
+            <div className="col-4 text-burntumber fw-bolder bg-pearl">
+              <input type='date' className='p-0 m-0 border-0 bg-pearl text-burntumber fw-bolder ' value={todate ? todate : ''} onChange={(e) => { settodate(e.target.value) }} />
             </div>
           </div>
         </div>
-        <div className="col-2 align-self-center">
+        <div className="col-2 col-md-2 col-lg-2 align-self-center">
           <ExportSaleEntry saleentryarr={saleentryarr} fromdate={reversefunction(fromdate)} todate={reversefunction(todate)} />
         </div>
       </div>
-      <div className='scroll scroll-y p-0 m-0' style={{ minHeight: '55vh', height: '55vh' }}>
+      <div className='scroll scroll-y p-0 m-0 mt-1' style={{ minHeight: '40vh', height: '58vh', maxHeight: '70vh' }}>
         <table className="table text-center table-responsive p-0 m-0">
           <thead className=' p-0 m-0'>
             <tr className=' p-0 m-0'>
@@ -302,7 +302,7 @@ function Saleentrysection(props) {
                             <img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" style={{ width: "1.5rem" }} />
                           </button></td>
 
-                        <td className={`PEdetailssection position-absolute mt-1 d-${i == index ? seidw : 'none'} bg-seashell p-0 m-0`} style={{ top: '-8.5rem' }} >
+                        <td className={`position-absolute mt-1 d-${i == index ? seidw : 'none'} start-0 end-0 border border-1 bg-seashell p-0 m-0`} style={{ zIndex: '2', top: '-7.5rem', 'height': '90vh' }} >
                           {
                             i == index ? (
                               <SEitemdetailssection saleentryarr={saleentryarr[i]} itembillid={"P-" + item.bill_id} toggle_seidw={toggle_seidw} />
@@ -332,16 +332,16 @@ function Saleentrysection(props) {
           }
         </table>
       </div>
-      <div className="container-fluid mb-1 p-0 m-0">
-        <div className="row p-0 m-0 text-center">
-          <div className="col-3 col-xl-4 col-md-2 col-sm-2 p-0 m-0">
-            <button className="button ms-1 button-seashell" ref={previousref} value={prevoffset} onClick={(e) => { getpreviouspages(e); }} style={{ marginTop: '0.15rem' }}>Previous</button>
-          </div>
+      <div className="container-fluid my-1 p-0 m-0">
+        <div className="d-flex p-0 m-0 justify-content-center text-center">
+
+          <button className="btn  border-charcoal p-0 m-0 px-1 me-2" ref={previousref} value={prevoffset} onClick={(e) => { getpreviouspages(e); }} style={{ marginTop: '0.15rem' }}>Previous</button>
+
           <div className="col-auto col-xl-auto col-sm-8 col-md-8 p-0 m-0">
             {
               pages ? (
                 pages.map((page, i) => (
-                  <button className={`button ms-2 button-${nxtoffset - 1 == i ? 'pearl' : 'burntumber'} border  shadow-${nxtoffset - 1 == i ? 'lg' : 'none'}`} ref={nextref} value={page} id={page} onClick={(e) => { GETSalesList(i) }} key={i}>{page}</button>
+                  <button className={`button rounded-3 ms-2 button-${nxtoffset - 1 == i ? 'charcoal' : 'pearl'}   shadow-${nxtoffset - 1 == i ? 'lg' : 'none'}`} ref={nextref} value={page} id={page} onClick={(e) => { GETSalesList(i) }} key={i}>{page}</button>
                 ))
               ) : (
                 <div>Loading...</div>
@@ -349,12 +349,10 @@ function Saleentrysection(props) {
 
             }
           </div>
-          <div className="col-3 col-xl-4 col-md-2 col-sm-2 p-0 m-0">
-            <button className={`button button-burntumber`} ref={nextref} value={nxtoffset} onClick={(e) => { getnextpages(e); }} style={{ marginTop: '0.15rem' }}>Next</button>
-          </div>
+          <button className={`btn p-0 m-0 px-1 border-charcoal ms-2`} ref={nextref} value={nxtoffset} onClick={(e) => { getnextpages(e); }} style={{ marginTop: '0.15rem' }}>Next</button>
         </div>
       </div>
-      <section className={`newsaleentryform position-absolute d-${nsef} start-0 end-0 bg-seashell border border-1 m-2 rounded-4 shadow`} style={{ height: '90vh' }}>
+      <section className={`newsaleentryform p-0 m-0 position-absolute d-${nsef} border border-1 mx-auto start-0 end-0 bg-seashell`} style={{ height: '90vh' }}>
         <SaleEntryForm toggle_nsef={toggle_nsef} GETSalesList={GETSalesList} />
       </section>
     </>
@@ -568,44 +566,39 @@ function SEitemdetailssection(props) {
   console.log(props.saleentryarr)
   return (
     <div className="container-fluid p-0 m-0 bg-seashell ">
-      <div className="container-fluid bg-seashell p-0 m-0">
-        <div className="row p-0 m-0">
-          <div className="col-1">
-            <button type="button" className="btn-close closebtn m-auto" onClick={props.toggle_seidw} aria-label="Close"></button>
-          </div>
-          <div className="col-9">
-            <h5 className='text-center text-charcoal fw-bolder'>{props.itembillid} Sale Entry Item Details</h5>
-          </div>
-          <div className="col-2 d-none">
-            <div className=' position-relative searchbutton' style={{ top: '0.25rem', right: '1rem' }}>
-              <input type="text" className=" form-control d-inline PEsearch bg-seashell" placeholder="Search PE" />
-              <button className="btn p-0 m-0 bg-transparent border-0 position-absolute" style={{ width: '2rem', right: '0', left: '0', top: '0.25rem' }}><img src={process.env.PUBLIC_URL + "/images/search.png"} alt="displaying_image" className="img-fluid p-0 m-0" /></button>
-            </div>
-          </div>
+
+      <h5 className='text-center text-charcoal pt-3'>{props.itembillid} Sale Entry Item Details</h5>
+      <button type="button" className="btn-close closebtn position-absolute end-0 me-4" onClick={props.toggle_seidw} aria-label="Close"></button>
+
+      <div className="col-2 d-none">
+        <div className=' position-relative searchbutton' style={{ top: '0.25rem', right: '1rem' }}>
+          <input type="text" className=" form-control d-inline PEsearch bg-seashell" placeholder="Search PE" />
+          <button className="btn p-0 m-0 bg-transparent border-0 position-absolute" style={{ width: '2rem', right: '0', left: '0', top: '0.25rem' }}><img src={process.env.PUBLIC_URL + "/images/search.png"} alt="displaying_image" className="img-fluid p-0 m-0" /></button>
         </div>
       </div>
-      <div className='row p-0 m-0 mb-3'>
+      <div className='d-flex p-0 m-0 mt-3 mb-1 justify-content-center'>
         {
           Items.map((data, i) => (
-            <div className="col-3 col-xl-2 col-lg-2 col-md-4 col-sm-6 p-0 m-0">
-              <button className={`button border button-${i == index ? 'charcoal' : 'seashell'}`} onClick={() => { setindex(i) }}>{data}</button>
-            </div>
+            <button className={`button shadow-0 rounded-0 border-charcoal button-${i == index ? 'charcoal' : 'seashell'}`} onClick={() => { setindex(i) }}>{data}</button>
+
           ))
         }
       </div>
 
       <div className="row p-0 m-0 justify-content-between">
-        <div className="col-auto ms-2 text-burntumber fw-bolder" >
-          Grand Total : {props.saleentryarr.grand_total ? props.saleentryarr.grand_total : 0}
+        <div className="col-auto ms-2 mb-2 text-burntumber rounded-2 fw-bolder bg-pearl" >
+          <p className='text-charcoal p-0 m-0 ms-1 text-start'>Grand Total</p>
+          <hr className='p-0 m-0' />
+          <h5 className='text-charcoal p-0 m-0 fw-bold text-start ms-1'>{props.saleentryarr.grand_total ? props.saleentryarr.grand_total : 0}</h5>
         </div>
-        <div className="col-auto justify-content-end me-4">
+        <div className="col-auto align-self-end justify-content-end me-4">
           <input type='checkbox' className='' value={Taxon ? Taxon : ''} onChange={() => { Taxon == true ? setTaxon(false) : setTaxon(true) }} /><label>Show Tax Details</label>
         </div>
 
       </div>
 
-      <div className={`scroll bg-seashell scroll-y d-${medicine}`} style={{ minHeight: '82vh', maxHeight: '82vh' }}>
-        <table className="table datatable table-responsive text-center bg-seashell">
+      <div className={`scroll bg-seashell scroll-y d-${medicine}`} style={{ minHeight: '65vh', Height: '65vh', maxHeight: '70vh' }}>
+        <table className="table datatable text-center bg-seashell">
           <thead>
             <tr>
               <th rowspan='2' className='border p-0 m-0 px-1'>Stock ID</th>
@@ -659,8 +652,8 @@ function SEitemdetailssection(props) {
 
             ) : (
               <body className='text-center p-0 m-0 border border-1 '>
-                <div className='position-absolute border-0 start-0 end-0 mx-3 p-2 bg-lightred'>
-                  <strong className='fs-5 text-center bg-lightred'>No Medicines Found</strong>
+                <div className='position-absolute border-0 start-0 end-0 mx-3 p-2'>
+                  <p className=' text-center text-charcoal fw-bold'>No Medicines Found</p>
                 </div>
 
               </body>
@@ -670,7 +663,7 @@ function SEitemdetailssection(props) {
           }
         </table>
       </div>
-      <div className={`scroll bg-seashell scroll-y d-${vaccine}`} style={{ minHeight: '82vh', maxHeight: '82vh' }}>
+      <div className={`scroll bg-seashell scroll-y d-${vaccine}`} style={{ minHeight: '70vh', Height: '70vh', maxHeight: '70vh' }}>
         <table className="table datatable table-responsive text-center bg-seashell">
           <thead>
             <tr>
@@ -724,7 +717,7 @@ function SEitemdetailssection(props) {
             ) : (
               <body className='text-center p-0 m-0 border border-1 '>
                 <div className='position-absolute border-0 start-0 end-0 mx-3 p-2 bg-lightred'>
-                  <strong className='fs-5 text-center bg-lightred'>No Vaccines Found</strong>
+                  <p className=' text-center fw-bold text-charcoal'>No Vaccines Found</p>
                 </div>
 
               </body>
@@ -823,9 +816,9 @@ function SaleReturns() {
     <>
       <button className="button addentrypurchase button-charcoal position-absolute" onClick={toggle_nref}><img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt='displaying_image' className="img-fluid" style={{ width: `1.5rem` }} />Entry Return</button>
       <div classsName='p-0 m-0'>
-        <div className="row p-0 m-0">
-          <div className="col-2 col-md-2 col-lg-3 align-self-center text-charcoal fw-bolder fs-6">Sale Return </div>
-          <div className="col-6 col-xl-6 col-lg-7 col-md-8 col-sm-auto align-self-center m-1 justify-content-center ">
+        <div className="row p-0 m-0 justify-content-lg-between">
+          <div className="col-2 col-md-2 col-lg-2 text-center align-self-center text-charcoal fw-bolder fs-6">Sale Return </div>
+          <div className="col-6 col-xl-6 col-lg-7 col-md-7 col-sm-auto align-self-center m-1 justify-content-center ">
             <div className="row border-burntumber fw-bolder rounded-2 text-center justify-content-center ">
               <div className="col-4 d-none">
                 <select className='p-0 m-0 border-0 text-burntumber fw-bolder' value={channel ? channel : ''} onChange={(e) => { setchannel(e.target.value) }}>
@@ -841,11 +834,12 @@ function SaleReturns() {
               </div>
             </div>
           </div>
-          <div className="col-2 align-self-center d-none">
+          <div className="col-2 col-lg-2 col-md-2 align-self-center">
+            excel
             <ExportSaleReturn salereturnarr={salereturnarr} fromdate={reversefunction(fromdate)} todate={reversefunction(todate)} />
           </div>
         </div>
-        <div className='scroll scroll-y overflow-scroll p-0 m-0' style={{ minHeight: '55vh', height: '55vh' }}>
+        <div className='scroll scroll-y overflow-scroll p-0 m-0' style={{ minHeight: '40vh', height: '59vh', maxHeight: '70vh' }}>
           <table className="table text-center p-0 m-0">
             <thead className='p-0 m-0 align-middle'>
               <tr>
@@ -885,7 +879,7 @@ function SaleReturns() {
                             {/* <button className='btn'><img src={process.env.PUBLIC_URL + "/images/cart.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1" /></button> */}
                             <button className="btn" onClick={() => { setindex(i); toggle_sridw() }}><img src={process.env.PUBLIC_URL + "/images/archivebox.png"} alt="displaying_image" className="ms-1" style={{ width: "1.5rem" }} /></button></td>
                           <td className='p-0 m-0 text-charcoal fw-bold'><button className="btn position-relative cursor-pointer more p-0 m-0"><img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" style={{ width: "1.5rem" }} /></button></td>
-                          <td className={`PEdetailssection position-absolute mt-1 d-${i == index ? sridw : 'none'} bg-seashell p-0 m-0`} style={{ top: '-8.5rem' }} >
+                          <td className={` position-absolute d-${i == index ? sridw : 'none'} bg-seashell border border-1 start-0 end-0 p-0 m-0`} style={{ top: '-7.5rem', zIndex: '2' }} >
                             {
                               i == index ? (
                                 <SRitemdetailssection salereturnarr={salereturnarr[i]} toggle_sridw={toggle_sridw} />
@@ -913,16 +907,14 @@ function SaleReturns() {
           </table>
         </div>
         <div className="container-fluid mb-1">
-          <div className="row p-0 m-0 text-center">
-            <div className="col-3 col-xl-4 col-md-2 col-lg-2 col-sm-4 p-0 m-0">
-              <button className="button ms-1 button-seashell" ref={previousref} value={prevoffset} onClick={(e) => { getpreviouspages(e); }} style={{ marginTop: '0.15rem' }}>Previous</button>
-            </div>
-            <div className="col-auto col-xl-auto col-md-8 col-lg-8 col-sm-auto p-0 m-0">
+          <div className="d-flex justify-content-center p-0 m-0 text-center">
+            <button className="btn p-0 m-0 border-charcoal px-1 me-2" ref={previousref} value={prevoffset} onClick={(e) => { getpreviouspages(e); }} style={{ marginTop: '0.15rem' }}>Previous</button>
 
+            <div className="col-auto col-xl-auto col-md-8 col-lg-8 col-sm-auto p-0 m-0">
               {
                 pages ? (
                   pages.map((page, i) => (
-                    <button className={`button ms-2 button-${nxtoffset - 1 == i ? 'pearl' : 'burntumber'} border  shadow-${nxtoffset - 1 == i ? 'lg' : 'none'}`} ref={nextref} value={page} id={page} onClick={(e) => { settabindex(i); GETSaleReturns(i) }} key={i}>{page}</button>
+                    <button className={`button ms-2 button-${nxtoffset - 1 == i ? 'charcoal' : 'pearl'} shadow-${nxtoffset - 1 == i ? 'lg' : 'none'}`} ref={nextref} value={page} id={page} onClick={(e) => { settabindex(i); GETSaleReturns(i) }} key={i}>{page}</button>
                   ))
                 ) : (
                   <div>Loading...</div>
@@ -930,13 +922,12 @@ function SaleReturns() {
 
               }
             </div>
-            <div className="col-3 col-xl-4 col-md-2 col-lg-2 col-sm-4 p-0 m-0">
-              <button className={`button button-burntumber`} ref={nextref} value={nxtoffset} onClick={(e) => { getnextpages(e); }} style={{ marginTop: '0.15rem' }}>Next</button>
-            </div>
+            <button className={`btn p-0 m-0 px-1 border-charcoal ms-2`} ref={nextref} value={nxtoffset} onClick={(e) => { getnextpages(e); }} style={{ marginTop: '0.15rem' }}>Next</button>
+
           </div>
         </div>
       </div>
-      <section className={`newreturnentrysection position-absolute start-0 end-0 top-0 border border-1 mx-2 bg-seashell shadow rounded-4 bottom-0 d-${nref}`} style={{ marginTop: '-8.5rem', 'height': '90vh' }}  >
+      <section className={`newreturnentrysection position-absolute start-0 end-0 border border-1 bg-seashell d-${nref}`} style={{ 'height': '90vh' }}  >
         {<NewSaleReturnentryform toggle_nref={toggle_nref} GETSaleReturns={GETSaleReturns} />}
       </section>
     </>
@@ -1263,330 +1254,330 @@ function SaleEntryForm(props) {
   console.log(itembyid)
   console.log(itemsearch)
   return (
-    <>
-      <div className="container-fluid p-0 m-0 p-2 rounded-4">
-        <div className='position-relative mb-3'>
-          <h5 className='text-center fw-bolder text-charcoal '>Sale Entry Form</h5>
-          <button className='btn btn-close position-absolute end-0 top-0 me-2' disabled={load ? true : false} onClick={props.toggle_nsef}></button>
-        </div>
-        <hr className='p-0 m-0' />
-        <div className="p-0 m-0 text-center bg-seashell">
 
-          {
-            cliniclist.map((data, i) => (
-              <label className={` text-burntumber fw-bolder d-${clinicID == data.id ? 'block' : 'none'}`}><input type="checkbox" className={`radio form me-1  text-burntumber fw-bolder`} key={i} checked={clinicID == data.id ? true : false} name={data.id} /> {data.title} {data.address}</label>
-            ))
-          }
-        </div>
-        <hr className='p-0 m-0' />
-        <div className='my-2 text-center align-self-center'>
-          <div className=" form-switch justify-content-center position-relative">
-            <label className="form-check-label text-charcoal fw-bolder" for="flexSwitchCheckDefault">Deliver to Customer</label>
-            <input className="form-check-input ms-2 outline-none text-center" type="checkbox" role="switch" id="flexSwitchCheckDefault" checked={Dc == 1 ? true : false} onChange={() => { DC() }} />
-            <div className={`d-${addressform} position-absolute start-0 end-0 m-5 mt-0 top-0 bg-pearl shadow rounded-2 `} style={{ zIndex: 2 }} ref={patientaddref}>
-              <div className='p-0 m-0 position-relative text-wrap'>
-                <button className='btn btn-close position-absolute end-0 p-1 m-1' onClick={() => { addressid ? setaddressform('none') : setaddressform('none') }}></button>
-                {
-                  patientdata && patientdata.address && patientdata.address.length !== 0 ? (
-                    <div className="row p-0 m-0 gx-2  ">
-                      <h6 className='ms-1 text-burntumber fw-bold text-start'>Choose Address for Delivery</h6>
-                      {
-                        patientdata.address.map((data) => (
-                          <div className={`col-12 px-1 m-2 text-start card bg-${addressid == data.id ? 'lightgreen' : 'lightyellow'} text-charcoal fw-bold`} onClick={() => { addressid ? selectaddress() : selectaddress(data) }}>
-                            <div>Patient Name:- {data.full_name}</div>
-                            <div>Address:-{data.address_line1 && data.address_line1 !== null ? data.address_line1 : ''}</div>
-                            <div>{data.address_line2 && data.address_line2 !== null ? data.address_line2 : ''}</div>
-                            <div>PinCode:-{data.zip_code && data.zip_code !== null ? data.zip_code : ''}</div>
-                          </div>
-                        ))
-                      }
-                    </div>
-                  ) : (
-                    <div className='text-danger fw-bold'>Addresses not found.Update Patient Details to get Address </div>
-                  )
-                }
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col-4">
-            <label className="m-0">Search Using Phone or Name</label>
-            <input type="text" className="form-control bg-seashell selectpatient col-10 position-relative" placeholder='Search for Patients' value={searchinput ? searchinput : ''} onFocus={() => setsearchload(true)} onChange={searchpatient} />
-            <div className={`col-auto d-${displaysearchlist} searchinput rounded-2 shadow bg-pearl px-2`} style={{ width: 'max-content' }}>
+    <div className="container-fluid p-0 m-0">
+      <div className='position-relative mb-3'>
+        <h5 className='text-center text-charcoal pt-2 '>New Sale Entry</h5>
+        <button className='btn btn-close position-absolute end-0 top-0 me-2' disabled={load ? true : false} onClick={props.toggle_nsef}></button>
+      </div>
+      <hr className='p-0 m-0' />
+      <div className="p-0 m-0 text-center bg-seashell">
+
+        {
+          cliniclist.map((data, i) => (
+            <label className={` text-burntumber fw-bolder d-${clinicID == data.id ? 'block' : 'none'}`}><input type="checkbox" className={`radio form me-1  text-burntumber fw-bolder`} key={i} checked={clinicID == data.id ? true : false} name={data.id} /> {data.title} {data.address}</label>
+          ))
+        }
+      </div>
+      <hr className='p-0 m-0' />
+      <div className='my-2 text-center align-self-center'>
+        <div className=" form-switch justify-content-center position-relative">
+          <label className="form-check-label text-charcoal fw-bolder" for="flexSwitchCheckDefault">Deliver to Customer</label>
+          <input className="form-check-input ms-2 outline-none text-center" type="checkbox" role="switch" id="flexSwitchCheckDefault" checked={Dc == 1 ? true : false} onChange={() => { DC() }} />
+          <div className={`d-${addressform} position-absolute start-0 end-0 m-5 mt-0 top-0 bg-pearl shadow rounded-2 `} style={{ zIndex: 2 }} ref={patientaddref}>
+            <div className='p-0 m-0 position-relative text-wrap'>
+              <button className='btn btn-close position-absolute end-0 p-1 m-1' onClick={() => { addressid ? setaddressform('none') : setaddressform('none') }}></button>
               {
-                searchload == true || searchinput == undefined ? (
-                  <p className="btn text-charcoal75 fs-6 p-0 m-0 ps-1">Loading... </p>
-                ) : (
-                  searchlist.length == 0 ? (
-                    <p className="text-danger btn fs-6 p-0 m-0">Patient not found</p>
-                  ) : (
-                    searchlist.map((data) => (
-                      <div className='col-auto p-0 m-0 ms-1 bg-pearl text-charcoal text-start' style={{ width: 'max-content' }} onClick={() => { get_value(data.id, data.full_name, data) }}>{data.full_name} {data.phone_number}</div>
-                    )))
-
-                )
-
-              }
-            </div>
-          </div>
-          <div className="col-4">
-            <label>Select Doctor</label>
-            <div className="col-12">
-              <select className="col-10 form-control selectdoctor bg-seashell" placeholder='Select Doctor' value={doctorid ? doctorid : ''} onChange={(e) => { setdoctorid(e.target.value); }} >
-                <option className='text-charcoal50'>Select Doctor</option>
-                {
-                  Doclist.map((data, i) => (
-                    <option className={`text-charcoal`} key={i} value={data[0]}>{data[0]}.{' '}{'Dr.'}{' '}{data[1]}</option>
-                  ))
-                }
-              </select>
-            </div>
-          </div>
-          <div className="col-4">
-            <label>Other Doctor</label>
-            <div className="col-12">
-              <input className='col-10 form-control bg-seashell' placeholder='Other Doctors' />
-            </div>
-          </div>
-
-        </div>
-        <div className="container-fluid mt-4 text-center p-0 m-0">
-          <div className="col-12 p-0 m-0 justify-content-center">
-            <h6 className='text-charcoal p-0 m-0 fw-bolder text-start'>Add Products</h6>
-            <hr className='p-0 m-0' />
-            {/* <div className="col-12">
-              <button className='button button-seashell text-burntumber border-burntumber '>Scan to Add Product</button>
-            </div>
-            <h4 className='my-2'>OR</h4> */}
-            <div className="row p-0 m-0 my-2 justify-content-center">
-
-
-              <div className="col-4">
-                <input className='form-control bg-seashell' placeholder='Search Product by Name'
-                  value={itemname ? itemname : ''}
-                  onChange={(e) => {
-                    searchmeds(e.target.value);
-                    setitemname(e.target.value);
-                    setitemid();
-                    setproducts();
-                    stockref.current.style.display = 'none'
-                  }} />
-                <div ref={medicinesref} className='position-absolute rounded-2 mt-1' style={{ Width: 'max-content', zIndex: '1' }} >
-                  {
-                    itemsearch ? (
-                      loadsearch ? (
-                        <div className='rounded-2 p-1 bg-pearl'>
-                          Searching Please wait....
-                          <div className="spinner-border my-auto" style={{ width: "1rem", height: "1rem" }} role="status" >
-                            <span className="sr-only"> </span> </div>
+                patientdata && patientdata.address && patientdata.address.length !== 0 ? (
+                  <div className="row p-0 m-0 gx-2  ">
+                    <h6 className='ms-1 text-burntumber fw-bold text-start'>Choose Address for Delivery</h6>
+                    {
+                      patientdata.address.map((data) => (
+                        <div className={`col-12 px-1 m-2 text-start card bg-${addressid == data.id ? 'lightgreen' : 'lightyellow'} text-charcoal fw-bold`} onClick={() => { addressid ? selectaddress() : selectaddress(data) }}>
+                          <div>Patient Name:- {data.full_name}</div>
+                          <div>Address:-{data.address_line1 && data.address_line1 !== null ? data.address_line1 : ''}</div>
+                          <div>{data.address_line2 && data.address_line2 !== null ? data.address_line2 : ''}</div>
+                          <div>PinCode:-{data.zip_code && data.zip_code !== null ? data.zip_code : ''}</div>
                         </div>
-                      ) : (
-                        loadsearch == false && itemsearch.length == 0 ? (
-                          <div className="bg-burntumber text-light rounded-2 p-1">Oops! Not Avaliable</div>
-                        ) : (
-                          <div className={`rounded-4 border border-1 bg-pearl p-1 d-${itemsearch && itemsearch.length > 0 ? 'block' : 'none'}`}>
-                            <p className={`text-start p-0 m-0 m-1 fw-bold text-charcoal75`} style={{ fontSize: '0.8rem' }}>Search Results</p>
-                            {
-                              itemsearch.map((data, i) => (
-                                <div style={{ cursor: 'pointer', Width: 'max-content' }} className={`bg-${((i % 2) == 0) ? 'pearl' : 'seashell'} p-0 ps-1 border-bottom text-charcoal `} onClick={(e) => { setproducts(data); setitemname(data.display_name ? data.display_name : data.name); setitemid(data.id); stockref.current.style.display = 'block' }}>{data.display_name ? data.display_name : data.name}</div>
-                              ))
-                            }
-                          </div>
-                        )
-                      )
-                    ) : (<div className='bg-seashell'></div>)
-                  }
-                </div>
-                <div ref={stockref} className={`position-absolute bg-pearl scroll scroll-y align-self-center rounded-4 border border-1 p-1 d-${products && products.stock_info && products.stock_info.length > 0 ? 'block' : 'none'}`} style={{ marginLeft: '15.7rem', marginTop: '2rem', zIndex: '2', 'width': '13rem', 'height': '10rem' }}>
-                  <p className={`text-start p-0 m-0 m-1 fw-bold text-charcoal75`} style={{ fontSize: '0.8rem' }}>Batch Stock</p>
-                  {
-                    products && products.length == 0 ? (
-                      <div className='bg-seashell'>Not Avaliable</div>
-                    ) : (
-
-                      products ? (
-
-                        products.stock_info.map((data, i) => (
-                          <div style={{ cursor: 'pointer', Width: 'max-content' }} className={`bg-${((i % 2) == 0) ? 'pearl' : 'seashell'} border-bottom text-wrap`}
-                            onClick={
-                              () => {
-                                AddProducts(data);
-                                setitemname();
-                                setitemid();
-                                setproducts();
-                                setitemsearch()
-                              }}>
-                            <p className='text-center m-0 p-0 fw-bold'>{itemname}</p>
-                            <p className='p-0 m-0 '>BatchNo. - {data.batch_no && data.batch_no !== null ? data.batch_no : ''}</p>
-                            <p className='p-0 m-0 '>Stock - {data.current_stock && data.current_stock ? data.current_stock : ''}</p>
-                            <p className='p-0 m-0 '>Expiry Date - {data.expiry_date ? reversefunction(data.expiry_date) : ''}</p>
-                          </div>
-                        ))
-
-                      ) : (<div>Not available</div>)
-
-
-                    )
-
-                  }
-                </div>
-                <div></div>
-              </div>
-              <div className='col-1 text-burntumber fw-bold align-self-center'>
-                OR
-              </div>
-              <div className="col-4 ">
-                <input className='form-control bg-seashell border border-1 rounded-2' value={itemid ? itemid : ''} placeholder='Search Product by ID' onChange={(e) => { searchmedbyId(e.target.value); setitemid(e.target.value) }} />
-                <div ref={medbyidref} className='position-absolute rounded-2 mt-1' style={{ Width: 'max-content', zIndex: '2' }} >
-                  {
-                    itembyid ? (
-                      loadbyId ? (
-                        <div className='rounded-2 p-1 bg-pearl'>
-                          Searching Please wait....
-                          <div className="spinner-border my-auto" style={{ width: "1rem", height: "1rem" }} role="status" >
-                            <span className="sr-only"> </span> </div>
-                        </div>
-                      ) : (
-                        itembyid.length == 0 ? (
-                          <div className="bg-burntumber text-light rounded-2 p-1">Oops! Not Avaliable</div>
-                        ) : (
-                          itembyid.map((data, i) => (
-                            <div style={{ cursor: 'pointer', Width: 'max-content' }} className={`p-0 ps-1 shadow bg-${((i % 2) == 0) ? 'pearl' : 'seashell'} fs-6 `}
-                              onClick={(e) => {
-                                setitemid(data.type + data.id);
-                                AddProducts(data)
-                                medbyidref.current.style.display = 'none';
-                              }}>{data.item_name ? data.item_name : ''}</div>
-                          ))
-                        )
-                      )
-                    ) : (<div className='bg-seashell'></div>)
-                  }
-                </div>
-
-              </div>
-            </div>
-          </div>
-          <div className="col-12 m-0 p-0">
-            <div className="d-flex p-0 m-0 justify-content-between">
-              <h6 className='text-charcoal p-0 m-0 fw-bolder text-start'>Product Added</h6>
-
-            </div>
-
-            <hr className='p-0 m-0' />
-            <div className='p-0 m-0 scroll scroll-y' style={{ height: '35vh' }}>
-              <table className='table p-0 m-0'>
-                <thead className='p-0 m-0'>
-                  <tr className='p-0 m-0'>
-                    <th className='p-0 m-0 px-2' rowSpan='2'>Item ID</th>
-                    <th className='p-0 m-0 px-2' rowSpan='2'>Item Name</th>
-                    <th className='p-0 m-0 px-2' rowSpan='2'>BatchNo.</th>
-                    <th className='p-0 m-0 px-2' rowSpan='2'>Expiry Date</th>
-                    <th className='p-0 m-0 px-2' rowSpan='2'>Avl.Stock</th>
-                    <th className='p-0 m-0 px-2' rowSpan='2'>Qty To Sale</th>
-                    <th className='p-0 m-0 px-2' rowSpan='2'>Discount %</th>
-                    <th className='p-0 m-0 px-2' colSpan='4' scope='col-group'>Costing</th>
-                    <th className='p-0 m-0 px-2' rowSpan='2'>Total Amount</th>
-                    <th className='p-0 m-0 px-2' rowSpan='2'>Delete</th>
-                  </tr>
-                  <tr className='p-0 m-0'>
-                    <th className='p-0 m-0 px-2' scope='col'>MRP</th>
-                    <th className='p-0 m-0 px-2' scope='col'>Cost</th>
-                    <th className='p-0 m-0 px-2' scope='col'>GST Rate</th>
-                    <th className='p-0 m-0 px-2' scope='col'>Selling Cost/Unit</th>
-                  </tr>
-                </thead>
-                {
-                  SelectedProducts && SelectedProducts.length !== 0 ? (
-                    <tbody className='p-0 m-0'>
-                      {
-                        SelectedProducts.map((data) => (
-                          <tr className='p-0 m-0 align-middle'>
-                            <td>{data.type} {data.productid}</td>
-                            <td>{data.product}</td>
-                            <td>{data.batch}</td>
-                            <td>{reversefunction(data.expiry)}</td>
-                            <td>{data.quantity}</td>
-
-                            <td><input className='border border-1 rounded-1 w-25 text-center p-0 m-0 bg-seashell'
-                              value={data.qtytoSale ? data.qtytoSale : ''}
-                              onChange={(e) => {
-                                data.qtytoSale = e.target.value;
-                                data.totalamt = CalTotalAmount(e.target.value, data.disccost)
-                                setSelectedProducts(prevState => [...prevState])
-                              }} /> </td>
-
-                            <td className='text-center p-0 m-0' style={{ Width: '0rem' }}>
-                              <input className='border border-1 rounded-1 w-25 text-center p-0 m-0 bg-seashell'
-                                value={data.discount ? data.discount : ''}
-                                onChange={(e) => {
-                                  data.discount = e.target.value;
-                                  data.disccost = CalSellingCost(data.mainmrp, e.target.value);
-                                  data.totalamt = CalTotalAmount(data.qtytoSale, data.disccost)
-                                  setSelectedProducts(prevState => [...prevState])
-                                }} /> </td>
-                            <td>{data.mainmrp}</td>
-                            <td>{data.cost}</td>
-                            <td>{data.gst + '%'}</td>
-                            <td>{data.disccost}</td>
-                            <td>{data.totalamt}</td>
-                            <td><button className='btn p-0 m-0' onClick={() => { DeleteProduct(data.batch) }}><img src={process.env.PUBLIC_URL + 'images/delete.png'} style={{ width: '1.5rem' }} /></button></td>
-                          </tr>
-                        ))
-                      }
-                    </tbody>
-                  ) : (
-                    <tbody className='p-0 m-0 position-relative'>
-                      <tr className='p-0 m-0'>
-                        <td className='p-0 m-0 position-absolute text-charcoal fw-bold start-0 end-0'>No Product Added</td>
-                      </tr>
-                    </tbody>
-                  )
-                }
-              </table>
-            </div>
-          </div>
-
-        </div>
-        <div className='col-12 position-absolute start-0 end-0 bottom-0 text-center bg-pearl align-items-center rounded-bottom'>
-          <div className="row p-0 m-0">
-            <div className="col-6">
-              <div className="row">
-                <div className="col-3">
-                  <p className='text-charcoal75 p-0 m-0 fw-bolder card-title text-start ms-3'> Order Total </p>
-                  <h4 className='text-charcoal  p-0 m-0 fw-bolder card-header text-start ps-3'>{Grandtotal}</h4>
-                </div>
-                <div className="col-3">
-                  <p className='text-charcoal75 p-0 m-0 fw-bolder card-title text-start ms-3'> Discount %</p>
-                  <h4 className='text-charcoal  p-0 m-0 fw-bolder card-header text-start ps-3'>{CaltotalDiscount(SelectedProducts)}</h4>
-                </div>
-                <div className="col-3">
-                  <p className='text-charcoal75 p-0 m-0 fw-bolder card-title text-start ms-3'> Total Items</p>
-                  <h4 className='text-charcoal  p-0 m-0 fw-bolder card-header text-start ps-3'>{SelectedProducts.length}</h4>
-                </div>
-              </div>
-            </div>
-            <div className="col-3 align-self-center">
-              {
-                load ? (
-                  <div className="col-6 py-2 pb-2 m-auto text-center">
-                    <div class="spinner-border" role="status">
-                      <span class="visually-hidden">Loading...</span>
-                    </div>
+                      ))
+                    }
                   </div>
                 ) : (
-                  <button className='button button-charcoal px-5' onClick={() => { confirmmessage() }}>Save Entry</button>
+                  <div className='text-danger fw-bold'>Addresses not found.Update Patient Details to get Address </div>
                 )
               }
-            </div>
-            <div className="col-3 align-self-center">
-              <button className='button button-pearl border-charcoal text-charcoal px-4' disabled={load ? true : false} onClick={() => { confirmmessage2() }}>Add To Cart</button>
             </div>
           </div>
         </div>
       </div>
-    </>
+      <div className="row p-0 m-0">
+        <div className="col-4">
+          <label className="m-0">Search Using Phone or Name</label>
+          <input type="text" className="form-control bg-seashell selectpatient col-10 position-relative" placeholder='Search for Patients' value={searchinput ? searchinput : ''} onFocus={() => setsearchload(true)} onChange={searchpatient} />
+          <div className={`col-auto d-${displaysearchlist} searchinput position-absolute rounded-2 shadow bg-pearl px-2`} style={{ width: 'max-content', zIndex: '2' }}>
+            {
+              searchload == true || searchinput == undefined ? (
+                <p className="btn text-charcoal75 fs-6 p-0 m-0 ps-1">Loading... </p>
+              ) : (
+                searchlist.length == 0 ? (
+                  <p className="text-danger btn fs-6 p-0 m-0">Patient not found</p>
+                ) : (
+                  searchlist.map((data) => (
+                    <div className='col-auto p-0 m-0 ms-1 bg-pearl text-charcoal text-start px-1 border-bottom' style={{ width: 'max-content' }} onClick={() => { get_value(data.id, data.full_name, data) }}>{data.full_name} {data.phone_number}</div>
+                  )))
+
+              )
+
+            }
+          </div>
+        </div>
+        <div className="col-4">
+          <label>Select Doctor</label>
+          <div className="col-12">
+            <select className="col-10 form-control selectdoctor bg-seashell" placeholder='Select Doctor' value={doctorid ? doctorid : ''} onChange={(e) => { setdoctorid(e.target.value); }} >
+              <option className='text-charcoal50'>Select Doctor</option>
+              {
+                Doclist.map((data, i) => (
+                  <option className={`text-charcoal`} key={i} value={data[0]}>{data[0]}.{' '}{'Dr.'}{' '}{data[1]}</option>
+                ))
+              }
+            </select>
+          </div>
+        </div>
+        <div className="col-4">
+          <label>Other Doctor</label>
+          <div className="col-12">
+            <input className='col-10 form-control bg-seashell' placeholder='Other Doctors' />
+          </div>
+        </div>
+
+      </div>
+      <div className="container-fluid mt-4 text-center p-0 m-0">
+        <div className="col-12 p-0 m-0 justify-content-center">
+          <h6 className='text-charcoal p-0 m-0 fw-bolder text-start ms-1'>Add Products</h6>
+          <hr className='p-0 m-0' />
+          {/* <div className="col-12">
+              <button className='button button-seashell text-burntumber border-burntumber '>Scan to Add Product</button>
+            </div>
+            <h4 className='my-2'>OR</h4> */}
+          <div className="row p-0 m-0 my-2 justify-content-center">
+
+
+            <div className="col-4">
+              <input className='form-control bg-seashell' placeholder='Search Product by Name'
+                value={itemname ? itemname : ''}
+                onChange={(e) => {
+                  searchmeds(e.target.value);
+                  setitemname(e.target.value);
+                  setitemid();
+                  setproducts();
+                  stockref.current.style.display = 'none'
+                }} />
+              <div ref={medicinesref} className='position-absolute rounded-2 mt-1' style={{ Width: 'max-content', zIndex: '1' }} >
+                {
+                  itemsearch ? (
+                    loadsearch ? (
+                      <div className='rounded-2 p-1 bg-pearl'>
+                        Searching Please wait....
+                        <div className="spinner-border my-auto" style={{ width: "1rem", height: "1rem" }} role="status" >
+                          <span className="sr-only"> </span> </div>
+                      </div>
+                    ) : (
+                      loadsearch == false && itemsearch.length == 0 ? (
+                        <div className="bg-burntumber text-light rounded-2 p-1">Oops! Not Avaliable</div>
+                      ) : (
+                        <div className={`rounded-4 border border-1 bg-pearl p-1 d-${itemsearch && itemsearch.length > 0 ? 'block' : 'none'}`}>
+                          <p className={`text-start p-0 m-0 m-1 fw-bold text-charcoal75 ms-2`} style={{ fontSize: '0.8rem' }}>{itemsearch.length} Search Results</p>
+                          {
+                            itemsearch.map((data, i) => (
+                              <div style={{ cursor: 'pointer', Width: 'max-content' }} className={`bg-${((i % 2) == 0) ? 'pearl' : 'seashell'} p-0 ps-1 border-bottom text-charcoal `} onClick={(e) => { setproducts(data); setitemname(data.display_name ? data.display_name : data.name); setitemid(data.id); stockref.current.style.display = 'block' }}>{data.display_name ? data.display_name : data.name}</div>
+                            ))
+                          }
+                        </div>
+                      )
+                    )
+                  ) : (<div className='bg-seashell'></div>)
+                }
+              </div>
+              <div ref={stockref} className={`position-absolute bg-pearl scroll scroll-y align-self-center rounded-4 border border-1 p-1 d-${products && products.stock_info && products.stock_info.length > 0 ? 'block' : 'none'}`} style={{ marginLeft: '15.7rem', marginTop: '2rem', zIndex: '2', 'width': '13rem', 'height': '10rem' }}>
+                <p className={`text-start p-0 m-0 m-1 fw-bold text-charcoal75`} style={{ fontSize: '0.8rem' }}>{products && products.stock_info !== undefined ? products.stock_info.length : ''} Batch Stocks</p>
+                {
+                  products && products.length == 0 ? (
+                    <div className='bg-seashell'>Not Avaliable</div>
+                  ) : (
+
+                    products ? (
+
+                      products.stock_info.map((data, i) => (
+                        <div style={{ cursor: 'pointer', Width: 'max-content' }} className={`bg-${((i % 2) == 0) ? 'pearl' : 'seashell'} border-bottom text-wrap`}
+                          onClick={
+                            () => {
+                              AddProducts(data);
+                              setitemname();
+                              setitemid();
+                              setproducts();
+                              setitemsearch()
+                            }}>
+                          <p className='text-center m-0 p-0 fw-bold'>{itemname}</p>
+                          <p className='p-0 m-0 '>BatchNo. - {data.batch_no && data.batch_no !== null ? data.batch_no : ''}</p>
+                          <p className='p-0 m-0 '>Stock - {data.current_stock && data.current_stock ? data.current_stock : ''}</p>
+                          <p className='p-0 m-0 '>Expiry Date - {data.expiry_date ? reversefunction(data.expiry_date) : ''}</p>
+                        </div>
+                      ))
+
+                    ) : (<div>Not available</div>)
+
+
+                  )
+
+                }
+              </div>
+              <div></div>
+            </div>
+            <div className='col-1 text-burntumber fw-bold align-self-center'>
+              OR
+            </div>
+            <div className="col-4 ">
+              <input className='form-control bg-seashell border border-1 rounded-2' value={itemid ? itemid : ''} placeholder='Search Product by ID' onChange={(e) => { searchmedbyId(e.target.value); setitemid(e.target.value) }} />
+              <div ref={medbyidref} className='position-absolute rounded-2 mt-1' style={{ Width: 'max-content', zIndex: '2' }} >
+                {
+                  itembyid ? (
+                    loadbyId ? (
+                      <div className='rounded-2 p-1 bg-pearl'>
+                        Searching Please wait....
+                        <div className="spinner-border my-auto" style={{ width: "1rem", height: "1rem" }} role="status" >
+                          <span className="sr-only"> </span> </div>
+                      </div>
+                    ) : (
+                      itembyid.length == 0 ? (
+                        <div className="bg-burntumber text-light rounded-2 p-1">Oops! Not Avaliable</div>
+                      ) : (
+                        itembyid.map((data, i) => (
+                          <div style={{ cursor: 'pointer', Width: 'max-content' }} className={`p-0 ps-1 shadow bg-${((i % 2) == 0) ? 'pearl' : 'seashell'} fs-6 `}
+                            onClick={(e) => {
+                              setitemid(data.type + data.id);
+                              AddProducts(data)
+                              medbyidref.current.style.display = 'none';
+                            }}>{data.item_name ? data.item_name : ''}</div>
+                        ))
+                      )
+                    )
+                  ) : (<div className='bg-seashell'></div>)
+                }
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div className="col-12 m-0 p-0">
+          <div className="d-flex p-0 m-0 justify-content-between">
+            <h6 className='text-charcoal p-0 m-0 fw-bolder text-start ms-1'>Product Added</h6>
+
+          </div>
+
+          <hr className='p-0 m-0' />
+          <div className='p-0 m-0 scroll scroll-y' style={{ height: '35vh' }}>
+            <table className='table p-0 m-0'>
+              <thead className='p-0 m-0'>
+                <tr className='p-0 m-0'>
+                  <th className='p-0 m-0 px-2' rowSpan='2'>Item ID</th>
+                  <th className='p-0 m-0 px-2' rowSpan='2'>Item Name</th>
+                  <th className='p-0 m-0 px-2' rowSpan='2'>BatchNo.</th>
+                  <th className='p-0 m-0 px-2' rowSpan='2'>Expiry Date</th>
+                  <th className='p-0 m-0 px-2' rowSpan='2'>Avl.Stock</th>
+                  <th className='p-0 m-0 px-2' rowSpan='2'>Qty To Sale</th>
+                  <th className='p-0 m-0 px-2' rowSpan='2'>Discount %</th>
+                  <th className='p-0 m-0 px-2' colSpan='4' scope='col-group'>Costing</th>
+                  <th className='p-0 m-0 px-2' rowSpan='2'>Total Amount</th>
+                  <th className='p-0 m-0 px-2' rowSpan='2'>Delete</th>
+                </tr>
+                <tr className='p-0 m-0'>
+                  <th className='p-0 m-0 px-2' scope='col'>MRP</th>
+                  <th className='p-0 m-0 px-2' scope='col'>Cost</th>
+                  <th className='p-0 m-0 px-2' scope='col'>GST Rate</th>
+                  <th className='p-0 m-0 px-2' scope='col'>Selling Cost/Unit</th>
+                </tr>
+              </thead>
+              {
+                SelectedProducts && SelectedProducts.length !== 0 ? (
+                  <tbody className='p-0 m-0'>
+                    {
+                      SelectedProducts.map((data) => (
+                        <tr className='p-0 m-0 align-middle'>
+                          <td>{data.type} {data.productid}</td>
+                          <td>{data.product}</td>
+                          <td>{data.batch}</td>
+                          <td>{reversefunction(data.expiry)}</td>
+                          <td>{data.quantity}</td>
+
+                          <td><input className='border border-1 rounded-1 w-25 text-center p-0 m-0 bg-seashell'
+                            value={data.qtytoSale ? data.qtytoSale : ''}
+                            onChange={(e) => {
+                              data.qtytoSale = e.target.value;
+                              data.totalamt = CalTotalAmount(e.target.value, data.disccost)
+                              setSelectedProducts(prevState => [...prevState])
+                            }} /> </td>
+
+                          <td className='text-center p-0 m-0' style={{ Width: '0rem' }}>
+                            <input className='border border-1 rounded-1 w-25 text-center p-0 m-0 bg-seashell'
+                              value={data.discount ? data.discount : ''}
+                              onChange={(e) => {
+                                data.discount = e.target.value;
+                                data.disccost = CalSellingCost(data.mainmrp, e.target.value);
+                                data.totalamt = CalTotalAmount(data.qtytoSale, data.disccost)
+                                setSelectedProducts(prevState => [...prevState])
+                              }} /> </td>
+                          <td>{data.mainmrp}</td>
+                          <td>{data.cost}</td>
+                          <td>{data.gst + '%'}</td>
+                          <td>{data.disccost}</td>
+                          <td>{data.totalamt}</td>
+                          <td><button className='btn p-0 m-0' onClick={() => { DeleteProduct(data.batch) }}><img src={process.env.PUBLIC_URL + 'images/delete.png'} style={{ width: '1.5rem' }} /></button></td>
+                        </tr>
+                      ))
+                    }
+                  </tbody>
+                ) : (
+                  <tbody className='p-0 m-0 position-relative'>
+                    <tr className='p-0 m-0'>
+                      <td className='p-0 m-0 position-absolute text-charcoal fw-bold start-0 end-0'>No Product Added</td>
+                    </tr>
+                  </tbody>
+                )
+              }
+            </table>
+          </div>
+        </div>
+
+      </div>
+      <div className='col-12 position-absolute start-0 end-0 bottom-0 py-3 border border-1 text-center bg-pearl align-items-center rounded-bottom'>
+        <div className="row p-0 m-0">
+          <div className="col-6">
+            <div className="row">
+              <div className="col-3">
+                <p className='text-charcoal75 p-0 m-0 fw-bolder card-title text-start ms-3'> Order Total </p>
+                <h4 className='text-charcoal  p-0 m-0 fw-bolder card-header text-start ps-3'>{Grandtotal}</h4>
+              </div>
+              <div className="col-3">
+                <p className='text-charcoal75 p-0 m-0 fw-bolder card-title text-start ms-3'> Discount %</p>
+                <h4 className='text-charcoal  p-0 m-0 fw-bolder card-header text-start ps-3'>{CaltotalDiscount(SelectedProducts)}</h4>
+              </div>
+              <div className="col-3">
+                <p className='text-charcoal75 p-0 m-0 fw-bolder card-title text-start ms-3'> Total Items</p>
+                <h4 className='text-charcoal  p-0 m-0 fw-bolder card-header text-start ps-3'>{SelectedProducts.length}</h4>
+              </div>
+            </div>
+          </div>
+          <div className="col-3 align-self-center">
+            {
+              load ? (
+                <div className="col-6 py-2 pb-2 m-auto text-center">
+                  <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                </div>
+              ) : (
+                <button className='button button-charcoal px-5' onClick={() => { confirmmessage() }}>Save Entry</button>
+              )
+            }
+          </div>
+          <div className="col-3 align-self-center">
+            <button className='button button-pearl border-charcoal text-charcoal px-4' disabled={load ? true : false} onClick={() => { confirmmessage2() }}>Add To Cart</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
   )
 }
 function NewSaleReturnentryform(props) {
@@ -1744,7 +1735,7 @@ function NewSaleReturnentryform(props) {
   }
   console.log(billid, itemname, billsearch)
   return (
-    <section className="newpurchaseentryform ">
+    <div className="p-0 m-0 ">
       <div className="container-fluid p-0 m-0 border border-1 ">
         <h5 className="text-center pt-3" style={{ color: "var(--charcoal)" }} >New Sale Return Entry</h5>
         <button type="button" className="btn-close closebtn position-absolute end-0 p-2 me-2" onClick={props.toggle_nref} disabled={load ? true : false} aria-label="Close" ></button>
@@ -1893,7 +1884,7 @@ function NewSaleReturnentryform(props) {
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 }
 function SRitemdetailssection(props) {
@@ -1937,12 +1928,8 @@ function SRitemdetailssection(props) {
     <div className="container-fluid p-0 m-0 bg-seashell ">
       <div className="container-fluid bg-seashell p-0 m-0">
         <div className="row p-0 m-0 position-relative">
-
+          <h5 className='text-center text-charcoal pt-3'>{props.itembillid} Sale Return Item Details</h5>
           <button type="button" className="btn-close closebtn m-auto position-absolute end-0 me-4" onClick={props.toggle_sridw} aria-label="Close"></button>
-
-          <div className="col-12 mt-2">
-            <h4 className='text-center' style={{ color: 'var(--charcoal)', fontWeight: '600' }}>{props.itembillid} Sale Return Item Details</h4>
-          </div>
           <div className="col-2 d-none">
             <div className=' position-relative searchbutton' style={{ top: '0.25rem', right: '1rem' }}>
               <input type="text" className=" form-control d-inline PEsearch bg-seashell" placeholder="Search PE" />
@@ -1951,12 +1938,12 @@ function SRitemdetailssection(props) {
           </div>
         </div>
       </div>
-      <div className='row p-0 m-0'>
+      <div className='d-flex justify-content-center p-0 m-0 mt-3 mb-1'>
         {
           Items.map((data, i) => (
-            <div className="col-3 col-xl-2 col-lg-2 col-md-4 col-sm-6 p-0 m-0">
-              <button className={`button border button-${i == index ? 'charcoal' : 'seashell'}`} onClick={() => { setindex(i) }}>{data}</button>
-            </div>
+
+            <button className={`button border-charcoal rounded-0 shadow-0 button-${i == index ? 'charcoal' : 'seashell'}`} onClick={() => { setindex(i) }}>{data}</button>
+
           ))
         }
 
@@ -1965,7 +1952,7 @@ function SRitemdetailssection(props) {
       <div className="row justify-content-end me-5">
         <div className="col-3"><input type='checkbox' className='' value={Taxon ? Taxon : ''} onChange={() => { Taxon == true ? setTaxon(false) : setTaxon(true) }} /><label>Show Tax Details</label></div>
       </div>
-      <div className={`scroll bg-seashell scroll-y d-${medicine}`} style={{ minHeight: '82vh', maxHeight: '82vh' }}>
+      <div className={`scroll bg-seashell scroll-y d-${medicine}`} style={{ minHeight: '70vh', Height: '70vh', maxHeight: '82vh' }}>
         <table className="table datatable table-responsive text-center bg-seashell"><thead>
           <tr>
             <th rowspan='2' className='border p-0 m-0 px-1'>Item Name</th>
@@ -2032,7 +2019,7 @@ function SRitemdetailssection(props) {
           }
         </table>
       </div>
-      <div className={`scroll bg-seashell scroll-y d-${vaccine}`} style={{ minHeight: '82vh', maxHeight: '82vh' }}>
+      <div className={`scroll bg-seashell scroll-y d-${vaccine}`} style={{ minHeight: '70vh', Height: '70vh', maxHeight: '70vh' }}>
         <table className="table datatable table-responsive text-center bg-seashell"><thead>
           <tr>
             <th rowspan='2' className='border p-0 m-0 px-1'>Item ID</th>
@@ -2131,24 +2118,21 @@ function Purchasesection(props) {
   return (
     <>
 
-      <section className='purchasesection pt-3'>
-        <div className="container-fluid">
-          <div className="row g-3">
-            <div className="col-10">
-              <div className='row'>
-                {
-                  first.map((e, i) => {
-                    return (
-                      <div className="col-auto">
-                        <button className={`btn btn-sm px-4 rounded-5 text-${i === second ? "light" : "dark"} bg-${i === second ? "charcoal" : "seashell"}`} onClick={(a) => setSecond(i)} >{e}</button>
-                      </div>
-                    )
-                  }
-                  )
-                }
-              </div>
-            </div>
+      <section className='purchasesection'>
 
+        <div className="row p-0 m-0 mt-1 gx-3">
+
+          <div className='row p-0 m-0'>
+            {
+              first.map((e, i) => {
+                return (
+                  <div className="col-auto">
+                    <button className={`btn btn-sm px-4 rounded-5 text-${i === second ? "light" : "dark"} bg-${i === second ? "charcoal" : "seashell"}`} onClick={(a) => setSecond(i)} >{e}</button>
+                  </div>
+                )
+              }
+              )
+            }
           </div>
         </div>
       </section>
@@ -2246,9 +2230,9 @@ function Purchaseentrysection(props) {
   return (
     <>
       <button className="button addentrypurchase button-charcoal position-absolute" onClick={toggle_npef}><img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt='displaying_image' className="img-fluid" style={{ width: `1.5rem` }} />Entry Purchase</button>
-      <div className="row p-0 m-0">
-        <div className="col-3 col-md-2 col-lg-2 align-self-center text-charcoal fw-bolder fs-6">Purchase Entry</div>
-        <div className="col-6 col-xl-6 col-lg-7 col-md-auto align-self-center m-1 ">
+      <div className="row p-0 m-0 justify-content-lg-between">
+        <div className="col-3 col-md-2 col-lg-2 align-self-center text-center text-charcoal fw-bolder fs-6">Purchase Entry</div>
+        <div className="col-6 col-xl-6 col-lg-7 col-md-7 align-self-center m-1 ">
           <div className="row border-burntumber fw-bolder rounded-2 text-center justify-content-center ">
             <div className="col-4">
               <select className='p-0 m-0 border-0 text-burntumber fw-bolder' value={channel ? channel : ''} onChange={(e) => { setchannel(e.target.value) }}>
@@ -2264,12 +2248,12 @@ function Purchaseentrysection(props) {
             </div>
           </div>
         </div>
-        <div className="col-2 align-self-center">
+        <div className="col-2 cool-md-2 col-lg-2 align-self-center">
           <ExportPurchaseEntry purchaseentryarr={purchaseentryarr} fromdate={reversefunction(fromdate)} todate={reversefunction(todate)} />
         </div>
       </div>
       <div>
-        <div className='scroll scroll-y overflow-scroll p-0 m-0' style={{ minHeight: '55vh', height: '55vh' }}>
+        <div className='scroll scroll-y overflow-scroll p-0 m-0' style={{ minHeight: '55vh', height: '56vh' }}>
           <table className="table text-center p-0 m-0">
             <thead className='p-0 m-0 align-middle'>
               <tr>
@@ -2311,7 +2295,7 @@ function Purchaseentrysection(props) {
                           <td className='p-0 m-0 text-charcoal fw-bold'>{item.distributor && item.distributor != null && item.distributor.entity_name && item.distributor.entity_name != null ? item.distributor.entity_name : 'N/A'}</td>
                           <td className='p-0 m-0 text-charcoal fw-bold'><button className='btn'><img src={process.env.PUBLIC_URL + "/images/cart.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1" /></button><button className="btn" onClick={() => { setindex(i); toggle_peidw() }}><img src={process.env.PUBLIC_URL + "/images/archivebox.png"} alt="displaying_image" className="ms-1" style={{ width: "1.5rem" }} /></button></td>
                           <td className='p-0 m-0 text-charcoal fw-bold'><button className="btn position-relative cursor-pointer more p-0 m-0"><img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" style={{ width: "1.5rem" }} /></button></td>
-                          <td className={`PEdetailssection position-absolute mt-1 d-${i == index ? peidw : 'none'} bg-seashell p-0 m-0`} style={{ top: '-8.5rem' }} >
+                          <td className={` position-absolute d-${i == index ? peidw : 'none'} border border-1 start-0 end-0 bg-seashell p-0 m-0`} style={{ top: '-7.5rem', zIndex: '2' }} >
                             {
                               i == index ? (
                                 <PEitemdetailssection purchaseentryarr={purchaseentryarr[i]} itembillid={"PE-" + item.bill_id} toggle_peidw={toggle_peidw} />
@@ -2338,17 +2322,15 @@ function Purchaseentrysection(props) {
 
           </table>
         </div>
-        <div className="container-fluid mb-1">
-          <div className="row p-0 m-0 text-center">
-            <div className="col-3 col-xl-4">
-              <button className="button ms-1 button-seashell" ref={previousref} value={prevoffset} onClick={(e) => { getpreviouspages(e); console.log(e.target.value) }} style={{ marginTop: '0.15rem' }}>Previous</button>
-            </div>
-            <div className="col-auto col-xl-auto">
+        <div className="container-fluid mb-1 mt-1">
+          <div className="d-flex justify-content-center p-0 m-0 text-center">
+            <button className="btn p-0 m-0 me-2 px-1 border-charcoal" ref={previousref} value={prevoffset} onClick={(e) => { getpreviouspages(e); console.log(e.target.value) }} style={{ marginTop: '0.15rem' }}>Previous</button>
 
+            <div className="col-auto col-xl-auto col-sm-8 col-md-8 p-0 m-0">
               {
                 pages ? (
                   pages.map((page, i) => (
-                    <button className={`button ms-2 button-${nxtoffset - 1 == i ? 'pearl' : 'burntumber'} border  shadow-${nxtoffset - 1 == i ? 'lg' : 'none'}`} ref={nextref} value={page} id={page} onClick={(e) => { settabindex(i); GETPurchaseList(i) }} key={i}>{page}</button>
+                    <button className={`button ms-2 border-0 button-${nxtoffset - 1 == i ? 'charcoal' : 'pearl'}  shadow-${nxtoffset - 1 == i ? 'lg' : 'none'}`} ref={nextref} value={page} id={page} onClick={(e) => { settabindex(i); GETPurchaseList(i) }} key={i}>{page}</button>
                   ))
                 ) : (
                   <div>Loading...</div>
@@ -2356,13 +2338,11 @@ function Purchaseentrysection(props) {
 
               }
             </div>
-            <div className="col-3 col-xl-4">
-              <button className={`button button-burntumber`} ref={nextref} value={nxtoffset} onClick={(e) => { getnextpages(e); console.log(e.target.value) }} style={{ marginTop: '0.15rem' }}>Next</button>
-            </div>
+            <button className={`btn p-0 m-0 border-charcoal ms-2 px-1`} ref={nextref} value={nxtoffset} onClick={(e) => { getnextpages(e); console.log(e.target.value) }} style={{ marginTop: '0.15rem' }}>Next</button>
           </div>
         </div>
       </div>
-      <section className={`newpurchaseentrysection position-absolute start-0 end-0 top-0 bottom-0 d-${npef}`}  >
+      <section className={`newpurchaseentrysection position-absolute start-0 end-0 border border-1 d-${npef}`}  >
         {<Newpurchaseentryform toggle_npef={toggle_npef} GETPurchaseList={GETPurchaseList} />}
       </section>
     </>
@@ -2403,39 +2383,32 @@ function PEitemdetailssection(props) {
   return (
     <div className="container-fluid p-0 m-0 bg-seashell ">
       <div className="container-fluid bg-seashell p-0 m-0">
-        <div className="row p-0 m-0">
-          <div className="col-1">
-            <button type="button" className="btn-close closebtn m-auto" onClick={props.toggle_peidw} aria-label="Close"></button>
-          </div>
-          <div className="col-9">
-            <h4 className='text-center' style={{ color: 'var(--charcoal)', fontWeight: '600' }}>{props.itembillid} Purchase Entry Item Details</h4>
-          </div>
-          <div className="col-2">
-            <div className=' position-relative searchbutton' style={{ top: '0.25rem', right: '1rem' }}>
-              <input type="text" className=" form-control d-inline PEsearch bg-seashell" placeholder="Search PE" />
-              <button className="btn p-0 m-0 bg-transparent border-0 position-absolute" style={{ width: '2rem', right: '0', left: '0', top: '0.25rem' }}><img src={process.env.PUBLIC_URL + "/images/search.png"} alt="displaying_image" className="img-fluid p-0 m-0" /></button>
-            </div>
+        <h5 className='text-center pt-3 text-charcoal'>{props.itembillid} Purchase Entry Item Details</h5>
+        <button type="button" className="btn-close closebtn position-absolute end-0 me-2" onClick={props.toggle_peidw} aria-label="Close"></button>
+
+        <div className="col-2 d-none">
+          <div className=' position-relative searchbutton' style={{ top: '0.25rem', right: '1rem' }}>
+            <input type="text" className=" form-control d-inline PEsearch bg-seashell" placeholder="Search PE" />
+            <button className="btn p-0 m-0 bg-transparent border-0 position-absolute" style={{ width: '2rem', right: '0', left: '0', top: '0.25rem' }}><img src={process.env.PUBLIC_URL + "/images/search.png"} alt="displaying_image" className="img-fluid p-0 m-0" /></button>
           </div>
         </div>
+
       </div>
-      <div className='row p-0 m-0 mb-3'>
+      <div className='d-flex justify-content-center p-0 m-0 mt-3 mb-1'>
         {
           Items.map((data, i) => (
-            <div className="col-3 col-xl-2 col-lg-2 col-md-4 col-sm-6 p-0 m-0">
-              <button className={`button border button-${i == index ? 'charcoal' : 'seashell'}`} onClick={() => { setindex(i) }}>{data}</button>
-            </div>
+            <button className={`button border-charcoal rounded-0 shadow-0 button-${i == index ? 'charcoal' : 'seashell'}`} onClick={() => { setindex(i) }}>{data}</button>
+
           ))
         }
 
       </div>
 
 
-      <div className={`scroll bg-seashell scroll-y d-${medicine}`} style={{ minHeight: '82vh', maxHeight: '82vh' }}>
-        <div className="row">
-          <div className="col-9"><h5 className='ps-1'>Medicine</h5></div>
-          <div className="col-3"><input type='checkbox' className='' value={Taxon ? Taxon : ''} onChange={() => { Taxon == true ? setTaxon(false) : setTaxon(true) }} /><label>Show Tax Details</label></div>
-        </div>
-
+      <div className=" d-flex justify-content-end me-5">
+        <input type='checkbox' className='' value={Taxon ? Taxon : ''} onChange={() => { Taxon == true ? setTaxon(false) : setTaxon(true) }} /><label>Show Tax Details</label>
+      </div>
+      <div className={`scroll bg-seashell scroll-y d-${medicine}`} style={{ minHeight: '70vh', Height: '70vh', maxHeight: '70vh' }}>
         <table className="table datatable table-responsive text-center bg-seashell"><thead>
           <tr>
             <th rowspan='2' className='border p-0 m-0 px-1'>Item ID</th>
@@ -2450,7 +2423,7 @@ function PEitemdetailssection(props) {
             <th rowspan='2' className='border p-0 m-0 px-1'>Cost in Rs.</th>
             <th rowspan='2' className='border p-0 m-0 px-1'>Qty.</th>
             <th rowspan='2' className='border p-0 m-0 px-1'>Total in Rs.</th>
-            <th rowspan='2' className='border p-0 m-0 px-1'>Print QR</th>
+
           </tr>
           <tr>
             <th scope='col' className={`border p-0 m-0 px-1 d-${Taxon == true ? '' : 'none'}`}>CGST%</th>
@@ -2488,7 +2461,6 @@ function PEitemdetailssection(props) {
                       <td className='border p-0 m-0 align-middle'>{item.cost ? item.cost : 'N/A'}</td>
                       <td className='border p-0 m-0 align-middle'>{item.qty ? item.qty : 'N/A'}</td>
                       <td className='border p-0 m-0 align-middle'>{item.total_amount ? item.total_amount : 'N/A'}</td>
-                      <td className='border p-0 m-0 align-middle'><button className='btn'><img src={process.env.PUBLIC_URL + "/images/qrcode.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1" /></button></td>
                     </tr>
                   ))
                 }
@@ -2497,8 +2469,8 @@ function PEitemdetailssection(props) {
 
             ) : (
               <body className='text-center p-0 m-0 border border-1 '>
-                <div className='position-absolute border-0 start-0 end-0 mx-3 p-2 bg-lightred'>
-                  <strong className='fs-5 text-center bg-lightred'>No Medicines Found</strong>
+                <div className='position-absolute border-0 start-0 end-0 mx-3 p-2 '>
+                  <p className=' text-center fw-bold'>No Medicines Found</p>
                 </div>
 
               </body>
@@ -2508,11 +2480,7 @@ function PEitemdetailssection(props) {
           }
         </table>
       </div>
-      <div className={`scroll bg-seashell scroll-y d-${vaccine}`} style={{ minHeight: '82vh', maxHeight: '82vh' }}>
-        <div className="row">
-          <div className="col-9"><h5 className='ps-1'>Vaccine</h5></div>
-          <div className="col-3"><input type='checkbox' className='' value={Taxon ? Taxon : ''} onChange={() => { Taxon == true ? setTaxon(false) : setTaxon(true) }} /><label>Show Tax Details</label></div>
-        </div>
+      <div className={`scroll bg-seashell scroll-y d-${vaccine}`} style={{ minHeight: '70vh', Height: '70vh', maxHeight: '70vh' }}>
         <table className="table datatable table-responsive text-center bg-seashell"><thead>
           <tr>
             <th rowspan='2' className='border p-0 m-0 px-1'>Item ID</th>
@@ -2574,8 +2542,8 @@ function PEitemdetailssection(props) {
 
             ) : (
               <body className='text-center p-0 m-0 border border-1 '>
-                <div className='position-absolute border-0 start-0 end-0 mx-3 p-2 bg-lightred'>
-                  <strong className='fs-5 text-center bg-lightred'>No Vaccines Found</strong>
+                <div className='position-absolute border-0 start-0 end-0 mx-3 p-2 '>
+                  <p className='fw-bold text-center'>No Vaccines Found</p>
                 </div>
 
               </body>
@@ -3037,10 +3005,10 @@ function Newpurchaseentryform(props) {
 
 
   return (
-    <section className="newpurchaseentryform mt-1">
-      <div className="container-fluid p-0 m-0">
+
+      <div className="container-fluid p-0 m-0" style={{zIndex:'2'}}>
         <div className="container-fluid bg-seashell border border-2 border-top-0 border-start-0 border-end-0 ">
-          <div className="row p-2">
+          <div className="row p-0 m-0 p-2">
             <div className="col-1">
               <button type="button" className="btn-close closebtn m-auto" onClick={props.toggle_npef} aria-label="Close" ></button>
             </div>
@@ -3062,8 +3030,8 @@ function Newpurchaseentryform(props) {
             </div>
           </div>
         </div>
-        <div className="container-fluid entrydetails bg-pearl">
-          <div className="row">
+        <div className="container-fluid p-0 m-0 entrydetails bg-pearl">
+          <div className="row p-0 m-0">
             <div className={`col-${vendorid ? '8' : '12'} p-0 m-0`}>
               <div className="container m-2">
                 <div className="row align-items-center">
@@ -3136,7 +3104,7 @@ function Newpurchaseentryform(props) {
 
                 </div>
               </div>
-              <div className=" p-0 m-0  mt-2 scroll scroll-y" style={{ maxHeight: '53vh' }}>
+              <div className=" p-0 m-0  mt-2 scroll scroll-y" style={{ Height: '50vh' }}>
                 <table className="table datatable text-center position-relative">
                   <thead style={{ color: 'gray', fontWeight: '600' }}>
                     <tr>
@@ -3192,7 +3160,7 @@ function Newpurchaseentryform(props) {
                 </table>
               </div>
             </div>
-            <div className={`col-4 m-0 p-0 medicineinfosection d-${vendorid ? 'block' : 'none'} bg-seashell ps-2`} id='medicineinfosection'>
+            <div className={`col-4 m-0 p-0 scroll scroll-y border border-1 medicineinfosection d-${vendorid ? 'block' : 'none'} bg-seashell ps-2`} id='medicineinfosection' style={{ maxHeight: '90vh', Height: '90vh' }}>
               <h5 className="mt-2">Add Items</h5>
               <div className="col-12">
                 <div className=" col-10 col-md-11">
@@ -3335,7 +3303,6 @@ function Newpurchaseentryform(props) {
           </div>
         </div>
       </div>
-    </section>
   );
 }
 function Purchaseordersection() {
@@ -3595,12 +3562,11 @@ function PurchaseReturns() {
               Loading ? (
                 <body className=' text-center' style={{ minHeight: '55vh' }}>
                   <tr className='position-absolute border-0 start-0 end-0 px-5'>
-                    <div class="d-flex align-items-center">
+                    <div className="d-flex align-items-center">
                       <strong className='fs-5'>Getting Details please be Patient ...</strong>
-                      <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
+                      <div className="spinner-border ms-auto" role="status" aria-hidden="true"></div>
                     </div>
                   </tr>
-
                 </body>
 
               ) : (
@@ -3668,7 +3634,7 @@ function PurchaseReturns() {
           </div>
         </div>
       </div>
-      <section className={`newreturnentrysection position-absolute start-0 end-0 top-0 bottom-0 d-${nref}`} style={{ marginTop: '-8.5rem', 'height': '90vh' }}  >
+      <section className={`newreturnentrysection position-absolute rounded-4 bg-seashell border border-1 mx-2 start-0 end-0 top-0 bottom-0 d-${nref}`} style={{ marginTop: '-8.5rem', 'height': '90vh' }}  >
         {<NewPurchaseReturnentryform toggle_nref={toggle_nref} GETPurchaseReturns={GETPurchaseReturns} />}
       </section>
     </>
@@ -3914,7 +3880,7 @@ function NewPurchaseReturnentryform(props) {
   const [itemname, setitemname] = useState()
   const [loadsearch, setloadsearch] = useState()
   const [MedicineentriesArr, setMedicineentriesArr] = useState([])
-  const [load,setload]=useState()
+  const [load, setload] = useState()
 
   const CalculateCost = (cost, currentstock, qtytotreturn) => {
     let costing = 0;
@@ -4079,7 +4045,7 @@ function NewPurchaseReturnentryform(props) {
     return c
   }
   return (
-    <section className="newpurchaseentryform mt-1 position-relative bg-seashell m-2 shadow rounded-4 " style={{ 'height': '90vh' }}>
+    <section className="newpurchaseentryform mt-1 position-relative" style={{ 'height': '90vh' }}>
       <div className="container-fluid p-0 m-0 rounded-4">
         <div className="container-fluid bg-seashell rounded-4 position-relative  ">
           <div className="row p-2 pe-1">
@@ -4087,7 +4053,7 @@ function NewPurchaseReturnentryform(props) {
               <button type="button" className="btn-close closebtn m-auto" onClick={props.toggle_nref} aria-label="Close" ></button>
             </div>
             <div className="col-12 justify-content-center">
-              <h6 className="text-center" style={{ color: "var(--charcoal)", fontWeight: "600" }} >New Purchase Return Entry</h6>
+              <h5 className="text-center" style={{ color: "var(--charcoal)" }} >New Purchase Return Entry</h5>
             </div>
           </div>
         </div>
@@ -4225,7 +4191,7 @@ function NewPurchaseReturnentryform(props) {
 
         </div>
       </div>
-      <div className='col-12 position-absolute start-0 end-0 bottom-0 text-center bg-pearl align-items-center rounded-bottom p-2'>
+      <div className='col-12 position-absolute start-0 end-0 bottom-0 rounded-bottom text-center bg-pearl align-items-center border border-1 p-2'>
         <div className="row p-0 m-0">
           <div className="col-6">
             <div className="row">
@@ -4243,14 +4209,14 @@ function NewPurchaseReturnentryform(props) {
             {
               load ? (
                 <div className="col-6 py-2 pb-2 m-auto text-center">
-                <div class="spinner-border" role="status">
-                  <span class="visually-hidden">Loading...</span>
+                  <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
                 </div>
-              </div>
-              ):(
-            <button className='button button-charcoal px-5' onClick={confirmmessage}>Save Entry</button>
+              ) : (
+                <button className='button button-charcoal px-5' onClick={confirmmessage}>Save Entry</button>
               )
-       
+
             }
           </div>
           <div className="col-3 align-self-center">
@@ -4286,29 +4252,27 @@ function Stocksection() {
   }
   return (
     <>
-      <section className='stocksection pt-3'>
+      <section className='stocksection pt-1'>
         <div className="container-fluid">
-          <div className="row g-3">
-            <div className="col-10">
-              <div className='row'>
-                {
-                  menu.map((e, i) => {
-                    return (
-                      <div className="col-auto">
-                        <button className={`btn btn-sm px-4 rounded-5 text-${i === menuindex ? "light" : "dark"} bg-${i === menuindex ? "charcoal" : "seashell"}`} onClick={(a) => setmenuindex(i)} >{e}</button>
-                      </div>
-                    )
-                  }
+          <div className="row gx-3">
+            <div className='row m-0 p-0'>
+              {
+                menu.map((e, i) => {
+                  return (
+                    <div className="col-auto">
+                      <button className={`btn btn-sm px-4 rounded-5 text-${i === menuindex ? "light" : "dark"} bg-${i === menuindex ? "charcoal" : "seashell"}`} onClick={(a) => setmenuindex(i)} >{e}</button>
+                    </div>
                   )
                 }
-              </div>
+                )
+              }
             </div>
 
           </div>
         </div>
       </section>
       <section className="tablesrender position-relative">
-        <div className='container-fluid pt-5'>
+        <div className='container-fluid pt-3'>
           <div className="scroll scroll-y">
             {_selectedmenu(menuindex)}
           </div>
@@ -4412,7 +4376,7 @@ function Stockvaccinesection() {
         <input type="text" className=" form-control d-inline vaccinesearch bg-pearl" placeholder="Vaccine Name" onChange={(e) => { setsearchname(e.target.value); }} />
         <button className="btn p-0 m-0 bg-transparent border-0 position-absolute" style={{ width: '2rem', right: '0', left: '0', top: '0.25rem' }}><img src={process.env.PUBLIC_URL + "/images/search.png"} alt="displaying_image" className="img-fluid p-0 m-0" /></button>
       </div>
-      <h3 className='ps-3'>Vaccine Stock Info</h3>
+      <h5 className=' text-center text-charcoal75 fw-bold'>Vaccine Stock Info</h5>
       <div className='scroll scroll-y' style={{ 'height': '52vh', minHeight: '52vh', maxHeight: '52vh' }}>
         <table className="table datatable text-center" >
           <thead>
@@ -4605,7 +4569,7 @@ function Stockmedicinesection() {
         <input type="text" className=" form-control d-inline vaccinesearch bg-pearl" placeholder="Medicine Name" onChange={(e) => { setsearchname(e.target.value); }} />
         <button className="btn p-0 m-0 bg-transparent border-0 position-absolute" style={{ width: '2rem', right: '0', left: '0', top: '0.25rem' }}><img src={process.env.PUBLIC_URL + "/images/search.png"} alt="displaying_image" className="img-fluid p-0 m-0" /></button>
       </div>
-      <h3 className='ps-3'>Vaccine Stock Info</h3>
+      <h6 className='text-center text-charcoal75 fw-bold'>Medicine Stock Info</h6>
       <div className='scroll scroll-y' style={{ 'height': '52vh', minHeight: '52vh', maxHeight: '52vh' }}>
         <table className="table datatable text-center" >
           <thead>
