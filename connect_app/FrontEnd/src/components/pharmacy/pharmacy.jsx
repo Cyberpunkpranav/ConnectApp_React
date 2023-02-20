@@ -663,7 +663,7 @@ function SEitemdetailssection(props) {
           }
         </table>
       </div>
-      <div className={`scroll bg-seashell scroll-y d-${vaccine}`} style={{ minHeight: '70vh', Height: '70vh', maxHeight: '70vh' }}>
+      <div className={`scroll bg-seashell scroll-y d-${vaccine}`} style={{ minHeight: '65vh', Height: '65vh', maxHeight: '65vh' }}>
         <table className="table datatable table-responsive text-center bg-seashell">
           <thead>
             <tr>
@@ -716,7 +716,7 @@ function SEitemdetailssection(props) {
 
             ) : (
               <body className='text-center p-0 m-0 border border-1 '>
-                <div className='position-absolute border-0 start-0 end-0 mx-3 p-2 bg-lightred'>
+                <div className='position-absolute border-0 start-0 end-0 mx-3 p-2 '>
                   <p className=' text-center fw-bold text-charcoal'>No Vaccines Found</p>
                 </div>
 
@@ -1851,7 +1851,7 @@ function NewSaleReturnentryform(props) {
           </div>
         </div>
       </div>
-      <div className='col-12 position-absolute start-0 end-0 bottom-0 text-center bg-pearl  border border-1 rounded-bottom p-2 py-4'>
+      <div className='col-12 position-absolute start-0 end-0 bottom-0 text-center bg-pearl  border border-1 py-3'>
 
         <div className="row p-0 m-0">
           <div className="col-6">
@@ -2194,7 +2194,7 @@ function Purchaseentrysection(props) {
         }
         setLoading(false)
       }).catch((e) => {
-        Notiflix.Notify.warning(e)
+        Notiflix.Notify.warning(e.message)
         setLoading(false)
       })
     } catch (e) {
@@ -2230,8 +2230,8 @@ function Purchaseentrysection(props) {
   return (
     <>
       <button className="button addentrypurchase button-charcoal position-absolute" onClick={toggle_npef}><img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt='displaying_image' className="img-fluid" style={{ width: `1.5rem` }} />Entry Purchase</button>
-      <div className="row p-0 m-0 justify-content-lg-between">
-        <div className="col-3 col-md-2 col-lg-2 align-self-center text-center text-charcoal fw-bolder fs-6">Purchase Entry</div>
+      <div className="row p-0 m-0 justify-content-lg-between align-items-center">
+        <div className="col-3 col-md-2 col-lg-2 align-self-center text-center text-charcoal mb-2 fw-bolder">Purchase Entry</div>
         <div className="col-6 col-xl-6 col-lg-7 col-md-7 align-self-center m-1 ">
           <div className="row border-burntumber fw-bolder rounded-2 text-center justify-content-center ">
             <div className="col-4">
@@ -2253,7 +2253,7 @@ function Purchaseentrysection(props) {
         </div>
       </div>
       <div>
-        <div className='scroll scroll-y overflow-scroll p-0 m-0' style={{ minHeight: '55vh', height: '56vh' }}>
+        <div className='scroll scroll-y overflow-scroll p-0 m-0' style={{ minHeight: '56vh', height: '56vh' }}>
           <table className="table text-center p-0 m-0">
             <thead className='p-0 m-0 align-middle'>
               <tr>
@@ -2342,7 +2342,7 @@ function Purchaseentrysection(props) {
           </div>
         </div>
       </div>
-      <section className={`newpurchaseentrysection position-absolute start-0 end-0 border border-1 d-${npef}`}  >
+      <section className={`newpurchaseentrysection position-absolute start-0 end-0 bg-seashell border border-1 d-${npef}`} style={{ 'height': '90vh' }}  >
         {<Newpurchaseentryform toggle_npef={toggle_npef} GETPurchaseList={GETPurchaseList} />}
       </section>
     </>
@@ -3006,303 +3006,302 @@ function Newpurchaseentryform(props) {
 
   return (
 
-      <div className="container-fluid p-0 m-0" style={{zIndex:'2'}}>
-        <div className="container-fluid bg-seashell border border-2 border-top-0 border-start-0 border-end-0 ">
-          <div className="row p-0 m-0 p-2">
-            <div className="col-1">
-              <button type="button" className="btn-close closebtn m-auto" onClick={props.toggle_npef} aria-label="Close" ></button>
-            </div>
-            <div className="col-9">
-              <h6 className="text-center" style={{ color: "var(--charcoal)", fontWeight: "600" }} > New Purchase Entry </h6>
-            </div>
-            <div className="col-auto">
-              {
-                load ? (
-                  <div className="col-6 py-2 pb-2 m-auto text-center">
-                    <div class="spinner-border" role="status">
-                      <span class="visually-hidden">Loading...</span>
-                    </div>
+    <div className="container-fluid p-0 m-0" style={{ zIndex: '2' }}>
+      <div className="container-fluid bg-seashell border border-2 border-top-0 border-start-0 border-end-0 ">
+        <div className="row p-0 m-0 p-2">
+          <div className="col-1">
+            <button type="button" className="btn-close closebtn m-auto mt-2" onClick={props.toggle_npef} aria-label="Close" ></button>
+          </div>
+          <div className="col-9">
+            <h5 className="text-center mt-2"> New Purchase Entry </h5>
+          </div>
+          <div className="col-auto">
+            {
+              load ? (
+                <div className="col-6 py-2 pb-2 m-auto text-center">
+                  <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
                   </div>
-                ) : (
-                  <button disabled={MedicineentriesArr == undefined || MedicineentriesArr && MedicineentriesArr.length == 0 ? true : false} className="button button-charcoal" onClick={() => { confirmmessage(MedicineentriesArr, vendorname) }}>Save All</button>
-                )
-              }
-            </div>
+                </div>
+              ) : (
+                <button disabled={MedicineentriesArr == undefined || MedicineentriesArr && MedicineentriesArr.length == 0 ? true : false} className="button button-charcoal" onClick={() => { confirmmessage(MedicineentriesArr, vendorname) }}>Save All</button>
+              )
+            }
           </div>
         </div>
-        <div className="container-fluid p-0 m-0 entrydetails bg-pearl">
-          <div className="row p-0 m-0">
-            <div className={`col-${vendorid ? '8' : '12'} p-0 m-0`}>
-              <div className="container m-2">
-                <div className="row align-items-center">
+      </div>
+      <div className="container-fluid p-0 m-0 entrydetails bg-pearl" style={{ Height: '90vh' }}>
+        <div className="row p-0 m-0">
+          <div className={`col-${vendorid ? '8' : '12'} p-0 m-0`}>
+
+            <div className="row p-0 m-0 align-items-center">
+              <div className="col-auto">
+                <div className="row p-0 m-0">
                   <div className="col-auto">
-                    <div className="row">
-                      <div className="col-auto">
-                        <input type="checkbox" className="" checked={channel == 1 ? true : false} value='1' onClick={(e) => { setchannel(e.target.value) }} />
-                      </div>
-                      <div className="col-auto">
-                        <span className="ms-0">Pharmacy</span>
-                      </div>
-                    </div>
+                    <input type="checkbox" className="" checked={channel == 1 ? true : false} value='1' onClick={(e) => { setchannel(e.target.value) }} />
                   </div>
                   <div className="col-auto">
-                    <div className="row">
-                      <div className="col-auto">
-                        <input type="checkbox" className="" checked={channel == 2 ? true : false} value='2' onClick={(e) => { setchannel(e.target.value) }} />
-                      </div>
-                      <div className="col-auto">
-                        <span className="ms-0">Clinic</span>
-                      </div>
-                    </div>
+                    <span className="ms-0">Pharmacy</span>
                   </div>
                 </div>
               </div>
-              <div className="col-8 p-0 m-0">
-                <div className="row g-4">
-                  <div className="col-5">
-                    <h6 className="p-0 m-0 ms-3 fw-bold">Select PO</h6>
-                    <input className="form-control ms-2 rounded-1" placeholder="Enter PO" value={po ? po : ''} onChange={(e) => { setpo(e.target.value) }} />
+              <div className="col-auto">
+                <div className="row">
+                  <div className="col-auto">
+                    <input type="checkbox" className="" checked={channel == 2 ? true : false} value='2' onClick={(e) => { setchannel(e.target.value) }} />
                   </div>
-                  <div className="col-5">
-                    <h6 className="p-0 m-0 ms-3 fw-bold">Select Vendor</h6>
-                    <input className="form-control ms-2 rounded-1" placeholder='Search Vendors' value={vendorname ? vendorname : ''} onChange={(e) => { searchvendors(e.target.value); setvendorname(e.target.value); setvendorid(); setvendorcode() }} />
-                    <div ref={vendorsref} className='position-absolute ms-2 rounded-2 bg-pearl col-2' >
-                      {
-                        vendorsearch ? (
-                          loadvendors ? (
-                            <div className='rounded-2 p-1'>
-                              Searching Please wait....
-                              <div className="spinner-border my-auto" style={{ width: "1rem", height: "1rem" }} role="status" >
-                                <span className="sr-only"> </span> </div>
-                            </div>
-                          ) : (
-                            vendorsearch.length == 0 ? (
-                              <div className="bg-burntumber text-light rounded-2 p-1">Oops! Not Avaliable</div>
-                            ) : (
-                              vendorsearch.map((data, i) => (
-                                <div style={{ cursor: 'pointer' }} className={`p-0 p-1  bg-${((i % 2) == 0) ? 'pearl' : 'lightblue'} fs-6 `} name={data.id} onClick={(e) => { setvendorname(data.entity_name); setvendorid(data.id); setvendorcode(data.state_code); filterclinic(); vendorsref.current.style.display = 'none'; }}>{data.entity_name}</div>
-                              ))
-                            )
-                          )
-                        ) : (<></>)
-                      }
-                    </div>
-                  </div>
-                  <div className="col-5">
-                    <h6 className="p-0 m-0 ms-3 fw-bold">Invoice Number</h6>
-                    <input type="text" placeholder="Enter No." className="form-control ms-2 rounded-1" value={invoice ? invoice : ''} onChange={(e) => { setinvoice(e.target.value) }} style={{ color: "gray" }} />
-                  </div>
-                  <div className="col-5">
-                    <h6 className="p-0 m-0 ms-3 fw-bold">Invoice Date</h6>
-                    <input type="date" className="form-control ms-2 rounded-1" value={invoicedate ? invoicedate : ''} onChange={(e) => { setinvoicedate(e.target.value) }} style={{ color: "gray" }} />
+                  <div className="col-auto">
+                    <span className="ms-0">Clinic</span>
                   </div>
                 </div>
-                <div className="row p-0 m-0 align-items-center mt-2">
-                  <div className="col-6 col-lg-5 col-md-5 p-0 m-0 align-self-center ms-1">
-                    <button className="button button-charcoal m-0 p-0 py-1 px-4"> <img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt="displaying_image" style={{ width: "1.5rem" }} /> Medicine </button>
-                  </div>
-
-                </div>
-              </div>
-              <div className=" p-0 m-0  mt-2 scroll scroll-y" style={{ Height: '50vh' }}>
-                <table className="table datatable text-center position-relative">
-                  <thead style={{ color: 'gray', fontWeight: '600' }}>
-                    <tr>
-                      <th>Edit</th>
-                      <th>Item ID</th>
-                      <th>Item Name</th>
-                      <th>batch No.</th>
-                      <th>Expiry Date</th>
-                      <th>MRP</th>
-                      <th>Rate</th>
-                      <th>Total Disc</th>
-                      <th>Cost</th>
-                      <th>Delete</th>
-                    </tr>
-                  </thead>
-                  {
-                    MedicineentriesArr ? (
-                      <tbody style={{ Height: '50vh', maxHeight: '50vh', color: 'var(--charcoal)', fontWeight: '600' }}>
-                        {
-                          MedicineentriesArr.map((item, _key) => (
-                            <tr key={_key}>
-                              <td><input type='checkbox' checked={_key == tableindex ? true : false} onClick={() => { indexing(_key) }} className='bg-seashell' /></td>
-                              <td>{item.Itemid}</td>
-                              <td>{item.Itemname}</td>
-                              <td>{item.batchno}</td>
-                              <td>{item.expirydate}</td>
-                              <td>{item.MRP}</td>
-                              <td>{item.Rate}</td>
-                              <td>{Number(item.Discount) + Number(item.tradeDiscount)}</td>
-                              <td>{item.costperunit}</td>
-                              <td ><button onClick={() => { DeleteMedicine(item.Itemid); }} className='btn btn-sm button-burntumber'>Delete</button></td>
-                            </tr>
-                          ))
-                        }
-                      </tbody>
-                    ) : (
-                      MedicineentriesArr && MedicineentriesArr.length == 0 ? (
-                        <tbody className="position-relative" style={{ height: '50vh', maxHeight: '50vh', color: 'var(--charcoal)', fontWeight: '600' }}>
-                          <tr >
-                            <td className="position-absolute start-0 end-0 top-0">No items Added</td>
-                          </tr>
-                        </tbody>
-                      ) : (
-                        <tbody className="position-relative" style={{ height: '50vh', maxHeight: '50vh', color: 'var(--charcoal)', fontWeight: '600' }}>
-                          <tr className=""  >
-                            <td className="position-absolute start-0 end-0 top-0" >No items Added</td>
-                          </tr>
-                        </tbody>
-                      )
-
-                    )
-                  }
-                </table>
               </div>
             </div>
-            <div className={`col-4 m-0 p-0 scroll scroll-y border border-1 medicineinfosection d-${vendorid ? 'block' : 'none'} bg-seashell ps-2`} id='medicineinfosection' style={{ maxHeight: '90vh', Height: '90vh' }}>
-              <h5 className="mt-2">Add Items</h5>
-              <div className="col-12">
-                <div className=" col-10 col-md-11">
-                  <div className='position-relative'>
-                    <label>Search Items </label>
-                    <input className='form-control bg-seashell' placeholder='Items' value={itemname ? itemname : ''} onChange={(e) => { searchmeds(e.target.value); setitemname(e.target.value); setitemtype() }} />
-                    <div ref={medicinesref} className='position-absolute rounded-4 col-12' style={{ zIndex: '2' }}  >
-                      {
-                        itemsearch ? (
-                          loadsearch ? (
-                            <div className='rounded-2 p-1 bg-pearl'>
-                              Searching Please wait....
-                              <div className="spinner-border my-auto" style={{ width: "1rem", height: "1rem" }} role="status" >
-                                <span className="sr-only"> </span> </div>
-                            </div>
+            <div className="col-8 p-0 m-0">
+              <div className="row p-0 m-0 gx-2 gy-1">
+                <div className="col-5">
+                  <h6 className="p-0 m-0 ms-3 fw-bold">Select PO</h6>
+                  <input className="form-control ms-2 rounded-1" placeholder="Enter PO" value={po ? po : ''} onChange={(e) => { setpo(e.target.value) }} />
+                </div>
+                <div className="col-5">
+                  <h6 className="p-0 m-0 ms-3 fw-bold">Select Vendor</h6>
+                  <input className="form-control ms-2 rounded-1" placeholder='Search Vendors' value={vendorname ? vendorname : ''} onChange={(e) => { searchvendors(e.target.value); setvendorname(e.target.value); setvendorid(); setvendorcode() }} />
+                  <div ref={vendorsref} className='position-absolute ms-2 rounded-2 bg-pearl col-2' >
+                    {
+                      vendorsearch ? (
+                        loadvendors ? (
+                          <div className='rounded-2 p-1'>
+                            Searching Please wait....
+                            <div className="spinner-border my-auto" style={{ width: "1rem", height: "1rem" }} role="status" >
+                              <span className="sr-only"> </span> </div>
+                          </div>
+                        ) : (
+                          vendorsearch.length == 0 ? (
+                            <div className="bg-burntumber text-light rounded-2 p-1">Oops! Not Avaliable</div>
                           ) : (
-                            itemsearch.length == 0 ? (
-                              <div className="bg-burntumber text-light rounded-2 p-1 text-wrap">Oops! Not Avaliable</div>
-                            ) : (
-                              <div className={`mt-1 rounded-4 bg-pearl shadow px-1 pb-2 d-${itemsearch && itemsearch.length > 1 ? 'block' : 'none'}`}>
-                                <p className={`p-0 m-0 bg-pearl fw-bold text-charcoal75 rounded-4 ps-2 `} style={{ fontSize: '0.8rem' }}>{itemsearch.length} Search Results</p>
-                                {
-                                  itemsearch.map((data, i) => (
-                                    <div style={{ cursor: 'pointer' }} className={`p-0 ps-1 text-wrap  bg-${((i % 2) == 0) ? '' : 'lightyellow'}`} name={data.id} onClick={(e) => { setitemname(data.display_name ? data.display_name : data.name); setitemid(data.id); setitemtype(data.vaccines_id ? 'v' : 'm'); medicinesref.current.style.display = 'none'; }}>{data.display_name ? data.display_name : data.name}</div>
-                                  ))
-                                }
-                              </div>
-                            )
+                            vendorsearch.map((data, i) => (
+                              <div style={{ cursor: 'pointer' }} className={`p-0 p-1  bg-${((i % 2) == 0) ? 'pearl' : 'lightblue'} fs-6 `} name={data.id} onClick={(e) => { setvendorname(data.entity_name); setvendorid(data.id); setvendorcode(data.state_code); filterclinic(); vendorsref.current.style.display = 'none'; }}>{data.entity_name}</div>
+                            ))
                           )
-                        ) : (<></>)
+                        )
+                      ) : (<></>)
+                    }
+                  </div>
+                </div>
+                <div className="col-5">
+                  <h6 className="p-0 m-0 ms-3 fw-bold">Invoice Number</h6>
+                  <input type="text" placeholder="Enter No." className="form-control ms-2 rounded-1" value={invoice ? invoice : ''} onChange={(e) => { setinvoice(e.target.value) }} style={{ color: "gray" }} />
+                </div>
+                <div className="col-5">
+                  <h6 className="p-0 m-0 ms-3 fw-bold">Invoice Date</h6>
+                  <input type="date" className="form-control ms-2 rounded-1" value={invoicedate ? invoicedate : ''} onChange={(e) => { setinvoicedate(e.target.value) }} style={{ color: "gray" }} />
+                </div>
+              </div>
+              <div className="row p-0 m-0 align-items-center mt-2">
+                <div className="col-6 col-lg-5 col-md-5 p-0 m-0 align-self-center ms-1">
+                  <button className="button button-charcoal m-0 p-0 py-1 px-4"> <img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt="displaying_image" style={{ width: "1.5rem" }} /> Medicine </button>
+                </div>
+
+              </div>
+            </div>
+            <div className=" p-0 m-0 scroll scroll-y" style={{ maxHeight: '50vh', Height: '50vh' }}>
+              <table className="table m-0 datatable text-center position-relative">
+                <thead style={{ color: 'gray', fontWeight: '600' }}>
+                  <tr>
+                    <th>Edit</th>
+                    <th>Item ID</th>
+                    <th>Item Name</th>
+                    <th>batch No.</th>
+                    <th>Expiry Date</th>
+                    <th>MRP</th>
+                    <th>Rate</th>
+                    <th>Total Disc</th>
+                    <th>Cost</th>
+                    <th>Delete</th>
+                  </tr>
+                </thead>
+                {
+                  MedicineentriesArr ? (
+                    <tbody style={{ Height: '48vh', maxHeight: '48vh', color: 'var(--charcoal)', fontWeight: '600' }}>
+                      {
+                        MedicineentriesArr.map((item, _key) => (
+                          <tr key={_key}>
+                            <td><input type='checkbox' checked={_key == tableindex ? true : false} onClick={() => { indexing(_key) }} className='bg-seashell' /></td>
+                            <td>{item.Itemid}</td>
+                            <td>{item.Itemname}</td>
+                            <td>{item.batchno}</td>
+                            <td>{item.expirydate}</td>
+                            <td>{item.MRP}</td>
+                            <td>{item.Rate}</td>
+                            <td>{Number(item.Discount) + Number(item.tradeDiscount)}</td>
+                            <td>{item.costperunit}</td>
+                            <td ><button onClick={() => { DeleteMedicine(item.Itemid); }} className='btn btn-sm button-burntumber'>Delete</button></td>
+                          </tr>
+                        ))
                       }
-                    </div>
-                  </div>
-
-                  <label className="mb-2 pt-2">Batch Number</label>
-                  <input type="text" max="10" className="form-control bg-seashell batchnumber rounded-1" id="inputEmail4" placeholder="Batch Number" value={batchno ? batchno : ''} onChange={(e) => setbatchno(e.target.value)} required />
-                  <label className="pt-3 mb-2">Expiry Date</label>
-                  <input type="Date" className="form-control bg-seashell reounded-1 expirydate" value={expdate ? expdate : ''} onChange={(e) => { setexpdate(e.target.value) }} required />
-                  <label className="pt-3 mb-2">Manufacturing Date</label>
-                  <input type="Date" className="form-control bg-seashell reounded-1 manufacturingdate" value={manufdate ? manufdate : ''} onChange={(e) => { setmanufdate(e.target.value) }} required />
-                </div>
-                <div className="col-12 form-group col-md-11 col-lg-11">
-                  <div className="row p-0 m-0">
-                    <div className="col-5">
-                      <label className="mb-2">MRP</label>
-                      <input type="number" max="10" className="form-control bg-seashell mrp rounded-1  m-auto" placeholder="00" value={mrp ? mrp : ''} onChange={(e) => { setmrp(e.target.value) }} required />
-                    </div>
-                    <div className="col-5">
-                      <label className="mb-2"> Rate</label>
-                      <input type="number" max="10" className="form-control bg-seashell rate rounded-1  m-auto" placeholder="00" value={rate ? rate : ''} onChange={(e) => { setrate(e.target.value); Calculate(e.target.value) }} required />
-                    </div>
-                  </div>
-                  <div className="row p-0 m-0">
-                    <div className="col-5">
-                      <label className="mb-2">Qty</label>
-                      <input type="number" max="10" className="form-control bg-seashell mrp rounded-1  m-auto" placeholder="00" value={qty ? qty : ''} onChange={(e) => { setqty(e.target.value); Calculate(rate, e.target.value) }} required />
-                    </div>
-                    <div className="col-5">
-                      <label className="mb-2">Free Qty</label>
-                      <input type="number" max="10" className="form-control bg-seashell rate rounded-1  m-auto" placeholder="00" value={freeqty ? freeqty : ''} onChange={(e) => { setfreeqty(e.target.value) }} required />
-                    </div>
-                  </div>
-                  <div className="row p-0 m-0 mt-2">
-                    <div className="col-5">
-                      <label className="mb-2">Discount &#40;%&#41;</label>
-                      <input type="number" max="10" className="form-control bg-seashell mrp rounded-1  m-auto" placeholder="00" value={disc ? disc : ''} onChange={(e) => { setdisc(e.target.value) }} required />
-                    </div>
-                    <div className="col-5 pb-3">
-                      <label className="mb-2">Trade Disc. &#40;%&#41;</label>
-                      <input type="number" max="10" className="form-control bg-seashell rate rounded-1  m-auto" placeholder="00" value={trddisc ? trddisc : ''} onChange={(e) => { settrddisc(e.target.value) }} required />
-                    </div>
-                    <hr />
-                    <div className={`col-12 ps-2 py-2 d-${vendorcode == clinicstatecode ? 'block' : 'none'}`}>
-                      <div className="row align-items-center p-0 m-0">
-                        <div className="col-2 ">
-                          <h6>SGST</h6>
-                        </div>
-                        <div className="col-5">
-                          <input type="number" max="10" className="form-control bg-seashell mrp rounded-1  m-auto" placeholder="00" disabled={true} value={sgst ? sgst : ''} required />
-                        </div>
-                        <div className="col-3">
-                          <input type="number" max="10" className="form-control bg-seashell mrp rounded-1  m-auto" placeholder="Rate" value={sgstprcnt ? sgstprcnt : ''} onChange={(e) => { setsgstprcnt(e.target.value); setcgstprcnt(e.target.value); CalculateGst() }} required />
-                        </div>
-                      </div>
-                    </div>
-                    <div className={`col-12 ps-2 py-2 d-${vendorcode == clinicstatecode ? 'block' : 'none'}`}>
-                      <div className="row p-0 m-0 align-items-center">
-                        <div className="col-2">
-                          <h6>CGST</h6>
-                        </div>
-                        <div className="col-5">
-                          <input type="number" max="10" className="form-control bg-seashell mrp rounded-1  m-auto" disabled={true} placeholder="00" value={cgst ? cgst : sgst ? sgst : ''} required />
-                        </div>
-                        <div className="col-3">
-                          <input type="number" max="10" className="form-control bg-seashell mrp rounded-1  m-auto" disabled={true} placeholder="Rate" value={cgstprcnt ? cgstprcnt : sgstprcnt ? sgstprcnt : ''} required />
-                        </div>
-                      </div>
-                    </div>
-                    <div className={`col-12 ps-2 py-2 d-${vendorcode == clinicstatecode ? 'none' : 'block'}`}>
-                      <div className="row p-0 m-0 align-items-center">
-                        <div className="col-2 ">
-                          <h6>IGST</h6>
-                        </div>
-                        <div className="col-5">
-                          <input type="number" max="10" className="form-control bg-seashell mrp rounded-1  m-auto" placeholder="00" disabled={true} value={CalculateIGst() ? CalculateIGst() : ''} />
-                        </div>
-                        <div className="col-3">
-                          <input type="number" max="10" className="form-control bg-seashell mrp rounded-1  m-auto" placeholder="Rate" value={igstprcnt ? igstprcnt : ''} onChange={(e) => { setigstprcnt(e.target.value) }} required />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <hr />
-                <div className="col-12 form-group">
-                  <div className="row p-0 m-0 g-3">
-                    <div className="col-5">
-                      <label className="mb-2">Cost/Unit</label>
-                      <input type="number" max="10" className="form-control bg-seashell costunit rounded-1" placeholder="00" disabled value={CalculateCPU() ? CalculateCPU() : ''} onChange={(e) => { setcpu(e.target.value) }} required />
-                    </div>
-                    <div className="col-5">
-                      <label className="mb-2">Total Amount</label>
-                      <input type="number" max="10" className="form-control bg-seashell totalamount rounded-1" placeholder="00" disabled value={Calculate() ? Calculate() : ''} onChange={(e) => { settotalamt(e.target.value) }} required />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="col-6 py-3 m-auto text-center">
-                  {
-                    tableindex == -1 || tableindex == undefined ? (
-                      <button type="submit" className="btn  button-charcoal done px-5" onClick={InsertMedicines} > Add </button>
+                    </tbody>
+                  ) : (
+                    MedicineentriesArr && MedicineentriesArr.length == 0 ? (
+                      <tbody className="position-relative" style={{ height: '48vh', maxHeight: '48vh', color: 'var(--charcoal)', fontWeight: '600' }}>
+                        <tr >
+                          <td className="position-absolute start-0 end-0 top-0">No items Added</td>
+                        </tr>
+                      </tbody>
                     ) : (
-                      <button type="submit" className="btn  button-charcoal done px-5" onClick={UpdateMedicines} > Update </button>
+                      <tbody className="position-relative" style={{ height: '48vh', maxHeight: '48vh', color: 'var(--charcoal)', fontWeight: '600' }}>
+                        <tr className=""  >
+                          <td className="position-absolute start-0 end-0 top-0" >No items Added</td>
+                        </tr>
+                      </tbody>
                     )
-                  }
 
+                  )
+                }
+              </table>
+            </div>
+          </div>
+          <div className={`col-4 m-0 p-0 scroll scroll-y border border-1 medicineinfosection d-${vendorid ? 'block' : 'none'} bg-seashell ps-2`} id='medicineinfosection' style={{ maxHeight: '81vh', Height: '81vh' }}>
+            <h5 className="mt-2">Add Items</h5>
+            <div className="col-12">
+              <div className=" col-10 col-md-11">
+                <div className='position-relative'>
+                  <label>Search Items </label>
+                  <input className='form-control bg-seashell' placeholder='Items' value={itemname ? itemname : ''} onChange={(e) => { searchmeds(e.target.value); setitemname(e.target.value); setitemtype() }} />
+                  <div ref={medicinesref} className='position-absolute rounded-4 col-12' style={{ zIndex: '2' }}  >
+                    {
+                      itemsearch ? (
+                        loadsearch ? (
+                          <div className='rounded-2 p-1 bg-pearl'>
+                            Searching Please wait....
+                            <div className="spinner-border my-auto" style={{ width: "1rem", height: "1rem" }} role="status" >
+                              <span className="sr-only"> </span> </div>
+                          </div>
+                        ) : (
+                          itemsearch.length == 0 ? (
+                            <div className="bg-burntumber text-light rounded-2 p-1 text-wrap">Oops! Not Avaliable</div>
+                          ) : (
+                            <div className={`mt-1 rounded-4 bg-pearl shadow px-1 pb-2 d-${itemsearch && itemsearch.length > 1 ? 'block' : 'none'}`}>
+                              <p className={`p-0 m-0 bg-pearl fw-bold text-charcoal75 rounded-4 ps-2 `} style={{ fontSize: '0.8rem' }}>{itemsearch.length} Search Results</p>
+                              {
+                                itemsearch.map((data, i) => (
+                                  <div style={{ cursor: 'pointer' }} className={`p-0 ps-1 text-wrap  bg-${((i % 2) == 0) ? '' : 'lightyellow'}`} name={data.id} onClick={(e) => { setitemname(data.display_name ? data.display_name : data.name); setitemid(data.id); setitemtype(data.vaccines_id ? 'v' : 'm'); medicinesref.current.style.display = 'none'; }}>{data.display_name ? data.display_name : data.name}</div>
+                                ))
+                              }
+                            </div>
+                          )
+                        )
+                      ) : (<></>)
+                    }
+                  </div>
                 </div>
+
+                <label className="mb-2 pt-2">Batch Number</label>
+                <input type="text" max="10" className="form-control bg-seashell batchnumber rounded-1" id="inputEmail4" placeholder="Batch Number" value={batchno ? batchno : ''} onChange={(e) => setbatchno(e.target.value)} required />
+                <label className="pt-3 mb-2">Expiry Date</label>
+                <input type="Date" className="form-control bg-seashell reounded-1 expirydate" value={expdate ? expdate : ''} onChange={(e) => { setexpdate(e.target.value) }} required />
+                <label className="pt-3 mb-2">Manufacturing Date</label>
+                <input type="Date" className="form-control bg-seashell reounded-1 manufacturingdate" value={manufdate ? manufdate : ''} onChange={(e) => { setmanufdate(e.target.value) }} required />
+              </div>
+              <div className="col-12 form-group col-md-11 col-lg-11">
+                <div className="row p-0 m-0">
+                  <div className="col-5">
+                    <label className="mb-2">MRP</label>
+                    <input type="number" max="10" className="form-control bg-seashell mrp rounded-1  m-auto" placeholder="00" value={mrp ? mrp : ''} onChange={(e) => { setmrp(e.target.value) }} required />
+                  </div>
+                  <div className="col-5">
+                    <label className="mb-2"> Rate</label>
+                    <input type="number" max="10" className="form-control bg-seashell rate rounded-1  m-auto" placeholder="00" value={rate ? rate : ''} onChange={(e) => { setrate(e.target.value); Calculate(e.target.value) }} required />
+                  </div>
+                </div>
+                <div className="row p-0 m-0">
+                  <div className="col-5">
+                    <label className="mb-2">Qty</label>
+                    <input type="number" max="10" className="form-control bg-seashell mrp rounded-1  m-auto" placeholder="00" value={qty ? qty : ''} onChange={(e) => { setqty(e.target.value); Calculate(rate, e.target.value) }} required />
+                  </div>
+                  <div className="col-5">
+                    <label className="mb-2">Free Qty</label>
+                    <input type="number" max="10" className="form-control bg-seashell rate rounded-1  m-auto" placeholder="00" value={freeqty ? freeqty : ''} onChange={(e) => { setfreeqty(e.target.value) }} required />
+                  </div>
+                </div>
+                <div className="row p-0 m-0 mt-2">
+                  <div className="col-5">
+                    <label className="mb-2">Discount &#40;%&#41;</label>
+                    <input type="number" max="10" className="form-control bg-seashell mrp rounded-1  m-auto" placeholder="00" value={disc ? disc : ''} onChange={(e) => { setdisc(e.target.value) }} required />
+                  </div>
+                  <div className="col-5 pb-3">
+                    <label className="mb-2">Trade Disc. &#40;%&#41;</label>
+                    <input type="number" max="10" className="form-control bg-seashell rate rounded-1  m-auto" placeholder="00" value={trddisc ? trddisc : ''} onChange={(e) => { settrddisc(e.target.value) }} required />
+                  </div>
+                  <hr />
+                  <div className={`col-12 ps-2 py-2 d-${vendorcode == clinicstatecode ? 'block' : 'none'}`}>
+                    <div className="row align-items-center p-0 m-0">
+                      <div className="col-2 ">
+                        <h6>SGST</h6>
+                      </div>
+                      <div className="col-5">
+                        <input type="number" max="10" className="form-control bg-seashell mrp rounded-1  m-auto" placeholder="00" disabled={true} value={sgst ? sgst : ''} required />
+                      </div>
+                      <div className="col-3">
+                        <input type="number" max="10" className="form-control bg-seashell mrp rounded-1  m-auto" placeholder="Rate" value={sgstprcnt ? sgstprcnt : ''} onChange={(e) => { setsgstprcnt(e.target.value); setcgstprcnt(e.target.value); CalculateGst() }} required />
+                      </div>
+                    </div>
+                  </div>
+                  <div className={`col-12 ps-2 py-2 d-${vendorcode == clinicstatecode ? 'block' : 'none'}`}>
+                    <div className="row p-0 m-0 align-items-center">
+                      <div className="col-2">
+                        <h6>CGST</h6>
+                      </div>
+                      <div className="col-5">
+                        <input type="number" max="10" className="form-control bg-seashell mrp rounded-1  m-auto" disabled={true} placeholder="00" value={cgst ? cgst : sgst ? sgst : ''} required />
+                      </div>
+                      <div className="col-3">
+                        <input type="number" max="10" className="form-control bg-seashell mrp rounded-1  m-auto" disabled={true} placeholder="Rate" value={cgstprcnt ? cgstprcnt : sgstprcnt ? sgstprcnt : ''} required />
+                      </div>
+                    </div>
+                  </div>
+                  <div className={`col-12 ps-2 py-2 d-${vendorcode == clinicstatecode ? 'none' : 'block'}`}>
+                    <div className="row p-0 m-0 align-items-center">
+                      <div className="col-2 ">
+                        <h6>IGST</h6>
+                      </div>
+                      <div className="col-5">
+                        <input type="number" max="10" className="form-control bg-seashell mrp rounded-1  m-auto" placeholder="00" disabled={true} value={CalculateIGst() ? CalculateIGst() : ''} />
+                      </div>
+                      <div className="col-3">
+                        <input type="number" max="10" className="form-control bg-seashell mrp rounded-1  m-auto" placeholder="Rate" value={igstprcnt ? igstprcnt : ''} onChange={(e) => { setigstprcnt(e.target.value) }} required />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <hr />
+              <div className="col-12 form-group">
+                <div className="row p-0 m-0 g-3">
+                  <div className="col-5">
+                    <label className="mb-2">Cost/Unit</label>
+                    <input type="number" max="10" className="form-control bg-seashell costunit rounded-1" placeholder="00" disabled value={CalculateCPU() ? CalculateCPU() : ''} onChange={(e) => { setcpu(e.target.value) }} required />
+                  </div>
+                  <div className="col-5">
+                    <label className="mb-2">Total Amount</label>
+                    <input type="number" max="10" className="form-control bg-seashell totalamount rounded-1" placeholder="00" disabled value={Calculate() ? Calculate() : ''} onChange={(e) => { settotalamt(e.target.value) }} required />
+                  </div>
+                </div>
+              </div>
+
+              <div className="col-6 py-3 m-auto text-center">
+                {
+                  tableindex == -1 || tableindex == undefined ? (
+                    <button type="submit" className="btn  button-charcoal done px-5" onClick={InsertMedicines} > Add </button>
+                  ) : (
+                    <button type="submit" className="btn  button-charcoal done px-5" onClick={UpdateMedicines} > Update </button>
+                  )
+                }
+
               </div>
             </div>
           </div>
         </div>
       </div>
+    </div>
   );
 }
 function Purchaseordersection() {
@@ -3478,7 +3477,7 @@ function PurchaseReturns() {
         }
         setLoading(false)
       }).catch((e) => {
-        Notiflix.Notify.warning(e)
+        Notiflix.Notify.warning(e.message)
         setLoading(false)
       })
     } catch (e) {
@@ -3524,29 +3523,29 @@ function PurchaseReturns() {
     <>
       <button className="button addentrypurchase button-charcoal position-absolute" onClick={toggle_nref}><img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt='displaying_image' className="img-fluid" style={{ width: `1.5rem` }} />Entry Return</button>
       <div classsName='p-0 m-0'>
-        <div className="row p-0 m-0">
-          <div className="col-3 col-md-2 col-lg-2 align-self-center text-charcoal fw-bolder fs-6">Purchase Return </div>
+        <div className="row p-0 m-0 align-items-center justify-content-lg-between">
+          <div className="col-3 col-md-2 col-lg-2 align-self-center text-center mb-2 text-charcoal fw-bolder fs-6">Purchase Return </div>
           <div className="col-6 col-xl-6 col-lg-7 col-md-auto align-self-center m-1 ">
-            <div className="row border-burntumber fw-bolder rounded-2 text-center justify-content-center ">
+            <div className="row border-burntumber bg-pearl fw-bolder rounded-2 text-center justify-content-center ">
               <div className="col-4">
-                <select className='p-0 m-0 border-0 text-burntumber fw-bolder' value={channel ? channel : ''} onChange={(e) => { setchannel(e.target.value) }}>
+                <select className='p-0 m-0 border-0 text-burntumber bg-pearl fw-bolder' value={channel ? channel : ''} onChange={(e) => { setchannel(e.target.value) }}>
                   <option className='border-0 text-burntumber fw-bolder' value='1'>Pharmacy</option>
                   <option className='border-0 text-burntumber fw-bolder' value='2'>Consumables</option>
                 </select>
               </div>
-              <div className="col-4 text-burntumber fw-bolder">
-                <input type='date' className='p-0 m-0 border-0 text-burntumber fw-bolder ' value={fromdate ? fromdate : ''} onChange={(e) => { setfromdate(e.target.value) }} />
+              <div className="col-4 text-burntumber fw-bolder bg-pearl">
+                <input type='date' className='p-0 m-0 border-0 bg-pearl text-burntumber fw-bolder ' value={fromdate ? fromdate : ''} onChange={(e) => { setfromdate(e.target.value) }} />
               </div>
-              <div className="col-4 text-burntumber fw-bolder">
-                <input type='date' className='p-0 m-0 border-0 text-burntumber fw-bolder ' value={todate ? todate : ''} onChange={(e) => { settodate(e.target.value) }} />
+              <div className="col-4 text-burntumber fw-bolder bg-pearl">
+                <input type='date' className='p-0 m-0 border-0 bg-pearl text-burntumber fw-bolder ' value={todate ? todate : ''} onChange={(e) => { settodate(e.target.value) }} />
               </div>
             </div>
           </div>
-          {/* <div className="col-2 align-self-center">
-          <ExportPurchaseEntry purchasereturnarr={purchasereturnarr} fromdate={reversefunction(fromdate)} todate={reversefunction(todate)} />
-        </div> */}
+          <div className="col-2 col-lg-2 col-md-2 align-self-center">
+            <ExportPurchaseEntry purchasereturnarr={purchasereturnarr} fromdate={reversefunction(fromdate)} todate={reversefunction(todate)} />
+          </div>
         </div>
-        <div className='scroll scroll-y overflow-scroll p-0 m-0' style={{ minHeight: '55vh', height: '55vh' }}>
+        <div className='scroll scroll-y overflow-scroll p-0 m-0' style={{ minHeight: '57vh', height: '57vh' }}>
           <table className="table text-center p-0 m-0">
             <thead className='p-0 m-0 align-middle'>
               <tr>
@@ -3560,7 +3559,7 @@ function PurchaseReturns() {
             </thead>
             {
               Loading ? (
-                <body className=' text-center' style={{ minHeight: '55vh' }}>
+                <body className=' text-center' style={{ minHeight: '57vh' }}>
                   <tr className='position-absolute border-0 start-0 end-0 px-5'>
                     <div className="d-flex align-items-center">
                       <strong className='fs-5'>Getting Details please be Patient ...</strong>
@@ -3583,7 +3582,7 @@ function PurchaseReturns() {
                             {/* <button className='btn'><img src={process.env.PUBLIC_URL + "/images/cart.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1" /></button> */}
                             <button className="btn" onClick={() => { setindex(i); toggle_pridw() }}><img src={process.env.PUBLIC_URL + "/images/archivebox.png"} alt="displaying_image" className="ms-1" style={{ width: "1.5rem" }} /></button></td>
                           <td className='p-0 m-0 text-charcoal fw-bold'><button className="btn position-relative cursor-pointer more p-0 m-0"><img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" style={{ width: "1.5rem" }} /></button></td>
-                          <td className={`PEdetailssection position-absolute mt-1 d-${i == index ? pridw : 'none'} bg-seashell p-0 m-0`} style={{ top: '-8.5rem' }} >
+                          <td className={` position-absolute d-${i == index ? pridw : 'none'} border border-1 start-0 end-0 bg-seashell p-0 m-0`} style={{ Height: '90vh', top: '-7.15rem', zIndex: '2' }} >
                             {
                               i == index ? (
                                 <PRitemdetailssection purchasereturnarr={purchasereturnarr[i]} itembillid={"PR-" + item.return_no} toggle_pridw={toggle_pridw} />
@@ -3610,17 +3609,15 @@ function PurchaseReturns() {
 
           </table>
         </div>
-        <div className="container-fluid mb-1">
-          <div className="row p-0 m-0 text-center">
-            <div className="col-3 col-xl-4 col-md-2 col-lg-2 col-sm-4 p-0 m-0">
-              <button className="button ms-1 button-seashell" ref={previousref} value={prevoffset} onClick={(e) => { getpreviouspages(e); console.log(e.target.value) }} style={{ marginTop: '0.15rem' }}>Previous</button>
-            </div>
-            <div className="col-auto col-xl-auto col-md-8 col-lg-8 col-sm-auto p-0 m-0">
+        <div className="container-fluid my-1">
+          <div className="d-flex justify-content-center p-0 m-0 text-center">
+            <button className="btn p-0 m-0 me-2 px-1 " ref={previousref} value={prevoffset} onClick={(e) => { getpreviouspages(e); console.log(e.target.value) }} style={{ marginTop: '0.15rem' }}>Previous</button>
 
+            <div className="col-auto col-xl-auto col-md-8 col-lg-8 col-sm-auto p-0 m-0">
               {
                 pages ? (
                   pages.map((page, i) => (
-                    <button className={`button ms-2 button-${nxtoffset - 1 == i ? 'pearl' : 'burntumber'} border  shadow-${nxtoffset - 1 == i ? 'lg' : 'none'}`} ref={nextref} value={page} id={page} onClick={(e) => { settabindex(i); GETPurchaseReturns(i) }} key={i}>{page}</button>
+                    <button className={`button ms-2 button-${nxtoffset - 1 == i ? 'charcoal' : 'pearl'}   shadow-${nxtoffset - 1 == i ? 'lg' : 'none'}`} ref={nextref} value={page} id={page} onClick={(e) => { settabindex(i); GETPurchaseReturns(i) }} key={i}>{page}</button>
                   ))
                 ) : (
                   <div>Loading...</div>
@@ -3628,13 +3625,13 @@ function PurchaseReturns() {
 
               }
             </div>
-            <div className="col-3 col-xl-4 col-md-2 col-lg-2 col-sm-4 p-0 m-0">
-              <button className={`button button-burntumber`} ref={nextref} value={nxtoffset} onClick={(e) => { getnextpages(e); console.log(e.target.value) }} style={{ marginTop: '0.15rem' }}>Next</button>
-            </div>
+
+            <button className={`btn border-charcoal p-0 m-0 px-1 ms-2`} ref={nextref} value={nxtoffset} onClick={(e) => { getnextpages(e); console.log(e.target.value) }} style={{ marginTop: '0.15rem' }}>Next</button>
+
           </div>
         </div>
       </div>
-      <section className={`newreturnentrysection position-absolute rounded-4 bg-seashell border border-1 mx-2 start-0 end-0 top-0 bottom-0 d-${nref}`} style={{ marginTop: '-8.5rem', 'height': '90vh' }}  >
+      <section className={`newreturnentrysection position-absolute bg-seashell border border-1 start-0 end-0  d-${nref}`} style={{ 'top': '-7.15rem', Height: '90vh' }}  >
         {<NewPurchaseReturnentryform toggle_nref={toggle_nref} GETPurchaseReturns={GETPurchaseReturns} />}
       </section>
     </>
@@ -3679,67 +3676,62 @@ function PRitemdetailssection(props) {
   console.log(props.purchasereturnarr)
   return (
     <div className="container-fluid p-0 m-0 bg-seashell ">
-      <div className="container-fluid bg-seashell p-0 m-0">
-        <div className="row p-0 m-0">
-          <div className="col-1">
-            <button type="button" className="btn-close closebtn m-auto" onClick={props.toggle_pridw} aria-label="Close"></button>
-          </div>
-          <div className="col-9">
-            <h4 className='text-center' style={{ color: 'var(--charcoal)', fontWeight: '600' }}>{props.itembillid} Purchase Return Item Details</h4>
-          </div>
-          <div className="col-2 d-none">
-            <div className=' position-relative searchbutton' style={{ top: '0.25rem', right: '1rem' }}>
-              <input type="text" className=" form-control d-inline PEsearch bg-seashell" placeholder="Search PE" />
-              <button className="btn p-0 m-0 bg-transparent border-0 position-absolute" style={{ width: '2rem', right: '0', left: '0', top: '0.25rem' }}><img src={process.env.PUBLIC_URL + "/images/search.png"} alt="displaying_image" className="img-fluid p-0 m-0" /></button>
-            </div>
+      <div className="container-fluid bg-seashell p-0 m-0 position-relative">
+        <h5 className='text-center text-charcoal mt-3'>{props.itembillid} Purchase Return Item Details</h5>
+        <button type="button" className="btn-close closebtn position-absolute end-0 me-2 " onClick={props.toggle_pridw} aria-label="Close"></button>
+        <div className="col-2 d-none">
+          <div className=' position-relative searchbutton' style={{ top: '0.25rem', right: '1rem' }}>
+            <input type="text" className=" form-control d-inline PEsearch bg-seashell" placeholder="Search PE" />
+            <button className="btn p-0 m-0 bg-transparent border-0 position-absolute" style={{ width: '2rem', right: '0', left: '0', top: '0.25rem' }}><img src={process.env.PUBLIC_URL + "/images/search.png"} alt="displaying_image" className="img-fluid p-0 m-0" /></button>
           </div>
         </div>
+
       </div>
-      <div className='row p-0 m-0 mb-3'>
+      <div className='d-flex justify-content-center p-0 m-0 mt-3 mb-1'>
         {
           Items.map((data, i) => (
-            <div className="col-3 col-xl-2 col-lg-2 col-md-4 col-sm-6 p-0 m-0">
-              <button className={`button border button-${i == index ? 'charcoal' : 'seashell'}`} onClick={() => { setindex(i) }}>{data}</button>
-            </div>
+
+            <button className={`button border-charcoal rounded-0 button-${i == index ? 'charcoal' : 'seashell'}`} onClick={() => { setindex(i) }}>{data}</button>
+
           ))
         }
 
       </div>
 
+      <div className="d-flex justify-content-end me-5 ">
+        <input type='checkbox' className='' value={Taxon ? Taxon : ''} onChange={() => { Taxon == true ? setTaxon(false) : setTaxon(true) }} /><label>Show Tax Details</label>
+      </div>
 
-      <div className={`scroll bg-seashell scroll-y d-${medicine}`} style={{ minHeight: '82vh', maxHeight: '82vh' }}>
-        <div className="row">
-          <div className="col-9"><h5 className='ps-1'>Medicine</h5></div>
-          <div className="col-3"><input type='checkbox' className='' value={Taxon ? Taxon : ''} onChange={() => { Taxon == true ? setTaxon(false) : setTaxon(true) }} /><label>Show Tax Details</label></div>
-        </div>
+      <div className={`scroll bg-seashell scroll-y d-${medicine}`} style={{ minHeight: '70vh', maxHeight: '70vh' }}>
 
-        <table className="table datatable table-responsive text-center bg-seashell"><thead>
-          <tr>
-            <th rowspan='2' className='border p-0 m-0 px-1'>Item ID</th>
-            <th rowspan='2' className='border p-0 m-0 px-1'>Item Name</th>
-            <th rowspan='2' className='border p-0 m-0 px-1'>Batch No.</th>
-            <th rowspan='2' className='border p-0 m-0 px-1'>Expiry Date</th>
-            <th rowspan='2' className='border p-0 m-0 px-1'>MRP in Rs.</th>
-            <th rowspan='2' className='border p-0 m-0 px-1'>Rate in Rs.</th>
-            <th rowspan='2' className='border p-0 m-0 px-1'>Disc%</th>
-            <th rowspan='2' className='border p-0 m-0 px-1'>Trade Disc%</th>
-            <th colspan={Taxon == true ? '8' : '2'} scope='col-group' className='border p-0 m-0 px-1'>Total Tax</th>
-            <th rowspan='2' className='border p-0 m-0 px-1'>Cost in Rs.</th>
-            <th rowspan='2' className='border p-0 m-0 px-1'>Qty.</th>
-            <th rowspan='2' className='border p-0 m-0 px-1'>Total in Rs.</th>
-            <th rowspan='2' className='border p-0 m-0 px-1'>Print QR</th>
-          </tr>
-          <tr>
-            <th scope='col' className={`border p-0 m-0 px-1 d-${Taxon == true ? '' : 'none'}`}>CGST%</th>
-            <th scope='col' className={`border p-0 m-0 px-1 d-${Taxon == true ? '' : 'none'}`}>CGST in Rs.</th>
-            <th scope='col' className={`border p-0 m-0 px-1 d-${Taxon == true ? '' : 'none'}`}>SGST%</th>
-            <th scope='col' className={`border p-0 m-0 px-1 d-${Taxon == true ? '' : 'none'}`}>SGST in Rs.</th>
-            <th scope='col' className={`border p-0 m-0 px-1 d-${Taxon == true ? '' : 'none'}`}>IGST%</th>
-            <th scope='col' className={`border p-0 m-0 px-1 d-${Taxon == true ? '' : 'none'}`}>IGST in Rs.</th>
-            <th scope='col' className={`border p-0 m-0 px-1`}>Total%</th>
-            <th scope='col' className={`border p-0 m-0 px-1`}>Total in Rs.</th>
-          </tr>
-        </thead>
+        <table className="table datatable text-center bg-seashell">
+          <thead>
+            <tr>
+              <th rowspan='2' className='border p-0 m-0 px-1'>Item ID</th>
+              <th rowspan='2' className='border p-0 m-0 px-1'>Item Name</th>
+              <th rowspan='2' className='border p-0 m-0 px-1'>Batch No.</th>
+              <th rowspan='2' className='border p-0 m-0 px-1'>Expiry Date</th>
+              <th rowspan='2' className='border p-0 m-0 px-1'>MRP in Rs.</th>
+              <th rowspan='2' className='border p-0 m-0 px-1'>Rate in Rs.</th>
+              <th rowspan='2' className='border p-0 m-0 px-1'>Disc%</th>
+              <th rowspan='2' className='border p-0 m-0 px-1'>Trade Disc%</th>
+              <th colspan={Taxon == true ? '8' : '2'} scope='col-group' className='border p-0 m-0 px-1'>Total Tax</th>
+              <th rowspan='2' className='border p-0 m-0 px-1'>Cost in Rs.</th>
+              <th rowspan='2' className='border p-0 m-0 px-1'>Qty.</th>
+              <th rowspan='2' className='border p-0 m-0 px-1'>Total in Rs.</th>
+
+            </tr>
+            <tr>
+              <th scope='col' className={`border p-0 m-0 px-1 d-${Taxon == true ? '' : 'none'}`}>CGST%</th>
+              <th scope='col' className={`border p-0 m-0 px-1 d-${Taxon == true ? '' : 'none'}`}>CGST in Rs.</th>
+              <th scope='col' className={`border p-0 m-0 px-1 d-${Taxon == true ? '' : 'none'}`}>SGST%</th>
+              <th scope='col' className={`border p-0 m-0 px-1 d-${Taxon == true ? '' : 'none'}`}>SGST in Rs.</th>
+              <th scope='col' className={`border p-0 m-0 px-1 d-${Taxon == true ? '' : 'none'}`}>IGST%</th>
+              <th scope='col' className={`border p-0 m-0 px-1 d-${Taxon == true ? '' : 'none'}`}>IGST in Rs.</th>
+              <th scope='col' className={`border p-0 m-0 px-1`}>Total%</th>
+              <th scope='col' className={`border p-0 m-0 px-1`}>Total in Rs.</th>
+            </tr>
+          </thead>
           {
             props.purchasereturnarr.purchase_medicines && props.purchasereturnarr.purchase_medicines.length !== 0 ? (
               <tbody className='border align-items-center p-0 m-0'>
@@ -3765,7 +3757,6 @@ function PRitemdetailssection(props) {
                       <td className='border p-0 m-0 align-middle'>{item.cost ? item.cost : 'N/A'}</td>
                       <td className='border p-0 m-0 align-middle'>{item.qty ? item.qty : 'N/A'}</td>
                       <td className='border p-0 m-0 align-middle'>{item.total_amount ? item.total_amount : 'N/A'}</td>
-                      <td className='border p-0 m-0 align-middle'><button className='btn'><img src={process.env.PUBLIC_URL + "/images/qrcode.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1" /></button></td>
                     </tr>
                   ))
                 }
@@ -3774,8 +3765,8 @@ function PRitemdetailssection(props) {
 
             ) : (
               <body className='text-center p-0 m-0 border border-1 '>
-                <div className='position-absolute border-0 start-0 end-0 mx-3 p-2 bg-lightred'>
-                  <strong className='fs-5 text-center bg-lightred'>No Medicines Found</strong>
+                <div className='position-absolute border-0 start-0 end-0 mx-3 p-2'>
+                  <p className=' text-charcoal fw-bold text-center'>No Medicines Found</p>
                 </div>
 
               </body>
@@ -3785,11 +3776,8 @@ function PRitemdetailssection(props) {
           }
         </table>
       </div>
-      <div className={`scroll bg-seashell scroll-y d-${vaccine}`} style={{ minHeight: '82vh', maxHeight: '82vh' }}>
-        <div className="row">
-          <div className="col-9"><h5 className='ps-1'>Vaccine</h5></div>
-          <div className="col-3"><input type='checkbox' className='' value={Taxon ? Taxon : ''} onChange={() => { Taxon == true ? setTaxon(false) : setTaxon(true) }} /><label>Show Tax Details</label></div>
-        </div>
+      <div className={`scroll bg-seashell scroll-y d-${vaccine}`} style={{ minHeight: '70vh', maxHeight: '70vh' }}>
+
         <table className="table datatable table-responsive text-center bg-seashell"><thead>
           <tr>
             <th rowspan='2' className='border p-0 m-0 px-1'>Item ID</th>
@@ -3804,7 +3792,7 @@ function PRitemdetailssection(props) {
             <th rowspan='2' className='border p-0 m-0 px-1'>Cost in Rs.</th>
             <th rowspan='2' className='border p-0 m-0 px-1'>Qty.</th>
             <th rowspan='2' className='border p-0 m-0 px-1'>Total in Rs.</th>
-            <th rowspan='2' className='border p-0 m-0 px-1'>Print QR</th>
+
           </tr>
           <tr>
             <th scope='col' className={`border p-0 m-0 px-1 d-${Taxon == true ? '' : 'none'}`}>CGST%</th>
@@ -3842,7 +3830,7 @@ function PRitemdetailssection(props) {
                       <td className='border p-0 m-0 align-middle'>{item.cost ? item.cost : 'N/A'}</td>
                       <td className='border p-0 m-0 align-middle'>{item.qty ? item.qty : 'N/A'}</td>
                       <td className='border p-0 m-0 align-middle'>{item.total_amount ? item.total_amount : 'N/A'}</td>
-                      <td className='border p-0 m-0 align-middle'><button className='btn'><img src={process.env.PUBLIC_URL + "/images/qrcode.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1" /></button></td>
+
                     </tr>
                   ))
                 }
@@ -3851,8 +3839,8 @@ function PRitemdetailssection(props) {
 
             ) : (
               <body className='text-center p-0 m-0 border border-1 '>
-                <div className='position-absolute border-0 start-0 end-0 mx-3 p-2 bg-lightred'>
-                  <strong className='fs-5 text-center bg-lightred'>No Vaccines Found</strong>
+                <div className='position-absolute border-0 start-0 end-0 mx-3 p-2'>
+                  <p className=' text-center fw-bold'>No Vaccines Found</p>
                 </div>
 
               </body>
@@ -4045,17 +4033,11 @@ function NewPurchaseReturnentryform(props) {
     return c
   }
   return (
-    <section className="newpurchaseentryform mt-1 position-relative" style={{ 'height': '90vh' }}>
-      <div className="container-fluid p-0 m-0 rounded-4">
-        <div className="container-fluid bg-seashell rounded-4 position-relative  ">
-          <div className="row p-2 pe-1">
-            <div className="col-1 position-absolute end-0">
-              <button type="button" className="btn-close closebtn m-auto" onClick={props.toggle_nref} aria-label="Close" ></button>
-            </div>
-            <div className="col-12 justify-content-center">
-              <h5 className="text-center" style={{ color: "var(--charcoal)" }} >New Purchase Return Entry</h5>
-            </div>
-          </div>
+    <div className="newpurchaseentryform p-0 m-0">
+      <div className=" p-0 m-0">
+        <div className="container-fluid p-0 m-0 bg-seashell position-relative  ">
+          <h5 className="text-center mt-3" style={{ color: "var(--charcoal)" }} >New Purchase Return Entry</h5>
+          <button type="button" className="btn-close position-absolute end-0 closebtn me-2" onClick={props.toggle_nref} aria-label="Close" ></button>
         </div>
         <div className="container-fluid p-0 m-0 w-100 entrydetails bg-seashell">
           <div className="row p-0 m-0 justify-content-center">
@@ -4191,7 +4173,7 @@ function NewPurchaseReturnentryform(props) {
 
         </div>
       </div>
-      <div className='col-12 position-absolute start-0 end-0 bottom-0 rounded-bottom text-center bg-pearl align-items-center border border-1 p-2'>
+      <div className='col-12 position-absolute start-0 end-0 bottom-0 rounded-bottom text-center bg-pearl align-items-center border border-1 py-3'>
         <div className="row p-0 m-0">
           <div className="col-6">
             <div className="row">
@@ -4224,7 +4206,7 @@ function NewPurchaseReturnentryform(props) {
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 }
 
@@ -4376,8 +4358,8 @@ function Stockvaccinesection() {
         <input type="text" className=" form-control d-inline vaccinesearch bg-pearl" placeholder="Vaccine Name" onChange={(e) => { setsearchname(e.target.value); }} />
         <button className="btn p-0 m-0 bg-transparent border-0 position-absolute" style={{ width: '2rem', right: '0', left: '0', top: '0.25rem' }}><img src={process.env.PUBLIC_URL + "/images/search.png"} alt="displaying_image" className="img-fluid p-0 m-0" /></button>
       </div>
-      <h5 className=' text-center text-charcoal75 fw-bold'>Vaccine Stock Info</h5>
-      <div className='scroll scroll-y' style={{ 'height': '52vh', minHeight: '52vh', maxHeight: '52vh' }}>
+      <div className=' text-start text-charcoal p-2 ms-5 fw-bold'>Vaccine Stock Info</div>
+      <div className='scroll scroll-y' style={{ 'height': '57vh', minHeight: '57vh', maxHeight: '57vh' }}>
         <table className="table datatable text-center" >
           <thead>
             <tr>
@@ -4448,17 +4430,17 @@ function Stockvaccinesection() {
           }
         </table>
       </div>
-      <div className="container-fluid mb-1">
-        <div className="row p-0 m-0 text-center">
-          <div className="col-3 col-xl-4 col-md-2 col-lg-2 col-sm-4 p-0 m-0">
-            <button className="button ms-1 button-seashell" ref={previousref} value={prevoffset} onClick={(e) => { getpreviouspages(e); }} style={{ marginTop: '0.15rem' }}>Previous</button>
-          </div>
+      <div className="container-fluid my-1">
+        <div className="d-flex justify-content-center p-0 m-0 text-center">
+
+          <button className="btn p-0 m-0 border-charcoal px-1 me-2" ref={previousref} value={prevoffset} onClick={(e) => { getpreviouspages(e); }} style={{ marginTop: '0.15rem' }}>Previous</button>
+
           <div className="col-auto col-xl-auto col-md-8 col-lg-8 col-sm-auto p-0 m-0">
 
             {
               pages ? (
                 pages.map((page, i) => (
-                  <button className={`button ms-2 button-${nxtoffset - 1 == i ? 'pearl' : 'burntumber'} border  shadow-${nxtoffset - 1 == i ? 'lg' : 'none'}`} ref={nextref} value={page} id={page} onClick={(e) => { GetVaccines(i) }} key={i}>{page}</button>
+                  <button className={`button ms-2 button-${nxtoffset - 1 == i ? 'charcoal' : 'pearl'} shadow-${nxtoffset - 1 == i ? 'lg' : 'none'}`} ref={nextref} value={page} id={page} onClick={(e) => { GetVaccines(i) }} key={i}>{page}</button>
                 ))
               ) : (
                 <div>Loading...</div>
@@ -4466,9 +4448,7 @@ function Stockvaccinesection() {
 
             }
           </div>
-          <div className="col-3 col-xl-4 col-md-2 col-lg-2 col-sm-4 p-0 m-0">
-            <button className={`button button-burntumber`} ref={nextref} value={nxtoffset} onClick={(e) => { getnextpages(e); }} style={{ marginTop: '0.15rem' }}>Next</button>
-          </div>
+          <button className={`btn p-0 m-0 border-charcoal px-1 ms-2 `} ref={nextref} value={nxtoffset} onClick={(e) => { getnextpages(e); }} style={{ marginTop: '0.15rem' }}>Next</button>
         </div>
       </div>
     </div>
@@ -4569,8 +4549,8 @@ function Stockmedicinesection() {
         <input type="text" className=" form-control d-inline vaccinesearch bg-pearl" placeholder="Medicine Name" onChange={(e) => { setsearchname(e.target.value); }} />
         <button className="btn p-0 m-0 bg-transparent border-0 position-absolute" style={{ width: '2rem', right: '0', left: '0', top: '0.25rem' }}><img src={process.env.PUBLIC_URL + "/images/search.png"} alt="displaying_image" className="img-fluid p-0 m-0" /></button>
       </div>
-      <h6 className='text-center text-charcoal75 fw-bold'>Medicine Stock Info</h6>
-      <div className='scroll scroll-y' style={{ 'height': '52vh', minHeight: '52vh', maxHeight: '52vh' }}>
+      <div className='text-start ms-5 text-charcoal fw-bold p-2'>Medicine Stock Info</div>
+      <div className='scroll scroll-y p-0 m-0' style={{ 'height': '57vh', minHeight: '57vh', maxHeight: '57vh' }}>
         <table className="table datatable text-center" >
           <thead>
             <tr>
@@ -4591,7 +4571,6 @@ function Stockmedicinesection() {
                 <td className='placeholder-glow'><div className='placeholder col-12 p-0 m-0 w-100 px-1'>Loading..</div></td>
                 <td className='placeholder-glow'><div className='placeholder col-12 p-0 m-0 w-100 px-1'>Loading..</div></td>
                 <td className='placeholder-glow'><div className='placeholder col-12 p-0 m-0 w-100 px-1'>Loading..</div></td>
-
               </tr>
             ) : (
               vaccineslist == undefined || vaccineslist.length == 0 ? (
@@ -4641,17 +4620,16 @@ function Stockmedicinesection() {
           }
         </table>
       </div>
-      <div className="container-fluid mb-1">
-        <div className="row p-0 m-0 text-center">
-          <div className="col-3 col-xl-4 col-md-2 col-lg-2 col-sm-4 p-0 m-0">
-            <button className="button ms-1 button-seashell" ref={previousref} value={prevoffset} onClick={(e) => { getpreviouspages(e); }} style={{ marginTop: '0.15rem' }}>Previous</button>
-          </div>
+      <div className="container-fluid my-1">
+        <div className="d-flex justify-content-center p-0 m-0 text-center">
+          <button className="button me-2 border-charcoal p-0 m-0 px-1" ref={previousref} value={prevoffset} onClick={(e) => { getpreviouspages(e); }} style={{ marginTop: '0.15rem' }}>Previous</button>
+
           <div className="col-auto col-xl-auto col-md-8 col-lg-8 col-sm-auto p-0 m-0">
 
             {
               pages ? (
                 pages.map((page, i) => (
-                  <button className={`button ms-2 button-${nxtoffset - 1 == i ? 'pearl' : 'burntumber'} border  shadow-${nxtoffset - 1 == i ? 'lg' : 'none'}`} ref={nextref} value={page} id={page} onClick={(e) => { GetVaccines(i) }} key={i}>{page}</button>
+                  <button className={`btn ms-2 button-${nxtoffset - 1 == i ? 'charcoal' : 'pearl'}  shadow-${nxtoffset - 1 == i ? 'lg' : 'none'}`} ref={nextref} value={page} id={page} onClick={(e) => { GetVaccines(i) }} key={i}>{page}</button>
                 ))
               ) : (
                 <div>Loading...</div>
@@ -4659,9 +4637,7 @@ function Stockmedicinesection() {
 
             }
           </div>
-          <div className="col-3 col-xl-4 col-md-2 col-lg-2 col-sm-4 p-0 m-0">
-            <button className={`button button-burntumber`} ref={nextref} value={nxtoffset} onClick={(e) => { getnextpages(e); }} style={{ marginTop: '0.15rem' }}>Next</button>
-          </div>
+          <button className={`btn border-charcoal p-0 m-0 px-1 ms-2`} ref={nextref} value={nxtoffset} onClick={(e) => { getnextpages(e); }} style={{ marginTop: '0.15rem' }}>Next</button>
         </div>
       </div>
     </div>

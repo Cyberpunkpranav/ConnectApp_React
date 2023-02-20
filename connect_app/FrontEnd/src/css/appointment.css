@@ -47,11 +47,6 @@ body {
 }
 
 
-.page2allappointment .actionoptions {
-    background: linear-gradient(120deg, rgba(255, 255, 255, .25), rgba(255, 255, 255, .75), 70%, rgba(255, 255, 255, .25));
-    border-radius: 10px;
-    box-shadow: 0 0 5px 0.5px rgba(0, 0, 0, 0.50);
-}
 
 .page2appointment tr:nth-child(even) {
     background-color: var(--seashell);
@@ -111,120 +106,13 @@ input[placeholder-shown] {
 
 /*--------------------------------------------------------------page2appointment css--------------------------------------------------------*/
 
-/*-------------------------------------------------------------page2allappointment css------------------------------------------------------*/
-.page2allappointment th {
-    font-family: 'Urbanist', sans-serif;
-    color: var(--charcoal75);
-}
 
-.page2allappointment .actionoptions {
-    display: none;
-    background: var(--seashell);
-    left: 3rem;
-    border: 1px solid var(--lightblue);
-    z-index: 2;
-}
-
-.page2allappointment .actionoptions tr:hover {
-    cursor: pointer;
-}
-
-.page2allappointment .actionoptions:before {
-    position: absolute;
-    content: "";
-    height: 20px;
-    width: 20px;
-    background: var(--seashell);
-    top: -0.7rem;
-    left: 0.6rem;
-    border-left: 1px solid var(--lightblue);
-    border-top: 1px solid var(--lightblue);
-    transform: rotate(45deg);
-}
-
-.page2allappointment .action:focus+.actionoptions {
-    display: block;
-}
-
-.page2allappointment .moreoptions {
-    display: none;
-    background: var(--seashell);
-    right: 3rem;
-    border: 1px solid var(--lightblue);
-    z-index: 2;
-    box-shadow: 1px 0px 5px 1px var(--charcoal);
-    font-weight: 800;
-}
-
-
-.page2allappointment .moreoptions tr:hover {
-    cursor: pointer;
-}
-
-.page2allappointment .moreoptions:before {
-    position: absolute;
-    content: "";
-    height: 20px;
-    width: 20px;
-    background: var(--seashell);
-    top: -0.7rem;
-    right: 0.6rem;
-    border-left: 1px solid var(--lightblue);
-    border-top: 1px solid var(--lightblue);
-
-    transform: rotate(45deg);
-}
-
-.page2allappointment .more:focus+.moreoptions {
-    display: block;
-}
-
-.page2allappointment .appointmentcompleted {
-    background-color: var(--lightgreen);
-    color: var(--charcoal);
-    font-weight: 800;
-}
-
-.page2allappointment .appointmentcancelled {
-    background-color: var(--lightred);
-    color: var(--charcoal);
-    font-weight: 800;
-}
-
-.page2allappointment .appointmentUnattended {
-    background-color: var(--lightyellow);
-    color: var(--charcoal);
-    font-weight: 800;
-}
-
-.page2allappointment .appointmentcompleted:hover,
-.page2allappointment .appointmentcancelled:hover,
-.page2allappointment .appointmentUnattended:hover {
-    box-shadow: 1px 0px 5px 1px var(--charcoal);
-}
-
-.page2allappointment .status_completed {
-    background-color: var(--lightgreen);
-    font-weight: 800;
-}
-
-.page2allappointment .status_pending {
-    background-color: var(--lightred);
-    font-weight: 800;
-
-
-}
-
-.page2allappointment .status_completed:hover,
-.page2allappointment .status_pending:hover {
-    box-shadow: 1px 0px 5px 1px var(--charcoal);
-}
     .bill .scroll {
     max-height: 30rem;
     overflow-y: auto;
     min-height: 20rem;
 }
-/*-------------------------------------------------------------page2allappointment css------------------------------------------------------*/
+
 @media (max-width:769px) {
 
     .page2appointment .UpdateAppointment {

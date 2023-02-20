@@ -84,9 +84,6 @@ html {
     right: 1rem;
 }
 
-.newpurchaseentrysection {
-    margin-top: -14vh;
-}
 
 .newpurchaseentryform {
     z-index: 2;
@@ -110,12 +107,6 @@ html {
     right: 0rem;
 }
 
-.PEdetailssection {
-    z-index: 2;
-    left: 0;
-    right: 0;
-    box-shadow: 100vh 100vh 100vh 100vh var(--charcoal50);
-}
 
 .newsaleentryform {
     top: -7.15rem;
@@ -127,5 +118,5 @@ html {
 }
 
 .newpurchaseentrysection {
-    top: -1.5rem;
+    top: -7.15rem;
 }

@@ -68,10 +68,12 @@ function DoctorSchedule(props) {
 
   async function Appointmentlist() {
     setisLoading(true);
+    Loading.dots()
     await axios.get(`${url}/appointment/list?doctor_id=${props.todayDoc[props._selected][0]}&from_date=${Date}&to_date=${Date}`).then((response) => {
       setappointmentdata(response.data.data);
     })
     setisLoading(false);
+    Loading.remove()
     setsingleload(1)
   }
   useEffect(() => {
@@ -313,7 +315,9 @@ function DoctorSchedule(props) {
                 singleload == 0 ? (
                   <tbody >
                     <tr className=' position-relative text-burntumber fs-3 mt-1 text-center m-auto'>
-                      <td className=' position-absolute start-0 end-0 text-burntumber fs-3 mt-1 text-center'>Loading Appointments</td>
+                      <td className=' position-absolute start-0 end-0 text-burntumber fs-3 mt-1 text-center'>
+
+                      </td>
                     </tr>
                   </tbody>
                 ) : (
@@ -519,9 +523,21 @@ function Timecard(props) {
     <div className="scroll align-items-center align-content-center my-auto mb-2">
       {
         isLoading ? (
-          <div className="container-fliud pt-3 start-0 end-0 position-absolute">
-            <div className="d-flex fs-2 align-items-center">
-              <div className="text-burntumber m-auto">Loading Timeslots</div>
+
+          <div className="card text-center ms-3" aria-hidden="true">
+            <div className="card-body text-center">
+              <h5 className="card-title text-center placeholder-glow">
+                <span className="placeholder text-center col-6"></span>
+              </h5>
+              <div className="card-text text-center placeholder-glow">
+                <div className="row text-center g-2">
+                <span className="text-center placeholder col-7"></span>
+                <span className="text-center placeholder col-4"></span>
+                <span className="text-center placeholder col-4"></span>
+                <span className="text-center placeholder col-6"></span>
+                <span className=" text-center placeholder col-8"></span>
+                </div>
+              </div>
             </div>
           </div>
         ) : (
@@ -636,7 +652,7 @@ function Timecard(props) {
 
         </div>
       </div>
-      <div className={`d-${displaytimecardbtn}`} id="addslotbutton">
+      <div className={`d-${isLoading ? 'none': displaytimecardbtn}`} id="addslotbutton">
         <button className='btn button-seashell ms-3' onClick={addnewtimecard}>
           <p className="text-burntumber">Click the button below to <br />add TimeCard</p>
           <img src={process.env.PUBLIC_URL + "/images/addicon.png"} alt="displaying_image" style={{ width: "3rem" }} />

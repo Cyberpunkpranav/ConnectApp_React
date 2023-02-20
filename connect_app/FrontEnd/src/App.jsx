@@ -530,11 +530,11 @@ function Appointments(props) {
               <div className="col-12 mt-3">
                 <h3 className="p-2">All Appointments</h3>
               </div>
-              <div className="col-12 mt-4">
-                <div className="row g-3">
+              <div className="col-12 mt-2">
+                <div className="row p-0 m-0 g-lg-3 g-md-1">
                   {
                     options.map((data, index) => (
-                      <div className="col-auto"><button className={`button px-4 rounded-5 button-${optionsindex == index ? 'seashell' : 'charcoal'} shadow-${optionsindex == index ? 'lg' : ''} border border-dark border-1`} key={index} onClick={(e) => { setoptionsindex(index); settype(data[1]) }}>{data[0]}</button></div>
+                      <div className="col-auto"><button className={`button px-4 rounded-5 border-charcoal button-${optionsindex == index ? 'charcoal' : 'pearl'}`} key={index} onClick={(e) => { setoptionsindex(index); settype(data[1]) }}>{data[0]}</button></div>
                     ))
                   }
                 </div>
@@ -569,9 +569,9 @@ function Appointments(props) {
             </div>
           </div>
         </div>
-        <section className="container-fluid scroll scroll-y page2allappointment shadow mt-2 " style={{ minHeight: '15rem', maxHeight: '68vh' }}>
+        <section className="container-fluid scroll scroll-y mt-2 " style={{ minHeight: '60vh', maxHeight: '60vh' }}>
           <table className="table text-center ">
-            <thead>
+            <thead className="text-charcoal75 fw-bold">
               <tr>
                 <th>Update</th>
                 <th>Status</th>
@@ -582,13 +582,14 @@ function Appointments(props) {
                 <th>Time</th>
                 <th>Total Amount</th>
                 <th>Amount Status</th>
+                <th></th>
                 <th>Rx</th>
                 <th>F/U Date</th>
                 <th>Actions</th>
                 <th>More</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="text-charcoal fw-bold ">
               {
                 doctorid ? (
                   <SelectedAppointments appointmentdata={appointmentdata} isselectedLoading={isselectedLoading} type={type} doctorid={doctorid} fromdate={fromdate} todate={todate} fetchallAppointmentslist={fetchallAppointmentslist} status={status} status_color={status_color} tConvert={tConvert} fetchapi={props.fetchapi} />

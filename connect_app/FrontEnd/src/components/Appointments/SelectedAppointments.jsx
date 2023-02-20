@@ -8,7 +8,7 @@ import Notiflix from 'notiflix';
 import { URL } from '../../index'
 import '../../css/bootstrap.css'
 import '../../css/appointment.css'
-import  {Bill} from './Bill'
+import { Bill } from './Bill'
 
 const SelectedAppointments = (props) => {
   const url = useContext(URL);
@@ -17,8 +17,8 @@ const SelectedAppointments = (props) => {
   const [d_form, setd_form] = useState()
   const [paymentsform, setpaymentsform] = useState('none')
   const [paymentindex, setpaymentindex] = useState()
-  const[billindex,setbillindex]=useState()
-  const [billform,setbillform]=useState('none')
+  const [billindex, setbillindex] = useState()
+  const [billform, setbillform] = useState('none')
 
   const openapppointmentform = () => {
     if (appointmentform === "none") {
@@ -42,15 +42,15 @@ const SelectedAppointments = (props) => {
       setpaymentindex()
     }
   }
-  const toggle_bill = ()=>{
-    if(billform==='none'){
-        setbillform('block')
+  const toggle_bill = () => {
+    if (billform === 'none') {
+      setbillform('block')
     }
-    if(billform==='block'){
-        setbillform('none')
-        setbillindex()
+    if (billform === 'block') {
+      setbillform('none')
+      setbillindex()
     }
-}
+  }
   function tConvert(time) {
 
     time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
@@ -114,7 +114,7 @@ const SelectedAppointments = (props) => {
                   <img src={process.env.PUBLIC_URL + "/images/confirmed.png"} style={{ width: "1.5rem" }} onClick={(e) => { settableindex(key); openapppointmentform(); }} className="btn p-0 m-0" />
                 </td>
                 <td>
-                  <select className={`p-2 fw-bolder rounded-5 text-center button-${props.status_color(data.appointment_status)}`} name={data.id} onChange={(e) => { UpadteStatus(e) }}>
+                  <select className={`py-1 fw-bold rounded-pill text-center button-${props.status_color(data.appointment_status)}`} name={data.id} onChange={(e) => { UpadteStatus(e) }}>
                     <option className="button" selected disabled>{props.status(data.appointment_status)}</option>
                     <option className="button-lightred" value='1'>Pending</option>
                     <option className="button-lightblue" value='2'>Booked</option>
@@ -136,6 +136,9 @@ const SelectedAppointments = (props) => {
                 <td>{props.tConvert(data.timeslot.time_from)}</td>
                 <td>{data.total_amount}</td>
                 <td><AmountPaid appointmentData={data} /></td>
+                <td className='p-0 m-0 text-charcoal fw-bold align-items-center '>
+                  <div className='vr rounded-2 align-self-center' style={{ padding: '0.8px' }}></div>
+                </td>
                 <td><img src={process.env.PUBLIC_URL + "/images/vitals.png"} alt="displaying_image" style={{ width: "1.5rem" }} className='m-0 p-0' /> </td>
                 <td>{data.follow_up_date ? data.follow_up_date : ''}</td>
                 <td> <img src={process.env.PUBLIC_URL + "/images/cart.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1 m-0 p-0" /> </td>
@@ -143,10 +146,10 @@ const SelectedAppointments = (props) => {
                   <button className="btn btn-white dropdown-toggle text-decoration-none" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" style={{ width: "1.5rem" }} />
                   </button>
-                  <ul className="dropdown-menu text-decoration-none bg-white" style={{ '-webkit-appearance': 'none','appearance':'none' }}>
-                    <li><button className="dropdown-item" onClick={()=>{setbillindex(key);toggle_bill()}}>Bill</button></li>
-                    <li><button className="dropdown-item" onClick={() => { setpaymentindex(key); toggle_payments(); }}>Payments</button></li>
-                    <li><a className="dropdown-item" href="#">Something else here</a></li>
+                  <ul className="dropdown-menu text-decoration-none bg-white" style={{ '-webkit-appearance': 'none', 'appearance': 'none' }}>
+                    <li  className='dropdown-item d-flex border-bottom p-0 m-0 align-items-center' onClick={() => { setbillindex(key); toggle_bill() }}>Bill</li>
+                    <li  className='dropdown-item d-flex border-bottom p-0 m-0 align-items-center' onClick={() => { setpaymentindex(key); toggle_payments(); }}>Payments</li>
+                    {/* <li><a className="dropdown-item" href="#">Something else here</a></li> */}
                   </ul>
                 </div></td>
                 {
@@ -165,13 +168,13 @@ const SelectedAppointments = (props) => {
                 {
                   billindex == key ? (
                     <td className={`bill d-${billindex == key ? billform : 'none'} bg-seashell col-lg-8 col-md-10 start-0 mx-auto end-0 top-0 col-sm-12 col-12 col-xl-6 border border-2 rounded-2 shadow position-absolute`} style={{ zIndex: '3020', marginTop: '6rem' }}>
-                      <Bill fetchallAppointmentslist={props.fetchallAppointmentslist} 
-                       toggle_bill={toggle_bill} 
-                       patientid={data.patient && data.patient.id != null ? data.patient.id : ""} 
-                       patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} 
-                       appointmentdata={props.getAppointments[key]} 
-                       appointmentid={data.id} 
-                       doctorfee={data.doctor.consulationFee} /></td>
+                      <Bill fetchallAppointmentslist={props.fetchallAppointmentslist}
+                        toggle_bill={toggle_bill}
+                        patientid={data.patient && data.patient.id != null ? data.patient.id : ""}
+                        patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""}
+                        appointmentdata={props.getAppointments[key]}
+                        appointmentid={data.id}
+                        doctorfee={data.doctor.consulationFee} /></td>
                   ) : (<></>)
                 }
                 {
