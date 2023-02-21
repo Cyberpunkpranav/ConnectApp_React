@@ -9,7 +9,7 @@ import { customconfirm } from '../features/notiflix/customconfirm'
 const UpdateAppointment = (props) => {
     const colorref = useRef(null)
     const clinicID = localStorage.getItem('ClinicId')
-        let adminid = localStorage.getItem('id')
+    let adminid = localStorage.getItem('id')
     const url = useContext(URL);
     const DocApi = useContext(Doctorapi)
     const Doclist = useContext(DoctorsList)
@@ -23,7 +23,7 @@ const UpdateAppointment = (props) => {
     const [clinicid, setclinicid] = useState(clinicID)
     const [time, settime] = useState()
     const [timeindex, settimeindex] = useState()
-    const[load,setload]=useState()
+    const [load, setload] = useState()
 
     const [ApikeyDocTimeslots, setApikeyDocTimeslots] = useState()
     const [ApiDocTimefrom, setApiDocTimefrom] = useState();
@@ -68,13 +68,16 @@ const UpdateAppointment = (props) => {
     async function getCurrentTimefrom() {
         setApiDocTimefrom()
         let timefrom = []
-        for (let j = 0; j < ApikeyDocTimeslots[0].length; j++) {
-            if (ApikeyDocTimeslots[0][j].date === props.appointmentdate) {
-                timefrom.push([ApikeyDocTimeslots[0][j].id, ApikeyDocTimeslots[0][j].time_from, ApikeyDocTimeslots[0][j].booking_status])
+        if (ApikeyDocTimeslots) {
+            for (let j = 0; j < ApikeyDocTimeslots[0].length; j++) {
+                if (ApikeyDocTimeslots[0][j].date === props.appointmentdate) {
+                    timefrom.push([ApikeyDocTimeslots[0][j].id, ApikeyDocTimeslots[0][j].time_from, ApikeyDocTimeslots[0][j].booking_status])
+                }
             }
+            setApiDocTimefrom(timefrom)
+            settrigger(false)
         }
-        setApiDocTimefrom(timefrom)
-        settrigger(false)
+
     }
 
 
@@ -134,10 +137,10 @@ const UpdateAppointment = (props) => {
 
                 }).then((response) => {
                     if (response) {
-                            props.fetchallAppointmentslist()
-                            props.closeappointmentform()
-                            setload(false)
-                            props.fetchapi()
+                        props.fetchallAppointmentslist()
+                        props.closeappointmentform()
+                        setload(false)
+                        props.fetchapi()
                         Notiflix.Notify.success(response.data.message);
 
                     } else {
@@ -177,41 +180,41 @@ const UpdateAppointment = (props) => {
     }
     const HighlightOptions = (response) => {
         for (let k = 0; k < TodayDoctors.length; k++) {
-                if(TodayDoctors[k][0]!==undefined){
-                    if (TodayDoctors[k][0] == response) {
-                        return 'charcoal'
-                    }
+            if (TodayDoctors[k][0] !== undefined) {
+                if (TodayDoctors[k][0] == response) {
+                    return 'charcoal'
                 }
-           
+            }
+
         }
 
     }
     const Avaliablemessage = (response) => {
         for (let k = 0; k < TodayDoctors.length; k++) {
-                if(TodayDoctors[k][0]!==undefined){
-                    if (TodayDoctors[k][0] == response) {
-                        return '(Aval today) '
-                    }
+            if (TodayDoctors[k][0] !== undefined) {
+                if (TodayDoctors[k][0] == response) {
+                    return '(Aval today) '
                 }
+            }
         }
 
     }
     return (
-        <section className='bg-seashell text-start rounded-2 shadow position-relative p-2'>
+        <div className=' text-start position-relative p-0 m-0'>
             <h5 className="text-center">Update {props.patientname} Appointment Details</h5>
-            <button type="button" className="btn-close closebtn position-absolute" aria-label="Close" disabled={load==true?true:false} onClick={props.closeappointmentform} ></button>
+            <button type="button" className="btn-close closebtn position-absolute" aria-label="Close" disabled={load == true ? true : false} onClick={props.closeappointmentform} ></button>
             <hr />
             <div className="col-12 text-center">
                 <label>Select Location</label>
                 <div className="col-12 bg-seashell  border-0" >
                     {
                         cliniclist.map((data, i) => (
-                            <label key={i} className={`d-${clinicID==data.id?'block':'none'}`}><input type="checkbox" className={`radio me-1 `} checked={clinicID==data.id? true : false} name={data.id} /> {data.title} {data.address}</label>
-                              
+                            <label key={i} className={`d-${clinicID == data.id ? 'block' : 'none'}`}><input type="checkbox" className={`radio me-1 `} checked={clinicID == data.id ? true : false} name={data.id} /> {data.title} {data.address}</label>
+
                         ))
                     }
                 </div>
-                <hr className='p-0 m-0 my-1'/>
+                <hr className='p-0 m-0 my-1' />
                 <div className="row p-0 m-0 text-center ms-5">
                     <div className="col-md-4">
                         <label>Selected Doctor</label>
@@ -221,7 +224,7 @@ const UpdateAppointment = (props) => {
                                 {
                                     TodayDoctors ? (
                                         Doclist.map((data, i) => (
-                                            <option className={` text-${HighlightOptions(data[0])?'pearl':HighlightOptions(data[0])} bg-${HighlightOptions(data[0]) ? HighlightOptions(data[0]) : 'seashell'}`} name={HighlightOptions(data[0])?'Currently Avaliable':''} selected={data[0] === props.appointmentdoctorid ? true : false} value={data[0]}>{data[0]}.{data[1]} {Avaliablemessage(data[0])}</option>
+                                            <option className={` text-${HighlightOptions(data[0]) ? 'pearl' : HighlightOptions(data[0])} bg-${HighlightOptions(data[0]) ? HighlightOptions(data[0]) : 'seashell'}`} name={HighlightOptions(data[0]) ? 'Currently Avaliable' : ''} selected={data[0] === props.appointmentdoctorid ? true : false} value={data[0]}>{data[0]}.{data[1]} {Avaliablemessage(data[0])}</option>
                                         ))
                                     ) : (
                                         <div>Loading</div>
@@ -262,7 +265,7 @@ const UpdateAppointment = (props) => {
                                     )
                                 ))
                             }
-                            <button className="btn btn-sm done m-1">
+                            <button className="btn btn-sm done m-1 d-none">
                                 <img src="/images/addicon.png" alt="displaying_image" className="mb-1 me-1" style={{ width: "1.2rem" }} /> Time Slot
                             </button>
                         </>
@@ -274,28 +277,28 @@ const UpdateAppointment = (props) => {
                 <hr />
                 <div className="row m-0 p-0">
                     {load ? (
-                                  <div className="col-6 py-2 pb-2 m-auto text-center">
-                                  <div class="spinner-border" role="status">
-                                      <span class="visually-hidden">Loading...</span>
-                                  </div>
-                              </div>
-                    ):(
-                        <>
                         <div className="col-6 py-2 pb-2 m-auto text-center">
-                        <button className='btn px-5 button-burntumber' onClick={confirmmessage}>Done</button>
-                    </div>
-                    <div className="col-6 py-2 pb-2 m-auto text-center">
-                        <button className="btn btn-light px-5 border border-2" onClick={getCurrentTimeslots}>Set Previous</button>
-                    </div>
-                    </>
+                            <div class="spinner-border" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                    ) : (
+                        <>
+                            <div className="col-6 py-2 pb-2 m-auto text-center">
+                                <button className='btn px-5 button-burntumber' onClick={confirmmessage}>Done</button>
+                            </div>
+                            <div className="col-6 py-2 pb-2 m-auto text-center">
+                                <button className="btn btn-light px-5 border border-2" onClick={getCurrentTimeslots}>Set Previous</button>
+                            </div>
+                        </>
                     )
-                
+
                     }
-               
+
                 </div>
 
             </div>
-        </section>
+        </div>
 
     )
 }

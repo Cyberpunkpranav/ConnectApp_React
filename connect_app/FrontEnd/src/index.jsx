@@ -179,6 +179,8 @@ function Switchpage() {
   const [password, setpassword] = useState('none');
   const [passvisibility, setpassvisibility] = useState('password');
   const [load, setload] = useState()
+  // 'Access-Control-Allow-Methods': '*',
+  // "Access-Control-Allow-Headers": "'Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token'",
   const topassword = () => {
     setpassword('flex');
     setemail('none');
@@ -301,7 +303,7 @@ function Switchpage() {
         <section className="signinsection mb-5">
           <div className="container rounded py-5 bg-light bg-opacity-75">
             <div className="container justify-content-center">
-            <p className="text-center mt-2 m-auto" id="text2"><img src={process.env.PUBLIC_URL + "/images/slogan2.png"} className="img-fluid" /></p>
+              <p className="text-center mt-2 m-auto" id="text2"><img src={process.env.PUBLIC_URL + "/images/slogan2.png"} className="img-fluid" /></p>
 
             </div>
             <form autoComplete="off" onSubmit={(e) => Submit(e)}>

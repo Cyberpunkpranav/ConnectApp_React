@@ -34,17 +34,7 @@ body {
 }
 
 
-.page2appointment .UpdateAppointment {
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    margin-bottom: 30rem;
-    margin-top: 20rem;
-    max-width: 40rem;
-    margin-left: 30%;
 
-}
 
 
 
@@ -113,16 +103,3 @@ input[placeholder-shown] {
     min-height: 20rem;
 }
 
-@media (max-width:769px) {
-
-    .page2appointment .UpdateAppointment {
-        margin-left: 4rem;
-        margin-right: -2rem;
-    }
-}
-
-@media (max-width:1024px) {
-    .page2appointment .UpdateAppointment {
-        margin-left: 12rem;
-    }
-}

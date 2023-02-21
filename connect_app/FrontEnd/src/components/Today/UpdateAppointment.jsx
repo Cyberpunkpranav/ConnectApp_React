@@ -205,7 +205,7 @@ const UpdateAppointment = (props) => {
 
     }
     return (
-        <section className='bg-seashell text-start position-relative rounded-5 p-2 shadow-lg'>
+        <div className='p-0 m-0 text-start'>
             <h5 className="text-center mt-2">Update {props.patientname} Appointment Details</h5>
             <button type="button" className="btn-close closebtn position-absolute" disabled={load == true ? true : false} aria-label="Close" onClick={props.closeappointmentform} ></button>
             <hr />
@@ -242,7 +242,7 @@ const UpdateAppointment = (props) => {
                     </div>
                     <div className="col-md-auto col-auto m-0 p-0">
                         <label className="">Selected Date</label>
-                        <div className="col-12"><input type="date" ref={dateref} className="form-control selectdate" onChange={getTimefrom} />
+                        <div className="col-12 bg-seashell"><input type="date" ref={dateref} className="form-control bg-seashell" onChange={getTimefrom} />
                         </div>
                     </div>
                     <div className="col-md-3 col-sm-3 col-lg-3 col-3">
@@ -269,7 +269,7 @@ const UpdateAppointment = (props) => {
                                     )
                                 ))
                             }
-                            <button className="btn btn-sm done m-1">
+                            <button className="btn btn-sm done m-1 d-none">
                                 <img src="/images/addicon.png" alt="displaying_image" className="mb-1 me-1" style={{ width: "1.2rem" }} /> Time Slot
                             </button>
                         </>
@@ -302,7 +302,7 @@ const UpdateAppointment = (props) => {
                 </div>
 
             </div>
-        </section>
+        </div>
 
     )
 }

@@ -111,7 +111,7 @@ body {
 .navsection .addoptions {
     z-index: 1;
     max-width: 20rem;
-    min-width:fit-content;
+    min-width: fit-content;
 }
 
 .navsection .addoptions:before {
@@ -417,14 +417,8 @@ body {
 
 .allappointmentsection .updateappointment {
     max-width: 90rem;
-    left: 0;
-    right: 0;
-    padding: 0;
     margin: 0 auto;
-    top: -10rem;
-    margin-top: 20rem;
-    margin-bottom: 30rem;
-    z-index: 3003;
+    z-index: 3;
 }
 
 .allappointmentsection .vitals {
@@ -441,17 +435,8 @@ body {
 .allappointmentsection .payments {
     max-width: 40rem;
     min-width: auto;
-    left: 0;
-    right: 0;
-    padding: 0;
     margin: 0 auto;
-    top: -10rem;
-    margin-top: 20rem;
-    margin-bottom: 30rem;
-    z-index: 3010;
-    height: 50vh;
-    background: var(--seashell);
-
+    z-index: 3;
 }
 
 .allappointmentsection .payments .scroll-y {
@@ -459,7 +444,7 @@ body {
 }
 
 .allappointmentsection .bill {
-    z-index: 3010;
+    z-index: 3;
     background: var(--seashell);
 }
 
@@ -469,10 +454,7 @@ body {
     min-height: 20rem;
 }
 
-.allappointmentsection .tablesection {
-    min-height: 10rem;
-    max-height: 12rem;
-}
+
 
 .allappointmentsection .timeslotbtns {
     border: 1px solid var(--burntumber);
@@ -490,11 +472,6 @@ body {
 
 /*------------------------------------------------------------------Common css--------------------------------------------------------------*/
 
-@media (max-width:1024px) {
-    .allappointmentsection .tablesection {
-        max-height: 32rem;
-    }
-}
 
 @media (max-width:992px) {
     .navsection .username {

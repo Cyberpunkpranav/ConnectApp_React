@@ -570,9 +570,9 @@ function Appointments(props) {
           </div>
         </div>
         <section className="container-fluid scroll scroll-y mt-2 " style={{ minHeight: '60vh', maxHeight: '60vh' }}>
-          <table className="table text-center ">
+          <table className="table text-center">
             <thead className="text-charcoal75 fw-bold">
-              <tr>
+              <tr className=" bg-pearl position-sticky top-0">
                 <th>Update</th>
                 <th>Status</th>
                 <th>Patient Name</th>
@@ -586,10 +586,10 @@ function Appointments(props) {
                 <th>Rx</th>
                 <th>F/U Date</th>
                 <th>Actions</th>
-                <th>More</th>
+                <th className="bg-pearl">More</th>
               </tr>
             </thead>
-            <tbody className="text-charcoal fw-bold ">
+            <tbody className="text-charcoal ">
               {
                 doctorid ? (
                   <SelectedAppointments appointmentdata={appointmentdata} isselectedLoading={isselectedLoading} type={type} doctorid={doctorid} fromdate={fromdate} todate={todate} fetchallAppointmentslist={fetchallAppointmentslist} status={status} status_color={status_color} tConvert={tConvert} fetchapi={props.fetchapi} />

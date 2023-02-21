@@ -227,7 +227,7 @@ body::-webkit-scrollbar-thumb:hover {
 }
 
 .bg-brandy {
-    background-color: var(--brandy);
+    background-color: var(--brandy) !important
 }
 
 .bg-lightyellow {
