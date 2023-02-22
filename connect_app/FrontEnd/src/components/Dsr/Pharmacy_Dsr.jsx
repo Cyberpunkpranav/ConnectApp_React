@@ -1,10 +1,33 @@
-import React from 'react'
-import { useState } from 'react'
+import React, { useContext } from 'react'
+import axios from 'axios'
+import { useState, useEffect } from 'react'
+import Notiflix from 'notiflix'
+import { URL } from '../../index'
 import '../../css/dashboard.css'
 import '../../css/appointment.css'
 import '../../css/dsr.css'
 
-const Pharmacy_Dsr = () => {
+const Pharmacy_Dsr = (props) => {
+  const url = useContext(URL)
+  const [SaleEntryList, setSaleEntryList] = useState([])
+  const [load, setload] = useState()
+
+  const PharmacyList = async () => {
+    setload(true)
+    try {
+      await axios.get(`${url}/DSR/pharmacy?from=${props.fromdate}&to=${props.todate}`).then((response) => {
+        setSaleEntryList(response.data.data.pharmacy_sale_return)
+        setload(false)
+      })
+    } catch (e) {
+      setload(false)
+      Notiflix.Notify.failure(e.message)
+    }
+  }
+  useEffect(() => {
+    PharmacyList()
+  }, [props.fromdate, props.todate])
+  console.log(SaleEntryList)
   let arr = [
     {
       id: 'c-102',
@@ -115,42 +138,75 @@ const Pharmacy_Dsr = () => {
         <h5 className='my-2 text-charcoal75 fw-semibold ms-2 '>Sale Entries</h5>
         <div className='container-fluid scroll scroll-y saleentries'>
           <table className='table'>
-            <thead>
+            <thead className='text-center'>
               <tr>
-                <th>Bill no.</th>
-                <th>Name</th>
-                <th>Mobile</th>
-                <th>Doctor Name</th>
-                <th>Date</th>
-                <th>Time</th>
-                <th>Payment Method</th>
-                <th>Amount</th>
-                <th>Discount</th>
-                <th>Pending Amt.</th>
-                <th> Grand Total</th>
+                <th rowspan='2' >Bill no.</th>
+                <th rowspan='2' >Name</th>
+                <th rowspan='2' >Mobile</th>
+                <th rowspan='2' >Doctor Name</th>
+                <th rowspan='2' >Bill Date</th>
+                <th colspan='7' scope='colgroup'>Payment Method</th>
+                <th rowspan='2' >Amount</th>
+                <th rowspan='2' >Discount</th>
+                <th rowspan='2' >Pending Amt.</th>
+                <th rowspan='2' >Return Date</th>
+                <th rowspan='2' > Grand Total</th>
+              </tr>
+              <tr>
+                <th className='bg-white' scope='col'>Cash</th>
+                <th className='bg-white' scope='col'>Card</th>
+                <th className='bg-white' scope='col'>Paytm</th>
+                <th className='bg-white' scope='col'>Phonepe</th>
+                <th className='bg-white' scope='col'>Razorpay</th>
+                <th className='bg-white' scope='col'>Wire-Transfer</th>
+                <th className='bg-white' scope='col'>Points</th>
               </tr>
             </thead>
-            <tbody>
-
-              {
-                Appointments.map((data, i) => (
+            {
+              load ? (
+                <tbody>
                   <tr>
-                    <td key={i}>{data.id}</td>
-                    <td>{data.name}</td>
-                    <td>{data.Mobile}</td>
-                    <td>{data.Doctorname}</td>
-                    <td>{data.Date}</td>
-                    <td>{data.Time}</td>
-                    <td>{data.Payment}</td>
-                    <td>{data.Amount}</td>
-                    <td>{data.Discount}</td>
-                    <td>{data.Pending}</td>
-                    <td>{data.Grand_total}</td>
+                    <td>Loading.. Please Be Patient</td>
                   </tr>
-                ))
-              }
+                </tbody>
+              ) : (
+                SaleEntryList && SaleEntryList.length == 0 ? (
+                  <tbody>
+                    <tr>
+                      <td>No Sale Entries</td>
+                    </tr>
+                  </tbody>
+                ) : (
+                  <tbody className='text-center'>
+                    {
+                      SaleEntryList.map((data, i) => (
+                        <tr>
+                          <td key={i}>{data.sale_entry && data.sale_entry.bill_id !== null ? "P-" + data.sale_entry.bill_id : ''}</td>
+                          <td>{data.sale_entry && data.sale_entry.patient && data.sale_entry.patient.full_name !== null ? data.sale_entry.patient.full_name : ''}</td>
+                          <td>{data.sale_entry && data.sale_entry.patient && data.sale_entry.patient.phone_number !== null ? data.sale_entry.patient.phone_number : ''}</td>
+                          <td>{data.sale_entry && data.sale_entry.doctor_name !== null ? data.sale_entry.doctor_name : ''}</td>
+                          <td>{data.sale_entry && data.sale_entry.bill_date !== null ? data.sale_entry.bill_date : ''}</td>
+                          <td>{data.sale_entry.payment_method_details && data.sale_entry.payment_method_details != null ? JSON.parse(data.sale_entry.payment_method_details).Cash : ''}</td>
+                          <td>{data.sale_entry.payment_method_details && data.sale_entry.payment_method_details != null ? JSON.parse(data.sale_entry.payment_method_details).Card : ''}</td>
+                          <td>{data.sale_entry.payment_method_details && data.sale_entry.payment_method_details != null ? JSON.parse(data.sale_entry.payment_method_details).Paytm : ''}</td>
+                          <td>{data.sale_entry.payment_method_details && data.sale_entry.payment_method_details != null ? JSON.parse(data.sale_entry.payment_method_details).Phonepe : ''}</td>
+                          <td>{data.sale_entry.payment_method_details && data.sale_entry.payment_method_details != null ? JSON.parse(data.sale_entry.payment_method_details).Razorpay : ''}</td>
+                          <td>{data.sale_entry.payment_method_details && data.sale_entry.payment_method_details != null ? JSON.parse(data.sale_entry.payment_method_details)['Wire-Transfer'] : ''}</td>
+                          <td>{data.sale_entry.payment_method_details && data.sale_entry.payment_method_details != null ? JSON.parse(data.sale_entry.payment_method_details).Points : ''}</td>
+                          <td>{data.sale_entry && data.sale_entry.grand_total !== null ? data.sale_entry.grand_total : ''}</td>
+                          <td>{data.Discount}</td>
+                          <td>{data.Pending}</td>
+                          <td>{data.return_date && data.return_date !== null ? data.return_date : ''}</td>
+                          <td>{data.grand_total && data.grand_total !== null ? data.grand_total : ''}</td>
 
-            </tbody>
+                        </tr>
+                      ))
+                    }
+                  </tbody>
+
+                )
+              )
+            }
           </table>
         </div>
         <h5 className='my-2 text-charcoal75 fw-semibold ms-2 '>Pending Payments Recieved</h5>
@@ -194,7 +250,7 @@ const Pharmacy_Dsr = () => {
             </tbody>
           </table>
         </div>
-        </div>
+      </div>
     </div>
 
 

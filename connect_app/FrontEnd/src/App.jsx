@@ -976,7 +976,7 @@ function DailySaleReport(props) {
       return <Doctors_Dsr clinicid={clinicid} doctorid={doctorid} fromdate={fromdate ? fromdate : CurrentDate} todate={todate ? todate : fromdate} />
     }
     if (menu == 2) {
-      return <Pharmacy_Dsr clinicid={clinicid} />
+      return <Pharmacy_Dsr clinicid={clinicid} doctorid={doctorid} fromdate={fromdate ? fromdate : CurrentDate} todate={todate ? todate : fromdate} />
     }
     return <div>Nothing Selected</div>
   }

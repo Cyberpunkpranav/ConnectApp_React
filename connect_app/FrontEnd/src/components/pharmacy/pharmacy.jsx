@@ -154,7 +154,7 @@ function Saleentrysection(props) {
     }
 
   }
-  let array = [[1, 'Pending', 'lightred'], [2, 'Booked', 'lightblue'], [3, 'Cancelled', 'lightred'], [4, 'QR Generated', 'light'], [5, 'Checked_in', 'brandy'], [6, 'Vitals Done', 'lightred'], [7, 'In_apppointment', 'lightyellow'], [8, 'Payment done', 'lightgreen'], [9, 'Unattained', 'lightyellow'], [10, 'Completed', 'lightgreen']]
+  let array = [[1, 'Confirmed', 'lightgreen'], [2, 'Payment done', 'success'], [3, 'Completed', 'lightyellow'], [4, 'Cancelled', 'danger']]
   function status(number) {
     let status
     for (let i = 0; i < array.length; i++) {
@@ -177,29 +177,24 @@ function Saleentrysection(props) {
     return status_color
   }
 
-  async function UpadteStatus(e) {
-    if (e.target.value && adminid && e.target.name) {
-      try {
-        Notiflix.Loading.circle('Upadating Appointment Status', {
-          backgroundColor: 'rgb(242, 242, 242,0.5)',
-          svgColor: '#96351E',
-          messageColor: '#96351E'
-        })
-        await axios.post(`${url}/appointment/change/status`, {
-          appointment_id: e.target.name,
-          status: e.target.value,
-          admin_id: adminid
-        }).then((response) => {
-          GETSalesList()
-          Notiflix.Loading.remove()
-          Notiflix.Notify.success(response.data.message)
-        })
-      } catch (e) {
-        alert(e)
-      }
-    } else {
-      Notiflix.Notify.alert('Please try Again')
+
+  //Status
+  const UpdateStatus = async (e, id) => {
+    console.log(e.target.value, id)
+    try {
+      await axios.post(`${url}/sale/entry/change/status`, {
+        sale_entry_id: id,
+        status: e.target.value,
+        admin_id: adminid,
+      }).then((response) => {
+        console.log(response)
+        Notiflix.Notify.success(response.data.message)
+        GETSalesList()
+      })
+    } catch (e) {
+      Notiflix.Notify.failure(e.message)
     }
+
   }
 
   return (
@@ -274,18 +269,12 @@ function Saleentrysection(props) {
                         <td className='text-charcoal fw-bold p-0 m-0 px-1'>{item.appointment && item.appointment != null && item.appointment.doctor && item.appointment.doctor.doctor_name != null ? item.appointment.doctor.doctor_name : ''}</td>
                         <td className='text-charcoal fw-bold p-0 m-0 px-1'>{item.appointment && item.appointment != null && item.appointment.bill_id && item.appointment.bill_id != null ? item.appointment.bill_id : ''}</td>
                         <td className="text-charcoal fw-bold p-0 m-0 px-1">
-                          <select className={` fw-bolder border-0 bg-${((i % 2) == 0) ? 'seashell' : 'pearl'} text-center  text-${status_color(item.status)}`} name={item.id} onChange={(e) => { UpadteStatus(e) }} style={{ appearance: 'none' }}>
-                            <option className="button" selected disabled>{status(item.status)}</option>
-                            <option key={0} className="text-lightred" value='1'>Pending</option>
-                            <option key={1} className="text-lightblue" value='2'>Booked</option>
-                            <option key={2} className="text-lightred" value='3'>Cancelled</option>
-                            <option key={3} className="text-pearl" value='4'>QR Generated</option>
-                            <option key={4} className="text-brandy" value='5'>Checked_in</option>
-                            <option key={5} className="text-lightred" value='6'>Vitals Done</option>
-                            <option key={6} className="text-lightyellow" value='7'>In_apppointment</option>
-                            <option key={7} className="text-lightgreen" value='8'>Payment done</option>
-                            <option key={8} className="text-lightyellow" value='9'>Unattained</option>
-                            <option key={9} className="text-lightgreen" value='10'>Completed</option>
+                          <select disabled={item.sale_entry_status == 4 ? true : false} className={` fw-bolder border-0 bg-${((i % 2) == 0) ? 'seashell' : 'pearl'} text-center  text-${status_color(item.sale_entry_status)}`} name={item.id} onChange={(e) => { UpdateStatus(e, item.id) }} style={{ appearance: 'none' }}>
+                            <option className="button" selected disabled>{status(item.sale_entry_status)}</option>
+                            <option key={0} className="text-lightred" value='1'>Confirmed</option>
+                            <option key={1} className="text-lightblue" value='2'>Payment Done</option>
+                            <option key={2} className="text-lightred" value='3'>Completed</option>
+                            <option key={3} className="text-pearl" value='4'>Cancelled</option>
                           </select>
                         </td>
 
