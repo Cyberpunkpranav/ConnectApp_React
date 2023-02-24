@@ -3,6 +3,7 @@ import React, { useState, useEffect, useContext, useRef } from 'react';
 import { URL, TodayDate, DoctorsList, Clinic } from '../../index';
 import { ExportPurchaseEntry, ExportSaleEntry, ExportSaleReturn } from '../pharmacy/Exports'
 import Notiflix from 'notiflix';
+import * as XLSX from "xlsx";
 import { customconfirm } from '../features/notiflix/customconfirm';
 import { customnotify } from '../features/notiflix/customnotify';
 import '../../css/bootstrap.css';
@@ -133,7 +134,7 @@ function Saleentrysection(props) {
         setLoading(false)
       })
     } catch (e) {
-      Notiflix.Notify.warning(e.data.message)
+      Notiflix.Notify.warning(e.message)
       setLoading(false)
     }
   }
@@ -763,7 +764,7 @@ function SaleReturns() {
         setLoading(false)
       })
     } catch (e) {
-      Notiflix.Notify.warning(e.data.message)
+      Notiflix.Notify.warning(e.message)
       setLoading(false)
     }
   }
@@ -1025,7 +1026,7 @@ function SaleEntryForm(props) {
         }
       })
     } catch (e) {
-      Notiflix.Notify.warning(e.data.message)
+      Notiflix.Notify.warning(e.message)
     }
   }
 
@@ -1492,7 +1493,8 @@ function SaleEntryForm(props) {
                           <td><input className='border border-1 rounded-1 w-25 text-center p-0 m-0 bg-seashell'
                             value={data.qtytoSale ? data.qtytoSale : ''}
                             onChange={(e) => {
-                              data.qtytoSale = e.target.value;
+                              e.target.value <= data.quantity ? data.qtytoSale = e.target.value : Notiflix.Notify.failure("Quantity Cannot be Greater then Current Stock Available")
+
                               data.totalamt = CalTotalAmount(e.target.value, data.disccost)
                               setSelectedProducts(prevState => [...prevState])
                             }} /> </td>
@@ -2187,7 +2189,7 @@ function Purchaseentrysection(props) {
         setLoading(false)
       })
     } catch (e) {
-      Notiflix.Notify.warning(e.data.message)
+      Notiflix.Notify.warning(e.message)
       setLoading(false)
     }
   }
@@ -2552,6 +2554,7 @@ function Newpurchaseentryform(props) {
   const ClinicList = useContext(Clinic)
   const medicinesref = useRef(null)
   const vendorsref = useRef(null)
+  const VendorExcel = useRef(null)
   const [channel, setchannel] = useState()
   const [po, setpo] = useState()
   const [invoice, setinvoice] = useState()
@@ -2587,6 +2590,8 @@ function Newpurchaseentryform(props) {
   const [tableindex, settableindex] = useState()
   const [clinicstatecode, setclinicstatecode] = useState()
   const [load, setload] = useState()
+  const [ExcelData, setExcelData] = useState([])
+
 
   async function filterclinic() {
     for (let i = 0; i < ClinicList.length; i++) {
@@ -2609,7 +2614,7 @@ function Newpurchaseentryform(props) {
     Discount: '',
     tradeDiscount: '',
     sgst: '',
-    sgstpercent: '',
+    sgstper: '',
     cgst: '',
     cgstper: '',
     igst: '',
@@ -2674,7 +2679,7 @@ function Newpurchaseentryform(props) {
 
       })
     } catch (e) {
-      Notiflix.Notify.warning(e.data.message)
+      Notiflix.Notify.warning(e.message)
     }
 
   }
@@ -2691,13 +2696,13 @@ function Newpurchaseentryform(props) {
         }
       }).catch(
         function error(e) {
-          Notiflix.Notify.warning(e.data.message)
+          Notiflix.Notify.warning(e.message)
           setloadvendors(false)
         }
       )
     } catch (e) {
       setloadvendors(false)
-      Notiflix.Notify.warning(e.data.message)
+      Notiflix.Notify.warning(e.message)
     }
   }
   const SavePurchase = async () => {
@@ -2939,7 +2944,7 @@ function Newpurchaseentryform(props) {
     total = trddisc ? total - (total * trddisc) / 100 : total
     total = sgstprcnt ? Number(total) + Number((((total * sgstprcnt) / 100) + ((total * sgstprcnt) / 100))) : total
     total = igstprcnt ? Number(total) + Number((total * Number(igstprcnt) / 100)) : total
-    total = total ? Math.round(parseFloat(total).toFixed(2)) : total
+    total = total ? parseFloat(total).toFixed(2) : total
     return total
   }
   let CostPerUnit = 0
@@ -2989,10 +2994,131 @@ function Newpurchaseentryform(props) {
 
   // console.log(totalamt,cpu)
   // console.log(sgst,cgst)
-  console.log(MedicineentriesArr, ClinicList)
-  console.log(clinicstatecode, vendorcode)
+  // console.log(MedicineentriesArr, ClinicList)
+  // console.log(clinicstatecode, vendorcode, vendorid)
+  const reversefunction = (date) => {
+    if (date) {
+      date = date.split("-").reverse().join("-")
+      return date
+    }
 
+  }
+  const MakeExcellive = async () => {
+    let Excel = VendorExcel.current.files[0]
+    console.log(VendorExcel.current.files[0])
+    let reader = new FileReader();
+    reader.readAsArrayBuffer(Excel)
+    reader.onload = (e) => {
+      const workbook = XLSX.read(e.target.result, { type: 'buffer' })
+      const worksheetName = workbook.SheetNames[0]
+      const worksheet = workbook.Sheets[worksheetName]
+      const data = XLSX.utils.sheet_to_json(worksheet)
+      console.log(data)
+      setExcelData(data)
+    }
 
+  }
+  const CalGst = (rate, cgst, sgst) => {
+    let g = 0
+    if (rate && cgst && sgst) {
+      g = (Number(rate) * Number(cgst)) / 100
+      return (g.toFixed(2))
+    } else {
+      return 0
+    }
+  }
+  const CalIGst = (rate, igst) => {
+    let ig = 0
+    if (rate && igst) {
+      ig = (Number(rate) * Number(igst)) / 100
+      return (ig.toFixed(2))
+    }
+  }
+
+  function ExcelModulesVendorWise() {
+    let DATA = []
+    if (vendorid == 4) {
+      for (let i = 0; i < ExcelData.length; i++) {
+        let expiry = ExcelData[i]['EXPIRY'].replaceAll('/', '-')
+        let gst = CalGst(ExcelData[i]['SRATE'], ExcelData[i]['CGST'], ExcelData[i]['SGST'])
+        let Igst = CalIGst(ExcelData[i]['SRATE'], ExcelData[i]['IGST'])
+        expiry = expiry.split('-')
+        expiry = expiry.reverse()
+        expiry = expiry.join('-')
+        expiry = '20' + expiry + '-01'
+        let CpU = 0
+        CpU = Number(ExcelData[i]['SRATE'])
+        CpU = ExcelData[i]['SGST'] && ExcelData[i]['SGST'] !== null ? CpU + Number(gst) + Number(gst) : CpU
+        CpU = ExcelData[i]['DIS'] && ExcelData[i]['DIS'] !== null ? CpU - (Number(CpU * Number(ExcelData[i]['DIS'])) / 100) : CpU
+        CpU = parseFloat(CpU).toFixed(2)
+        DATA.push(
+          MedicineentriesObj[i] = {
+            type: '',
+            Itemid: '',
+            Itemname: ExcelData[i]['ITEM NAME'],
+            batchno: ExcelData[i]['BATCH'],
+            expirydate: expiry,
+            manufacturingDate: '',
+            Qty: ExcelData[i]['QTY'],
+            freeQty: ExcelData[i]['F.QTY'],
+            MRP: ExcelData[i]['MRP'],
+            Rate: ExcelData[i]['SRATE'],
+            Discount: '',
+            tradeDiscount: ExcelData[i]['DIS'],
+            sgst: gst,
+            sgstper: ExcelData[i]['SGST'],
+            cgst: gst,
+            cgstper: ExcelData[i]['CGST'],
+            igst: Igst,
+            igstper: ExcelData[i]['IGST'],
+            costperunit: CpU,
+            totalamount: CpU * ExcelData[i]['QTY']
+          }
+        )
+      }
+      setMedicineentriesArr(DATA)
+    }
+    if (vendorid == 5 || vendorid == 6) {
+      for (let i = 0; i < ExcelData.length; i++) {
+        let expiryday = ExcelData[i]['EXPDAY'] < 10 ? "0" + ExcelData[i]['EXPDAY'] : ExcelData[i]['EXPDAY']
+        let expirymonth = ExcelData[i]['EXPMONTH'] < 10 ? "0" + ExcelData[i]['EXPMONTH'] : ExcelData[i]['EXPMONTH']
+        let expiryyear = '20' + ExcelData[i]['EXPYEAR']
+        let expiry = expiryyear + '-' + expirymonth + '-' + expiryday
+        let Totalamt = 0
+        Totalamt = Number(ExcelData[i]['AMOUNT'])
+        Totalamt = ExcelData[i]['SGST'] && ExcelData[i]['SGST'] !== null ? Totalamt + Number(ExcelData[i]['SGSTAmt']) + Number(ExcelData[i]['CGSTAmt']) : Totalamt
+        // Totalamt = ExcelData[i]['DIS'] && ExcelData[i]['DIS'] !== null ? Totalamt - (Number(Totalamt * Number(ExcelData[i]['DIS'])) / 100) : Totalamt
+        Totalamt = parseFloat(Totalamt).toFixed(2)
+        DATA.push(
+          MedicineentriesObj[i] = {
+            type: '',
+            Itemid: '',
+            Itemname: ExcelData[i]['ITEM NAME'],
+            batchno: ExcelData[i]['BATCH'],
+            expirydate: expiry,
+            manufacturingDate: '',
+            Qty: ExcelData[i]['QTY'],
+            freeQty: ExcelData[i]['F.QTY'],
+            MRP: ExcelData[i]['MRP'],
+            Rate: ExcelData[i]['SRATE'],
+            Discount: '',
+            tradeDiscount: ExcelData[i]['DIS'],
+            sgst: ExcelData[i]['SGSTAmt'],
+            sgstper: ExcelData[i]['SGST'],
+            cgst: ExcelData[i]['CGSTAmt'],
+            cgstper: ExcelData[i]['CGST'],
+            igst: ExcelData[i]['IGSTAmt'],
+            igstper: ExcelData[i]['IGST'],
+            costperunit: (Totalamt / Number(ExcelData[i]['QTY'])).toFixed(2),
+            totalamount: Totalamt
+          }
+        )
+      }
+      setMedicineentriesArr(DATA)
+    }
+
+  }
+  console.log(MedicineentriesArr, vendorid)
   return (
 
     <div className="container-fluid p-0 m-0" style={{ zIndex: '2' }}>
@@ -3053,7 +3179,14 @@ function Newpurchaseentryform(props) {
                 </div>
                 <div className="col-5">
                   <h6 className="p-0 m-0 ms-3 fw-bold">Select Vendor</h6>
-                  <input className="form-control ms-2 rounded-1" placeholder='Search Vendors' value={vendorname ? vendorname : ''} onChange={(e) => { searchvendors(e.target.value); setvendorname(e.target.value); setvendorid(); setvendorcode() }} />
+                  <input className="form-control ms-2 rounded-1" placeholder='Search Vendors' value={vendorname ? vendorname : ''}
+                    onChange={(e) => {
+                      searchvendors(e.target.value);
+                      setvendorname(e.target.value);
+                      setvendorid();
+                      setvendorcode();
+                      setMedicineentriesArr([])
+                    }} />
                   <div ref={vendorsref} className='position-absolute ms-2 rounded-2 bg-pearl col-2' >
                     {
                       vendorsearch ? (
@@ -3085,11 +3218,21 @@ function Newpurchaseentryform(props) {
                   <input type="date" className="form-control ms-2 rounded-1" value={invoicedate ? invoicedate : ''} onChange={(e) => { setinvoicedate(e.target.value) }} style={{ color: "gray" }} />
                 </div>
               </div>
-              <div className="row p-0 m-0 align-items-center mt-2">
-                <div className="col-6 col-lg-5 col-md-5 p-0 m-0 align-self-center ms-1">
+              <div className="row p-0 m-0 align-items-center mt-2 gx-2">
+                <div className="col-6 col-lg-6 col-md-6 p-0 m-0 align-self-center">
                   <button className="button button-charcoal m-0 p-0 py-1 px-4"> <img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt="displaying_image" style={{ width: "1.5rem" }} /> Medicine </button>
                 </div>
+                <div className="col-6 col-lg-6 col-md-6 p-0 m-0 align-self-center">
+                  <div className="row">
+                    <div className="col-5">
+                      <input type='file' ref={VendorExcel} placeholder='Choose Distributor Format file to upload' onChange={MakeExcellive} />
+                    </div>
+                    <div className="col-5">
+                      <button onClick={ExcelModulesVendorWise}>Submit</button>
+                    </div>
+                  </div>
 
+                </div>
               </div>
             </div>
             <div className=" p-0 m-0 scroll scroll-y" style={{ maxHeight: '50vh', Height: '50vh' }}>
@@ -3104,7 +3247,9 @@ function Newpurchaseentryform(props) {
                     <th>MRP</th>
                     <th>Rate</th>
                     <th>Total Disc</th>
-                    <th>Cost</th>
+                    <th>Qty</th>
+                    <th>Cost/Unit</th>
+                    <th>Total Amount</th>
                     <th>Delete</th>
                   </tr>
                 </thead>
@@ -3118,11 +3263,13 @@ function Newpurchaseentryform(props) {
                             <td>{item.Itemid}</td>
                             <td>{item.Itemname}</td>
                             <td>{item.batchno}</td>
-                            <td>{item.expirydate}</td>
+                            <td>{reversefunction(item.expirydate)}</td>
                             <td>{item.MRP}</td>
                             <td>{item.Rate}</td>
                             <td>{Number(item.Discount) + Number(item.tradeDiscount)}</td>
+                            <td>{item.Qty}</td>
                             <td>{item.costperunit}</td>
+                            <td>{item.totalamount}</td>
                             <td ><button onClick={() => { DeleteMedicine(item.Itemid); }} className='btn btn-sm button-burntumber'>Delete</button></td>
                           </tr>
                         ))
@@ -3470,7 +3617,7 @@ function PurchaseReturns() {
         setLoading(false)
       })
     } catch (e) {
-      Notiflix.Notify.warning(e.data.message)
+      Notiflix.Notify.warning(e.message)
       setLoading(false)
     }
   }
