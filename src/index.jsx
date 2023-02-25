@@ -1,5 +1,5 @@
 //React 
-import React from 'react';
+import React, { useContext } from 'react';
 import ReactDOM from 'react-dom/client';
 import { useState, useEffect } from "react";
 import { createContext } from 'react'
@@ -25,6 +25,8 @@ const Doctorapi = createContext();
 const TodayDocs = createContext();
 const Vitals = createContext();
 const Clinic = createContext();
+const Permissions = createContext()
+
 function Connectapp(props) {
   const d = new Date();
   const date = d.getDate() < 10 ? '0' + d.getDate() : d.getDate();
@@ -62,7 +64,9 @@ function Connectapp(props) {
   useEffect(() => {
     VitalsList()
   }, [])
-
+  console.log(props.permissions)
+  let p = Object.values(props.permissions)
+  console.log(p)
 
   async function fetchapi() {
     try {
@@ -136,41 +140,39 @@ function Connectapp(props) {
             </div>
           ) : (
             <>
-
-              <Doctorapi.Provider value={ConnectDoctorapi}>
-                <DoctorsList.Provider value={docapi}>
-                  <URL.Provider value={url}>
-                    <Clinic.Provider value={cliniclist}>
-                      <TodayDate.Provider value={APIDate}>
-                        <TodayDocs.Provider value={todayDoc}>
-                          <Vitals.Provider value={vitalslist}>
-                            <Router>
-                              <Navbar username={props.username} designation={props.designation} id={props.id} fetchapi={fetchapi} />
-                              <Routes>
-                                <Route path='/' element={<Doctorsection id={props.id} fetchapi={fetchapi} todayDoc={todayDoc} Loading={Loading} docapi={docapi} />} />
-                                <Route path='/Appointments' element={<Appointments id={props.id} fetchapi={fetchapi} />} />
-                                <Route path='/Patients' element={<Patients id={props.id} />} />
-                                <Route path='/Doctors' element={<Doctors id={props.id} docapi={docapi} />} />
-                                <Route path='/DailySaleReport' element={<DailySaleReport id={props.id} cliniclist={cliniclist} docapi={docapi} />} />
-                                <Route path='/Pharmacy' element={<Pharmacy id={props.id} />} />
-                              </Routes>
-                            </Router>
-                          </Vitals.Provider>
-                        </TodayDocs.Provider>
-                      </TodayDate.Provider>
-                    </Clinic.Provider>
-                  </URL.Provider>
-                </DoctorsList.Provider>
-              </Doctorapi.Provider>
-
+              <Permissions.Provider value={props.permissions} >
+                <Doctorapi.Provider value={ConnectDoctorapi}>
+                  <DoctorsList.Provider value={docapi}>
+                    <URL.Provider value={url}>
+                      <Clinic.Provider value={cliniclist}>
+                        <TodayDate.Provider value={APIDate}>
+                          <TodayDocs.Provider value={todayDoc}>
+                            <Vitals.Provider value={vitalslist}>
+                              <Router>
+                                <Navbar username={props.username} designation={props.designation} id={props.id} fetchapi={fetchapi} />
+                                <Routes>
+                                  <Route path='/' element={<Doctorsection id={props.id} fetchapi={fetchapi} todayDoc={todayDoc} Loading={Loading} docapi={docapi} />} />
+                                  <Route path='/Appointments' element={<Appointments id={props.id} fetchapi={fetchapi} />} />
+                                  <Route path='/Patients' element={<Patients id={props.id} />} />
+                                  <Route path='/Doctors' element={<Doctors id={props.id} docapi={docapi} />} />
+                                  <Route path='/DailySaleReport' element={<DailySaleReport id={props.id} cliniclist={cliniclist} docapi={docapi} />} />
+                                  <Route path='/Pharmacy' element={<Pharmacy id={props.id} />} />
+                                </Routes>
+                              </Router>
+                            </Vitals.Provider>
+                          </TodayDocs.Provider>
+                        </TodayDate.Provider>
+                      </Clinic.Provider>
+                    </URL.Provider>
+                  </DoctorsList.Provider>
+                </Doctorapi.Provider>
+              </Permissions.Provider>
             </>
           ))
       }
     </>
   );
 }
-export { TodayDate, URL, DoctorsList, Doctorapi, TodayDocs, Vitals, Clinic };
-
 
 function Switchpage() {
   // const [auth, setauth] = useState(true);
@@ -179,6 +181,7 @@ function Switchpage() {
   const [password, setpassword] = useState('none');
   const [passvisibility, setpassvisibility] = useState('password');
   const [load, setload] = useState()
+  const [permissions, setpermissions] = useState([])
   // 'Access-Control-Allow-Methods': '*',
   // "Access-Control-Allow-Headers": "'Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token'",
   const topassword = () => {
@@ -197,7 +200,6 @@ function Switchpage() {
       setpassvisibility('password');
     }
   }
-
   const [logininput, setlogininput] = useState({
     email: '',
     password: ''
@@ -221,7 +223,10 @@ function Switchpage() {
         localStorage.setItem('designation', response.data.data.roles.title);
         localStorage.setItem('id', response.data.data.id);
         localStorage.setItem('ClinicId', response.data.data.clinic_id)
-        window.location.reload(true);
+        setpermissions(response.data.data.roles.permissions)
+        Changepage()
+        // window.location.reload(true);
+
       } else {
         Notiflix.Report.failure(
           'Invalid Credentials',
@@ -233,132 +238,149 @@ function Switchpage() {
 
     })
   }
-  if (localemail !== null && localemail !== '') {
-    return <Connectapp username={localStorage.getItem('name')} designation={localStorage.getItem('designation')} id={localStorage.getItem('id')} />
-  } else {
-    <>
-      <div className='container-fluid loginform'>
-        <div className="navbar mb-5 justify-content-end">
-          <img src={process.env.PUBLIC_URL + "/images/logo.png"} alt='' className="float-end img-fluid col-lg-1 col-3 me-lg-5 me-2" />
-        </div>
 
-
-        <section className="signinsection mb-5">
-          <div className="container rounded py-5 bg-light bg-opacity-75">
-            <div className="col-5 m-auto position-relative pb-2">
-              <p className="text-center mt-2 m-auto col-6" id="text1"><img src={process.env.PUBLIC_URL + "/images/slogan1.png"} alt='' className="img-fluid" /></p>
-              <p className="text-center mt-2 position-absolute col-6" id="text2"><img src={process.env.PUBLIC_URL + "/images/slogan2.png"} alt='' className="img-fluid" /></p>
+  console.log(permissions)
+  function Changepage() {
+    if (localemail !== null && localemail !== '') {
+      return <Connectapp username={localStorage.getItem('name')} designation={localStorage.getItem('designation')} id={localStorage.getItem('id')} permissions={permissions} />
+    } else {
+      return (
+        <>
+          <div className='container-fluid loginform'>
+            <div className="navbar mb-5 justify-content-end">
+              <img src={process.env.PUBLIC_URL + "/images/logo.png"} alt='image' className="float-end img-fluid col-lg-1 col-3 me-lg-5 me-2" />
             </div>
 
-            <form autoComplete="off" onSubmit={(e) => Submit(e)}>
-              <div className="mt-4">
-                <div className={`row d-${email} justify-content-center mb-4`} id="userinput">
-                  <div className="col-1"></div>
-                  <div className="col-lg-6 col-md-8 col-sm-10 col-10 align-items-center d-flex userinput">
-                    <p className="m-0 ms-1" id="inputheading">Enter your Aartas Email ID</p>
-                    <input type="email" className="form-control" id="email" placeholder="example@aartas.com" value={logininput.email} autoComplete="false" onChange={(e) => { handleinput(e); if (e.target.value !== '') { setnext('block'); } if (e.target.value === '') { setnext('none'); } }} />
-                  </div>
-                  <div className={`col-lg-1 d-flex  col-2 align-items-center`}>
-                    <a href='/#' className={`next d-${next} text-decoration-none text-center p-2 rounded`} id="next" onClick={topassword}>Next</a>
-                  </div>
+
+            <section className="signinsection mb-5">
+              <div className="container rounded py-5 bg-light bg-opacity-75">
+                <div className="container justify-content-center">
+                  <p className="text-center mt-2 m-auto" id="text2"><img src={process.env.PUBLIC_URL + "/images/slogan2.png"} className="img-fluid" /></p>
 
                 </div>
-                <div className={`row d-${password} justify-content-center`} id="passinput">
-                  <div className="col-lg-1 col-2 col-md-1 align-items-center d-flex">
-                    <a href='/#' className="back text-decoration-none text-center p-2 rounded" onClick={toemail}>Back</a>
-                  </div>
-                  <div className="col-lg-6 col-md-8 col-sm-10 col-10 align-items-center d-flex userinput">
-                    <p className="m-0" id="inputheading">Enter your Password</p>
-                    <input type={passvisibility} className="form-control" id="password" placeholder="examplepassword123" autoComplete="new-password" onChange={(e) => handleinput(e)} value={logininput.password} />
-                  </div>
-                  <div className="col-1 align-items-center justify-content-center d-flex">
-                    <button type="button" className=" p-2 rounded submit text-center" onClick={Submit}>Submit</button>
-                  </div>
-
-
-                  <div className="col-12">
-                    <div className="col text-center">
-                      <input className="form-check-input" onClick={passwordvisibility} type="checkbox" value="" id="flexCheckDefault" />
-                      <label className="form-check-label" htmlFor="flexCheckDefault">Check Password</label>
-                    </div>
-                  </div>
-                  <div className="col-5 text-center"><a href="/#" className="text-decoration-none">forgot password</a></div>
-
-                </div>
-              </div>
-            </form>
-          </div>
-        </section>
-      </div>
-    </>
-  }
-  return (
-    <>
-      <div className='container-fluid loginform'>
-        <div className="navbar mb-5 justify-content-end">
-          <img src={process.env.PUBLIC_URL + "/images/logo.png"} alt='image' className="float-end img-fluid col-lg-1 col-3 me-lg-5 me-2" />
-        </div>
-
-
-        <section className="signinsection mb-5">
-          <div className="container rounded py-5 bg-light bg-opacity-75">
-            <div className="container justify-content-center">
-              <p className="text-center mt-2 m-auto" id="text2"><img src={process.env.PUBLIC_URL + "/images/slogan2.png"} className="img-fluid" /></p>
-
-            </div>
-            <form autoComplete="off" onSubmit={(e) => Submit(e)}>
-              <div className="mt-4">
-                <div className={`row d-${email} justify-content-center mb-4`} id="userinput">
-                  <div className="col-1"></div>
-                  <div className="col-lg-6 col-md-8 col-sm-10 col-10 align-items-center d-flex userinput">
-                    <p className="m-0 ms-1" id="inputheading">Enter your Aartas Email ID</p>
-                    <input type="email" className="form-control" id="email" placeholder="example@aartas.com" value={logininput.email} autoComplete="false" onChange={(e) => { handleinput(e); if (e.target.value != '') { setnext('block'); } if (e.target.value == '') { setnext('none'); } }} />
-                  </div>
-                  <div className={`col-lg-1 d-flex  col-2 align-items-center`}>
-                    <a className={`next d-${next} text-decoration-none text-center p-2 rounded`} id="next" onClick={topassword}>Next</a>
-                  </div>
-
-                </div>
-                <div className={`row d-${password} justify-content-center`} id="passinput">
-                  <div className="col-lg-1 col-2 col-md-1 align-items-center d-flex">
-                    <a className="back text-decoration-none text-center p-2 rounded" onClick={toemail}>Back</a>
-                  </div>
-                  {
-                    load ? (
-                      <div className="col-lg-6 col-md-8 col-sm-10 col-10 py-1 pb-1 userinput text-center">
-                        <div class="spinner-border" role="status">
-                          <span class="visually-hidden">Loading...</span>
-                        </div>
-                      </div>) : (
+                <form autoComplete="off" onSubmit={(e) => Submit(e)}>
+                  <div className="mt-4">
+                    <div className={`row d-${email} justify-content-center mb-4`} id="userinput">
+                      <div className="col-1"></div>
                       <div className="col-lg-6 col-md-8 col-sm-10 col-10 align-items-center d-flex userinput">
-                        <p className="m-0" id="inputheading">Enter your Password</p>
-                        <input type={passvisibility} className="form-control" id="password" placeholder="examplepassword123" autoComplete="new-password" onChange={(e) => handleinput(e)} value={logininput.password} />
+                        <p className="m-0 ms-1" id="inputheading">Enter your Aartas Email ID</p>
+                        <input type="email" className="form-control" id="email" placeholder="example@aartas.com" value={logininput.email} autoComplete="false" onChange={(e) => { handleinput(e); if (e.target.value != '') { setnext('block'); } if (e.target.value == '') { setnext('none'); } }} />
                       </div>
-                    )
-                  }
-                  <div className="col-1 align-items-center justify-content-center d-flex">
-                    <button type="button" className=" p-2 rounded submit text-center" disabled={load == true ? true : false} onClick={Submit}>Submit</button>
-                  </div>
+                      <div className={`col-lg-1 d-flex  col-2 align-items-center`}>
+                        <a className={`next d-${next} text-decoration-none text-center p-2 rounded`} id="next" onClick={topassword}>Next</a>
+                      </div>
+
+                    </div>
+                    <div className={`row d-${password} justify-content-center`} id="passinput">
+                      <div className="col-lg-1 col-2 col-md-1 align-items-center d-flex">
+                        <a className="back text-decoration-none text-center p-2 rounded" onClick={toemail}>Back</a>
+                      </div>
+                      {
+                        load ? (
+                          <div className="col-lg-6 col-md-8 col-sm-10 col-10 py-1 pb-1 userinput text-center">
+                            <div class="spinner-border" role="status">
+                              <span class="visually-hidden">Loading...</span>
+                            </div>
+                          </div>) : (
+                          <div className="col-lg-6 col-md-8 col-sm-10 col-10 align-items-center d-flex userinput">
+                            <p className="m-0" id="inputheading">Enter your Password</p>
+                            <input type={passvisibility} className="form-control" id="password" placeholder="examplepassword123" autoComplete="new-password" onChange={(e) => handleinput(e)} value={logininput.password} />
+                          </div>
+                        )
+                      }
+                      <div className="col-1 align-items-center justify-content-center d-flex">
+                        <button type="button" className=" p-2 rounded submit text-center" disabled={load == true ? true : false} onClick={Submit}>Submit</button>
+                      </div>
 
 
-                  <div className="col-12">
-                    <div className="col text-center">
-                      <input className="form-check-input" onClick={passwordvisibility} type="checkbox" value="" id="flexCheckDefault" />
-                      <label className="form-check-label" htmlFor="flexCheckDefault">Check Password</label>
+                      <div className="col-12">
+                        <div className="col text-center">
+                          <input className="form-check-input" onClick={passwordvisibility} type="checkbox" value="" id="flexCheckDefault" />
+                          <label className="form-check-label" htmlFor="flexCheckDefault">Check Password</label>
+                        </div>
+                      </div>
+                      <div className="col-5 text-center"><a href="#" className="text-decoration-none">forgot password</a></div>
+
                     </div>
                   </div>
-                  <div className="col-5 text-center"><a href="#" className="text-decoration-none">forgot password</a></div>
-
-                </div>
+                </form>
               </div>
-            </form>
+            </section>
           </div>
-        </section>
-      </div>
-    </>
+        </>
+      )
+    }
+  }
+
+  return (
+    // <>
+    //   <div className='container-fluid loginform'>
+    //     <div className="navbar mb-5 justify-content-end">
+    //       <img src={process.env.PUBLIC_URL + "/images/logo.png"} alt='image' className="float-end img-fluid col-lg-1 col-3 me-lg-5 me-2" />
+    //     </div>
+
+
+    //     <section className="signinsection mb-5">
+    //       <div className="container rounded py-5 bg-light bg-opacity-75">
+    //         <div className="container justify-content-center">
+    //           <p className="text-center mt-2 m-auto" id="text2"><img src={process.env.PUBLIC_URL + "/images/slogan2.png"} className="img-fluid" /></p>
+
+    //         </div>
+    //         <form autoComplete="off" onSubmit={(e) => Submit(e)}>
+    //           <div className="mt-4">
+    //             <div className={`row d-${email} justify-content-center mb-4`} id="userinput">
+    //               <div className="col-1"></div>
+    //               <div className="col-lg-6 col-md-8 col-sm-10 col-10 align-items-center d-flex userinput">
+    //                 <p className="m-0 ms-1" id="inputheading">Enter your Aartas Email ID</p>
+    //                 <input type="email" className="form-control" id="email" placeholder="example@aartas.com" value={logininput.email} autoComplete="false" onChange={(e) => { handleinput(e); if (e.target.value != '') { setnext('block'); } if (e.target.value == '') { setnext('none'); } }} />
+    //               </div>
+    //               <div className={`col-lg-1 d-flex  col-2 align-items-center`}>
+    //                 <a className={`next d-${next} text-decoration-none text-center p-2 rounded`} id="next" onClick={topassword}>Next</a>
+    //               </div>
+
+    //             </div>
+    //             <div className={`row d-${password} justify-content-center`} id="passinput">
+    //               <div className="col-lg-1 col-2 col-md-1 align-items-center d-flex">
+    //                 <a className="back text-decoration-none text-center p-2 rounded" onClick={toemail}>Back</a>
+    //               </div>
+    //               {
+    //                 load ? (
+    //                   <div className="col-lg-6 col-md-8 col-sm-10 col-10 py-1 pb-1 userinput text-center">
+    //                     <div class="spinner-border" role="status">
+    //                       <span class="visually-hidden">Loading...</span>
+    //                     </div>
+    //                   </div>) : (
+    //                   <div className="col-lg-6 col-md-8 col-sm-10 col-10 align-items-center d-flex userinput">
+    //                     <p className="m-0" id="inputheading">Enter your Password</p>
+    //                     <input type={passvisibility} className="form-control" id="password" placeholder="examplepassword123" autoComplete="new-password" onChange={(e) => handleinput(e)} value={logininput.password} />
+    //                   </div>
+    //                 )
+    //               }
+    //               <div className="col-1 align-items-center justify-content-center d-flex">
+    //                 <button type="button" className=" p-2 rounded submit text-center" disabled={load == true ? true : false} onClick={Submit}>Submit</button>
+    //               </div>
+
+
+    //               <div className="col-12">
+    //                 <div className="col text-center">
+    //                   <input className="form-check-input" onClick={passwordvisibility} type="checkbox" value="" id="flexCheckDefault" />
+    //                   <label className="form-check-label" htmlFor="flexCheckDefault">Check Password</label>
+    //                 </div>
+    //               </div>
+    //               <div className="col-5 text-center"><a href="#" className="text-decoration-none">forgot password</a></div>
+
+    //             </div>
+    //           </div>
+    //         </form>
+    //       </div>
+    //     </section>
+    //   </div>
+    // </>
+
+    Changepage()
+
   )
 }
-
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -366,3 +388,4 @@ root.render(
 );
 // ReactDOM.render(<Switchpage />, document.getElementById("root"));
 
+export { TodayDate, URL, DoctorsList, Doctorapi, TodayDocs, Vitals, Clinic, Permissions };

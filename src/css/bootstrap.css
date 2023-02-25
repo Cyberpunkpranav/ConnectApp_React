@@ -17,6 +17,7 @@
     --lightred: #E8AD98;
     --charcoal50: #22202331;
     --charcoal75: #222023ad;
+    --lightred50:#e8ad988a;
 }
 
 /*---------------------------------------------------bodyscrollbar css-------------------------------------------------------------------- */
@@ -245,7 +246,9 @@ body::-webkit-scrollbar-thumb:hover {
 .bg-lightred {
     background-color: var(--lightred) !important
 }
-
+.bg-lightred50{
+    background-color: var(--lightred50) !important
+}
 .bg-raffia {
     background-color: var(--Raffia) !important
 }

@@ -3,7 +3,7 @@ import { useState, useEffect, useContext, useRef } from "react"
 import axios from "axios"
 import { w3cwebsocket as websocket } from 'websocket'
 //Context APIs
-import { URL, TodayDate, DoctorsList, Doctorapi } from '../src/index'
+import { URL, TodayDate, DoctorsList, Doctorapi, Permissions } from '../src/index'
 //Components
 import { DoctorSchedule, Timecard } from "./components/Today/Doctor"
 import { Salesection, Purchasesection, Stocksection, PEitemdetailssection, } from "./components/pharmacy/pharmacy"
@@ -36,6 +36,7 @@ import { customconfirm } from "./components/features/notiflix/customconfirm"
 
 
 function Navbar(props) {
+
   // const chatinputref = useRef()
   // const [chat, setchat] = useState('')
   // const [chatarr, setchatarr] = useState([])
@@ -60,7 +61,8 @@ function Navbar(props) {
   //     console.log('client closed')
   //   }
   // }
-
+  const permission = useContext(Permissions)
+  console.log(permission)
   const [addoption, setaddoption] = useState("none");
   const toggleaddoption = () => {
     if (addoption === "none") {
@@ -986,17 +988,17 @@ function DailySaleReport(props) {
 
     <div className="DSRsection mt-3">
       <div className="p-0 m-0 mb-2">
-        <div className="row p-0 m-0 options align-items-center">
+        <div className="row p-0 m-0 options align-items-center ">
           <div className="col-auto col-lg-auto me-lg-2 col-xl-4 col-md-12 col-md-4 p-0 m-0">
             {
               options.map((data, i) => (
-                <button className={`button ms-1 button-${i == menu ? 'pearl' : 'charcoal'} shadow-${i == menu ? 'lg' : 'none'} border border-dark`} id={i} key={i} onClick={() => { setmenu(i) }}>{data}</button>
+                <button className={`button ms-1 button-${i == menu ? 'charcoal' : 'pearl'} shadow-${i == menu ? '' : 'none'} border-charcoal`} id={i} key={i} onClick={() => { setmenu(i) }}>{data}</button>
               ))
             }
           </div>
-          <div className="col-5 col-lg-8 col-xl-7 col-md-12 p-0 m-0 mt-lg-0 mt-2 align-items-center  text-end">
+          <div className="col-auto p-0 m-0 mt-2 mx-auto">
             <div className="row p-0 m-0">
-              <div className="col-auto col-xl-auto col-lg-4 col-md-4 p-0 m-0 text-end">
+              <div className="col-auto p-0 m-0">
                 <select className="px-1 bg-pearl text-burntumber py-2  py-md-1 text-center clinic ">
                   <option value="Select Clinic">Clinic</option>
                   {
@@ -1010,7 +1012,7 @@ function DailySaleReport(props) {
                   }
                 </select>
               </div>
-              <div className="col-2 col-lg-auto col-xl-auto col-md-auto p-0 m-0 text-xl-start">
+              <div className="col-auto p-0 m-0 ">
                 <select className="bg-pearl text-center border-md-start-0 text-burntumber px-1 py-2 py-md-1 doctor" value={doctorid ? doctorid : ''} onChange={(e) => setdoctorid(e.target.value)}>
                   <option value='Doctors'>Doctor</option>
                   {
@@ -1020,11 +1022,11 @@ function DailySaleReport(props) {
                   }
                 </select>
               </div>
-              <div className="col-auto col-xl-auto col-lg-4 col-4 col-md-3 Date p-0 m-0">
-                <div className="d-flex p-0 m-0 text-center">
-                  <input type='date' placeholder="from Date" value={fromdate ? fromdate : ''} className='bg-pearl px-1 fromdate' onChange={(e) => setfromdate(e.target.value)} />
-                  <div className="bg-pearl fromdate fw-bolder">-</div>
-                  <input type='date' placeholder="to Date" disabled={fromdate ? false : true} value={todate ? todate : ''} className='bg-pearl px-1 todate' onChange={(e) => settodate(e.target.value)} />
+              <div className="col-auto p-0 m-0">
+                <div className="row p-0 m-0 text-center">
+                  <input type='date' placeholder="from Date" value={fromdate ? fromdate : ''} className='bg-pearl col-auto px-1 fromdate' onChange={(e) => setfromdate(e.target.value)} />
+                  <div className="bg-pearl fw-bolder dash col-auto">-</div>
+                  <input type='date' placeholder="to Date" disabled={fromdate ? false : true} value={todate ? todate : ''} className='bg-pearl px-1  col-auto todate' onChange={(e) => settodate(e.target.value)} />
                 </div>
               </div>
             </div>

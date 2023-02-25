@@ -1065,8 +1065,10 @@ function SaleEntryForm(props) {
   function CalTotalAmount(qty, cst) {
     let cost = cst
     if (!qty) {
-      cost = Number(cst)
-      return cost
+      return 0
+    } else if (qty == 1) {
+      cst = Number(cst)
+      return cst
     } else {
       cost = Number(cst) * Number(qty)
       cost = cost.toFixed(2)
@@ -1180,11 +1182,11 @@ function SaleEntryForm(props) {
         ClearForm()
       }).catch(function error(e) {
         console.log(e)
-        Notiflix.Notify.failure(e)
+        Notiflix.Notify.failure(e.message)
         setload(false)
       })
     } catch (e) {
-      Notiflix.Notify.failure(e)
+      Notiflix.Notify.failure(e.message)
       setload(false)
     }
   }
@@ -1251,7 +1253,6 @@ function SaleEntryForm(props) {
       </div>
       <hr className='p-0 m-0' />
       <div className="p-0 m-0 text-center bg-seashell">
-
         {
           cliniclist.map((data, i) => (
             <label className={` text-burntumber fw-bolder d-${clinicID == data.id ? 'block' : 'none'}`}><input type="checkbox" className={`radio form me-1  text-burntumber fw-bolder`} key={i} checked={clinicID == data.id ? true : false} name={data.id} /> {data.title} {data.address}</label>
@@ -1492,8 +1493,8 @@ function SaleEntryForm(props) {
                           <td><input className='border border-1 rounded-1 w-25 text-center p-0 m-0 bg-seashell'
                             value={data.qtytoSale ? data.qtytoSale : ''}
                             onChange={(e) => {
-                              data.qtytoSale = e.target.value;
-                              data.totalamt = CalTotalAmount(e.target.value, data.disccost)
+                              e.target.value <= data.quantity ? data.qtytoSale = e.target.value : Notiflix.Notify.failure("Quantity Cannot be Greater then Current Stock Available");
+                              data.totalamt = CalTotalAmount(data.qtytoSale, data.disccost)
                               setSelectedProducts(prevState => [...prevState])
                             }} /> </td>
 
@@ -1680,8 +1681,8 @@ function NewSaleReturnentryform(props) {
         props.toggle_nref()
       })
     } catch (e) {
-      Notiflix.Notify.warning(e)
-      console.log(e)
+      Notiflix.Notify.warning(e.message)
+      console.log(e.message)
       setload(false)
     }
 

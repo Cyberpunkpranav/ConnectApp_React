@@ -3,6 +3,7 @@ import { useState, useEffect, useContext, useRef } from 'react'
 import { DownloadTableExcel } from 'react-export-table-to-excel';
 import axios from "axios"
 import { TodayDate, URL } from '../../index'
+import '../../css/bootstrap.css';
 import '../../css/dashboard.css'
 import '../../css/appointment.css'
 import '../../css/dsr.css'
@@ -26,7 +27,7 @@ const Appointments_Dsr = (props) => {
     setloading(true)
     if (props.doctorid || props.fromdate || props.todate) {
       try {
-        await axios.get(`${url}/DSR/appointments?from_date=${props.fromdate}&to_date=${props.todate}&admin_id=${adminid}&clinic_id=${props.clinicid}&doctor_id=${props.doctorid?props.doctorid:''}`).then((response) => {
+        await axios.get(`${url}/DSR/appointments?from_date=${props.fromdate}&to_date=${props.todate}&admin_id=${adminid}&clinic_id=${props.clinicid}&doctor_id=${props.doctorid ? props.doctorid : ''}`).then((response) => {
           response.data.data.appointments.map((data) => {
             listdata.push(data.doctor.id)
           })
@@ -191,6 +192,8 @@ const Appointments_Dsr = (props) => {
         advancepay += item
       })
       return advancepay
+    } else {
+      return 0
     }
   }
   function PendingAmountRecieved() {
@@ -201,9 +204,11 @@ const Appointments_Dsr = (props) => {
     }
     if (pendingpayarr.length != 0) {
       pendingpayarr.forEach(item => {
-        pendingpay += item
+        pendingpay += Number(item)
       })
       return pendingpay
+    } else {
+      return 0
     }
   }
   function TotalPendingPayment() {
@@ -220,8 +225,11 @@ const Appointments_Dsr = (props) => {
       totalpendingarr.forEach(item => {
         totalpending += item
       })
+      return totalpending
+    } else {
+      return 0
     }
-    return totalpending
+
   }
   function GrandTotal() {
     let grandtotalarr = []
@@ -251,65 +259,106 @@ const Appointments_Dsr = (props) => {
     }
   }
 
- function SumExtraCharges(i){
-  let ExtraChargeSumarr=[]
-  let sum=0
-  Appointments[i].other_charges.map((data)=>(
-    ExtraChargeSumarr.push(data.amount)
-  ))
+  function SumExtraCharges(i) {
+    let ExtraChargeSumarr = []
+    let sum = 0
+    Appointments[i].other_charges.map((data) => (
+      ExtraChargeSumarr.push(data.amount)
+    ))
 
-ExtraChargeSumarr.forEach(item=>{
-  sum+=Number(item)
-})
-return sum
+    ExtraChargeSumarr.forEach(item => {
+      sum += Number(item)
+    })
+    return sum
   }
-  function SumPendingpayments(i){
-    let PendingPaymentsSumarr=[]
-    let sum=0
+  function SumPendingpayments(i) {
+    let PendingPaymentsSumarr = []
+    let sum = 0
 
-      Appointments[i].pending_payments.map((data)=>{
-        if(data.is_paid==0){
-          PendingPaymentsSumarr.push(data.pending_amount)
-        }
-  })
-  PendingPaymentsSumarr.forEach(item=>{
-    sum+=Number(item)
-  })
-  return sum
-    }
+    Appointments[i].pending_payments.map((data) => {
+      if (data.is_paid == 0) {
+        PendingPaymentsSumarr.push(data.pending_amount)
+      }
+    })
+    PendingPaymentsSumarr.forEach(item => {
+      sum += Number(item)
+    })
+    return sum
+  }
 
   return (
     <div className='Appointments_Dsrsection'>
       <div>
-        <div className="row p-0 m-0 justify-content-between m-auto px-2 ">
-          <div className='col-lg-5 col-md-5 col-sm-5 col-5 CARD1 shadow-sm rounded-2' style={{ maxWidth: '25rem' }}>
+        <div className="row p-0 m-0 g-2 mx-1 justify-content-between ">
+          <div className='col-lg-5 col-md-4 col-sm-5 col-5 CARD1 scroll shadow-sm rounded-2' style={{ maxWidth: '50vh' }}>
             <h6 className="text-burntumber ms-3 mt-2">Payment Methods</h6>
-            <div className='row p-0 m-0'>
-              <div className='col-lg-auto mb-lg-2 col-md-4 text-start'>Cash:{payment_method_detailsForCash()}</div>
-              <div className='col-lg-auto mb-lg-2 col-md-auto text-center'>Card:{payment_method_detailsForCard()}</div>
-              <div className='col-lg-auto mb-lg-2 col-md-5 text-end'>WireTransfer:{payment_method_detailsForWireTransfer()}</div>
-              <div className='col-lg-auto mb-lg-2 col-md-4 text-start'>PhonePay:{payment_method_detailsForPhonepe()}</div>
-              <div className='col-lg-auto mb-lg-2 col-md-4 text-start'>Points:{payment_method_detailsForPoints()}</div>
-              <div className='col-lg-auto mb-lg-2 col-md-auto text-center'>RazorPay:{payment_method_detailsForRazorPay()}</div>
-              <div className='col-lg-auto mb-lg-2 col-md-4 text-start'>Paytm{' '}{payment_method_detailsForPaytm()}</div>
-            </div>
+            <table>
+              <thead>
+                <th></th>
+                <th></th>
+                <th></th>
+              </thead>
+              <tbody>
+                <tr className='border-bottom'>
+                  <td className='px-2'>Cash:{payment_method_detailsForCash()}</td>
+                  <td className='px-2'>Card:{payment_method_detailsForCard()}</td>
+                  <td className='px-2'>WireTransfer:{payment_method_detailsForWireTransfer()}</td>
+                </tr>
+                <tr className='border-bottom'>
+                  <td className='px-2' >PhonePay:{payment_method_detailsForPhonepe()}</td>
+                  <td className='px-2' >Points:{payment_method_detailsForPoints()}</td>
+                  <td className='px-2' > RazorPay:{payment_method_detailsForRazorPay()}</td>
+                </tr>
+                <tr className='border-bottom'>
+                  <td className='px-2'>Paytm{' '}{payment_method_detailsForPaytm()} </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-          <div className="col-lg-5 col-md-5 col-sm-5 col-5 CARD2 shadow-sm rounded-2" style={{ maxWidth: '25rem' }}>
+          <div className="col-lg-5 col-md-4 col-sm-5 col-5 CARD2 shadow-sm rounded-2" style={{ maxWidth: '60vh' }}>
             <h6 className='text-brandy p-0 ms-3 mt-2'>Amounts</h6>
-            <div className='bg-lightyellow rounded-2'>
-              <p className='text-charcoal m-0 ps-3 fw-semibold border-bottom-burntumber p-0'>Recieved</p>
-              <div className="row p-0 m-0">
-                <div className="col-5 col-md-6 text-lg-start">Advance Amount:{AdvancedAmountRecieved()}</div>
-                <div className="col-5 col-md-6 text-lg-end">Pending Amount:{PendingAmountRecieved()}</div>
-              </div>
+            <div className='bg-lightyellow scroll ps-2 border-bottom py-2'>
+              <table>
+                <thead>
+                  <th></th>
+                  <th></th>
+                </thead>
+                <tbody>
+                  <tr >
+                    <td className=' border-end border-2 border-dark pe-2 fw-bold '>
+                      Recieved
+                    </td>
+                    <td className='px-1'>
+                      Advance Amount:{AdvancedAmountRecieved()}
+                    </td>
+                    <td className='px-1'>
+                      Pending Amount:{PendingAmountRecieved()}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
 
-            <div className='bg-raffia rounded-2'>
-              <div className="row m-0 p-0 my-1">
-                <p className='text-charcoal m-0 ps-3 fw-semibold border-bottom-burntumber p-0'>Total</p>
-                <div className="col-6 col-md-6 text-lg-start">Pending:<span className='text-danger fw-bold'>{TotalPendingPayment()}</span></div>
-                <div className="col-4 col-md-6 text-lg-end ">Grand:<span className='text-success fw-bold'>{GrandTotal()}</span></div>
-              </div>
+            <div className='bg-raffia border-bottom py-1 scroll'>
+              <table>
+                <thead>
+                  <th></th>
+                  <th></th>
+                </thead>
+                <tbody>
+                  <tr >
+                    <td className=' border-end border-2 border-dark pe-2 fw-bold '>
+                      Total Amt.
+                    </td>
+                    <td className='px-1 '>
+                      Pending:<span className='fw-bold text-danger'>{TotalPendingPayment()}</span>
+                    </td>
+                    <td className='px-1'>
+                      Grand:<span className='fw-bold text-success'>{GrandTotal()}</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
           <div className="col-lg-2 col-md-2 col-sm-2 col-2 CARD3 rounded-2">
@@ -327,136 +376,136 @@ return sum
           </div>
         </div>
       </div>
-      <div className="container-fluid " ref={tableref}>
-        <h5 className='my-2 text-charcoal75 fw-semibold ms-2 '> Total Appointments :{Appointments.length}</h5>
-        <div className='container-fluid maintable scroll scroll-y appointments'>
-          <table className='table  text-center' ref={tableref}>
-            <thead className='border table-bordered'>
-              <tr>
-                <th className='border' rowspan='2'>Appointment Id</th>
-                <th className='border' rowspan='2'>Bill no.</th>
-                <th className='border' rowspan='2'>Name</th>
-                <th className='border' rowspan='2'>Mobile</th>
-                <th className='border' rowspan='2'>Doctor Name</th>
-                <th className='border' rowspan='2'>Date</th>
-                <th className='border' rowspan='2'>Time</th>
-                <th className='border' colspan='7' scope='colgroup'>Payment Method</th>
-                <th className='border' rowspan='2'>Consultation Amount</th>
-                <th className='border' rowspan='2'>Procedure Amount</th>
-                <th className='border' rowspan='2'>Extra Charges</th>
-                <th className='border' rowspan='2'>Discount</th>
-                <th className='border' rowspan='2'>CGST</th>
-                <th className='border' rowspan='2'>SGST</th>
-                <th className='border' rowspan='2'>Pending Amt.</th>
-                <th className='border' rowspan='2'> Grand Total</th>
+      <div className="container-fluid bg-pearl " ref={tableref}>
+        <h5 className='p-0 m-0 text-burntumber text-center fw-semibold '> Total Appointments :{Appointments.length}</h5>
+        <div className='container-fluid scroll scroll-y bg-pearl p-0 m-0' style={{ maxHeight: '20vh', height: '20vh' }}>
+          <table className='table text-center bg-pearl' ref={tableref}>
+            <thead className='position-sticky top-0 bg-pearl'>
+              <tr className='bg-pearl'>
+                <th className='py-0' rowspan='2'>Appointment Id</th>
+                <th className='py-0' rowspan='2'>Bill no.</th>
+                <th className='py-0' rowspan='2'>Name</th>
+                <th className='py-0' rowspan='2'>Mobile</th>
+                <th className='py-0' rowspan='2'>Doctor Name</th>
+                <th className='py-0' rowspan='2'>Date</th>
+                <th className='py-0' rowspan='2'>Time</th>
+                <th className='py-0' colspan='7' scope='colgroup'>Payment Method</th>
+                <th className='py-0' rowspan='2'>Consultation Amount</th>
+                <th className='py-0' rowspan='2'>Procedure Amount</th>
+                <th className='py-0' rowspan='2'>Extra Charges</th>
+                <th className='py-0' rowspan='2'>Discount</th>
+                <th className='py-0' rowspan='2'>CGST</th>
+                <th className='py-0' rowspan='2'>SGST</th>
+                <th className='py-0' rowspan='2'>Pending Amt.</th>
+                <th className='py-0' rowspan='2'> Grand Total</th>
               </tr>
               <tr>
-                <th className='bg-white border' scope='col'>Cash</th>
-                <th className='bg-white border' scope='col'>Card</th>
-                <th className='bg-white border' scope='col'>Paytm</th>
-                <th className='bg-white border' scope='col'>Phonepe</th>
-                <th className='bg-white border' scope='col'>Razorpay</th>
-                <th className='bg-white border' scope='col'>Wire-Transfer</th>
-                <th className='bg-white border' scope='col'>Points</th>
+                <th className='bg-pearl py-0' scope='col'>Cash</th>
+                <th className='bg-pearl py-0' scope='col'>Card</th>
+                <th className='bg-pearl py-0' scope='col'>Paytm</th>
+                <th className='bg-pearl py-0' scope='col'>Phonepe</th>
+                <th className='bg-pearl py-0' scope='col'>Razorpay</th>
+                <th className='bg-pearl py-0' scope='col'>Wire-Transfer</th>
+                <th className='bg-pearl py-0' scope='col'>Points</th>
               </tr>
             </thead>
 
 
-              {
-                loading ? (
-                  <tbody>
-                    <tr className='position-relative text-burntumber fs-3 mt-1 text-center m-auto'>
-                      <td className=' position-absolute start-0 end-0 text-charcoal75 fs-4 mt-1 text-center fw-bolder  '>Please be Patient while we are fetching Appointments</td></tr>
+            {
+              loading ? (
+                <tbody>
+                  <tr className='position-relative text-burntumber mt-1 m-auto'>
+                    <td className=' position-absolute start-0 end-0 text-charcoal75 mt-1  '>Please be Patient while we are fetching Appointments</td></tr>
+                </tbody>
+              ) : (
+                Appointments.length == 0 ? (
+                  <tbody >
+                    <tr className='position-relative text-burntumber mt-1 m-auto'>
+                      <td className=' position-absolute start-0 end-0 text-burntumber mt-1'>No Appointments</td></tr>
                   </tbody>
                 ) : (
-                  Appointments.length == 0 ? (
-                    <tbody >
-                      <tr className='position-relative text-burntumber fs-3 mt-1 text-center m-auto'>
-                        <td className=' position-absolute start-0 end-0 text-burntumber fs-3 mt-1 text-center'>No Appointments</td></tr>
-                    </tbody>
-                  ) : (
-                    <tbody className='align-items-center'>
-                      {
-                    Appointments.map((data, i) => (
-                      <tr className='border'>
-                        <td className='border'>{data.id ? data.id : 'N/A'}</td>
-                        <td className='border' key={i}>{data.bill_id && data.bill_id != null ? data.bill_id : 'N/A'}</td>
-                        <td className='border'>{data.patient && data.patient.full_name != null ? data.patient.full_name : 'N/A'}</td>
-                        <td className='border'>{data.patient && data.patient.phone_number != null ? data.patient.phone_number : 'N/A'}</td>
-                        <td className='border'>{data.doctor && data.doctor.doctor_name && data.doctor.doctor_name != null ? data.doctor.doctor_name : 'N/A'}</td>
-                        <td className='border'>{data.timeslot && data.timeslot.date && data.timeslot.date != null ? reversefunction(data.timeslot.date) : 'N/A'}</td>
-                        <td className='border'>{data.timeslot && data.timeslot.time_from && data.timeslot.time_from != null ? tConvert(data.timeslot.time_from) : 'N/A'}</td>
-                        <td className='border'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Cash : 'N/A'}</td>
-                        <td className='border'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Card : 'N/A'}</td>
-                        <td className='border'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Paytm : 'N/A'}</td>
-                        <td className='border'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Phonepe : 'N/A'}</td>
-                        <td className='border'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Razorpay : 'N/A'}</td>
-                        <td className='border'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details)['Wire-Transfer'] : 'N/A'}</td>
-                        <td className='border'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Points : 'N/A'}</td>
-                        <td className='border'>{data.doctor && data.doctor.consulationFee !== null ? data.doctor.consulationFee : 'N/A'}</td>
-                        <td className='border'>{data.procedure_cost && data.procedure_cost != null ? data.procedure_cost : 'N/A'}</td>
-                        <td className='border'>{SumExtraCharges(i)}</td>
-                        <td className='border'>{data.discount && data.discount != null ? data.discount : 'N/A'}</td>
-                        <td className='border'>{data.CGST}</td>
-                        <td className='border'>{data.SGST}</td>
-                        <td className='border'>{SumPendingpayments(i)}</td>
-                        <td className='border'>{data.total_amount}</td>
-                      </tr>
-                    ))
-                      }
-                    </tbody>
-                  )
-
+                  <tbody className='align-items-center Appointment'>
+                    {
+                      Appointments.map((data, i) => (
+                        <tr className={`bg-${SumPendingpayments(i) > 0 ? 'lightred50' : ''}`}>
+                          <td className='py-0 m-0 py-1'>{data.id ? data.id : 'N/A'}</td>
+                          <td className='py-0 m-0 py-1' key={i}>{data.bill_id && data.bill_id != null ? data.bill_id : 'N/A'}</td>
+                          <td className='py-0 m-0 py-1'>{data.patient && data.patient.full_name != null ? data.patient.full_name : 'N/A'}</td>
+                          <td className='py-0 m-0 py-1'>{data.patient && data.patient.phone_number != null ? data.patient.phone_number : 'N/A'}</td>
+                          <td className='py-0 m-0 py-1'>{data.doctor && data.doctor.doctor_name && data.doctor.doctor_name != null ? data.doctor.doctor_name : 'N/A'}</td>
+                          <td className='py-0 m-0 py-1'>{data.timeslot && data.timeslot.date && data.timeslot.date != null ? reversefunction(data.timeslot.date) : 'N/A'}</td>
+                          <td className='py-0 m-0 py-1'>{data.timeslot && data.timeslot.time_from && data.timeslot.time_from != null ? tConvert(data.timeslot.time_from) : 'N/A'}</td>
+                          <td className='py-0 m-0 py-1'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Cash : 'N/A'}</td>
+                          <td className='py-0 m-0 py-1'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Card : 'N/A'}</td>
+                          <td className='py-0 m-0 py-1'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Paytm : 'N/A'}</td>
+                          <td className='py-0 m-0 py-1'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Phonepe : 'N/A'}</td>
+                          <td className='py-0 m-0 py-1'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Razorpay : 'N/A'}</td>
+                          <td className='py-0 m-0 py-1'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details)['Wire-Transfer'] : 'N/A'}</td>
+                          <td className='py-0 m-0 py-1'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Points : 'N/A'}</td>
+                          <td className='py-0 m-0 py-1'>{data.doctor && data.doctor.consulationFee !== null ? data.doctor.consulationFee : 'N/A'}</td>
+                          <td className='py-0 m-0 py-1'>{data.procedure_cost && data.procedure_cost != null ? data.procedure_cost : 'N/A'}</td>
+                          <td className='py-0 m-0 py-1'>{SumExtraCharges(i)}</td>
+                          <td className='py-0 m-0 py-1'>{data.discount && data.discount != null ? data.discount : 'N/A'}</td>
+                          <td className='py-0 m-0 py-1'>{data.CGST}</td>
+                          <td className='py-0 m-0 py-1'>{data.SGST}</td>
+                          <td className='py-0 m-0 py-1'>{SumPendingpayments(i)}</td>
+                          <td className='py-0 m-0 py-1'>{data.total_amount}</td>
+                        </tr>
+                      ))
+                    }
+                  </tbody>
                 )
-              }
-       
+
+              )
+            }
+
           </table>
         </div>
-        <h5 className='my-2 text-charcoal75 fw-semibold ms-2 '>Pending Payments Recieved: {pendingpaid.length}</h5>
-        <div className='container-fluid scroll scroll-y pendingpayrecieve'>
+        <h5 className='p-0 m-0 text-burntumber text-center fw-semibold '>Pending Payments Recieved: {pendingpaid.length}</h5>
+        <div className='container-fluid scroll scroll-y p-0 m-0' style={{ maxHeight: '20vh', height: '20vh' }}>
           <table className='table text-center'>
-            <thead>
+            <thead className='bg-pearl position-sticky top-0'>
               <tr>
-                <th className='border' rowspan='2'>Appointment Id</th>
-                <th className='border' rowspan='2'>Bill no.</th>
-                <th className='border' rowspan='2'>Name</th>
-                <th className='border' rowspan='2'>Mobile</th>
-                <th className='border' rowspan='2'>Doctor Name</th>
-                <th className='border' rowspan='2'>Appointment Date</th>
-                <th className='border' rowspan='2'>Payment Recieved Date</th>
-                <th className='border' colspan='7' scope='colgroup'>Payment Method</th>
-                <th className='border' rowspan='2'>Amount Received</th>
+                <th className='py-0 my-0' rowspan='2'>Appointment Id</th>
+                <th className='py-0 my-0' rowspan='2'>Bill no.</th>
+                <th className='py-0 my-0' rowspan='2'>Name</th>
+                <th className='py-0 my-0' rowspan='2'>Mobile</th>
+                <th className='py-0 my-0' rowspan='2'>Doctor Name</th>
+                <th className='py-0 my-0' rowspan='2'>Appointment Date</th>
+                <th className='py-0 my-0' rowspan='2'>Payment Recieved Date</th>
+                <th className='py-0 my-0' colspan='7' scope='colgroup'>Payment Method</th>
+                <th className='py-0 my-0' rowspan='2'>Amount Received</th>
               </tr>
               <tr>
-                <th className='bg-white border' scope='col'>Cash</th>
-                <th className='bg-white border' scope='col'>Card</th>
-                <th className='bg-white border' scope='col'>Paytm</th>
-                <th className='bg-white border' scope='col'>Phonepe</th>
-                <th className='bg-white border' scope='col'>Razorpay</th>
-                <th className='bg-white border' scope='col'>Wire-Transfer</th>
-                <th className='bg-white border' scope='col'>Points</th>
+                <th className='py-0 my-0' scope='col'>Cash</th>
+                <th className='py-0 my-0' scope='col'>Card</th>
+                <th className='py-0 my-0' scope='col'>Paytm</th>
+                <th className='py-0 my-0' scope='col'>Phonepe</th>
+                <th className='py-0 my-0' scope='col'>Razorpay</th>
+                <th className='py-0 my-0' scope='col'>Wire-Transfer</th>
+                <th className='py-0 my-0' scope='col'>Points</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className='Pendingpay'>
 
               {
                 pendingpaid.map((data, i) => (
-                  <tr key={i} className='table-bordered'>
-                    <td className='border'>{data.appointment && data.appointment.id != null ? data.appointment.id : 'N/A'}</td>
-                    <td className='border'>{data.id && data.id != null ? data.id : 'N/A'}</td>
-                    <td className='border'>{data.appointment && data.appointment != null && data.appointment.patient && data.appointment.patient.full_name != null ? data.appointment.patient.full_name : 'N/A'}</td>
-                    <td className='border'>{data.appointment && data.appointment != null && data.appointment.patient.phone_number && data.appointment.patient.phone_number != null ? data.appointment.patient.phone_number : 'N/A'}</td>
-                    <td className='border'>{data.appointment && data.appointment != null && data.appointment.doctor && data.appointment.doctor.doctor_name != null ? data.appointment.doctor.doctor_name : 'N/A'}</td>
-                    <td className='border'>{data.appointment && data.appointment != null && data.appointment.appointment_date != null ? reversefunction(data.appointment.appointment_date) : 'N/A'}</td>
-                    <td className='border'>{data.paid_date && data.paid_date != null ? reversefunction(data.paid_date) : 'N/A'}</td>
-                    <td className='border'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Cash : 'N/A'}</td>
-                    <td className='border'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Card : 'N/A'}</td>
-                    <td className='border'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Paytm : 'N/A'}</td>
-                    <td className='border'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Phonepe : 'N/A'}</td>
-                    <td className='border'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Razorpay : 'N/A'}</td>
-                    <td className='border'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details)['Wire-Transfer'] : 'N/A'}</td>
-                    <td className='border'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Points : 'N/A'}</td>
-                    <td className='border'>{data.paid_amount}</td>
+                  <tr key={i}>
+                    <td className='py-0 m-0 py-1'>{data.appointment && data.appointment.id != null ? data.appointment.id : 'N/A'}</td>
+                    <td className='py-0 m-0 py-1'>{data.id && data.id != null ? data.id : 'N/A'}</td>
+                    <td className='py-0 m-0 py-1'>{data.appointment && data.appointment != null && data.appointment.patient && data.appointment.patient.full_name != null ? data.appointment.patient.full_name : 'N/A'}</td>
+                    <td className='py-0 m-0 py-1'>{data.appointment && data.appointment != null && data.appointment.patient.phone_number && data.appointment.patient.phone_number != null ? data.appointment.patient.phone_number : 'N/A'}</td>
+                    <td className='py-0 m-0 py-1'>{data.appointment && data.appointment != null && data.appointment.doctor && data.appointment.doctor.doctor_name != null ? data.appointment.doctor.doctor_name : 'N/A'}</td>
+                    <td className='py-0 m-0 py-1'>{data.appointment && data.appointment != null && data.appointment.appointment_date != null ? reversefunction(data.appointment.appointment_date) : 'N/A'}</td>
+                    <td className='py-0 m-0 py-1'>{data.paid_date && data.paid_date != null ? reversefunction(data.paid_date) : 'N/A'}</td>
+                    <td className='py-0 m-0 py-1'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Cash : 'N/A'}</td>
+                    <td className='py-0 m-0 py-1'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Card : 'N/A'}</td>
+                    <td className='py-0 m-0 py-1'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Paytm : 'N/A'}</td>
+                    <td className='py-0 m-0 py-1'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Phonepe : 'N/A'}</td>
+                    <td className='py-0 m-0 py-1'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Razorpay : 'N/A'}</td>
+                    <td className='py-0 m-0 py-1'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details)['Wire-Transfer'] : 'N/A'}</td>
+                    <td className='py-0 m-0 py-1'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Points : 'N/A'}</td>
+                    <td className='py-0 m-0 py-1'>{data.paid_amount}</td>
                   </tr>
                 ))
               }
@@ -464,49 +513,49 @@ return sum
             </tbody>
           </table>
         </div>
-        <h5 className='my-2 text-charcoal75 fw-semibold ms-2 '>Advanced Payments Recieved:{advancepaid.length}</h5>
-        <div className='container-fluid maintable scroll scroll-y advancepayrecieve'>
+        <h5 className='p-0 m-0 text-burntumber fw-semibold text-center '>Advanced Payments Recieved:{advancepaid.length}</h5>
+        <div className='container-fluid scroll scroll-y p-0 m-0' style={{ maxHeight: '20vh', height: '20vh' }}>
           <table className='table text-center'>
-            <thead>
+            <thead className='bg-pearl position-sticky top-0'>
               <tr>
-                <th className='border' rowspan='2'>Credit ID</th>
-                <th className='border' rowspan='2'>Patient Name</th>
-                <th className='border' rowspan='2'>Doctor Name</th>
-                <th className='border' rowspan='2'>Mobile No.</th>
-                <th className='border' rowspan='2'>Description</th>
-                <th className='border' rowspan='2'>Date Recieved</th>
-                <th className='border' colspan='7' scope='colgroup'>Payment Method</th>
-                <th className='border' rowspan='2'>Amount Recieved</th>
+                <th className='py-0 my-0' rowspan='2'>Credit ID</th>
+                <th className='py-0 my-0' rowspan='2'>Patient Name</th>
+                <th className='py-0 my-0' rowspan='2'>Doctor Name</th>
+                <th className='py-0 my-0' rowspan='2'>Mobile No.</th>
+                <th className='py-0 my-0' rowspan='2'>Description</th>
+                <th className='py-0 my-0' rowspan='2'>Date Recieved</th>
+                <th className='py-0 my-0' colspan='7' scope='colgroup'>Payment Method</th>
+                <th className='py-0 my-0' rowspan='2'>Amount Recieved</th>
               </tr>
               <tr>
-                <th className='bg-white border' scope='col'>Cash</th>
-                <th className='bg-white border' scope='col'>Card</th>
-                <th className='bg-white border' scope='col'>Paytm</th>
-                <th className='bg-white border' scope='col'>Phonepe</th>
-                <th className='bg-white border' scope='col'>Razorpay</th>
-                <th className='bg-white border' scope='col'>Wire-Transfer</th>
-                <th className='bg-white border' scope='col'>Points</th>
+                <th className='bg-white py-0 my-0' scope='col'>Cash</th>
+                <th className='bg-white py-0 my-0' scope='col'>Card</th>
+                <th className='bg-white py-0 my-0' scope='col'>Paytm</th>
+                <th className='bg-white py-0 my-0' scope='col'>Phonepe</th>
+                <th className='bg-white py-0 my-0' scope='col'>Razorpay</th>
+                <th className='bg-white py-0 my-0' scope='col'>Wire-Transfer</th>
+                <th className='bg-white py-0 my-0' scope='col'>Points</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className='Advancepay'>
 
               {
                 advancepaid.map((data, i) => (
-                  <tr key={i} className='bordered table-bordered'>
-                    <td className='border'>{data.id ? data.id : 'N/A'}</td>
-                    <td className='border'>{data.patient &&data.patient.full_name!=null ? data.patient.full_name:'N/A'}</td>
-                    <td className='border'>{data.doctor && data.doctor.full_name!=null ?data.doctor.full_name :'N/A'}</td>
-                    <td className='border'>{data.patient&& data.patient.phone_number!==null?data.patient.phone_number:'N/A'}</td>
-                    <td className='border'>{data.description&&data.description!=null ?data.description:'N/A'}</td>
-                    <td className='border'>{reversefunction(data.date)}</td>
-                    <td className='border'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Cash : 'N/A'}</td>
-                    <td className='border'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Card : 'N/A'}</td>
-                    <td className='border'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Paytm : 'N/A'}</td>
-                    <td className='border'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Phonepe : 'N/A'}</td>
-                    <td className='border'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Razorpay : 'N/A'}</td>
-                    <td className='border'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details)['Wire-Transfer'] : 'N/A'}</td>
-                    <td className='border'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Points : 'N/A'}</td>
-                    <td className='border'>{data.credit_amount}</td>
+                  <tr key={i} className=''>
+                    <td className='py-0 py-1'>{data.id ? data.id : 'N/A'}</td>
+                    <td className='py-0 py-1'>{data.patient && data.patient.full_name != null ? data.patient.full_name : 'N/A'}</td>
+                    <td className='py-0 py-1'>{data.doctor && data.doctor.full_name != null ? data.doctor.full_name : 'N/A'}</td>
+                    <td className='py-0 py-1'>{data.patient && data.patient.phone_number !== null ? data.patient.phone_number : 'N/A'}</td>
+                    <td className='py-0 py-1'>{data.description && data.description != null ? data.description : 'N/A'}</td>
+                    <td className='py-0 py-1'>{reversefunction(data.date)}</td>
+                    <td className='py-0 py-1'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Cash : 'N/A'}</td>
+                    <td className='py-0 py-1'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Card : 'N/A'}</td>
+                    <td className='py-0 py-1'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Paytm : 'N/A'}</td>
+                    <td className='py-0 py-1'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Phonepe : 'N/A'}</td>
+                    <td className='py-0 py-1'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Razorpay : 'N/A'}</td>
+                    <td className='py-0 py-1'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details)['Wire-Transfer'] : 'N/A'}</td>
+                    <td className='py-0 py-1'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Points : 'N/A'}</td>
+                    <td className='py-0 py-1'>{data.credit_amount}</td>
                   </tr>
                 ))
               }
