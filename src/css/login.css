@@ -1,0 +1,139 @@
+@import url('https://fonts.googleapis.com/css2?family=Urbanist&display=swap');
+
+html{
+    font-family: 'Urbanist';
+}
+:root{
+--burntumber:#96351E;
+--brandy:#DBB98F;
+--Raffia:#DDC6A8;
+--pearl:#ffffff;
+--seashell:#f2f2f2;
+--charcoal:#222023;
+}
+
+.loginform{
+    font-family: 'Urbanist';
+    animation:bgtrans;
+    animation-duration: 10s;
+    animation-direction: normal;
+    animation-iteration-count: infinite;
+    background-position: center;
+    background-size:cover;
+    background-repeat: no-repeat;
+    background-image: url(/public/images/bg1.jpg);
+    height:100vh;
+    width:100%;
+}
+.signinsection{
+    margin:0 auto;
+}
+.formbox{
+    position:relative;
+    font-family: 'Urbanist';
+    color:var(--charcoal);
+    font-size:1rem;
+}
+.userinput{
+    position: relative;
+    font-family: 'Urbanist';
+    color:var(--charcoal);
+   
+}
+.userinput p{
+    position: absolute;
+    bottom:0;
+    transition:all,0.3s;
+    z-index:-1;
+    font-family: 'Urbanist';
+    color:var(--charcoal);
+}
+.userinput:hover p{
+    bottom:100%;
+    z-index:0;
+    color:var(--charcoal); 
+    font-family: 'Urbanist';
+}
+#passinput{
+    transition: all,0.3s;
+    font-family: 'Urbanist';
+    color:var(--charcoal);
+}
+
+.next{
+    cursor: pointer;
+    transition:all,0.1s;
+    font-family: 'Urbanist';
+    color:var(--charcoal);
+    transition: all,0.3s;
+}
+.next:hover{
+    background-color:var(--charcoal);
+    color:var(--pearl);
+}
+.submit{
+
+    cursor: pointer;
+    border:none;
+    background-color: transparent;
+    transition:all,0.1s;
+    font-family: 'Urbanist';
+    color:var(--charcoal);
+}
+.submit:hover{
+    background-color:var(--charcoal);
+    color:var(--pearl);
+}
+
+.back{
+    cursor: pointer;
+    transition:all,0.1s;
+    font-family: 'Urbanist';
+    color:var(--charcoal);
+}
+.back:hover{
+    background-color:var(--charcoal);
+    color:var(--pearl);
+}
+
+
+#text2{
+    font-family: 'Urbanist';
+    color:var(--charcoal);
+    width:10rem
+}
+@keyframes bgtrans {
+    0%{
+        background-image: url(/public/images/bg2.jpg);
+    }
+    25%{
+        background-image: url(/public/images/bg2.jpg);
+    }
+    50%{
+
+        background-image: url(/public/images/bg1.jpg);
+    }
+    75%{
+        background-image: url(/public/images/bg1.jpg);
+    }
+    100%{
+        background-image: url(/public/images/bg2.jpg);
+        }
+    }
+@media screen and (max-width: 1000px) and(min-width:769px){
+    .signinsection{
+        width:50%;
+    }
+}
+
+@media screen and(max-width:768px){
+    .signinsection{
+        margin:0;
+        width:100%;
+    }
+}
+@media screen and (min-width: 1000px){
+    .signinsection{
+        width:50%;
+    }
+}

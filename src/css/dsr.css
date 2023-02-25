@@ -1,0 +1,120 @@
+
+.DSRsection .page {
+    z-index: 1000;
+}
+
+.DSRsection .clinic {
+    font-weight:bold;
+    border:0px;
+    border-top: 1px solid var(--charcoal50);
+    border-left: 1px solid var(--charcoal50);
+    border-bottom: 1px solid var(--charcoal50);
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    cursor: pointer;
+    appearance: none;
+}
+
+.DSRsection .doctor{
+    font-weight: bold;
+    border:0px;
+    border-top: 1px solid var(--charcoal50);
+    border-bottom: 1px solid var(--charcoal50);
+    cursor: pointer;
+    appearance: none;
+}
+.DSRsection .fromdate{
+    padding-top:6px;
+    padding-bottom:2px;
+    border:0px;
+    border-top: 1px solid var(--charcoal50);
+    border-bottom: 1px solid var(--charcoal50);
+
+    
+}
+.DSRsection .todate{
+    padding-top:6px;
+    padding-bottom:2px;
+    border:0px;
+    border-top: 1px solid var(--charcoal50);
+    border-bottom: 1px solid var(--charcoal50);
+    border-right: 1px solid var(--charcoal50);
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.Appointments_Dsrsection .CARD1 , .Pharmacy_Dsrsection .CARD1   {
+    border-left: 3px solid var(--burntumber);
+    border-right: 1px solid var(--charcoal50);
+    border-top: 1px solid var(--charcoal50);
+    border-bottom: 1px solid var(--charcoal50);
+}
+
+.Appointments_Dsrsection .CARD2 ,.Pharmacy_Dsrsection .CARD2  {
+    border-left: 3px solid var(--brandy);
+    border-right: 1px solid var(--charcoal50);
+    border-top: 1px solid var(--charcoal50);
+    border-bottom: 1px solid var(--charcoal50);
+}
+
+.Appointments_Dsrsection .CARD3,.Pharmacy_Dsrsection .CARD3 {
+    border-left: 3px solid var(--lightgreen);
+
+}
+.Appointments_Dsrsection .maintable tr:nth-child(even) {
+   background-color: var(--seashell);
+}
+.Appointments_Dsrsection .maintable {
+    max-height: 40vh;
+}
+.Appointments_Dsrsection .appointments{
+    min-height:10rem;
+}
+.Doctors_Dsrsection .doctordsrtable tr:nth-child(even){
+    background-color:var(--seashell)
+}
+ .doctordsrtable{
+    /* min-height:20rem; */
+    /* height:30rem; */
+    height:60vh
+}
+.Pharmacy_Dsrsection .maintable{
+    max-height:32rem;
+}
+
+@media (max-width:769px) {
+    .DSRsection .fromdate{
+        padding-bottom:4px;
+        padding-top:4px;
+    }
+    .DSRsection .todate{
+        padding-bottom:4px;
+        padding-top:4px;
+    }
+    .Appointments_Dsrsection,.Pharmacy_Dsrsection {
+        font-size: 0.8rem;
+    }
+
+    .Appointments_Dsrsection .CARD1 ,.Pharmacy_Dsrsection .CARD1 {
+        width: 18.9rem;
+    }
+
+    .Appointments_Dsrsection .CARD3 .button ,.Pharmacy_Dsrsection .CARD3 .button {
+        font-size: 0.8rem;
+        padding: 0;
+        margin-left: 1rem;
+    }
+
+    .maintable {
+        max-height: 10rem;
+    }
+    .Pharmacy_Dsrsection .maintable{
+        max-height:45rem;
+    }
+    /* .Pharmacy_Dsrsection .saleentries{
+        max-height:25rem;
+    }
+    .Pharmacy_Dsrsection .pendingpayrecieve{
+        max-height:25rem;
+    } */
+}

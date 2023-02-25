@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Urbanist&display=swap');
+
+:root {
+    --burntumber: #96351E;
+    --brandy: #DBB98F;
+    --Raffia: #DDC6A8;
+    --pearl: #ffffff;
+    --seashell: #f2f2f2;
+    --charcoal: #222023;
+    --lightblue: #A2B9C9;
+    --lightgreen: #95B3AB;
+    --lightyellow: #EFD78D;
+    --lightbrown: #D5AD70;
+    --lightred: #E8AD98;
+    --charcoal50: #22202331;
+    --charcoal75: #222023ad;
+}
+.patientsection {
+    max-height:90vh
+}
+.patientsection .scroll-y{
+max-height:70vh
+}
+.patientsection tr:nth-child(even) {
+    background-color: var(--seashell);
+}
+
+.patientsection .updatepatientform {
+    min-height: 30rem;
+    max-height:40rem;
+    left:0;
+    right:0;
+    bottom:0;
+    min-width: 20rem;
+    min-height: 35rem;
+    max-width:40rem;
+    overflow: auto ;
+    margin:0 auto;
+}
