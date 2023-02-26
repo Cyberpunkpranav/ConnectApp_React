@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react'
 import '../../css/dashboard.css'
 import '../../css/appointment.css'
 import '../../css/dsr.css'
-import '../../../node_modules/bootstrap/js/dist/popover'
-import '../../../node_modules/bootstrap/dist/'
 import { DownloadTableExcel } from 'react-export-table-to-excel';
 import { useContext, useRef } from 'react'
 import { URL, DoctorsList } from '../../index'
