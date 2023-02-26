@@ -350,8 +350,9 @@ function Saleentrysection(props) {
 function SaleEntrypayments(props) {
   const url = useContext(URL)
   const adminid = localStorage.getItem('id')
-  const [paymentmethods, setpaymentmethods] = useState([])
+  const [paymentmethods, setpaymentmethods] = useState()
   const [previouspayments, setpreviouspayments] = useState([])
+  const [previoustotal, setprevioustotal] = useState(0)
   const [loading, setloading] = useState()
   const paymentmethoddetails = {
     paymentmethod: '',
@@ -427,8 +428,27 @@ function SaleEntrypayments(props) {
       Notiflix.Notify.failure(e.message)
     }
   }
-  console.log(props.saleentryarr, paymentmethods)
+  const CalPrevTotal = async () => {
+    let total = 0
+    previouspayments.map((data) => (
+      total += Number(data.amount)
+    ))
+    console.log(total)
+    setprevioustotal(total)
+  }
+  useEffect(() => {
+    CalPrevTotal()
+  }, [previouspayments])
+  console.log(props.saleentryarr, paymentmethods, previoustotal)
 
+ function AddMethods(){
+  if(paymentmethods && paymentmethods.length>0){
+    setpaymentmethods(prevState => [...prevState, paymentmethoddetails]) 
+  }else{
+    setpaymentmethods([paymentmethoddetails])
+  }
+  
+  }
   return (
     <div className='p-0 m-0'>
       <h6 className='text-center mt-2 fw-bold'>{props.itembillid} Payments</h6>
@@ -438,59 +458,54 @@ function SaleEntrypayments(props) {
       <p className='text-charcoal p-0 m-auto fw-bolder'>Grand Total : <span className='text-burntumber'>Rs {props.saleentryarr.grand_total}</span></p>
       <hr className='p-0 m-0 mb-1' />
       <div className="container-fluid text-start position-relative">
+        <div className={`d-${previoustotal == props.saleentryarr.grand_total ? '' : 'none'} bg-lightgreen fw-bold text-center p-2 my-2`}>Payment Done</div>
         <h6 className='text-charcoal fw-bolder text-center'>Payments</h6>
         {
           previouspayments.map((data, i) => (
             <div className="row p-0 m-0 justify-content-end g-2">
               <div className="col-4 ">
-                <select className='form-control border-secondary py-1 text-center' disabled={true} value={data.paymentmethod} onChange={(e) => { data.paymentmethod = e.target.value; setpaymentmethods(prevState => [...prevState]) }}>
-                  <option className='text-charcoal75 fw-bolder'>Payment Method</option>
-                  <option value='Cash'>Cash</option>
-                  <option value='Card'>Card</option>
-                  <option value='Paytm'>Paytm</option>
-                  <option value='Phonepe'>Phone Pe</option>
-                  <option value='Wire-Transfer'>Wire Transfer</option>
-                  <option value='Razorpay'>Razorpay</option>
-                  <option value='Points'>Points</option>
-                  <option value='Adjust-Advance'>Adjust-Advance</option>
-                </select>
+                <div className=' text-center'>{data.paymentmethod}</div>
               </div>
               <div className="col-4 text-center ">
-                <input className='form-control border-secondary py-1 text-center' disabled={true} value={data.amount} onChange={(e) => { data.amount = e.target.value; setpaymentmethods(prevState => [...prevState]) }} />
+                <div className=' text-center'>{data.amount}</div>
               </div>
               <div className="col-2 text-center">
-
               </div>
             </div>
           ))
         }
+
         {
-          paymentmethods.map((data, i) => (
-            <div className="row p-0 m-0 justify-content-end g-2">
-              <div className="col-4 ">
-                <select className='form-control border-success py-1 text-center' value={data.paymentmethod} onChange={(e) => { data.paymentmethod = e.target.value; setpaymentmethods(prevState => [...prevState]) }}>
-                  <option className='text-charcoal75 fw-bolder'>Payment Method</option>
-                  <option value='Cash'>Cash</option>
-                  <option value='Card'>Card</option>
-                  <option value='Paytm'>Paytm</option>
-                  <option value='Phonepe'>Phone Pe</option>
-                  <option value='Wire-Transfer'>Wire Transfer</option>
-                  <option value='Razorpay'>Razorpay</option>
-                  <option value='Points'>Points</option>
-                  <option value='Adjust-Advance'>Adjust-Advance</option>
-                </select>
+          paymentmethods ? (
+            paymentmethods.map((data, i) => (
+              <div className={`row p-0 m-0 d-${previoustotal < props.saleentryarr.grand_total ? '  ' : 'none'} justify-content-end g-2`}>
+                <div className="col-4 ">
+                  <select className='form-control border-success py-1 text-center' value={data.paymentmethod} onChange={(e) => { data.paymentmethod = e.target.value; setpaymentmethods(prevState => [...prevState]) }}>
+                    <option className='text-charcoal75 fw-bolder'>Payment Method</option>
+                    <option value='Cash'>Cash</option>
+                    <option value='Card'>Card</option>
+                    <option value='Paytm'>Paytm</option>
+                    <option value='Phonepe'>Phone Pe</option>
+                    <option value='Wire-Transfer'>Wire Transfer</option>
+                    <option value='Razorpay'>Razorpay</option>
+                    <option value='Points'>Points</option>
+                    <option value='Adjust-Advance'>Adjust-Advance</option>
+                  </select>
+                </div>
+                <div className="col-4 text-center ">
+                  <input className='form-control border-success py-1 text-center' value={data.amount} onChange={(e) => { data.amount = e.target.value; setpaymentmethods(prevState => [...prevState]) }} />
+                </div>
+                <div className="col-2 text-center">
+                  <button className='btn btn-sm p-0 m-0' onClick={() => { DeletePaymentMethods(i); setpaymentmethods(prevState => [...prevState]) }}><img src={process.env.PUBLIC_URL + '/images/delete.png'} className='img-fluid' style={{ width: '1.5rem' }} /></button>
+                </div>
               </div>
-              <div className="col-4 text-center ">
-                <input className='form-control border-success py-1 text-center' value={data.amount} onChange={(e) => { data.amount = e.target.value; setpaymentmethods(prevState => [...prevState]) }} />
-              </div>
-              <div className="col-2 text-center">
-                <button className='btn btn-sm p-0 m-0' onClick={() => { DeletePaymentMethods(i); setpaymentmethods(prevState => [...prevState]) }}><img src={process.env.PUBLIC_URL + '/images/delete.png'} className='img-fluid' style={{ width: '1.5rem' }} /></button>
-              </div>
-            </div>
-          ))
+            ))
+          ) : (<></>)
+
         }
         <div className="container-fluid text-center mt-2">
-          <button className='btn py-0' onClick={() => setpaymentmethods(prevState => [...prevState, paymentmethoddetails])}><img src={process.env.PUBLIC_URL + '/images/add.png'} className='img-fluid' style={{ width: '2rem' }} /></button>
+          <button className='btn py-0' onClick={AddMethods}>
+            <img src={process.env.PUBLIC_URL + '/images/add.png'} className='img-fluid' style={{ width: '2rem' }} /></button>
         </div>
       </div>
 
@@ -1044,13 +1059,11 @@ function SaleEntryForm(props) {
     }
 
   }
-
   useEffect(() => {
     Doclist.map((data) => (
       data[0] == doctorid ? setdoctorname(data[1]) : ''
     ))
   }, [doctorid])
-
   function CalSellingCost(mrp, disc) {
     let cost = mrp
     if (!disc) {

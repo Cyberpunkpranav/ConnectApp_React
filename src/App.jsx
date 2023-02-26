@@ -199,11 +199,11 @@ function Navbar(props) {
                 <button className={`d-${logoutbtn} button button-lightred start-0 end-0 position-absolute text-burntumber w-75 fw-bolder`} style={{ zIndex: '1000' }} onClick={logout}>Logout</button>
               </button>
             </div>
-            <div className="col-lg-6 col-xl-6 align-self-center col-sm-auto col-md-auto col-10 p-0 m-0 menu order-1 order-xl-0 order-sm-0 order-md-0 order-sm-0">
+            <div className="col-lg-6 col-xl-7 align-self-center col-sm-auto col-md-auto col-10 p-0 m-0 menu order-1 order-xl-0 order-sm-0 order-md-0 order-sm-0">
               <div className="row p-0 m-0 gx-auto justify-content-center">
                 {
                   NavbarIcons.map((data, i) => (
-                    <div className={`col-auto bg-${highlighticon ? highlighticon === data.path ? 'burntumber50' : 'seashell' : path === data.path ? 'burntumber50' : 'seashell'} rounded-2 `} onClick={() => sethighlighticon(data.path)}>
+                    <div className={` ms-2 col-auto bg-${highlighticon ? highlighticon === data.path ? 'burntumber50' : 'seashell' : path === data.path ? 'burntumber50' : 'seashell'} rounded-2 `} onClick={() => sethighlighticon(data.path)}>
                       <Link to={data.path} className="text-decoration-none"> <div className="text-center"> <img src={process.env.PUBLIC_URL + data.image} alt="displaying_image" className="img-fluid" style={{ width: `1.5rem` }} /><p className="col-12 m-0">{data.title}</p> </div> </Link>
                     </div>
                   ))
@@ -228,8 +228,8 @@ function Navbar(props) {
                 <input className="col-12 p-lg-2 doctorslot shadow-sm text-start" type="button" defaultValue="Doctor Slot" onClick={toggledoctorform} />
               </div> */}
             </div>
-            <div className="col-lg-2 col-xl-3 col-md-2 col-sm-2 ms-md-2 align-self-center order-sm-2 order-2 position-relative p-0 m-0" style={{ zIndex: '1000' }}>
-              <input type="text" className="bg-seashell border border-1 w-75 rounded-1 text-center border-0 position-relative" placeholder="search" onChange={(e) => setsearchtext(e.target.value)} />
+            <div className="col-lg-1 col-xl-2 col-md-2 col-sm-2 ms-md-2 align-self-center order-sm-2 order-2 position-relative p-0 m-0" style={{ zIndex: '1000' }}>
+              <input type="text" className="bg-seashell border w-100 border-1 rounded-1 text-center border-0 position-relative" placeholder="search" onChange={(e) => setsearchtext(e.target.value)} />
               <div className="position-absolute bg-pearl end-0 shadow rounded-2 mt-2">
                 <SearchField searchtext={searchtext} fetchapi={props.fetchapi} />
               </div>
@@ -326,7 +326,6 @@ function Doctorsection(props) {
                 <>
                   <div className='col-auto p-0 m-0'>
                     <button key={i} className={`button rounded-3 p-0 m-0 py-1 px-2 btn-sm col-auto shadow-none text-${i === Doctor ? 'light' : 'charcoal75 fw-bolder'} button-${i === Doctor ? "charcoal" : "seashell"} border-${i === Doctor ? 'secondary' : 'none'}`} autoFocus={i === Doctor ? true : false} onFocus={() => { setDoctorID(data[0]); setDoctorName(data[1]); setDocClinic(data[2]) }} value={`${data[0]}.${data[1]}`} onClick={(a) => { setDoctor(i); }}>{`${data[0]}. Dr.${data[1]}`} </button>
-
                   </div>
                   <div className='vr rounded-2 h-75 align-self-center' style={{ padding: '0.8px' }}></div>
                 </>

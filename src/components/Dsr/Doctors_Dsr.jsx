@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import '../../css/dashboard.css'
 import '../../css/appointment.css'
 import '../../css/dsr.css'
+import '../../../node_modules/bootstrap/js/dist/popover'
+import '../../../node_modules/bootstrap/dist/'
 import { DownloadTableExcel } from 'react-export-table-to-excel';
 import { useContext, useRef } from 'react'
 import { URL, DoctorsList } from '../../index'
@@ -15,6 +17,7 @@ const Doctors_Dsr = (props) => {
   const [DocTimetyp1, setDocTimetyp1] = useState()
   const tableref = useRef()
   const Doctorwisetable = useRef()
+
   async function GetDoctors() {
     setload(true)
     await axios.get(`${url}/DSR/doctors?from_date=${props.fromdate}&to_date=${props.todate}`).then((response) => {
@@ -28,6 +31,7 @@ const Doctors_Dsr = (props) => {
   }, [props.fromdate, props.todate])
 
   let DoctorWisetotalarr = []
+
   async function DoctorwiseTable() {
     let total, hr, min
     let doctorstime = {
@@ -111,9 +115,9 @@ const Doctors_Dsr = (props) => {
         }
         if (DoctorWisetotalarr[k][5] >= 60) {
           let remainsmin = DoctorWisetotalarr[k][5] % 60
-          let minhours = Math.floor(DoctorWisetotalarr[k][5]/60)
+          let minhours = Math.floor(DoctorWisetotalarr[k][5] / 60)
           DoctorWisetotalarr[k][5] = remainsmin
-          DoctorWisetotalarr[k][4]+=minhours
+          DoctorWisetotalarr[k][4] += minhours
 
         }
 
@@ -121,7 +125,6 @@ const Doctors_Dsr = (props) => {
     }
     console.log(DoctorWisetotalarr)
     setDocTimetyp1(DoctorWisetotalarr)
-    console.log(Math.floor(69/60))
   }
   useEffect(() => {
     async function load() {
@@ -218,8 +221,7 @@ const Doctors_Dsr = (props) => {
     <div className="container-fluid Doctors_Dsrsection">
       <div className='py-2'>
         <div className="container-fluid ms-0">
-          <h6 className='text-burntumber fw-bolder'>Exports</h6>
-          <div className="row">
+          <div className="row p-0 m-0">
             <div className="col-3 col-lg-3 col-md-5 py-2 border border-1 rounded-2 shadow-sm">
               <h6 className='text-charcoa50 fw-bold'>Total Report</h6>
               <div className="row gx-1">
@@ -266,9 +268,9 @@ const Doctors_Dsr = (props) => {
         </div>
       </div>
 
-      <h5 className='my-2 text-charcoal75 fw-semibold ms-2 '>Doctors Login/Logout Details : {Appointments.length}  </h5>
+      <h6 className=' p-0 m-0 text-charcoal75 fw-semibold ms-2 '>Doctors Login/Logout Details : {Appointments.length}  </h6>
       <div className='container-fluid scroll scroll-y doctordsrtable' ref={tableref}>
-      <span className='d-none'>Total Time:{TotalTime()}</span>
+        <span className='d-none'>Total Time:{TotalTime()}</span>
         <table className='table text-center border' >
           <thead>
             <tr>
@@ -321,21 +323,21 @@ const Doctors_Dsr = (props) => {
         </table>
 
       </div>
-      <h6 className='fs-5 text-charcoal75 fw-bolder my-3'>Doctor Summary</h6>
+      <h6 className='text-charcoal75 fw-bolder p-0 m-0'>Doctor Summary</h6>
       <div className='container-fluid scroll scroll-y doctordsrtable' ref={Doctorwisetable}>
         <table className='table text-center'>
-          <thead>
+          <thead className='position-sticky top-0 bg-pearl'>
             <tr>
-              <th className='border' rowspan='2'>Doctor Id</th>
-              <th className='border' rowspan='2'>Doctor Name</th>
-              <th className='border' colspan='2' scope='colgroup'>Consultation</th>
-              <th className='border' colspan='2' scope='colgroup'>Procedure</th>
+              <th className='my-0 py-0' rowspan='2'>Doctor Id</th>
+              <th className='my-0 py-0' rowspan='2'>Doctor Name</th>
+              <th className='my-0 py-0' colspan='2' scope='colgroup'>Consultation</th>
+              <th className='my-0 py-0' colspan='2' scope='colgroup'>Procedure</th>
             </tr>
             <tr>
-              <th className='border bg-pearl' scope='col'>Total Hours</th>
-              <th className='border bg-pearl' scope='col'>Total Minutes</th>
-              <th className='border bg-pearl' scope='col'>Total Hours</th>
-              <th className='border bg-pearl' scope='col'>Total Minutes</th>
+              <th className='py-0 my-0 bg-pearl' scope='col'>Total Hours</th>
+              <th className='py-0 my-0 bg-pearl' scope='col'>Total Minutes</th>
+              <th className='py-0 my-0 bg-pearl' scope='col'>Total Hours</th>
+              <th className='py-0 my-0 bg-pearl' scope='col'>Total Minutes</th>
             </tr>
           </thead>
 

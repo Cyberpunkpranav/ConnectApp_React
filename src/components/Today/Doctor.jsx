@@ -5,6 +5,7 @@ import AmountPaid from './AmountPaid';
 import { URL, TodayDate } from '../../index'
 import Notiflix from 'notiflix';
 import { customconfirm } from "../features/notiflix/customconfirm";
+import {customloading} from "../features/notiflix/customloading"
 import { Loading } from 'notiflix/build/notiflix-loading-aio';
 import { UpdateAppointment } from './UpdateAppointment'
 import '../../css/bootstrap.css'
@@ -68,7 +69,12 @@ function DoctorSchedule(props) {
 
   async function Appointmentlist() {
     setisLoading(true);
-    Loading.dots()
+    Loading.dots('Getting Details',{
+      backgroundColor: 'rgb(242, 242, 242,0.5)',
+      svgColor: '#96351E',
+      messageColor: '#96351E',
+      messageFontSize:'1.5rem'
+    })
     await axios.get(`${url}/appointment/list?doctor_id=${props.todayDoc[props._selected][0]}&from_date=${Date}&to_date=${Date}`).then((response) => {
       setappointmentdata(response.data.data);
     })
@@ -135,7 +141,7 @@ function DoctorSchedule(props) {
           Notiflix.Notify.success(response.data.message)
         })
       } catch (e) {
-        alert(e)
+        Notiflix.Notify.failure(e.message)
       }
     } else {
       Notiflix.Notify.alert('Please try Again')

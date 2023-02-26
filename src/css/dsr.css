@@ -83,7 +83,8 @@
  .doctordsrtable{
     /* min-height:20rem; */
     /* height:30rem; */
-    height:60vh
+    height:32vh;
+    max-height:32vh
 }
 .Pharmacy_Dsrsection .maintable{
     max-height:32rem;
