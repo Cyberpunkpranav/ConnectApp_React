@@ -204,7 +204,7 @@ function Saleentrysection(props) {
         <div className="col-2 col-md-2 col-lg-2 align-self-center text-center text-charcoal fw-bolder fs-6">
           Sale Entry
         </div>
-        <div className="col-6 col-xl-7 col-lg-7 col-md-7 align-self-center m-1 ">
+        <div className="col-8 col-xl-8 col-lg-8 col-md-8 align-self-center">
           <div className="row border-burntumber fw-bolder rounded-2 text-center justify-content-center ">
             <div className="col-4 bg-pearl">
               <select className='p-0 m-0 bg-pearl border-0 text-burntumber fw-bolder' value={channel ? channel : ''} onChange={(e) => { setchannel(e.target.value) }}>
@@ -521,7 +521,7 @@ function SaleEntrypayments(props) {
           ) : (
             <div className="row">
               <div className="col-6">
-                <button className='button button-burntumber m-0 p-0 py-1 px-5' onClick={confirmmessage}>Save</button>
+                <button className='button button-burntumber m-0 p-0 py-1 px-5' disabled={previoustotal == props.saleentryarr.grand_total?true:false} onClick={confirmmessage}>Save</button>
               </div>
               <div className="col-6">
                 <button className='button button-pearl border-charcoal p-0 m-0 py-1 px-5' onClick={() => { setpaymentmethods(); props.toggle_payments() }}>Cancel</button>

@@ -135,10 +135,10 @@ const Pharmacy_Dsr = (props) => {
         </div>
       </div>
       <div className="container-fluid maintable scroll scroll-y">
-        <h5 className='my-2 text-charcoal75 fw-semibold ms-2 '>Sale Entries</h5>
+        <h5 className='text-charcoal75 fw-semibold ms-2'>Sale Entries</h5>
         <div className='container-fluid scroll scroll-y saleentries'>
           <table className='table'>
-            <thead className='text-center'>
+            <thead className='text-center position-sticky top-0 '>
               <tr>
                 <th rowspan='2' >Bill no.</th>
                 <th rowspan='2' >Name</th>
@@ -172,8 +172,8 @@ const Pharmacy_Dsr = (props) => {
               ) : (
                 SaleEntryList && SaleEntryList.length == 0 ? (
                   <tbody>
-                    <tr>
-                      <td>No Sale Entries</td>
+                    <tr  className='position-relative'  >
+                      <td className='position-absolute start-0 end-0' >No Sale Entries</td>
                     </tr>
                   </tbody>
                 ) : (
