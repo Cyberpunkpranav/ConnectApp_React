@@ -84,10 +84,13 @@
     /* min-height:20rem; */
     /* height:30rem; */
     height:32vh;
-    max-height:32vh
+    max-height:32vh;
 }
 .Pharmacy_Dsrsection .maintable{
     max-height:32rem;
+}
+.Pharmacy_Dsrsection .saleentries tr:nth-child(even){
+    background-color:var(--seashell)
 }
 .Appointments_Dsrsection .Appointment tr:nth-child(even){
 background-color: var(--seashell);

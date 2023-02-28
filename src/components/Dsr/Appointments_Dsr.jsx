@@ -11,9 +11,8 @@ import Notiflix from 'notiflix'
 
 const Appointments_Dsr = (props) => {
   const url = useContext(URL)
-
   const adminid = localStorage.getItem('id')
-  const tableref = useRef()
+  const Appointmentref = useRef()
   //Use States
   const [Appointments, setAppointments] = useState([])
   const [pendingpaid, setpendingpaid] = useState([])
@@ -62,7 +61,6 @@ const Appointments_Dsr = (props) => {
     }
     return date
   }
-
   function tConvert(time) {
     time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
 
@@ -73,8 +71,6 @@ const Appointments_Dsr = (props) => {
     }
     return time.join('');
   }
-
-  const [payments, setpayments] = useState([])
   function payment_method_detailsForCash() {
     let casharr = []
     let cash = 0
@@ -246,19 +242,6 @@ const Appointments_Dsr = (props) => {
     }
     return grandtotal
   }
-
-  function CountAppointments(response) {
-    let arr = []
-    for (let i = 0; i < visibles.length; i++) {
-      if (response === visibles[i]) {
-        arr.push(response)
-      }
-    }
-    if (arr.length != 0) {
-      return ' | ' + '(' + arr.length + ' Appointments)'
-    }
-  }
-
   function SumExtraCharges(i) {
     let ExtraChargeSumarr = []
     let sum = 0
@@ -305,9 +288,9 @@ const Appointments_Dsr = (props) => {
                   <td className='px-2'>WireTransfer:{payment_method_detailsForWireTransfer()}</td>
                 </tr>
                 <tr className='border-bottom'>
-                  <td className='px-2' >PhonePay:{payment_method_detailsForPhonepe()}</td>
-                  <td className='px-2' >Points:{payment_method_detailsForPoints()}</td>
-                  <td className='px-2' > RazorPay:{payment_method_detailsForRazorPay()}</td>
+                  <td className='px-2'>PhonePay:{payment_method_detailsForPhonepe()}</td>
+                  <td className='px-2'>Points:{payment_method_detailsForPoints()}</td>
+                  <td className='px-2'> RazorPay:{payment_method_detailsForRazorPay()}</td>
                 </tr>
                 <tr className='border-bottom'>
                   <td className='px-2'>Paytm{' '}{payment_method_detailsForPaytm()} </td>
@@ -361,25 +344,13 @@ const Appointments_Dsr = (props) => {
               </table>
             </div>
           </div>
-          <div className="col-lg-2 col-md-2 col-sm-2 col-2 CARD3 rounded-2">
-            <h6 className='text-lightgreen mt-2'>Exports</h6>
-            <DownloadTableExcel
-              filename={`${reversefunction(props.fromdate) + ' to ' + reversefunction(props.todate)} Appointments`}
-              sheet="Appointments"
-              currentTableRef={tableref.current}
-            >
-              <button className='button button-pearl border-bottom-lightgreen ms-lg-2'>Excel</button>
-
-            </DownloadTableExcel>
-            <button className='button button-pearl border-bottom-lightgreen ms-lg-2'>CSV</button>
-            {/* <button className='button button-pearl border-bottom-lightgreen ms-lg-2'>Excel</button> */}
-          </div>
+       
         </div>
       </div>
-      <div className="container-fluid bg-pearl " ref={tableref}>
+      {/* <div className="container-fluid bg-pearl" >
         <h5 className='p-0 m-0 text-burntumber text-center fw-semibold '> Total Appointments :{Appointments.length}</h5>
         <div className='container-fluid scroll scroll-y bg-pearl p-0 m-0' style={{ maxHeight: '20vh', height: '20vh' }}>
-          <table className='table text-center bg-pearl' ref={tableref}>
+          <table className='table text-center bg-pearl'>
             <thead className='position-sticky top-0 bg-pearl'>
               <tr className='bg-pearl'>
                 <th className='py-0' rowspan='2'>Appointment Id</th>
@@ -409,8 +380,6 @@ const Appointments_Dsr = (props) => {
                 <th className='bg-pearl py-0' scope='col'>Points</th>
               </tr>
             </thead>
-
-
             {
               loading ? (
                 <tbody>
@@ -563,7 +532,227 @@ const Appointments_Dsr = (props) => {
             </tbody>
           </table>
         </div>
-      </div>
+      </div> */}
+    <div className="accordion mt-4" id="accordionExample">
+    <div className="accordion-item" ref={Appointmentref}>
+    <h5 className="accordion-header" id="headingOne">
+      <button className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+      <h6 className='p-0 m-0 text-burntumber text-center fw-semibold '> Total Appointments :{Appointments.length}</h6>
+      <DownloadTableExcel
+              filename={`${reversefunction(props.fromdate) + ' to ' + reversefunction(props.todate)} Appointments`}
+              sheet="Appointments"
+              currentTableRef={Appointmentref.current}
+            >
+              <button className='button ms-5 button-lightgreen text-white'>Export Appointment Excel</button>
+
+            </DownloadTableExcel>
+      </button>
+    </h5>
+    <div id="collapseOne" className="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+    <div className='container-fluid accordion-body scroll scroll-y bg-pearl p-0 m-0' style={{ maxHeight: '45vh', height: '45vh' }}>
+          <table className='table text-center bg-pearl'>
+            <thead className='position-sticky top-0 bg-pearl'>
+              <tr className='bg-pearl'>
+                <th className='py-0' rowspan='2'>Appointment Id</th>
+                <th className='py-0' rowspan='2'>Bill no.</th>
+                <th className='py-0' rowspan='2'>Name</th>
+                <th className='py-0' rowspan='2'>Mobile</th>
+                <th className='py-0' rowspan='2'>Doctor Name</th>
+                <th className='py-0' rowspan='2'>Date</th>
+                <th className='py-0' rowspan='2'>Time</th>
+                <th className='py-0' colspan='7' scope='colgroup'>Payment Method</th>
+                <th className='py-0' rowspan='2'>Consultation Amount</th>
+                <th className='py-0' rowspan='2'>Procedure Amount</th>
+                <th className='py-0' rowspan='2'>Extra Charges</th>
+                <th className='py-0' rowspan='2'>Discount</th>
+                <th className='py-0' rowspan='2'>CGST</th>
+                <th className='py-0' rowspan='2'>SGST</th>
+                <th className='py-0' rowspan='2'>Pending Amt.</th>
+                <th className='py-0' rowspan='2'> Grand Total</th>
+              </tr>
+              <tr>
+                <th className='bg-pearl py-0' scope='col'>Cash</th>
+                <th className='bg-pearl py-0' scope='col'>Card</th>
+                <th className='bg-pearl py-0' scope='col'>Paytm</th>
+                <th className='bg-pearl py-0' scope='col'>Phonepe</th>
+                <th className='bg-pearl py-0' scope='col'>Razorpay</th>
+                <th className='bg-pearl py-0' scope='col'>Wire-Transfer</th>
+                <th className='bg-pearl py-0' scope='col'>Points</th>
+              </tr>
+            </thead>
+
+
+            {
+              loading ? (
+                <tbody>
+                  <tr className='position-relative text-burntumber mt-1 m-auto'>
+                    <td className=' position-absolute start-0 end-0 text-charcoal75 mt-1  '>Please be Patient while we are fetching Appointments</td></tr>
+                </tbody>
+              ) : (
+                Appointments.length == 0 ? (
+                  <tbody >
+                    <tr className='position-relative text-burntumber mt-1 m-auto'>
+                      <td className=' position-absolute start-0 end-0 text-burntumber mt-1'>No Appointments</td></tr>
+                  </tbody>
+                ) : (
+                  <tbody className='align-items-center Appointment'>
+                    {
+                      Appointments.map((data, i) => (
+                        <tr className={`bg-${SumPendingpayments(i) > 0 ? 'lightred50' : ''}`}>
+                          <td className='py-0 m-0 py-1'>{data.id ? data.id : 'N/A'}</td>
+                          <td className='py-0 m-0 py-1' key={i}>{data.bill_id && data.bill_id != null ? data.bill_id : 'N/A'}</td>
+                          <td className='py-0 m-0 py-1'>{data.patient && data.patient.full_name != null ? data.patient.full_name : 'N/A'}</td>
+                          <td className='py-0 m-0 py-1'>{data.patient && data.patient.phone_number != null ? data.patient.phone_number : 'N/A'}</td>
+                          <td className='py-0 m-0 py-1'>{data.doctor && data.doctor.doctor_name && data.doctor.doctor_name != null ? data.doctor.doctor_name : 'N/A'}</td>
+                          <td className='py-0 m-0 py-1'>{data.timeslot && data.timeslot.date && data.timeslot.date != null ? reversefunction(data.timeslot.date) : 'N/A'}</td>
+                          <td className='py-0 m-0 py-1'>{data.timeslot && data.timeslot.time_from && data.timeslot.time_from != null ? tConvert(data.timeslot.time_from) : 'N/A'}</td>
+                          <td className='py-0 m-0 py-1'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Cash : 'N/A'}</td>
+                          <td className='py-0 m-0 py-1'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Card : 'N/A'}</td>
+                          <td className='py-0 m-0 py-1'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Paytm : 'N/A'}</td>
+                          <td className='py-0 m-0 py-1'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Phonepe : 'N/A'}</td>
+                          <td className='py-0 m-0 py-1'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Razorpay : 'N/A'}</td>
+                          <td className='py-0 m-0 py-1'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details)['Wire-Transfer'] : 'N/A'}</td>
+                          <td className='py-0 m-0 py-1'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Points : 'N/A'}</td>
+                          <td className='py-0 m-0 py-1'>{data.doctor && data.doctor.consulationFee !== null ? data.doctor.consulationFee : 'N/A'}</td>
+                          <td className='py-0 m-0 py-1'>{data.procedure_cost && data.procedure_cost != null ? data.procedure_cost : 'N/A'}</td>
+                          <td className='py-0 m-0 py-1'>{SumExtraCharges(i)}</td>
+                          <td className='py-0 m-0 py-1'>{data.discount && data.discount != null ? data.discount : 'N/A'}</td>
+                          <td className='py-0 m-0 py-1'>{data.CGST}</td>
+                          <td className='py-0 m-0 py-1'>{data.SGST}</td>
+                          <td className='py-0 m-0 py-1'>{SumPendingpayments(i)}</td>
+                          <td className='py-0 m-0 py-1'>{data.total_amount}</td>
+                        </tr>
+                      ))
+                    }
+                  </tbody>
+                )
+
+              )
+            }
+
+          </table>
+        </div>
+    </div>
+  </div>
+  <div className="accordion-item">
+    <h2 className="accordion-header" id="headingTwo">
+      <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+      <h6 className='p-0 m-0 text-burntumber text-center fw-semibold '>Pending Payments Recieved: {pendingpaid.length}</h6>
+      </button>
+    </h2>
+    <div id="collapseTwo" className="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+    <div className='container-fluid accordion-body scroll scroll-y p-0 m-0' style={{ maxHeight: '45vh', height: '45vh' }}>
+          <table className='table text-center'>
+            <thead className='bg-pearl position-sticky top-0'>
+              <tr>
+                <th className='py-0 my-0' rowspan='2'>Appointment Id</th>
+                <th className='py-0 my-0' rowspan='2'>Bill no.</th>
+                <th className='py-0 my-0' rowspan='2'>Name</th>
+                <th className='py-0 my-0' rowspan='2'>Mobile</th>
+                <th className='py-0 my-0' rowspan='2'>Doctor Name</th>
+                <th className='py-0 my-0' rowspan='2'>Appointment Date</th>
+                <th className='py-0 my-0' rowspan='2'>Payment Recieved Date</th>
+                <th className='py-0 my-0' colspan='7' scope='colgroup'>Payment Method</th>
+                <th className='py-0 my-0' rowspan='2'>Amount Received</th>
+              </tr>
+              <tr>
+                <th className='py-0 my-0' scope='col'>Cash</th>
+                <th className='py-0 my-0' scope='col'>Card</th>
+                <th className='py-0 my-0' scope='col'>Paytm</th>
+                <th className='py-0 my-0' scope='col'>Phonepe</th>
+                <th className='py-0 my-0' scope='col'>Razorpay</th>
+                <th className='py-0 my-0' scope='col'>Wire-Transfer</th>
+                <th className='py-0 my-0' scope='col'>Points</th>
+              </tr>
+            </thead>
+            <tbody className='Pendingpay'>
+
+              {
+                pendingpaid.map((data, i) => (
+                  <tr key={i}>
+                    <td className='py-0 m-0 py-1'>{data.appointment && data.appointment.id != null ? data.appointment.id : 'N/A'}</td>
+                    <td className='py-0 m-0 py-1'>{data.id && data.id != null ? data.id : 'N/A'}</td>
+                    <td className='py-0 m-0 py-1'>{data.appointment && data.appointment != null && data.appointment.patient && data.appointment.patient.full_name != null ? data.appointment.patient.full_name : 'N/A'}</td>
+                    <td className='py-0 m-0 py-1'>{data.appointment && data.appointment != null && data.appointment.patient.phone_number && data.appointment.patient.phone_number != null ? data.appointment.patient.phone_number : 'N/A'}</td>
+                    <td className='py-0 m-0 py-1'>{data.appointment && data.appointment != null && data.appointment.doctor && data.appointment.doctor.doctor_name != null ? data.appointment.doctor.doctor_name : 'N/A'}</td>
+                    <td className='py-0 m-0 py-1'>{data.appointment && data.appointment != null && data.appointment.appointment_date != null ? reversefunction(data.appointment.appointment_date) : 'N/A'}</td>
+                    <td className='py-0 m-0 py-1'>{data.paid_date && data.paid_date != null ? reversefunction(data.paid_date) : 'N/A'}</td>
+                    <td className='py-0 m-0 py-1'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Cash : 'N/A'}</td>
+                    <td className='py-0 m-0 py-1'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Card : 'N/A'}</td>
+                    <td className='py-0 m-0 py-1'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Paytm : 'N/A'}</td>
+                    <td className='py-0 m-0 py-1'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Phonepe : 'N/A'}</td>
+                    <td className='py-0 m-0 py-1'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Razorpay : 'N/A'}</td>
+                    <td className='py-0 m-0 py-1'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details)['Wire-Transfer'] : 'N/A'}</td>
+                    <td className='py-0 m-0 py-1'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Points : 'N/A'}</td>
+                    <td className='py-0 m-0 py-1'>{data.paid_amount}</td>
+                  </tr>
+                ))
+              }
+
+            </tbody>
+          </table>
+        </div>
+    </div>
+  </div>
+  <div className="accordion-item">
+    <h2 className="accordion-header" id="headingThree">
+      <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+      <h6 className='p-0 m-0 text-burntumber fw-semibold text-center '>Advanced Payments Recieved:{advancepaid.length}</h6>
+      </button>
+    </h2>
+    <div id="collapseThree" className="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+    <div className='container-fluid accordion-body scroll scroll-y p-0 m-0' style={{ maxHeight: '45vh', height: '45vh' }}>
+          <table className='table text-center'>
+            <thead className='bg-pearl position-sticky top-0'>
+              <tr>
+                <th className='py-0 my-0' rowspan='2'>Credit ID</th>
+                <th className='py-0 my-0' rowspan='2'>Patient Name</th>
+                <th className='py-0 my-0' rowspan='2'>Doctor Name</th>
+                <th className='py-0 my-0' rowspan='2'>Mobile No.</th>
+                <th className='py-0 my-0' rowspan='2'>Description</th>
+                <th className='py-0 my-0' rowspan='2'>Date Recieved</th>
+                <th className='py-0 my-0' colspan='7' scope='colgroup'>Payment Method</th>
+                <th className='py-0 my-0' rowspan='2'>Amount Recieved</th>
+              </tr>
+              <tr>
+                <th className='bg-white py-0 my-0' scope='col'>Cash</th>
+                <th className='bg-white py-0 my-0' scope='col'>Card</th>
+                <th className='bg-white py-0 my-0' scope='col'>Paytm</th>
+                <th className='bg-white py-0 my-0' scope='col'>Phonepe</th>
+                <th className='bg-white py-0 my-0' scope='col'>Razorpay</th>
+                <th className='bg-white py-0 my-0' scope='col'>Wire-Transfer</th>
+                <th className='bg-white py-0 my-0' scope='col'>Points</th>
+              </tr>
+            </thead>
+            <tbody className='Advancepay'>
+
+              {
+                advancepaid.map((data, i) => (
+                  <tr key={i} className=''>
+                    <td className='py-0 py-1'>{data.id ? data.id : 'N/A'}</td>
+                    <td className='py-0 py-1'>{data.patient && data.patient.full_name != null ? data.patient.full_name : 'N/A'}</td>
+                    <td className='py-0 py-1'>{data.doctor && data.doctor.full_name != null ? data.doctor.full_name : 'N/A'}</td>
+                    <td className='py-0 py-1'>{data.patient && data.patient.phone_number !== null ? data.patient.phone_number : 'N/A'}</td>
+                    <td className='py-0 py-1'>{data.description && data.description != null ? data.description : 'N/A'}</td>
+                    <td className='py-0 py-1'>{reversefunction(data.date)}</td>
+                    <td className='py-0 py-1'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Cash : 'N/A'}</td>
+                    <td className='py-0 py-1'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Card : 'N/A'}</td>
+                    <td className='py-0 py-1'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Paytm : 'N/A'}</td>
+                    <td className='py-0 py-1'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Phonepe : 'N/A'}</td>
+                    <td className='py-0 py-1'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Razorpay : 'N/A'}</td>
+                    <td className='py-0 py-1'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details)['Wire-Transfer'] : 'N/A'}</td>
+                    <td className='py-0 py-1'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Points : 'N/A'}</td>
+                    <td className='py-0 py-1'>{data.credit_amount}</td>
+                  </tr>
+                ))
+              }
+
+            </tbody>
+          </table>
+        </div>
+    </div>
+  </div>
+    </div>
     </div>
 
 

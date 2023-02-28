@@ -3,6 +3,7 @@ import React, { useState, useEffect, useContext, useRef } from 'react';
 import { URL, TodayDate, DoctorsList, Clinic } from '../../index';
 import { ExportPurchaseEntry, ExportSaleEntry, ExportSaleReturn } from '../pharmacy/Exports'
 import Notiflix from 'notiflix';
+import * as XLSX from 'xlsx';
 import { customconfirm } from '../features/notiflix/customconfirm';
 import { customnotify } from '../features/notiflix/customnotify';
 import '../../css/bootstrap.css';
@@ -441,13 +442,13 @@ function SaleEntrypayments(props) {
   }, [previouspayments])
   console.log(props.saleentryarr, paymentmethods, previoustotal)
 
- function AddMethods(){
-  if(paymentmethods && paymentmethods.length>0){
-    setpaymentmethods(prevState => [...prevState, paymentmethoddetails]) 
-  }else{
-    setpaymentmethods([paymentmethoddetails])
-  }
-  
+  function AddMethods() {
+    if (paymentmethods && paymentmethods.length > 0) {
+      setpaymentmethods(prevState => [...prevState, paymentmethoddetails])
+    } else {
+      setpaymentmethods([paymentmethoddetails])
+    }
+
   }
   return (
     <div className='p-0 m-0'>
@@ -521,7 +522,7 @@ function SaleEntrypayments(props) {
           ) : (
             <div className="row">
               <div className="col-6">
-                <button className='button button-burntumber m-0 p-0 py-1 px-5' disabled={previoustotal == props.saleentryarr.grand_total?true:false} onClick={confirmmessage}>Save</button>
+                <button className='button button-burntumber m-0 p-0 py-1 px-5' disabled={previoustotal == props.saleentryarr.grand_total ? true : false} onClick={confirmmessage}>Save</button>
               </div>
               <div className="col-6">
                 <button className='button button-pearl border-charcoal p-0 m-0 py-1 px-5' onClick={() => { setpaymentmethods(); props.toggle_payments() }}>Cancel</button>
@@ -2566,6 +2567,7 @@ function Newpurchaseentryform(props) {
   const ClinicList = useContext(Clinic)
   const medicinesref = useRef(null)
   const vendorsref = useRef(null)
+  const Tableref = useRef(null)
   const [channel, setchannel] = useState()
   const [po, setpo] = useState()
   const [invoice, setinvoice] = useState()
@@ -2585,7 +2587,7 @@ function Newpurchaseentryform(props) {
   const [mrp, setmrp] = useState()
   const [rate, setrate] = useState()
   const [qty, setqty] = useState()
-  const [freeqty, setfreeqty] = useState()
+  const [freeqty, setfreeqty] = useState(0)
   const [disc, setdisc] = useState(0)
   const [trddisc, settrddisc] = useState(0)
   const [cgst, setcgst] = useState(0)
@@ -2601,7 +2603,15 @@ function Newpurchaseentryform(props) {
   const [tableindex, settableindex] = useState()
   const [clinicstatecode, setclinicstatecode] = useState()
   const [load, setload] = useState()
+  const [Exceldata, setExceldata] = useState([])
 
+  const reversefunction = (date) => {
+    if (date) {
+      date = date.split("-").reverse().join("-")
+      return date
+    }
+
+  }
   async function filterclinic() {
     for (let i = 0; i < ClinicList.length; i++) {
       if (ClinicList[i].id == ClinicId) {
@@ -2756,7 +2766,7 @@ function Newpurchaseentryform(props) {
       costperunit.push(MedicineentriesArr[i].costperunit ? MedicineentriesArr[i].costperunit : '')
       totalamount.push(MedicineentriesArr[i].totalamount ? MedicineentriesArr[i].totalamount : '')
       quantity.push(MedicineentriesArr[i].Qty ? MedicineentriesArr[i].Qty : '')
-      freequantity.push(MedicineentriesArr[i].freeQty ? MedicineentriesArr[i].freeQty : '')
+      freequantity.push(MedicineentriesArr[i].freeQty ? MedicineentriesArr[i].freeQty : 0)
     }
 
     totalamount.forEach(item => {
@@ -2797,13 +2807,7 @@ function Newpurchaseentryform(props) {
         setload(false)
         Notiflix.Notify.success(response.data.message)
         props.GETPurchaseList()
-        setMedicineentriesArr()
-        setchannel()
-        setpo()
-        setinvoice()
-        setinvoicedate()
-        setvendorname()
-        setvendorid()
+
         setload(false)
         props.toggle_npef()
       })
@@ -2812,6 +2816,15 @@ function Newpurchaseentryform(props) {
       Notiflix.Notify.warning(e.message)
     }
 
+  }
+  const ClearFields = () => {
+    setMedicineentriesArr()
+    setchannel()
+    setpo()
+    setinvoice()
+    setinvoicedate()
+    setvendorname()
+    setvendorid()
   }
   const resetfields = async () => {
     setitemname()
@@ -2953,7 +2966,7 @@ function Newpurchaseentryform(props) {
     total = trddisc ? total - (total * trddisc) / 100 : total
     total = sgstprcnt ? Number(total) + Number((((total * sgstprcnt) / 100) + ((total * sgstprcnt) / 100))) : total
     total = igstprcnt ? Number(total) + Number((total * Number(igstprcnt) / 100)) : total
-    total = total ? Math.round(parseFloat(total).toFixed(2)) : total
+    total = total ? parseFloat(total).toFixed(2) : total
     return total
   }
   let CostPerUnit = 0
@@ -3003,10 +3016,160 @@ function Newpurchaseentryform(props) {
 
   // console.log(totalamt,cpu)
   // console.log(sgst,cgst)
-  console.log(MedicineentriesArr, ClinicList)
+  // console.log(MedicineentriesArr, ClinicList)
   console.log(clinicstatecode, vendorcode)
+  const searchmedAuto = async (search) => {
+    try {
+      await axios.get(`${url}/item/search?search=${search}`).then((response) => {
+        let medicines = []
+        let vaccines = []
+        let items = []
+        medicines.push(response.data.data.medicines ? response.data.data.medicines : [])
+        vaccines.push(response.data.data.vaccines ? response.data.data.vaccines : [])
+        items = medicines.concat(vaccines)
+        items = items.flat()
+        console.log(items)
+        return items
+        // for(let i=0;i<items.length;i++){
+        //     if(items[i].itemname){
 
+        //     }
+        // }
+      })
+    } catch (e) {
+      Notiflix.Notify.warning(e.data.message)
+    }
 
+  }
+  const CalGST = (rate, cgst) => {
+    let gst = 0
+    if (cgst && rate) {
+      gst = (cgst * rate) / 100
+      gst = Number(gst)
+      gst = gst.toFixed(2)
+      return gst
+    } else {
+      return 0
+    }
+  }
+  const Disc = (rate, dis) => {
+    let disrate = 0
+    if (rate && dis) {
+      disrate = (rate * dis) / 100
+      return disrate
+    } else {
+      return 0
+    }
+  }
+  const SubmitExcel = () => {
+    if (Tableref.current.files[0].type == "application/vnd.ms-excel") {
+      let SelectedFile = Tableref.current.files[0]
+      let reader = new FileReader();
+      reader.readAsArrayBuffer(SelectedFile)
+      reader.onload = (e) => {
+        setExceldata(e.target.result)
+      }
+    } else {
+      Notiflix.Notify.failure('Choose Only Excel File to Upload')
+    }
+  }
+  const ConvertExcel = () => {
+    searchmedAuto()
+    let e = []
+    if (vendorid == 4) {
+      if (Exceldata && Exceldata.length != 0) {
+        const Excelfile = XLSX.read(Exceldata, { 'type': 'buffer' });
+        const ExcelSheet = Excelfile.SheetNames[0]
+        const Sheet = Excelfile.Sheets[ExcelSheet]
+        const data = XLSX.utils.sheet_to_json(Sheet)
+        // console.log(data)
+        for (let i = 0; i < data.length; i++) {
+          let expiry = data[i].EXPIRY.replace('/', '-20')
+          expiry = '01-' + expiry
+          expiry = reversefunction(expiry)
+          let CpU = Number(data[i].SRATE)
+          CpU = data[i]['CGST'] ? CpU + Number(CalGST(CpU, data[i]['CGST'])) + Number(CalGST(CpU, data[i]['SGST'])) : CpU
+          CpU = CpU - Number(Disc(CpU, data[i].DIS))
+          CpU = Number(CpU).toFixed(2)
+          let itemID = searchmedAuto(data[i]['ITEM NAME'])
+          MedicineentriesObj = {
+            type: '',
+            Itemid: itemID,
+            Itemname: data[i]['ITEM NAME'],
+            batchno: data[i].BATCH,
+            expirydate: expiry,
+            manufacturingDate: manufdate,
+            MRP: data[i].MRP,
+            Rate: data[i].SRATE,
+            Qty: data[i].QTY,
+            freeQty: data[i]['F.QTY'],
+            Discount: '',
+            tradeDiscount: data[i].DIS,
+            sgstper: data[i]['SGST'],
+            sgst: CalGST(data[i].SRATE, data[i]['SGST']),
+            cgstper: data[i]['CGST'],
+            cgst: CalGST(data[i].SRATE, data[i]['CGST']),
+            igstper: CalGST(data[i].SRATE, data[i]['IGST']),
+            igst: data[i].IGST,
+            costperunit: CpU,
+            totalamount: CpU * data[i].QTY.toFixed(2)
+          }
+          e.push(MedicineentriesObj)
+        }
+      }
+    }
+    if (vendorid == 5 || vendorid == 6) {
+      if (Exceldata && Exceldata.length != 0) {
+        const Excelfile = XLSX.read(Exceldata, { 'type': 'buffer' });
+        const ExcelSheet = Excelfile.SheetNames[0]
+        const Sheet = Excelfile.Sheets[ExcelSheet]
+        const data = XLSX.utils.sheet_to_json(Sheet)
+        console.log(data)
+        for (let i = 0; i < data.length; i++) {
+          let expiry = '20' + data[i].EXPYEAR
+          expiry = expiry + (data[i].EXPMONTH < 10 ? '-' + '0' + data[i].EXPMONTH : '-' + data[i].EXPMONTH)
+          expiry = expiry + (data[i].EXPDAY < 10 ? '-' + '0' + data[i].EXPDAY : data[i].EXPDAY)
+          let CpU = Number(data[i].SRATE)
+          CpU = data[i]['CGST'] ? CpU + Number(CalGST(CpU, data[i]['CGST'])) + Number(CalGST(CpU, data[i]['SGST'])) : CpU
+          CpU = CpU - Number(Disc(CpU, data[i].DIS))
+          CpU = Number(CpU).toFixed(2)
+          // let mfddate = data[i].INVYEAR
+          // mfddate = mfddate + (data[i].INVMONTH < 10 ? '-' + '0' + data[i].INVMONTH : '-' + data[i].INVMONTH)
+          // mfddate = mfddate + (data[i].INVDAY < 10 ?  ('-' + '0' + data[i].INVDAY) :'-'+ data[i].INVDAY)
+          // console.log(mfddate)
+          MedicineentriesObj = {
+            type: '',
+            Itemid: '',
+            Itemname: data[i]['ITEM NAME'],
+            batchno: data[i].BATCH,
+            expirydate: expiry,
+            manufacturingDate: '',
+            MRP: data[i].MRP,
+            Rate: data[i].SRATE,
+            Qty: data[i].QTY,
+            freeQty: data[i]['F.QTY'],
+            Discount: '',
+            tradeDiscount: data[i].DIS,
+            sgstper: data[i]['SGST'],
+            sgst: CalGST(data[i].SRATE, data[i]['SGST']),
+            cgstper: data[i]['CGST'],
+            cgst: CalGST(data[i].SRATE, data[i]['CGST']),
+            igstper: CalGST(data[i].SRATE, data[i]['IGST']),
+            igst: data[i].IGST,
+            costperunit: CpU,
+            totalamount: (CpU * data[i].QTY).toFixed(2)
+          }
+          e.push(MedicineentriesObj)
+        }
+      }
+    }
+    if (MedicineentriesArr == undefined || MedicineentriesArr.length == 0) {
+      setMedicineentriesArr(e)
+    } else {
+      setMedicineentriesArr(prevState => [...prevState, e])
+    }
+  }
+  console.log(vendorid, vendorsearch)
   return (
 
     <div className="container-fluid p-0 m-0" style={{ zIndex: '2' }}>
@@ -3015,7 +3178,7 @@ function Newpurchaseentryform(props) {
           <div className="col-1">
             <button type="button" className="btn-close closebtn m-auto mt-2" onClick={props.toggle_npef} aria-label="Close" ></button>
           </div>
-          <div className="col-9">
+          <div className="col-8">
             <h5 className="text-center mt-2"> New Purchase Entry </h5>
           </div>
           <div className="col-auto">
@@ -3030,6 +3193,9 @@ function Newpurchaseentryform(props) {
                 <button disabled={MedicineentriesArr == undefined || MedicineentriesArr && MedicineentriesArr.length == 0 ? true : false} className="button button-charcoal" onClick={() => { confirmmessage(MedicineentriesArr, vendorname) }}>Save All</button>
               )
             }
+          </div>
+          <div className="col-auto">
+            <button className='button button-burntumber' onClick={ClearFields}>Clear All</button>
           </div>
         </div>
       </div>
@@ -3075,7 +3241,8 @@ function Newpurchaseentryform(props) {
                           <div className='rounded-2 p-1'>
                             Searching Please wait....
                             <div className="spinner-border my-auto" style={{ width: "1rem", height: "1rem" }} role="status" >
-                              <span className="sr-only"> </span> </div>
+                              <span className="sr-only"></span>
+                            </div>
                           </div>
                         ) : (
                           vendorsearch.length == 0 ? (
@@ -3103,22 +3270,34 @@ function Newpurchaseentryform(props) {
                 <div className="col-6 col-lg-5 col-md-5 p-0 m-0 align-self-center ms-1">
                   <button className="button button-charcoal m-0 p-0 py-1 px-4"> <img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt="displaying_image" style={{ width: "1.5rem" }} /> Medicine </button>
                 </div>
-
+                <div className="col-6">
+                  <div className="row">
+                    <div className="col-5">
+                      <input ref={Tableref} className='form-control w-100 p-0 m-0 px-2 py-1 rounded-2 bg-pearl' onChange={SubmitExcel} type='file' />
+                    </div>
+                    <div className="col-5 text-end">
+                      <button className='button button-lightyellow p-0 m-0 px-3 py-1' onClick={ConvertExcel}>Submit</button>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
             <div className=" p-0 m-0 scroll scroll-y" style={{ maxHeight: '50vh', Height: '50vh' }}>
               <table className="table m-0 datatable text-center position-relative">
-                <thead style={{ color: 'gray', fontWeight: '600' }}>
+                <thead className='position-sticky top-0 bg-pearl' style={{ color: 'gray', fontWeight: '600' }}>
                   <tr>
                     <th>Edit</th>
                     <th>Item ID</th>
                     <th>Item Name</th>
+                    {/* <th>Manuf. Date</th> */}
                     <th>batch No.</th>
                     <th>Expiry Date</th>
                     <th>MRP</th>
                     <th>Rate</th>
                     <th>Total Disc</th>
+                    <th>Qty.</th>
                     <th>Cost</th>
+                    <th>Amount</th>
                     <th>Delete</th>
                   </tr>
                 </thead>
@@ -3127,16 +3306,19 @@ function Newpurchaseentryform(props) {
                     <tbody style={{ Height: '48vh', maxHeight: '48vh', color: 'var(--charcoal)', fontWeight: '600' }}>
                       {
                         MedicineentriesArr.map((item, _key) => (
-                          <tr key={_key}>
+                          <tr key={_key} className={`bg-${_key % 2 == 0 ? 'lightred50' : 'pearl'}`}>
                             <td><input type='checkbox' checked={_key == tableindex ? true : false} onClick={() => { indexing(_key) }} className='bg-seashell' /></td>
                             <td>{item.Itemid}</td>
                             <td>{item.Itemname}</td>
+                            {/* <td>{reversefunction(item.manufacturingDate)}</td> */}
                             <td>{item.batchno}</td>
-                            <td>{item.expirydate}</td>
+                            <td>{reversefunction(item.expirydate)}</td>
                             <td>{item.MRP}</td>
                             <td>{item.Rate}</td>
                             <td>{Number(item.Discount) + Number(item.tradeDiscount)}</td>
+                            <td>{item.Qty}</td>
                             <td>{item.costperunit}</td>
+                            <td>{item.totalamount}</td>
                             <td ><button onClick={() => { DeleteMedicine(item.Itemid); }} className='btn btn-sm button-burntumber'>Delete</button></td>
                           </tr>
                         ))

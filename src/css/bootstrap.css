@@ -316,3 +316,12 @@ body::-webkit-scrollbar-thumb:hover {
 .border-charcoal {
     border: 1px solid var(--charcoal);
 }
+.accordion-button {
+    background-color: var(--seashell);
+}
+.accordion-button:not(.collapsed){
+    background-color: var(--lightred50);
+}
+.accordion-button:not(.collapsed){
+color:var(--burntumber)
+}

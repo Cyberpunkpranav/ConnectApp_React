@@ -17,6 +17,7 @@ const Pharmacy_Dsr = (props) => {
     try {
       await axios.get(`${url}/DSR/pharmacy?from=${props.fromdate}&to=${props.todate}`).then((response) => {
         setSaleEntryList(response.data.data.pharmacy_sale_return)
+        console.log(response)
         setload(false)
       })
     } catch (e) {
@@ -95,7 +96,12 @@ const Pharmacy_Dsr = (props) => {
     }
   ]
   const [Appointments, setAppointments] = useState(arr)
-
+  const reversefunction = (date) => {
+    if (date && date != null) {
+        date = date.split("-").reverse().join("-")
+        return date
+    }
+}
 
   return (
     <div className='Pharmacy_Dsrsection'>
@@ -136,7 +142,7 @@ const Pharmacy_Dsr = (props) => {
       </div>
       <div className="container-fluid maintable scroll scroll-y">
         <h5 className='text-charcoal75 fw-semibold ms-2'>Sale Entries</h5>
-        <div className='container-fluid scroll scroll-y saleentries'>
+        <div className='container-fluid scroll scroll-y saleentries' style={{minHeight:'10rem'}}>
           <table className='table'>
             <thead className='text-center position-sticky top-0 '>
               <tr>
@@ -172,8 +178,8 @@ const Pharmacy_Dsr = (props) => {
               ) : (
                 SaleEntryList && SaleEntryList.length == 0 ? (
                   <tbody>
-                    <tr  className='position-relative'  >
-                      <td className='position-absolute start-0 end-0' >No Sale Entries</td>
+                    <tr  className='position-relative text-center  m-auto'  >
+                      <td className='position-absolute  text-charcoal fw-bold start-0 end-0' >No Sale Entries</td>
                     </tr>
                   </tbody>
                 ) : (
@@ -196,7 +202,7 @@ const Pharmacy_Dsr = (props) => {
                           <td>{data.sale_entry && data.sale_entry.grand_total !== null ? data.sale_entry.grand_total : ''}</td>
                           <td>{data.Discount}</td>
                           <td>{data.Pending}</td>
-                          <td>{data.return_date && data.return_date !== null ? data.return_date : ''}</td>
+                          <td>{data.return_date && data.return_date !== null ? reversefunction(data.return_date) : ''}</td>
                           <td>{data.grand_total && data.grand_total !== null ? data.grand_total : ''}</td>
 
                         </tr>
