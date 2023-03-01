@@ -118,7 +118,7 @@ function Connectapp(props) {
   }
 
   return (
-    <>
+    <div className='bg-pearl'style={{height:'100vh'}}>
       {
         isWelcomeLoading == 0 ? (
           <>
@@ -126,7 +126,7 @@ function Connectapp(props) {
           </>
         ) : (
           ClinicId == 'null' ? (
-            <div className='container w-50 text-center rounded shadow bg-seashell' style={{ marginTop: '10%' }}>
+            <div className='container w-50 text-center rounded-4 bg-pearl' style={{ marginTop: '10%' }}>
               <img src={process.env.PUBLIC_URL + "/images/logo.png"} alt='image' className='img-fluid p-0 m-0' style={{ width: '10rem' }} />
               <h4>Select Clinic</h4>
               {
@@ -136,7 +136,7 @@ function Connectapp(props) {
                     <br /></>
                 ))
               }
-              <button className='button button-burntumber pt-2' onClick={Gomain}>Submit</button>
+              <button className='button button-burntumber my-4 pt-2' onClick={Gomain}>Submit</button>
             </div>
           ) : (
             <>
@@ -170,7 +170,7 @@ function Connectapp(props) {
             </>
           ))
       }
-    </>
+    </div>
   );
 }
 
@@ -245,22 +245,17 @@ function Switchpage() {
       return <Connectapp username={localStorage.getItem('name')} designation={localStorage.getItem('designation')} id={localStorage.getItem('id')} permissions={permissions} />
     } else {
       return (
-        <>
-          <div className='container-fluid loginform'>
-            <div className="navbar mb-5 justify-content-end">
+  
+          <div className='loginform p-0 m-0'>
+            {/* <div className="navbar mb-5 justify-content-end">
               <img src={process.env.PUBLIC_URL + "/images/logo.png"} alt='image' className="float-end img-fluid col-lg-1 col-3 me-lg-5 me-2" />
-            </div>
-
-
-            <section className="signinsection mb-5">
-              <div className="container rounded py-5 bg-light bg-opacity-75">
-                <div className="container justify-content-center">
-                  <p className="text-center mt-2 m-auto" id="text2"><img src={process.env.PUBLIC_URL + "/images/slogan2.png"} className="img-fluid" /></p>
-
-                </div>
+            </div> */}
+            <section className="signinsection bg-pearl p-4 shadow-sm rounded-4">
+              <div className=" p-0 m-0 ">
+                <h4 className='text-center text-charcoal fw-semibold'>Login to Aartas</h4>
                 <form autoComplete="off" onSubmit={(e) => Submit(e)}>
                   <div className="mt-4">
-                    <div className={`row d-${email} justify-content-center mb-4`} id="userinput">
+                    <div className={`row d-${email} justify-content-center p-0 m-0`} id="userinput">
                       <div className="col-1"></div>
                       <div className="col-lg-6 col-md-8 col-sm-10 col-10 align-items-center d-flex userinput">
                         <p className="m-0 ms-1" id="inputheading">Enter your Aartas Email ID</p>
@@ -291,15 +286,13 @@ function Switchpage() {
                       <div className="col-1 align-items-center justify-content-center d-flex">
                         <button type="button" className=" p-2 rounded submit text-center" disabled={load == true ? true : false} onClick={Submit}>Submit</button>
                       </div>
-
-
-                      <div className="col-12">
+                      <div className="col-12 p-0 m-0">
                         <div className="col text-center">
                           <input className="form-check-input" onClick={passwordvisibility} type="checkbox" value="" id="flexCheckDefault" />
                           <label className="form-check-label" htmlFor="flexCheckDefault">Check Password</label>
                         </div>
                       </div>
-                      <div className="col-5 text-center"><a href="#" className="text-decoration-none">forgot password</a></div>
+                      <div className="col-5 text-center d-none"><a href="#" className="text-decoration-none">forgot password</a></div>
 
                     </div>
                   </div>
@@ -307,7 +300,6 @@ function Switchpage() {
               </div>
             </section>
           </div>
-        </>
       )
     }
   }

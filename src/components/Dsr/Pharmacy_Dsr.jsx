@@ -6,7 +6,7 @@ import { URL } from '../../index'
 import '../../css/dashboard.css'
 import '../../css/appointment.css'
 import '../../css/dsr.css'
-
+import '../../css/bootstrap.css'
 const Pharmacy_Dsr = (props) => {
   const url = useContext(URL)
   const [SaleEntryList, setSaleEntryList] = useState([])
@@ -140,9 +140,25 @@ const Pharmacy_Dsr = (props) => {
           </div>
         </div>
       </div>
-      <div className="container-fluid maintable scroll scroll-y">
-        <h5 className='text-charcoal75 fw-semibold ms-2'>Sale Entries</h5>
-        <div className='container-fluid scroll scroll-y saleentries' style={{minHeight:'10rem'}}>
+      <div className='ms-2 mt-2'>
+      <ul className="nav nav-pills mb-3" id="pills-tab" role="tablist">
+  <li className="nav-item" role="presentation">
+    <button className="nav-link active p-0 m-0 py-1 px-3" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Sale Entries</button>
+  </li>
+  <li className="nav-item" role="presentation">
+    <button className="nav-link p-0 m-0 py-1 px-3" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Sale Returns</button>
+  </li>
+  <li className="nav-item" role="presentation">
+    <button className="nav-link p-0 m-0 py-1 px-3" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Pendings Paid</button>
+  </li>
+
+      </ul>
+  <div className="tab-content" id="pills-tabContent">
+  <div className="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
+   01
+  </div>
+  <div className="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
+  <div className='container-fluid p-0 m-0 scroll scroll-y saleentries' style={{minHeight:'10rem'}}>
           <table className='table'>
             <thead className='text-center position-sticky top-0 '>
               <tr>
@@ -179,7 +195,7 @@ const Pharmacy_Dsr = (props) => {
                 SaleEntryList && SaleEntryList.length == 0 ? (
                   <tbody>
                     <tr  className='position-relative text-center  m-auto'  >
-                      <td className='position-absolute  text-charcoal fw-bold start-0 end-0' >No Sale Entries</td>
+                      <td className='position-absolute  text-charcoal fw-bold start-0 end-0' >No Sale Returns</td>
                     </tr>
                   </tbody>
                 ) : (
@@ -187,7 +203,7 @@ const Pharmacy_Dsr = (props) => {
                     {
                       SaleEntryList.map((data, i) => (
                         <tr>
-                          <td key={i}>{data.sale_entry && data.sale_entry.bill_id !== null ? "P-" + data.sale_entry.bill_id : ''}</td>
+                          <td key={i}>{data.sale_entry && data.sale_entry.bill_id !== null ? "SR-" + data.sale_entry.bill_id : ''}</td>
                           <td>{data.sale_entry && data.sale_entry.patient && data.sale_entry.patient.full_name !== null ? data.sale_entry.patient.full_name : ''}</td>
                           <td>{data.sale_entry && data.sale_entry.patient && data.sale_entry.patient.phone_number !== null ? data.sale_entry.patient.phone_number : ''}</td>
                           <td>{data.sale_entry && data.sale_entry.doctor_name !== null ? data.sale_entry.doctor_name : ''}</td>
@@ -214,9 +230,10 @@ const Pharmacy_Dsr = (props) => {
               )
             }
           </table>
-        </div>
-        <h5 className='my-2 text-charcoal75 fw-semibold ms-2 '>Pending Payments Recieved</h5>
-        <div className='container-fluid scroll scroll-y pendingpayrecieve'>
+  </div>
+  </div>
+  <div className="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">
+  <div className='container-fluid scroll scroll-y pendingpayrecieve'>
           <table className='table'>
             <thead>
               <tr>
@@ -255,9 +272,11 @@ const Pharmacy_Dsr = (props) => {
 
             </tbody>
           </table>
-        </div>
-      </div>
-    </div>
+  </div>
+  </div>
+  </div>
+  </div>
+  </div>
 
 
 

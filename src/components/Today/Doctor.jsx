@@ -333,7 +333,7 @@ function DoctorSchedule(props) {
                   <tbody>
                     {
                       appointmentdata.length == 0 ? (
-                        <tr><button className="text-center position-absolute border-0 text-charcoal fw-bold px-5 start-0 end-0">No Appointments Found</button></tr>
+                        <tr><button className="text-center position-absolute border-0 text-charcoal fw-bold px-5 start-0 end-0 mx-auto">No Appointments Found</button></tr>
                       ) : (
                         appointmentdata.map((data, i) => (
                           <tr className='align-middle'>

@@ -19,7 +19,9 @@
     --charcoal75: #222023ad;
     --lightred50:#e8ad988a;
 }
-
+body{
+    background-color: var(--seashell);
+}
 /*---------------------------------------------------bodyscrollbar css-------------------------------------------------------------------- */
 body::-webkit-scrollbar {
     height: 0.7rem;
@@ -317,11 +319,28 @@ body::-webkit-scrollbar-thumb:hover {
     border: 1px solid var(--charcoal);
 }
 .accordion-button {
-    background-color: var(--seashell);
+    background-color: var(--pearl);
+    border:none
 }
 .accordion-button:not(.collapsed){
-    background-color: var(--pearl);
+    background-color: var(--seashell);
+    border:none
 }
 .accordion-button:not(.collapsed){
 color:var(--burntumber)
+}
+.accordion-button:not(.collapsed)::after{
+background-image: none;
+}
+.accordion-button:focus{
+border-color:none;
+box-shadow:none;
+
+}
+.nav-item .active{
+    background-color: var(--charcoal) !important;
+    color:var(--pearl)
+}
+.nav-item .nav-link {
+color:var(--charcoal)
 }

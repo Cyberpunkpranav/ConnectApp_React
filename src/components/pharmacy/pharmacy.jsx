@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import { URL, TodayDate, DoctorsList, Clinic } from '../../index';
-import { ExportPurchaseEntry, ExportSaleEntry, ExportSaleReturn } from '../pharmacy/Exports'
+import { ExportPurchaseEntry, ExportPurchaseReturn, ExportSaleEntry, ExportSaleReturn } from '../pharmacy/Exports'
 import Notiflix from 'notiflix';
 import * as XLSX from 'xlsx';
 import { customconfirm } from '../features/notiflix/customconfirm';
@@ -207,7 +207,7 @@ function Saleentrysection(props) {
         </div>
         <div className="col-8 col-xl-8 col-lg-8 col-md-8 align-self-center">
           <div className="row border-burntumber fw-bolder rounded-2 text-center justify-content-center ">
-            <div className="col-4 bg-pearl">
+            <div className="col-4 bg-pearl rounded-2">
               <select className='p-0 m-0 bg-pearl border-0 text-burntumber fw-bolder' value={channel ? channel : ''} onChange={(e) => { setchannel(e.target.value) }}>
                 <option className='border-0 text-burntumber fw-bolder' value='1'>Pharmacy</option>
                 <option className='border-0 text-burntumber fw-bolder' value='2'>Consumables</option>
@@ -216,7 +216,7 @@ function Saleentrysection(props) {
             <div className="col-4 text-burntumber fw-bolder bg-pearl">
               <input type='date' className='p-0 m-0 border-0 bg-pearl text-burntumber fw-bolder ' value={fromdate ? fromdate : ''} onChange={(e) => { setfromdate(e.target.value) }} />
             </div>
-            <div className="col-4 text-burntumber fw-bolder bg-pearl">
+            <div className="col-4 text-burntumber fw-bolder bg-pearl rounded-2">
               <input type='date' className='p-0 m-0 border-0 bg-pearl text-burntumber fw-bolder ' value={todate ? todate : ''} onChange={(e) => { settodate(e.target.value) }} />
             </div>
           </div>
@@ -374,7 +374,7 @@ function SaleEntrypayments(props) {
       for (let j = 0; j < Payments[0].length; j++) {
         allamounts.push(p = { paymentmethod: Payments[0][j], amount: amounts[0][j] })
       }
-      setpreviouspayments(allamounts)
+      setpaymentmethods(allamounts)
     }
 
     paymentmethods.push(paymentobj)
@@ -431,7 +431,7 @@ function SaleEntrypayments(props) {
   }
   const CalPrevTotal = async () => {
     let total = 0
-    previouspayments.map((data) => (
+    paymentmethods.map((data) => (
       total += Number(data.amount)
     ))
     console.log(total)
@@ -439,7 +439,7 @@ function SaleEntrypayments(props) {
   }
   useEffect(() => {
     CalPrevTotal()
-  }, [previouspayments])
+  }, [props.saleentryarr])
   console.log(props.saleentryarr, paymentmethods, previoustotal)
 
   function AddMethods() {
@@ -461,25 +461,11 @@ function SaleEntrypayments(props) {
       <div className="container-fluid text-start position-relative">
         <div className={`d-${previoustotal == props.saleentryarr.grand_total ? '' : 'none'} bg-lightgreen fw-bold text-center p-2 my-2`}>Payment Done</div>
         <h6 className='text-charcoal fw-bolder text-center'>Payments</h6>
-        {
-          previouspayments.map((data, i) => (
-            <div className="row p-0 m-0 justify-content-end g-2">
-              <div className="col-4 ">
-                <div className=' text-center'>{data.paymentmethod}</div>
-              </div>
-              <div className="col-4 text-center ">
-                <div className=' text-center'>{data.amount}</div>
-              </div>
-              <div className="col-2 text-center">
-              </div>
-            </div>
-          ))
-        }
-
+        {/* d-${previoustotal < props.saleentryarr.grand_total ? '  ' : 'none'} */}
         {
           paymentmethods ? (
             paymentmethods.map((data, i) => (
-              <div className={`row p-0 m-0 d-${previoustotal < props.saleentryarr.grand_total ? '  ' : 'none'} justify-content-end g-2`}>
+              <div className={`row p-0 m-0  justify-content-end g-2`}>
                 <div className="col-4 ">
                   <select className='form-control border-success py-1 text-center' value={data.paymentmethod} onChange={(e) => { data.paymentmethod = e.target.value; setpaymentmethods(prevState => [...prevState]) }}>
                     <option className='text-charcoal75 fw-bolder'>Payment Method</option>
@@ -2236,19 +2222,19 @@ function Purchaseentrysection(props) {
       <button className="button addentrypurchase button-charcoal position-absolute" onClick={toggle_npef}><img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt='displaying_image' className="img-fluid" style={{ width: `1.5rem` }} />Entry Purchase</button>
       <div className="row p-0 m-0 justify-content-lg-between align-items-center">
         <div className="col-3 col-md-2 col-lg-2 align-self-center text-center text-charcoal mb-2 fw-bolder">Purchase Entry</div>
-        <div className="col-6 col-xl-6 col-lg-7 col-md-7 align-self-center m-1 ">
+        <div className="col-auto align-self-center m-1 ">
           <div className="row border-burntumber fw-bolder rounded-2 text-center justify-content-center ">
-            <div className="col-4">
-              <select className='p-0 m-0 border-0 text-burntumber fw-bolder' value={channel ? channel : ''} onChange={(e) => { setchannel(e.target.value) }}>
+            <div className="col-4 bg-pearl rounded-2">
+              <select className='p-0 m-0 border-0 text-burntumber fw-bolder bg-pearl' value={channel ? channel : ''} onChange={(e) => { setchannel(e.target.value) }}>
                 <option className='border-0 text-burntumber fw-bolder' value='1'>Pharmacy</option>
                 <option className='border-0 text-burntumber fw-bolder' value='2'>Consumables</option>
               </select>
             </div>
-            <div className="col-4 text-burntumber fw-bolder">
-              <input type='date' className='p-0 m-0 border-0 text-burntumber fw-bolder ' value={fromdate ? fromdate : ''} onChange={(e) => { setfromdate(e.target.value) }} />
+            <div className="col-4 text-burntumber fw-bolder bg-pearl">
+              <input type='date' className='p-0 m-0 border-0 text-burntumber fw-bolder bg-pearl ' value={fromdate ? fromdate : ''} onChange={(e) => { setfromdate(e.target.value) }} />
             </div>
-            <div className="col-4 text-burntumber fw-bolder">
-              <input type='date' className='p-0 m-0 border-0 text-burntumber fw-bolder ' value={todate ? todate : ''} onChange={(e) => { settodate(e.target.value) }} />
+            <div className="col-4 text-burntumber fw-bolder bg-pearl rounded-2">
+              <input type='date' className='p-0 m-0 border-0 text-burntumber fw-bolder bg-pearl ' value={todate ? todate : ''} onChange={(e) => { settodate(e.target.value) }} />
             </div>
           </div>
         </div>
@@ -3710,7 +3696,7 @@ function PurchaseReturns() {
       <div classsName='p-0 m-0'>
         <div className="row p-0 m-0 align-items-center justify-content-lg-between">
           <div className="col-3 col-md-2 col-lg-2 align-self-center text-center mb-2 text-charcoal fw-bolder fs-6">Purchase Return </div>
-          <div className="col-6 col-xl-6 col-lg-7 col-md-auto align-self-center m-1 ">
+          <div className="col-auto align-self-center m-1 ">
             <div className="row border-burntumber bg-pearl fw-bolder rounded-2 text-center justify-content-center ">
               <div className="col-4">
                 <select className='p-0 m-0 border-0 text-burntumber bg-pearl fw-bolder' value={channel ? channel : ''} onChange={(e) => { setchannel(e.target.value) }}>
@@ -3721,13 +3707,13 @@ function PurchaseReturns() {
               <div className="col-4 text-burntumber fw-bolder bg-pearl">
                 <input type='date' className='p-0 m-0 border-0 bg-pearl text-burntumber fw-bolder ' value={fromdate ? fromdate : ''} onChange={(e) => { setfromdate(e.target.value) }} />
               </div>
-              <div className="col-4 text-burntumber fw-bolder bg-pearl">
+              <div className="col-4 text-burntumber fw-bolder bg-pearl rounded-2">
                 <input type='date' className='p-0 m-0 border-0 bg-pearl text-burntumber fw-bolder ' value={todate ? todate : ''} onChange={(e) => { settodate(e.target.value) }} />
               </div>
             </div>
           </div>
           <div className="col-2 col-lg-2 col-md-2 align-self-center">
-            <ExportPurchaseEntry purchasereturnarr={purchasereturnarr} fromdate={reversefunction(fromdate)} todate={reversefunction(todate)} />
+            <ExportPurchaseReturn purchasereturnarr={purchasereturnarr} fromdate={reversefunction(fromdate)} todate={reversefunction(todate)} />
           </div>
         </div>
         <div className='scroll scroll-y overflow-scroll p-0 m-0' style={{ minHeight: '57vh', height: '57vh' }}>

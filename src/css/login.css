@@ -14,19 +14,26 @@ html{
 
 .loginform{
     font-family: 'Urbanist';
-    animation:bgtrans;
+    /* animation:bgtrans;
     animation-duration: 10s;
     animation-direction: normal;
-    animation-iteration-count: infinite;
+    animation-iteration-count: infinite; */
+
+
+    background-image: url(/public/images/aartasconnectbg.png);
+    background-size:contain;
     background-position: center;
-    background-size:cover;
     background-repeat: no-repeat;
-    background-image: url(/public/images/bg1.jpg);
     height:100vh;
     width:100%;
+    position: relative;
 }
 .signinsection{
-    margin:0 auto;
+    position:absolute;
+    margin-top:18.5%;
+    margin-left:45%;
+    width:40rem;
+    max-width:40rem;
 }
 .formbox{
     position:relative;
@@ -120,20 +127,39 @@ html{
         background-image: url(/public/images/bg2.jpg);
         }
     }
-@media screen and (max-width: 1000px) and(min-width:769px){
+@media screen and (max-width: 1080px) and(min-width:810px){
     .signinsection{
         width:50%;
+        margin-top:18.5%;
+        margin-left:45%
+    }
+    .loginform{
+        width:100%;
+        background-size: contain;
     }
 }
 
 @media screen and(max-width:768px){
     .signinsection{
-        margin:0;
         width:100%;
     }
+    .loginform{
+        width:100%;
+        background-size: contain;
+    }
 }
-@media screen and (min-width: 1000px){
-    .signinsection{
+@media screen and (min-width:810px){
+    /* .signinsection{
         width:50%;
+        margin-top:25%;
+    } */
+    .loginform{
+        width:100%;
+        background-size: contain;
+    }
+}
+@media (width:810px) {
+    .signinsection{
+        margin-top:50%;
     }
 }
