@@ -11,29 +11,28 @@ html{
 --seashell:#f2f2f2;
 --charcoal:#222023;
 }
-
 .loginform{
     font-family: 'Urbanist';
-    /* animation:bgtrans;
-    animation-duration: 10s;
-    animation-direction: normal;
-    animation-iteration-count: infinite; */
+}
 
-
+.signinsection{
+    margin:0;
+    padding:0;
+    background-color: var(--seashell);
     background-image: url(/public/images/aartasconnectbg.png);
     background-size:contain;
     background-position: center;
     background-repeat: no-repeat;
     height:100vh;
-    width:100%;
-    position: relative;
+    box-sizing: content-box;
+    position:relative;
 }
-.signinsection{
-    position:absolute;
-    margin-top:18.5%;
-    margin-left:45%;
+.formsection{
+    position: absolute;
+    top:35%;
+    right:0;
+    right:10%;
     width:40rem;
-    max-width:40rem;
 }
 .formbox{
     position:relative;
@@ -126,41 +125,31 @@ html{
     100%{
         background-image: url(/public/images/bg2.jpg);
         }
-    }
-@media screen and (max-width: 1080px) and(min-width:810px){
-    .signinsection{
-        width:50%;
-        margin-top:18.5%;
-        margin-left:45%
-    }
-    .loginform{
-        width:100%;
-        background-size: contain;
-    }
-}
+    } 
 
-@media screen and(max-width:768px){
-    .signinsection{
-        width:100%;
-    }
-    .loginform{
-        width:100%;
-        background-size: contain;
-    }
-}
-@media screen and (min-width:810px){
-    .signinsection{
-        width:40%;
-        margin-top:15.5%;
-        /* margin-top:25%; */
-    }
-    .loginform{
-        width:100%;
-        background-size: contain;
+    @media screen and (min-width:568px) and (max-width:991px) {
+        .formsection{
+            top:40%;
+            right:0;
+           width:30rem;
+        }
+    }    
+@media screen and (min-width:992px) and(max-width:1099px) {
+    .formsection{
+        right:0;
+        top:40%;
+       width:50rem;
     }
 }
-@media (width:810px) {
-    .signinsection{
-        margin-top:50%;
+@media screen and (min-width:1100px) and (max-width:1999px) {
+    .formsection{
+       right:15vh;
+       width:50rem;
+    }
+}
+@media screen and (min-width:2000px) {
+    .formsection{
+       right:20%;
+       width:50rem;
     }
 }

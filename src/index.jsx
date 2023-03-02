@@ -250,19 +250,19 @@ function Switchpage() {
             {/* <div className="navbar mb-5 justify-content-end">
               <img src={process.env.PUBLIC_URL + "/images/logo.png"} alt='image' className="float-end img-fluid col-lg-1 col-3 me-lg-5 me-2" />
             </div> */}
-            <section className="signinsection bg-pearl p-4 shadow-sm rounded-4">
-              <div className=" p-0 m-0 ">
-                <h4 className='text-center text-charcoal fw-semibold'>Login to Aartas</h4>
+            <section className="signinsection">
+              <div className=" p-0 m-0 formsection ">
+                <h4 className='text-center text-charcoal fw-semibold mb-4'>Login to Aartas</h4>
                 <form autoComplete="off" onSubmit={(e) => Submit(e)}>
-                  <div className="mt-4">
+                  <div className="">
                     <div className={`row d-${email} justify-content-center p-0 m-0`} id="userinput">
                       <div className="col-1"></div>
                       <div className="col-lg-6 col-md-8 col-sm-10 col-10 align-items-center d-flex userinput">
                         <p className="m-0 ms-1" id="inputheading">Enter your Aartas Email ID</p>
-                        <input type="email" className="form-control" id="email" placeholder="example@aartas.com" value={logininput.email} autoComplete="false" onChange={(e) => { handleinput(e); if (e.target.value != '') { setnext('block'); } if (e.target.value == '') { setnext('none'); } }} />
+                        <input type="email" className="form-control bg-seashell" id="email" placeholder="example@aartas.com" value={logininput.email} autoComplete="false" onChange={(e) => { handleinput(e); if (e.target.value != '') { setnext('block'); } if (e.target.value == '') { setnext('none'); } }} />
                       </div>
                       <div className={`col-lg-1 d-flex  col-2 align-items-center`}>
-                        <a className={`next d-${next} text-decoration-none text-center p-2 rounded`} id="next" onClick={topassword}>Next</a>
+                        <a className={`next d-${next} text-decoration-none text-center text-charcoal p-2 rounded`} id="next" onClick={topassword}>Next</a>
                       </div>
 
                     </div>
@@ -279,7 +279,7 @@ function Switchpage() {
                           </div>) : (
                           <div className="col-lg-6 col-md-8 col-sm-10 col-10 align-items-center d-flex userinput">
                             <p className="m-0" id="inputheading">Enter your Password</p>
-                            <input type={passvisibility} className="form-control" id="password" placeholder="examplepassword123" autoComplete="new-password" onChange={(e) => handleinput(e)} value={logininput.password} />
+                            <input type={passvisibility} className="form-control bg-seashell" id="password" placeholder="examplepassword123" autoComplete="new-password" onChange={(e) => handleinput(e)} value={logininput.password} />
                           </div>
                         )
                       }
@@ -289,7 +289,7 @@ function Switchpage() {
                       <div className="col-12 p-0 m-0">
                         <div className="col text-center">
                           <input className="form-check-input" onClick={passwordvisibility} type="checkbox" value="" id="flexCheckDefault" />
-                          <label className="form-check-label" htmlFor="flexCheckDefault">Check Password</label>
+                          <label className="form-check-label ms-2 text-charcoal" htmlFor="flexCheckDefault">Check Password</label>
                         </div>
                       </div>
                       <div className="col-5 text-center d-none"><a href="#" className="text-decoration-none">forgot password</a></div>

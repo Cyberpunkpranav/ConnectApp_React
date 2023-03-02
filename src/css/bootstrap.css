@@ -19,9 +19,7 @@
     --charcoal75: #222023ad;
     --lightred50:#e8ad988a;
 }
-body{
-    background-color: var(--seashell);
-}
+
 /*---------------------------------------------------bodyscrollbar css-------------------------------------------------------------------- */
 body::-webkit-scrollbar {
     height: 0.7rem;
@@ -343,4 +341,14 @@ box-shadow:none;
 }
 .nav-item .nav-link {
 color:var(--charcoal)
+}
+.form-check-input:checked{
+background-color: var(--burntumber);
+border-color: var(--burntumber);
+box-shadow: none;
+}
+@media (max-width:992px){
+    body{
+        background-size:contain;
+    }
 }

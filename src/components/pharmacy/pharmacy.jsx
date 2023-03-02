@@ -9,7 +9,9 @@ import { customnotify } from '../features/notiflix/customnotify';
 import '../../css/bootstrap.css';
 import '../../css/pharmacy.css';
 import '../../css/dashboard.css'
-import { Purchaseorderarray, Pharmacystocktable, Stockvaccinearray, Stockmedicinearray, POitemdetailsarray, PEitemdetailsarray } from './apiarrays';
+import { Purchaseorderarray, Pharmacystocktable, POitemdetailsarray } from './apiarrays';
+import { NewMedicine } from './NewMedicine';
+import { UpdateMedicine } from './UpdateMedicine';
 
 //-------------------------------------------------Sales------------------------------------------------------------------------------------------
 function Salesection(props) {
@@ -2590,7 +2592,7 @@ function Newpurchaseentryform(props) {
   const [clinicstatecode, setclinicstatecode] = useState()
   const [load, setload] = useState()
   const [Exceldata, setExceldata] = useState([])
-
+  const [NewMed, setNewMed] = useState('none')
   const reversefunction = (date) => {
     if (date) {
       date = date.split("-").reverse().join("-")
@@ -3155,6 +3157,15 @@ function Newpurchaseentryform(props) {
       setMedicineentriesArr(prevState => [...prevState, e])
     }
   }
+
+  const ToggleNewMedicine = () => {
+    if (NewMed == 'block') {
+      setNewMed('none')
+    }
+    if (NewMed == 'none') {
+      setNewMed('block')
+    }
+  }
   console.log(vendorid, vendorsearch)
   return (
 
@@ -3164,7 +3175,7 @@ function Newpurchaseentryform(props) {
           <div className="col-1">
             <button type="button" className="btn-close closebtn m-auto mt-2" onClick={props.toggle_npef} aria-label="Close" ></button>
           </div>
-          <div className="col-8">
+          <div className="col-8 col-md-7 col-lg-8 col-xl-8">
             <h5 className="text-center mt-2"> New Purchase Entry </h5>
           </div>
           <div className="col-auto">
@@ -3254,7 +3265,7 @@ function Newpurchaseentryform(props) {
               </div>
               <div className="row p-0 m-0 align-items-center mt-2">
                 <div className="col-6 col-lg-5 col-md-5 p-0 m-0 align-self-center ms-1">
-                  <button className="button button-charcoal m-0 p-0 py-1 px-4"> <img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt="displaying_image" style={{ width: "1.5rem" }} /> Medicine </button>
+                  <button className="button button-charcoal m-0 p-0 py-1 px-4" onClick={ToggleNewMedicine}> <img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt="displaying_image" style={{ width: "1.5rem" }} /> Medicine </button>
                 </div>
                 <div className="col-6">
                   <div className="row">
@@ -3472,6 +3483,9 @@ function Newpurchaseentryform(props) {
           </div>
         </div>
       </div>
+      <section className={`position-absolute top-0 start-0 end-0 d-${NewMed}`}>
+        <NewMedicine ToggleNewMedicine={ToggleNewMedicine} />
+      </section>
     </div>
   );
 }
@@ -4391,7 +4405,7 @@ export { PEitemdetailssection };
 //-------------------------------------------------------------------------Stock Info---------------------------------------------------------
 
 function Stocksection() {
-  let menu = ["Vaccines", "Medicines"];
+  let menu = ["Vaccines", "Medicines", "Medicine List"];
   const [menuindex, setmenuindex] = useState(0);
   const _selectedmenu = (_menu) => {
     if (_menu === 0) {
@@ -4399,6 +4413,9 @@ function Stocksection() {
     }
     if (_menu === 1) {
       return <div className=""><Stockmedicinesection /></div>
+    }
+    if (_menu === 2) {
+      return <div className=""><MedicineList /></div>
     }
     return <div className='fs-2'>Nothing Selected</div>
 
@@ -4532,7 +4549,7 @@ function Stockvaccinesection() {
       <div className=' text-start text-charcoal p-2 ms-5 fw-bold'>Vaccine Stock Info</div>
       <div className='scroll scroll-y' style={{ 'height': '57vh', minHeight: '57vh', maxHeight: '57vh' }}>
         <table className="table datatable text-center" >
-          <thead>
+          <thead className='position-sticky top-0 bg-pearl'>
             <tr>
               <th rowSpan='2' className='p-0 m-0 px-1 text-charcoal75 fw-bold'>ID</th>
               <th rowSpan='2' className='p-0 m-0 px-1 text-charcoal75 fw-bold'>Vaccine Name</th>
@@ -4540,11 +4557,13 @@ function Stockvaccinesection() {
               <th rowSpan='2' className='p-0 m-0 px-1 text-charcoal75 fw-bold'>T.Stock</th>
               <th rowSpan='2' className='p-0 m-0 px-1 text-charcoal75 fw-bold'>Status</th>
               <th rowSpan='2' className='p-0 m-0 px-1 text-charcoal75 fw-bold'></th>
+              <th rowSpan='2' className='p-0 m-0 px-1 text-charcoal75 fw-bold'>Inventory</th>
             </tr>
           </thead>
           {
             load ? (
               <tr className='p-0 m-0'>
+                <td className='placeholder-glow'><div className='placeholder col-12 p-0 m-0 w-100 px-1'>Loading..</div></td>
                 <td className='placeholder-glow'><div className='placeholder col-12 p-0 m-0 w-100 px-1'>Loading..</div></td>
                 <td className='placeholder-glow'><div className='placeholder col-12 p-0 m-0 w-100 px-1'>Loading..</div></td>
                 <td className='placeholder-glow'><div className='placeholder col-12 p-0 m-0 w-100 px-1'>Loading..</div></td>
@@ -4723,7 +4742,7 @@ function Stockmedicinesection() {
       <div className='text-start ms-5 text-charcoal fw-bold p-2'>Medicine Stock Info</div>
       <div className='scroll scroll-y p-0 m-0' style={{ 'height': '57vh', minHeight: '57vh', maxHeight: '57vh' }}>
         <table className="table datatable text-center" >
-          <thead>
+          <thead className='position-sticky top-0 bg-pearl'>
             <tr>
               <th rowSpan='2' className='p-0 m-0 px-1 text-charcoal75 fw-bold'>ID</th>
               <th rowSpan='2' className='p-0 m-0 px-1 text-charcoal75 fw-bold'>Medicine Name</th>
@@ -4731,11 +4750,13 @@ function Stockmedicinesection() {
               <th rowSpan='2' className='p-0 m-0 px-1 text-charcoal75 fw-bold'>T.Stock</th>
               <th rowSpan='2' className='p-0 m-0 px-1 text-charcoal75 fw-bold'>Status</th>
               <th rowSpan='2' className='p-0 m-0 px-1 text-charcoal75 fw-bold'></th>
+              <th rowSpan='2' className='p-0 m-0 px-1 text-charcoal75 fw-bold'>Inventory</th>
             </tr>
           </thead>
           {
             load ? (
               <tr className='p-0 m-0'>
+                <td className='placeholder-glow'><div className='placeholder col-12 p-0 m-0 w-100 px-1'>Loading..</div></td>
                 <td className='placeholder-glow'><div className='placeholder col-12 p-0 m-0 w-100 px-1'>Loading..</div></td>
                 <td className='placeholder-glow'><div className='placeholder col-12 p-0 m-0 w-100 px-1'>Loading..</div></td>
                 <td className='placeholder-glow'><div className='placeholder col-12 p-0 m-0 w-100 px-1'>Loading..</div></td>
@@ -4914,6 +4935,117 @@ function MedicinesectionItemDetails(props) {
       </div>
     </div>
 
+  )
+}
+function MedicineList() {
+  const url = useContext(URL)
+  const [limit, setlimit] = useState(12)
+  const [offset, setoffset] = useState(0)
+  const [stock, setstock] = useState([])
+  const [medicines, setmedicines] = useState([])
+  const [load, setload] = useState(false)
+  const [index, setindex] = useState()
+  const [NewMed, setNewMed] = useState('none')
+  const medcinelist = async () => {
+    setload(true)
+    try {
+      await axios.get(`${url}/medicine/list?limit=${limit}&offset=${offset}`).then((response) => {
+        setmedicines(response.data.data.medicine)
+        setload(false)
+      })
+    } catch (e) {
+      Notiflix.Notify.failure(e.message)
+      setload(false)
+    }
+
+  }
+  useEffect(() => {
+    medcinelist()
+  }, [offset])
+
+  const ToggleNewMedicine = () => {
+    if (NewMed == 'block') {
+      setNewMed('none')
+      setindex()
+    }
+    if (NewMed == 'none') {
+      setNewMed('block')
+    }
+  }
+
+
+  return (
+    <div>
+      <div className='text-start ms-5 text-charcoal fw-bold p-2'>Medicines List</div>
+      <div className='scroll scroll-y p-0 m-0' style={{ 'height': '57vh', minHeight: '65vh', maxHeight: '65vh' }}>
+        <table className="table datatable text-center" >
+          <thead className='position-sticky top-0 bg-pearl'>
+            <tr>
+              <th rowSpan='2' className='p-0 m-0 px-1 text-charcoal75 fw-bold'>Update</th>
+              <th rowSpan='2' className='p-0 m-0 px-1 text-charcoal75 fw-bold'>Display Name</th>
+              <th rowSpan='2' className='p-0 m-0 px-1 text-charcoal75 fw-bold'> Name</th>
+              <th rowSpan='2' className='p-0 m-0 px-1 text-charcoal75 fw-bold'>Salt Name</th>
+              <th rowSpan='2' className='p-0 m-0 px-1 text-charcoal75 fw-bold'>HSN Code</th>
+              <th rowSpan='2' className='p-0 m-0 px-1 text-charcoal75 fw-bold'>Manufacturer</th>
+            </tr>
+          </thead>
+          {
+            load ? (
+              <tr className='p-0 m-0'>
+                <td className='placeholder-glow'><div className='placeholder col-12 p-0 m-0 w-100 px-1'>Loading..</div></td>
+                <td className='placeholder-glow'><div className='placeholder col-12 p-0 m-0 w-100 px-1'>Loading..</div></td>
+                <td className='placeholder-glow'><div className='placeholder col-12 p-0 m-0 w-100 px-1'>Loading..</div></td>
+                <td className='placeholder-glow'><div className='placeholder col-12 p-0 m-0 w-100 px-1'>Loading..</div></td>
+                <td className='placeholder-glow'><div className='placeholder col-12 p-0 m-0 w-100 px-1'>Loading..</div></td>
+                <td className='placeholder-glow'><div className='placeholder col-12 p-0 m-0 w-100 px-1'>Loading..</div></td>
+              </tr>
+            ) : (
+              medicines == undefined || medicines.length == 0 ? (
+                <tbody className='' >
+                  <tr>
+                    <td className='position-absolute text-charcoal fw-bolder start-0 end-0'>No Medicines Found</td>
+                  </tr>
+                </tbody>
+              ) : (
+                <tbody className=''>
+                  {
+                    medicines.map((data, i) => (
+                      <tr className={`align-middle text-center`}>
+                        <td className={`py-0 bg-${index === i ? 'lightyellow' : ''}`}>
+                          <button className="btn m-0 p-0" key={i} onClick={(e) => { ToggleNewMedicine(); setindex(i) }}>
+                            <img src={process.env.PUBLIC_URL + "/images/confirmed.png"} alt="displaying_image" className="img-fluid" style={{ width: "1.5rem" }} key={i} />
+                          </button>
+                        </td>
+                        <td className=' text-charcoal fw-bold'>{data.display_name && data.display_name !== null ? data.display_name : ''}</td>
+                        <td className=' text-charcoal fw-bold'>{data.name && data.name !== null ? data.name : ''}</td>
+                        <td className=' text-charcoal fw-bold'>{data.salt_name && data.salt_name !== null ? data.salt_name : ''}</td>
+                        <td className=' text-charcoal fw-bold'>{data.hsn_code && data.hsn_code !== null ? data.hsn_code : ''}</td>
+                        <td className=' text-charcoal fw-bold'>{data.manufacturer && data.manufacturer !== null ? data.manufacturer : ''}</td>
+                        {
+                          index == i ? (
+                            <td className={` text-start  d-${index == i ? NewMed : 'none'} border position-absolute start-0 end-0 top-0 bg-seashell`} style={{ padding: 0, marginTop: '-7.15rem' }}>
+                              <UpdateMedicine ToggleNewMedicine={ToggleNewMedicine} data={medicines[i]} />
+                            </td>
+                          ) : (<></>)
+                        }
+                      </tr>
+
+                    ))
+                  }
+
+                </tbody>
+              )
+
+            )
+          }
+        </table>
+      </div>
+      <div className="col-12 text-center d-flex p-0 m-0 justify-content-between  align-self-center">
+        <button className='button button-charcoal p-0 m-0 px-3 py-1 ' disabled={offset == 0 ? true : false} onClick={() => { setoffset(offset - 12) }}>Previous</button>
+        <button className='button button-charcoal p-0 m-0 px-3 py-1' onClick={() => { setoffset(offset + 12) }}>Next</button>
+      </div>
+
+    </div>
   )
 }
 export { Stocksection };
