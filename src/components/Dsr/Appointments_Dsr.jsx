@@ -351,22 +351,22 @@ const Appointments_Dsr = (props) => {
       </div>
 
       <div className="accordion mt-4" id="accordionExample">
-        <div className="accordion-item" ref={Appointmentref}>
-          <h5 className="accordion-header" id="headingOne">
-            <button className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-              <h6 className='p-0 m-0 text-burntumber text-center fw-semibold '> Total Appointments :{Appointments.length}</h6>
+        <div className="accordion-item p-0 m-0" ref={Appointmentref}>
+          <h5 className="accordion-header p-0 m-0" id="headingOne">
+            <button className="accordion-button p-0 m-0 py-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+              <h6 className='p-0 m-0 text-burntumber text-center fw-semibold p-0 m-0 '> Total Appointments :{Appointments.length}</h6>
               <DownloadTableExcel
                 filename={`${reversefunction(props.fromdate) + ' to ' + reversefunction(props.todate)} Appointments`}
                 sheet="Appointments"
                 currentTableRef={Appointmentref.current}
               >
-              <button className='btn p-0 m-0 ms-5 text-charcoal fw-bold '> <img src={process.env.PUBLIC_URL + '/images/download.png'} style={{ 'width': '1.5rem' }} /> Export</button>
+                <button className='btn p-0 m-0 ms-5 text-charcoal fw-bold '> <img src={process.env.PUBLIC_URL + '/images/download.png'} style={{ 'width': '1.5rem' }} /> Export</button>
 
               </DownloadTableExcel>
             </button>
           </h5>
           <div id="collapseOne" className="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-            <div className='container-fluid accordion-body scroll scroll-y bg-pearl p-0 m-0' style={{ maxHeight: '45vh', height: '45vh' }}>
+            <div className='container-fluid accordion-body scroll scroll-y bg-pearl p-0 m-0' style={{ maxHeight: '40vh', height: '40vh' }}>
               <table className='table text-center bg-pearl'>
                 <thead className='position-sticky top-0 bg-pearl'>
                   <tr className='bg-pearl'>
@@ -453,22 +453,22 @@ const Appointments_Dsr = (props) => {
         </div>
         <div className="accordion-item" ref={Pendingref}>
           <h2 className="accordion-header" id="headingTwo">
-            <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+            <button className="accordion-button p-0 m-0 py-1 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
               <h6 className='p-0 m-0 text-burntumber text-center fw-semibold '>Pending Payments Recieved: {pendingpaid.length}</h6>
 
-  
+
               <DownloadTableExcel
                 filename={`${reversefunction(props.fromdate) + ' to ' + reversefunction(props.todate)} Appointments`}
                 sheet="Appointments"
                 currentTableRef={Pendingref.current}
               >
-              <button className='btn p-0 m-0 ms-5 text-charcoal fw-bold '> <img src={process.env.PUBLIC_URL + '/images/download.png'} style={{ 'width': '1.5rem' }} /> Export</button>
+                <button className='btn p-0 m-0 ms-5 text-charcoal fw-bold '> <img src={process.env.PUBLIC_URL + '/images/download.png'} style={{ 'width': '1.5rem' }} /> Export</button>
 
               </DownloadTableExcel>
             </button>
           </h2>
           <div id="collapseTwo" className="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
-            <div className='container-fluid accordion-body scroll scroll-y p-0 m-0' style={{ maxHeight: '45vh', height: '45vh' }}>
+            <div className='container-fluid accordion-body scroll scroll-y p-0 m-0' style={{ maxHeight: '40vh', height: '40vh' }}>
               <table className='table text-center'>
                 <thead className='bg-pearl position-sticky top-0'>
                   <tr>
@@ -523,7 +523,7 @@ const Appointments_Dsr = (props) => {
         </div>
         <div className="accordion-item" ref={Advancedref}>
           <h2 className="accordion-header" id="headingThree">
-            <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+            <button className="accordion-button p-0 m-0 py-0 collapsed " type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
               <h6 className='p-0 m-0 text-burntumber fw-semibold text-center '>Advanced Payments Recieved:{advancepaid.length}</h6>
               <DownloadTableExcel
                 filename={`${reversefunction(props.fromdate) + ' to ' + reversefunction(props.todate)} Appointments`}
@@ -536,7 +536,7 @@ const Appointments_Dsr = (props) => {
             </button>
           </h2>
           <div id="collapseThree" className="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
-            <div className='container-fluid accordion-body scroll scroll-y p-0 m-0' style={{ maxHeight: '45vh', height: '45vh' }}>
+            <div className='container-fluid accordion-body scroll scroll-y p-0 m-0' style={{ maxHeight: '40vh', height: '40vh' }}>
               <table className='table text-center'>
                 <thead className='bg-pearl position-sticky top-0'>
                   <tr>

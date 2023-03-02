@@ -149,10 +149,11 @@ html{
     }
 }
 @media screen and (min-width:810px){
-    /* .signinsection{
-        width:50%;
-        margin-top:25%;
-    } */
+    .signinsection{
+        width:40%;
+        margin-top:15.5%;
+        /* margin-top:25%; */
+    }
     .loginform{
         width:100%;
         background-size: contain;
