@@ -2089,7 +2089,7 @@ function SRitemdetailssection(props) {
 }
 export { Salesection }
 
-// ---------------------------------------------------------------purchase------------------------------------------------------------------
+//  ---------------------------------------------------------------purchase------------------------------------------------------------------
 function Purchasesection(props) {
   const first = ["Purchase Orders", "Purchase Entry", "Purchase Returns"];
   const [second, setSecond] = useState(0);
@@ -2564,7 +2564,7 @@ function Newpurchaseentryform(props) {
   const [vendorid, setvendorid] = useState()
   const [loadvendors, setloadvendors] = useState()
   const [vendorcode, setvendorcode] = useState()
-  const [vendorsearch, setvendorsearch] = useState([''])
+  const [vendorsearch, setvendorsearch] = useState()
   const [itemsearch, setitemsearch] = useState([''])
   const [itemname, setitemname] = useState()
   const [itemid, setitemid] = useState()
@@ -3181,7 +3181,7 @@ function Newpurchaseentryform(props) {
           <div className="col-auto">
             {
               load ? (
-                <div className="col-6 py-2 pb-2 m-auto text-center">
+                <div className="col-6 py-2 pb-2 m-auto text-center" >
                   <div class="spinner-border" role="status">
                     <span class="visually-hidden">Loading...</span>
                   </div>
@@ -3235,7 +3235,7 @@ function Newpurchaseentryform(props) {
                     {
                       vendorsearch ? (
                         loadvendors ? (
-                          <div className='rounded-2 p-1'>
+                          <div className='rounded-2 p-1 bg-pearl mt-1 border shadow' style={{ width: 'fit-content' }}>
                             Searching Please wait....
                             <div className="spinner-border my-auto" style={{ width: "1rem", height: "1rem" }} role="status" >
                               <span className="sr-only"></span>
@@ -3245,9 +3245,13 @@ function Newpurchaseentryform(props) {
                           vendorsearch.length == 0 ? (
                             <div className="bg-burntumber text-light rounded-2 p-1">Oops! Not Avaliable</div>
                           ) : (
-                            vendorsearch.map((data, i) => (
-                              <div style={{ cursor: 'pointer' }} className={`p-0 p-1  bg-${((i % 2) == 0) ? 'pearl' : 'lightblue'} fs-6 `} name={data.id} onClick={(e) => { setvendorname(data.entity_name); setvendorid(data.id); setvendorcode(data.state_code); filterclinic(); vendorsref.current.style.display = 'none'; }}>{data.entity_name}</div>
-                            ))
+                            <div className='bg-pearl border shadow rounded-2 p-1' style={{ zIndex: '40', width: 'fit-content' }}>
+                              {
+                                vendorsearch.map((data, i) => (
+                                  <div style={{ cursor: 'pointer' }} className={`p-0 p-1 d-${vendorsearch == undefined || vendorsearch.length > 0 ? '' : 'none'}  bg-${((i % 2) == 0) ? 'pearl' : 'lightblue'} fs-6 `} name={data.id} onClick={(e) => { setvendorname(data.entity_name); setvendorid(data.id); setvendorcode(data.state_code); filterclinic(); vendorsref.current.style.display = 'none'; }}>{data.entity_name}</div>
+                                ))
+                              }
+                            </div>
                           )
                         )
                       ) : (<></>)
@@ -4893,6 +4897,7 @@ function MedicinesectionItemDetails(props) {
       return date
     }
   }
+  console.log(props.data)
   return (
     <div className=' p-0 m-0 position-relative bg-pearl rounded-4'>
       <h6 className='text-center text-charcoal fw-bold pt-2'>{props.name}</h6>
@@ -5010,7 +5015,7 @@ function MedicineList() {
                 <tbody className=''>
                   {
                     medicines.map((data, i) => (
-                      <tr className={`align-middle text-center`}>
+                      <tr className={`bg-${i % 2 == 0 ? 'seashell' : 'pearl'} align-middle text-center`}>
                         <td className={`py-0 bg-${index === i ? 'lightyellow' : ''}`}>
                           <button className="btn m-0 p-0" key={i} onClick={(e) => { ToggleNewMedicine(); setindex(i) }}>
                             <img src={process.env.PUBLIC_URL + "/images/confirmed.png"} alt="displaying_image" className="img-fluid" style={{ width: "1.5rem" }} key={i} />

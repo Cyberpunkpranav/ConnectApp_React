@@ -203,8 +203,8 @@ function Navbar(props) {
               <div className="row p-0 m-0 gx-auto justify-content-center">
                 {
                   NavbarIcons.map((data, i) => (
-                    <div className={` ms-2 col-auto bg-${highlighticon ? highlighticon === data.path ? 'burntumber50' : 'seashell' : path === data.path ? 'burntumber50' : 'seashell'} rounded-2 `} onClick={() => sethighlighticon(data.path)}>
-                      <Link to={data.path} className="text-decoration-none"> <div className="text-center"> <img src={process.env.PUBLIC_URL + data.image} alt="displaying_image" className="img-fluid" style={{ width: `1.5rem` }} /><p className="col-12 m-0">{data.title}</p> </div> </Link>
+                    <div className={` ms-2 col-auto align-self-end `} onClick={() => sethighlighticon(data.path)}>
+                      <Link to={data.path} className="text-decoration-none"> <div className="text-center"> <img src={process.env.PUBLIC_URL + data.image} alt="displaying_image" className={`img-fluid rounded-2 p-2 bg-${highlighticon ? highlighticon === data.path ? 'burntumber25' : 'seashell' : path === data.path ? 'burntumber50' : 'seashell'}`} style={{ width: `1.5rem` , boxSizing:'content-box' }} /></div><p className="col-12 m-0 text-center">{data.title}</p>  </Link>
                     </div>
                   ))
                 }
@@ -221,12 +221,6 @@ function Navbar(props) {
                   <li><button class="dropdown-item " onClick={() => { toggledoctorform() }}>+ Doctor</button></li>
                 </ul>
               </div>
-              {/* <button className="btn btn-sm p-0 m-0 py-1 col-12 col-lg-6 col-md-6 addbtn align-self-center" onClick={toggleaddoption}> +Add </button>
-              <div className={`text-center addoptions d-${addoption} position-absolute start-0  `} >
-                <input className="col-12 p-lg-2 border-1 border-bottom text-start patient" type="button" defaultValue="Patient" onClick={togglepatientform} />
-                <input className="col-12 p-lg-2 text-start border-1 border-bottom appointment" type="button" defaultValue="Appointment" onClick={toggleappointmentform} />
-                <input className="col-12 p-lg-2 doctorslot shadow-sm text-start" type="button" defaultValue="Doctor Slot" onClick={toggledoctorform} />
-              </div> */}
             </div>
             <div className="col-lg-1 col-xl-2 col-md-2 col-sm-2 ms-md-2 align-self-center order-sm-2 order-2 position-relative p-0 m-0" style={{ zIndex: '1000' }}>
               <input type="text" className="bg-seashell border w-100 border-1 rounded-1 text-center border-0 position-relative" placeholder="search" onChange={(e) => setsearchtext(e.target.value)} />
@@ -342,7 +336,7 @@ function Doctorsection(props) {
 
       </div>
       <section className="patientsection border-start p-0 m-0 border-5 border-dark border-opacity-50 position-relative">
-        <div className="container-fluid p-0 m-0">
+        <div className="container-fluid p-0 m-0 my-2">
           <div className="row m-0 p-0 align-items-center">
             <span className='col-auto fs-4 text-charcoal fw-bold'>{currentDate}</span>
             <div className=' col-auto vr align-self-center h-75' style={{ padding: '0.8px' }}></div>
@@ -370,10 +364,10 @@ function Doctorsection(props) {
               doctorindex.map((data, i) => (
                 data == Doctor ? (
                   <div key={i}>
-                    <div className="p-0 m-0">
+                    <div className="p-0 m-0 my-2">
                       <Timecard docid={props.todayDoc[Doctor][0]} _selected={Doctor} />
                     </div>
-                    <div className="p-0 m-0">
+                    <div className="p-0 m-0 my-2">
                       <DoctorSchedule todayDoc={props.todayDoc} _selected={Doctor} fetchapi={props.fetchapi} DocClinic={DocClinic} DoctorID={DoctorID} DoctorName={DoctorName} />
                     </div>
                   </div>

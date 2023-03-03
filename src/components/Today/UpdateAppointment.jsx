@@ -56,6 +56,7 @@ const UpdateAppointment = (props) => {
     const dateref = useRef()
     const docref = useRef()
     const [trigger, settrigger] = useState(false)
+
     async function getCurrentTimeslots() {
         setdoctorid(props.appointmentdoctorid)
         dateref.current.value = ''
@@ -154,7 +155,7 @@ const UpdateAppointment = (props) => {
 
                 })
             } catch (e) {
-                alert(e)
+                Notiflix.Notify.alert(e.message)
                 setload(false)
             }
         } else {
@@ -210,20 +211,21 @@ const UpdateAppointment = (props) => {
             <button type="button" className="btn-close closebtn position-absolute" disabled={load == true ? true : false} aria-label="Close" onClick={props.closeappointmentform} ></button>
             <hr />
             <div className="col-12">
-                <label>Select Location</label>
-                <div className="col-12 form-control location bg-seashell  border-0" >
+                <div className="col-12 location bg-seashell  border-0" >
                     {
                         cliniclist.map((data, i) => (
-                            <label key={i} className={`d-${clinicID == data.id ? 'block' : 'none'}`}><input type="checkbox" className={`radio me-1 `} checked={clinicID == data.id ? true : false} name={data.id} /> {data.title} {data.address}</label>
+                            <div key={i} className={`d-${clinicID == data.id ? 'block' : 'none'} align-items-center text-charcoal `}>
+                                <img className='mb-1' src={process.env.PUBLIC_URL + '/images/location.png'} style={{ width: '1.3rem' }} />
+                                {data.title} {data.address}</div>
 
                         ))
                     }
                 </div>
-                <div className="row p-0 m-0">
+                <div className="row p-0 m-0 mt-2">
                     <div className="col-md-4 col-sm-4 col-4">
                         <label>Selected Doctor</label>
                         <div className="col-12">
-                            <select className="col-10 form-control selectdoctor bg-seashell" ref={docref} onChange={getTimeslots}>
+                            <select className="col-10 form-control selectdoctor border-charcoal  bg-seashell" ref={docref} onChange={getTimeslots}>
                                 <option defaultValue="Select Doctor bg-seashell" >Select Doctor</option>
                                 {
                                     TodayDoctors ? (
@@ -242,13 +244,13 @@ const UpdateAppointment = (props) => {
                     </div>
                     <div className="col-md-auto col-auto m-0 p-0">
                         <label className="">Selected Date</label>
-                        <div className="col-12 bg-seashell"><input type="date" ref={dateref} className="form-control bg-seashell" onChange={getTimefrom} />
+                        <div className="col-12 bg-seashell"><input type="date" ref={dateref} className="form-control bg-seashell border-charcoal" onChange={getTimefrom} />
                         </div>
                     </div>
                     <div className="col-md-3 col-sm-3 col-lg-3 col-3">
-                        <label>Selected Time</label>
+                        <label className='text-charcoal'>Selected Time</label>
                         <div className="col-12">
-                            <button className='button button-burntumber' disabled >{props.appointmenttime}</button>
+                            <button className='button button-charcoal50-outline shadow-none' >{props.appointmenttime}</button>
                         </div>
 
                     </div>
@@ -263,9 +265,9 @@ const UpdateAppointment = (props) => {
                             {
                                 ApiDocTimefrom.map((data, key) => (
                                     data[2] == 0 ? (
-                                        <button className={`button-sm button-${timeindex == key ? 'pearl' : 'lightgreen'}  m-1`} id={key} value={data[0]} onClick={(e) => { gettime_value(e); settimeindex(key) }}>{tConvert(data[1])}</button>
+                                        <button className={`button-sm button-${timeindex == key ? 'charcoal' : 'charcoal-outline'}  m-1`} id={key} value={data[0]} onClick={(e) => { gettime_value(e); settimeindex(key) }}>{tConvert(data[1])}</button>
                                     ) : (
-                                        <button disabled className="button-sm button-burntumber m-1" id={key} value={data[0]}>{tConvert(data[1])}</button>
+                                        <button disabled className="button-sm button-charcoal50-outline m-1" id={key} value={data[0]}>{tConvert(data[1])}</button>
                                     )
                                 ))
                             }
@@ -290,10 +292,10 @@ const UpdateAppointment = (props) => {
                         ) : (
                             <>
                                 <div className="col-6 py-2 pb-2 m-auto text-center">
-                                    <button className='btn px-5 button-burntumber' onClick={confirmmessage}>Done</button>
+                                    <button className='btn px-5 button-charcoal' onClick={confirmmessage}>Done</button>
                                 </div>
                                 <div className="col-6 py-2 pb-2 m-auto text-center">
-                                    <button className="btn btn-light px-5 border border-2" onClick={getCurrentTimeslots}>Set Previous</button>
+                                    <button className="btn btn-light px-5 border " onClick={getCurrentTimeslots}>Set Previous</button>
                                 </div>
 
                             </>

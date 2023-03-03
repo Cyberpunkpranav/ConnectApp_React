@@ -393,8 +393,7 @@ body {
 
 #cardslot,
 .card {
-    min-width: 5rem;
-    width: 13rem;
+    width: fit-content;
 }
 
 .patientsection .card {

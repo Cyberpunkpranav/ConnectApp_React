@@ -82,7 +82,7 @@ const SelectedTimeAppointment = (props) => {
             <button type="button" className="btn-close closebtn position-absolute" aria-label="Close" onClick={(e) => { props.closeAddAppointmentform() }} ></button>
             <div className="col-12 p-0 mt-2">
     
-                <input type="text" placeholder='Search Patient using Number or Name' className="form-control selectpatient col-10 position-relative" value={searchinput ? searchinput : ''}  onChange={(e) => { searchpatient(e); }}  />
+                <input type="text" placeholder='Search Patient using Number or Name' className="form-control w-75 ms-3 bg-seashell border-charcoal selectpatient col-10 position-relative" value={searchinput ? searchinput : ''}  onChange={(e) => { searchpatient(e); }}  />
                 <div className={`col-8  d-${displaysearchlist} `} style={{ minHeight: '4rem' }}>
                     {
                         searchload ? (
@@ -100,24 +100,22 @@ const SelectedTimeAppointment = (props) => {
                     }
                 </div>
                 <hr className='p-0 m-0 mt-1' />
-                <div className="col-12 text-center py-1">
+                <div className="col-11 text-start ms-3 py-1">
                 {
                         cliniclist.map((data, i) => (
-                        <label className={`d-${clinicID == data.id ? 'block' : 'none'}`}><input type="checkbox" className="radio form me-1" checked={clinicID == data.id ? true : false} /> {data.title} {data.address}</label>
+                        <label className={`d-${clinicID == data.id ? 'block' : 'none'}`}><img src={process.env.PUBLIC_URL+'/images/location.png'} className='mb-2' style={{width:'1.3rem'}}/> {data.title} {data.address}</label>
 
                         ))
                  }
                 </div>
-                <div className="row p-0 m-0 text-center">
-                    <div className="col-5 p-0 m-0">
-                        <button className='button button-charcoal shadow'>{props.DoctorID}.{props.DoctorName}</button>
-                    </div>
-                    <div className="col-4 p-0 m-0">
-                        <input type="date" disabled value={APIDate} className="form-control selectdate" />
-                    </div>
-                    <div className="col-3 p-0 m-0">
-                        <button className='button-sm button-lightgreen'>{tConvert(props.selectedtime)}</button>
-                    </div>
+                <div className="d-flex p-0 m-0 text-start">
+
+                        <button className='button button-charcoal-outline ms-3'>{props.DoctorID}.{props.DoctorName}</button>
+            
+                        <input type="date" disabled value={APIDate} className="form-control selectdate ms-3 border-charcoal" style={{width:'10rem'}} />
+                    
+
+                        <button className='button-sm button-charcoal-outline ms-3'>{tConvert(props.selectedtime)}</button>
 
                 </div>
                 <hr className='p-0 m-0 mt-2' />{
@@ -129,7 +127,7 @@ const SelectedTimeAppointment = (props) => {
                         </div>
                     ) : (
                         <div className="col-6 py-2 pb-2 m-auto text-center">
-                            <button className="button button-burntumber" onClick={BookAppointment}> Done </button>
+                            <button className="button button-charcoal" onClick={BookAppointment}> Done </button>
                         </div>
 
                     )
