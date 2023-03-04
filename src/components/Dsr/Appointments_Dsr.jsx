@@ -275,7 +275,7 @@ const Appointments_Dsr = (props) => {
     <div className='Appointments_Dsrsection'>
       <div>
         <div className="row p-0 m-0 justify-content-around ">
-          <div className=' col-5 col-lg-5 col-md-4 col-sm-5 CARD1 scroll shadow-sm rounded-2'>
+          <div className=' col-5 col-lg-3 col-md-4 col-sm-5 CARD1 scroll shadow-sm rounded-2'>
             <h6 className="text-burntumber ms-3 mt-2">Payment Methods</h6>
             <table className='w-100'>
               <thead>
@@ -300,7 +300,7 @@ const Appointments_Dsr = (props) => {
               </tbody>
             </table>
           </div>
-          <div className="col-lg-5 col-md-4 col-sm-5 col-5 CARD2 shadow-sm rounded-2" style={{ maxWidth: '60vh' }}>
+          <div className="col-lg-3 col-md-4 col-sm-5 col-5 CARD2 shadow-sm rounded-2" style={{ maxWidth: '60vh' }}>
             <h6 className='text-brandy p-0 ms-3 mt-2'>Amounts</h6>
             <div className='bg-lightyellow scroll ps-2 border-bottom py-2'>
               <table className='w-100'>
@@ -403,7 +403,7 @@ const Appointments_Dsr = (props) => {
                   loading ? (
                     <tbody>
                       <tr className='position-relative text-burntumber mt-1 m-auto'>
-                        <td className=' position-absolute start-0 end-0 text-charcoal75 mt-1  '>Please be Patient while we are fetching Appointments</td></tr>
+                        <td className=' position-absolute start-0 end-0 text-charcoal75 mt-1'>Please be Patient while we are fetching Appointments</td></tr>
                     </tbody>
                   ) : (
                     Appointments.length == 0 ? (

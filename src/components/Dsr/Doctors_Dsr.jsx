@@ -218,47 +218,47 @@ const Doctors_Dsr = (props) => {
   return (
     <div className="container-fluid Doctors_Dsrsection">
       <div className='py-2'>
-        <div className="container-fluid ms-0">
-          <div className="row p-0 m-0">
-            <div className="col-3 col-lg-3 col-md-5 py-2 border border-1 rounded-2 shadow-sm">
+        <div className="container-fluid m-0 p-0">
+          <div className="row p-0 m-0 justify-content-around">
+            <div className="col-4 col-lg-3 col-md-4 col-sm-4 py-2 border border-1 rounded-2 shadow-sm">
               <h6 className='text-charcoa50 fw-bold'>Total Report</h6>
               <div className="row gx-1">
-                <div className="col-5 col-lg-6 col-md-6 p-0 m-0">
-                  <button className='button button-brandy'>Export CSV </button>
+                <div className="col-6 col-lg-6 col-md-6 p-0 m-0">
+                  <button className='button-sm button-brandy'>Export CSV </button>
                 </div>
-                <div className="col-5 col-lg-6 col-md-6 p-0 m-0">
+                <div className="col-6 col-lg-6 col-md-6  p-0 m-0">
                   <DownloadTableExcel
                     filename={`${reversefunction(props.fromdate) + ' to ' + reversefunction(props.todate)} All Doctors Login/Logout Details`}
                     sheet="Login/Logout Details"
                     currentTableRef={tableref.current}
                   >
-                    <button className='button button-lightgreen'>Export Excel </button>
+                    <button className='button-sm button-lightgreen'>Export Excel </button>
 
                   </DownloadTableExcel>
 
                 </div>
               </div>
             </div>
-            <div className="col-3 col-lg-3 col-md-5 ms-lg-3 ms-md-2 ms-1 py-2 border border-1 rounded-2 shadow-sm">
+            <div className="col-4 col-lg-3 col-md-4 col-sm-4 py-2 border border-1 rounded-2 shadow-sm">
               <h6 className='text-charcoa50 fw-bold'>Doctor Wise Report</h6>
               <div className="row gx-1">
-                <div className="col-5 col-lg-6 p-0 m-0">
-                  <button className='button button-brandy'>Export CSV </button>
+                <div className="col-6 col-lg-6 col-md-6 p-0 m-0">
+                  <button className='button-sm button-brandy'>Export CSV </button>
                 </div>
-                <div className="col-5 col-lg-6 p-0 m-0">
+                <div className="col-6 col-lg-6 col-md-6 col-sm-4  p-0 m-0">
                   <DownloadTableExcel
                     filename={`${reversefunction(props.fromdate) + ' to ' + reversefunction(props.todate)} Doctors Summary`}
                     sheet="Summary Report"
                     currentTableRef={Doctorwisetable.current}
                   >
-                    <button className='button button-lightgreen'>Export Excel </button>
+                    <button className='button-sm button-lightgreen'>Export Excel </button>
 
                   </DownloadTableExcel>
 
                 </div>
               </div>
             </div>
-            <div className="col-3 col-lg-3 col-md-5 ms-lg-3 ms-md-2 ms-1 py-2 border border-1 rounded-2 shadow-sm text-center align-items-center">
+            <div className="col-4 col-lg-3 col-md-4 col-sm-4 border border-1 rounded-2 shadow-sm text-center align-items-center">
               {/* <h6 className='text-charcoa50 fw-bold'>Summary</h6> */}
               <div className="col-12 col-lg-12 p-0 m-0 bg-lightyellow rounded-2 align-self-center mt-2 fw-bold">Total Time <hr className='p-0 m-0' /> {TotalTime()}</div>
             </div>

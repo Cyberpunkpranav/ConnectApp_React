@@ -114,6 +114,7 @@ console.log(props.data.id)
   if (img !== null) {
     console.log(img[0])
   }
+  console.log(data)
   return (
     <div className='position-relative bg-seashell p-0 m-0'>
       <h5 className='p-0 m-0 text-center py-2 border-bottom'>Update Medicine</h5>

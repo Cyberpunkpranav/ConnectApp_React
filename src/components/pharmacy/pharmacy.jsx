@@ -2593,6 +2593,7 @@ function Newpurchaseentryform(props) {
   const [load, setload] = useState()
   const [Exceldata, setExceldata] = useState([])
   const [NewMed, setNewMed] = useState('none')
+  
   const reversefunction = (date) => {
     if (date) {
       date = date.split("-").reverse().join("-")

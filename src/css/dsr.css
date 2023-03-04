@@ -92,6 +92,9 @@
 .Pharmacy_Dsrsection .saleentries tr:nth-child(even){
     background-color:var(--seashell)
 }
+.Pharmacy_Dsrsection .salereturns tr:nth-child(even){
+    background-color:var(--seashell)
+}
 .Appointments_Dsrsection .Appointment tr:nth-child(even){
 background-color: var(--seashell);
 }
