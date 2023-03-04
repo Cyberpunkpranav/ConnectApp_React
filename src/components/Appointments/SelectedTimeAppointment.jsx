@@ -80,27 +80,8 @@ const SelectedTimeAppointment = (props) => {
         <>
             <h5 className="text-center m-0 p-0 mt-2">Quick Appointment</h5>
             <button type="button" className="btn-close closebtn position-absolute" aria-label="Close" onClick={(e) => { props.closeAddAppointmentform() }} ></button>
-            <div className="col-12 p-0 mt-2">
-    
-                <input type="text" placeholder='Search Patient using Number or Name' className="form-control w-75 ms-3 bg-seashell border-charcoal selectpatient col-10 position-relative" value={searchinput ? searchinput : ''}  onChange={(e) => { searchpatient(e); }}  />
-                <div className={`col-8  d-${displaysearchlist} `} style={{ minHeight: '4rem' }}>
-                    {
-                        searchload ? (
-                            <p className="btn text-charcoal75 fs-6 p-0 m-0 ps-1">Loading... </p>
-                        ) : (
-                            searchlist.length == 0 ? (
-                                <p className="text-danger btn fs-6 p-0 m-0">Patient not found add as new to book appointments</p>
-                            ) : (
-                                searchlist.map((data) => (
-                                    <button className='col-12 d-block p-0 m-0 ms-1 border-0 bg-pearl text-charcoal text-start border border-1' name={data.id} value={data.full_name} onClick={get_value}>{data.full_name}  {data.phone_number}</button>
-                                )))
-
-                        )
-
-                    }
-                </div>
-                <hr className='p-0 m-0 mt-1' />
-                <div className="col-11 text-start ms-3 py-1">
+            <hr className='p-0 m-0 mb-1'/>
+            <div className=" text-start ms-3 ">
                 {
                         cliniclist.map((data, i) => (
                         <label className={`d-${clinicID == data.id ? 'block' : 'none'}`}><img src={process.env.PUBLIC_URL+'/images/location.png'} className='mb-2' style={{width:'1.3rem'}}/> {data.title} {data.address}</label>
@@ -108,17 +89,44 @@ const SelectedTimeAppointment = (props) => {
                         ))
                  }
                 </div>
-                <div className="d-flex p-0 m-0 text-start">
+                <div className="row p-0 m-0">
+                    <div className="col-5">
+                    <input type="text" placeholder='Search Patient using Number or Name' className="form-control bg-pearl border-0" value={searchinput ? searchinput : ''}  onChange={(e) => { searchpatient(e); }}  />
+                    <div className={`col-6 position-absolute scroll  d-${displaysearchlist} rounded-2 `} style={{ maxHeight: '3.2rem' }}>
+                    {
+                        searchload ? (
+                            <p className="btn col-9 text-charcoal75 bg-pearl p-0 m-0 ps-1 mt-1">Loading... </p>
+                        ) : (
+                            searchlist.length == 0 ? (
+                                <p className="text-burntumber col-9 p-0 m-0 bg-pearl shadow rounded mt-1 p-2">Patient not found</p>
+                            ) : (
+                                <div className='mt-1 shadow rounded-2 bg-pearl border border-1 col-9 ' style={{zIndex:'6'}}>
+                                    {
+                                  searchlist.map((data,i) => (
+                                      <div className={` bg-${i%2 ==0 ?'lightred50':'pearl'} text-charcoal text-start ps-2 border-bottom align-self-center`} name={data.id} value={data.full_name} onClick={get_value}>{data.full_name} {data.phone_number}</div>
+                                  ))
+                                    }
+                                </div>
+                            )
 
-                        <button className='button button-charcoal-outline ms-3'>{props.DoctorID}.{props.DoctorName}</button>
-            
-                        <input type="date" disabled value={APIDate} className="form-control selectdate ms-3 border-charcoal" style={{width:'10rem'}} />
-                    
+                        )
 
-                        <button className='button-sm button-charcoal-outline ms-3'>{tConvert(props.selectedtime)}</button>
-
+                    }
                 </div>
-                <hr className='p-0 m-0 mt-2' />{
+                    </div>
+                    <div className="col-7">
+                    <div className="d-flex p-0 m-0 text-start justify-content-around">
+                    <button className='button button-charcoal-outline border-0 '>{props.DoctorID}.{props.DoctorName}</button>
+                    <input type="date" disabled value={APIDate} className=" bg-seashell border-0 text-charcoal text-center" style={{width:'10rem'}} />
+                    <button className='button-sm button-charcoal-outline border-0'>{tConvert(props.selectedtime)}</button>
+                    </div>
+                    </div>
+                </div>
+                
+               
+         
+               
+            {
                     load ? (
                         <div className="col-6 py-2 pb-2 m-auto text-center">
                             <div class="spinner-border" role="status">
@@ -133,7 +141,7 @@ const SelectedTimeAppointment = (props) => {
                     )
                 }
 
-            </div>
+          
         </>
 
     )

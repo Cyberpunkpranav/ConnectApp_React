@@ -126,7 +126,7 @@ body::-webkit-scrollbar-thumb:hover {
 .button-charcoal {
     color: var(--pearl);
     background-color: var(--charcoal);
-    border: var(--charcoal);
+    border: 1px solid var(--charcoal);
 }
 .button-charcoal-outline {
     color:var(--charcoal);
@@ -141,13 +141,13 @@ body::-webkit-scrollbar-thumb:hover {
 .button-charcoal:disabled {
     color: var(--pearl);
     background-color: var(--charcoal75);
-    border: var(--charcoal75);
+    border: 1px solid var(--charcoal75);
 }
 
 .button-seashell {
     color: var(--charcoal);
     background-color: var(--seashell);
-    border: var(--seashell);
+    border: 1px solid var(--seashell);
 }
 
 .button-seashell:disabled {
@@ -178,19 +178,19 @@ body::-webkit-scrollbar-thumb:hover {
 .button-brandy {
     color: var(--charcoal);
     background-color: var(--brandy);
-    border: var(--brandy);
+    border: 1px solid var(--brandy);
 }
 
 .button-Raffia {
     color: var(--charcoal);
     background-color: var(--Raffia);
-    border: var(--Raffia);
+    border: 1px solid var(--Raffia);
 }
 
 .button-lightblue {
     color: var(--charcoal);
     background-color: var(--lightblue);
-    border: var(--lightblue);
+    border: 1px solid var(--lightblue);
 }
 
 .button-lightgreen {
@@ -208,7 +208,7 @@ body::-webkit-scrollbar-thumb:hover {
 .button-lightyellow {
     color: var(--charcoal);
     background-color: var(--lightyellow);
-    border: var(--lightyellow);
+    border: 1px solid var(--lightyellow);
 }
 
 .button-lightyellow:disabled {

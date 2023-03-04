@@ -117,9 +117,9 @@ const Vitalsoperation = (props) => {
   // console.log(props.appointmentvitalslist)
   return (
     <div className='bg-seashell rounded-2 position-relative pb-4'>
-      <h5 className='p-1'>{props.patientname} Vitals</h5>
+      <h5 className='p-1 text-center'>{props.patientname} Vitals</h5>
       <button className=' btn-close position-absolute top-0 end-0 m-1 me-2' disabled={props.loadvitals ? true : false} onClick={props.CloseVitals}></button>
-      <button className='btn p-0 m-0 position-absolute top-0 start-0 ms-2 m-1' onClick={refresh}><img src={process.env.PUBLIC_URL + '/images/refresh.png'} style={{ width: '1.8rem' }} /></button>
+      <button className='btn p-0 m-0 position-absolute top-0 start-0 ms-2 m-1' onClick={refresh}><img src={process.env.PUBLIC_URL + '/images/refresh.png'} style={{ width: '1.5rem' }} /></button>
       {
         props.loadvitals ? (
           <div className="col-6 py-2 pb-2 m-auto text-center">
@@ -135,9 +135,9 @@ const Vitalsoperation = (props) => {
           ) : (
             props.appointmentvitalslist.map((data, i) => (
               <div className='container-fluid'>
-                <div className={`row justify-content-center`}>
+                <div className={`row justify-content-end align-items-center`}>
                   <div className="col-3">
-                    <select className='form-control text-end p-0 border-0 bg-seashell' value={data.id ? data.id : ''}>
+                    <select className='form-control text-center border border-1 p-0 border-0 bg-seashell' value={data.id ? data.id : ''}>
                       <option value={data.id}>{data.vital.title}</option>
                     </select>
                   </div>
@@ -152,12 +152,12 @@ const Vitalsoperation = (props) => {
                     ) : (<></>)
                   }
 
-                  <div className="col-1 p-0 m-0">
+                  <div className="col-1 p-0 m-0 align-self-end">
                     {
                       data.vital.id ? (
-                        <p className='text-charcoal text-center'>{Vitalunit(data.vital.id)}</p>
+                        <p className='p-0 m-0  text-charcoal text-center align-self-center'>{Vitalunit(data.vital.id)}</p>
                       ) : (
-                        <p className='text-charcoal text-center'>Unit</p>
+                        <p className='text-charcoal text-center align-self-center'>Unit</p>
                       )
                     }
 
@@ -172,7 +172,7 @@ const Vitalsoperation = (props) => {
                       </div>
                     ) : (<></>)
                   }
-                  <div className="col-auto ms-2">
+                  <div className="col-auto me-5">
                     <button className='btn p-0 m-0'><img src={process.env.PUBLIC_URL + '/images/delete.png'} className='img-fluid' style={{ width: '1.3rem' }} onClick={() => DeleteVital(data.id)} /></button>
                   </div>
                 </div>
@@ -192,9 +192,9 @@ const Vitalsoperation = (props) => {
               </div>
             </div>
           ) : (
-            <div className="row p-0 m-0 justify-content-center">
-              <div className="col-3 p-0 m-0">
-                <select className='form-control p-0 border-0 text-end bg-seashell' value={vitalid ? vitalid : ''} onChange={(e) => { setvitalid(e.target.value) }}>
+            <div className="row p-0 m-0 justify-content-center mt-2">
+              <div className="col-4 p-0 m-0">
+                <select className='  border-0 text-center bg-seashell' value={vitalid ? vitalid : ''} onChange={(e) => { setvitalid(e.target.value) }}>
                   <option>Select Vitals</option>
                   {
                     vitals.map((data) => (

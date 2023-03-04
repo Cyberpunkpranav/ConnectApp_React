@@ -269,14 +269,7 @@ body {
 
 /*---------------------------------------------------------------Doctor Section css---------------------------------------------------------*/
 /*---------------------------------------------------------------appointmentform css---------------------------------------------------------*/
-.appointmentinfosection {
-    background-color: var(--seashell);
-    top: 0;
-    right: 0;
-    font-family: 'Urbanist', sans-serif;
-    box-shadow: 0px 0px 0px 1600px#22202370;
-    z-index: 2000;
-}
+
 
 .appointmentinfosection .location {
     overflow-x: hidden;
@@ -462,12 +455,7 @@ body {
 
 
 /*------------------------------------------------------------------Common css--------------------------------------------------------------*/
-.appointmentinfosection .done,
-.patientinfosection .done,
-.doctorinfosection .done {
-    background-color: var(--burntumber);
-    color: var(--pearl);
-}
+
 
 /*------------------------------------------------------------------Common css--------------------------------------------------------------*/
 

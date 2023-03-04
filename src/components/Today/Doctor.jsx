@@ -277,7 +277,7 @@ function DoctorSchedule(props) {
                       <button className={`button-sm button-${timeindex == i ? 'charcoal' : 'charcoal-outline'} m-1`} onClick={(e) => { openAddApppointmentform(); settimeindex(i) }} key={i}>{tConvert(data[0])}</button>
                       {
                         timeindex == i ? (
-                          <section className={`d-${timeindex == i ? addappointmentform : 'none'} col-lg-6 col-md-8 col-sm-8 col-12 col-xl-4 appointmentinfosection position-absolute m-auto start-0 end-0 bg-seashell rounded-4 col-6 shadow overflow-auto`} style={{ zIndex: 4000, top: '-2rem' }}>
+                          <section className={`d-${timeindex == i ? addappointmentform : 'none'} col-lg-8 col-md-8 col-sm-8 col-11 col-xl-6 appointmentinfosection position-absolute m-auto start-0 end-0 bg-seashell rounded-4 col-6 shadow-none border border-1 overflow-auto`} style={{ zIndex: 4, top: '-2rem' }}>
                             <SelectedTimeAppointment fetchapi={props.fetchapi} closeAddAppointmentform={closeAddAppointmentform} DocClinic={props.DocClinic} DoctorID={props.DoctorID} DoctorName={props.DoctorName} timeindex={timeindex} selectedtime={data[0]} selectedtimeID={data[2]} />
                           </section>
                         ) : (
@@ -376,7 +376,7 @@ function DoctorSchedule(props) {
                             }
                             {
                               vitalindex === i ? (
-                                <td className={`vitals bg-${ vitalindex === i ?'lightred':''} col-lg-6 col-md-8 col-sm-12 col-12 col-xl-4 position-absolute border border-1 shadow rounded-2 d-${vitalindex == i ? vitalsform : 'none'}`} style={{ zIndex: '3010' }}>
+                                <td className={`vitals bg-${ vitalindex === i ?'lightred':''} col-lg-7 col-md-8 col-sm-12 col-12 col-xl-5 position-absolute border border-1 shadow rounded-2 d-${vitalindex == i ? vitalsform : 'none'}`} style={{ zIndex: '3010' }}>
                                   <Vitalsoperation GetAppointmentVitals={GetAppointmentVitals} CloseVitals={CloseVitals} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} appointmentid={data.id} appointmentvitalslist={appointmentvitalslist} loadvitals={loadvitals} patientid={data.patient && data.patient.id != null ? data.patient.id : ""} /></td>
                               ) : (<></>)
                             }
@@ -441,9 +441,10 @@ function Timecard(props) {
   }
   let [doctime, setdoctime] = useState([]);
   let [isLoading, setisLoading] = useState();
-  let [doctorid, setdoctorid] = useState();
+  let [startload,setstartload]=useState(false)
   let doctimes = [];
-  let clinicid = 1;
+
+  let clinicid = localStorage.getItem('ClinicId');
 
   function fetchapi() {
     setisLoading(true);
@@ -454,17 +455,18 @@ function Timecard(props) {
       else {
         response.data.data.map((data) => {
           doctimes.push(data);
-          setdoctorid(props.docid);
+   
         })
         setdoctime(doctimes.reverse());
         setisLoading(false);
       }
     })
   }
-  const [refreshtimeslots, setrefreshtimeslot] = useState();
+  const [refreshtimeslots, setrefreshtimeslot] = useState(false);
   const [roomnumber, setroomnumber] = useState('1');
 
   async function starttimeslot() {
+    setstartload(true)
     let adminid = localStorage.getItem('id');
     if (clinicid && roomnumber && props.docid && adminid) {
       try {
@@ -474,49 +476,41 @@ function Timecard(props) {
           doctor_id: props.docid,
           admin_id: adminid,
         }).then((response) => {
-          return response;
+          setstartload(false)
+          Notiflix.Notify.success(response.data.message)
         })
         fetchapi();
-        setrefreshtimeslot(false);
+ 
       } catch (e) {
         if (e.response.status != 200) {
           alert("please Check your internet Connection")
-          window.location.reload()
+          setstartload(false)
         }
-        alert(e)
       }
-
     } else {
       Notiflix.Notify.alert('Please fill all details')
+      setstartload(false)
     }
   }
 
-  async function endtimeslot(id) {
-    console.log(id)
+  async function endtimeslot(data) {
     let adminid = localStorage.getItem('id');
     setrefreshtimeslot(true);
-    let log_id = id;
-    if (adminid && log_id) {
+    let log_id = data.id;
       try {
         await axios.post(`${url}/doctor/end/time`, {
           admin_id: adminid,
           log_id: log_id
         }).then((response) => {
-          return response;
+          Notiflix.Notify.success(response.data.message)
         })
         fetchapi();
-        setrefreshtimeslot(false);
-  
+        setrefreshtimeslot(false)
       } catch (e) {
         Notiflix.Notify.failure(e.message)
-        console.log(e.message)
         setrefreshtimeslot(false);
-   
       }
-    } else {
-      Notiflix.Notify.failure('Please fill all details and try Again')
-      setrefreshtimeslot(false);
-    }
+
   }
   useEffect(() => {
     fetchapi();
@@ -545,7 +539,14 @@ function Timecard(props) {
                   <option defaultValue="12">12</option>
                   <option defaultValue="13">13</option>
                 </select>
-                <button className="btn p-0 m-0 mx-2" onClick={starttimeslot}><img src={process.env.PUBLIC_URL + 'images/play.png'} style={{width:'1.8rem'}}/></button>
+                {
+                  startload ? (
+                    <div className="text-charcoal spinner-border spinner-border-sm me-2 " role="status" aria-hidden="true" ></div>
+                  ):(
+                    <button className="btn p-0 m-0 mx-2" onClick={starttimeslot}><img src={process.env.PUBLIC_URL + 'images/play.png'} style={{width:'1.8rem'}}/></button>
+                  )
+                }
+         
                 </div>
               </div>
         </div>
@@ -567,17 +568,12 @@ function Timecard(props) {
                 <div className="card-body p-0 m-0">
                   <div className="d-flex text-start align-items-center p-0 m-0 ">
                       <p className=" p-0 m-0  ms-2 text-charcoal fw-bold">Room</p>
-                      <select className="form-control rounded-2 bg-pearl my-1  mx-2 p-0 py-1 px-3 border-0 w-auto" id="clinicroom">
+                      <select className="form-control rounded-2 bg-pearl my-1 mx-2 p-0 py-1 px-3 border-0 w-auto" id="clinicroom">
                         <option defaultValue="01">{data.room_id}</option>
                       </select>
                     {
                       refreshtimeslots && i === cardindex ? (
-                        <div className="container-fliud pt-2">
-                          <div className="d-flex fs-6 align-items-center justify-content-around">
-                            <h6 className="text-burntumber">Updating...</h6>
-                            <div className="text-burntumber spinner-border ml-auto" role="status" aria-hidden="true" ></div>
-                          </div>
-                        </div>
+                        <div className="text-charcoal spinner-border spinner-border-sm me-2 " role="status" aria-hidden="true" ></div>
                       ) : (
                         <>
                           <div className="d-flex p-0 m-0 justify-content-center">
@@ -593,7 +589,8 @@ function Timecard(props) {
                               data.logout_time ? (
                                 <div id="totalhrs" className="btn p-0 m-0 text-charcoal fw-bold text-center me-3" defaultValue="00">{data.logout_time ? diff(data.login_time, data.logout_time) : ''}</div>
                               ) : (
-                                <button className="btn p-0 m-0" value={data.id} onClick={(e) => { endtimeslot(data.id); setcardindex(i) }}><img src={process.env.PUBLIC_URL + 'images/pause.png'} onClick={(e) => { endtimeslot(e); setcardindex(i) }} style={{width:'1.8rem'}}/></button>
+                                <button className="btn p-0 m-0" value={data.id} onClick={(e) => { endtimeslot(data); setcardindex(i) }}><img src={process.env.PUBLIC_URL + 'images/pause.png'} onClick={(e) => { endtimeslot(e); setcardindex(i) }} style={{width:'1.8rem'}}/></button>
+                                  
                               )
                             }
 

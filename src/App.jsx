@@ -192,14 +192,14 @@ function Navbar(props) {
       <div className="navsection p-0 m-0 py-2">
         <div className="container-fluid p-0 m-0 ">
           <div className="row m-0 p-0 justify-content-evenly">
-            <div className="col-lg-auto col-xl-auto col-md-auto col-sm-2 col-6 p-0 m-0 text-start">
+            <div className="col-lg-auto col-xl-auto col-md-auto col-sm-auto col-6 p-0 m-0 text-start">
               <button className="button button-seashell shadow-none col-md-auto col-auto user position-relative p-0 m-0 ms-2" onClick={togglelogoutbtn}>
                 <p className="m-0 username text-decoration-none text-lg-start text-md-start text-center"> {props.username} </p>
                 <p className="m-0 userstatus text-decoration-none text-lg-start text-md-start text-center"><small className="text-muted">{props.designation}</small> </p>
                 <button className={`d-${logoutbtn} button button-lightred start-0 end-0 position-absolute text-burntumber w-75 fw-bolder`} style={{ zIndex: '1000' }} onClick={logout}>Logout</button>
               </button>
             </div>
-            <div className="col-lg-6 col-xl-7 align-self-center col-sm-auto col-md-auto col-10 p-0 m-0 menu order-1 order-xl-0 order-sm-0 order-md-0 order-sm-0">
+            <div className="col-lg-auto col-xl-7 align-self-center col-sm-auto col-md-auto col-10 p-0 m-0 menu order-1 order-xl-0 order-sm-0 order-md-0 order-sm-0">
               <div className="row p-0 m-0 gx-auto justify-content-center">
                 {
                   NavbarIcons.map((data, i) => (
@@ -222,9 +222,9 @@ function Navbar(props) {
                 </ul>
               </div>
             </div>
-            <div className="col-lg-1 col-xl-2 col-md-2 col-sm-2 ms-md-2 align-self-center order-sm-2 order-2 position-relative p-0 m-0" style={{ zIndex: '1000' }}>
-              <input type="text" className="bg-seashell border w-100 border-1 rounded-1 text-center border-0 position-relative" placeholder="search" onChange={(e) => setsearchtext(e.target.value)} />
-              <div className="position-absolute bg-pearl end-0 shadow rounded-2 mt-2">
+            <div className="col-lg-2 col-xl-2 col-md-2 col-sm-2 ms-md-2 align-self-center order-sm-2 order-2 position-relative p-0 m-0" style={{ zIndex: '5' }}>
+              <input type="text" className="bg-pearl border border-1 text-center position-relative w-100" placeholder="search" onChange={(e) => setsearchtext(e.target.value)} />
+              <div className="position-absolute bg-pearl end-0 shadow rounded-2 mt-2 border border-1">
                 <SearchField searchtext={searchtext} fetchapi={props.fetchapi} />
               </div>
             </div>
@@ -776,29 +776,27 @@ function Patients() {
           </tbody>
         </table>
       </div>
-      <div className="container-fluid mb-1">
-        <div className="d-flex text-center">
-          <div className="col-4">
+
+        <div className="d-flex text-center justify-content-center mt-3">
+       
             <button className="button ms-1 button-seashell" ref={previousref} value={prevoffset} onClick={(e) => { getpreviouspages(e) }} style={{ marginTop: '0.15rem' }}>Previous</button>
-          </div>
-          <div className="col-4">
 
             {
               pages ? (
                 pages.map((page, i) => (
-                  <button className={`button ms-2 button-${nxtoffset - 1 == i ? 'pearl' : 'burntumber'} border  shadow-${nxtoffset - 1 == i ? 'lg' : 'none'}`} ref={nextref} value={page} id={page} onClick={(e) => { settabindex(i); getAllPatients(i) }} key={i}>{page}</button>
+                  <button className={`button ms-2 button-${nxtoffset - 1 == i ? 'charcoal' : 'charcoal-outline'}`} ref={nextref} value={page} id={page} onClick={(e) => { settabindex(i); getAllPatients(i) }} key={i}>{page}</button>
                 ))
               ) : (
                 <div>Loading...</div>
               )
 
             }
-          </div>
-          <div className="col-4">
-            <button className={`button button-burntumber`} ref={nextref} value={nxtoffset} onClick={(e) => { getnextpages(e); }} style={{ marginTop: '0.15rem' }}>Next</button>
-          </div>
+    
+       
+            <button className={`button button-charcoal ms-2`} ref={nextref} value={nxtoffset} onClick={(e) => { getnextpages(e); }} style={{ marginTop: '0.15rem' }}>Next</button>
+      
         </div>
-      </div>
+    
     </section>
   )
 
@@ -923,29 +921,25 @@ function Doctors() {
           </tbody>
         </table>
       </div>
-      <div className="container-fluid mb-1">
-        <div className="d-flex text-center">
-          <div className="col-4">
-            <button className="button ms-1 button-seashell" ref={previousref} value={prevoffset} onClick={(e) => { getpreviouspages(e); console.log(e.target.value) }} style={{ marginTop: '0.15rem' }}>Previous</button>
-          </div>
-          <div className="col-4">
 
+        <div className="d-flex text-center justify-content-center">
+            <button className="button ms-1 button-seashell" ref={previousref} value={prevoffset} onClick={(e) => { getpreviouspages(e); console.log(e.target.value) }} style={{ marginTop: '0.15rem' }}>Previous</button>
             {
               pages ? (
                 pages.map((page, i) => (
-                  <button className={`button ms-2 button-${nxtoffset - 1 == i ? 'pearl' : 'burntumber'} border  shadow-${nxtoffset - 1 == i ? 'lg' : 'none'}`} ref={nextref} value={page} id={page} onClick={(e) => { settabindex(i); getAllDoctors(i) }} key={i}>{page}</button>
+                  <button className={`button ms-2 button-${nxtoffset - 1 == i ? 'charcoal' : 'charcoal-outline'}`} ref={nextref} value={page} id={page} onClick={(e) => { settabindex(i); getAllDoctors(i) }} key={i}>{page}</button>
                 ))
               ) : (
                 <div>Loading...</div>
               )
 
             }
-          </div>
-          <div className="col-4">
-            <button className={`button button-burntumber`} ref={nextref} value={nxtoffset} onClick={(e) => { getnextpages(e); console.log(e.target.value) }} style={{ marginTop: '0.15rem' }}>Next</button>
-          </div>
+  
+
+            <button className={`button button-charcoal ms-2`} ref={nextref} value={nxtoffset} onClick={(e) => { getnextpages(e); console.log(e.target.value) }} style={{ marginTop: '0.15rem' }}>Next</button>
+
         </div>
-      </div>
+
     </section>
   )
 }

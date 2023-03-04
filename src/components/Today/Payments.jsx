@@ -140,7 +140,7 @@ const Payments = (props) => {
     console.log(advancepaymentmethods)
     return (
         <div className=' p-0 m-0'>
-            <h5 className='fs-4'>{props.patientname} Payments Section</h5>
+            <h5 className=''>{props.patientname} Payments Section</h5>
             <button className='btn-close position-absolute end-0 p-2 top-0' onClick={props.ClosePaymentsForm}></button>
             <div className="d-flex justify-content-center p-0 m-0 gx-2 mt-3">
                 {
@@ -307,7 +307,7 @@ const Payments = (props) => {
                             </>
                         )
                     ) : (
-                        <div className='rounded-2 bg-lightgreen fw-bolder p-2'>No Pending Payments Found</div>
+                        <div className='rounded-2 bg-lightgreen fw-bolder p-2 my-4'>No Pending Payments Found</div>
                     )
                 }
             </div>
