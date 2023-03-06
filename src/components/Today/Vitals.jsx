@@ -236,6 +236,7 @@ const Vitalsoperation = (props) => {
 
 
       </div>
+      <button className='button button-charcoal' onClick={props.CloseVitals}>Done</button>
     </div>
   )
 }

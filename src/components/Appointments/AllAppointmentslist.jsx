@@ -53,8 +53,11 @@ const AllAppointmentslist = (props) => {
         }
     }
     const reversefunction = (date) => {
-        date = date.split("-").reverse().join("-")
-        return date
+        if(date){
+            date = date.split("-").reverse().join("-")
+            return date
+        }
+
     }
     async function UpadteStatus(e) {
         if (e.target.value && adminid && e.target.name) {
@@ -132,12 +135,12 @@ const AllAppointmentslist = (props) => {
                                     <option className="button-lightgreen" value='10'>Completed</option>
                                 </select>
                             </td>
-                            <td className='text-charcoal fw-bold'>{data.patient != null && data.patient.full_name != null ? data.patient.full_name : 'N/A'}</td>
-                            <td className='text-charcoal fw-bold'>{data.doctor != null && data.doctor.doctor_name != null ? data.doctor.doctor_name : 'N/A'}</td>
-                            <td className='text-charcoal fw-bold'>{data.patient != null && data.patient.phone_number != null ? data.patient.phone_number : "N/A"}</td>
-                            <td className='text-charcoal fw-bold'>{reversefunction(data.timeslot.date)}</td>
-                            <td className='text-charcoal fw-bold'>{props.tConvert(data.timeslot.time_from)}</td>
-                            <td className='text-charcoal fw-bold'>{data.total_amount}</td>
+                            <td className='text-charcoal fw-bold'>{data.patient != null && data.patient.full_name != null ? data.patient.full_name : ''}</td>
+                            <td className='text-charcoal fw-bold'>{data.doctor != null && data.doctor.doctor_name != null ? data.doctor.doctor_name : ''}</td>
+                            <td className='text-charcoal fw-bold'>{data.patient != null && data.patient.phone_number != null ? data.patient.phone_number : ""}</td>
+                            <td className='text-charcoal fw-bold'>{data.timeslot && data.timeslot.date !==null ? reversefunction(data.timeslot.date):''}</td>
+                            <td className='text-charcoal fw-bold'>{data.timeslot && data.timeslot.time_from !==null ? props.tConvert(data.timeslot.time_from):''}</td>
+                            <td className='text-charcoal fw-bold'>{data.total_amount && data.total_amount!==null? data.total_amount:data.total_amount}</td>
                             <td className='text-charcoal fw-bold'><AmountPaid appointmentData={data} /></td>
                             <td className='p-0 m-0 text-charcoal fw-bold align-items-center '>
                                 <div className='vr rounded-2 h-100 align-self-center py-3' style={{ padding: '1px' }}></div>
@@ -157,7 +160,7 @@ const AllAppointmentslist = (props) => {
                             </div></td>
                             {
                                 tableindex == key ? (
-                                    <td className={` d-${tableindex == key ? appointmentform : 'none'} bg-seashell col-lg-8 col-xl-6 col-md-8 col-sm-10 start-0 end-0  mx-auto top-0 border border-1 rounded-3 position-absolute`} style={{ zIndex: '3',marginTop:'10rem' }}>
+                                    <td className={` d-${tableindex == key ? appointmentform : 'none'} bg-seashell col-lg-8 col-xl-5 col-md-8 col-sm-10 start-0 end-0  mx-auto top-0 border border-1 rounded-3 position-absolute`} style={{ zIndex: '3',marginTop:'10rem' }}>
                                         <UpdateAppointment fetchallAppointmentslist={props.fetchallAppointmentslist} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} patientid={data.patient != null && data.patient.id != null ? data.patient.id : ""} appointmentid={data.id} closeappointmentform={closeappointmentform} doctorid={props.doctorid} fetchapi={props.fetchapi} appointmentdoctorid={data.doctor.id} appointmentdate={data.appointment_date} appointmenttime={tConvert(data.timeslot.time_from)} />
                                     </td>
                                 ) : (<></>)

@@ -277,7 +277,7 @@ function DoctorSchedule(props) {
                       <button className={`button-sm button-${timeindex == i ? 'charcoal' : 'charcoal-outline'} m-1`} onClick={(e) => { openAddApppointmentform(); settimeindex(i) }} key={i}>{tConvert(data[0])}</button>
                       {
                         timeindex == i ? (
-                          <section className={`d-${timeindex == i ? addappointmentform : 'none'} col-lg-8 col-md-8 col-sm-8 col-11 col-xl-6 appointmentinfosection position-absolute m-auto start-0 end-0 bg-seashell rounded-4 col-6 shadow-none border border-1 overflow-auto`} style={{ zIndex: 4, top: '-2rem' }}>
+                          <section className={`d-${timeindex == i ? addappointmentform : 'none'} col-lg-6 col-md-8 col-sm-8 col-11 col-xl-4 appointmentinfosection position-absolute m-auto start-0 end-0 bg-seashell rounded-4 col-6 shadow-none border border-1 overflow-auto`} style={{ zIndex: 4, top: '-1rem' }}>
                             <SelectedTimeAppointment fetchapi={props.fetchapi} closeAddAppointmentform={closeAddAppointmentform} DocClinic={props.DocClinic} DoctorID={props.DoctorID} DoctorName={props.DoctorName} timeindex={timeindex} selectedtime={data[0]} selectedtimeID={data[2]} />
                           </section>
                         ) : (
@@ -370,7 +370,7 @@ function DoctorSchedule(props) {
                             <td className={`py-0`}><a target='_blank' className='p-0 m-0 text-decoration-none text-charcoal fw-bold' href={`https://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/assets/swift_pdf/prescription_pdf_${data.id}.pdf`}><img src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" style={{ width: "2rem" }} /></a></td>
                             {
                               tableindex === i ? (
-                                <td className={`updateappointment border border-1 rounded-3 bg-seashell mt-2 start-0 end-0 top-0 col-lg-8 col-md-10 col-sm-10 col-10 col-xl-6 d-${tableindex == i ? appointmentform : 'none'} position-absolute`}>
+                                <td className={`updateappointment border border-1 rounded-3 bg-seashell mt-2 start-0 end-0 top-0 col-lg-8 col-md-10 col-sm-10 col-10 col-xl-5 d-${tableindex == i ? appointmentform : 'none'} position-absolute`}>
                                   <UpdateAppointment fetchapi={props.fetchapi} fetchallAppointmentslist={props.fetchallAppointmentslist} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} patientid={data.patient != null && data.patient.id != null ? data.patient.id : ""} appointmentid={data.id} addappointmentform={addappointmentform} closeappointmentform={closeappointmentform} doctorid={props.doctorid} appointmentdoctorid={data.doctor.id} appointmentdate={data.appointment_date} appointmenttime={tConvert(data.timeslot.time_from)} /></td>
                               ) : (<></>)
                             }

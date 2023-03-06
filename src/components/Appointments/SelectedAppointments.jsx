@@ -132,7 +132,7 @@ const SelectedAppointments = (props) => {
                 <td>{data.patient != null && data.patient.full_name != null ? data.patient.full_name : 'N/A'}</td>
                 <td>{data.doctor != null && data.doctor.doctor_name != null ? data.doctor.doctor_name : 'N/A'}</td>
                 <td>{data.patient != null && data.patient.phone_number != null ? data.patient.phone_number : "N/A"}</td>
-                <td>{data.timeslot.date}</td>
+                <td>{data.timeslot.date && data.timeslot.date !==null ? data.timeslot.date:''}</td>
                 <td>{props.tConvert(data.timeslot.time_from)}</td>
                 <td>{data.total_amount}</td>
                 <td><AmountPaid appointmentData={data} /></td>

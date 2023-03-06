@@ -204,23 +204,23 @@ const UpdateAppointment = (props) => {
             <h5 className="text-center">Update {props.patientname} Appointment Details</h5>
             <button type="button" className="btn-close closebtn position-absolute" aria-label="Close" disabled={load == true ? true : false} onClick={props.closeappointmentform} ></button>
             <hr />
-            <div className="col-12 text-center">
-                <label>Select Location</label>
-                <div className="col-12 bg-seashell  border-0" >
+            <div className="col-12">
+             
+                <div className="col-12 bg-seashell align-self-center  border-0" >
                     {
                         cliniclist.map((data, i) => (
-                            <label key={i} className={`d-${clinicID == data.id ? 'block' : 'none'}`}><input type="checkbox" className={`radio me-1 `} checked={clinicID == data.id ? true : false} name={data.id} /> {data.title} {data.address}</label>
+                            <label key={i} className={`d-${clinicID == data.id ? 'block' : 'none'} `}><img src={process.env.PUBLIC_URL + '/images/location.png'} style={{width:'1.5rem'}}/> {data.title} {data.address}</label>
 
                         ))
                     }
                 </div>
                 <hr className='p-0 m-0 my-1' />
-                <div className="row p-0 m-0 text-center ms-5">
+                <div className="row p-0 m-0 ms-5">
                     <div className="col-md-4">
                         <label>Selected Doctor</label>
                         <div className="col-12">
-                            <select className="col-10 form-control selectdoctor bg-seashell" ref={docref} onChange={getTimeslots}>
-                                <option defaultValue="Select Doctor bg-seashell" >Select Doctor</option>
+                            <select className="col-10 form-control button-charcoal-outline" ref={docref} onChange={getTimeslots}>
+                                <option defaultValue="Select Doctor" >Select Doctor</option>
                                 {
                                     TodayDoctors ? (
                                         Doclist.map((data, i) => (
@@ -238,13 +238,13 @@ const UpdateAppointment = (props) => {
                     </div>
                     <div className="col-md-auto m-0 p-0">
                         <label className="">Selected Date</label>
-                        <div className="col-12"><input type="date" ref={dateref} className="form-control selectdate" onChange={getTimefrom} />
+                        <div className="col-12"><input type="date" ref={dateref} className="form-control border-charcoal bg-seashell" onChange={getTimefrom} />
                         </div>
                     </div>
                     <div className="col-md-3 col-lg-3 col-3">
                         <label>Selected Time</label>
                         <div className="col-12">
-                            <button className='button button-burntumber' disabled >{props.appointmenttime}</button>
+                            <button className='button button-charcoal50 shadow-none' disabled >{props.appointmenttime}</button>
                         </div>
 
                     </div>
@@ -259,9 +259,9 @@ const UpdateAppointment = (props) => {
                             {
                                 ApiDocTimefrom.map((data, key) => (
                                     data[2] == 0 ? (
-                                        <button className={`button-sm button-${timeindex == key ? 'pearl' : 'lightgreen'}  m-1`} id={key} value={data[0]} onClick={(e) => { gettime_value(e); settimeindex(key) }}>{tConvert(data[1])}</button>
+                                        <button className={`button-sm button-${timeindex == key ? 'charcoal' : 'charcoal-outline'}  m-1`} id={key} value={data[0]} onClick={(e) => { gettime_value(e); settimeindex(key) }}>{tConvert(data[1])}</button>
                                     ) : (
-                                        <button disabled className="button-sm button-burntumber m-1" id={key} value={data[0]}>{tConvert(data[1])}</button>
+                                        <button disabled className="button-sm button-charcoa50 m-1" id={key} value={data[0]}>{tConvert(data[1])}</button>
                                     )
                                 ))
                             }
@@ -285,10 +285,10 @@ const UpdateAppointment = (props) => {
                     ) : (
                         <>
                             <div className="col-6 py-2 pb-2 m-auto text-center">
-                                <button className='btn px-5 button-burntumber' onClick={confirmmessage}>Done</button>
+                                <button className='btn px-5 button-charcoal' onClick={confirmmessage}>Done</button>
                             </div>
                             <div className="col-6 py-2 pb-2 m-auto text-center">
-                                <button className="btn btn-light px-5 border border-2" onClick={getCurrentTimeslots}>Set Previous</button>
+                                <button className="btn btn-light px-5" onClick={getCurrentTimeslots}>Set Previous</button>
                             </div>
                         </>
                     )
