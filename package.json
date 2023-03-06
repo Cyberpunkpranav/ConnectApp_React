@@ -11,7 +11,6 @@
     "bootstrap": "^5.2.2",
     "file-saver": "^2.0.5",
     "jotai": "^1.12.1",
-    "netlify-cli": "^12.10.0",
     "notiflix": "^3.2.5",
     "package.json": "^2.0.1",
     "popper.js": "^1.16.1",

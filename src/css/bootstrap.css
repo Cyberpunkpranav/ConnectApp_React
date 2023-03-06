@@ -228,7 +228,11 @@ body::-webkit-scrollbar-thumb:hover {
     background-color: var(--lightred);
     border: var(--lightred);
 }
-
+.button-lightred:checked{
+    color: var(--lightred);
+    background-color: transparent;
+    border: var(--lightred);
+}
 .bg-seashell {
     background-color: var(--seashell) !important;
 }

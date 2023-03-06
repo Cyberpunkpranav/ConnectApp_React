@@ -81,8 +81,6 @@
     background-color:var(--seashell)
 }
  .doctordsrtable{
-    /* min-height:20rem; */
-    /* height:30rem; */
     height:32vh;
     max-height:32vh;
 }
@@ -93,6 +91,9 @@
     background-color:var(--seashell)
 }
 .Pharmacy_Dsrsection .salereturns tr:nth-child(even){
+    background-color:var(--seashell)
+}
+.Pharmacy_Dsrsection .pendingpayrecieve tr:nth-child(even){
     background-color:var(--seashell)
 }
 .Appointments_Dsrsection .Appointment tr:nth-child(even){

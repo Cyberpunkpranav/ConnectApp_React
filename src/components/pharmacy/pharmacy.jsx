@@ -2593,7 +2593,7 @@ function Newpurchaseentryform(props) {
   const [load, setload] = useState()
   const [Exceldata, setExceldata] = useState([])
   const [NewMed, setNewMed] = useState('none')
-  
+
   const reversefunction = (date) => {
     if (date) {
       date = date.split("-").reverse().join("-")
@@ -4979,7 +4979,37 @@ function MedicineList() {
     }
   }
 
+  const DeleteMedicine = async (medid) => {
+    try {
+      await axios.post(`${url}/medicine/delete`, {
+        id: medid
+      }).then((response) => {
+        Notiflix.Notify.success(response.data.message)
+        console.log(response.data)
+        medcinelist()
+      })
+    } catch (e) {
+      Notiflix.Notify.failure(e.message)
+    }
 
+  }
+  const confirmmessage = (name, medid) => {
+    customconfirm()
+    Notiflix.Confirm.show(
+      `Add Charges and Payments`,
+      `Do you surely want to delete Medicine ${name}`,
+      'Yes',
+      'No',
+      () => {
+        DeleteMedicine(medid)
+      },
+      () => {
+        return 0
+      },
+      {
+      },
+    );
+  }
   return (
     <div>
       <div className='text-start ms-5 text-charcoal fw-bold p-2'>Medicines List</div>
@@ -4993,6 +5023,7 @@ function MedicineList() {
               <th rowSpan='2' className='p-0 m-0 px-1 text-charcoal75 fw-bold'>Salt Name</th>
               <th rowSpan='2' className='p-0 m-0 px-1 text-charcoal75 fw-bold'>HSN Code</th>
               <th rowSpan='2' className='p-0 m-0 px-1 text-charcoal75 fw-bold'>Manufacturer</th>
+              <th rowSpan='2' className='p-0 m-0 px-1 text-charcoal75 fw-bold'>Delete</th>
             </tr>
           </thead>
           {
@@ -5027,6 +5058,8 @@ function MedicineList() {
                         <td className=' text-charcoal fw-bold'>{data.salt_name && data.salt_name !== null ? data.salt_name : ''}</td>
                         <td className=' text-charcoal fw-bold'>{data.hsn_code && data.hsn_code !== null ? data.hsn_code : ''}</td>
                         <td className=' text-charcoal fw-bold'>{data.manufacturer && data.manufacturer !== null ? data.manufacturer : ''}</td>
+                        <td><button className='btn p-0 m-0' onClick={() => { confirmmessage(data.name, data.id) }}><img src={process.env.PUBLIC_URL + '/images/delete.png'} style={{ width: '1.5rem' }} /></button></td>
+
                         {
                           index == i ? (
                             <td className={` text-start  d-${index == i ? NewMed : 'none'} border position-absolute start-0 end-0 top-0 bg-seashell`} style={{ padding: 0, marginTop: '-7.15rem' }}>
