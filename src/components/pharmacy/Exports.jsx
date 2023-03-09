@@ -3,7 +3,7 @@ import { ExportExcel } from '../features/ExportExcel'
 
 const ExportPurchaseEntry = (props) => {
     const [ExportPurchaseEntry, setExportPurchaseEntry] = useState([])
-    const fileName = props.fromdate + '-' + props.todate +'Purchase Entry'
+    const fileName = props.fromdate + '-' + props.todate + 'Purchase Entry'
     const reversefunction = (date) => {
         if (date) {
             date = date.split("-").reverse().join("-")
@@ -23,11 +23,11 @@ const ExportPurchaseEntry = (props) => {
     }
     async function MakePurchaseEntryExport() {
         if (props.purchaseentryarr.length !== 0) {
-     
+
             var obj = []
             for (let i = 0; i < props.purchaseentryarr.length; i++) {
                 var vendorsitems = props.purchaseentryarr[i].medicines.map(Data => ({
-                    'Type':'Medicine',
+                    'Type': 'Medicine',
                     'PE ID': Data.purchase_entry.bill_id && Data.purchase_entry.bill_id != null ? "PE-" + Data.purchase_entry.bill_id : '',
                     'Invoice No.': Data.purchase_entry.invoice_no && Data.purchase_entry.invoice_no != null ? Data.purchase_entry.invoice_no : '',
                     'Bill Date': reversefunction(Data.purchase_entry.bill_date),
@@ -62,7 +62,7 @@ const ExportPurchaseEntry = (props) => {
             var objvaccine = []
             for (let i = 0; i < props.purchaseentryarr.length; i++) {
                 var vendorsitems = props.purchaseentryarr[i].vaccines.map(Data => ({
-                    'Type':'Vaccine',
+                    'Type': 'Vaccine',
                     'PE ID': Data.purchase_entry.bill_id && Data.purchase_entry.bill_id != null ? "PE-" + Data.purchase_entry.bill_id : '',
                     'Invoice No.': Data.purchase_entry.invoice_no && Data.purchase_entry.invoice_no != null ? Data.purchase_entry.invoice_no : '',
                     'Bill Date': reversefunction(Data.purchase_entry.bill_date),
@@ -109,16 +109,16 @@ const ExportPurchaseEntry = (props) => {
     // console.log(props.purchaseentryarr)
     return (
         <>
-        <ExportExcel apiData={ExportPurchaseEntry} fileName={fileName} />
+            <ExportExcel apiData={ExportPurchaseEntry} fileName={fileName} />
         </>
     )
 }
 
 export { ExportPurchaseEntry }
 
-const ExportPurchaseReturn =(props)=>{
-    const [ExportPurchaseReturn, setExportPurchaseReturn] = useState([])
-    const fileName = props.fromdate + '-' + props.todate +'Purchase Return'
+const ExportPurchaseReturn = (props) => {
+    const [ReturnEntry, setReturnEntry] = useState([])
+    const fileName = props.fromdate + '-' + props.todate + 'Purchase Return'
     const reversefunction = (date) => {
         if (date) {
             date = date.split("-").reverse().join("-")
@@ -138,16 +138,19 @@ const ExportPurchaseReturn =(props)=>{
     }
     async function MakePurchaseReturnExport() {
         if (props.purchasereturnarr.length !== 0) {
-     
+
             var obj = []
             for (let i = 0; i < props.purchasereturnarr.length; i++) {
-                var vendorsitems = props.purchaseentryarr[i].medicines.map(Data => ({
-                    'Type':'Medicine',
+                let distributor = props.purchasereturnarr[i].distributor.entity_name
+                let GST = props.purchasereturnarr[i].distributor.GSTIN_no
+                console.log()
+                var vendorsitems = props.purchasereturnarr[i].purchase_medicines.map(Data => ({
+                    'Type': 'Medicine',
                     'PE ID': Data.purchase_entry.bill_id && Data.purchase_entry.bill_id != null ? "PE-" + Data.purchase_entry.bill_id : '',
                     'Invoice No.': Data.purchase_entry.invoice_no && Data.purchase_entry.invoice_no != null ? Data.purchase_entry.invoice_no : '',
                     'Bill Date': reversefunction(Data.purchase_entry.bill_date),
-                    'Distributor': Data.purchase_entry.distributor.entity_name,
-                    'GSTIN': Data.purchase_entry.distributor.GSTIN_no,
+                    'Distributor': distributor,
+                    'GSTIN': GST,
                     'Item ID': Data.id != null ? Data.id : '',
                     'Item Name': Data.medicine && Data.medicine.name && Data.medicine.name != null ? Data.medicine.name : '',
                     'Batch No.': Data.batch_no != null ? Data.batch_no : '',
@@ -175,14 +178,16 @@ const ExportPurchaseReturn =(props)=>{
             var obj2 = obj.flat()
 
             var objvaccine = []
-            for (let i = 0; i < props.purchaseentryarr.length; i++) {
-                var vendorsitems = props.purchaseentryarr[i].vaccines.map(Data => ({
-                    'Type':'Vaccine',
+            for (let i = 0; i < props.purchasereturnarr.length; i++) {
+                let distributor = props.purchasereturnarr[i].distributor.entity_name
+                let GST = props.purchasereturnarr[i].distributor.GSTIN_no
+                var vendorsitems = props.purchasereturnarr[i].purchase_vaccines.map(Data => ({
+                    'Type': 'Vaccine',
                     'PE ID': Data.purchase_entry.bill_id && Data.purchase_entry.bill_id != null ? "PE-" + Data.purchase_entry.bill_id : '',
                     'Invoice No.': Data.purchase_entry.invoice_no && Data.purchase_entry.invoice_no != null ? Data.purchase_entry.invoice_no : '',
                     'Bill Date': reversefunction(Data.purchase_entry.bill_date),
-                    'Distributor': Data.purchase_entry.distributor.entity_name,
-                    'GSTIN': Data.purchase_entry.distributor.GSTIN_no,
+                    'Distributor': distributor,
+                    'GSTIN':GST,
                     'Item ID': Data.id != null ? Data.id : '',
                     'Item Name': Data.medicine && Data.medicine.name && Data.medicine.name != null ? Data.medicine.name : '',
                     'Batch No.': Data.batch_no != null ? Data.batch_no : '',
@@ -212,7 +217,7 @@ const ExportPurchaseReturn =(props)=>{
             TotalExport.push(obj2)
             TotalExport.push(objj)
             TotalExport = TotalExport.flat()
-            setExportPurchaseReturn(TotalExport)
+            setReturnEntry(TotalExport)
         }
     }
     useEffect(() => {
@@ -224,17 +229,18 @@ const ExportPurchaseReturn =(props)=>{
     console.log(props.purchasereturnarr)
     return (
         <>
-        <ExportExcel apiData={ExportPurchaseReturn} fileName={fileName} />
+            <ExportExcel apiData={ReturnEntry} fileName={fileName} />
         </>
     )
 }
-export {ExportPurchaseReturn}
 
-const ExportSaleEntry=(props)=>{
+export { ExportPurchaseReturn }
 
-}
-export{ExportSaleEntry}
-const ExportSaleReturn =(props)=>{
+const ExportSaleEntry = (props) => {
 
 }
-export {ExportSaleReturn}
+export { ExportSaleEntry }
+const ExportSaleReturn = (props) => {
+
+}
+export { ExportSaleReturn }

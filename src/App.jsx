@@ -204,7 +204,7 @@ function Navbar(props) {
                 {
                   NavbarIcons.map((data, i) => (
                     <div className={` ms-2 col-auto align-self-end `} onClick={() => sethighlighticon(data.path)}>
-                      <Link to={data.path} className="text-decoration-none"> <div className="text-center"> <img src={process.env.PUBLIC_URL + data.image} alt="displaying_image" className={`img-fluid rounded-2 p-2 bg-${highlighticon ? highlighticon === data.path ? 'burntumber25' : 'seashell' : path === data.path ? 'burntumber50' : 'seashell'}`} style={{ width: `1.5rem` , boxSizing:'content-box' }} /></div><p className="col-12 m-0 text-center">{data.title}</p>  </Link>
+                      <Link to={data.path} className="text-decoration-none"> <div className="text-center"> <img src={process.env.PUBLIC_URL + data.image} alt="displaying_image" className={`img-fluid rounded-2 p-2 bg-${highlighticon ? highlighticon === data.path ? 'burntumber25' : 'seashell' : path === data.path ? 'burntumber50' : 'seashell'}`} style={{ width: `1.5rem`, boxSizing: 'content-box' }} /></div><p className="col-12 m-0 text-center">{data.title}</p>  </Link>
                     </div>
                   ))
                 }
@@ -235,7 +235,7 @@ function Navbar(props) {
       <div className={`col-lg-5 col-md-6 col-sm-12 col-12 rounded-4 p-2 me-2 mt-2 patientinfosection d-${patientform} border-start border-top border-2 position-absolute`} >
         <AddPatient togglepatientform={togglepatientform} />
       </div>
-      <div className={`col-lg-5 col-md-6 col-sm-12 rounded-4 p-2 me-2 mt-2 col-12 appointmentinfosection d-${appointmentform} border-start border-top border-2 position-absolute`} >
+      <div className={`col-lg-5 col-md-6 col-sm-12 rounded-4 p-2 me-2 mt-2 col-12 bg-seashell appointmentinfosection d-${appointmentform} border-start border-top border-2 position-absolute`} style={{ zIndex: '4', right: '0' }} >
         <AddAppointment toggleappointmentform={toggleappointmentform} formshift={formshift} fetchapi={props.fetchapi} />
       </div>
       {
@@ -777,26 +777,26 @@ function Patients() {
         </table>
       </div>
 
-        <div className="d-flex text-center justify-content-center mt-3">
-       
-            <button className="button ms-1 button-seashell" ref={previousref} value={prevoffset} onClick={(e) => { getpreviouspages(e) }} style={{ marginTop: '0.15rem' }}>Previous</button>
+      <div className="d-flex text-center justify-content-center mt-3">
 
-            {
-              pages ? (
-                pages.map((page, i) => (
-                  <button className={`button ms-2 button-${nxtoffset - 1 == i ? 'charcoal' : 'charcoal-outline'}`} ref={nextref} value={page} id={page} onClick={(e) => { settabindex(i); getAllPatients(i) }} key={i}>{page}</button>
-                ))
-              ) : (
-                <div>Loading...</div>
-              )
+        <button className="button ms-1 button-seashell" ref={previousref} value={prevoffset} onClick={(e) => { getpreviouspages(e) }} style={{ marginTop: '0.15rem' }}>Previous</button>
 
-            }
-    
-       
-            <button className={`button button-charcoal ms-2`} ref={nextref} value={nxtoffset} onClick={(e) => { getnextpages(e); }} style={{ marginTop: '0.15rem' }}>Next</button>
-      
-        </div>
-    
+        {
+          pages ? (
+            pages.map((page, i) => (
+              <button className={`button ms-2 button-${nxtoffset - 1 == i ? 'charcoal' : 'charcoal-outline'}`} ref={nextref} value={page} id={page} onClick={(e) => { settabindex(i); getAllPatients(i) }} key={i}>{page}</button>
+            ))
+          ) : (
+            <div>Loading...</div>
+          )
+
+        }
+
+
+        <button className={`button button-charcoal ms-2`} ref={nextref} value={nxtoffset} onClick={(e) => { getnextpages(e); }} style={{ marginTop: '0.15rem' }}>Next</button>
+
+      </div>
+
     </section>
   )
 
@@ -922,23 +922,23 @@ function Doctors() {
         </table>
       </div>
 
-        <div className="d-flex text-center justify-content-center">
-            <button className="button ms-1 button-seashell" ref={previousref} value={prevoffset} onClick={(e) => { getpreviouspages(e); console.log(e.target.value) }} style={{ marginTop: '0.15rem' }}>Previous</button>
-            {
-              pages ? (
-                pages.map((page, i) => (
-                  <button className={`button ms-2 button-${nxtoffset - 1 == i ? 'charcoal' : 'charcoal-outline'}`} ref={nextref} value={page} id={page} onClick={(e) => { settabindex(i); getAllDoctors(i) }} key={i}>{page}</button>
-                ))
-              ) : (
-                <div>Loading...</div>
-              )
+      <div className="d-flex text-center justify-content-center">
+        <button className="button ms-1 button-seashell" ref={previousref} value={prevoffset} onClick={(e) => { getpreviouspages(e); console.log(e.target.value) }} style={{ marginTop: '0.15rem' }}>Previous</button>
+        {
+          pages ? (
+            pages.map((page, i) => (
+              <button className={`button ms-2 button-${nxtoffset - 1 == i ? 'charcoal' : 'charcoal-outline'}`} ref={nextref} value={page} id={page} onClick={(e) => { settabindex(i); getAllDoctors(i) }} key={i}>{page}</button>
+            ))
+          ) : (
+            <div>Loading...</div>
+          )
 
-            }
-  
+        }
 
-            <button className={`button button-charcoal ms-2`} ref={nextref} value={nxtoffset} onClick={(e) => { getnextpages(e); console.log(e.target.value) }} style={{ marginTop: '0.15rem' }}>Next</button>
 
-        </div>
+        <button className={`button button-charcoal ms-2`} ref={nextref} value={nxtoffset} onClick={(e) => { getnextpages(e); console.log(e.target.value) }} style={{ marginTop: '0.15rem' }}>Next</button>
+
+      </div>
 
     </section>
   )
@@ -973,54 +973,63 @@ function DailySaleReport(props) {
 
   return (
 
-    <div className="DSRsection mt-3">
+    <div className="DSRsection mt-1">
       <div className="p-0 m-0 mb-2">
-        <div className="row p-0 m-0 options align-items-center ">
-          <div className="col-auto col-lg-auto me-lg-2 col-xl-4 col-md-12 col-md-4 p-0 m-0">
+        <div className="row p-0 m-0 options align-items-center bg-seashell ">
+          <div className=" hstack gap-3 d-flex p-0 m-0 p-1 align-items-center">
             {
               options.map((data, i) => (
-                <button className={`button ms-1 button-${i == menu ? 'charcoal' : 'pearl'} shadow-${i == menu ? '' : 'none'} border-charcoal`} id={i} key={i} onClick={() => { setmenu(i) }}>{data}</button>
+                <>
+                  <div className='col-auto p-0 m-0'>
+                    <button className={`button m-0 p-0 px-2 py-1 ms-1 border-0 button-${i == menu ? 'charcoal' : ''} `} id={i} key={i} onClick={() => { setmenu(i) }}>{data}</button>
+                  </div>
+                  <div className="vr rounded-2 h-50 align-self-center" style={{ padding: '0.8px' }}></div>
+                </>
               ))
             }
           </div>
-          <div className="col-auto p-0 m-0 mt-2 mx-auto">
-            <div className="row p-0 m-0">
-              <div className="col-auto p-0 m-0">
-                <select className="px-1 bg-pearl text-burntumber py-2  py-md-1 text-center clinic ">
-                  <option value="Select Clinic">Clinic</option>
-                  {
-                    props.cliniclist ? (
-                      props.cliniclist.map((data) => (
-                        <option className="text-start" selected={clinicid == data.id ? true : false} value={data.id}>{data.id}.{' '}{data.title}</option>
-                      ))
-                    ) : (
-                      <option>Loading</option>
-                    )
-                  }
-                </select>
-              </div>
-              <div className="col-auto p-0 m-0 ">
-                <select className="bg-pearl text-center border-md-start-0 text-burntumber px-1 py-2 py-md-1 doctor" value={doctorid ? doctorid : ''} onChange={(e) => setdoctorid(e.target.value)}>
-                  <option value='Doctors'>Doctor</option>
-                  {
-                    Doctors.map((data) => (
-                      <option className="text-start" value={data[0]}>{data[0]}. Dr.{data[1]} </option>
+
+        </div>
+        <div className="col-auto p-0 m-0 mt-2 text-center mx-auto">
+          <div className="row p-0 m-0">
+            <div className="col-auto p-0 m-0">
+              <select className="px-1 bg-pearl text-burntumber py-2  py-md-1 text-center clinic ">
+                <option value="Select Clinic">Clinic</option>
+                {
+                  props.cliniclist ? (
+                    props.cliniclist.map((data) => (
+                      <option className="text-start" selected={clinicid == data.id ? true : false} value={data.id}>{data.id}.{' '}{data.title}</option>
                     ))
-                  }
-                </select>
-              </div>
-              <div className="col-auto p-0 m-0">
-                <div className="row p-0 m-0 text-center">
-                  <input type='date' placeholder="from Date" value={fromdate ? fromdate : ''} className='bg-pearl col-auto px-1 fromdate' onChange={(e) => setfromdate(e.target.value)} />
-                  <div className="bg-pearl fw-bolder dash col-auto">-</div>
-                  <input type='date' placeholder="to Date" disabled={fromdate ? false : true} value={todate ? todate : ''} className='bg-pearl px-1  col-auto todate' onChange={(e) => settodate(e.target.value)} />
-                </div>
+                  ) : (
+                    <option>Loading</option>
+                  )
+                }
+              </select>
+            </div>
+            <div className="col-auto p-0 m-0 ">
+              <select className="bg-pearl text-center border-md-start-0 text-burntumber px-1 py-2 py-md-1 doctor" value={doctorid ? doctorid : ''} onChange={(e) => setdoctorid(e.target.value)}>
+                <option value='Doctors'>Doctor</option>
+                {
+                  Doctors.map((data) => (
+                    <>
+                      <option className="text-start" value={data[0]}>{data[0]}. Dr.{data[1]} </option>
+
+                    </>
+                  ))
+                }
+              </select>
+            </div>
+            <div className="col-auto p-0 m-0">
+              <div className="row p-0 m-0 text-center">
+                <input type='date' placeholder="from Date" value={fromdate ? fromdate : ''} className='bg-pearl col-auto px-1 fromdate' onChange={(e) => setfromdate(e.target.value)} />
+                <div className="bg-pearl fw-bolder dash col-auto">-</div>
+                <input type='date' placeholder="to Date" disabled={fromdate ? false : true} value={todate ? todate : ''} className='bg-pearl px-1  col-auto todate' onChange={(e) => settodate(e.target.value)} />
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div className="container-fluid page m-0 p-0 ">
+      <div className="container-fluid  m-0 p-0 ">
         <div className="p-0 m-0">{ToggleOptions(menu)}</div>
       </div>
     </div>

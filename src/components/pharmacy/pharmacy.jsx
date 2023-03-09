@@ -2175,6 +2175,7 @@ function Purchaseentrysection(props) {
     } else {
       previousref.current.disabled = false
     }
+
     try {
       axios.get(`${url}/purchase/entry?clinic_id=${ClinicID}&channel=${channel}&limit=25&offset=${i * 25}&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`).then((response) => {
         setpurchaseentryarr(response.data.data)
@@ -2247,7 +2248,7 @@ function Purchaseentrysection(props) {
       <div>
         <div className='scroll scroll-y overflow-scroll p-0 m-0' style={{ minHeight: '56vh', height: '56vh' }}>
           <table className="table text-center p-0 m-0">
-            <thead className='p-0 m-0 align-middle'>
+            <thead className='p-0 m-0 align-middle position-sticky top-0 bg-pearl'>
               <tr>
                 <th className='fw-bolder text-charcoal75' scope='col'>PE ID</th>
                 <th className='fw-bolder text-charcoal75' scope='col'>PO ID</th>
@@ -2257,7 +2258,7 @@ function Purchaseentrysection(props) {
                 <th className='fw-bolder text-charcoal75' scope='col'>Bill Total</th>
                 <th className='fw-bolder text-charcoal75' scope='col'>Vendor</th>
                 <th className='fw-bolder text-charcoal75' scope='col'>Actions</th>
-                <th className='fw-bolder text-charcoal75' scope='col'>more</th>
+                <th className='fw-bolder text-charcoal75' scope='col' style={{ zIndex: '3' }}>more</th>
               </tr>
             </thead>
             {
@@ -3008,26 +3009,30 @@ function Newpurchaseentryform(props) {
   // console.log(MedicineentriesArr, ClinicList)
   console.log(clinicstatecode, vendorcode)
   const searchmedAuto = async (search) => {
-    try {
-      await axios.get(`${url}/item/search?search=${search}`).then((response) => {
-        let medicines = []
-        let vaccines = []
-        let items = []
-        medicines.push(response.data.data.medicines ? response.data.data.medicines : [])
-        vaccines.push(response.data.data.vaccines ? response.data.data.vaccines : [])
-        items = medicines.concat(vaccines)
-        items = items.flat()
-        console.log(items)
-        return items
-        // for(let i=0;i<items.length;i++){
-        //     if(items[i].itemname){
 
-        //     }
-        // }
-      })
-    } catch (e) {
-      Notiflix.Notify.warning(e.data.message)
-    }
+    await axios.get(`${url}/item/search?search=${search}`).then((response) => {
+      let medicines = []
+      let vaccines = []
+      let items = []
+      medicines.push(response.data.data.medicines ? response.data.data.medicines : [])
+      vaccines.push(response.data.data.vaccines ? response.data.data.vaccines : [])
+      items = medicines.concat(vaccines)
+      items = items.flat()
+      console.log(items)
+      if (items[0] && items[0].id !== undefined) {
+        let ID = items[0].id
+        return ID
+      } else {
+        return 'Please Select ID'
+      }
+
+      // for(let i=0;i<items.length;i++){
+      //     if(items[i].itemname){
+
+      //     }
+      // }
+    })
+
 
   }
   const CalGST = (rate, cgst) => {
@@ -3062,16 +3067,16 @@ function Newpurchaseentryform(props) {
       Notiflix.Notify.failure('Choose Only Excel File to Upload')
     }
   }
-  const ConvertExcel = () => {
-    searchmedAuto()
+  const ConvertExcel = async () => {
+
     let e = []
-    if (vendorid == 4) {
+    if (vendorid == 2) {
       if (Exceldata && Exceldata.length != 0) {
         const Excelfile = XLSX.read(Exceldata, { 'type': 'buffer' });
         const ExcelSheet = Excelfile.SheetNames[0]
         const Sheet = Excelfile.Sheets[ExcelSheet]
         const data = XLSX.utils.sheet_to_json(Sheet)
-        // console.log(data)
+        console.log(data)
         for (let i = 0; i < data.length; i++) {
           let expiry = data[i].EXPIRY.replace('/', '-20')
           expiry = '01-' + expiry
@@ -3080,10 +3085,12 @@ function Newpurchaseentryform(props) {
           CpU = data[i]['CGST'] ? CpU + Number(CalGST(CpU, data[i]['CGST'])) + Number(CalGST(CpU, data[i]['SGST'])) : CpU
           CpU = CpU - Number(Disc(CpU, data[i].DIS))
           CpU = Number(CpU).toFixed(2)
-          let itemID = searchmedAuto(data[i]['ITEM NAME'])
+          let ITEMID = await searchmedAuto(data[i]['ITEM NAME'])
+          console.log(ITEMID)
+
           MedicineentriesObj = {
             type: '',
-            Itemid: itemID,
+            Itemid: '',
             Itemname: data[i]['ITEM NAME'],
             batchno: data[i].BATCH,
             expirydate: expiry,
@@ -3104,10 +3111,11 @@ function Newpurchaseentryform(props) {
             totalamount: CpU * data[i].QTY.toFixed(2)
           }
           e.push(MedicineentriesObj)
+          console.log(e)
         }
       }
     }
-    if (vendorid == 5 || vendorid == 6) {
+    if (vendorid == 4 || vendorid == 3) {
       if (Exceldata && Exceldata.length != 0) {
         const Excelfile = XLSX.read(Exceldata, { 'type': 'buffer' });
         const ExcelSheet = Excelfile.SheetNames[0]
@@ -3227,12 +3235,12 @@ function Newpurchaseentryform(props) {
               <div className="row p-0 m-0 gx-2 gy-1">
                 <div className="col-5">
                   <h6 className="p-0 m-0 ms-3 fw-bold">Select PO</h6>
-                  <input className="form-control ms-2 rounded-1" placeholder="Enter PO" value={po ? po : ''} onChange={(e) => { setpo(e.target.value) }} />
+                  <input className="form-control ms-2 rounded-1" placeholder="Enter PO" value={po ? po : ''} onChange={(e) => { setpo(e.target.value) }} style={{ zIndex: '5' }} />
                 </div>
                 <div className="col-5">
                   <h6 className="p-0 m-0 ms-3 fw-bold">Select Vendor</h6>
                   <input className="form-control ms-2 rounded-1" placeholder='Search Vendors' value={vendorname ? vendorname : ''} onChange={(e) => { searchvendors(e.target.value); setvendorname(e.target.value); setvendorid(); setvendorcode() }} />
-                  <div ref={vendorsref} className='position-absolute ms-2 rounded-2 bg-pearl col-2' >
+                  <div ref={vendorsref} className='position-absolute ms-2 rounded-2 bg-pearl col-2' style={{ zIndex: '5' }} >
                     {
                       vendorsearch ? (
                         loadvendors ? (
@@ -3244,7 +3252,7 @@ function Newpurchaseentryform(props) {
                           </div>
                         ) : (
                           vendorsearch.length == 0 ? (
-                            <div className="bg-burntumber text-light rounded-2 p-1">Oops! Not Avaliable</div>
+                            <div className="bg-burntumber text-light rounded-2 p-2">Oops! Not Avaliable</div>
                           ) : (
                             <div className='bg-pearl border shadow rounded-2 p-1' style={{ zIndex: '40', width: 'fit-content' }}>
                               {
@@ -3285,8 +3293,8 @@ function Newpurchaseentryform(props) {
               </div>
             </div>
             <div className=" p-0 m-0 scroll scroll-y" style={{ maxHeight: '50vh', Height: '50vh' }}>
-              <table className="table m-0 datatable text-center position-relative">
-                <thead className='position-sticky top-0 bg-pearl' style={{ color: 'gray', fontWeight: '600' }}>
+              <table className="table m-0 datatable bg-pearl text-start position-relative">
+                <thead className=' bg-pearl position-sticky top-0' style={{ color: 'gray', fontWeight: '600' }}>
                   <tr>
                     <th>Edit</th>
                     <th>Item ID</th>
@@ -3328,13 +3336,13 @@ function Newpurchaseentryform(props) {
                     </tbody>
                   ) : (
                     MedicineentriesArr && MedicineentriesArr.length == 0 ? (
-                      <tbody className="position-relative" style={{ height: '48vh', maxHeight: '48vh', color: 'var(--charcoal)', fontWeight: '600' }}>
+                      <tbody className="position-relative bg-pearl text-center" style={{ height: '48vh', maxHeight: '48vh', color: 'var(--charcoal)', fontWeight: '600' }}>
                         <tr >
                           <td className="position-absolute start-0 end-0 top-0">No items Added</td>
                         </tr>
                       </tbody>
                     ) : (
-                      <tbody className="position-relative" style={{ height: '48vh', maxHeight: '48vh', color: 'var(--charcoal)', fontWeight: '600' }}>
+                      <tbody className="position-relative bg-pearl text-center" style={{ height: '48vh', maxHeight: '48vh', color: 'var(--charcoal)', fontWeight: '600' }}>
                         <tr className=""  >
                           <td className="position-absolute start-0 end-0 top-0" >No items Added</td>
                         </tr>

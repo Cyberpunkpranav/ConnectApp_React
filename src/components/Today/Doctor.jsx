@@ -5,7 +5,7 @@ import AmountPaid from './AmountPaid';
 import { URL, TodayDate } from '../../index'
 import Notiflix from 'notiflix';
 import { customconfirm } from "../features/notiflix/customconfirm";
-import {customloading} from "../features/notiflix/customloading"
+import { customloading } from "../features/notiflix/customloading"
 import { Loading } from 'notiflix/build/notiflix-loading-aio';
 import { UpdateAppointment } from './UpdateAppointment'
 import '../../css/bootstrap.css'
@@ -69,11 +69,11 @@ function DoctorSchedule(props) {
 
   async function Appointmentlist() {
     setisLoading(true);
-    Loading.dots('Getting Details',{
+    Loading.dots('Getting Details', {
       backgroundColor: 'rgb(242, 242, 242,0.5)',
       svgColor: '#96351E',
       messageColor: '#96351E',
-      messageFontSize:'1.5rem'
+      messageFontSize: '1.5rem'
     })
     await axios.get(`${url}/appointment/list?doctor_id=${props.todayDoc[props._selected][0]}&from_date=${Date}&to_date=${Date}`).then((response) => {
       setappointmentdata(response.data.data);
@@ -277,7 +277,7 @@ function DoctorSchedule(props) {
                       <button className={`button-sm button-${timeindex == i ? 'charcoal' : 'charcoal-outline'} m-1`} onClick={(e) => { openAddApppointmentform(); settimeindex(i) }} key={i}>{tConvert(data[0])}</button>
                       {
                         timeindex == i ? (
-                          <section className={`d-${timeindex == i ? addappointmentform : 'none'} col-lg-6 col-md-8 col-sm-8 col-11 col-xl-4 appointmentinfosection position-absolute m-auto start-0 end-0 bg-seashell rounded-4 col-6 shadow-none border border-1 overflow-auto`} style={{ zIndex: 4, top: '-1rem' }}>
+                          <section className={`d-${timeindex == i ? addappointmentform : 'none'} col-lg-6 col-md-10 col-sm-10 col-11 col-xl-4 appointmentinfosection position-absolute m-auto start-0 end-0 bg-seashell rounded-4 col-6 shadow-none border border-1 overflow-auto`} style={{ zIndex: 4, top: '-1rem' }}>
                             <SelectedTimeAppointment fetchapi={props.fetchapi} closeAddAppointmentform={closeAddAppointmentform} DocClinic={props.DocClinic} DoctorID={props.DoctorID} DoctorName={props.DoctorName} timeindex={timeindex} selectedtime={data[0]} selectedtimeID={data[2]} />
                           </section>
                         ) : (
@@ -303,7 +303,7 @@ function DoctorSchedule(props) {
           </div>
           <div className=" scroll scroll-y align-content-center align-items-center" style={{ maxHeight: '42vh', Height: '42vh' }}>
             <table className="table datatable text-center">
-              <thead className="p-0 m-0 px-2 bg-pearl" style={{'zIndex':'4'}}>
+              <thead className="p-0 m-0 px-2 bg-pearl" style={{ 'zIndex': '4' }}>
                 <tr className="p-0 m-0 position-sticky top-0">
                   <th className="border-0 bg-pearl" key={0}>Update</th>
                   <th className="border-0 bg-pearl" key={1}>Status</th>
@@ -337,7 +337,7 @@ function DoctorSchedule(props) {
                       ) : (
                         appointmentdata.map((data, i) => (
                           <tr className='align-middle'>
-                            <td className={`py-0 bg-${tableindex === i ?'lightyellow':''}`}>
+                            <td className={`py-0 bg-${tableindex === i ? 'lightyellow' : ''}`}>
                               <button className="btn m-0 p-0" key={i} onClick={(e) => { openapppointmentform(); settableindex(i); setappointmentid(data.id) }}>
                                 <img src={process.env.PUBLIC_URL + "/images/confirmed.png"} alt="displaying_image" className="img-fluid" style={{ width: "1.5rem" }} key={i} />
                               </button>
@@ -362,9 +362,9 @@ function DoctorSchedule(props) {
                             <td className="py-0">{tConvert(data.timeslot.time_from)}</td>
                             <td className="py-0">{data.total_amount}</td>
                             <td className="py-0"><AmountPaid appointmentData={data} Appointmentlist={Appointmentlist} /> </td>
-                            <td className={`py-0 bg-${ vitalindex === i ?'lightyellow':''}`}><button className="btn p-0 m-0" onClick={() => { setvitalindex(i); OpenVitals(); GetAppointmentVitals(data.id) }}><img src={process.env.PUBLIC_URL + "/images/vitals.png"} alt="displaying_image" style={{ width: "1.5rem" }} /></button></td>
-                            <td className={`py-0 bg-${ billindex === i ?'lightyellow':''}`}> <button className="btn p-0 m-0" onClick={() => { setbillindex(i); OpenBillForm(); }}><img src={process.env.PUBLIC_URL + "/images/bill.png"} alt="displaying_image" style={{ width: "1.8rem" }} className="me-1" /></button>  </td>
-                            <td className={`py-0 bg-${ paymentsindex === i ?'lightyellow':''}`}><button className="btn p-0 m-0" onClick={() => { setpaymentsindex(i); OpenPaymentsForm(); }}><img src={process.env.PUBLIC_URL + "/images/rupee.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1" /></button></td>
+                            <td className={`py-0 bg-${vitalindex === i ? 'lightyellow' : ''}`}><button className="btn p-0 m-0" onClick={() => { setvitalindex(i); OpenVitals(); GetAppointmentVitals(data.id) }}><img src={process.env.PUBLIC_URL + "/images/vitals.png"} alt="displaying_image" style={{ width: "1.5rem" }} /></button></td>
+                            <td className={`py-0 bg-${billindex === i ? 'lightyellow' : ''}`}> <button className="btn p-0 m-0" onClick={() => { setbillindex(i); OpenBillForm(); }}><img src={process.env.PUBLIC_URL + "/images/bill.png"} alt="displaying_image" style={{ width: "1.8rem" }} className="me-1" /></button>  </td>
+                            <td className={`py-0 bg-${paymentsindex === i ? 'lightyellow' : ''}`}><button className="btn p-0 m-0" onClick={() => { setpaymentsindex(i); OpenPaymentsForm(); }}><img src={process.env.PUBLIC_URL + "/images/rupee.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1" /></button></td>
                             <td className={`py-0`}><button className="btn p-0 m-0" onClick={() => confirmmessage(data.patient.full_name, data.id)}><img src={process.env.PUBLIC_URL + "/images/speaker.png"} alt="displaying_image" className="ms-1" style={{ width: "1.8rem" }} /></button></td>
                             <td className={`py-0`}><a target='_blank' className='p-0 m-0 text-decoration-none text-burntumber fw-bold' href={`https://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/admin/appointment/generate/bill/${data.id}`}><img src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" style={{ width: "2rem" }} /></a></td>
                             <td className={`py-0`}><a target='_blank' className='p-0 m-0 text-decoration-none text-charcoal fw-bold' href={`https://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/assets/swift_pdf/prescription_pdf_${data.id}.pdf`}><img src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" style={{ width: "2rem" }} /></a></td>
@@ -376,7 +376,7 @@ function DoctorSchedule(props) {
                             }
                             {
                               vitalindex === i ? (
-                                <td className={`vitals bg-${ vitalindex === i ?'lightred':''} col-lg-7 col-md-8 col-sm-12 col-12 col-xl-5 position-absolute border border-1 shadow rounded-2 d-${vitalindex == i ? vitalsform : 'none'}`} style={{ zIndex: '3010' }}>
+                                <td className={`vitals bg-${vitalindex === i ? 'lightred' : ''} col-lg-7 col-md-8 col-sm-12 col-12 col-xl-5 position-absolute border border-1 shadow rounded-2 d-${vitalindex == i ? vitalsform : 'none'}`} style={{ zIndex: '3010' }}>
                                   <Vitalsoperation GetAppointmentVitals={GetAppointmentVitals} CloseVitals={CloseVitals} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} appointmentid={data.id} appointmentvitalslist={appointmentvitalslist} loadvitals={loadvitals} patientid={data.patient && data.patient.id != null ? data.patient.id : ""} /></td>
                               ) : (<></>)
                             }
@@ -441,7 +441,7 @@ function Timecard(props) {
   }
   let [doctime, setdoctime] = useState([]);
   let [isLoading, setisLoading] = useState();
-  let [startload,setstartload]=useState(false)
+  let [startload, setstartload] = useState(false)
   let doctimes = [];
 
   let clinicid = localStorage.getItem('ClinicId');
@@ -455,7 +455,7 @@ function Timecard(props) {
       else {
         response.data.data.map((data) => {
           doctimes.push(data);
-   
+
         })
         setdoctime(doctimes.reverse());
         setisLoading(false);
@@ -480,12 +480,12 @@ function Timecard(props) {
           Notiflix.Notify.success(response.data.message)
         })
         fetchapi();
- 
+
       } catch (e) {
-        if (e.response.status != 200) {
-          alert("please Check your internet Connection")
+        Notiflix.Notify.failure(e.message)
+
           setstartload(false)
-        }
+        
       }
     } else {
       Notiflix.Notify.alert('Please fill all details')
@@ -497,19 +497,19 @@ function Timecard(props) {
     let adminid = localStorage.getItem('id');
     setrefreshtimeslot(true);
     let log_id = data.id;
-      try {
-        await axios.post(`${url}/doctor/end/time`, {
-          admin_id: adminid,
-          log_id: log_id
-        }).then((response) => {
-          Notiflix.Notify.success(response.data.message)
-        })
-        fetchapi();
-        setrefreshtimeslot(false)
-      } catch (e) {
-        Notiflix.Notify.failure(e.message)
-        setrefreshtimeslot(false);
-      }
+    try {
+      await axios.post(`${url}/doctor/end/time`, {
+        admin_id: adminid,
+        log_id: log_id
+      }).then((response) => {
+        Notiflix.Notify.success(response.data.message)
+      })
+      fetchapi();
+      setrefreshtimeslot(false)
+    } catch (e) {
+      Notiflix.Notify.failure(e.message)
+      setrefreshtimeslot(false);
+    }
 
   }
   useEffect(() => {
@@ -519,46 +519,46 @@ function Timecard(props) {
 
   return (
     <div className="scroll align-items-center align-content-center my-auto mb-2">
-        <div id="cardslot" className={`d-${isLoading ? 'none' : 'inline-flex'} m-1`}>
+      <div id="cardslot" className={`d-${isLoading ? 'none' : 'inline-flex'} m-1`}>
         <div className="card card1 p-0 m-0 text-start" id="card1" >
           <div className="card-body p-0 m-0">
             <div className="d-flex align-items-center ms-3">
-                <p className=" m-0 p-0 text-charcoal fw-bold me-2">Room</p>
-                <select onChange={(e) => { setroomnumber(e.target.value) }} className="form-control bg-pearl my-1  mx-2 p-0 py-1 px-3 w-auto text-center border-0" id="clinicroom1">
-                  <option defaultValue="1">1</option>
-                  <option defaultValue="2">2</option>
-                  <option defaultValue="3">3</option>
-                  <option defaultValue="4">4</option>
-                  <option defaultValue="5">5</option>
-                  <option defaultValue="6">6</option>
-                  <option defaultValue="7">7</option>
-                  <option defaultValue="8">8</option>
-                  <option defaultValue="9">9</option>
-                  <option defaultValue="10">10</option>
-                  <option defaultValue="11">11</option>
-                  <option defaultValue="12">12</option>
-                  <option defaultValue="13">13</option>
-                </select>
-                {
-                  startload ? (
-                    <div className="text-charcoal spinner-border spinner-border-sm me-2 " role="status" aria-hidden="true" ></div>
-                  ):(
-                    <button className="btn p-0 m-0 mx-2" onClick={starttimeslot}><img src={process.env.PUBLIC_URL + 'images/play.png'} style={{width:'1.8rem'}}/></button>
-                  )
-                }
-         
-                </div>
-              </div>
+              <p className=" m-0 p-0 text-charcoal fw-bold me-2">Room</p>
+              <select onChange={(e) => { setroomnumber(e.target.value) }} className="form-control bg-pearl my-1  mx-2 p-0 py-1 px-3 w-auto text-center border-0" id="clinicroom1">
+                <option defaultValue="1">1</option>
+                <option defaultValue="2">2</option>
+                <option defaultValue="3">3</option>
+                <option defaultValue="4">4</option>
+                <option defaultValue="5">5</option>
+                <option defaultValue="6">6</option>
+                <option defaultValue="7">7</option>
+                <option defaultValue="8">8</option>
+                <option defaultValue="9">9</option>
+                <option defaultValue="10">10</option>
+                <option defaultValue="11">11</option>
+                <option defaultValue="12">12</option>
+                <option defaultValue="13">13</option>
+              </select>
+              {
+                startload ? (
+                  <div className="text-charcoal spinner-border spinner-border-sm me-2 " role="status" aria-hidden="true" ></div>
+                ) : (
+                  <button className="btn p-0 m-0 mx-2" onClick={starttimeslot}><img src={process.env.PUBLIC_URL + 'images/play.png'} style={{ width: '1.8rem' }} /></button>
+                )
+              }
+
+            </div>
+          </div>
         </div>
       </div>
       {
         isLoading ? (
 
-          <div className="card bg-pearl text-center ms-3 bg-seashell" aria-hidden="true" style={{width:'18rem',paddingTop:'0.76rem',paddingBottom:'0.76rem'}}>
+          <div className="card bg-pearl text-center ms-3 bg-seashell" aria-hidden="true" style={{ width: '18rem', paddingTop: '0.76rem', paddingBottom: '0.76rem' }}>
             <div className=" text-start   placeholder-glow gx-2">
-                <span className="placeholder col-4 ms-2 text-start"></span>
-                <span className="placeholder col-4 ms-2 text-start"></span>
-                <span className="placeholder col-2 ms-2 text-start"></span>
+              <span className="placeholder col-4 ms-2 text-start"></span>
+              <span className="placeholder col-4 ms-2 text-start"></span>
+              <span className="placeholder col-2 ms-2 text-start"></span>
             </div>
           </div>
         ) : (
@@ -567,30 +567,30 @@ function Timecard(props) {
               <div className="card p-0 m-0 text-start" id="card1">
                 <div className="card-body p-0 m-0">
                   <div className="d-flex text-start align-items-center p-0 m-0 ">
-                      <p className=" p-0 m-0  ms-2 text-charcoal fw-bold">Room</p>
-                      <select className="form-control rounded-2 bg-pearl my-1 mx-2 p-0 py-1 px-3 border-0 w-auto" id="clinicroom">
-                        <option defaultValue="01">{data.room_id}</option>
-                      </select>
+                    <p className=" p-0 m-0  ms-2 text-charcoal fw-bold">Room</p>
+                    <select className="form-control rounded-2 bg-pearl my-1 mx-2 p-0 py-1 px-3 border-0 w-auto" id="clinicroom">
+                      <option defaultValue="01">{data.room_id}</option>
+                    </select>
                     {
                       refreshtimeslots && i === cardindex ? (
                         <div className="text-charcoal spinner-border spinner-border-sm me-2 " role="status" aria-hidden="true" ></div>
                       ) : (
                         <>
                           <div className="d-flex p-0 m-0 justify-content-center">
-                           
+
                             <button type="text" className="btn p-0 m-0 float-end text-charcoal text-center">{(data.login_time) ? tConvert(data.login_time) : ''}</button>
-                            <div className='vr h-50 mx-2 align-self-center' style={{padding:'0.9px'}}></div>
-                              <button type="text" className="btn p-0 m-0 text-charcoal float-end text-center">{(data.logout_time) ? tConvert(data.logout_time) : '__'}</button>
-                          
+                            <div className='vr h-50 mx-2 align-self-center' style={{ padding: '0.9px' }}></div>
+                            <button type="text" className="btn p-0 m-0 text-charcoal float-end text-center">{(data.logout_time) ? tConvert(data.logout_time) : '__'}</button>
+
                           </div>
-                    
+
                           <div className="d-flex mx-2 ">
                             {
                               data.logout_time ? (
                                 <div id="totalhrs" className="btn p-0 m-0 text-charcoal fw-bold text-center me-3" defaultValue="00">{data.logout_time ? diff(data.login_time, data.logout_time) : ''}</div>
                               ) : (
-                                <button className="btn p-0 m-0" value={data.id} onClick={(e) => { endtimeslot(data); setcardindex(i) }}><img src={process.env.PUBLIC_URL + 'images/pause.png'} onClick={(e) => { endtimeslot(e); setcardindex(i) }} style={{width:'1.8rem'}}/></button>
-                                  
+                                <button className="btn p-0 m-0" value={data.id} onClick={(e) => { endtimeslot(data); setcardindex(i) }}><img src={process.env.PUBLIC_URL + 'images/pause.png'} onClick={(e) => { endtimeslot(e); setcardindex(i) }} style={{ width: '1.8rem' }} /></button>
+
                               )
                             }
 
@@ -601,11 +601,11 @@ function Timecard(props) {
                       )
                     }
                   </div>
-                  </div>
-
                 </div>
 
-             
+              </div>
+
+
             </div>
           )
           )

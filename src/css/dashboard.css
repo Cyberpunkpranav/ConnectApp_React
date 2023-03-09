@@ -314,9 +314,9 @@ body {
 .patientinfosection {
     background-color: var(--seashell);
     font-family: 'Urbanist', sans-serif;
-    z-index: 2000;
+    z-index: 5;
     right: 0;
-    top: 0;
+ 
     box-shadow: 0px 0px 0px 1600px#22202370;
     overflow-y: scroll;
     max-height: 45rem;
@@ -353,7 +353,6 @@ body {
 .doctorinfosection {
     background-color: var(--seashell);
     right: 0;
-    top: 0;
     font-family: 'Urbanist', sans-serif;
     box-shadow: 0px 0px 0px 1600px#22202370;
     z-index: 2000;
