@@ -11,6 +11,8 @@ import '../../css/bootstrap.css'
 const Pharmacy_Dsr = (props) => {
   const Pendingsonly = useRef()
   const saleentry = useRef()
+  const salereturn =useRef()
+  const pendingsrecieved =useRef()
   const url = useContext(URL)
   const [pendingpaid, setpendingpaid] = useState([])
   const [advancepaid, setadvancepaid] = useState([])
@@ -22,6 +24,7 @@ const Pharmacy_Dsr = (props) => {
   const [pd, setpd] = useState('none')
   const [se, setse] = useState('block')
   const [pageindex, setpageindex] = useState()
+
   const PharmacyList = async () => {
     setload(true)
     try {
@@ -80,6 +83,21 @@ const Pharmacy_Dsr = (props) => {
       return cash
     }
 
+    if (pageindex == 2) {
+      for (let i = 0; i < PendingPaid.length; i++) {
+        if (JSON.parse(PendingPaid[i].payment_method_details) != null && JSON.parse(PendingPaid[i].payment_method_details).Cash != null) {
+          casharr.push(Number(JSON.parse(PendingPaid[i].payment_method_details).Cash))
+        }
+      }
+      if (casharr.length != 0) {
+        casharr.forEach(item => {
+          cash += item
+        })
+
+      }
+      return cash
+    }
+
   }
   function payment_method_detailsForCard() {
     let cardarr = []
@@ -102,6 +120,21 @@ const Pharmacy_Dsr = (props) => {
       for (let i = 0; i < SaleReturnList.length; i++) {
         if (JSON.parse(SaleReturnList[i].sale_entry.payment_method_details) != null && JSON.parse(SaleReturnList[i].sale_entry.payment_method_details).Card != null) {
           cardarr.push(Number(JSON.parse(SaleReturnList[i].sale_entry.payment_method_details).Card))
+        }
+      }
+      if (cardarr.length != 0) {
+        cardarr.forEach(item => {
+          card += item
+        })
+
+      }
+      return card
+    }
+
+    if (pageindex == 2) {
+      for (let i = 0; i < PendingPaid.length; i++) {
+        if (JSON.parse(PendingPaid[i].payment_method_details) != null && JSON.parse(PendingPaid[i].payment_method_details).Card != null) {
+          cardarr.push(Number(JSON.parse(PendingPaid[i].payment_method_details).Card))
         }
       }
       if (cardarr.length != 0) {
@@ -143,7 +176,19 @@ const Pharmacy_Dsr = (props) => {
       }
       return paytm
     }
-
+    if (pageindex == 2) {
+      for (let i = 0; i < PendingPaid.length; i++) {
+        if (JSON.parse(PendingPaid[i].payment_method_details) != null && JSON.parse(PendingPaid[i].payment_method_details).Paytm != null) {
+          paytmarr.push(Number(JSON.parse(PendingPaid[i].payment_method_details).Paytm))
+        }
+      }
+      if (paytmarr.length != 0) {
+        paytmarr.forEach(item => {
+          paytm += item
+        })
+      }
+      return paytm
+    }
   }
   function payment_method_detailsForRazorPay() {
     let razorpayarr = []
@@ -165,6 +210,19 @@ const Pharmacy_Dsr = (props) => {
       for (let i = 0; i < SaleReturnList.length; i++) {
         if (JSON.parse(SaleReturnList[i].sale_entry.payment_method_details) != null && JSON.parse(SaleReturnList[i].sale_entry.payment_method_details).Razorpay != null) {
           razorpayarr.push(Number(JSON.parse(SaleReturnList[i].sale_entry.payment_method_details).Razorpay))
+        }
+      }
+      if (razorpayarr.length != 0) {
+        razorpayarr.forEach(item => {
+          razorpay += item
+        })
+      }
+      return razorpay
+    }
+    if (pageindex == 2) {
+      for (let i = 0; i < PendingPaid.length; i++) {
+        if (JSON.parse(PendingPaid[i].payment_method_details) != null && JSON.parse(PendingPaid[i].payment_method_details).Razorpay != null) {
+          razorpayarr.push(Number(JSON.parse(PendingPaid[i].payment_method_details).Razorpay))
         }
       }
       if (razorpayarr.length != 0) {
@@ -207,7 +265,20 @@ const Pharmacy_Dsr = (props) => {
       }
       return points
     }
+    if (pageindex == 2) {
+      for (let i = 0; i < PendingPaid.length; i++) {
+        if (JSON.parse(PendingPaid[i].payment_method_details) != null && JSON.parse(PendingPaid[i].payment_method_details).Points != null) {
+          pointsarr.push(Number(JSON.parse(PendingPaid[i].payment_method_details).Points))
+        }
+      }
+      if (pointsarr.length != 0) {
+        pointsarr.forEach(item => {
+          points += item
+        })
 
+      }
+      return points
+    }
   }
   function payment_method_detailsForPhonepe() {
     let phonepearr = []
@@ -240,7 +311,20 @@ const Pharmacy_Dsr = (props) => {
       }
       return phonepe
     }
+    if (pageindex == 2) {
+      for (let i = 0; i < PendingPaid.length; i++) {
+        if (JSON.parse(PendingPaid[i].payment_method_details) != null && JSON.parse(PendingPaid[i].payment_method_details).Phonepe != null) {
+          phonepearr.push(Number(JSON.parse(PendingPaid[i].payment_method_details).Phonepe))
+        }
+      }
+      if (phonepearr.length != 0) {
+        phonepearr.forEach(item => {
+          phonepe += item
+        })
 
+      }
+      return phonepe
+    }
   }
   function payment_method_detailsForWireTransfer() {
     let wiretransferarr = []
@@ -263,6 +347,20 @@ const Pharmacy_Dsr = (props) => {
       for (let i = 0; i < SaleReturnList.length; i++) {
         if (JSON.parse(SaleReturnList[i].sale_entry.payment_method_details) != null && JSON.parse(SaleReturnList[i].sale_entry.payment_method_details)['Wire-Transfer'] != null) {
           wiretransferarr.push(Number(JSON.parse(SaleReturnList[i].sale_entry.payment_method_details)['Wire-Transfer']))
+        }
+      }
+      if (wiretransferarr.length != 0) {
+        wiretransferarr.forEach(item => {
+          wiretransfer += item
+        })
+
+      }
+      return wiretransfer
+    }
+    if (pageindex == 2) {
+      for (let i = 0; i < PendingPaid.length; i++) {
+        if (JSON.parse(PendingPaid[i].payment_method_details) != null && JSON.parse(PendingPaid[i].payment_method_details)['Wire-Transfer'] != null) {
+          wiretransferarr.push(Number(JSON.parse(PendingPaid[i].payment_method_details)['Wire-Transfer']))
         }
       }
       if (wiretransferarr.length != 0) {
@@ -353,6 +451,19 @@ const Pharmacy_Dsr = (props) => {
       }
       return grandtotal
     }
+    if (pageindex == 2) {
+      for (let i = 0; i < PendingPaid.length; i++) {
+
+        grandtotalarr.push(JSON.parse(PendingPaid[i].paid_amount))
+
+      }
+      if (grandtotalarr.length != 0) {
+        grandtotalarr.forEach(item => {
+          grandtotal += item
+        })
+      }
+      return grandtotal
+    }
 
 
   }
@@ -423,50 +534,50 @@ const Pharmacy_Dsr = (props) => {
             <button className="nav-link p-0 m-0 py-1 px-3" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false" onClick={() => { setpageindex(1) }}>Sale Returns<span class=" p-0 m-0 ms-2 badge text-lightyellow fs-6 fw-normal">{SaleReturnList.length}</span></button>
           </li>
           <li className="nav-item" role="presentation">
-            <button className="nav-link p-0 m-0 py-1 px-3" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false" onClick={() => { setpageindex(2) }}>Pendings Paid<span class=" p-0 m-0 ms-2 badge text-lightyellow fs-6 fw-normal">{PendingPaid.length}</span></button>
+            <button className="nav-link p-0 m-0 py-1 px-3" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false" onClick={() => { setpageindex(2) }}>Pendings Recieved<span class=" p-0 m-0 ms-2 badge text-lightyellow fs-6 fw-normal">{PendingPaid.length}</span></button>
           </li>
         </ul>
 
         <div className="tab-content" id="pills-tabContent">
 
           <div className="tab-pane fade show active text-start" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
-                <h6 className="text-charcoal fw-bold p-0 m-0 ms-2 ms-lg-3 ms-md-1 ms-sm-1">Payments</h6>
-                <div className="row m-0 g-2 p-0 text-start">
-                  <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-lg-3  bg-seashell" style={{borderLeft:'3.5px solid var(--burntumber)'}}>
-                  <p className='fw-bold text-charcoal75 text-start p-0 m-0 justify-content-start'>CASH</p>
-                  <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForCash()}</h6>
-                  </div>
-                  <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-1 ms-sm-1 ms-lg-3 bg-seashell" style={{borderLeft:'3.5px solid var(--burntumber)'}}>
-                  <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>CARD</p>
-                  <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForCard()}</h6>
-                  </div>
-                  <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-1 ms-sm-1 ms-lg-3 bg-seashell" style={{borderLeft:'3.5px solid var(--burntumber)'}}>
-                  <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>PAYTM</p>
-                  <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForPaytm()}</h6>
-                  </div>
-                  <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-1 ms-sm-1 ms-lg-3 bg-seashell" style={{borderLeft:'3.5px solid var(--burntumber)'}}>
-                  <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>PHONEPE</p>
-                  <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForPhonepe()}</h6>
-                  </div>
-                  <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-1 ms-sm-1 ms-lg-3 bg-seashell" style={{borderLeft:'3.5px solid var(--burntumber)'}}>
-                  <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>WIRE</p>
-                  <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForWireTransfer()}</h6>
-                  </div>
-                  <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-1 ms-sm-1 ms-lg-3 bg-seashell" style={{borderLeft:'3.5px solid var(--burntumber)'}}>
-                  <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>RAZORPAY</p>
-                  <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForRazorPay()}</h6>
-                  </div>
-                  <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-3 ms-md-1 ms-sm-1 ms-lg-3 bg-seashell" style={{borderLeft:'3.5px solid var(--burntumber)'}}>
-                  <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>POINTS</p>
-                  <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForPoints()}</h6>
-                  </div>
-                </div>
-          
-      
-             <div className=' mt-2 position-absolute end-0 me-5 text-end'style={{top:'20vh'}}>
+            <h6 className="text-charcoal fw-bold p-0 m-0 ms-2 ms-lg-3 ms-md-1 ms-sm-1">Payments</h6>
+            <div className="row m-0 g-2 mt-md-2 p-0 text-start justify-content-start">
+              <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-2 ms-lg-3  bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+                <p className='fw-bold text-charcoal75 text-start p-0 m-0 justify-content-start'>CASH</p>
+                <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForCash()}</h6>
+              </div>
+              <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-2 ms-sm-2 ms-lg-3 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+                <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>CARD</p>
+                <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForCard()}</h6>
+              </div>
+              <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-2 ms-sm-2 ms-lg-3 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+                <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>PAYTM</p>
+                <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForPaytm()}</h6>
+              </div>
+              <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-2 ms-sm-2 ms-lg-3 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+                <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>PHONEPE</p>
+                <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForPhonepe()}</h6>
+              </div>
+              <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-2 ms-sm-2 ms-lg-3 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+                <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>WIRE</p>
+                <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForWireTransfer()}</h6>
+              </div>
+              <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-2 ms-sm-2 ms-lg-3 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+                <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>RAZORPAY</p>
+                <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForRazorPay()}</h6>
+              </div>
+              <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-3 ms-md-2 ms-sm-2 ms-lg-3 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+                <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>POINTS</p>
+                <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForPoints()}</h6>
+              </div>
+            </div>
+
+
+            <div className=' saleoptions mt-2 position-absolute end-0 me-md-2 me-5 text-end'>
               <span className={`d-${se}`}>
                 <DownloadTableExcel
-                  filename={`${reversefunction(props.fromdate) + ' to ' + reversefunction(props.todate)} Appointments`}
+                  filename={`${reversefunction(props.fromdate) + ' to ' + reversefunction(props.todate)} Sale Entries`}
                   sheet="Sale Entries"
                   currentTableRef={saleentry.current}
                 >
@@ -476,7 +587,7 @@ const Pharmacy_Dsr = (props) => {
               </span>
               <span className={`d-${pd}`}>
                 <DownloadTableExcel
-                  filename={`${reversefunction(props.fromdate) + ' to ' + reversefunction(props.todate)} Appointments`}
+                  filename={`${reversefunction(props.fromdate) + ' to ' + reversefunction(props.todate)} Pending Sale Entries`}
                   sheet="Pendings"
                   currentTableRef={Pendingsonly.current}
                 >
@@ -494,7 +605,7 @@ const Pharmacy_Dsr = (props) => {
                   <tr>
                     <th rowspan='2' className='py-0' >Bill no.</th>
                     <th rowspan='2' className='py-0' >Name</th>
-                    <th rowspan='2' className='py-0' >Mobile</th>
+                    {/* <th rowspan='2' className='py-0' >Mobile</th> */}
                     <th rowspan='2' className='py-0' >Doctor Name</th>
                     <th rowspan='2' className='py-0' >Bill Date</th>
                     <th colspan='7' scope='colgroup' className='border-0 p-0 m-0'>Payment Method</th>
@@ -502,13 +613,13 @@ const Pharmacy_Dsr = (props) => {
                     <th rowspan='2' className='py-0' > Grand Total</th>
                   </tr>
                   <tr>
-                    <th className='bg-white' scope='col'>Cash</th>
-                    <th className='bg-white' scope='col'>Card</th>
-                    <th className='bg-white' scope='col'>Paytm</th>
-                    <th className='bg-white' scope='col'>Phonepe</th>
-                    <th className='bg-white' scope='col'>Razorpay</th>
-                    <th className='bg-white' scope='col'>Wire-Transfer</th>
-                    <th className='bg-white' scope='col'>Points</th>
+                    <th className='bg-white py-0' scope='col'>Cash</th>
+                    <th className='bg-white py-0' scope='col'>Card</th>
+                    <th className='bg-white py-0' scope='col'>Paytm</th>
+                    <th className='bg-white py-0' scope='col'>Phonepe</th>
+                    <th className='bg-white py-0' scope='col'>Razorpay</th>
+                    <th className='bg-white py-0' scope='col'>Wire-Transfer</th>
+                    <th className='bg-white py-0' scope='col'>Points</th>
                   </tr>
                 </thead>
                 {
@@ -530,13 +641,13 @@ const Pharmacy_Dsr = (props) => {
                         </tr>
                       </tbody>
                     ) : (
-                      <tbody className='text-start'>
+                      <tbody className='text-start' style={{paddingBottom:'30px'}}>
                         {
                           SaleEntryList.map((data, i) => (
                             <tr className={``}>
                               <td key={i}>{data && data.bill_id !== null ? "P-" + data.bill_id : ''}</td>
                               <td>{data && data.patient && data.patient.full_name !== null ? data.patient.full_name : ''}</td>
-                              <td>{data && data.patient && data.patient.phone_number !== null ? data.patient.phone_number : ''}</td>
+                              {/* <td>{data && data.patient && data.patient.phone_number !== null ? data.patient.phone_number : ''}</td> */}
                               <td>{data && data.doctor_name !== null ? 'Dr. ' + data.doctor_name : ''}</td>
                               <td>{data && data.bill_date !== null ? reversefunction(data.bill_date) : ''}</td>
                               <td>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Cash : ''}</td>
@@ -552,13 +663,19 @@ const Pharmacy_Dsr = (props) => {
                             </tr>
                           ))
                         }
+                        <tr className='bg-pearl text-light'>__</tr>
+                        <tr className='bg-pearl text-light'>__</tr>
+                        <tr className='bg-pearl text-light'>__</tr>
+                        <tr className='bg-pearl text-light'>__</tr>
+                        <tr className='bg-pearl text-light'>__</tr>
+                        <tr className='bg-pearl text-light'>__</tr>
                       </tbody>
 
                     )
                   )
                 }
               </table>
-     
+
             </div>
             <div className={`container-fluid p-0 m-0 scroll scroll-y saleentries d-${pd}`} ref={Pendingsonly} style={{ minHeight: '60vh', maxHeight: '60vh' }}>
               <table className='table'>
@@ -566,7 +683,7 @@ const Pharmacy_Dsr = (props) => {
                   <tr>
                     <th rowspan='2' >Bill no.</th>
                     <th rowspan='2' >Name</th>
-                    <th rowspan='2' >Mobile</th>
+                    {/* <th rowspan='2' >Mobile</th> */}
                     <th rowspan='2' >Doctor Name</th>
                     <th rowspan='2' >Bill Date</th>
                     <th colspan='7' scope='colgroup' className='border-0'>Payment Method</th>
@@ -611,7 +728,7 @@ const Pharmacy_Dsr = (props) => {
                               <tr className={` bg-lightred50`}>
                                 <td key={i}>{data && data.bill_id !== null ? "P-" + data.bill_id : ''}</td>
                                 <td>{data && data.patient && data.patient.full_name !== null ? data.patient.full_name : ''}</td>
-                                <td>{data && data.patient && data.patient.phone_number !== null ? data.patient.phone_number : ''}</td>
+                                {/* <td>{data && data.patient && data.patient.phone_number !== null ? data.patient.phone_number : ''}</td> */}
                                 <td>{data && data.doctor_name !== null ? 'Dr. ' + data.doctor_name : ''}</td>
                                 <td>{data && data.bill_date !== null ? reversefunction(data.bill_date) : ''}</td>
                                 <td>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Cash : ''}</td>
@@ -630,6 +747,12 @@ const Pharmacy_Dsr = (props) => {
 
                           ))
                         }
+                        <tr className='bg-pearl text-light'>__</tr>
+                        <tr className='bg-pearl text-light'>__</tr>
+                        <tr className='bg-pearl text-light'>__</tr>
+                        <tr className='bg-pearl text-light'>__</tr>
+                        <tr className='bg-pearl text-light'>__</tr>
+                        <tr className='bg-pearl text-light'>__</tr>
                       </tbody>
 
                     )
@@ -638,86 +761,91 @@ const Pharmacy_Dsr = (props) => {
               </table>
             </div>
             <div className='p-0 m-0 py-1 ps-2 bg-seashell border position-absolute w-100 bottom-0'>
-                <div className="row p-0 m-0">
-                  <div className="col-auto">
+              <div className="row p-0 m-0">
+                <div className="col-auto">
                   <h6 className='fw-bold text-charcoal75 '>Total Pending Payments</h6>
                   <h5 className='fw-bold'>Rs. {TotalPendingPayment()}</h5>
-                  </div>
-                  <div className="col-auto">
-                  <h6 className='fw-bold text-charcoal75 '>Grand Total</h6>
-                  <h5 className='fw-bold'>Rs. {GrandTotal()}</h5> 
-                  </div>
                 </div>
-          </div>
-          </div>
-          <div className="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
-            <div className="row p-0 m-0 g-2 justify-content-around ">
-              <div className='= CARD1 p-2  shadow-sm rounded-2' style={{ width: 'fit-content', maxwidth: '24rem' }}>
-                <h6 className="text-burntumber">Payment Methods</h6>
-                <table className='w-100 bg-seashell rounded-2 p-2'>
-                  <thead>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                  </thead>
-                  <tbody>
-                    <tr className=''>
-                      <td className='px-2'>Cash:{' '}{payment_method_detailsForCash()}</td>
-                      <td className='px-2'>Card:{' '}{payment_method_detailsForCard()}</td>
-                      <td className='px-2'>WireTransfer:{' '}{payment_method_detailsForWireTransfer()}</td>
-                      <td className='px-2'>PhonePay:{' '}{payment_method_detailsForPhonepe()}</td>
-                    </tr>
-                    <tr className=''>
-                      <td className='px-2'>Paytm:{' '}{payment_method_detailsForPaytm()} </td>
-                      <td className='px-2'>Points:{' '}{payment_method_detailsForPoints()}</td>
-                      <td className='px-2'> RazorPay:{' '}{payment_method_detailsForRazorPay()}</td>
-                    </tr>
-
-                  </tbody>
-                </table>
-              </div>
-              <div className=" CARD2 p-2 shadow-sm rounded-2" style={{ width: 'fit-content', maxwidth: '24rem' }}>
-                <h6 className='text-brandy'>Amounts</h6>
-                <div className='bg-lightyellow rounded-2 p-1 border-bottom'>
-                  <div className="row p-0 m-0">
-                    {/* <div className="col-auto">
-                      <div className='text-charcoal text-wrap align-self-end fw-bold'> Total Pending Amount</div>
-                      <div className='fw-bold fs-5 text-burntumber'>{TotalPendingPayment()}</div>
-                    </div> */}
-                    <div className="col-auto">
-                      <div className='text-cahrcoal  text-wrap align-self-end fw-bold'>Total Returned Amount</div>
-                      <div className='fw-bold fs-5 text-lightgreen'>{GrandTotal()}</div>
-                    </div>
-                  </div>
+                <div className="col-auto">
+                  <h6 className='fw-bold text-charcoal75 '>Grand Total</h6>
+                  <h5 className='fw-bold'>Rs. {GrandTotal()}</h5>
                 </div>
               </div>
             </div>
-            <div className='container-fluid p-0 m-0 scroll scroll-y salereturns' style={{ minHeight: '10rem' }}>
+          </div>
+
+          <div className="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
+            <h6 className="text-charcoal fw-bold p-0 m-0 ms-2 ms-lg-3 ms-md-1 ms-sm-1">Payments</h6>
+            <div className="row m-0 g-2 p-0 text-start">
+              <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-lg-3  bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+                <p className='fw-bold text-charcoal75 text-start p-0 m-0 justify-content-start'>CASH</p>
+                <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForCash()}</h6>
+              </div>
+              <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-1 ms-sm-1 ms-lg-3 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+                <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>CARD</p>
+                <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForCard()}</h6>
+              </div>
+              <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-1 ms-sm-1 ms-lg-3 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+                <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>PAYTM</p>
+                <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForPaytm()}</h6>
+              </div>
+              <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-1 ms-sm-1 ms-lg-3 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+                <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>PHONEPE</p>
+                <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForPhonepe()}</h6>
+              </div>
+              <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-1 ms-sm-1 ms-lg-3 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+                <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>WIRE</p>
+                <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForWireTransfer()}</h6>
+              </div>
+              <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-1 ms-sm-1 ms-lg-3 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+                <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>RAZORPAY</p>
+                <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForRazorPay()}</h6>
+              </div>
+              <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-3 ms-md-1 ms-sm-1 ms-lg-3 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+                <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>POINTS</p>
+                <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForPoints()}</h6>
+              </div>
+            </div>
+
+            <div className=' saleoptions mt-2 position-absolute end-0 me-md-2 me-5 text-end'>
+              <span>
+                <DownloadTableExcel
+                  filename={`${reversefunction(props.fromdate) + ' to ' + reversefunction(props.todate)} Sale Returns`}
+                  sheet="Sale Returns"
+                  currentTableRef={salereturn.current}
+                >
+                  <button className='btn p-0 m-0 ms-5 bg-pearl border-charcoal px-2 py-1 fw-bold '> <img src={process.env.PUBLIC_URL + '/images/download.png'} style={{ 'width': '1.5rem' }} /> Export</button>
+
+                </DownloadTableExcel>
+              </span>
+            </div>
+
+            <div className='container-fluid p-0 m-0 scroll scroll-y salereturns mt-2' ref={salereturn} style={{ minHeight: '60vh', maxHeight: '60vh' }}>
 
               <table className='table'>
-                <thead className='text-start position-sticky top-0 '>
+                <thead className='text-start position-sticky top-0 bg-pearl '>
                   <tr>
-                    <th rowspan='2' >SE ID</th>
-                    <th rowspan='2' >SR ID</th>
-                    <th rowspan='2' >Bill no.</th>
-                    <th rowspan='2' >Name</th>
-                    <th rowspan='2' >Mobile</th>
-                    <th rowspan='2' >Doctor Name</th>
-                    <th rowspan='2' >Bill Date</th>
-                    <th colspan='7' scope='colgroup' className='border-0'>Payment Method</th>
-                    <th rowspan='2' >Amount</th>
-                    <th rowspan='2' >Return Date</th>
-                    <th rowspan='2' >Returned Amount</th>
+                    {/* <th rowspan='2' className='py-0' >SE ID</th> */}
+                    <th rowspan='2' className='py-0' >SR ID</th>
+                    <th rowspan='2' className='py-0' >Bill no.</th>
+                    <th rowspan='2' className='py-0' >Name</th>
+                    {/* <th rowspan='2' className='py-0' >Mobile</th> */}
+                    <th rowspan='2' className='py-0' >Doctor Name</th>
+                    <th rowspan='2' className='py-0' >Bill Date</th>
+                    {/* <th colspan='7' scope='colgroup' className='border-0 py-0'>Payment Method</th> */}
+                    {/* <th rowspan='2' className='py-0' >Amount</th> */}
+                    <th rowspan='2' className='py-0' >Return Date</th>
+                    <th rowspan='2' className='py-0' >Returned Amount</th>
                   </tr>
-                  <tr>
-                    <th className='bg-white' scope='col'>Cash</th>
-                    <th className='bg-white' scope='col'>Card</th>
-                    <th className='bg-white' scope='col'>Paytm</th>
-                    <th className='bg-white' scope='col'>Phonepe</th>
-                    <th className='bg-white' scope='col'>Razorpay</th>
-                    <th className='bg-white' scope='col'>Wire-Transfer</th>
-                    <th className='bg-white' scope='col'>Points</th>
-                  </tr>
+                  {/* <tr>
+                    <th className='bg-white py-0' scope='col'>Cash</th>
+                    <th className='bg-white py-0' scope='col'>Card</th>
+                    <th className='bg-white py-0' scope='col'>Paytm</th>
+                    <th className='bg-white py-0' scope='col'>Phonepe</th>
+                    <th className='bg-white py-0' scope='col'>Razorpay</th>
+                    <th className='bg-white py-0' scope='col'>Wire-Transfer</th>
+                    <th className='bg-white py-0' scope='col'>Points</th>
+                  </tr> */}
                 </thead>
                 {
                   load ? (
@@ -742,27 +870,33 @@ const Pharmacy_Dsr = (props) => {
                         {
                           SaleReturnList.map((data, i) => (
                             <tr>
-                              <td key={i}>{data.sale_entry_id && data.sale_entry_id !== null ? "SE-" + data.sale_entry_id : ''}</td>
+                              {/* <td key={i}>{data.sale_entry_id && data.sale_entry_id !== null ? "SE-" + data.sale_entry_id : ''}</td> */}
                               <td key={i}>{data.return_no && data.return_no !== null ? "SR-" + data.return_no : ''}</td>
                               <td key={i}>{data.sale_entry && data.bill_id !== null ? "P-" + data.sale_entry.bill_id : ''}</td>
                               <td>{data.sale_entry && data.sale_entry.patient && data.sale_entry.patient.full_name !== null ? data.sale_entry.patient.full_name : ''}</td>
-                              <td>{data.sale_entry && data.sale_entry.patient && data.sale_entry.patient.phone_number !== null ? data.sale_entry.patient.phone_number : ''}</td>
+                              {/* <td>{data.sale_entry && data.sale_entry.patient && data.sale_entry.patient.phone_number !== null ? data.sale_entry.patient.phone_number : ''}</td> */}
                               <td>{data.sale_entry && data.sale_entry.doctor_name !== null ? 'Dr. ' + data.sale_entry.doctor_name : ''}</td>
                               <td>{data.sale_entry && data.sale_entry.bill_date !== null ? reversefunction(data.sale_entry.bill_date) : ''}</td>
-                              <td>{data.sale_entry.payment_method_details && data.sale_entry.payment_method_details != null ? JSON.parse(data.sale_entry.payment_method_details).Cash : ''}</td>
-                              <td>{data.sale_entry.payment_method_details && data.sale_entry.payment_method_details != null ? JSON.parse(data.sale_entry.payment_method_details).Card : ''}</td>
+                              {/* <td>{data.sale_entry.payment_method_details && data.sale_entry.payment_method_details != null ? JSON.parse(data.sale_entry.payment_method_details).Cash : data.sale_entry.pending_payments[0].payment_method_details && data.sale_entry.pending_payments[0].payment_method_details != null ? JSON.parse(data.sale_entry.pending_payments[0].payment_method_details).Cash:''}</td>
+                              <td>{data.sale_entry.pending_payments[0] !==undefined && data.sale_entry.pending_payments[0].payment_method_details !==undefined && data.sale_entry.pending_payments[0].payment_method_details != null ? JSON.parse(data.sale_entry.pending_payments[0].payment_method_details).Card :''}</td>
                               <td>{data.sale_entry.payment_method_details && data.sale_entry.payment_method_details != null ? JSON.parse(data.sale_entry.payment_method_details).Paytm : ''}</td>
                               <td>{data.sale_entry.payment_method_details && data.sale_entry.payment_method_details != null ? JSON.parse(data.sale_entry.payment_method_details).Phonepe : ''}</td>
                               <td>{data.sale_entry.payment_method_details && data.sale_entry.payment_method_details != null ? JSON.parse(data.sale_entry.payment_method_details).Razorpay : ''}</td>
                               <td>{data.sale_entry.payment_method_details && data.sale_entry.payment_method_details != null ? JSON.parse(data.sale_entry.payment_method_details)['Wire-Transfer'] : ''}</td>
                               <td>{data.sale_entry.payment_method_details && data.sale_entry.payment_method_details != null ? JSON.parse(data.sale_entry.payment_method_details).Points : ''}</td>
-                              <td>{data.sale_entry && data.sale_entry.grand_total !== null ? data.sale_entry.grand_total : ''}</td>
+                              <td>{data.sale_entry && data.sale_entry.grand_total !== null ? data.sale_entry.grand_total : ''}</td> */}
                               <td>{data.return_date && data.return_date !== null ? reversefunction(data.return_date) : ''}</td>
                               <td>{data.grand_total && data.grand_total !== null ? data.grand_total : ''}</td>
-
+                              {/* : data.sale_entry.payment_method_details && data.sale_entry.payment_method_details != null ? JSON.parse(data.sale_entry.payment_method_details).Card */}
                             </tr>
                           ))
                         }
+                        <tr className='bg-pearl text-light'>__</tr>
+                        <tr className='bg-pearl text-light'>__</tr>
+                        <tr className='bg-pearl text-light'>__</tr>
+                        <tr className='bg-pearl text-light'>__</tr>
+                        <tr className='bg-pearl text-light'>__</tr>
+                        <tr className='bg-pearl text-light'>__</tr>
                       </tbody>
 
                     )
@@ -770,30 +904,83 @@ const Pharmacy_Dsr = (props) => {
                 }
               </table>
             </div>
+            <div className='p-0 m-0 py-1 ps-2 bg-seashell border position-absolute w-100 bottom-0'>
+              <div className="row p-0 m-0">
+                <div className="col-auto">
+                  <h6 className='fw-bold text-charcoal75 '>Grand Total</h6>
+                  <h5 className='fw-bold'>Rs. {GrandTotal()}</h5>
+                </div>
+              </div>
+            </div>
           </div>
+
+
           <div className="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">
-            <div className='container-fluid p-0 m-0 scroll scroll-y pendingpayrecieve' style={{ minHeight: '10rem' }}>
+          <h6 className="text-charcoal fw-bold p-0 m-0 ms-2 ms-lg-3 ms-md-1 ms-sm-1">Payments</h6>
+            <div className="row m-0 g-2 mt-md-2 p-0 text-start justify-content-start">
+              <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-2 ms-lg-3  bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+                <p className='fw-bold text-charcoal75 text-start p-0 m-0 justify-content-start'>CASH</p>
+                <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForCash()}</h6>
+              </div>
+              <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-2 ms-sm-2 ms-lg-3 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+                <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>CARD</p>
+                <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForCard()}</h6>
+              </div>
+              <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-2 ms-sm-2 ms-lg-3 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+                <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>PAYTM</p>
+                <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForPaytm()}</h6>
+              </div>
+              <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-2 ms-sm-2 ms-lg-3 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+                <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>PHONEPE</p>
+                <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForPhonepe()}</h6>
+              </div>
+              <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-2 ms-sm-2 ms-lg-3 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+                <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>WIRE</p>
+                <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForWireTransfer()}</h6>
+              </div>
+              <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-2 ms-sm-2 ms-lg-3 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+                <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>RAZORPAY</p>
+                <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForRazorPay()}</h6>
+              </div>
+              <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-3 ms-md-2 ms-sm-2 ms-lg-3 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+                <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>POINTS</p>
+                <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForPoints()}</h6>
+              </div>
+            </div>
+            <div className=' saleoptions mt-2 position-absolute end-0 me-md-2 me-5 text-end'>
+              <span>
+                <DownloadTableExcel
+                  filename={`${reversefunction(props.fromdate) + ' to ' + reversefunction(props.todate)} Pendings Recieved`}
+                  sheet="Pendings Recieved"
+                  currentTableRef={pendingsrecieved.current}
+                >
+                  <button className='btn p-0 m-0 ms-5 bg-pearl border-charcoal px-2 py-1 fw-bold '> <img src={process.env.PUBLIC_URL + '/images/download.png'} style={{ 'width': '1.5rem' }} /> Export</button>
+
+                </DownloadTableExcel>
+              </span>
+            </div>
+            <div className='container-fluid p-0 m-0 scroll scroll-y pendingpayrecieve' ref={pendingsrecieved} style={{ minHeight: '60vh', maxHeight: '60vh' }}>
               <table className='table'>
-                <thead className='text-center position-sticky top-0 '>
+                <thead className='text-start position-sticky top-0 bg-pearl '>
                   <tr>
-                    <th rowspan='2' >Bill no.</th>
-                    <th rowspan='2' >Name</th>
-                    <th rowspan='2' >Mobile</th>
-                    <th rowspan='2' >Doctor Name</th>
-                    <th rowspan='2' >Bill Date</th>
-                    <th rowspan='2' >Pending Date</th>
-                    <th rowspan='2' >Paid Date</th>
-                    <th colspan='7' scope='colgroup' className='border-0'>Payment Method</th>
-                    <th rowspan='2' >Amount Received</th>
+                    <th rowspan='2' className='py-0' >Bill no.</th>
+                    <th rowspan='2' className='py-0' >Name</th>
+                    {/* <th rowspan='2' className='py-0' >Mobile</th> */}
+                    <th rowspan='2' className='py-0' >Doctor Name</th>
+                    <th rowspan='2' className='py-0' >Bill Date</th>
+                    <th rowspan='2' className='py-0' >Pending Date</th>
+                    <th rowspan='2' className='py-0' >Paid Date</th>
+                    <th colspan='7' scope='colgroup' className='border-0 py-0'>Payment Method</th>
+                    <th rowspan='2' className='py-0' >Amount Received</th>
                   </tr>
                   <tr>
-                    <th className='bg-white' scope='col'>Cash</th>
-                    <th className='bg-white' scope='col'>Card</th>
-                    <th className='bg-white' scope='col'>Paytm</th>
-                    <th className='bg-white' scope='col'>Phonepe</th>
-                    <th className='bg-white' scope='col'>Razorpay</th>
-                    <th className='bg-white' scope='col'>Wire-Transfer</th>
-                    <th className='bg-white' scope='col'>Points</th>
+                    <th className='bg-white py-0' scope='col'>Cash</th>
+                    <th className='bg-white py-0' scope='col'>Card</th>
+                    <th className='bg-white py-0' scope='col'>Paytm</th>
+                    <th className='bg-white py-0' scope='col'>Phonepe</th>
+                    <th className='bg-white py-0' scope='col'>Razorpay</th>
+                    <th className='bg-white py-0' scope='col'>Wire-Transfer</th>
+                    <th className='bg-white py-0' scope='col'>Points</th>
                   </tr>
                 </thead>
 
@@ -817,28 +1004,34 @@ const Pharmacy_Dsr = (props) => {
                         </tr>
                       </tbody>
                     ) : (
-                      <tbody className='text-center'>
+                      <tbody className='text-start'>
                         {
                           PendingPaid.map((data, i) => (
                             <tr>
                               <td>{data.sale_entry && data.sale_entry.bill_id !== null ? "P-" + data.sale_entry.bill_id : ''}</td>
                               <td>{data.sale_entry && data.sale_entry.patient && data.sale_entry.patient.full_name !== null ? data.sale_entry.patient.full_name : ''}</td>
-                              <td>{data.sale_entry && data.sale_entry.patient && data.sale_entry.patient.phone_number !== null ? data.sale_entry.patient.phone_number : ''}</td>
+                              {/* <td>{data.sale_entry && data.sale_entry.patient && data.sale_entry.patient.phone_number !== null ? data.sale_entry.patient.phone_number : ''}</td> */}
                               <td>{data.sale_entry && data.sale_entry.doctor_name !== null ? 'Dr. ' + data.sale_entry.doctor_name : ''}</td>
                               <td>{data.sale_entry && data.sale_entry.bill_date !== null ? reversefunction(data.sale_entry.bill_date) : ''}</td>
                               <td>{data.pending_date && data.pending_date !== null ? reversefunction(data.pending_date) : ''}</td>
                               <td>{data.paid_date && data.paid_date !== null ? reversefunction(data.paid_date) : ''}</td>
-                              <td>{data.sale_entry.payment_method_details && data.sale_entry.payment_method_details != null ? JSON.parse(data.sale_entry.payment_method_details).Cash : ''}</td>
-                              <td>{data.sale_entry.payment_method_details && data.sale_entry.payment_method_details != null ? JSON.parse(data.sale_entry.payment_method_details).Card : ''}</td>
-                              <td>{data.sale_entry.payment_method_details && data.sale_entry.payment_method_details != null ? JSON.parse(data.sale_entry.payment_method_details).Paytm : ''}</td>
-                              <td>{data.sale_entry.payment_method_details && data.sale_entry.payment_method_details != null ? JSON.parse(data.sale_entry.payment_method_details).Phonepe : ''}</td>
-                              <td>{data.sale_entry.payment_method_details && data.sale_entry.payment_method_details != null ? JSON.parse(data.sale_entry.payment_method_details).Razorpay : ''}</td>
-                              <td>{data.sale_entry.payment_method_details && data.sale_entry.payment_method_details != null ? JSON.parse(data.sale_entry.payment_method_details)['Wire-Transfer'] : ''}</td>
-                              <td>{data.sale_entry.payment_method_details && data.sale_entry.payment_method_details != null ? JSON.parse(data.sale_entry.payment_method_details).Points : ''}</td>
+                              <td>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Cash : ''}</td>
+                              <td>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Card : ''}</td>
+                              <td>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Paytm : ''}</td>
+                              <td>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Phonepe : ''}</td>
+                              <td>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Razorpay : ''}</td>
+                              <td>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details)['Wire-Transfer'] : ''}</td>
+                              <td>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Points : ''}</td>
                               <td>{data.paid_amount && data.paid_amount !== null ? data.paid_amount : ''}</td>
                             </tr>
                           ))
                         }
+                        <tr className='bg-pearl text-light'>__</tr>
+                        <tr className='bg-pearl text-light'>__</tr>
+                        <tr className='bg-pearl text-light'>__</tr>
+                        <tr className='bg-pearl text-light'>__</tr>
+                        <tr className='bg-pearl text-light'>__</tr>
+                        <tr className='bg-pearl text-light'>__</tr>
                       </tbody>
 
                     )
@@ -848,10 +1041,19 @@ const Pharmacy_Dsr = (props) => {
 
               </table>
             </div>
+            <div className='p-0 m-0 py-1 ps-2 bg-seashell border position-absolute w-100 bottom-0'>
+              <div className="row p-0 m-0">
+                <div className="col-auto">
+                  <h6 className='fw-bold text-charcoal75 '>Total Amount Recieved</h6>
+                  <h5 className='fw-bold'>Rs. {GrandTotal()}</h5>
+                </div>
+              </div>
+            </div>
           </div>
+          
         </div>
       </div>
-      
+
     </div>
 
 

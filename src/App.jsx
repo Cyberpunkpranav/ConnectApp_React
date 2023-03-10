@@ -990,8 +990,8 @@ function DailySaleReport(props) {
           </div>
 
         </div>
-        <div className="col-auto p-0 m-0 mt-2 text-center mx-auto">
-          <div className="row p-0 m-0">
+        <div className="col-auto p-0 m-0 mt-2">
+          <div className="row p-0 m-0 justify-content-center">
             <div className="col-auto p-0 m-0">
               <select className="px-1 bg-pearl text-burntumber py-2  py-md-1 text-center clinic ">
                 <option value="Select Clinic">Clinic</option>

@@ -105,3 +105,11 @@ background-color: var(--seashell);
 .Appointments_Dsrsection  .Advancepay  tr:nth-child(even){
         background-color: var(--seashell);
         }
+    .saleoptions{
+        top:20vh
+    }  
+@media (max-width:810px){
+    .saleoptions{
+        top:15vh;
+    }
+}
