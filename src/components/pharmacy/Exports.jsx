@@ -189,7 +189,7 @@ const ExportPurchaseReturn = (props) => {
                     'Distributor': distributor,
                     'GSTIN':GST,
                     'Item ID': Data.id != null ? Data.id : '',
-                    'Item Name': Data.medicine && Data.medicine.name && Data.medicine.name != null ? Data.medicine.name : '',
+                    'Item Name': Data.vaccine && Data.vaccine.name && Data.vaccine.name != null ? Data.vaccine.name : '',
                     'Batch No.': Data.batch_no != null ? Data.batch_no : '',
                     'ExpiryDate': Data.expiry_date !== null ? reversefunction(Data.expiry_date) : '',
                     'MRP': Data.mrp != null ? Data.mrp : '',
@@ -207,7 +207,7 @@ const ExportPurchaseReturn = (props) => {
                     'Cost Rs': Data.cost,
                     'Qty': Data.qty,
                     'Total Rs': Data.total_amount ? Data.total_amount : '',
-                    'HSN Code': Data.medicine && Data.medicine.hsn_code !== null ? Data.medicine.hsn_code : ''
+                    'HSN Code': Data.vaccine && Data.vaccine.hsn_code !== null ? Data.vaccine.hsn_code : ''
                 }))
                 obj.push(vendorsitems)
 

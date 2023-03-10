@@ -82,7 +82,8 @@ function Saleentrysection(props) {
   const [pages, setpages] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
   const [paymentsapage, setpaymentsapage] = useState('none')
   const [tabindex, settabindex] = useState()
-  console.log(saleentryarr)
+  const [totalpagecount, settotalpagecount] = useState()
+  console.log(saleentryarr, totalpagecount)
   const toggle_nsef = () => {
     if (nsef === 'none') {
       setnsef('block')
@@ -123,7 +124,8 @@ function Saleentrysection(props) {
     try {
       axios.get(`${url}/sale/entry?clinic_id=${ClinicID}&limit=25&offset=${i * 25}&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`).then((response) => {
         console.log(response)
-        setsaleentryarr(response.data.data)
+        settotalpagecount(response.data.data.total_count)
+        setsaleentryarr(response.data.data.sale_entry)
         let nxt = Number(i) + 1
         setnxtoffset(nxt)
         if (i != 0) {
@@ -229,7 +231,7 @@ function Saleentrysection(props) {
       </div>
       <div className='scroll scroll-y p-0 m-0 mt-1' style={{ minHeight: '40vh', height: '58vh', maxHeight: '70vh' }}>
         <table className="table text-center table-responsive p-0 m-0">
-          <thead className=' p-0 m-0'>
+          <thead className=' p-0 m-0 position-sticky top-0 bg-pearl'>
             <tr className=' p-0 m-0'>
               <th className='text-charcoal75 fw-bolder p-0 m-0 px-1' rowspan='2'>Bill ID</th>
               <th className='text-charcoal75 fw-bolder p-0 m-0 px-1' rowspan='2'>Patient Name</th>
@@ -343,6 +345,7 @@ function Saleentrysection(props) {
           </div>
           <button className={`btn p-0 m-0 px-1 border-charcoal ms-2`} ref={nextref} value={nxtoffset} onClick={(e) => { getnextpages(e); }} style={{ marginTop: '0.15rem' }}>Next</button>
         </div>
+
       </div>
       <section className={`newsaleentryform p-0 m-0 position-absolute d-${nsef} border border-1 mx-auto start-0 end-0 bg-seashell`} style={{ height: '90vh' }}>
         <SaleEntryForm toggle_nsef={toggle_nsef} GETSalesList={GETSalesList} />
@@ -754,7 +757,7 @@ function SaleReturns() {
       // /sale/return?from_date=2023-01-01&to_date=2023-01-31&limit=2&offset=0
       axios.get(`${url}/sale/return?limit=25&offset=${i * 25}&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`).then((response) => {
         console.log(response)
-        setsalereturnarr(response.data.data)
+        setsalereturnarr(response.data.data.sale_return)
         let nxt = Number(i) + 1
         setnxtoffset(nxt)
         if (i != 0) {
@@ -2178,7 +2181,7 @@ function Purchaseentrysection(props) {
 
     try {
       axios.get(`${url}/purchase/entry?clinic_id=${ClinicID}&channel=${channel}&limit=25&offset=${i * 25}&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`).then((response) => {
-        setpurchaseentryarr(response.data.data)
+        setpurchaseentryarr(response.data.data.purchase_entry)
         let nxt = Number(i) + 1
         setnxtoffset(nxt)
         if (i != 0) {
@@ -2241,7 +2244,7 @@ function Purchaseentrysection(props) {
             </div>
           </div>
         </div>
-        <div className="col-2 cool-md-2 col-lg-2 align-self-center">
+        <div className="col-2 col-md-2 col-lg-2 align-self-center">
           <ExportPurchaseEntry purchaseentryarr={purchaseentryarr} fromdate={reversefunction(fromdate)} todate={reversefunction(todate)} />
         </div>
       </div>
@@ -3653,7 +3656,7 @@ function PurchaseReturns() {
   const [prevoffset, setprevoffset] = useState(0)
   const [pages, setpages] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
   const [tabindex, settabindex] = useState()
-
+  const [totalpagecount, settotalpagecount] = useState()
   function GETPurchaseReturns(i) {
     if (i == undefined) {
       i = 0
@@ -3666,7 +3669,8 @@ function PurchaseReturns() {
     }
     try {
       axios.get(`${url}/purchase/return?clinic_id=${ClinicID}&channel=${channel}&limit=25&offset=${i * 25}&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`).then((response) => {
-        setpurchasereturnarr(response.data.data)
+        setpurchasereturnarr(response.data.data.purchase_return)
+        settotalpagecount(response.data.data.total_count)
         let nxt = Number(i) + 1
         setnxtoffset(nxt)
         if (i != 0) {

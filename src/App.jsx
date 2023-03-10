@@ -992,7 +992,7 @@ function DailySaleReport(props) {
         </div>
         <div className="col-auto p-0 m-0 mt-2">
           <div className="row p-0 m-0 justify-content-center">
-            <div className="col-auto p-0 m-0">
+            {/* <div className="col-auto p-0 m-0">
               <select className="px-1 bg-pearl text-burntumber py-2  py-md-1 text-center clinic ">
                 <option value="Select Clinic">Clinic</option>
                 {
@@ -1005,9 +1005,9 @@ function DailySaleReport(props) {
                   )
                 }
               </select>
-            </div>
+            </div> */}
             <div className="col-auto p-0 m-0 ">
-              <select className="bg-pearl text-center border-md-start-0 text-burntumber px-1 py-2 py-md-1 doctor" value={doctorid ? doctorid : ''} onChange={(e) => setdoctorid(e.target.value)}>
+              <select className="bg-pearl text-center border-start px-2 rounded-start text-burntumber px-1 py-2 py-md-1 doctor" value={doctorid ? doctorid : ''} onChange={(e) => setdoctorid(e.target.value)}>
                 <option value='Doctors'>Doctor</option>
                 {
                   Doctors.map((data) => (
@@ -1021,9 +1021,9 @@ function DailySaleReport(props) {
             </div>
             <div className="col-auto p-0 m-0">
               <div className="row p-0 m-0 text-center">
-                <input type='date' placeholder="from Date" value={fromdate ? fromdate : ''} className='bg-pearl col-auto px-1 fromdate' onChange={(e) => setfromdate(e.target.value)} />
+                <input type='date' placeholder="from Date" value={fromdate ? fromdate : ''} className='bg-pearl col-auto px-2 fromdate' onChange={(e) => setfromdate(e.target.value)} />
                 <div className="bg-pearl fw-bolder dash col-auto">-</div>
-                <input type='date' placeholder="to Date" disabled={fromdate ? false : true} value={todate ? todate : ''} className='bg-pearl px-1  col-auto todate' onChange={(e) => settodate(e.target.value)} />
+                <input type='date' placeholder="to Date" disabled={fromdate ? false : true} value={todate ? todate : ''} className='bg-pearl px-2 col-auto todate' onChange={(e) => settodate(e.target.value)} />
               </div>
             </div>
           </div>

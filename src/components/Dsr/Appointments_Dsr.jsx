@@ -274,80 +274,38 @@ const Appointments_Dsr = (props) => {
   return (
     <div className='Appointments_Dsrsection'>
       <div>
-        <div className="row p-0 m-0 justify-content-around ">
-          <div className=' col-5 col-lg-3 col-md-4 col-sm-5 CARD1 scroll shadow-sm rounded-2'>
-            <h6 className="text-burntumber ms-3 mt-2">Payment Methods</h6>
-            <table className='w-100'>
-              <thead>
-                <th></th>
-                <th></th>
-                <th></th>
-              </thead>
-              <tbody>
-                <tr className='border-bottom'>
-                  <td className='px-2'>Cash:{payment_method_detailsForCash()}</td>
-                  <td className='px-2'>Card:{payment_method_detailsForCard()}</td>
-                  <td className='px-2'>WireTransfer:{payment_method_detailsForWireTransfer()}</td>
-                </tr>
-                <tr className='border-bottom'>
-                  <td className='px-2'>PhonePay:{payment_method_detailsForPhonepe()}</td>
-                  <td className='px-2'>Points:{payment_method_detailsForPoints()}</td>
-                  <td className='px-2'> RazorPay:{payment_method_detailsForRazorPay()}</td>
-                </tr>
-                <tr className='border-bottom'>
-                  <td className='px-2'>Paytm{' '}{payment_method_detailsForPaytm()} </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div className="col-lg-3 col-md-4 col-sm-5 col-5 CARD2 shadow-sm rounded-2" style={{ maxWidth: '60vh' }}>
-            <h6 className='text-brandy p-0 ms-3 mt-2'>Amounts</h6>
-            <div className='bg-lightyellow scroll ps-2 border-bottom py-2'>
-              <table className='w-100'>
-                <thead>
-                  <th></th>
-                  <th></th>
-                </thead>
-                <tbody>
-                  <tr >
-                    <td className=' border-end border-2 border-dark pe-2 fw-bold '>
-                      Recieved
-                    </td>
-                    <td className='px-1'>
-                      Advance Amount:{AdvancedAmountRecieved()}
-                    </td>
-                    <td className='px-1'>
-                      Pending Amount:{PendingAmountRecieved()}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+      <h6 className="text-charcoal fw-bold p-0 m-0 ms-2 ms-lg-3 ms-md-1 ms-sm-1">Payments</h6>
+            <div className="row m-0 g-2 mt-md-2 p-0 text-start justify-content-start">
+              <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-2 ms-lg-3  bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+                <p className='fw-bold text-charcoal75 text-start p-0 m-0 justify-content-start'>CASH</p>
+                <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForCash()}</h6>
+              </div>
+              <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-2 ms-sm-2 ms-lg-3 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+                <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>CARD</p>
+                <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForCard()}</h6>
+              </div>
+              <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-2 ms-sm-2 ms-lg-3 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+                <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>PAYTM</p>
+                <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForPaytm()}</h6>
+              </div>
+              <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-2 ms-sm-2 ms-lg-3 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+                <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>PHONEPE</p>
+                <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForPhonepe()}</h6>
+              </div>
+              <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-2 ms-sm-2 ms-lg-3 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+                <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>WIRE</p>
+                <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForWireTransfer()}</h6>
+              </div>
+              <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-2 ms-sm-2 ms-lg-3 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+                <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>RAZORPAY</p>
+                <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForRazorPay()}</h6>
+              </div>
+              <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-3 ms-md-2 ms-sm-2 ms-lg-3 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+                <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>POINTS</p>
+                <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForPoints()}</h6>
+              </div>
             </div>
 
-            <div className='bg-raffia border-bottom py-1 scroll'>
-              <table className='w-100'>
-                <thead>
-                  <th></th>
-                  <th></th>
-                </thead>
-                <tbody>
-                  <tr >
-                    <td className=' border-end border-2 border-dark pe-2 fw-bold '>
-                      Total Amt.
-                    </td>
-                    <td className='px-1 '>
-                      Pending:<span className='fw-bold text-danger'>{TotalPendingPayment()}</span>
-                    </td>
-                    <td className='px-1'>
-                      Grand:<span className='fw-bold text-success'>{GrandTotal()}</span>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-        </div>
       </div>
 
       <div className="accordion mt-4" id="accordionExample">
@@ -366,7 +324,7 @@ const Appointments_Dsr = (props) => {
             </button>
           </h5>
           <div id="collapseOne" className="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-            <div className='container-fluid accordion-body scroll scroll-y bg-pearl p-0 m-0' style={{ maxHeight: '40vh', height: '40vh' }}>
+            <div className='container-fluid accordion-body scroll scroll-y bg-pearl p-0 m-0' style={{ maxHeight: '50vh', height: '40vh' }}>
               <table className='table text-center bg-pearl'>
                 <thead className='position-sticky top-0 bg-pearl'>
                   <tr className='bg-pearl'>
@@ -588,6 +546,37 @@ const Appointments_Dsr = (props) => {
           </div>
         </div>
       </div>
+      <div className='p-0 m-0 py-1 ps-2 bg-seashell border position-absolute w-100 bottom-0'>
+        <div className="row p-0 m-0">
+          <div className="col-auto">
+          <div className="row p-0 m-0 justify-content-start">
+                <div className="col-auto">
+                  <h6 className='fw-bold text-charcoal75 '> Recieved Advance Amount</h6>
+                  <h5 className='fw-bold'>Rs. {AdvancedAmountRecieved()}</h5>
+                </div>
+                <div className="col-auto">
+                  <h6 className='fw-bold text-charcoal75 '>Recieved Pending Amount</h6>
+                  <h5 className='fw-bold'>Rs. {PendingAmountRecieved()}</h5>
+                </div>
+              </div>
+          </div>
+          <div className="col-auto">
+          <div className="row p-0 m-0 justify-content-end">
+                <div className="col-auto">
+                  <h6 className='fw-bold text-charcoal75 '>Total Pending Amounts</h6>
+                  <h5 className='fw-bold'>Rs. {TotalPendingPayment()}</h5>
+                </div>
+                <div className="col-auto">
+                  <h6 className='fw-bold text-charcoal75 '>Grand Total</h6>
+                  <h5 className='fw-bold'>Rs. {GrandTotal()}</h5>
+                </div>
+              </div>
+          </div>
+   
+        </div>
+  
+     
+            </div>
     </div>
 
 

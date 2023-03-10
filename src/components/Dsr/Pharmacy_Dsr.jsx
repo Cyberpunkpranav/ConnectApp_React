@@ -372,36 +372,6 @@ const Pharmacy_Dsr = (props) => {
       return wiretransfer
     }
   }
-  function AdvancedAmountRecieved() {
-    let advancepayarr = []
-    let advancepay = 0
-    for (let i = 0; i < advancepaid.length; i++) {
-      advancepayarr.push(Number(advancepaid[i].credit_amount))
-    }
-    if (advancepayarr.length != 0) {
-      advancepayarr.forEach(item => {
-        advancepay += item
-      })
-      return advancepay
-    } else {
-      return 0
-    }
-  }
-  function PendingAmountRecieved() {
-    let pendingpayarr = []
-    let pendingpay = 0
-    for (let i = 0; i < pendingpaid.length; i++) {
-      pendingpayarr.push(Number(pendingpaid[i].paid_amount))
-    }
-    if (pendingpayarr.length != 0) {
-      pendingpayarr.forEach(item => {
-        pendingpay += Number(item)
-      })
-      return pendingpay
-    } else {
-      return 0
-    }
-  }
   function TotalPendingPayment() {
     let totalpendingarr = []
     let totalpending = 0;
@@ -1050,7 +1020,7 @@ const Pharmacy_Dsr = (props) => {
               </div>
             </div>
           </div>
-          
+
         </div>
       </div>
 
