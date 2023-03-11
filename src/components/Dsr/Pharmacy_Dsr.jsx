@@ -11,8 +11,8 @@ import '../../css/bootstrap.css'
 const Pharmacy_Dsr = (props) => {
   const Pendingsonly = useRef()
   const saleentry = useRef()
-  const salereturn =useRef()
-  const pendingsrecieved =useRef()
+  const salereturn = useRef()
+  const pendingsrecieved = useRef()
   const url = useContext(URL)
   const [pendingpaid, setpendingpaid] = useState([])
   const [advancepaid, setadvancepaid] = useState([])
@@ -23,6 +23,8 @@ const Pharmacy_Dsr = (props) => {
   const [load, setload] = useState()
   const [pd, setpd] = useState('none')
   const [se, setse] = useState('block')
+  const [pr,setpr] = useState('block')
+  const [prxl,setprxl]=useState('none')
   const [pageindex, setpageindex] = useState()
 
   const PharmacyList = async () => {
@@ -42,7 +44,7 @@ const Pharmacy_Dsr = (props) => {
   }
   useEffect(() => {
     PharmacyList()
-  }, [props.fromdate, props.todate])
+  }, [props.fromdate, props.todate,props.clinic])
 
 
 
@@ -482,7 +484,6 @@ const Pharmacy_Dsr = (props) => {
       setpd('none')
     }
   }
-
   // d-${Pendingsonly.current.checked = true ? Conditionaldisplay(i) : ''}
   return (
     <div className='Pharmacy_Dsrsection p-0 m-0'>
@@ -543,7 +544,7 @@ const Pharmacy_Dsr = (props) => {
               </div>
             </div>
 
-
+            {/* onClick={()=>{setse('block')}} */}
             <div className=' saleoptions mt-2 position-absolute end-0 me-md-2 me-5 text-end'>
               <span className={`d-${se}`}>
                 <DownloadTableExcel
@@ -567,9 +568,144 @@ const Pharmacy_Dsr = (props) => {
               </span>
               <input ref={Pendingsonly} type="checkbox" className='form-check-input ms-2' onChange={() => { Conditionaldisplay() }} /><label className='text-burntumber fw-bold'>Show Pendings Only</label>
             </div>
-
-
             <div className={`container-fluid p-0 m-0 scroll scroll-y mt-2 saleentries d-${se}`} ref={saleentry} style={{ minHeight: '60vh', maxHeight: '60vh' }}>
+              <table className='table'>
+                <thead className='text-start position-sticky top-0 bg-pearl'>
+                  <tr>
+                    <th className='py-0 text-charcoal75 fw-bold'>Bill no.</th>
+                    <th className='py-0 text-charcoal75 fw-bold'>Bill Date</th>
+                    <th className='py-0 text-charcoal75 fw-bold'>Name</th>
+                    <th className='py-0 text-charcoal75 fw-bold'>Doctor</th>
+                    <th className='py-0 text-charcoal75 fw-bold'>Bill Total</th>
+                    <th className='py-0 text-charcoal75 fw-bold'>Amt. Recieved</th>
+                    <th className='py-0 text-charcoal75 fw-bold'>Amt. Pending</th>
+                    <th className='py-0 text-charcoal75 fw-bold'>Payment Mode</th>
+                    <th className='py-0 text-charcoal75 fw-bold text-center'>Payment Status</th>
+                  </tr>
+                </thead>
+                {
+                  load ? (
+                    <body className=' text-start' style={{ minHeight: '55vh' }}>
+                      <tr className='position-absolute border-0 start-0 end-0 px-5'>
+                        <div class="d-flex align-items-center">
+                          <strong className='fs-5'>Getting Details please be Patient ...</strong>
+                          <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
+                        </div>
+                      </tr>
+
+                    </body>
+                  ) : (
+                    SaleEntryList && SaleEntryList.length == 0 ? (
+                      <tbody>
+                        <tr className='position-relative text-center  m-auto'  >
+                          <td className='position-absolute  text-charcoal fw-bold start-0 end-0' >No Sale Entries</td>
+                        </tr>
+                      </tbody>
+                    ) : (
+                      <tbody className='text-start' style={{ paddingBottom: '30px' }}>
+                        {
+                          SaleEntryList.map((data, i) => (
+                            <tr className={``}>
+                              <td className='fw-bold text-charcoal py-0 px-0 px-2' key={i}>{data && data.bill_id !== null ? "P-" + data.bill_id : ''}</td>
+                              <td className='fw-bold text-charcoal py-0 px-0 px-2'>{data && data.bill_date !== null ? reversefunction(data.bill_date) : ''}</td>
+                              <td className='fw-bold text-charcoal py-0 px-0 px-2'>{data && data.patient && data.patient.full_name !== null ? data.patient.full_name : ''}</td>
+                              <td className='fw-bold text-charcoal py-0 px-0 px-2'>{data && data.doctor_name !== null ? 'Dr. ' + data.doctor_name : ''}</td>
+                              <td className='fw-bold text-charcoal py-0 px-0 px-2'>{data.grand_total && data.grand_total !== null ? data.grand_total : ''}</td>
+                              <td className='fw-bold text-charcoal py-0 px-0 px-2'>{data.payment_method_details && data.payment_method_details != null ? Object.values(JSON.parse(data.payment_method_details)) + '' : ''}</td>
+                              <td className='fw-bold text-charcoal py-0 px-0 px-2'>{SumPendingpayments(i)}</td>
+                              <td className='fw-bold text-charcoal py-0 px-0 px-2'>{data.payment_method_details && data.payment_method_details != null ? Object.keys(JSON.parse(data.payment_method_details)) + '' : ''}</td>
+                              <td className='fw-bold text-charcoal text-center'>{SumPendingpayments(i) !== 0 ?
+                                <button className='button p-0 m-0 px-4 fw-bold text-charcoal rounded-pill button-lightred'>Pending</button>
+                                :
+                                <button className='button p-0 m-0 px-3 fw-bold rounded-pill text-cahrcoal button-lightgreen'>Completed</button>}</td>
+                            </tr>
+                          ))
+                        }
+                        <tr className='bg-pearl text-light'>__</tr>
+                        <tr className='bg-pearl text-light'>__</tr>
+                        <tr className='bg-pearl text-light'>__</tr>
+                        <tr className='bg-pearl text-light'>__</tr>
+                        <tr className='bg-pearl text-light'>__</tr>
+                        <tr className='bg-pearl text-light'>__</tr>
+                      </tbody>
+
+                    )
+                  )
+                }
+              </table>
+
+            </div>
+            <div className={`container-fluid p-0 m-0 scroll scroll-y mt-2 saleentries d-${pd}`} ref={Pendingsonly} style={{ minHeight: '60vh', maxHeight: '60vh' }}>
+              <table className='table'>
+                <thead className='text-start position-sticky top-0 bg-pearl'>
+                  <tr>
+                    <th className='py-0 text-charcoal75 fw-bold'>Bill no.</th>
+                    <th className='py-0 text-charcoal75 fw-bold'>Bill Date</th>
+                    <th className='py-0 text-charcoal75 fw-bold'>Name</th>
+                    <th className='py-0 text-charcoal75 fw-bold'>Doctor</th>
+                    <th className='py-0 text-charcoal75 fw-bold'>Bill Total</th>
+                    <th className='py-0 text-charcoal75 fw-bold'>Amt. Recieved</th>
+                    <th className='py-0 text-charcoal75 fw-bold'>Amt. Pending</th>
+                    <th className='py-0 text-charcoal75 fw-bold'>Payment Mode</th>
+                    <th className='py-0 text-charcoal75 fw-bold text-center'>Payment Status</th>
+                  </tr>
+                </thead>
+                {
+                  load ? (
+                    <body className=' text-center' style={{ minHeight: '55vh' }}>
+                      <tr className='position-absolute border-0 start-0 end-0 px-5'>
+                        <div class="d-flex align-items-center">
+                          <strong className='fs-5'>Getting Details please be Patient ...</strong>
+                          <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
+                        </div>
+                      </tr>
+
+                    </body>
+                  ) : (
+                    SaleEntryList && SaleEntryList.length == 0 ? (
+                      <tbody>
+                        <tr className='position-relative text-center  m-auto'  >
+                          <td className='position-absolute  text-charcoal fw-bold start-0 end-0' >No Sale Entries</td>
+                        </tr>
+                      </tbody>
+                    ) : (
+                      // d-${SumPendingpayments(i) > 0 ? '':'none'}
+                      <tbody className='text-start'>
+                        {
+                          SaleEntryList.map((data, i) => (
+
+                            SumPendingpayments(i) > 0 ? (
+
+                              <tr className={``}>
+                                <td className='fw-bold text-charcoal py-0 px-0 px-2' key={i}>{data && data.bill_id !== null ? "P-" + data.bill_id : ''}</td>
+                                <td className='fw-bold text-charcoal py-0 px-0 px-2'>{data && data.bill_date !== null ? reversefunction(data.bill_date) : ''}</td>
+                                <td className='fw-bold text-charcoal py-0 px-0 px-2'>{data && data.patient && data.patient.full_name !== null ? data.patient.full_name : ''}</td>
+                                <td className='fw-bold text-charcoal py-0 px-0 px-2'>{data && data.doctor_name !== null ? 'Dr. ' + data.doctor_name : ''}</td>
+                                <td className='fw-bold text-charcoal py-0 px-0 px-2'>{data.grand_total && data.grand_total !== null ? data.grand_total : ''}</td>
+                                <td className='fw-bold text-charcoal py-0 px-0 px-2'>{data.payment_method_details && data.payment_method_details != null ? Object.values(JSON.parse(data.payment_method_details)) + '' : ''}</td>
+                                <td className='fw-bold text-charcoal py-0 px-0 px-2'>{SumPendingpayments(i)}</td>
+                                <td className='fw-bold text-charcoal py-0 px-0 px-2'>{data.payment_method_details && data.payment_method_details != null ? Object.keys(JSON.parse(data.payment_method_details)) + '' : ''}</td>
+                                <td className='fw-bold text-charcoal text-center'><button className='button p-0 m-0 px-4 fw-bold text-charcoal rounded-pill button-lightred'>Pending</button></td>
+                              </tr>
+                            ) : (<></>)
+
+
+                          ))
+                        }
+                        <tr className='bg-pearl text-light'>__</tr>
+                        <tr className='bg-pearl text-light'>__</tr>
+                        <tr className='bg-pearl text-light'>__</tr>
+                        <tr className='bg-pearl text-light'>__</tr>
+                        <tr className='bg-pearl text-light'>__</tr>
+                        <tr className='bg-pearl text-light'>__</tr>
+                      </tbody>
+
+                    )
+                  )
+                }
+              </table>
+            </div>
+            <div className={`container-fluid p-0 m-0 scroll d-none scroll-y mt-2 saleentries d-${se}`} ref={saleentry} style={{ minHeight: '60vh', maxHeight: '60vh' }}>
               <table className='table'>
                 <thead className='text-start position-sticky top-0 bg-pearl'>
                   <tr>
@@ -611,7 +747,7 @@ const Pharmacy_Dsr = (props) => {
                         </tr>
                       </tbody>
                     ) : (
-                      <tbody className='text-start' style={{paddingBottom:'30px'}}>
+                      <tbody className='text-start' style={{ paddingBottom: '30px' }}>
                         {
                           SaleEntryList.map((data, i) => (
                             <tr className={``}>
@@ -647,7 +783,7 @@ const Pharmacy_Dsr = (props) => {
               </table>
 
             </div>
-            <div className={`container-fluid p-0 m-0 scroll scroll-y saleentries d-${pd}`} ref={Pendingsonly} style={{ minHeight: '60vh', maxHeight: '60vh' }}>
+            <div className={`container-fluid p-0 m-0 scroll scroll-y d-none saleentries d-${pd}`} ref={Pendingsonly} style={{ minHeight: '60vh', maxHeight: '60vh' }}>
               <table className='table'>
                 <thead className='text-start position-sticky top-0 bg-pearl'>
                   <tr>
@@ -886,7 +1022,7 @@ const Pharmacy_Dsr = (props) => {
 
 
           <div className="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">
-          <h6 className="text-charcoal fw-bold p-0 m-0 ms-2 ms-lg-3 ms-md-1 ms-sm-1">Payments</h6>
+            <h6 className="text-charcoal fw-bold p-0 m-0 ms-2 ms-lg-3 ms-md-1 ms-sm-1">Payments</h6>
             <div className="row m-0 g-2 mt-md-2 p-0 text-start justify-content-start">
               <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-2 ms-lg-3  bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
                 <p className='fw-bold text-charcoal75 text-start p-0 m-0 justify-content-start'>CASH</p>
@@ -924,18 +1060,79 @@ const Pharmacy_Dsr = (props) => {
                   sheet="Pendings Recieved"
                   currentTableRef={pendingsrecieved.current}
                 >
-                  <button className='btn p-0 m-0 ms-5 bg-pearl border-charcoal px-2 py-1 fw-bold '> <img src={process.env.PUBLIC_URL + '/images/download.png'} style={{ 'width': '1.5rem' }} /> Export</button>
+                  <button className='btn p-0 m-0 ms-5 bg-pearl border-charcoal px-2 py-1 fw-bold '> <img src={process.env.PUBLIC_URL + '/images/download.png'} style={{ 'width': '1.5rem' }} onClick={()=>{prxl('block')}} /> Export</button>
 
                 </DownloadTableExcel>
               </span>
             </div>
-            <div className='container-fluid p-0 m-0 scroll scroll-y pendingpayrecieve' ref={pendingsrecieved} style={{ minHeight: '60vh', maxHeight: '60vh' }}>
+            <div className={`container-fluid p-0 m-0 scroll scroll-y pendingpayrecieve mt-2`} ref={pendingsrecieved} style={{ minHeight: '60vh', maxHeight: '60vh' }}>
+              <table className='table'>
+                <thead className='text-start position-sticky top-0 bg-pearl '>
+                  <tr className='text-charcoal75 fw-bold'>
+                    <th className='py-0' >Bill no.</th>
+                    <th className='py-0' >Name</th>
+                    <th className='py-0' >Doctor Name</th>
+                    <th className='py-0' >Bill Date</th>
+                    <th className='py-0' >Pending Date</th>
+                    <th className='py-0' >Paid Date</th>
+                    <th className='py-0'>payment Mode</th>
+                    <th className='py-0'>Amt Recieved</th>
+                    <th className='py-0' >Total Received</th>
+                  </tr>
+               
+                </thead>
+
+                {
+                  load ? (
+                    <body className=' text-start' style={{ minHeight: '55vh' }}>
+                      <tr className='position-absolute border-0 start-0 end-0 px-5'>
+                        <div class="d-flex align-items-center">
+                          <strong className='fs-5'>Getting Details please be Patient ...</strong>
+                          <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
+                        </div>
+                      </tr>
+
+                    </body>
+
+                  ) : (
+                    PendingPaid && PendingPaid.length == 0 ? (
+                      <tbody>
+                        <tr className='position-relative text-center  m-auto'  >
+                          <td className='position-absolute  text-charcoal fw-bold start-0 end-0' >No Pending Entries</td>
+                        </tr>
+                      </tbody>
+                    ) : (
+                      <tbody className='text-start'>
+                        {
+                          PendingPaid.map((data, i) => (
+                            <tr className='text-charcoal fw-bold'>
+                              <td>{data.sale_entry && data.sale_entry.bill_id !== null ? "P-" + data.sale_entry.bill_id : ''}</td>
+                              <td>{data.sale_entry && data.sale_entry.patient && data.sale_entry.patient.full_name !== null ? data.sale_entry.patient.full_name : ''}</td>
+                              <td>{data.sale_entry && data.sale_entry.doctor_name !== null ? 'Dr. ' + data.sale_entry.doctor_name : ''}</td>
+                              <td>{data.sale_entry && data.sale_entry.bill_date !== null ? reversefunction(data.sale_entry.bill_date) : ''}</td>
+                              <td>{data.pending_date && data.pending_date !== null ? reversefunction(data.pending_date) : ''}</td>
+                              <td>{data.paid_date && data.paid_date !== null ? reversefunction(data.paid_date) : ''}</td>
+                              <td>{data.payment_method_details && data.payment_method_details != null ? Object.keys(JSON.parse(data.payment_method_details)) +'' : ''}</td>
+                              <td>{data.payment_method_details && data.payment_method_details != null ? Object.values(JSON.parse(data.payment_method_details)) +'' : ''}</td>
+                              <td>{data.paid_amount && data.paid_amount !== null ? data.paid_amount : ''}</td>
+                            </tr>
+                          ))
+                        }
+                      </tbody>
+
+                    )
+                  )
+                }
+
+
+              </table>
+            </div>
+            <div className={`container-fluid p-0 m-0 scroll scroll-y d-none pendingpayrecieve d-${prxl}`} ref={pendingsrecieved} style={{ minHeight: '60vh', maxHeight: '60vh' }}>
               <table className='table'>
                 <thead className='text-start position-sticky top-0 bg-pearl '>
                   <tr>
                     <th rowspan='2' className='py-0' >Bill no.</th>
                     <th rowspan='2' className='py-0' >Name</th>
-                    {/* <th rowspan='2' className='py-0' >Mobile</th> */}
                     <th rowspan='2' className='py-0' >Doctor Name</th>
                     <th rowspan='2' className='py-0' >Bill Date</th>
                     <th rowspan='2' className='py-0' >Pending Date</th>
@@ -980,7 +1177,6 @@ const Pharmacy_Dsr = (props) => {
                             <tr>
                               <td>{data.sale_entry && data.sale_entry.bill_id !== null ? "P-" + data.sale_entry.bill_id : ''}</td>
                               <td>{data.sale_entry && data.sale_entry.patient && data.sale_entry.patient.full_name !== null ? data.sale_entry.patient.full_name : ''}</td>
-                              {/* <td>{data.sale_entry && data.sale_entry.patient && data.sale_entry.patient.phone_number !== null ? data.sale_entry.patient.phone_number : ''}</td> */}
                               <td>{data.sale_entry && data.sale_entry.doctor_name !== null ? 'Dr. ' + data.sale_entry.doctor_name : ''}</td>
                               <td>{data.sale_entry && data.sale_entry.bill_date !== null ? reversefunction(data.sale_entry.bill_date) : ''}</td>
                               <td>{data.pending_date && data.pending_date !== null ? reversefunction(data.pending_date) : ''}</td>
@@ -996,12 +1192,6 @@ const Pharmacy_Dsr = (props) => {
                             </tr>
                           ))
                         }
-                        <tr className='bg-pearl text-light'>__</tr>
-                        <tr className='bg-pearl text-light'>__</tr>
-                        <tr className='bg-pearl text-light'>__</tr>
-                        <tr className='bg-pearl text-light'>__</tr>
-                        <tr className='bg-pearl text-light'>__</tr>
-                        <tr className='bg-pearl text-light'>__</tr>
                       </tbody>
 
                     )

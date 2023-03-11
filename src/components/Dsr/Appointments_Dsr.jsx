@@ -28,7 +28,7 @@ const Appointments_Dsr = (props) => {
     setloading(true)
     if (props.doctorid || props.fromdate || props.todate) {
       try {
-        await axios.get(`${url}/DSR/appointments?from_date=${props.fromdate}&to_date=${props.todate}&admin_id=${adminid}&clinic_id=${props.clinicid}&doctor_id=${props.doctorid ? props.doctorid : ''}`).then((response) => {
+        await axios.get(`${url}/DSR/appointments?from_date=${props.fromdate}&to_date=${props.todate}&admin_id=${adminid}&clinic_id=${props.clinic}&doctor_id=${props.doctorid ? props.doctorid : ''}`).then((response) => {
           response.data.data.appointments.map((data) => {
             listdata.push(data.doctor.id)
           })
@@ -53,9 +53,9 @@ const Appointments_Dsr = (props) => {
   }, [])
   useEffect(() => {
     DSR_All_Appointments()
-  }, [props.doctorid, props.fromdate, props.todate])
+  }, [props.doctorid, props.fromdate, props.todate,props.clinic])
   // console.log(visibles)
-  // console.log(Appointments)
+  // console.log(Appointments,props.clinic)
 
   const reversefunction = (date) => {
     if (date !== undefined) {

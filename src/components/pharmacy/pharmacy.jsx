@@ -266,7 +266,7 @@ function Saleentrysection(props) {
                   {
                     saleentryarr.map((item, i) => (
                       <tr className={` bg-${((i % 2) == 0) ? 'seashell' : 'pearl'} align-middle`} key={i}>
-                        <td className='text-charcoal fw-bold p-0 m-0 px-1'>{item.id && item.id !== null ? "P-" + item.id : ''}</td>
+                        <td className='text-charcoal fw-bold p-0 m-0 px-1'>{item.bill_id && item.bill_id !== null ? "P-" + item.bill_id : ''}</td>
                         <td className='text-charcoal fw-bold p-0 m-0 px-1'>{item.patient && item.patient && item.patient.full_name != null ? item.patient.full_name : ''}</td>
                         <td className='text-charcoal fw-bold p-0 m-0 px-1'>{item.bill_date && item.bill_date ? reversefunction(item.bill_date) : ''}</td>
                         <td className='text-charcoal fw-bold p-0 m-0 px-1'>{item.grand_total && item.grand_total ? "Rs. " + item.grand_total : ''}</td>
@@ -630,7 +630,7 @@ function SEitemdetailssection(props) {
                       <td className='border p-0 m-0 align-middle'>{item.main_mrp ? item.main_mrp : ''}</td>
                       <td className='border p-0 m-0 align-middle'>{item.discount != null ? item.discount : ''}</td>
                       <td className='border p-0 m-0 align-middle'>{item.disc_mrp ? item.disc_mrp : ''}</td>
-                      <td className='border p-0 m-0 align-middle'>{item.medicine_stocks && item.medicine_stocks.total_amount ? item.medicine_stocks.total_amount : ''}</td>
+                      <td className='border p-0 m-0 align-middle'>{item.total_amount ? item.total_amount : ''}</td>
                       <td className={`border p-0 m-0 align-middle d-${Taxon == true ? '' : 'none'}`}>{item.SGST_rate ? Number(item.SGST_rate) : ''}</td>
                       <td className={`border p-0 m-0 align-middle d-${Taxon == true ? '' : 'none'}`}>{item.SGST ? Number(item.SGST) * Number(item.qty) : ''}</td>
                       <td className={`border p-0 m-0 align-middle d-${Taxon == true ? '' : 'none'}`}>{item.CGST_rate ? Number(item.CGST_rate) : ''}</td>
@@ -639,7 +639,7 @@ function SEitemdetailssection(props) {
                       <td className={`border p-0 m-0 align-middle d-${Taxon == true ? '' : 'none'}`}>{item.IGST ? Number(item.IGST) * Number(item.qty) : ''}</td>
                       <td className='border p-0 m-0 align-middle'>{TotalTaxPercent(item.CGST_rate, item.SGST_rate, item.IGST_rate)}</td>
                       <td className='border p-0 m-0 align-middle'>{TotalTaxRate(item.CGST, item.SGST, item.IGST, item.qty)}</td>
-                      <td className='border p-0 m-0 align-middle'>{item.total_amount ? item.total_amount : ''}</td>
+                      <td className='border p-0 m-0 align-middle'>{item.medicine_stocks && item.medicine_stocks.total_amount ? item.medicine_stocks.total_amount : ''}</td>
                     </tr>
                   ))
                 }
@@ -814,24 +814,23 @@ function SaleReturns() {
       <div classsName='p-0 m-0'>
         <div className="row p-0 m-0 justify-content-lg-between">
           <div className="col-2 col-md-2 col-lg-2 text-center align-self-center text-charcoal fw-bolder fs-6">Sale Return </div>
-          <div className="col-6 col-xl-6 col-lg-7 col-md-7 col-sm-auto align-self-center m-1 justify-content-center ">
+          <div className="col-auto align-self-center m-1 justify-content-center ">
             <div className="row border-burntumber fw-bolder rounded-2 text-center justify-content-center ">
-              <div className="col-4 d-none">
-                <select className='p-0 m-0 border-0 text-burntumber fw-bolder' value={channel ? channel : ''} onChange={(e) => { setchannel(e.target.value) }}>
+              <div className="col-auto ">
+                <select className='p-0 m-0 border-0 text-burntumber fw-bolder rounded-2' value={channel ? channel : ''} onChange={(e) => { setchannel(e.target.value) }}>
                   <option className='border-0 text-burntumber fw-bolder' value='1'>Pharmacy</option>
                   <option className='border-0 text-burntumber fw-bolder' value='2'>Consumables</option>
                 </select>
               </div>
-              <div className="col-4 col-md-6 col-sm-6 text-burntumber bg-pearl fw-bolder">
+              <div className="col-auto  text-burntumber bg-pearl fw-bolder">
                 <input type='date' className='p-0 m-0 border-0 text-burntumber  bg-pearl fw-bolder' placeholder='fromdate' value={fromdate ? fromdate : ''} onChange={(e) => { setfromdate(e.target.value) }} />
               </div>
-              <div className="col-4 col-md-6 col-sm-6 text-burntumber bg-pearl fw-bolder">
+              <div className="col-auto  text-burntumber bg-pearl fw-bolder rounded-2">
                 <input type='date' className='p-0 m-0 border-0 text-burntumber fw-bolder bg-pearl' placeholder='fromdate' value={todate ? todate : ''} onChange={(e) => { settodate(e.target.value) }} />
               </div>
             </div>
           </div>
           <div className="col-2 col-lg-2 col-md-2 align-self-center">
-            excel
             <ExportSaleReturn salereturnarr={salereturnarr} fromdate={reversefunction(fromdate)} todate={reversefunction(todate)} />
           </div>
         </div>
@@ -2438,7 +2437,7 @@ function PEitemdetailssection(props) {
                 {
                   props.purchaseentryarr.medicines.map((item, _key) => (
                     <tr className='border p-0 m-0 align-middle' key={_key}>
-                      <td className='border p-0 m-0 align-middle'>{item && item.id !== null ? item.id : 'N/A'}</td>
+                      <td className='border p-0 m-0 align-middle'>{item && item.id !== null ?'m'+item.id : 'N/A'}</td>
                       <td className='border p-0 m-0 align-middle'>{item.medicine && item.medicine.name !== null ? item.medicine.name : 'N/A'}</td>
                       <td className='border p-0 m-0 align-middle'>{item.batch_no && item.batch_no != null ? item.batch_no : 'N/A'}</td>
                       <td className='border p-0 m-0 align-middle'>{item.expiry_date && item.expiry_date != null ? item.expiry_date : 'N/A'}</td>
@@ -2510,8 +2509,8 @@ function PEitemdetailssection(props) {
                 {
                   props.purchaseentryarr.vaccines.map((item, _key) => (
                     <tr className='border p-0 m-0 align-middle' key={_key}>
-                      <td className='border p-0 m-0 align-middle'>{item && item.id !== null ? item.id : 'N/A'}</td>
-                      <td className='border p-0 m-0 align-middle'>{item.medicine && item.medicine.name !== null ? item.medicine.name : 'N/A'}</td>
+                      <td className='border p-0 m-0 align-middle'>{item && item.id !== null ? 'v'+item.id : 'N/A'}</td>
+                      <td className='border p-0 m-0 align-middle'>{item.vaccine && item.vaccine.name !== null ? item.vaccine.name : 'N/A'}</td>
                       <td className='border p-0 m-0 align-middle'>{item.batch_no && item.batch_no != null ? item.batch_no : 'N/A'}</td>
                       <td className='border p-0 m-0 align-middle'>{item.expiry_date && item.expiry_date != null ? item.expiry_date : 'N/A'}</td>
                       <td className='border p-0 m-0 align-middle'>{item.mrp ? item.mrp : 'N/A'}</td>
@@ -3178,7 +3177,7 @@ function Newpurchaseentryform(props) {
       setNewMed('block')
     }
   }
-  console.log(vendorid, vendorsearch)
+  console.log(vendorid, vendorsearch, vendorcode)
   return (
 
     <div className="container-fluid p-0 m-0" style={{ zIndex: '2' }}>
@@ -3381,7 +3380,7 @@ function Newpurchaseentryform(props) {
                               <p className={`p-0 m-0 bg-pearl fw-bold text-charcoal75 rounded-4 ps-2 `} style={{ fontSize: '0.8rem' }}>{itemsearch.length} Search Results</p>
                               {
                                 itemsearch.map((data, i) => (
-                                  <div style={{ cursor: 'pointer' }} className={`p-0 ps-1 text-wrap  bg-${((i % 2) == 0) ? '' : 'lightyellow'}`} name={data.id} onClick={(e) => { setitemname(data.display_name ? data.display_name : data.name); setitemid(data.id); setitemtype(data.vaccines_id ? 'v' : 'm'); medicinesref.current.style.display = 'none'; }}>{data.display_name ? data.display_name : data.name}</div>
+                                  <div style={{ cursor: 'pointer' }} className={`p-0 ps-1 text-wrap  bg-${((i % 2) == 0) ? '' : 'lightyellow'}`} name={data.id} onClick={(e) => { setitemname(data.display_name ? data.display_name : data.name); setitemid(data.id); setitemtype(data.vaccines_id || data.vaccines_id == null ? 'v' : 'm'); medicinesref.current.style.display = 'none'; }}>{data.display_name ? data.display_name : data.name}</div>
                                 ))
                               }
                             </div>

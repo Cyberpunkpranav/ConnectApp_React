@@ -286,14 +286,14 @@ const Doctors_Dsr = (props) => {
           {
             load ? (
               <tbody className='position-relative'>
-                <tr className='position-absolute start-0 end-0 fs-4 fw-bolder text-charcoal75'>Loading Doctors Login History </tr>
+                <tr className='position-absolute start-0 end-0 fw-bolder text-charcoal'>Loading Doctors Login History </tr>
               </tbody>
             ) : (
               Appointments.length == 0 || Appointments == undefined ? (
                 <tbody className='position-relative'>
-                  <tr className='position-absolute start-0 end-0 fs-4 fw-bolder text-burntumber'>No Doctors Login History Found </tr>
+                  <tr className='position-absolute start-0 end-0 fw-bolder text-charcoal'>No Doctors Login History Found </tr>
                 </tbody>
-              ) : (
+              ) : ( 
                 <tbody className='border'>
                   {
                     Appointments.map((data, i) => (

@@ -30,6 +30,10 @@ import './css/patient.css';
 import './css/Doctors.css';
 
 import '../node_modules/bootstrap/js/dist/dropdown';
+// import '../node_modules/bootstrap/js/dist/collapse'
+// import "../node_modules/jquery/dist/jquery.min.js";
+// import "../node_modules/bootstrap/dist/js/bootstrap.min.js"
+// import "../node_modules/bootstrap/js/src/collapse.js";
 //Notiflix
 import Notiflix from 'notiflix';
 import { customconfirm } from "./components/features/notiflix/customconfirm"
@@ -211,14 +215,14 @@ function Navbar(props) {
               </div>
             </div>
             <div className="col-lg-auto col-xl-auto col-md-auto col-6 col-sm-2 text-center align-self-center position-relative p-0 m-0 ">
-              <div class="dropdown">
-                <button class="button button p-0 m-0 px-1 py-1 button-burntumber dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <div className="dropdown">
+                <button className="button button p-0 m-0 px-1 py-1 button-burntumber dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                   +Add
                 </button>
-                <ul class="dropdown-menu">
-                  <li><button class="dropdown-item border-bottom" onClick={() => { togglepatientform() }}>+ Patient</button></li>
-                  <li><button class="dropdown-item border-bottom" onClick={() => { toggleappointmentform() }}>+ Appointment</button></li>
-                  <li><button class="dropdown-item " onClick={() => { toggledoctorform() }}>+ Doctor</button></li>
+                <ul className="dropdown-menu">
+                  <li><button className="dropdown-item border-bottom" onClick={() => { togglepatientform() }}>+ Patient</button></li>
+                  <li><button className="dropdown-item border-bottom" onClick={() => { toggleappointmentform() }}>+ Appointment</button></li>
+                  <li><button className="dropdown-item " onClick={() => { toggledoctorform() }}>+ Doctor</button></li>
                 </ul>
               </div>
             </div>
@@ -945,6 +949,12 @@ function Doctors() {
 }
 
 function DailySaleReport(props) {
+  const month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December",];
+  var weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday",];
+  const d = new Date();
+  let monthname = month[d.getMonth()];
+  var fullDate = new Date();
+  var currentDate = monthname + " " + fullDate.getDate() + "," + fullDate.getFullYear() + " ";
   const Doctors = useContext(DoctorsList)
   const CurrentDate = useContext(TodayDate)
   const clinicid = localStorage.getItem('ClinicId')
@@ -954,12 +964,12 @@ function DailySaleReport(props) {
   const [doctorid, setdoctorid] = useState()
   const [fromdate, setfromdate] = useState()
   const [todate, settodate] = useState()
-  const [clinic, setclinic] = useState()
+  const [clinic, setclinic] = useState(clinicid)
 
 
   function ToggleOptions(_menu) {
     if (_menu == 0) {
-      return <Appointments_Dsr clinicid={clinicid} doctorid={doctorid} fromdate={fromdate ? fromdate : CurrentDate} todate={todate ? todate : fromdate} clinic={clinic} />
+      return <Appointments_Dsr clinic={clinic} doctorid={doctorid} fromdate={fromdate ? fromdate : CurrentDate} todate={todate ? todate : fromdate} />
     }
     if (_menu == 1) {
       return <Doctors_Dsr clinicid={clinicid} doctorid={doctorid} fromdate={fromdate ? fromdate : CurrentDate} todate={todate ? todate : fromdate} />
@@ -990,44 +1000,65 @@ function DailySaleReport(props) {
           </div>
 
         </div>
-        <div className="col-auto p-0 m-0 mt-2">
-          <div className="row p-0 m-0 justify-content-center">
-            {/* <div className="col-auto p-0 m-0">
-              <select className="px-1 bg-pearl text-burntumber py-2  py-md-1 text-center clinic ">
-                <option value="Select Clinic">Clinic</option>
-                {
-                  props.cliniclist ? (
-                    props.cliniclist.map((data) => (
-                      <option className="text-start" selected={clinicid == data.id ? true : false} value={data.id}>{data.id}.{' '}{data.title}</option>
-                    ))
-                  ) : (
-                    <option>Loading</option>
-                  )
-                }
-              </select>
-            </div> */}
-            <div className="col-auto p-0 m-0 ">
-              <select className="bg-pearl text-center border-start px-2 rounded-start text-burntumber px-1 py-2 py-md-1 doctor" value={doctorid ? doctorid : ''} onChange={(e) => setdoctorid(e.target.value)}>
-                <option value='Doctors'>Doctor</option>
-                {
-                  Doctors.map((data) => (
-                    <>
-                      <option className="text-start" value={data[0]}>{data[0]}. Dr.{data[1]} </option>
+        <div className="row p-0 m-0 align-items-center gx-2">
+          <div className="col-auto">
+            <div className="container-fluid p-0 m-0 my-2">
+              <div className="row m-0 p-0 align-items-center">
+                <span className='col-auto fs-4 text-charcoal fw-bold p-0 m-0'>{<Livetime />}</span>
 
-                    </>
-                  ))
-                }
-              </select>
-            </div>
-            <div className="col-auto p-0 m-0">
-              <div className="row p-0 m-0 text-center">
-                <input type='date' placeholder="from Date" value={fromdate ? fromdate : ''} className='bg-pearl col-auto px-2 fromdate' onChange={(e) => setfromdate(e.target.value)} />
-                <div className="bg-pearl fw-bolder dash col-auto">-</div>
-                <input type='date' placeholder="to Date" disabled={fromdate ? false : true} value={todate ? todate : ''} className='bg-pearl px-2 col-auto todate' onChange={(e) => settodate(e.target.value)} />
+
               </div>
             </div>
           </div>
+          <div className="col">
+            <div className="dropdown">
+              <button className="button button p-0 m-0 px-1 py-1 button-pearl text-burntumber  fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Filter Options
+              </button>
+              <ul className="dropdown-menu">
+                <li className="text-center"><button className="dropdown-item border-bottom" >
+                  <div className="col-auto p-0 m-0">
+                    <select className="px-1 bg-transparent border-0 text-burntumber py-2  py-md-1 text-center " value={clinic ? clinic : ''} onChange={(e) => { setclinic(e.target.value) }}>
+                      <option value="Select Clinic">Clinic</option>
+                      {
+                        props.cliniclist ? (
+                          props.cliniclist.map((data) => (
+                            <option className="text-start" value={data.id}>{data.id}.{' '}{data.title}</option>
+                          ))
+                        ) : (
+                          <option>Loading</option>
+                        )
+                      }
+                    </select>
+                  </div></button></li>
+                <li className="text-center"><button className="dropdown-item border-bottom " >
+                  <div className="col-auto p-0 m-0 ">
+                    <select className="bg-pearl text-center bg-transparent border-0  px-2 text-burntumber px-1 py-2 py-md-1" value={doctorid ? doctorid : ''} onChange={(e) => setdoctorid(e.target.value)}>
+                      <option value='Doctors'>Doctor</option>
+                      {
+                        Doctors.map((data) => (
+                          <>
+                            <option className="text-start" value={data[0]}>{data[0]}. Dr.{data[1]} </option>
+
+                          </>
+                        ))
+                      }
+                    </select>
+                  </div></button></li>
+                <li className="text-center"><button className="dropdown-item ">
+                  <div className="col-auto p-0 m-0">
+                    <div className="row p-0 m-0 text-center">
+                      <input type='date' placeholder="from Date" value={fromdate ? fromdate : ''} className=' bg-pearl col-auto px-2 border-0 outline-none ' onChange={(e) => setfromdate(e.target.value)} />
+                      <div className="bg-pearl fw-bolder col-auto">-</div>
+                      <input type='date' placeholder="to Date" disabled={fromdate ? false : true} value={todate ? todate : ''} className='bg-pearl px-2 border-0 col-auto outline-none' onChange={(e) => settodate(e.target.value)} />
+                    </div>
+                  </div></button></li>
+              </ul>
+            </div>
+          </div>
+
         </div>
+
       </div>
       <div className="container-fluid  m-0 p-0 ">
         <div className="p-0 m-0">{ToggleOptions(menu)}</div>
@@ -1077,7 +1108,7 @@ function Pharmacy() {
             </div>
           </div>
         </div>
-        <div className="p-0 m-0 ms-1 text-charcoal75 fs-4 ">
+        <div className="p-0 m-0 ms-1 text-charcoal fw-bold fs-4 ">
           {<Livetime />}
         </div>
         <div className="p-0 m-0">{_selectedmenu(menuindex)}</div>
