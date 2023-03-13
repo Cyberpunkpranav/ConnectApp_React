@@ -45,14 +45,14 @@ const UpdatePatient = (props) => {
         } else if (props.data.address[0] && props.data.address[0].address_line1) {
             setaddress(props.data.address[0].address_line1)
         } else {
-            setaddress('Address not saved')
+            setaddress('')
         }
         props.phonecountrycode ? setcountrycode(props.phonecountrycode) : setcountrycode()
         props.PhoneNo ? setphonenumber(props.PhoneNo) : setphonenumber()
-        props.full_name ? setfullname(props.full_name) : setfullname('Not Saved Currently')
+        props.full_name ? setfullname(props.full_name) : setfullname('')
         props.dob ? setDOB(props.dob) : setDOB()
         props.pincode ? setpincode(props.pincode) : setpincode()
-        props.email ? setemail(props.email) : setemail('Not Saved Currently')
+        props.email ? setemail(props.email) : setemail('')
         props.location ? setplace(props.location) : setplace()
         props.main ? setmain(props.main) : setmain()
         props.latitude ? setlat(props.latitude) : setlat()

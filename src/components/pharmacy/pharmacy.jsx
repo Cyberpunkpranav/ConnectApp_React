@@ -80,11 +80,11 @@ function Saleentrysection(props) {
   const [nsef, setnsef] = useState("none");
   const [nxtoffset, setnxtoffset] = useState(0)
   const [prevoffset, setprevoffset] = useState(0)
-  const [pages, setpages] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+  const [pages, setpages] = useState([])
   const [paymentsapage, setpaymentsapage] = useState('none')
   const [tabindex, settabindex] = useState()
   const [pagecount, setpagecount] = useState()
-  console.log(saleentryarr, pagecount)
+  // console.log(saleentryarr, pagecount)
   const toggle_nsef = () => {
     if (nsef === 'none') {
       setnsef('block')
@@ -167,10 +167,20 @@ function Saleentrysection(props) {
   }
   useEffect(() => {
     GETSalesList()
+    let pagearr = []
+    let pages = Math.round(pagecount / 25)
+    console.log(pages)
+    for (let i = 0; i < pages; i++) {
+      pagearr.push(i + 1)
+    }
+
+    setpagecount(pagearr)
 
   }, [channel, fromdate, todate])
   useEffect(() => {
     GETSalesListForExcel()
+
+
   }, [pagecount])
   const reversefunction = (date) => {
     if (date) {
@@ -221,7 +231,9 @@ function Saleentrysection(props) {
     }
 
   }
-  console.log(saleentryarrforExcel)
+
+
+  // console.log(saleentryarrforExcel)
   return (
     <>
       <button className="button addentrypurchase button-charcoal position-absolute" onClick={toggle_nsef}><img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt='displaying_image' className="img-fluid" style={{ width: `1.5rem` }} />Entry Sale</button>
@@ -969,6 +981,7 @@ function SaleReturns() {
   )
 }
 function SaleEntryForm(props) {
+  const tableref = useRef(null)
   const cliniclist = useContext(Clinic)
   const url = useContext(URL)
   const Doclist = useContext(DoctorsList)
@@ -992,7 +1005,7 @@ function SaleEntryForm(props) {
   const [searchload, setsearchload] = useState(false)
   const [products, setproducts] = useState([])
   const [itemsearch, setitemsearch] = useState([])
-  const [itembyid, setitembyid] = useState([''])
+  const [itembyid, setitembyid] = useState([])
   const [loadbyId, setloadbyId] = useState()
   const [itemname, setitemname] = useState()
   const [itemid, setitemid] = useState()
@@ -1074,7 +1087,6 @@ function SaleEntryForm(props) {
       Notiflix.Notify.warning(e.data.message)
     }
   }
-
   const searchmedbyId = async (search) => {
     if (search.length > 0) {
       setloadbyId(true)
@@ -1088,7 +1100,6 @@ function SaleEntryForm(props) {
         Notiflix.Notify.failure(e.message)
       }
     }
-
   }
   useEffect(() => {
     Doclist.map((data) => (
@@ -1105,9 +1116,15 @@ function SaleEntryForm(props) {
       cost = cost.toFixed(2)
       return cost
     }
+
   }
-  function CalTotalAmount(qty, cst) {
+  function CalTotalAmount(qty, cst, realcst) {
     let cost = cst
+    if (Number(realcst) > Number(cost)) {
+
+      Notiflix.Notify.failure('Selling Cost should not less than Cost')
+    }
+    console.log(typeof (realcst), typeof (cost))
     if (!qty) {
       return 0
     } else if (qty == 1) {
@@ -1118,6 +1135,7 @@ function SaleEntryForm(props) {
       cost = cost.toFixed(2)
       return cost
     }
+
   }
   function CalGrandttl() {
     let ttl = 0
@@ -1462,7 +1480,7 @@ function SaleEntryForm(props) {
               OR
             </div>
             <div className="col-4 ">
-              <input className='form-control bg-seashell border border-1 rounded-2' value={itemid ? itemid : ''} placeholder='Search Product by ID' onChange={(e) => { searchmedbyId(e.target.value); setitemid(e.target.value) }} />
+              <input className='form-control bg-seashell border border-1 rounded-2' value={itemid ? itemid : ''} placeholder='Search Product by ID' onChange={(e) => { searchmedbyId(e.target.value); setitemid(e.target.value); medbyidref.current.style.display = 'block' }} />
               <div ref={medbyidref} className='position-absolute rounded-2 mt-1' style={{ Width: 'max-content', zIndex: '2' }} >
                 {
                   itembyid ? (
@@ -1473,11 +1491,11 @@ function SaleEntryForm(props) {
                           <span className="sr-only"> </span> </div>
                       </div>
                     ) : (
-                      itembyid.length == 0 ? (
+                      loadbyId == false && itembyid.length == 0 ? (
                         <div className="bg-burntumber text-light rounded-2 p-1">Oops! Not Avaliable</div>
                       ) : (
                         itembyid.map((data, i) => (
-                          <div style={{ cursor: 'pointer', Width: 'max-content' }} className={`p-0 ps-1 shadow bg-${((i % 2) == 0) ? 'pearl' : 'seashell'} fs-6 `}
+                          <div style={{ cursor: 'pointer', Width: 'max-content' }} className={`p-0 p-1 rounded-pill shadow bg-${((i % 2) == 0) ? 'pearl' : 'seashell'} fs-6 `}
                             onClick={(e) => {
                               setitemid(data.type + data.id);
                               AddProducts(data)
@@ -1503,7 +1521,7 @@ function SaleEntryForm(props) {
           <div className='p-0 m-0 scroll scroll-y' style={{ height: '35vh' }}>
             <table className='table p-0 m-0'>
               <thead className='p-0 m-0'>
-                <tr className='p-0 m-0'>
+                <tr className={`p-0 m-0 `}>
                   <th className='p-0 m-0 px-2' rowSpan='2'>Item ID</th>
                   <th className='p-0 m-0 px-2' rowSpan='2'>Item Name</th>
                   <th className='p-0 m-0 px-2' rowSpan='2'>BatchNo.</th>
@@ -1527,8 +1545,8 @@ function SaleEntryForm(props) {
                   <tbody className='p-0 m-0'>
                     {
                       SelectedProducts.map((data) => (
-                        <tr className='p-0 m-0 align-middle'>
-                          <td>{data.type} {data.productid}</td>
+                        <tr className={`p-0 m-0 align-middle bg-${Number(data.disccost) < Number(data.cost) ? 'lightred50' : ''}`}>
+                          <td>{data.type}{data.productid}</td>
                           <td>{data.product}</td>
                           <td>{data.batch}</td>
                           <td>{reversefunction(data.expiry)}</td>
@@ -1548,8 +1566,8 @@ function SaleEntryForm(props) {
                               onChange={(e) => {
                                 data.discount = e.target.value;
                                 data.disccost = CalSellingCost(data.mainmrp, e.target.value);
-                                data.totalamt = CalTotalAmount(data.qtytoSale, data.disccost)
-                                setSelectedProducts(prevState => [...prevState])
+                                data.totalamt = CalTotalAmount(data.qtytoSale, Number(data.disccost), Number(data.cost))
+                                setSelectedProducts(prevState => [...prevState]);
                               }} /> </td>
                           <td>{data.mainmrp}</td>
                           <td>{data.cost}</td>
