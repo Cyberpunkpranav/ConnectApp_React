@@ -5,7 +5,7 @@ import axios from "axios"
 import Notiflix from 'notiflix'
 import { customconfirm } from '../features/notiflix/customconfirm'
 //Context APIs
-import { URL, TodayDate, DoctorsList,Clinic } from '../../index'
+import { URL, TodayDate, DoctorsList, Clinic } from '../../index'
 
 const AddSelectedDoctorSlot = (props) => {
     const url = useContext(URL)
@@ -22,28 +22,28 @@ const AddSelectedDoctorSlot = (props) => {
 
     async function AddSelectedDoctorSlot() {
 
-            if (props.DoctorID && APIDate && fromtime && totime && clinicid && admin_id) {
-                Notiflix.Loading.pulse({
-                    backgroundColor: 'rgb(242, 242, 242,0.5)',
-                    svgColor: '#96351E'
-                })
-                await axios.post(`${url}/doctor/add/timeslots`, {
-                    doctor_id: props.DoctorID,
-                    date: APIDate,
-                    time_from: fromtime,
-                    time_to: totime,
-                    clinic_id: clinicid,
-                    admin_id: admin_id
-                }).then((response) => {
-                    Notiflix.Loading.remove();
-                    props.CloseAddQuickSlots()
-                    props.fetchapi()
-                    Notiflix.Notify.success(response.data.message)
-                })
-            } else {
-                Notiflix.Notify.warning('Please Fill all Detais')
-            }
-        
+        if (props.DoctorID && APIDate && fromtime && totime && clinicid && admin_id) {
+            Notiflix.Loading.pulse({
+                backgroundColor: 'rgb(242, 242, 242,0.5)',
+                svgColor: '#96351E'
+            })
+            await axios.post(`${url}/doctor/add/timeslots`, {
+                doctor_id: props.DoctorID,
+                date: APIDate,
+                time_from: fromtime,
+                time_to: totime,
+                clinic_id: clinicid,
+                admin_id: admin_id
+            }).then((response) => {
+                Notiflix.Loading.remove();
+                props.CloseAddQuickSlots()
+                props.fetchapi()
+                Notiflix.Notify.success(response.data.message)
+            })
+        } else {
+            Notiflix.Notify.warning('Please Fill all Detais')
+        }
+
     }
 
     const confirmmessage = () => {
@@ -72,20 +72,20 @@ const AddSelectedDoctorSlot = (props) => {
             <button type="button" className="btn-close closebtn position-absolute" aria-label="Close" onClick={props.CloseAddQuickSlots} ></button>
             <hr />
             <div className="col-12 text-center">
-              {
-          cliniclist.map((data, i) => (
-            <label className={`d-${clinicID == data.id ? 'block' : 'none'}`}><input type="checkbox" className="radio form me-1" checked={clinicID == data.id ? true : false} /> {data.title} {data.address}</label>
+                {
+                    cliniclist.map((data, i) => (
+                        <label className={`d-${clinicID == data.id ? 'block' : 'none'}`}><img src={process.env.PUBLIC_URL + '/images/location.png'} style={{ width: '1.5rem' }} />{data.title} {data.address}</label>
 
-          ))
-        }
+                    ))
+                }
             </div>
-            <div className="row">
-            <div className="col-6">
-                <button className='button button-charcoal shadow'>{props.DoctorName}</button>
-            </div>
-              <div className="col-6">
-        <input type="date" disabled className="form-control col-10" value={APIDate}/>
-        </div>
+            <div className="row mt-2">
+                <div className="col-6">
+                    <button className='button button-charcoal-outline'>{props.DoctorName}</button>
+                </div>
+                <div className="col-6">
+                    <input type="date" disabled className="form-control col-10" value={APIDate} />
+                </div>
             </div>
             <hr />
             <div className="d-flex">
@@ -97,7 +97,7 @@ const AddSelectedDoctorSlot = (props) => {
 
             <hr />
             <div className="col-6 py-2 pb-2 m-auto text-center">
-                <button className="button button-burntumber px-5" onClick={confirmmessage} > Done </button>
+                <button className="button button-charcoal px-5" onClick={confirmmessage} > Done </button>
             </div>
         </div>
     )

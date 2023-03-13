@@ -586,7 +586,7 @@ const Pharmacy_Dsr = (props) => {
                 {
                   load ? (
                     <body className=' text-start' style={{ minHeight: '55vh' }}>
-                      <tr className='position-absolute border-0 start-0 end-0 px-5'>
+                      <tr className='position-absolute border-0 start-0 end-0 px-5 '>
                         <div class="d-flex align-items-center">
                           <strong className='fs-5'>Getting Details please be Patient ...</strong>
                           <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
@@ -597,7 +597,7 @@ const Pharmacy_Dsr = (props) => {
                   ) : (
                     SaleEntryList && SaleEntryList.length == 0 ? (
                       <tbody>
-                        <tr className='position-relative text-center  m-auto'  >
+                        <tr className='position-relative text-center align-middle'  >
                           <td className='position-absolute  text-charcoal fw-bold start-0 end-0' >No Sale Entries</td>
                         </tr>
                       </tbody>
@@ -605,7 +605,7 @@ const Pharmacy_Dsr = (props) => {
                       <tbody className='text-start' style={{ paddingBottom: '30px' }}>
                         {
                           SaleEntryList.map((data, i) => (
-                            <tr className={``}>
+                            <tr className={`align-middle`}>
                               <td className='fw-bold text-charcoal py-0 px-0 px-2' key={i}>{data && data.bill_id !== null ? "P-" + data.bill_id : ''}</td>
                               <td className='fw-bold text-charcoal py-0 px-0 px-2'>{data && data.bill_date !== null ? reversefunction(data.bill_date) : ''}</td>
                               <td className='fw-bold text-charcoal py-0 px-0 px-2'>{data && data.patient && data.patient.full_name !== null ? data.patient.full_name : ''}</td>

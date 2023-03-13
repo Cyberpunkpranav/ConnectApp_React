@@ -390,7 +390,7 @@ function Doctorsection(props) {
       </section>
       {
         Docval == 1 ? (
-          <div className={`col-lg-5 col-md-6 col-sm-12 col-12 doctorinfosection d-${doctorform} me-2 mt-2 rounded-4  border-start border-top border-2 position-absolute`} >
+          <div className={`col-lg-5 col-md-6 col-sm-12 col-12 top-0 doctorinfosection d-${doctorform} me-2 mt-2 rounded-4  border-start border-top border-2 position-absolute`} >
             <AddDoctorSlot toggledoctorform={toggledoctorform} staticBackdrop4={'staticBackdrop4'} fetchapi={props.fetchapi} />
           </div>
         ) : (
@@ -1018,7 +1018,7 @@ function DailySaleReport(props) {
               <ul className="dropdown-menu">
                 <li className="text-center"><button className="dropdown-item border-bottom" >
                   <div className="col-auto p-0 m-0">
-                    <select className="px-1 bg-transparent border-0 text-burntumber py-2  py-md-1 text-center " value={clinic ? clinic : ''} onChange={(e) => { setclinic(e.target.value) }}>
+                    <select className="px-1 bg-transparent border-0 text-charcoal py-2  py-md-1 text-center " value={clinic ? clinic : ''} onChange={(e) => { setclinic(e.target.value) }}>
                       <option value="Select Clinic">Clinic</option>
                       {
                         props.cliniclist ? (
@@ -1033,7 +1033,7 @@ function DailySaleReport(props) {
                   </div></button></li>
                 <li className="text-center"><button className="dropdown-item border-bottom " >
                   <div className="col-auto p-0 m-0 ">
-                    <select className="bg-pearl text-center bg-transparent border-0  px-2 text-burntumber px-1 py-2 py-md-1" value={doctorid ? doctorid : ''} onChange={(e) => setdoctorid(e.target.value)}>
+                    <select className="bg-pearl text-center bg-transparent border-0  px-2 text-charcoal px-1 py-2 py-md-1" value={doctorid ? doctorid : ''} onChange={(e) => setdoctorid(e.target.value)}>
                       <option value='Doctors'>Doctor</option>
                       {
                         Doctors.map((data) => (
