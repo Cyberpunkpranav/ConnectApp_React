@@ -384,6 +384,16 @@ box-shadow: none;
 .dropdown .dropdown-menu :active{
 background: none;
 }
+.pagination .active a{
+    background-color: #222023;
+    border-color:#222023 ;
+}
+.pagination .active:focus{
+    border-color:transparent ;
+}
+.pagination .btn :focus{
+    color:#222023;
+}
 @media (max-width:992px){
     body{
         background-size:contain;

@@ -3,6 +3,7 @@ import React, { useState, useEffect, useContext, useRef } from 'react';
 import { URL, TodayDate, DoctorsList, Clinic } from '../../index';
 import { ExportPurchaseEntry, ExportPurchaseReturn, ExportSaleEntry, ExportSaleReturn } from '../pharmacy/Exports'
 import Notiflix from 'notiflix';
+import ReactPaginate from 'react-paginate';
 import * as XLSX from 'xlsx';
 import { customconfirm } from '../features/notiflix/customconfirm';
 import { customnotify } from '../features/notiflix/customnotify';
@@ -67,8 +68,6 @@ function Saleentrysection(props) {
   const ClinicID = localStorage.getItem('ClinicId')
   const adminid = localStorage.getItem('id')
   const url = useContext(URL)
-  const nextref = useRef()
-  const previousref = useRef()
   const [seidw, setseidw] = useState("none");
   const [channel, setchannel] = useState(1)
   const [fromdate, setfromdate] = useState()
@@ -78,13 +77,11 @@ function Saleentrysection(props) {
   const [saleentryarrforExcel, setsaleentryarrforExcel] = useState([])
   const [index, setindex] = useState()
   const [nsef, setnsef] = useState("none");
-  const [nxtoffset, setnxtoffset] = useState(0)
-  const [prevoffset, setprevoffset] = useState(0)
   const [pages, setpages] = useState([])
   const [paymentsapage, setpaymentsapage] = useState('none')
   const [tabindex, settabindex] = useState()
   const [pagecount, setpagecount] = useState()
-  // console.log(saleentryarr, pagecount)
+
   const toggle_nsef = () => {
     if (nsef === 'none') {
       setnsef('block')
@@ -112,27 +109,11 @@ function Saleentrysection(props) {
     }
 
   }
-  function GETSalesList(i) {
-    if (i == undefined) {
-      i = 0
-    }
-    setLoading(true)
-    if (i == 0 || i == undefined || nxtoffset == 0) {
-      previousref.current.disabled = true
-    } else {
-      previousref.current.disabled = false
-    }
+  function GetPages() {
     try {
-      axios.get(`${url}/sale/entry?clinic_id=${ClinicID}&limit=25&offset=${i * 25}&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`).then((response) => {
-        console.log(response)
+      axios.get(`${url}/sale/entry?clinic_id=${ClinicID}&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`).then((response) => {
         setpagecount(response.data.data.total_count)
-        setsaleentryarr(response.data.data.sale_entry)
-        let nxt = Number(i) + 1
-        setnxtoffset(nxt)
-        if (i != 0) {
-          let prev = i--
-          setprevoffset(prev)
-        }
+        setpages(Math.round(response.data.data.total_count / 25) + 1)
         setLoading(false)
       }).catch((e) => {
         Notiflix.Notify.warning(e)
@@ -142,6 +123,40 @@ function Saleentrysection(props) {
       Notiflix.Notify.warning(e.message)
       setLoading(false)
     }
+  }
+  function GETSalesList(Data) {
+    if (Data == undefined || Data.selected == undefined) {
+      setLoading(true)
+      try {
+        axios.get(`${url}/sale/entry?clinic_id=${ClinicID}&limit=25&offset=${0 * 25}&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`).then((response) => {
+          console.log(response)
+          setsaleentryarr(response.data.data.sale_entry)
+          setLoading(false)
+        }).catch((e) => {
+          Notiflix.Notify.warning(e)
+          setLoading(false)
+        })
+      } catch (e) {
+        Notiflix.Notify.warning(e.message)
+        setLoading(false)
+      }
+    } else {
+      setLoading(true)
+      try {
+        axios.get(`${url}/sale/entry?clinic_id=${ClinicID}&limit=25&offset=${Data.selected * 25}&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`).then((response) => {
+          console.log(response)
+          setsaleentryarr(response.data.data.sale_entry)
+          setLoading(false)
+        }).catch((e) => {
+          Notiflix.Notify.warning(e)
+          setLoading(false)
+        })
+      } catch (e) {
+        Notiflix.Notify.warning(e.message)
+        setLoading(false)
+      }
+    }
+
   }
   function GETSalesListForExcel() {
 
@@ -159,29 +174,17 @@ function Saleentrysection(props) {
       setLoading(false)
     }
   }
-  async function getnextpages(e) {
-    GETSalesList(e.target.value)
-  }
-  async function getpreviouspages(e) {
-    GETSalesList(e.target.value - 1)
-  }
+
+
+  useEffect(() => {
+    GetPages()
+  }, [channel, fromdate, todate])
+
   useEffect(() => {
     GETSalesList()
-    let pagearr = []
-    let pages = Math.round(pagecount / 25)
-    console.log(pages)
-    for (let i = 0; i < pages; i++) {
-      pagearr.push(i + 1)
-    }
-
-    setpagecount(pagearr)
-
-  }, [channel, fromdate, todate])
-  useEffect(() => {
     GETSalesListForExcel()
-
-
   }, [pagecount])
+
   const reversefunction = (date) => {
     if (date) {
       date = date.split("-").reverse().join("-")
@@ -200,7 +203,6 @@ function Saleentrysection(props) {
     }
     return status
   }
-
   function status_color(number) {
     let status_color;
     for (let j = 0; j < array.length; j++) {
@@ -211,8 +213,6 @@ function Saleentrysection(props) {
     }
     return status_color
   }
-
-
   //Status
   const UpdateStatus = async (e, id) => {
     console.log(e.target.value, id)
@@ -231,9 +231,7 @@ function Saleentrysection(props) {
     }
 
   }
-
-
-  // console.log(saleentryarrforExcel)
+  console.log(saleentryarr, pages)
   return (
     <>
       <button className="button addentrypurchase button-charcoal position-absolute" onClick={toggle_nsef}><img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt='displaying_image' className="img-fluid" style={{ width: `1.5rem` }} />Entry Sale</button>
@@ -261,23 +259,20 @@ function Saleentrysection(props) {
           <ExportSaleEntry saleentryarr={saleentryarrforExcel} fromdate={reversefunction(fromdate)} todate={reversefunction(todate)} />
         </div>
       </div>
-      <div className='scroll scroll-y p-0 m-0 mt-1' style={{ minHeight: '40vh', height: '58vh', maxHeight: '70vh' }}>
+      <div className='scroll scroll-y p-0 m-0 mt-2' style={{ minHeight: '40vh', height: '58vh', maxHeight: '70vh' }}>
         <table className="table text-center table-responsive p-0 m-0">
           <thead className=' p-0 m-0 position-sticky top-0 bg-pearl'>
             <tr className=' p-0 m-0'>
-              <th className='text-charcoal75 fw-bolder p-0 m-0 px-1' rowspan='2'>Bill ID</th>
-              <th className='text-charcoal75 fw-bolder p-0 m-0 px-1' rowspan='2'>Patient Name</th>
-              <th className='text-charcoal75 fw-bolder p-0 m-0 px-1' rowspan='2'>Bill Date</th>
-              <th className='text-charcoal75 fw-bolder p-0 m-0 px-1' rowspan='2'>Bill Total</th>
-              <th className='text-charcoal75 fw-bolder p-0 m-0 px-1' colspan='3'>Appointment Details</th>
-              <th className='text-charcoal75 fw-bolder p-0 m-0 px-1' rowspan='2'>Status</th>
-              <th className='text-charcoal75 fw-bolder p-0 m-0 px-1' rowspan='2'>Actions</th>
+              <th className='text-charcoal75 fw-bolder p-0 m-0 px-1'>Bill ID</th>
+              <th className='text-charcoal75 fw-bolder p-0 m-0 px-1'>Patient Name</th>
+              <th className='text-charcoal75 fw-bolder p-0 m-0 px-1'>Bill Date</th>
+              <th className='text-charcoal75 fw-bolder p-0 m-0 px-1'>Bill Total</th>
+              <th className='text-charcoal75 fw-bolder p-0 m-0 px-1'>Appointment Date</th>
+              <th className='text-charcoal75 fw-bolder p-0 m-0 px-1'>Doctor Name</th>
+              <th className='text-charcoal75 fw-bolder p-0 m-0 px-1'>Invoice No.</th>
+              <th className='text-charcoal75 fw-bolder p-0 m-0 px-1'>Status</th>
+              <th className='text-charcoal75 fw-bolder p-0 m-0 px-1'>Actions</th>
               {/* <th className='text-charcoal75 fw-bolder p-0 m-0 px-1' rowspan='2'>more</th> */}
-            </tr>
-            <tr className='p-0 m-0'>
-              <th className='text-charcoal75 fw-bolder p-0 m-0 px-1' scope='col'>Appointment Date</th>
-              <th className='text-charcoal75 fw-bolder p-0 m-0 px-1' scope='col'>Doctor Name</th>
-              <th className='text-charcoal75 fw-bolder p-0 m-0 px-1' scope='col'>Invoice No.</th>
             </tr>
           </thead>
           {
@@ -358,17 +353,21 @@ function Saleentrysection(props) {
           }
         </table>
       </div>
-      <div className="container-fluid my-1 p-0 m-0">
-        <div className="d-flex p-0 m-0 justify-content-center text-center">
+      <div className="container-fluid mt-2 d-flex justify-content-center">
+        {/* <div className="d-flex p-0 m-0 justify-content-center text-center">
 
           <button className="btn  border-charcoal p-0 m-0 px-1 me-2" ref={previousref} value={prevoffset} onClick={(e) => { getpreviouspages(e); }} style={{ marginTop: '0.15rem' }}>Previous</button>
 
-          <div className="col-auto col-xl-auto col-sm-8 col-md-8 p-0 m-0">
+          <div className="col-auto col-xl-auto col-sm-8 col-md-8 p-0 m-0 scroll" ref={pageref}>
             {
               pages ? (
-                pages.map((page, i) => (
-                  <button className={`button rounded-3 ms-2 button-${nxtoffset - 1 == i ? 'charcoal' : 'pearl'}   shadow-${nxtoffset - 1 == i ? 'lg' : 'none'}`} ref={nextref} value={page} id={page} onClick={(e) => { GETSalesList(i) }} key={i}>{page}</button>
-                ))
+                <div className='d-inline-flex'>
+                  {
+                    pages.map((page, i) => (
+                      <button className={`button rounded-3 ms-2 button-${nxtoffset - 1 == i ? 'charcoal' : 'pearl'}   shadow-${nxtoffset - 1 == i ? 'lg' : 'none'}`} value={page} id={page} onClick={(e) => { GETSalesList(i) }} key={i}>{page}</button>
+                    ))
+                  }
+                </div>
               ) : (
                 <div>Loading...</div>
               )
@@ -376,8 +375,26 @@ function Saleentrysection(props) {
             }
           </div>
           <button className={`btn p-0 m-0 px-1 border-charcoal ms-2`} ref={nextref} value={nxtoffset} onClick={(e) => { getnextpages(e); }} style={{ marginTop: '0.15rem' }}>Next</button>
-        </div>
-
+        </div> */}
+        < ReactPaginate
+          previousLabel={'Previous'}
+          nextLabel={'Next'}
+          breakLabel={'. . .'}
+          pageCount={pages}
+          marginPagesDisplayed={3}
+          pageRangeDisplayed={2}
+          onPageChange={GETSalesList}
+          containerClassName={'pagination'}
+          pageClassName={'page-item text-charcoal'}
+          pageLinkClassName={'page-link text-decoration-none text-charcoal border-charcoal rounded-2 mx-1'}
+          previousClassName={'btn button-charcoal-outline me-2'}
+          previousLinkClassName={'text-decoration-none text-charcoal'}
+          nextClassName={'btn button-charcoal-outline ms-2'}
+          nextLinkClassName={'text-decoration-none text-charcoal'}
+          breakClassName={'mx-2 text-charcoal fw-bold fs-4'}
+          breakLinkClassName={'text-decoration-none text-charcoal'}
+          activeClassName={'active'}
+        />
       </div>
       <section className={`newsaleentryform p-0 m-0 position-absolute d-${nsef} border border-1 mx-auto start-0 end-0 bg-seashell`} style={{ height: '90vh' }}>
         <SaleEntryForm toggle_nsef={toggle_nsef} GETSalesList={GETSalesList} />
@@ -757,10 +774,9 @@ function SEitemdetailssection(props) {
 }
 function SaleReturns() {
   const currentDate = useContext(TodayDate)
+  const ClinicID = localStorage.getItem('ClinicId')
   const url = useContext(URL)
   const [sridw, setsridw] = useState("none");
-  const nextref = useRef()
-  const previousref = useRef()
   const [fromdate, setfromdate] = useState()
   const [todate, settodate] = useState()
   const [Loading, setLoading] = useState(false)
@@ -768,48 +784,62 @@ function SaleReturns() {
   const [salereturnarrExcel, setsalereturnarrExcel] = useState([])
   const [index, setindex] = useState()
   const [nref, setnref] = useState("none");
-  const [nxtoffset, setnxtoffset] = useState(0)
-  const [prevoffset, setprevoffset] = useState(0)
-  const [pages, setpages] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+
+  const [pages, setpages] = useState()
   const [pagecount, setpagecount] = useState()
-  const [tabindex, settabindex] = useState()
+
   console.log(salereturnarr, pagecount)
-  function GETSaleReturns(i) {
-    if (i == undefined) {
-      i = 0
-    }
-    setLoading(true)
-    if (i == 0 || i == undefined || nxtoffset == 0) {
-      previousref.current.disabled = true
-    } else {
-      previousref.current.disabled = false
-    }
+  function GetPages() {
     try {
-      // /sale/return?from_date=2023-01-01&to_date=2023-01-31&limit=2&offset=0
-      axios.get(`${url}/sale/return?limit=25&offset=${i * 25}&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`).then((response) => {
-        console.log(response)
-        setsalereturnarr(response.data.data.sale_return)
-        let nxt = Number(i) + 1
-        setnxtoffset(nxt)
-        if (i != 0) {
-          let prev = i--
-          setprevoffset(prev)
-        }
+      axios.get(`${url}/sale/return?clinic_id=${ClinicID}&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`).then((response) => {
+        setpagecount(response.data.data.total_count)
+        setpages(Math.round(response.data.data.total_count / 25) + 1)
         setLoading(false)
       }).catch((e) => {
         Notiflix.Notify.warning(e)
         setLoading(false)
       })
     } catch (e) {
-      Notiflix.Notify.warning(e.data.message)
+      Notiflix.Notify.warning(e.message)
       setLoading(false)
+    }
+  }
+  function GETSaleReturns(Data) {
+    if (Data == undefined || Data.selected == undefined) {
+      try {
+        axios.get(`${url}/sale/return?clinic_id=${ClinicID}&limit=25&offset=0&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`).then((response) => {
+          console.log(response)
+          setsalereturnarr(response.data.data.sale_return)
+
+          setLoading(false)
+        }).catch((e) => {
+          Notiflix.Notify.warning(e)
+          setLoading(false)
+        })
+      } catch (e) {
+        Notiflix.Notify.warning(e.data.message)
+        setLoading(false)
+      }
+    } else {
+      try {
+        axios.get(`${url}/sale/return?clinic_id=${ClinicID}&limit=25&offset=${Data.selected * 25}&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`).then((response) => {
+          console.log(response)
+          setsalereturnarr(response.data.data.sale_return)
+          setLoading(false)
+        }).catch((e) => {
+          Notiflix.Notify.warning(e)
+          setLoading(false)
+        })
+      } catch (e) {
+        Notiflix.Notify.warning(e.data.message)
+        setLoading(false)
+      }
     }
   }
   function GETSaleReturnsForExcel() {
     setLoading(true)
     try {
-      // /sale/return?from_date=2023-01-01&to_date=2023-01-31&limit=2&offset=0
-      axios.get(`${url}/sale/return?limit=${pagecount}&offset=0&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`).then((response) => {
+      axios.get(`${url}/sale/return?clinic_id=${ClinicID}&limit=${pagecount}&offset=0&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`).then((response) => {
         console.log(response)
         setpagecount(response.data.data.total_count)
         setsalereturnarrExcel(response.data.data.sale_return)
@@ -824,9 +854,11 @@ function SaleReturns() {
     }
   }
   useEffect(() => {
-    GETSaleReturns()
+    GetPages()
   }, [fromdate, todate])
+
   useEffect(() => {
+    GETSaleReturns()
     GETSaleReturnsForExcel()
   }, [pagecount])
 
@@ -853,12 +885,7 @@ function SaleReturns() {
       return date
     }
   }
-  async function getnextpages(e) {
-    GETSaleReturns(e.target.value)
-  }
-  async function getpreviouspages(e) {
-    GETSaleReturns(e.target.value - 1)
-  }
+
   console.log(salereturnarr)
   return (
     <>
@@ -953,25 +980,26 @@ function SaleReturns() {
 
           </table>
         </div>
-        <div className="container-fluid mb-1">
-          <div className="d-flex justify-content-center p-0 m-0 text-center">
-            <button className="btn p-0 m-0 border-charcoal px-1 me-2" ref={previousref} value={prevoffset} onClick={(e) => { getpreviouspages(e); }} style={{ marginTop: '0.15rem' }}>Previous</button>
-
-            <div className="col-auto col-xl-auto col-md-8 col-lg-8 col-sm-auto p-0 m-0">
-              {
-                pages ? (
-                  pages.map((page, i) => (
-                    <button className={`button ms-2 button-${nxtoffset - 1 == i ? 'charcoal' : 'pearl'} shadow-${nxtoffset - 1 == i ? 'lg' : 'none'}`} ref={nextref} value={page} id={page} onClick={(e) => { settabindex(i); GETSaleReturns(i) }} key={i}>{page}</button>
-                  ))
-                ) : (
-                  <div>Loading...</div>
-                )
-
-              }
-            </div>
-            <button className={`btn p-0 m-0 px-1 border-charcoal ms-2`} ref={nextref} value={nxtoffset} onClick={(e) => { getnextpages(e); }} style={{ marginTop: '0.15rem' }}>Next</button>
-
-          </div>
+        <div className="container-fluid d-flex justify-content-center">
+          < ReactPaginate
+            previousLabel={'Previous'}
+            nextLabel={'Next'}
+            breakLabel={'. . .'}
+            pageCount={pages}
+            marginPagesDisplayed={3}
+            pageRangeDisplayed={2}
+            onPageChange={GETSaleReturns}
+            containerClassName={'pagination'}
+            pageClassName={'page-item text-charcoal'}
+            pageLinkClassName={'page-link text-decoration-none text-charcoal border-charcoal rounded-2 mx-1'}
+            previousClassName={'btn button-charcoal-outline me-2'}
+            previousLinkClassName={'text-decoration-none text-charcoal'}
+            nextClassName={'btn button-charcoal-outline ms-2'}
+            nextLinkClassName={'text-decoration-none text-charcoal'}
+            breakClassName={'mx-2 text-charcoal fw-bold fs-4'}
+            breakLinkClassName={'text-decoration-none text-charcoal'}
+            activeClassName={'active'}
+          />
         </div>
       </div>
       <section className={`newreturnentrysection position-absolute start-0 end-0 border border-1 bg-seashell d-${nref}`} style={{ 'height': '90vh' }}  >
@@ -2203,8 +2231,7 @@ function Purchaseentrysection(props) {
   const ClinicID = localStorage.getItem('ClinicId')
   const url = useContext(URL)
   const [peidw, setpeidw] = useState("none");
-  const nextref = useRef()
-  const previousref = useRef()
+
   const toggle_peidw = () => {
     if (peidw === "none") {
       setpeidw("block");
@@ -2221,41 +2248,56 @@ function Purchaseentrysection(props) {
   const [purchaseentryarrExcel, setpurchaseentryarrExcel] = useState([])
   const [index, setindex] = useState()
   const [npef, setnpef] = useState("none");
-  const [nxtoffset, setnxtoffset] = useState(0)
-  const [prevoffset, setprevoffset] = useState(0)
-  const [pages, setpages] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
-  const [tabindex, settabindex] = useState()
+  const [pages, setpages] = useState()
   const [pagecount, setpagecount] = useState()
-  function GETPurchaseList(i) {
-    if (i == undefined) {
-      i = 0
-    }
-    setLoading(true)
-    if (i == 0 || i == undefined || nxtoffset == 0) {
-      previousref.current.disabled = true
-    } else {
-      previousref.current.disabled = false
-    }
 
+  function GetPages() {
     try {
-      axios.get(`${url}/purchase/entry?clinic_id=${ClinicID}&channel=${channel}&limit=25&offset=${i * 25}&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`).then((response) => {
+      axios.get(`${url}/purchase/entry?clinic_id=${ClinicID}&channel=${channel}&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`).then((response) => {
         setpagecount(response.data.data.total_count)
-        setpurchaseentryarr(response.data.data.purchase_entry)
-        console.log(response)
-        let nxt = Number(i) + 1
-        setnxtoffset(nxt)
-        if (i != 0) {
-          let prev = i--
-          setprevoffset(prev)
-        }
+        setpages(Math.round(response.data.data.total_count / 25) + 1)
         setLoading(false)
       }).catch((e) => {
-        Notiflix.Notify.warning(e.message)
+        Notiflix.Notify.warning(e)
         setLoading(false)
       })
     } catch (e) {
-      Notiflix.Notify.warning(e.data.message)
+      Notiflix.Notify.warning(e.message)
       setLoading(false)
+    }
+  }
+
+  function GETPurchaseList(Data) {
+    if (Data == undefined || Data.selected == undefined) {
+      setLoading(true)
+      try {
+        axios.get(`${url}/purchase/entry?clinic_id=${ClinicID}&channel=${channel}&limit=25&offset=0&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`).then((response) => {
+          setpagecount(response.data.data.total_count)
+          setpurchaseentryarr(response.data.data.purchase_entry)
+          setLoading(false)
+        }).catch((e) => {
+          Notiflix.Notify.warning(e.message)
+          setLoading(false)
+        })
+      } catch (e) {
+        Notiflix.Notify.warning(e.data.message)
+        setLoading(false)
+      }
+    } else {
+      setLoading(true)
+      try {
+        axios.get(`${url}/purchase/entry?clinic_id=${ClinicID}&channel=${channel}&limit=25&offset=${Data.selected * 25}&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`).then((response) => {
+          setpagecount(response.data.data.total_count)
+          setpurchaseentryarr(response.data.data.purchase_entry)
+          setLoading(false)
+        }).catch((e) => {
+          Notiflix.Notify.warning(e.message)
+          setLoading(false)
+        })
+      } catch (e) {
+        Notiflix.Notify.warning(e.data.message)
+        setLoading(false)
+      }
     }
   }
   function GETPurchaseListForExcel() {
@@ -2274,12 +2316,14 @@ function Purchaseentrysection(props) {
     }
   }
   useEffect(() => {
-    GETPurchaseList()
+    GetPages()
   }, [channel, fromdate, todate])
 
   useEffect(() => {
+    GETPurchaseList()
     GETPurchaseListForExcel()
   }, [pagecount])
+
   const toggle_npef = () => {
     if (npef === "none") {
       setnpef("block");
@@ -2296,12 +2340,7 @@ function Purchaseentrysection(props) {
     }
 
   }
-  async function getnextpages(e) {
-    GETPurchaseList(e.target.value)
-  }
-  async function getpreviouspages(e) {
-    GETPurchaseList(e.target.value - 1)
-  }
+
   return (
     <>
       <button className="button addentrypurchase button-charcoal position-absolute" onClick={toggle_npef}><img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt='displaying_image' className="img-fluid" style={{ width: `1.5rem` }} />Entry Purchase</button>
@@ -2397,24 +2436,26 @@ function Purchaseentrysection(props) {
 
           </table>
         </div>
-        <div className="container-fluid mb-1 mt-1">
-          <div className="d-flex justify-content-center p-0 m-0 text-center">
-            <button className="btn p-0 m-0 me-2 px-1 border-charcoal" ref={previousref} value={prevoffset} onClick={(e) => { getpreviouspages(e); console.log(e.target.value) }} style={{ marginTop: '0.15rem' }}>Previous</button>
-
-            <div className="col-auto col-xl-auto col-sm-8 col-md-8 p-0 m-0">
-              {
-                pages ? (
-                  pages.map((page, i) => (
-                    <button className={`button ms-2 border-0 button-${nxtoffset - 1 == i ? 'charcoal' : 'pearl'}  shadow-${nxtoffset - 1 == i ? 'lg' : 'none'}`} ref={nextref} value={page} id={page} onClick={(e) => { settabindex(i); GETPurchaseList(i) }} key={i}>{page}</button>
-                  ))
-                ) : (
-                  <div>Loading...</div>
-                )
-
-              }
-            </div>
-            <button className={`btn p-0 m-0 border-charcoal ms-2 px-1`} ref={nextref} value={nxtoffset} onClick={(e) => { getnextpages(e); console.log(e.target.value) }} style={{ marginTop: '0.15rem' }}>Next</button>
-          </div>
+        <div className="container-fluid mt-2 d-flex justify-content-center">
+          < ReactPaginate
+            previousLabel={'Previous'}
+            nextLabel={'Next'}
+            breakLabel={'. . .'}
+            pageCount={pages}
+            marginPagesDisplayed={3}
+            pageRangeDisplayed={2}
+            onPageChange={GETPurchaseList}
+            containerClassName={'pagination'}
+            pageClassName={'page-item text-charcoal'}
+            pageLinkClassName={'page-link text-decoration-none text-charcoal border-charcoal rounded-2 mx-1'}
+            previousClassName={'btn button-charcoal-outline me-2'}
+            previousLinkClassName={'text-decoration-none text-charcoal'}
+            nextClassName={'btn button-charcoal-outline ms-2'}
+            nextLinkClassName={'text-decoration-none text-charcoal'}
+            breakClassName={'mx-2 text-charcoal fw-bold fs-4'}
+            breakLinkClassName={'text-decoration-none text-charcoal'}
+            activeClassName={'active'}
+          />
         </div>
       </div>
       <section className={`newpurchaseentrysection position-absolute start-0 end-0 bg-seashell border border-1 d-${npef}`} style={{ 'height': '90vh' }}  >
@@ -3723,8 +3764,6 @@ function PurchaseReturns() {
   const ClinicID = localStorage.getItem('ClinicId')
   const url = useContext(URL)
   const [pridw, setpridw] = useState("none");
-  const nextref = useRef()
-  const previousref = useRef()
   const [channel, setchannel] = useState(1)
   const [fromdate, setfromdate] = useState()
   const [todate, settodate] = useState()
@@ -3733,39 +3772,54 @@ function PurchaseReturns() {
   const [purchasereturnarrExcel, setpurchasereturnarrExcel] = useState([])
   const [index, setindex] = useState()
   const [nref, setnref] = useState("none");
-  const [nxtoffset, setnxtoffset] = useState(0)
-  const [prevoffset, setprevoffset] = useState(0)
-  const [pages, setpages] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
-  const [tabindex, settabindex] = useState()
+  const [pages, setpages] = useState()
   const [pagecount, setpagecount] = useState()
-  function GETPurchaseReturns(i) {
-    if (i == undefined) {
-      i = 0
-    }
-    setLoading(true)
-    if (i == 0 || i == undefined || nxtoffset == 0) {
-      previousref.current.disabled = true
-    } else {
-      previousref.current.disabled = false
-    }
+  function GetPages() {
     try {
-      axios.get(`${url}/purchase/return?clinic_id=${ClinicID}&channel=${channel}&limit=25&offset=${i * 25}&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`).then((response) => {
-        setpurchasereturnarr(response.data.data.purchase_return)
+      axios.get(`${url}/purchase/return?clinic_id=${ClinicID}&channel=${channel}&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`).then((response) => {
         setpagecount(response.data.data.total_count)
-        let nxt = Number(i) + 1
-        setnxtoffset(nxt)
-        if (i != 0) {
-          let prev = i--
-          setprevoffset(prev)
-        }
+        setpages(Math.round(response.data.data.total_count / 25) + 1)
         setLoading(false)
       }).catch((e) => {
-        Notiflix.Notify.warning(e.message)
+        Notiflix.Notify.warning(e)
         setLoading(false)
       })
     } catch (e) {
-      Notiflix.Notify.warning(e.data.message)
+      Notiflix.Notify.warning(e.message)
       setLoading(false)
+    }
+  }
+  function GETPurchaseReturns(Data) {
+    if (Data == undefined || Data.selected == undefined) {
+      setLoading(true)
+      try {
+        axios.get(`${url}/purchase/return?clinic_id=${ClinicID}&channel=${channel}&limit=25&offset=0&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`).then((response) => {
+          setpurchasereturnarr(response.data.data.purchase_return)
+          setpagecount(response.data.data.total_count)
+          setLoading(false)
+        }).catch((e) => {
+          Notiflix.Notify.warning(e.message)
+          setLoading(false)
+        })
+      } catch (e) {
+        Notiflix.Notify.warning(e.data.message)
+        setLoading(false)
+      }
+    } else {
+      setLoading(true)
+      try {
+        axios.get(`${url}/purchase/return?clinic_id=${ClinicID}&channel=${channel}&limit=25&offset=${Data.selected * 25}&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`).then((response) => {
+          setpurchasereturnarr(response.data.data.purchase_return)
+          setpagecount(response.data.data.total_count)
+          setLoading(false)
+        }).catch((e) => {
+          Notiflix.Notify.warning(e.message)
+          setLoading(false)
+        })
+      } catch (e) {
+        Notiflix.Notify.warning(e.data.message)
+        setLoading(false)
+      }
     }
   }
   function GETPurchaseReturnsForExcel() {
@@ -3784,9 +3838,11 @@ function PurchaseReturns() {
     }
   }
   useEffect(() => {
-    GETPurchaseReturns()
+    GetPages()
   }, [channel, fromdate, todate])
+
   useEffect(() => {
+    GETPurchaseReturns()
     GETPurchaseReturnsForExcel()
   }, [pagecount])
 
@@ -3813,12 +3869,6 @@ function PurchaseReturns() {
       return date
     }
 
-  }
-  async function getnextpages(e) {
-    GETPurchaseReturns(e.target.value)
-  }
-  async function getpreviouspages(e) {
-    GETPurchaseReturns(e.target.value - 1)
   }
   return (
     <>
@@ -3910,26 +3960,26 @@ function PurchaseReturns() {
 
           </table>
         </div>
-        <div className="container-fluid my-1">
-          <div className="d-flex justify-content-center p-0 m-0 text-center">
-            <button className="btn p-0 m-0 me-2 px-1 " ref={previousref} value={prevoffset} onClick={(e) => { getpreviouspages(e); console.log(e.target.value) }} style={{ marginTop: '0.15rem' }}>Previous</button>
-
-            <div className="col-auto col-xl-auto col-md-8 col-lg-8 col-sm-auto p-0 m-0">
-              {
-                pages ? (
-                  pages.map((page, i) => (
-                    <button className={`button ms-2 button-${nxtoffset - 1 == i ? 'charcoal' : 'pearl'}   shadow-${nxtoffset - 1 == i ? 'lg' : 'none'}`} ref={nextref} value={page} id={page} onClick={(e) => { settabindex(i); GETPurchaseReturns(i) }} key={i}>{page}</button>
-                  ))
-                ) : (
-                  <div>Loading...</div>
-                )
-
-              }
-            </div>
-
-            <button className={`btn border-charcoal p-0 m-0 px-1 ms-2`} ref={nextref} value={nxtoffset} onClick={(e) => { getnextpages(e); console.log(e.target.value) }} style={{ marginTop: '0.15rem' }}>Next</button>
-
-          </div>
+        <div className="container-fluid mt-2 d-flex justify-content-center">
+          < ReactPaginate
+            previousLabel={'Previous'}
+            nextLabel={'Next'}
+            breakLabel={'. . .'}
+            pageCount={pages}
+            marginPagesDisplayed={3}
+            pageRangeDisplayed={2}
+            onPageChange={GETPurchaseReturns}
+            containerClassName={'pagination'}
+            pageClassName={'page-item text-charcoal'}
+            pageLinkClassName={'page-link text-decoration-none text-charcoal border-charcoal rounded-2 mx-1'}
+            previousClassName={'btn button-charcoal-outline me-2'}
+            previousLinkClassName={'text-decoration-none text-charcoal'}
+            nextClassName={'btn button-charcoal-outline ms-2'}
+            nextLinkClassName={'text-decoration-none text-charcoal'}
+            breakClassName={'mx-2 text-charcoal fw-bold fs-4'}
+            breakLinkClassName={'text-decoration-none text-charcoal'}
+            activeClassName={'active'}
+          />
         </div>
       </div>
       <section className={`newreturnentrysection position-absolute bg-seashell border border-1 start-0 end-0  d-${nref}`} style={{ 'top': '-7.15rem', Height: '90vh' }}  >
