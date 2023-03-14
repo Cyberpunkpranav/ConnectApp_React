@@ -387,6 +387,7 @@ background: none;
 .pagination .active a{
     background-color: #222023;
     border-color:#222023 ;
+    z-index: 0;
 }
 .pagination .active:focus{
     border-color:transparent ;

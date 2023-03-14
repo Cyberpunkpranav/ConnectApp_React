@@ -34,6 +34,7 @@ const ExportPurchaseEntry = (props) => {
                     'GSTIN': Data.purchase_entry.distributor.GSTIN_no,
                     'Item ID': Data.id != null ? Data.id : '',
                     'Item Name': Data.medicine && Data.medicine.name && Data.medicine.name != null ? Data.medicine.name : '',
+                    'HSN Code': Data.medicine && Data.medicine.hsn_code !== null ? Data.medicine.hsn_code : '',
                     'Batch No.': Data.batch_no != null ? Data.batch_no : '',
                     'ExpiryDate': Data.expiry_date !== null ? reversefunction(Data.expiry_date) : '',
                     'MRP': Data.mrp != null ? Data.mrp : '',
@@ -51,7 +52,7 @@ const ExportPurchaseEntry = (props) => {
                     'Total Tax %': TotalTaxRate(Data.CGST_rate, Data.SGST_rate, Data.IGST_rate),
                     'Cost in Rs': Data.cost,
                     'Total Rs': Data.total_amount ? Data.total_amount : '',
-                    'HSN Code': Data.medicine && Data.medicine.hsn_code !== null ? Data.medicine.hsn_code : ''
+
                 }))
                 obj.push(vendorsitems)
                 var vendorsitems = props.purchaseentryarr[i].vaccines.map(Data => ({
@@ -63,6 +64,7 @@ const ExportPurchaseEntry = (props) => {
                     'GSTIN': Data.purchase_entry.distributor.GSTIN_no,
                     'Item ID': Data.id != null ? Data.id : '',
                     'Item Name': Data.vaccines && Data.vaccines.name && Data.vaccines.name != null ? Data.medicine.name : '',
+                    'HSN Code': Data.vaccines && Data.vaccines.hsn_code !== null ? Data.vaccines.hsn_code : '',
                     'Batch No.': Data.batch_no != null ? Data.batch_no : '',
                     'ExpiryDate': Data.expiry_date !== null ? reversefunction(Data.expiry_date) : '',
                     'MRP': Data.mrp != null ? Data.mrp : '',
@@ -80,7 +82,7 @@ const ExportPurchaseEntry = (props) => {
                     'Total Tax %': TotalTaxRate(Data.CGST_rate, Data.SGST_rate, Data.IGST_rate),
                     'Cost Rs': Data.cost,
                     'Total Rs': Data.total_amount ? Data.total_amount : '',
-                    'HSN Code': Data.vaccines && Data.vaccines.hsn_code !== null ? Data.vaccines.hsn_code : ''
+
                 }))
                 obj.push(vendorsitems)
 
@@ -174,6 +176,7 @@ const ExportPurchaseReturn = (props) => {
                     'GSTIN': GST,
                     'Item ID': Data.id != null ? Data.id : '',
                     'Item Name': Data.medicine && Data.medicine.name && Data.medicine.name != null ? Data.medicine.name : '',
+                    'HSN Code': Data.medicine && Data.medicine.hsn_code !== null ? Data.medicine.hsn_code : '',
                     'Batch No.': Data.batch_no != null ? Data.batch_no : '',
                     'ExpiryDate': Data.expiry_date !== null ? reversefunction(Data.expiry_date) : '',
                     'MRP': Data.mrp != null ? Data.mrp : '',
@@ -191,7 +194,7 @@ const ExportPurchaseReturn = (props) => {
                     'Total Tax %': TotalTaxRate(Data.CGST_rate, Data.SGST_rate, Data.IGST_rate),
                     'Cost Rs': Data.cost,
                     'Total Rs': Data.total_amount ? Data.total_amount : '',
-                    'HSN Code': Data.medicine && Data.medicine.hsn_code !== null ? Data.medicine.hsn_code : ''
+
                 }))
                 obj.push(vendorsitems)
                 var vendorsitems = props.purchasereturnarr[i].purchase_vaccines.map(Data => ({
@@ -203,6 +206,7 @@ const ExportPurchaseReturn = (props) => {
                     'GSTIN': GST,
                     'Item ID': Data.id != null ? Data.id : '',
                     'Item Name': Data.vaccine && Data.vaccine.name && Data.vaccine.name != null ? Data.vaccine.name : '',
+                    'HSN Code': Data.vaccine && Data.vaccine.hsn_code !== null ? Data.vaccine.hsn_code : '',
                     'Batch No.': Data.batch_no != null ? Data.batch_no : '',
                     'ExpiryDate': Data.expiry_date !== null ? reversefunction(Data.expiry_date) : '',
                     'MRP': Data.mrp != null ? Data.mrp : '',
@@ -220,7 +224,7 @@ const ExportPurchaseReturn = (props) => {
                     'Total Tax %': TotalTaxRate(Data.CGST_rate, Data.SGST_rate, Data.IGST_rate),
                     'Cost Rs': Data.cost,
                     'Total Rs': Data.total_amount ? Data.total_amount : '',
-                    'HSN Code': Data.vaccine && Data.vaccine.hsn_code !== null ? Data.vaccine.hsn_code : ''
+
                 }))
                 obj.push(vendorsitems)
             }
@@ -281,6 +285,7 @@ export { ExportPurchaseReturn }
 const ExportSaleEntry = (props) => {
     const [SaleEntry, setSaleEntry] = useState([])
     const fileName = props.fromdate + '-' + props.todate + 'Sale Entry'
+
     const reversefunction = (date) => {
         if (date) {
             date = date.split("-").reverse().join("-")
@@ -298,6 +303,15 @@ const ExportSaleEntry = (props) => {
 
             return Number(cgst) + Number(sgst) + Number(igst)
         }
+    }
+    function taxableAmount(amt, cgst, sgst, igst) {
+        if (amt) {
+            amt = amt - (cgst + sgst + igst)
+            return amt
+        } else {
+            return 0
+        }
+
     }
     async function MakeSaleEntryExport() {
         if (props.saleentryarr.length !== 0) {
@@ -318,12 +332,15 @@ const ExportSaleEntry = (props) => {
                     'Bill Date': billdate,
                     'Item ID': Data.medicine_stocks.id != null ? Data.medicine_stocks.id : '',
                     'Item Name': Data.medicine && Data.medicine.name && Data.medicine.name != null ? Data.medicine.name : '',
+                    'HSN Code': Data.medicine && Data.medicine.hsn_code !== null ? Data.medicine.hsn_code : '',
                     'Batch No.': Data.medicine_stocks.batch_no != null ? Data.medicine_stocks.batch_no : '',
                     'ExpiryDate': Data.medicine_stocks.expiry_date !== null ? reversefunction(Data.medicine_stocks.expiry_date) : '',
+                    'Rate': Data.medicine_stocks.rate != null ? Data.medicine_stocks.rate : '',
+                    'Cost': Data.medicine_stocks.cost != null ? Data.medicine_stocks.cost : '',
                     'MRP': Data.medicine_stocks.mrp != null ? Data.medicine_stocks.mrp : '',
                     'Qty': Data.qty,
-                    'Rate': Data.medicine_stocks.rate != null ? Data.medicine_stocks.rate : '',
                     'Disc. %': Data.discount != null ? Data.discount : '',
+                    'Taxable Amt': taxableAmount(Number(Data.total_amount), Number(Data.CGST), Number(Data.SGST), Number(Data.IGST)),
                     'Total CGST': Number(Data.CGST) * Number(Data.qty),
                     'CGST %': Data.CGST_rate,
                     'Total SGST': Number(Data.SGST) * Number(Data.qty),
@@ -334,7 +351,7 @@ const ExportSaleEntry = (props) => {
                     'Total Tax ': TotalTax(Data.CGST, Data.SGST, Data.IGST) * Number(Data.qty),
                     'Amount': Data.total_amount !== null ? Data.total_amount : '',
                     'Grand Total': Data.total_amount ? Data.total_amount : '',
-                    'HSN Code': Data.medicine && Data.medicine.hsn_code !== null ? Data.medicine.hsn_code : ''
+
                 }))
                 obj.push(vendorsitems)
                 var vendorsitems = props.saleentryarr[i].sale_vaccines.map(Data => ({
@@ -346,12 +363,15 @@ const ExportSaleEntry = (props) => {
                     'Bill Date': billdate,
                     'Item ID': Data.vaccine_stocks.id != null ? Data.vaccine_stocks.id : '',
                     'Item Name': Data.vaccine && Data.vaccine.name && Data.vaccine.name != null ? Data.vaccine.name : '',
+                    'HSN Code': Data.vaccine && Data.vaccine.hsn_code !== null ? Data.vaccine.hsn_code : '',
                     'Batch No.': Data.vaccine_stocks.batch_no != null ? Data.vaccine_stocks.batch_no : '',
                     'ExpiryDate': Data.vaccine_stocks.expiry_date !== null ? reversefunction(Data.vaccine_stocks.expiry_date) : '',
+                    'Rate': Data.vaccine_stocks.rate != null ? Data.vaccine_stocks.rate : '',
+                    'Cost': Data.vaccine_stocks.cost != null ? Data.vaccine_stocks.cost : '',
                     'MRP': Data.vaccine_stocks.mrp != null ? Data.vaccine_stocks.mrp : '',
                     'Qty': Data.qty,
-                    'Rate': Data.vaccine_stocks.rate != null ? Data.vaccine_stocks.rate : '',
                     'Disc. %': Data.discount != null ? Data.discount : '',
+                    'Taxable Amt': taxableAmount(Number(Data.total_amount), Number(Data.CGST), Number(Data.SGST), Number(Data.IGST)),
                     'Total CGST': Number(Data.CGST) * Number(Data.qty),
                     'CGST %': Data.CGST_rate,
                     'Total SGST': Number(Data.SGST) * Number(Data.qty),
@@ -362,7 +382,7 @@ const ExportSaleEntry = (props) => {
                     'Total Tax ': TotalTax(Data.CGST, Data.SGST, Data.IGST) * Number(Data.qty),
                     'Amount': Data.total_amount !== null ? Data.total_amount : '',
                     'Grand Total': Data.total_amount ? Data.total_amount : '',
-                    'HSN Code': Data.vaccine && Data.vaccine.hsn_code !== null ? Data.vaccine.hsn_code : ''
+
                 }))
                 obj.push(vendorsitems)
             }
@@ -459,10 +479,12 @@ const ExportSaleReturn = (props) => {
                     'Return Date': returndate,
                     'Item ID': Data.id != null ? Data.id : '',
                     'Item Name': Data.medicine && Data.medicine.name && Data.medicine.name != null ? Data.medicine.name : '',
+                    'HSN Code': Data.medicine && Data.medicine.hsn_code !== null ? Data.medicine.hsn_code : '',
                     'Batch No.': Data.medicine_stocks.batch_no != null ? Data.medicine_stocks.batch_no : '',
                     'ExpiryDate': Data.medicine_stocks.expiry_date !== null ? reversefunction(Data.medicine_stocks.expiry_date) : '',
                     'MRP': Data.medicine_stocks.mrp != null ? Data.medicine_stocks.mrp : '',
                     'Rate': Data.medicine_stocks.rate != null ? Data.medicine_stocks.rate : '',
+                    'Cost': Data.medicine_stocks.cost != null ? Data.medicine_stocks.cost : '',
                     'Discount': Data.discount != null ? Data.discount : '',
                     'Selling Cost in Rs': Data.disc_mrp !== null ? Data.disc_mrp : '',
                     'Qty': Data.qty,
@@ -476,7 +498,7 @@ const ExportSaleReturn = (props) => {
                     'Total Tax %': TotalTaxRate(Data.CGST_rate, Data.SGST_rate, Data.IGST_rate),
                     'Total in Rs': Data.total_amount ? Data.total_amount : '',
                     'Returned Amount': returnedamt,
-                    'HSN Code': Data.medicine && Data.medicine.hsn_code !== null ? Data.medicine.hsn_code : ''
+
                 }))
                 obj.push(vendorsitems)
                 var vendorsitems = props.salereturnarr[i].sale_vaccines.map(Data => ({
@@ -488,10 +510,12 @@ const ExportSaleReturn = (props) => {
                     'Return Date': returndate,
                     'Item ID': Data.id != null ? Data.id : '',
                     'Item Name': Data.vaccine && Data.vaccine.name && Data.vaccine.name != null ? Data.vaccine.name : '',
+                    'HSN Code': Data.vaccine && Data.vaccine.hsn_code !== null ? Data.vaccine.hsn_code : '',
                     'Batch No.': Data.vaccine_stocks.batch_no != null ? Data.vaccine_stocks.batch_no : '',
                     'ExpiryDate': Data.medicine_stocks.expiry_date !== null ? reversefunction(Data.vaccine_stocks.expiry_date) : '',
                     'MRP': Data.vaccine_stocks.mrp != null ? Data.vaccine_stocks.mrp : '',
                     'Rate': Data.vaccine_stocks.rate != null ? Data.vaccine_stocks.rate : '',
+                    'Cost': Data.vaccine_stocks.cost != null ? Data.vaccine_stocks.cost : '',
                     'Discount': Data.discount != null ? Data.discount : '',
                     'Selling Cost in Rs': Data.disc_mrp !== null ? Data.disc_mrp : '',
                     'Qty': Data.qty,
@@ -504,7 +528,7 @@ const ExportSaleReturn = (props) => {
                     'Total Tax %': TotalTaxRate(Data.CGST_rate, Data.SGST_rate, Data.IGST_rate),
                     'Total in Rs': Data.total_amount ? Data.total_amount : '',
                     'Returned Amount': returnedamt,
-                    'HSN Code': Data.vaccine && Data.vaccine.hsn_code !== null ? Data.vaccine.hsn_code : ''
+
                 }))
                 obj.push(vendorsitems)
             }

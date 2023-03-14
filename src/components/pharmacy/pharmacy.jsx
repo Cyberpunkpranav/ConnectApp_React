@@ -393,7 +393,7 @@ function Saleentrysection(props) {
           nextLinkClassName={'text-decoration-none text-charcoal'}
           breakClassName={'mx-2 text-charcoal fw-bold fs-4'}
           breakLinkClassName={'text-decoration-none text-charcoal'}
-          activeClassName={'active'}
+          activeClassName={'active '}
         />
       </div>
       <section className={`newsaleentryform p-0 m-0 position-absolute d-${nsef} border border-1 mx-auto start-0 end-0 bg-seashell`} style={{ height: '90vh' }}>
@@ -2362,7 +2362,7 @@ function Purchaseentrysection(props) {
             </div>
           </div>
         </div>
-        <div className="col-2 col-md-2 col-lg-2 align-self-center me-lg-2">
+        <div className="col-auto align-self-center me-lg-2">
           <ExportPurchaseEntry purchaseentryarr={purchaseentryarrExcel} fromdate={reversefunction(fromdate)} todate={reversefunction(todate)} />
         </div>
       </div>
