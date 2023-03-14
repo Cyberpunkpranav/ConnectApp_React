@@ -235,7 +235,7 @@ function Saleentrysection(props) {
   return (
     <>
       <button className="button addentrypurchase button-charcoal position-absolute" onClick={toggle_nsef}><img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt='displaying_image' className="img-fluid" style={{ width: `1.5rem` }} />Entry Sale</button>
-      <div className="row p-0 m-0 justify-content-lg-between">
+      <div className="row p-0 m-0 justify-content-lg-between justify-content-center">
         <div className="col-2 col-md-2 col-lg-2 align-self-center text-center text-charcoal fw-bolder fs-6">
           Sale Entry <span className='text-burntumber border-burntumber px-1 rounded-2'>{pagecount}</span>
         </div>
@@ -891,7 +891,7 @@ function SaleReturns() {
     <>
       <button className="button addentrypurchase button-charcoal position-absolute" onClick={toggle_nref}><img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt='displaying_image' className="img-fluid" style={{ width: `1.5rem` }} />Entry Return</button>
       <div classsName='p-0 m-0'>
-        <div className="row p-0 m-0 justify-content-lg-between">
+        <div className="row p-0 m-0 justify-content-lg-between justify-content-center">
           <div className="col-2 col-md-2 col-lg-2 text-center align-self-center text-charcoal fw-bolder fs-6">Sale Return <span className='text-burntumber border-burntumber px-1 rounded-2'>{pagecount}</span> </div>
           <div className="col-auto align-self-center m-1 justify-content-center ">
             <div className="row border-burntumber fw-bolder rounded-2 text-center justify-content-center ">
@@ -2344,8 +2344,8 @@ function Purchaseentrysection(props) {
   return (
     <>
       <button className="button addentrypurchase button-charcoal position-absolute" onClick={toggle_npef}><img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt='displaying_image' className="img-fluid" style={{ width: `1.5rem` }} />Entry Purchase</button>
-      <div className="row p-0 m-0 justify-content-lg-between align-items-center">
-        <div className="col-3 col-md-2 col-lg-2 align-self-center text-center text-charcoal mb-2 fw-bolder">Purchase Entry <span className='text-burntumber border-burntumber px-1 rounded-2'>{pagecount}</span></div>
+      <div className="row p-0 m-0 justify-content-lg-between">
+        <div className="col-3 col-md-auto col-lg-3 align-self-center text-center text-charcoal fw-bolder">Purchase Entry <span className='text-burntumber border-burntumber px-1 rounded-2'>{pagecount}</span></div>
         <div className="col-auto align-self-center m-1 ">
           <div className="row border-burntumber fw-bolder rounded-2 text-center justify-content-center ">
             <div className="col-4 bg-pearl rounded-2">
@@ -2362,7 +2362,7 @@ function Purchaseentrysection(props) {
             </div>
           </div>
         </div>
-        <div className="col-2 col-md-2 col-lg-2 align-self-center">
+        <div className="col-2 col-md-2 col-lg-2 align-self-center me-lg-2">
           <ExportPurchaseEntry purchaseentryarr={purchaseentryarrExcel} fromdate={reversefunction(fromdate)} todate={reversefunction(todate)} />
         </div>
       </div>
@@ -3873,10 +3873,9 @@ function PurchaseReturns() {
   return (
     <>
       <button className="button addentrypurchase button-charcoal position-absolute" onClick={toggle_nref}><img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt='displaying_image' className="img-fluid" style={{ width: `1.5rem` }} />Entry Return</button>
-      <div classsName='p-0 m-0'>
-        <div className="row p-0 m-0 align-items-center justify-content-lg-between">
-          <div className="col-3 col-md-2 col-lg-2 align-self-center text-center mb-2 text-charcoal fw-bolder fs-6">Purchase Return <span className='text-burntumber border-burntumber px-1 rounded-2'>{pagecount}</span></div>
-          <div className="col-auto align-self-center m-1 ">
+        <div className="row p-0 m-0 justify-content-lg-between">
+          <div className="col-3 col-md-auto col-lg-3 align-self-center text-center text-charcoal fw-bolder fs-6 ">Purchase Return <span className='text-burntumber border-burntumber px-1 rounded-2'>{pagecount}</span></div>
+          <div className="col-auto align-self-center ">
             <div className="row border-burntumber bg-pearl fw-bolder rounded-2 text-center justify-content-center ">
               <div className="col-4">
                 <select className='p-0 m-0 border-0 text-burntumber bg-pearl fw-bolder' value={channel ? channel : ''} onChange={(e) => { setchannel(e.target.value) }}>
@@ -3884,15 +3883,15 @@ function PurchaseReturns() {
                   <option className='border-0 text-burntumber fw-bolder' value='2'>Consumables</option>
                 </select>
               </div>
-              <div className="col-4 text-burntumber fw-bolder bg-pearl">
+              <div className="col-4 text-burntumber fw-bolder bg-pearl ">
                 <input type='date' className='p-0 m-0 border-0 bg-pearl text-burntumber fw-bolder ' value={fromdate ? fromdate : ''} onChange={(e) => { setfromdate(e.target.value) }} />
               </div>
-              <div className="col-4 text-burntumber fw-bolder bg-pearl rounded-2">
+              <div className="col-4 text-burntumber fw-bolder bg-pearl rounded-2 ">
                 <input type='date' className='p-0 m-0 border-0 bg-pearl text-burntumber fw-bolder ' value={todate ? todate : ''} onChange={(e) => { settodate(e.target.value) }} />
               </div>
             </div>
           </div>
-          <div className="col-2 col-lg-2 col-md-2 align-self-center">
+          <div className="col-2 col-md-2 col-lg-2 align-self-center me-lg-2 ">
             <ExportPurchaseReturn purchasereturnarr={purchasereturnarrExcel} fromdate={reversefunction(fromdate)} todate={reversefunction(todate)} />
           </div>
         </div>
@@ -3981,7 +3980,7 @@ function PurchaseReturns() {
             activeClassName={'active'}
           />
         </div>
-      </div>
+     
       <section className={`newreturnentrysection position-absolute bg-seashell border border-1 start-0 end-0  d-${nref}`} style={{ 'top': '-7.15rem', Height: '90vh' }}  >
         {<NewPurchaseReturnentryform toggle_nref={toggle_nref} GETPurchaseReturns={GETPurchaseReturns} />}
       </section>

@@ -15,7 +15,7 @@ const ExportExcel = ({ apiData, fileName }) => {
   };
 
   return (
-    <button className='button button-lightyellow m-0 p-0  px-2 text-charcoal fw-bold ms-lg-2' onClick={(e) => exportToCSV(apiData, fileName)}>Export Excel</button>
+    <button className='button button-lightyellow m-0 p-0  px-2 text-charcoal fw-bold ms-lg-2' onClick={(e) => exportToCSV(apiData, fileName)}>Export</button>
   );
 }
 
