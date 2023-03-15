@@ -36,4 +36,5 @@ max-height:70vh
     max-width:40rem;
     overflow: auto ;
     margin:0 auto;
+    z-index:2;
 }
