@@ -58,7 +58,7 @@ const AddAppointment = (props) => {
         setsearchload(true)
         setsearchinput(e.target.value)
         axios.get(`${url}/patient/list?search=${searchinput}&limit=5&offset=0`).then((response) => {
-            setsearchlist(response.data.data)
+            setsearchlist(response.data.data.patients_list)
                     setsearchload(false)
         })
         if (searchinput && searchinput.length > 1) {

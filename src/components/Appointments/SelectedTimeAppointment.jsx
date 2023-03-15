@@ -37,7 +37,7 @@ const SelectedTimeAppointment = (props) => {
         setsearchload(true)
         setsearchinput(e.target.value)
         await axios.get(`${url}/patient/list?search=${searchinput}&limit=5&offset=0`).then((response) => {
-            setsearchlist(response.data.data)
+            setsearchlist(response.data.data.patients_list)
             setsearchload(false)
         })
 

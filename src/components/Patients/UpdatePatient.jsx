@@ -98,8 +98,8 @@ const UpdatePatient = (props) => {
     const searchmainaccount = (e) => {
         setaccountinput(e.target.value)
         axios.get(`${url}/patient/list?search=${accountinput}&limit=5&offset=0`).then((response) => {
-            setmainaccount(response.data.data)
-            console.log(response.data.data)
+            setmainaccount(response.data.data.patient_list)
+            console.log(response.data.data.patients_list)
         })
         if (accountinput && accountinput.length > 1) {
             setdisplaymainaccount('block');

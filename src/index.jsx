@@ -72,7 +72,7 @@ function Connectapp(props) {
     try {
       setLoading(true);
       await axios.get(`${url}/doctor/list?clinic_id=${ClinicId}&limit=30&offset=0`).then(function (response) {
-        let tempArray = response.data.data;
+        let tempArray = response.data.data.doctor_list;
         setConnectDoctorapi(tempArray)
         for (let i = 0; i < tempArray.length; i++) {
           Doctorarray.push([tempArray[i].id, tempArray[i].doctor_name, tempArray[i].clinic_id, []]);

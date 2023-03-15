@@ -6,7 +6,6 @@ import Notiflix from 'notiflix';
 import ReactPaginate from 'react-paginate';
 import * as XLSX from 'xlsx';
 import { customconfirm } from '../features/notiflix/customconfirm';
-import { customnotify } from '../features/notiflix/customnotify';
 import '../../css/bootstrap.css';
 import '../../css/pharmacy.css';
 import '../../css/dashboard.css'
@@ -128,7 +127,7 @@ function Saleentrysection(props) {
     if (Data == undefined || Data.selected == undefined) {
       setLoading(true)
       try {
-        axios.get(`${url}/sale/entry?clinic_id=${ClinicID}&limit=25&offset=${0 * 25}&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`).then((response) => {
+        axios.get(`${url}/sale/entry?clinic_id=${ClinicID}&limit=25&offset=0&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`).then((response) => {
           console.log(response)
           setsaleentryarr(response.data.data.sale_entry)
           setLoading(false)
@@ -1047,7 +1046,7 @@ function SaleEntryForm(props) {
     setsearchload(true)
     setsearchinput(e.target.value)
     axios.get(`${url}/patient/list?search=${searchinput}&limit=5&offset=0`).then((response) => {
-      setsearchlist(response.data.data)
+      setsearchlist(response.data.data.patients_list)
       setsearchload(false)
     })
     if (searchinput && searchinput.length > 1) {
@@ -2693,6 +2692,7 @@ function Newpurchaseentryform(props) {
   const [itemsearch, setitemsearch] = useState([''])
   const [itemname, setitemname] = useState()
   const [itemid, setitemid] = useState()
+  const [IsConsumable, setIsConsumable] = useState(0)
   const [itemtype, setitemtype] = useState()
   const [batchno, setbatchno] = useState()
   const [expdate, setexpdate] = useState()
@@ -2735,6 +2735,7 @@ function Newpurchaseentryform(props) {
   }
   let MedicineentriesObj = {
     type: '',
+    isconsumable: 0,
     Itemid: '',
     Itemname: '',
     batchno: '',
@@ -2758,6 +2759,7 @@ function Newpurchaseentryform(props) {
   async function InsertMedicines() {
     MedicineentriesObj = {
       type: itemtype,
+      isconsumable: IsConsumable,
       Itemid: itemid,
       Itemname: itemname,
       batchno: batchno,
@@ -2839,6 +2841,7 @@ function Newpurchaseentryform(props) {
     }
   }
   const SavePurchase = async () => {
+    let Is_consumable = []
     let MedId = []
     let medname = []
     let Type = []
@@ -2862,6 +2865,7 @@ function Newpurchaseentryform(props) {
     let grosstotal = 0
     for (let i = 0; i < MedicineentriesArr.length; i++) {
       Type.push(MedicineentriesArr[i].type ? MedicineentriesArr[i].type : '')
+      Is_consumable.push(MedicineentriesArr[i].isconsumable ? MedicineentriesArr[i].isconsumable : '')
       MedId.push(MedicineentriesArr[i].Itemid ? MedicineentriesArr[i].Itemid : '')
       medname.push(MedicineentriesArr[i].Itemname ? MedicineentriesArr[i].Itemname : '')
       batches.push(MedicineentriesArr[i].batchno ? MedicineentriesArr[i].batchno : '')
@@ -2894,6 +2898,7 @@ function Newpurchaseentryform(props) {
       bill_date: invoicedate,
       clinic_id: ClinicId,
       channel: channel,
+      IsConsumable: Is_consumable,
       bill_total: grosstotal,
       id: MedId,
       type: Type,
@@ -3011,7 +3016,7 @@ function Newpurchaseentryform(props) {
     settotalamt(MedicineentriesArr[index].totalamount)
   }
   function Emptytableindex() {
-
+    setIsConsumable(0)
     setitemid()
     setitemname()
     setbatchno()
@@ -3038,6 +3043,7 @@ function Newpurchaseentryform(props) {
       if (tableindex == j) {
         MedicineentriesArr[j] = {
           type: itemtype,
+          isconsumable: IsConsumable,
           Itemid: itemid,
           Itemname: itemname,
           batchno: batchno,
@@ -3128,10 +3134,6 @@ function Newpurchaseentryform(props) {
     setcpu(CalculateCPU())
   }, [CalculateCPU(), Calculate()])
 
-  // console.log(totalamt,cpu)
-  // console.log(sgst,cgst)
-  // console.log(MedicineentriesArr, ClinicList)
-  console.log(clinicstatecode, vendorcode)
   const searchmedAuto = async (search) => {
 
     await axios.get(`${url}/item/search?search=${search}`).then((response) => {
@@ -3290,7 +3292,6 @@ function Newpurchaseentryform(props) {
       setMedicineentriesArr(prevState => [...prevState, e])
     }
   }
-
   const ToggleNewMedicine = () => {
     if (NewMed == 'block') {
       setNewMed('none')
@@ -3299,7 +3300,7 @@ function Newpurchaseentryform(props) {
       setNewMed('block')
     }
   }
-  console.log(vendorid, vendorsearch, vendorcode)
+  // console.log(vendorid, vendorsearch, vendorcode, IsConsumable)
   return (
 
     <div className="container-fluid p-0 m-0" style={{ zIndex: '2' }}>
@@ -3481,6 +3482,7 @@ function Newpurchaseentryform(props) {
           <div className={`col-4 m-0 p-0 scroll scroll-y border border-1 medicineinfosection d-${vendorid ? 'block' : 'none'} bg-seashell ps-2`} id='medicineinfosection' style={{ maxHeight: '81vh', Height: '81vh' }}>
             <h5 className="mt-2">Add Items</h5>
             <div className="col-12">
+              <input type='checkbox' checked={IsConsumable == 0 ? false : true} className='form-check-input' onChange={() => { IsConsumable == 0 ? setIsConsumable(1) : setIsConsumable(0) }} /> <label>Is Consumable</label>
               <div className=" col-10 col-md-11">
                 <div className='position-relative'>
                   <label>Search Items </label>
@@ -3512,6 +3514,7 @@ function Newpurchaseentryform(props) {
                     }
                   </div>
                 </div>
+
 
                 <label className="mb-2 pt-2">Batch Number</label>
                 <input type="text" max="10" className="form-control bg-seashell batchnumber rounded-1" id="inputEmail4" placeholder="Batch Number" value={batchno ? batchno : ''} onChange={(e) => setbatchno(e.target.value)} required />
@@ -3873,114 +3876,114 @@ function PurchaseReturns() {
   return (
     <>
       <button className="button addentrypurchase button-charcoal position-absolute" onClick={toggle_nref}><img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt='displaying_image' className="img-fluid" style={{ width: `1.5rem` }} />Entry Return</button>
-        <div className="row p-0 m-0 justify-content-lg-between">
-          <div className="col-3 col-md-auto col-lg-3 align-self-center text-center text-charcoal fw-bolder fs-6 ">Purchase Return <span className='text-burntumber border-burntumber px-1 rounded-2'>{pagecount}</span></div>
-          <div className="col-auto align-self-center ">
-            <div className="row border-burntumber bg-pearl fw-bolder rounded-2 text-center justify-content-center ">
-              <div className="col-4">
-                <select className='p-0 m-0 border-0 text-burntumber bg-pearl fw-bolder' value={channel ? channel : ''} onChange={(e) => { setchannel(e.target.value) }}>
-                  <option className='border-0 text-burntumber fw-bolder' value='1'>Pharmacy</option>
-                  <option className='border-0 text-burntumber fw-bolder' value='2'>Consumables</option>
-                </select>
-              </div>
-              <div className="col-4 text-burntumber fw-bolder bg-pearl ">
-                <input type='date' className='p-0 m-0 border-0 bg-pearl text-burntumber fw-bolder ' value={fromdate ? fromdate : ''} onChange={(e) => { setfromdate(e.target.value) }} />
-              </div>
-              <div className="col-4 text-burntumber fw-bolder bg-pearl rounded-2 ">
-                <input type='date' className='p-0 m-0 border-0 bg-pearl text-burntumber fw-bolder ' value={todate ? todate : ''} onChange={(e) => { settodate(e.target.value) }} />
-              </div>
+      <div className="row p-0 m-0 justify-content-lg-between">
+        <div className="col-3 col-md-auto col-lg-3 align-self-center text-center text-charcoal fw-bolder fs-6 ">Purchase Return <span className='text-burntumber border-burntumber px-1 rounded-2'>{pagecount}</span></div>
+        <div className="col-auto align-self-center ">
+          <div className="row border-burntumber bg-pearl fw-bolder rounded-2 text-center justify-content-center ">
+            <div className="col-4">
+              <select className='p-0 m-0 border-0 text-burntumber bg-pearl fw-bolder' value={channel ? channel : ''} onChange={(e) => { setchannel(e.target.value) }}>
+                <option className='border-0 text-burntumber fw-bolder' value='1'>Pharmacy</option>
+                <option className='border-0 text-burntumber fw-bolder' value='2'>Consumables</option>
+              </select>
+            </div>
+            <div className="col-4 text-burntumber fw-bolder bg-pearl ">
+              <input type='date' className='p-0 m-0 border-0 bg-pearl text-burntumber fw-bolder ' value={fromdate ? fromdate : ''} onChange={(e) => { setfromdate(e.target.value) }} />
+            </div>
+            <div className="col-4 text-burntumber fw-bolder bg-pearl rounded-2 ">
+              <input type='date' className='p-0 m-0 border-0 bg-pearl text-burntumber fw-bolder ' value={todate ? todate : ''} onChange={(e) => { settodate(e.target.value) }} />
             </div>
           </div>
-          <div className="col-2 col-md-2 col-lg-2 align-self-center me-lg-2 ">
-            <ExportPurchaseReturn purchasereturnarr={purchasereturnarrExcel} fromdate={reversefunction(fromdate)} todate={reversefunction(todate)} />
-          </div>
         </div>
-        <div className='scroll scroll-y overflow-scroll p-0 m-0' style={{ minHeight: '57vh', height: '57vh' }}>
-          <table className="table text-center p-0 m-0">
-            <thead className='p-0 m-0 align-middle'>
-              <tr>
-                <th className='fw-bolder text-charcoal75' scope='col'>PR ID</th>
-                <th className='fw-bolder text-charcoal75' scope='col'>Distributor</th>
-                <th className='fw-bolder text-charcoal75' scope='col'>Return Date</th>
-                <th className='fw-bolder text-charcoal75' scope='col'>Return Amount</th>
-                <th className='fw-bolder text-charcoal75' scope='col'>Inventory</th>
-                <th className='fw-bolder text-charcoal75' scope='col'>more</th>
-              </tr>
-            </thead>
-            {
-              Loading ? (
-                <body className=' text-center' style={{ minHeight: '57vh' }}>
-                  <tr className='position-absolute border-0 start-0 end-0 px-5'>
-                    <div className="d-flex align-items-center">
-                      <strong className='fs-5'>Getting Details please be Patient ...</strong>
-                      <div className="spinner-border ms-auto" role="status" aria-hidden="true"></div>
-                    </div>
-                  </tr>
-                </body>
+        <div className="col-2 col-md-2 col-lg-2 align-self-center me-lg-2 ">
+          <ExportPurchaseReturn purchasereturnarr={purchasereturnarrExcel} fromdate={reversefunction(fromdate)} todate={reversefunction(todate)} />
+        </div>
+      </div>
+      <div className='scroll scroll-y overflow-scroll p-0 m-0' style={{ minHeight: '57vh', height: '57vh' }}>
+        <table className="table text-center p-0 m-0">
+          <thead className='p-0 m-0 align-middle'>
+            <tr>
+              <th className='fw-bolder text-charcoal75' scope='col'>PR ID</th>
+              <th className='fw-bolder text-charcoal75' scope='col'>Distributor</th>
+              <th className='fw-bolder text-charcoal75' scope='col'>Return Date</th>
+              <th className='fw-bolder text-charcoal75' scope='col'>Return Amount</th>
+              <th className='fw-bolder text-charcoal75' scope='col'>Inventory</th>
+              <th className='fw-bolder text-charcoal75' scope='col'>more</th>
+            </tr>
+          </thead>
+          {
+            Loading ? (
+              <body className=' text-center' style={{ minHeight: '57vh' }}>
+                <tr className='position-absolute border-0 start-0 end-0 px-5'>
+                  <div className="d-flex align-items-center">
+                    <strong className='fs-5'>Getting Details please be Patient ...</strong>
+                    <div className="spinner-border ms-auto" role="status" aria-hidden="true"></div>
+                  </div>
+                </tr>
+              </body>
 
+            ) : (
+              purchasereturnarr && purchasereturnarr.length != 0 ? (
+                <tbody>
+                  {
+                    purchasereturnarr.map((item, i) => (
+                      <tr key={i} className={`bg-${((i % 2) == 0) ? 'seashell' : 'pearl'} align-middle`}>
+                        <td className='p-0 m-0 text-charcoal fw-bold'>PR-{item.return_no}</td>
+                        <td className='p-0 m-0 text-charcoal fw-bold'>{item.distributor && item.distributor != null && item.distributor.entity_name && item.distributor.entity_name != null ? item.distributor.entity_name : 'N/A'}</td>
+                        <td className='p-0 m-0 text-charcoal fw-bold'>{item.return_date ? reversefunction(item.return_date) : ''}</td>
+                        <td className='p-0 m-0 text-charcoal fw-bold'>{item.grand_total ? item.grand_total : 'N/A'}</td>
+                        <td className='p-0 m-0 text-charcoal fw-bold'>
+                          {/* <button className='btn'><img src={process.env.PUBLIC_URL + "/images/cart.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1" /></button> */}
+                          <button className="btn" onClick={() => { setindex(i); toggle_pridw() }}><img src={process.env.PUBLIC_URL + "/images/archivebox.png"} alt="displaying_image" className="ms-1" style={{ width: "1.5rem" }} /></button></td>
+                        <td className='p-0 m-0 text-charcoal fw-bold'><button className="btn position-relative cursor-pointer more p-0 m-0"><img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" style={{ width: "1.5rem" }} /></button></td>
+                        <td className={` position-absolute d-${i == index ? pridw : 'none'} border border-1 start-0 end-0 bg-seashell p-0 m-0`} style={{ Height: '90vh', top: '-7.15rem', zIndex: '2' }} >
+                          {
+                            i == index ? (
+                              <PRitemdetailssection purchasereturnarr={purchasereturnarr[i]} itembillid={"PR-" + item.return_no} toggle_pridw={toggle_pridw} />
+                            ) : (<></>)
+                          }
+                        </td>
+
+                      </tr>
+
+                    ))
+
+                  }
+
+                </tbody>
               ) : (
-                purchasereturnarr && purchasereturnarr.length != 0 ? (
-                  <tbody>
-                    {
-                      purchasereturnarr.map((item, i) => (
-                        <tr key={i} className={`bg-${((i % 2) == 0) ? 'seashell' : 'pearl'} align-middle`}>
-                          <td className='p-0 m-0 text-charcoal fw-bold'>PR-{item.return_no}</td>
-                          <td className='p-0 m-0 text-charcoal fw-bold'>{item.distributor && item.distributor != null && item.distributor.entity_name && item.distributor.entity_name != null ? item.distributor.entity_name : 'N/A'}</td>
-                          <td className='p-0 m-0 text-charcoal fw-bold'>{item.return_date ? reversefunction(item.return_date) : ''}</td>
-                          <td className='p-0 m-0 text-charcoal fw-bold'>{item.grand_total ? item.grand_total : 'N/A'}</td>
-                          <td className='p-0 m-0 text-charcoal fw-bold'>
-                            {/* <button className='btn'><img src={process.env.PUBLIC_URL + "/images/cart.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1" /></button> */}
-                            <button className="btn" onClick={() => { setindex(i); toggle_pridw() }}><img src={process.env.PUBLIC_URL + "/images/archivebox.png"} alt="displaying_image" className="ms-1" style={{ width: "1.5rem" }} /></button></td>
-                          <td className='p-0 m-0 text-charcoal fw-bold'><button className="btn position-relative cursor-pointer more p-0 m-0"><img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" style={{ width: "1.5rem" }} /></button></td>
-                          <td className={` position-absolute d-${i == index ? pridw : 'none'} border border-1 start-0 end-0 bg-seashell p-0 m-0`} style={{ Height: '90vh', top: '-7.15rem', zIndex: '2' }} >
-                            {
-                              i == index ? (
-                                <PRitemdetailssection purchasereturnarr={purchasereturnarr[i]} itembillid={"PR-" + item.return_no} toggle_pridw={toggle_pridw} />
-                              ) : (<></>)
-                            }
-                          </td>
-
-                        </tr>
-
-                      ))
-
-                    }
-
-                  </tbody>
-                ) : (
-                  <tbody className='text-center position-relative p-0 m-0 ' style={{ minHeight: '55vh' }}>
-                    <tr className=''>
-                      <td className='fw-bolder text-charcoal text-center position-absolute border-0 start-0 end-0 mx-3 p-2 border-0'>No Purchase Returns</td>
-                    </tr>
-                  </tbody>
-                )
+                <tbody className='text-center position-relative p-0 m-0 ' style={{ minHeight: '55vh' }}>
+                  <tr className=''>
+                    <td className='fw-bolder text-charcoal text-center position-absolute border-0 start-0 end-0 mx-3 p-2 border-0'>No Purchase Returns</td>
+                  </tr>
+                </tbody>
               )
-            }
+            )
+          }
 
-          </table>
-        </div>
-        <div className="container-fluid mt-2 d-flex justify-content-center">
-          < ReactPaginate
-            previousLabel={'Previous'}
-            nextLabel={'Next'}
-            breakLabel={'. . .'}
-            pageCount={pages}
-            marginPagesDisplayed={3}
-            pageRangeDisplayed={2}
-            onPageChange={GETPurchaseReturns}
-            containerClassName={'pagination'}
-            pageClassName={'page-item text-charcoal'}
-            pageLinkClassName={'page-link text-decoration-none text-charcoal border-charcoal rounded-2 mx-1'}
-            previousClassName={'btn button-charcoal-outline me-2'}
-            previousLinkClassName={'text-decoration-none text-charcoal'}
-            nextClassName={'btn button-charcoal-outline ms-2'}
-            nextLinkClassName={'text-decoration-none text-charcoal'}
-            breakClassName={'mx-2 text-charcoal fw-bold fs-4'}
-            breakLinkClassName={'text-decoration-none text-charcoal'}
-            activeClassName={'active'}
-          />
-        </div>
-     
+        </table>
+      </div>
+      <div className="container-fluid mt-2 d-flex justify-content-center">
+        < ReactPaginate
+          previousLabel={'Previous'}
+          nextLabel={'Next'}
+          breakLabel={'. . .'}
+          pageCount={pages}
+          marginPagesDisplayed={3}
+          pageRangeDisplayed={2}
+          onPageChange={GETPurchaseReturns}
+          containerClassName={'pagination'}
+          pageClassName={'page-item text-charcoal'}
+          pageLinkClassName={'page-link text-decoration-none text-charcoal border-charcoal rounded-2 mx-1'}
+          previousClassName={'btn button-charcoal-outline me-2'}
+          previousLinkClassName={'text-decoration-none text-charcoal'}
+          nextClassName={'btn button-charcoal-outline ms-2'}
+          nextLinkClassName={'text-decoration-none text-charcoal'}
+          breakClassName={'mx-2 text-charcoal fw-bold fs-4'}
+          breakLinkClassName={'text-decoration-none text-charcoal'}
+          activeClassName={'active'}
+        />
+      </div>
+
       <section className={`newreturnentrysection position-absolute bg-seashell border border-1 start-0 end-0  d-${nref}`} style={{ 'top': '-7.15rem', Height: '90vh' }}  >
         {<NewPurchaseReturnentryform toggle_nref={toggle_nref} GETPurchaseReturns={GETPurchaseReturns} />}
       </section>
@@ -4618,56 +4621,67 @@ function Stocksection() {
 }
 function Stockvaccinesection() {
   const url = useContext(URL)
-  const nextref = useRef()
-  const previousref = useRef()
-  const [nxtoffset, setnxtoffset] = useState(0)
-  const [prevoffset, setprevoffset] = useState(0)
-  const [pages, setpages] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+  const [pagecount, setpagecount] = useState()
+  const [pages, setpages] = useState()
   const [vaccineslist, setvaccineslist] = useState([])
   const [load, setload] = useState()
   const [searchname, setsearchname] = useState('')
   const [index, setindex] = useState()
   const [detailsform, setdetailsform] = useState('none')
-
-  const GetVaccines = async (i) => {
-    if (i == undefined) {
-      i = 0
-    }
-    setload(true)
-    if (i == 0 || i == undefined || nxtoffset == 0) {
-      previousref.current.disabled = true
-    } else {
-      previousref.current.disabled = false
-    }
+  function GetPages() {
     try {
-      axios.get(`${url}/stock/list?search=${searchname}&limit=20&offset=${i * 10}`).then((response) => {
-        console.log(response.data.data.vaccines)
-        setvaccineslist(response.data.data.vaccines)
-        let nxt = Number(i) + 1
-        setnxtoffset(nxt)
-        if (i != 0) {
-          let prev = i--
-          setprevoffset(prev)
-        }
+      axios.get(`${url}/stock/list?search=${searchname}&limit=20&offset=0`).then((response) => {
+        setpagecount(response.data.data.total_count_vaccines)
+        setpages(Math.round(response.data.data.total_count_vaccines / 20) + 1)
         setload(false)
-      }).catch(function error(e) {
-        Notiflix.Notify.failure(e.message)
-        // setload(false)
+      }).catch((e) => {
+        Notiflix.Notify.warning(e)
+        setload(false)
       })
     } catch (e) {
-      Notiflix.Notify.failure(e.message)
-      // setload(false)
+      Notiflix.Notify.warning(e.message)
+      setload(false)
     }
   }
+  const GetVaccines = async (Data) => {
+    if (Data == undefined || Data.selected == undefined) {
+      setload(true)
+      try {
+        axios.get(`${url}/stock/list?search=${searchname}&limit=20&offset=0`).then((response) => {
+          console.log(response.data.data)
+          setvaccineslist(response.data.data.vaccines)
+          setload(false)
+        }).catch(function error(e) {
+          Notiflix.Notify.failure(e.message)
+          // setload(false)
+        })
+      } catch (e) {
+        Notiflix.Notify.failure(e.message)
+        // setload(false)
+      }
+    } else {
+      setload(true)
+      try {
+        axios.get(`${url}/stock/list?search=${searchname}&limit=20&offset=${Data.selected * 10}`).then((response) => {
+          console.log(response.data.data)
+          setvaccineslist(response.data.data.vaccines)
+          setload(false)
+        }).catch(function error(e) {
+          Notiflix.Notify.failure(e.message)
+          // setload(false)
+        })
+      } catch (e) {
+        Notiflix.Notify.failure(e.message)
+        // setload(false)
+      }
+    }
+
+  }
   useEffect(() => {
+    GetPages()
     GetVaccines()
-  }, [searchname])
-  async function getnextpages(e) {
-    GetVaccines(e.target.value)
-  }
-  async function getpreviouspages(e) {
-    GetVaccines(e.target.value - 1)
-  }
+  }, [pagecount, searchname])
+
 
   const CalculateBStock = (data) => {
     let total = 0
@@ -4785,82 +4799,91 @@ function Stockvaccinesection() {
           }
         </table>
       </div>
-      <div className="container-fluid my-1">
-        <div className="d-flex justify-content-center p-0 m-0 text-center">
-
-          <button className="btn p-0 m-0 border-charcoal px-1 me-2" ref={previousref} value={prevoffset} onClick={(e) => { getpreviouspages(e); }} style={{ marginTop: '0.15rem' }}>Previous</button>
-
-          <div className="col-auto col-xl-auto col-md-8 col-lg-8 col-sm-auto p-0 m-0">
-
-            {
-              pages ? (
-                pages.map((page, i) => (
-                  <button className={`button ms-2 button-${nxtoffset - 1 == i ? 'charcoal' : 'pearl'} shadow-${nxtoffset - 1 == i ? 'lg' : 'none'}`} ref={nextref} value={page} id={page} onClick={(e) => { GetVaccines(i) }} key={i}>{page}</button>
-                ))
-              ) : (
-                <div>Loading...</div>
-              )
-
-            }
-          </div>
-          <button className={`btn p-0 m-0 border-charcoal px-1 ms-2 `} ref={nextref} value={nxtoffset} onClick={(e) => { getnextpages(e); }} style={{ marginTop: '0.15rem' }}>Next</button>
-        </div>
+      <div className="container-fluid d-flex justify-content-center">
+        < ReactPaginate
+          previousLabel={'Previous'}
+          nextLabel={'Next'}
+          breakLabel={'. . .'}
+          pageCount={pages}
+          marginPagesDisplayed={3}
+          pageRangeDisplayed={2}
+          onPageChange={GetVaccines}
+          containerClassName={'pagination'}
+          pageClassName={'page-item text-charcoal'}
+          pageLinkClassName={'page-link text-decoration-none text-charcoal border-charcoal rounded-2 mx-1'}
+          previousClassName={'btn button-charcoal-outline me-2'}
+          previousLinkClassName={'text-decoration-none text-charcoal'}
+          nextClassName={'btn button-charcoal-outline ms-2'}
+          nextLinkClassName={'text-decoration-none text-charcoal'}
+          breakClassName={'mx-2 text-charcoal fw-bold fs-4'}
+          breakLinkClassName={'text-decoration-none text-charcoal'}
+          activeClassName={'active'}
+        />
       </div>
     </div>
   )
 }
 function Stockmedicinesection() {
   const url = useContext(URL)
-  const nextref = useRef()
-  const previousref = useRef()
-  const [nxtoffset, setnxtoffset] = useState(0)
-  const [prevoffset, setprevoffset] = useState(0)
-  const [pages, setpages] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
-  const [vaccineslist, setvaccineslist] = useState([])
+  const [pagecount, setpagecount] = useState()
+  const [pages, setpages] = useState()
+  const [medicineslist, setmedicineslist] = useState([])
   const [load, setload] = useState()
   const [searchname, setsearchname] = useState('')
   const [index, setindex] = useState()
   const [detailsform, setdetailsform] = useState('none')
-
-  const GetVaccines = async (i) => {
-    if (i == undefined) {
-      i = 0
-    }
-    setload(true)
-    if (i == 0 || i == undefined || nxtoffset == 0) {
-      previousref.current.disabled = true
-    } else {
-      previousref.current.disabled = false
-    }
+  function GetPages() {
     try {
-      axios.get(`${url}/stock/list?search=${searchname}&limit=20&offset=${i * 10}`).then((response) => {
-        console.log(response.data.data.medicines)
-        setvaccineslist(response.data.data.medicines)
-        let nxt = Number(i) + 1
-        setnxtoffset(nxt)
-        if (i != 0) {
-          let prev = i--
-          setprevoffset(prev)
-        }
+      axios.get(`${url}/stock/list?search=${searchname}&limit=20&offset=0`).then((response) => {
+        setpagecount(response.data.data.total_count_medicines)
+        setpages(Math.round(response.data.data.total_count_medicines / 20) + 1)
         setload(false)
-      }).catch(function error(e) {
-        Notiflix.Notify.failure(e.message)
-        // setload(false)
+      }).catch((e) => {
+        Notiflix.Notify.warning(e)
+        setload(false)
       })
     } catch (e) {
-      Notiflix.Notify.failure(e.message)
-      // setload(false)
+      Notiflix.Notify.warning(e.message)
+      setload(false)
     }
   }
+  const GetMedicines = async (Data) => {
+    if (Data == undefined || Data.selected == undefined) {
+      setload(true)
+      try {
+        axios.get(`${url}/stock/list?search=${searchname}&limit=20&offset=0`).then((response) => {
+          setmedicineslist(response.data.data.medicines)
+          setload(false)
+        }).catch(function error(e) {
+          Notiflix.Notify.failure(e.message)
+          // setload(false)
+        })
+      } catch (e) {
+        Notiflix.Notify.failure(e.message)
+        // setload(false)
+      }
+    } else {
+      setload(true)
+      try {
+        axios.get(`${url}/stock/list?search=${searchname}&limit=20&offset=${Data.selected * 20}`).then((response) => {
+          setmedicineslist(response.data.data.medicines)
+          setload(false)
+        }).catch(function error(e) {
+          Notiflix.Notify.failure(e.message)
+          // setload(false)
+        })
+      } catch (e) {
+        Notiflix.Notify.failure(e.message)
+        // setload(false)
+      }
+    }
+
+  }
   useEffect(() => {
-    GetVaccines()
+    GetPages()
+    GetMedicines()
   }, [searchname])
-  async function getnextpages(e) {
-    GetVaccines(e.target.value)
-  }
-  async function getpreviouspages(e) {
-    GetVaccines(e.target.value - 1)
-  }
+
 
   const CalculateBStock = (data) => {
     let total = 0
@@ -4930,16 +4953,16 @@ function Stockmedicinesection() {
                 <td className='placeholder-glow'><div className='placeholder col-12 p-0 m-0 w-100 px-1'>Loading..</div></td>
               </tr>
             ) : (
-              vaccineslist == undefined || vaccineslist.length == 0 ? (
+              medicineslist == undefined || medicineslist.length == 0 ? (
                 <tbody className='' >
                   <tr>
-                    <td className='position-absolute text-charcoal fw-bolder start-0 end-0'>No Vaccines Found</td>
+                    <td className='position-absolute text-charcoal fw-bolder start-0 end-0'>No Medicines Found</td>
                   </tr>
                 </tbody>
               ) : (
                 <tbody className=''>
                   {
-                    vaccineslist.map((data, i) => (
+                    medicineslist.map((data, i) => (
                       <tr className={`align-middle text-center`}>
                         <td className=' text-charcoal fw-bold'>{data.id}</td>
                         <td className=' text-charcoal fw-bold'>{data.name && data.name !== null ? data.name : ''}</td>
@@ -4961,7 +4984,7 @@ function Stockmedicinesection() {
                         {
                           index == i ? (
                             <td className={`stockdetailsfrom bg-white border border-1 col-lg-10 rounded-4 shadow p-0 col-md-10 col-sm-10 col-10 col-xl-6 d-${index == i ? detailsform : 'none'} position-absolute start-0 end-0 top-0`}>
-                              <MedicinesectionItemDetails toggle_detailsform={toggle_detailsform} name={vaccineslist[i].name} data={vaccineslist[i].stock_info} />
+                              <MedicinesectionItemDetails toggle_detailsform={toggle_detailsform} name={medicineslist[i].name} data={medicineslist[i].stock_info} />
                             </td>
                           ) : (<></>)
                         }
@@ -4977,26 +5000,28 @@ function Stockmedicinesection() {
           }
         </table>
       </div>
-      <div className="container-fluid my-1">
-        <div className="d-flex justify-content-center p-0 m-0 text-center">
-          <button className="button me-2 border-charcoal p-0 m-0 px-1" ref={previousref} value={prevoffset} onClick={(e) => { getpreviouspages(e); }} style={{ marginTop: '0.15rem' }}>Previous</button>
-
-          <div className="col-auto col-xl-auto col-md-8 col-lg-8 col-sm-auto p-0 m-0">
-
-            {
-              pages ? (
-                pages.map((page, i) => (
-                  <button className={`btn ms-2 button-${nxtoffset - 1 == i ? 'charcoal' : 'pearl'}  shadow-${nxtoffset - 1 == i ? 'lg' : 'none'}`} ref={nextref} value={page} id={page} onClick={(e) => { GetVaccines(i) }} key={i}>{page}</button>
-                ))
-              ) : (
-                <div>Loading...</div>
-              )
-
-            }
-          </div>
-          <button className={`btn border-charcoal p-0 m-0 px-1 ms-2`} ref={nextref} value={nxtoffset} onClick={(e) => { getnextpages(e); }} style={{ marginTop: '0.15rem' }}>Next</button>
-        </div>
+      <div className="container-fluid mt-2 d-flex justify-content-center">
+        < ReactPaginate
+          previousLabel={'Previous'}
+          nextLabel={'Next'}
+          breakLabel={'. . .'}
+          pageCount={pages}
+          marginPagesDisplayed={3}
+          pageRangeDisplayed={2}
+          onPageChange={GetMedicines}
+          containerClassName={'pagination'}
+          pageClassName={'page-item text-charcoal'}
+          pageLinkClassName={'page-link text-decoration-none text-charcoal border-charcoal rounded-2 mx-1'}
+          previousClassName={'btn button-charcoal-outline me-2'}
+          previousLinkClassName={'text-decoration-none text-charcoal'}
+          nextClassName={'btn button-charcoal-outline ms-2'}
+          nextLinkClassName={'text-decoration-none text-charcoal'}
+          breakClassName={'mx-2 text-charcoal fw-bold fs-4'}
+          breakLinkClassName={'text-decoration-none text-charcoal'}
+          activeClassName={'active'}
+        />
       </div>
+
     </div>
   )
 }
@@ -5105,29 +5130,60 @@ function MedicinesectionItemDetails(props) {
 }
 function MedicineList() {
   const url = useContext(URL)
-  const [limit, setlimit] = useState(12)
-  const [offset, setoffset] = useState(0)
-  const [stock, setstock] = useState([])
+  const [pagecount, setpagecount] = useState()
+  const [pages, setpages] = useState()
   const [medicines, setmedicines] = useState([])
   const [load, setload] = useState(false)
   const [index, setindex] = useState()
   const [NewMed, setNewMed] = useState('none')
-  const medcinelist = async () => {
-    setload(true)
+
+  function GetPages() {
     try {
-      await axios.get(`${url}/medicine/list?limit=${limit}&offset=${offset}`).then((response) => {
-        setmedicines(response.data.data.medicine)
+      axios.get(`${url}/medicine/list?limit=20&offset=0`).then((response) => {
+        setpagecount(response.data.data.total_count)
+        setpages(Math.round(response.data.data.total_count / 20) + 1)
+        setload(false)
+      }).catch((e) => {
+        Notiflix.Notify.warning(e)
         setload(false)
       })
     } catch (e) {
-      Notiflix.Notify.failure(e.message)
+      Notiflix.Notify.warning(e.message)
       setload(false)
     }
+  }
 
+  const medcinelist = async (Data) => {
+    if (Data == undefined || Data.selected == undefined) {
+      setload(true)
+      try {
+        await axios.get(`${url}/medicine/list?limit=20&offset=0`).then((response) => {
+          console.log(response.data.data)
+          setmedicines(response.data.data.medicine)
+          setload(false)
+        })
+      } catch (e) {
+        Notiflix.Notify.failure(e.message)
+        setload(false)
+      }
+    } else {
+      setload(true)
+      try {
+        await axios.get(`${url}/medicine/list?limit=20&offset=${Data.selected * 20}`).then((response) => {
+          console.log(response.data.data)
+          setmedicines(response.data.data.medicine)
+          setload(false)
+        })
+      } catch (e) {
+        Notiflix.Notify.failure(e.message)
+        setload(false)
+      }
+    }
   }
   useEffect(() => {
+    GetPages()
     medcinelist()
-  }, [offset])
+  }, [pagecount])
 
   const ToggleNewMedicine = () => {
     if (NewMed == 'block') {
@@ -5173,8 +5229,8 @@ function MedicineList() {
   return (
     <div>
       <div className='text-start ms-5 text-charcoal fw-bold p-2'>Medicines List</div>
-      <div className='scroll scroll-y p-0 m-0' style={{ 'height': '57vh', minHeight: '65vh', maxHeight: '65vh' }}>
-        <table className="table datatable text-center" >
+      <div className='scroll scroll-y p-0 m-0 overflow-scroll' style={{ 'height': '57vh', minHeight: '57vh', maxHeight: '57vh' }}  >
+        <table className="table datatable text-start" >
           <thead className='position-sticky top-0 bg-pearl'>
             <tr>
               <th rowSpan='2' className='p-0 m-0 px-1 text-charcoal75 fw-bold'>Update</th>
@@ -5207,7 +5263,7 @@ function MedicineList() {
                 <tbody className=''>
                   {
                     medicines.map((data, i) => (
-                      <tr className={`bg-${i % 2 == 0 ? 'seashell' : 'pearl'} align-middle text-center`}>
+                      <tr className={`bg-${i % 2 == 0 ? 'seashell' : 'pearl'} align-middle text-start`}>
                         <td className={`py-0 bg-${index === i ? 'lightyellow' : ''}`}>
                           <button className="btn m-0 p-0" key={i} onClick={(e) => { ToggleNewMedicine(); setindex(i) }}>
                             <img src={process.env.PUBLIC_URL + "/images/confirmed.png"} alt="displaying_image" className="img-fluid" style={{ width: "1.5rem" }} key={i} />
@@ -5239,9 +5295,26 @@ function MedicineList() {
           }
         </table>
       </div>
-      <div className="col-12 text-center d-flex p-0 m-0 justify-content-between  align-self-center">
-        <button className='button button-charcoal p-0 m-0 px-3 py-1 ' disabled={offset == 0 ? true : false} onClick={() => { setoffset(offset - 12) }}>Previous</button>
-        <button className='button button-charcoal p-0 m-0 px-3 py-1' onClick={() => { setoffset(offset + 12) }}>Next</button>
+      <div className="container-fluid d-flex justify-content-center mt-2">
+        < ReactPaginate
+          previousLabel={'Previous'}
+          nextLabel={'Next'}
+          breakLabel={'. . .'}
+          pageCount={pages}
+          marginPagesDisplayed={3}
+          pageRangeDisplayed={2}
+          onPageChange={medcinelist}
+          containerClassName={'pagination'}
+          pageClassName={'page-item text-charcoal'}
+          pageLinkClassName={'page-link text-decoration-none text-charcoal border-charcoal rounded-2 mx-1'}
+          previousClassName={'btn button-charcoal-outline me-2'}
+          previousLinkClassName={'text-decoration-none text-charcoal'}
+          nextClassName={'btn button-charcoal-outline ms-2'}
+          nextLinkClassName={'text-decoration-none text-charcoal'}
+          breakClassName={'mx-2 text-charcoal fw-bold fs-4'}
+          breakLinkClassName={'text-decoration-none text-charcoal'}
+          activeClassName={'active'}
+        />
       </div>
 
     </div>
