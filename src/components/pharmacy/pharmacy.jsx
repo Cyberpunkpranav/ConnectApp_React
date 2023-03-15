@@ -1313,6 +1313,11 @@ function SaleEntryForm(props) {
       },
     );
   }
+  useEffect(() => {
+    if (AtC == 1) {
+      SubmitSaleEntry()
+    }
+  }, [AtC])
   const ClearForm = async () => {
     setSelectedProducts([])
     setaddressid()
