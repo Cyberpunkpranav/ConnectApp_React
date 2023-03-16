@@ -88,6 +88,28 @@ const SelectedAppointments = (props) => {
       Notiflix.Notify.alert('Please try Again')
     }
   }
+  const Generate_Bill = async (id) => {
+    Notiflix.Loading.circle('Generating Bill', {
+        backgroundColor: 'rgb(242, 242, 242,0.5)',
+        svgColor: '#96351E',
+        messageColor: '#96351E',
+        messageFontSize: '1.5rem'
+    })
+    try {
+        axios.post(`${url}/appointment/bill`, {
+            appointment_id: id,
+            admin_id: adminid
+        }).then((response) => {
+            console.log(response)
+            Notiflix.Notify.success(response.data.message)
+            window.open(response.data.data.bill_url, '_blank', 'noreferrer');
+            Notiflix.Loading.remove()
+        })
+    } catch (e) {
+        Notiflix.Notify.failure(e.message)
+        Notiflix.Loading.remove()
+    }
+}
   console.log(paymentindex)
   return (
     <>
@@ -149,7 +171,7 @@ const SelectedAppointments = (props) => {
                   <ul className="dropdown-menu text-decoration-none bg-white" style={{ '-webkit-appearance': 'none', 'appearance': 'none' }}>
                     <li  className='dropdown-item d-flex border-bottom p-0 m-0 align-items-center' onClick={() => { setbillindex(key); toggle_bill() }}>Bill</li>
                     <li  className='dropdown-item d-flex border-bottom p-0 m-0 align-items-center' onClick={() => { setpaymentindex(key); toggle_payments(); }}>Payments</li>
-                    {/* <li><a className="dropdown-item" href="#">Something else here</a></li> */}
+                    <li className='dropdown-item d-flex  p-0 m-0 align-items-center' onClick={() => { Generate_Bill(data.id) }}><img src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" style={{ width: "2rem" }} />Generate Bill</li>
                   </ul>
                 </div></td>
                 {

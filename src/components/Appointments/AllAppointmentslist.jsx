@@ -53,7 +53,7 @@ const AllAppointmentslist = (props) => {
         }
     }
     const reversefunction = (date) => {
-        if(date){
+        if (date) {
             date = date.split("-").reverse().join("-")
             return date
         }
@@ -64,7 +64,9 @@ const AllAppointmentslist = (props) => {
             try {
                 Notiflix.Loading.circle('Updating Appointment Status', {
                     backgroundColor: 'rgb(242, 242, 242,0.5)',
-                    svgColor: '#96351E'
+                    svgColor: '#96351E',
+                    messageColor: '#96351E',
+                    messageFontSize: '1.5rem'
                 }
                 )
                 await axios.post(`${url}/appointment/change/status`, {
@@ -95,6 +97,28 @@ const AllAppointmentslist = (props) => {
         }
         return time.join('');
     }
+    const Generate_Bill = async (id) => {
+        Notiflix.Loading.circle('Generating Bill', {
+            backgroundColor: 'rgb(242, 242, 242,0.5)',
+            svgColor: '#96351E',
+            messageColor: '#96351E',
+            messageFontSize: '1.5rem'
+        })
+        try {
+            axios.post(`${url}/appointment/bill`, {
+                appointment_id: id,
+                admin_id: adminid
+            }).then((response) => {
+                console.log(response)
+                Notiflix.Notify.success(response.data.message)
+                window.open(response.data.data.bill_url, '_blank', 'noreferrer');
+                Notiflix.Loading.remove()
+            })
+        } catch (e) {
+            Notiflix.Notify.failure(e.message)
+            Notiflix.Loading.remove()
+        }
+    }
     console.log(paymentindex)
     return (
         <>
@@ -116,7 +140,7 @@ const AllAppointmentslist = (props) => {
                 ) : (
 
                     props.getAppointments.map((data, key) => (
-                        <tr id={key} key={key} className='align-middle'>
+                        <tr id={key} key={key} className='align-middle text-start'>
                             <td className={`bg-${tableindex == key ? 'lightyellow' : ''}`}>
                                 <img src={process.env.PUBLIC_URL + "/images/confirmed.png"} style={{ width: "1.5rem" }} onClick={(e) => { openapppointmentform(); settableindex(key) }} className="btn p-0 m-0" />
                             </td>
@@ -138,9 +162,9 @@ const AllAppointmentslist = (props) => {
                             <td className='text-charcoal fw-bold'>{data.patient != null && data.patient.full_name != null ? data.patient.full_name : ''}</td>
                             <td className='text-charcoal fw-bold'>{data.doctor != null && data.doctor.doctor_name != null ? data.doctor.doctor_name : ''}</td>
                             <td className='text-charcoal fw-bold'>{data.patient != null && data.patient.phone_number != null ? data.patient.phone_number : ""}</td>
-                            <td className='text-charcoal fw-bold'>{data.timeslot && data.timeslot.date !==null ? reversefunction(data.timeslot.date):''}</td>
-                            <td className='text-charcoal fw-bold'>{data.timeslot && data.timeslot.time_from !==null ? props.tConvert(data.timeslot.time_from):''}</td>
-                            <td className='text-charcoal fw-bold'>{data.total_amount && data.total_amount!==null? data.total_amount:data.total_amount}</td>
+                            <td className='text-charcoal fw-bold'>{data.timeslot && data.timeslot.date !== null ? reversefunction(data.timeslot.date) : ''}</td>
+                            <td className='text-charcoal fw-bold'>{data.timeslot && data.timeslot.time_from !== null ? props.tConvert(data.timeslot.time_from) : ''}</td>
+                            <td className='text-charcoal fw-bold'>{data.total_amount && data.total_amount !== null ? data.total_amount : data.total_amount}</td>
                             <td className='text-charcoal fw-bold'><AmountPaid appointmentData={data} /></td>
                             <td className='p-0 m-0 text-charcoal fw-bold align-items-center '>
                                 <div className='vr rounded-2 h-100 align-self-center py-3' style={{ padding: '1px' }}></div>
@@ -154,13 +178,15 @@ const AllAppointmentslist = (props) => {
                                 </button>
                                 <ul className="dropdown-menu text-decoration-none p-0 m-0" style={{ '-webkit-appearance': 'none' }}>
                                     <li className='dropdown-item d-flex border-bottom p-0 m-0 align-items-center' onClick={() => { setbillindex(key); toggle_bill() }}><img className='m-2 img-fluid' style={{ 'width': '1.8rem' }} src={process.env.PUBLIC_URL + 'images/bill.png'} />Bill</li>
-                                    <li className='dropdown-item d-flex  p-0 m-0 align-items-center' onClick={() => { setpaymentindex(key); toggle_payments(); }}><img className='m-2 img-fluid' style={{ 'width': '1.6rem' }} src={process.env.PUBLIC_URL + 'images/rupee.png'} />Payments</li>
+                                    <li className='dropdown-item d-flex border-bottom  p-0 m-0 align-items-center' onClick={() => { setpaymentindex(key); toggle_payments(); }}><img className='m-2 img-fluid' style={{ 'width': '1.6rem' }} src={process.env.PUBLIC_URL + 'images/rupee.png'} />Payments</li>
+                                    <li className='dropdown-item d-flex  p-0 m-0 align-items-center' onClick={() => { Generate_Bill(data.id) }}><img src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" style={{ width: "2rem" }} />Generate Bill</li>
+
                                     {/* <li><a className="dropdown-item" href="#">Something else here</a></li> */}
                                 </ul>
                             </div></td>
                             {
                                 tableindex == key ? (
-                                    <td className={` d-${tableindex == key ? appointmentform : 'none'} bg-seashell col-lg-8 col-xl-5 col-md-8 col-sm-10 start-0 end-0  mx-auto top-0 border border-1 rounded-3 position-absolute`} style={{ zIndex: '3',marginTop:'10rem' }}>
+                                    <td className={` d-${tableindex == key ? appointmentform : 'none'} bg-seashell col-lg-8 col-xl-5 col-md-8 col-sm-10 start-0 end-0  mx-auto top-0 border border-1 rounded-3 position-absolute`} style={{ zIndex: '3', marginTop: '10rem' }}>
                                         <UpdateAppointment fetchallAppointmentslist={props.fetchallAppointmentslist} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} patientid={data.patient != null && data.patient.id != null ? data.patient.id : ""} appointmentid={data.id} closeappointmentform={closeappointmentform} doctorid={props.doctorid} fetchapi={props.fetchapi} appointmentdoctorid={data.doctor.id} appointmentdate={data.appointment_date} appointmenttime={tConvert(data.timeslot.time_from)} />
                                     </td>
                                 ) : (<></>)

@@ -230,6 +230,28 @@ function Saleentrysection(props) {
     }
 
   }
+  const Generate_Bill = async (id) => {
+    Notiflix.Loading.circle('Generating Bill', {
+      backgroundColor: 'rgb(242, 242, 242,0.5)',
+      svgColor: '#96351E',
+      messageColor: '#96351E',
+      messageFontSize: '1.5rem'
+    })
+    try {
+      axios.post(`${url}/sale/entry/bill`, {
+        sale_entry_id: id,
+        admin_id: adminid
+      }).then((response) => {
+        console.log(response)
+        Notiflix.Notify.success(response.data.message)
+        window.open(response.data.data.bill_url, '_blank', 'noreferrer');
+        Notiflix.Loading.remove()
+      })
+    } catch (e) {
+      Notiflix.Notify.failure(e.message)
+      Notiflix.Loading.remove()
+    }
+  }
   console.log(saleentryarr, pages)
   return (
     <>
@@ -309,13 +331,26 @@ function Saleentrysection(props) {
                           </select>
                         </td>
 
-                        <td className={`text-charcoal fw-bold p-0 m-0 px-1 `}>
-                          <button className={`btn bg-${tabindex == i ? 'lightred' : ''}`} onClick={() => { settabindex(i); toggle_payments() }}>
-                            <img src={process.env.PUBLIC_URL + "/images/rupee.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1" />
-                          </button>
-                          <button className="btn" onClick={() => { setindex(i); toggle_seidw() }}>
-                            <img src={process.env.PUBLIC_URL + "/images/archivebox.png"} alt="displaying_image" className="ms-1" style={{ width: "1.5rem" }} />
-                          </button> </td>
+                        <td className={`text-charcoal bg-transparent fw-bold p-0 m-0 px-1 `}>
+                          <div className={`dropdown  bg-${tabindex == i ? 'lightred' : ''} text-start text-decoration-none`}>
+                            <button className="btn p-0 m-0 px-1 py-1 text-decoration-none dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                              <img src={process.env.PUBLIC_URL + "/images/confirmed.png"} alt="displaying_image" style={{ width: "1.5rem" }} />
+                            </button>
+                            <ul className="dropdown-menu  text-start" >
+                              <li className="text-start border-bottom"><button className={`btn`} onClick={() => { settabindex(i); toggle_payments() }}>
+                                <img src={process.env.PUBLIC_URL + "/images/rupee.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1" />Payments
+                              </button></li>
+                              <li className=" text-start border-bottom">    <button className="btn" onClick={() => { setindex(i); toggle_seidw() }}>
+                                <img src={process.env.PUBLIC_URL + "/images/archivebox.png"} alt="displaying_image" className="ms-1" style={{ width: "1.5rem" }} /> Inventory
+                              </button></li>
+                              <li className="text-start"><button className="btn" onClick={() => { Generate_Bill(item.id) }}><img src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" style={{ width: "2rem" }} /> Generate Bill</button>
+                              </li>
+                            </ul>
+                          </div>
+
+
+
+                        </td>
 
                         {/* <td className={`text-charcoal fw-bold p-0 m-0 px-1 `}>
                           <button className="btn position-relative cursor-pointer more p-0 m-0">
@@ -1331,6 +1366,7 @@ function SaleEntryForm(props) {
     setsearchinput()
     setpatientdata()
   }
+
   // console.log(patientid, doctorid, doctorname, Dc, itemname, itemid)
   // console.log(SelectedProducts, Grandtotal)
   // console.log(patientdata)
@@ -1601,8 +1637,7 @@ function SaleEntryForm(props) {
                                 data.totalamt = CalTotalAmount(data.qtytoSale, Number(data.disccost), Number(data.cost))
                                 setSelectedProducts(prevState => [...prevState]);
                               }} /> </td>
-                          <td>{data.mainmrp}</td>
-                          <td>{data.cost}</td>
+                          <td>{data.mainmrp}</td>                          <td>{data.cost}</td>
                           <td>{data.gst + '%'}</td>
                           <td>{data.disccost}</td>
                           <td>{data.totalamt}</td>

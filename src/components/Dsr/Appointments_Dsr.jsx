@@ -280,8 +280,43 @@ const Appointments_Dsr = (props) => {
 
   return (
     <div className='Appointments_Dsrsection'>
-      <div>
+      <div className='position-relative'>
         <h6 className="text-charcoal fw-bold p-0 m-0 ms-2 ms-lg-3 ms-md-1 ms-sm-1">Payments</h6>
+        <div className="col position-absolute top-0 " style={{marginTop:'-3.1rem',marginLeft:'26rem'}}>
+            <div className="dropdown">
+              <button className="button button p-0 m-0 px-1 py-1 button-pearl text-burntumber  fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Exports
+              </button>
+              <ul className="dropdown-menu" >
+                <li className="text-center border-bottom"  onClick={() => { setappxl('block') }}><DownloadTableExcel
+                filename={`${reversefunction(props.fromdate) + ' to ' + reversefunction(props.todate)} Appointments`}
+                sheet="Appointments"
+                currentTableRef={Appointmentref.current}
+              >
+                <button className='btn p-0 m-0'>Appointments Export</button>
+
+              </DownloadTableExcel></li>
+                <li className="text-center  border-bottom" onClick={() => { setpprxl('block') }}><DownloadTableExcel
+                filename={`${reversefunction(props.fromdate) + ' to ' + reversefunction(props.todate)} Pending Payments Reciecved`}
+                sheet=" Pending Payments Reciecved"
+                currentTableRef={Pendingref.current}
+              >
+                <button className='btn p-0 m-0 '>Pending Payments Reciecved Export</button>
+
+              </DownloadTableExcel></li>
+                <li className="text-center"onClick={() => { setadvxl('block') }}>
+                <DownloadTableExcel
+                filename={`${reversefunction(props.fromdate) + ' to ' + reversefunction(props.todate)} Advance payment Recieved`}
+                sheet=" Advance payment Recieved"
+                currentTableRef={Advancedref.current}
+              >
+                <button className=' btn p-0 m-0'>Advance payment Recieved Export</button>
+
+              </DownloadTableExcel>
+                </li>
+              </ul>
+            </div>
+          </div>
         <div className="row m-0 g-2 mt-md-2 p-0 text-start justify-content-start">
           <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-2 ms-lg-3  bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
             <p className='fw-bold text-charcoal75 text-start p-0 m-0 justify-content-start'>CASH</p>
@@ -320,14 +355,7 @@ const Appointments_Dsr = (props) => {
           <h5 className="accordion-header p-0 m-0 text-center" id="headingOne">
             <button className="accordion-button p-0 m-0 py-1 text-center justify-content-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
               <h6 className='p-0 m-0 ms-5 text-burntumber text-center fw-semibold p-0 m-0 '> Total Appointments :{Appointments.length}</h6>
-              <DownloadTableExcel
-                filename={`${reversefunction(props.fromdate) + ' to ' + reversefunction(props.todate)} Appointments`}
-                sheet="Appointments"
-                currentTableRef={Appointmentref.current}
-              >
-                <button className='btn p-0 m-0 ms-5 text-charcoal fw-bold '> <img src={process.env.PUBLIC_URL + '/images/download.png'} style={{ 'width': '1.5rem' }} onClick={() => { setappxl('block') }} /> Export</button>
-
-              </DownloadTableExcel>
+           
             </button>
           </h5>
           <div id="collapseOne" className="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
@@ -493,14 +521,6 @@ const Appointments_Dsr = (props) => {
           <h2 className="accordion-header" id="headingTwo">
             <button className="accordion-button p-0 m-0 py-1 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
               <h6 className='p-0 m-0 ms-1 text-burntumber text-center fw-semibold '>Pending Payments Recieved: {pendingpaid.length}</h6>
-              <DownloadTableExcel
-                filename={`${reversefunction(props.fromdate) + ' to ' + reversefunction(props.todate)} Pending Payments Reciecved`}
-                sheet=" Pending Payments Reciecved"
-                currentTableRef={Pendingref.current}
-              >
-                <button className='btn p-0 m-0 ms-5 text-charcoal fw-bold '> <img src={process.env.PUBLIC_URL + '/images/download.png'} style={{ 'width': '1.5rem' }} onClick={() => { setpprxl('block') }} /> Export</button>
-
-              </DownloadTableExcel>
             </button>
           </h2>
           <div id="collapseTwo" className="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
@@ -598,14 +618,7 @@ const Appointments_Dsr = (props) => {
           <h2 className="accordion-header" id="headingThree">
             <button className="accordion-button p-0 m-0 py-0 collapsed " type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
               <h6 className='p-0 m-0 text-burntumber fw-semibold text-center '>Advanced Payments Recieved:{advancepaid.length}</h6>
-              <DownloadTableExcel
-                filename={`${reversefunction(props.fromdate) + ' to ' + reversefunction(props.todate)} Advance payment Recieved`}
-                sheet=" Advance payment Recieved"
-                currentTableRef={Advancedref.current}
-              >
-                <button className=' btn p-0 m-0 ms-5 text-charcoal fw-bold '> <img src={process.env.PUBLIC_URL + '/images/download.png'} style={{ 'width': '1.5rem' }} onClick={() => { setadvxl('block') }} /> Export</button>
-
-              </DownloadTableExcel>
+         
             </button>
           </h2>
           <div id="collapseThree" className="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
@@ -701,7 +714,7 @@ const Appointments_Dsr = (props) => {
           <div className="col-auto">
             <div className="row p-0 m-0 justify-content-start">
               <div className="col-auto">
-                <h6 className='fw-bold text-charcoal75 '> Recieved Advance Amount</h6>
+                <h6 className='fw-bold text-charcoal75 '>Recieved Advance Amount</h6>
                 <h5 className='fw-bold'>Rs. {AdvancedAmountRecieved()}</h5>
               </div>
               <div className="col-auto">

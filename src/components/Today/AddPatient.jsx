@@ -154,6 +154,7 @@ const AddPatient = (props) => {
                         <div className="col-4">
                             <select name="countryCode" className="form-control" value={countrycode ? countrycode : ''} onChange={(e) => { setcountrycode(e.target.value) }}>
                                 <option defaultValue='Country Code' >Country Code</option>
+                                <option data-countrycode="IN" value="91">India (+91)</option>
                                 <option data-countrycode="DZ" value="213">Algeria (+213)</option>
                                 <option data-countrycode="AD" value="376">Andorra (+376)</option>
                                 <option data-countrycode="AO" value="244">Angola (+244)</option>
@@ -239,7 +240,6 @@ const AddPatient = (props) => {
                                 <option data-countrycode="HK" value="852">Hong Kong (+852)</option>
                                 <option data-countrycode="HU" value="36">Hungary (+36)</option>
                                 <option data-countrycode="IS" value="354">Iceland (+354)</option>
-                                <option data-countrycode="IN" value="91">India (+91)</option>
                                 <option data-countrycode="ID" value="62">Indonesia (+62)</option>
                                 <option data-countrycode="IR" value="98">Iran (+98)</option>
                                 <option data-countrycode="IQ" value="964">Iraq (+964)</option>

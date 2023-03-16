@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 import { useState, useEffect, useContext } from "react";
 import AmountPaid from './AmountPaid';
-import { URL, TodayDate } from '../../index'
+import { URL, TodayDate, Clinic } from '../../index'
 import Notiflix from 'notiflix';
 import { customconfirm } from "../features/notiflix/customconfirm";
 import { customloading } from "../features/notiflix/customloading"
@@ -128,7 +128,8 @@ function DoctorSchedule(props) {
         Loading.circle('Upadating Appointment Status', {
           backgroundColor: 'rgb(242, 242, 242,0.5)',
           svgColor: '#96351E',
-          messageColor: '#96351E'
+          messageColor: '#96351E',
+          messageFontSize: '1.5rem'
         })
         await axios.post(`${url}/appointment/change/status`, {
           appointment_id: e.target.name,
@@ -191,14 +192,22 @@ function DoctorSchedule(props) {
 
   //Send Notification
   async function SendNotifcation(name, id) {
+    Notiflix.Loading.dots('Sending', {
+      backgroundColor: 'rgb(242, 242, 242,0.5)',
+      svgColor: '#96351E',
+      messageColor: '#96351E',
+      messageFontSize: '1.3rem'
+    })
     try {
       await axios.post(`${url}/appointment/call/in`, {
         appointment_id: id,
         admin_id: adminid
       }).then((response) => {
         Notiflix.Notify.success(response.data.message.slice(0, -1) + ' to ' + name)
+        Notiflix.Loading.remove()
       })
     } catch (e) {
+      Notiflix.Loading.remove()
       Notiflix.Notify.warning(e.message)
     }
 
@@ -245,7 +254,28 @@ function DoctorSchedule(props) {
       setpaymentsindex()
     }
   }
-
+  const Generate_Bill = async (id) => {
+    Notiflix.Loading.circle('Generating Bill', {
+      backgroundColor: 'rgb(242, 242, 242,0.5)',
+      svgColor: '#96351E',
+      messageColor: '#96351E',
+      messageFontSize: '1.5rem'
+    })
+    try {
+      axios.post(`${url}/appointment/bill`, {
+        appointment_id: id,
+        admin_id: adminid
+      }).then((response) => {
+        console.log(response)
+        Notiflix.Notify.success(response.data.message)
+        Notiflix.Loading.remove()
+        window.open(response.data.data.bill_url, '_blank', 'noreferrer');
+      })
+    } catch (e) {
+      Notiflix.Notify.failure(e.message)
+      Notiflix.Loading.remove()
+    }
+  }
   return (
     <>
       <section id="doctorscheduledata">
@@ -366,7 +396,7 @@ function DoctorSchedule(props) {
                             <td className={`py-0 bg-${billindex === i ? 'lightyellow' : ''}`}> <button className="btn p-0 m-0" onClick={() => { setbillindex(i); OpenBillForm(); }}><img src={process.env.PUBLIC_URL + "/images/bill.png"} alt="displaying_image" style={{ width: "1.8rem" }} className="me-1" /></button>  </td>
                             <td className={`py-0 bg-${paymentsindex === i ? 'lightyellow' : ''}`}><button className="btn p-0 m-0" onClick={() => { setpaymentsindex(i); OpenPaymentsForm(); }}><img src={process.env.PUBLIC_URL + "/images/rupee.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1" /></button></td>
                             <td className={`py-0`}><button className="btn p-0 m-0" onClick={() => confirmmessage(data.patient.full_name, data.id)}><img src={process.env.PUBLIC_URL + "/images/speaker.png"} alt="displaying_image" className="ms-1" style={{ width: "1.8rem" }} /></button></td>
-                            <td className={`py-0`}><a target='_blank' className='p-0 m-0 text-decoration-none text-burntumber fw-bold' href={`https://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/admin/appointment/generate/bill/${data.id}`}><img src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" style={{ width: "2rem" }} /></a></td>
+                            <td className={`py-0`}><button className="p-0 m-0 btn" onClick={() => { Generate_Bill(data.id) }}><img src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" style={{ width: "2rem" }} /></button></td>
                             <td className={`py-0`}><a target='_blank' className='p-0 m-0 text-decoration-none text-charcoal fw-bold' href={`https://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/assets/swift_pdf/prescription_pdf_${data.id}.pdf`}><img src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" style={{ width: "2rem" }} /></a></td>
                             {
                               tableindex === i ? (
@@ -412,7 +442,9 @@ export { DoctorSchedule };
 
 function Timecard(props) {
   const url = useContext(URL);
+  const clinics = useContext(Clinic)
   const [cardindex, setcardindex] = useState()
+  const [rooms, setrooms] = useState([])
   function diff(start, end) {
     start = start.split(":");
     end = end.split(":");
@@ -442,22 +474,19 @@ function Timecard(props) {
   let [doctime, setdoctime] = useState([]);
   let [isLoading, setisLoading] = useState();
   let [startload, setstartload] = useState(false)
-  let doctimes = [];
 
   let clinicid = localStorage.getItem('ClinicId');
 
-  function fetchapi() {
+  async function fetchapi() {
     setisLoading(true);
-    axios.get(`${url}/todays/doctor/time/list?doctor_id=${props.docid}&clinic_id=${clinicid}`).then((response) => {
+    await axios.get(`${url}/todays/doctor/time/list?doctor_id=${props.docid}&clinic_id=${clinicid}`).then((response) => {
+      console.log(response)
+      console.log(response.data.data)
       if (response.data.data.length == 0) {
         setisLoading(false);
       }
       else {
-        response.data.data.map((data) => {
-          doctimes.push(data);
-
-        })
-        setdoctime(doctimes.reverse());
+        setdoctime(response.data.data.reverse());
         setisLoading(false);
       }
     })
@@ -479,7 +508,7 @@ function Timecard(props) {
           setstartload(false)
           Notiflix.Notify.success(response.data.message)
         })
-        fetchapi();
+        await fetchapi();
 
       } catch (e) {
         Notiflix.Notify.failure(e.message)
@@ -504,7 +533,7 @@ function Timecard(props) {
       }).then((response) => {
         Notiflix.Notify.success(response.data.message)
       })
-      fetchapi();
+      await fetchapi();
       setrefreshtimeslot(false)
     } catch (e) {
       Notiflix.Notify.failure(e.message)
@@ -516,7 +545,15 @@ function Timecard(props) {
     fetchapi();
   }, [props._selected]);
 
+  useEffect(() => {
+    for (let i = 0; i < clinics.length; i++) {
+      if (clinics[i].id == Number(clinicid)) {
+        setrooms(clinics[i].rooms)
+      }
+    }
 
+  }, [clinicid])
+  // console.log(doctime, clinics, rooms, clinicid)
   return (
     <div className="scroll align-items-center align-content-center my-auto mb-2">
       <div id="cardslot" className={`d-${isLoading ? 'none' : 'inline-flex'} m-1`}>
@@ -525,19 +562,14 @@ function Timecard(props) {
             <div className="d-flex align-items-center ms-3">
               <p className=" m-0 p-0 text-charcoal fw-bold me-2">Room</p>
               <select onChange={(e) => { setroomnumber(e.target.value) }} className="form-control bg-pearl my-1  mx-2 p-0 py-1 px-3 w-auto text-center border-0" id="clinicroom1">
-                <option defaultValue="1">1</option>
-                <option defaultValue="2">2</option>
-                <option defaultValue="3">3</option>
-                <option defaultValue="4">4</option>
-                <option defaultValue="5">5</option>
-                <option defaultValue="6">6</option>
-                <option defaultValue="7">7</option>
-                <option defaultValue="8">8</option>
-                <option defaultValue="9">9</option>
-                <option defaultValue="10">10</option>
-                <option defaultValue="11">11</option>
-                <option defaultValue="12">12</option>
-                <option defaultValue="13">13</option>
+                {
+
+                  rooms.map((data) => (
+                    <option value={data.id}>{data.room_number}</option>
+                  ))
+
+
+                }
               </select>
               {
                 startload ? (
@@ -568,8 +600,8 @@ function Timecard(props) {
                 <div className="card-body p-0 m-0">
                   <div className="d-flex text-start align-items-center p-0 m-0 ">
                     <p className=" p-0 m-0  ms-2 text-charcoal fw-bold">Room</p>
-                    <select className="form-control rounded-2 bg-pearl my-1 mx-2 p-0 py-1 px-3 border-0 w-auto" id="clinicroom">
-                      <option defaultValue="01">{data.room_id}</option>
+                    <select className="form-control rounded-2 bg-pearl my-1 mx-2 p-0 py-1 px-3 border-0 w-auto" value={data.room_id} id="clinicroom">
+                      <option value={data.room_id}>{data.room_id}</option>
                     </select>
                     {
                       refreshtimeslots && i === cardindex ? (
@@ -608,8 +640,9 @@ function Timecard(props) {
 
             </div>
           )
-          )
-        )
+
+          ))
+
       }
     </div>
 

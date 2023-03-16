@@ -724,7 +724,7 @@ function Patients() {
         <input className="form-control m-auto mt-2" placeholder="Search Patient By Name or Number" style={{ width: '30rem' }} onChange={(e) => { setpatientsearch(e.target.value); getAllPatients(); }} onBlur={getAllPatients} />
       </div>
       <div className="container-fluid p-0 m-0 scroll scroll-y " style={{ minHeight: '30rem' }}>
-        <table className="table text-center p-0 m-0" >
+        <table className="table text-start" >
           <thead>
             <tr>
               <th>Update</th>
@@ -741,43 +741,61 @@ function Patients() {
               {/* <th>More</th> */}
             </tr>
           </thead>
-          <tbody>
-            {
-              Loading ? (
-                <div className='text-burntumber fs-4 position-absolute start-0 end-0 top-5'>Loading Patient Info</div>
+
+          {
+            Loading ? (
+              <tbody className=' text-center' style={{ minHeight: '30vh' }}>
+                <tr className='position-absolute border-0 start-0 end-0 px-5'>
+                  <div class="d-flex align-items-center">
+                    <strong className='fs-5'>Getting Details please be Patient ...</strong>
+                    <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
+                  </div>
+                </tr>
+
+              </tbody>
+            ) : (
+              PatientsList && PatientsList.length == 0 ? (
+                <tbody className='text-center position-relative p-0 m-0 ' style={{ minHeight: '30vh' }}>
+                  <tr className=''>
+                    <td className='fw-bolder text-charcoal text-center position-absolute border-0 start-0 end-0 mx-3 p-2 border-0'>No Patients found</td>
+                  </tr>
+                </tbody>
+
               ) : (
-                PatientsList && PatientsList.length != 0 ? (
-                  PatientsList.map((data, i) => (
-                    <tr>
-                      <td><button className="btn p-0 m-0" onClick={(e) => { settabindex(i); OpenUpdatePatient(i) }}><img src={process.env.PUBLIC_URL + "/images/confirmed.png"} style={{ width: "1.5rem" }} /></button>
-                        {form == i ? (
+                <tbody>
+                  {
+                    PatientsList && PatientsList.map((data, i) => (
+                      <tr>
+                        <td><button className="btn p-0 m-0" onClick={(e) => { settabindex(i); OpenUpdatePatient(i) }}><img src={process.env.PUBLIC_URL + "/images/confirmed.png"} style={{ width: "1.5rem" }} /></button>
+                          {form == i ? (
 
 
-                          <section id={i} className={`updatepatientform text-start position-absolute d-${tabindex == i ? updatepatient : 'none'} bg-seashell rounded-2 shadow`}>
-                            <UpdatePatient index={i} getAllPatients={getAllPatients} CloseUpdatePatient={CloseUpdatePatient} patientid={data.id} data={data} phonecountrycode={data.phone_country_code ? data.phone_country_code : 'N/A'} PhoneNo={data.phone_number ? Number(data.phone_number) : ''} dob={data.dob ? data.dob : ''} gender={data.gender ? data.gender : ''} full_name={data.full_name ? data.full_name : ''} email={data.email ? data.email : ''} pincode={data.pin_code ? data.pin_code : ''} location={data.location ? data.location : ''} parent={data.parent} linkid={data.link_id ? data.link_id : ''} relation={data.relation} latitude={data.latitude} longitude={data.longitude} />
-                          </section>
-                        ) : (<></>)
-                        }
+                            <section id={i} className={`updatepatientform text-start position-absolute d-${tabindex == i ? updatepatient : 'none'} bg-seashell rounded-2 shadow`}>
+                              <UpdatePatient index={i} getAllPatients={getAllPatients} CloseUpdatePatient={CloseUpdatePatient} patientid={data.id} data={data} phonecountrycode={data.phone_country_code ? data.phone_country_code : 'N/A'} PhoneNo={data.phone_number ? Number(data.phone_number) : ''} dob={data.dob ? data.dob : ''} gender={data.gender ? data.gender : ''} full_name={data.full_name ? data.full_name : ''} email={data.email ? data.email : ''} pincode={data.pin_code ? data.pin_code : ''} location={data.location ? data.location : ''} parent={data.parent} linkid={data.link_id ? data.link_id : ''} relation={data.relation} latitude={data.latitude} longitude={data.longitude} />
+                            </section>
+                          ) : (<></>)
+                          }
 
-                      </td>
-                      <td>{data.full_name ? data.full_name : 'N/A'}</td>
-                      <td>{data.gender ? data.gender : 'N/A'}</td>
-                      <td>{data.dob ? reversefunction(data.dob) : 'N/A'}</td>
-                      <td>{data.email ? data.email : 'N/A'}</td>
-                      {/* <td>{data.address.length != 0 ? data.address[0].address_line1 ? data.address[0].address_line1 : 'N/A' : ''}{data.address.length != 0 ? data.address[0].address_line2 ? ' | ' + data.address[0].address_line2 : '' : 'N/A'} </td>
+                        </td>
+                        <td>{data.full_name ? data.full_name : 'N/A'}</td>
+                        <td>{data.gender ? data.gender : 'N/A'}</td>
+                        <td>{data.dob ? reversefunction(data.dob) : 'N/A'}</td>
+                        <td>{data.email ? data.email : 'N/A'}</td>
+                        {/* <td>{data.address.length != 0 ? data.address[0].address_line1 ? data.address[0].address_line1 : 'N/A' : ''}{data.address.length != 0 ? data.address[0].address_line2 ? ' | ' + data.address[0].address_line2 : '' : 'N/A'} </td>
                       <td>{data.location ? data.location : 'N/A'}</td> */}
-                      <td>{data.pin_code ? data.pin_code : 'N/A'}</td>
-                      <td>{data.phone_number ? data.phone_number : 'N/A'}</td>
-                      <td>{data.parent ? ' No' : 'Yes'}</td>
-                      <td><button className="btn p-0 m-0" onClick={(e) => { confirmmessage(data.full_name, data.id); }}><img src={process.env.PUBLIC_URL + "/images/delete.png"} alt="displaying_image" style={{ width: "1.5rem" }} /></button></td>
-                      {/* <td><button className="btn p-0 m-0"><img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" style={{ width: "1.5rem" }} /></button></td> */}
-                    </tr>
-                  ))
-                ) : (
-                  <div className='text-burntumber fs-4 position-absolute start-0 end-0 top-5'>No patients found</div>
-                ))
-            }
-          </tbody>
+                        <td>{data.pin_code ? data.pin_code : 'N/A'}</td>
+                        <td>{data.phone_number ? data.phone_number : 'N/A'}</td>
+                        <td>{data.parent ? ' No' : 'Yes'}</td>
+                        <td><button className="btn p-0 m-0" onClick={(e) => { confirmmessage(data.full_name, data.id); }}><img src={process.env.PUBLIC_URL + "/images/delete.png"} alt="displaying_image" style={{ width: "1.5rem" }} /></button></td>
+                        {/* <td><button className="btn p-0 m-0"><img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" style={{ width: "1.5rem" }} /></button></td> */}
+                      </tr>
+
+                    ))
+                  }
+                </tbody>
+              ))
+          }
+
         </table>
       </div>
 
@@ -894,55 +912,55 @@ function Doctors() {
               {/* <th>More</th> */}
             </tr>
           </thead>
-   
-            {
-              pageloading ? (
-                <body className=' text-center' style={{ minHeight: '30vh' }}>
-                  <tr className='position-absolute border-0 start-0 end-0 px-5'>
-                    <div class="d-flex align-items-center">
-                      <strong className='fs-5'>Getting Details please be Patient ...</strong>
-                      <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
-                    </div>
+
+          {
+            pageloading ? (
+              <tbody className=' text-center' style={{ minHeight: '30vh' }}>
+                <tr className='position-absolute border-0 start-0 end-0 px-5'>
+                  <div class="d-flex align-items-center">
+                    <strong className='fs-5'>Getting Details please be Patient ...</strong>
+                    <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
+                  </div>
+                </tr>
+
+              </tbody>
+            ) : (
+              Doctorslist && Doctorslist.length == 0 ? (
+                <tbody className='text-center position-relative p-0 m-0 ' style={{ minHeight: '30vh' }}>
+                  <tr className=''>
+                    <td className='fw-bolder text-charcoal text-center position-absolute border-0 start-0 end-0 mx-3 p-2 border-0'>No Doctors found</td>
                   </tr>
+                </tbody>
 
-                </body>
               ) : (
-                Doctorslist && Doctorslist.length == 0 ? (
-                  <tbody className='text-center position-relative p-0 m-0 ' style={{ minHeight: '30vh' }}>
-                    <tr className=''>
-                      <td className='fw-bolder text-charcoal text-center position-absolute border-0 start-0 end-0 mx-3 p-2 border-0'>No Doctors found</td>
-                    </tr>
-                  </tbody>
+                <tbody style={{ minHeight: '32vh' }}>
+                  {
+                    Doctorslist && Doctorslist.map((data, i) => (
+                      <tr className="align-middle">
+                        <td><button className="btn p-0 m-0" onClick={(e) => { settabindex(i); OpenUpdateDoctor(i) }}><img src={process.env.PUBLIC_URL + "/images/confirmed.png"} style={{ width: "1.5rem" }} /></button>
+                          {form == i ? (
+                            <section id={i} className={`scroll scroll-y position-absolute d-${tabindex == i ? updatedoctor : 'none'} bg-seashell rounded shadow top-0 bottom-2 `} style={{ marginLeft: '22.5rem', width: '40rem', height: '35rem' }}>
+                              <UpdateDoctor index={i} CloseUpdateDoctor={CloseUpdateDoctor} patientid={data.id} data={data} phonecountrycode={data.phone_country_code ? data.phone_country_code : ''} PhoneNo={data.phone_number ? Number(data.phone_number) : ''} dob={data.dob ? data.dob : ''} gender={data.gender ? data.gender : ''} full_name={data.full_name ? data.full_name : ''} email={data.email ? data.email : ''} pincode={data.pin_code ? data.pin_code : ''} location={data.location ? data.location : ''} parent={data.parent} linkid={data.link_id ? data.link_id : ''} relation={data.relation} latitude={data.latitude} longitude={data.longitude} />
+                            </section>
+                          ) : (<></>)
+                          }
 
-                ) : (
-                  <tbody style={{ minHeight: '32vh' }}>
-                    {
-                      Doctorslist && Doctorslist.map((data, i) => (
-                        <tr className="align-middle">
-                          <td><button className="btn p-0 m-0" onClick={(e) => { settabindex(i); OpenUpdateDoctor(i) }}><img src={process.env.PUBLIC_URL + "/images/confirmed.png"} style={{ width: "1.5rem" }} /></button>
-                            {form == i ? (
-                              <section id={i} className={`scroll scroll-y position-absolute d-${tabindex == i ? updatedoctor : 'none'} bg-seashell rounded shadow top-0 bottom-2 `} style={{ marginLeft: '22.5rem', width: '40rem', height: '35rem' }}>
-                                <UpdateDoctor index={i} CloseUpdateDoctor={CloseUpdateDoctor} patientid={data.id} data={data} phonecountrycode={data.phone_country_code ? data.phone_country_code : ''} PhoneNo={data.phone_number ? Number(data.phone_number) : ''} dob={data.dob ? data.dob : ''} gender={data.gender ? data.gender : ''} full_name={data.full_name ? data.full_name : ''} email={data.email ? data.email : ''} pincode={data.pin_code ? data.pin_code : ''} location={data.location ? data.location : ''} parent={data.parent} linkid={data.link_id ? data.link_id : ''} relation={data.relation} latitude={data.latitude} longitude={data.longitude} />
-                              </section>
-                            ) : (<></>)
-                            }
-
-                          </td>
-                          <td className="pe-5">{data.image ? <img className="img-fluid rounded-5" style={{ width: '2rem' }} src={imagepath + data.image} /> : 'Image not found'}{' '}{data.doctor_name ? data.doctor_name : ''}</td>
-                          <td>{data.speciality.name}</td>
-                          <td>{data.degree_suffix ? data.degree_suffix : ''}</td>
-                          <td>{data.phone_number ? data.phone_number : ''}</td>
-                          <td>{data.email}</td>
-                          <td className="text-center"><button className="btn p-0 m-0"><img src={process.env.PUBLIC_URL + "/images/info.png"} alt="displaying_image" style={{ width: "1.5rem" }} /></button></td>
-                          {/* <td><button className="btn p-0 m-0"><img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" style={{ width: "1.5rem" }} /></button></td> */}
-                        </tr>
-                      ))
-                    }
-                  </tbody>
-                )
+                        </td>
+                        <td className="pe-5">{data.image ? <img className="img-fluid rounded-5" style={{ width: '2rem' }} src={imagepath + data.image} /> : 'Image not found'}{' '}{data.doctor_name ? data.doctor_name : ''}</td>
+                        <td>{data.speciality.name}</td>
+                        <td>{data.degree_suffix ? data.degree_suffix : ''}</td>
+                        <td>{data.phone_number ? data.phone_number : ''}</td>
+                        <td>{data.email}</td>
+                        <td className="text-center"><button className="btn p-0 m-0"><img src={process.env.PUBLIC_URL + "/images/info.png"} alt="displaying_image" style={{ width: "1.5rem" }} /></button></td>
+                        {/* <td><button className="btn p-0 m-0"><img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" style={{ width: "1.5rem" }} /></button></td> */}
+                      </tr>
+                    ))
+                  }
+                </tbody>
               )
-            }
-         
+            )
+          }
+
         </table>
       </div>
 
@@ -1025,9 +1043,9 @@ function DailySaleReport(props) {
           </div>
 
         </div>
-        <div className="row p-0 m-0 align-items-center gx-2">
+        <div className="row p-0 m-0 align-items-center gx-2 ">
           <div className="col-auto">
-            <div className="container-fluid p-0 m-0 my-2">
+            <div className="container-fluid p-0 m-0 my-2 ">
               <div className="row m-0 p-0 align-items-center">
                 <span className='col-auto fs-4 text-charcoal fw-bold p-0 m-0'>{<Livetime />}</span>
 
