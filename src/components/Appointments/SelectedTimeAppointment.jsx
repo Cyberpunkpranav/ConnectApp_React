@@ -92,18 +92,18 @@ const SelectedTimeAppointment = (props) => {
             <div className="row p-0 m-0">
                 <div className="col-5">
                     <input type="text" placeholder='Search Patient using Number or Name' className="form-control bg-pearl border-0" value={searchinput ? searchinput : ''} onChange={(e) => { searchpatient(e); }} />
-                    <div className={`col-6 position-absolute scroll  d-${displaysearchlist} rounded-2 `} style={{ maxHeight: '3.2rem' }}>
+                    <div className={`col-6 position-absolute d-${displaysearchlist} rounded-2 `} style={{zIndex:100}}>
                         {
                             searchload ? (
-                                <p className="btn col-9 text-charcoal75 bg-pearl p-0 m-0 ps-1 mt-1">Loading... </p>
+                                <p className="btn col-12 text-charcoal75 bg-pearl p-0 m-0 ps-1 mt-1">Loading... </p>
                             ) : (
                                 searchlist.length == 0 ? (
-                                    <p className="text-burntumber col-9 p-0 m-0 bg-pearl shadow rounded mt-1 p-2">Patient not found</p>
+                                    <p className="text-burntumber col-12 p-0 m-0 bg-pearl shadow rounded mt-1 p-2">Patient not found</p>
                                 ) : (
-                                    <div className='mt-1 shadow rounded-2 bg-pearl border border-1 col-9 '>
+                                    <div className='mt-1 shadow rounded-2 bg-pearl border border-1 col-12 '>
                                         {
                                             searchlist.map((data, i) => (
-                                                <div className={` bg-${i % 2 == 0 ? 'lightred50' : 'pearl'} text-charcoal text-start ps-2 border-bottom align-self-center`} name={data.id} value={data.full_name} onClick={() => { get_value(data) }}>{data.full_name} {data.phone_number}</div>
+                                                <div className={`col-12 bg-${i % 2 == 0 ? 'lightred50' : 'pearl'} px-2 text-charcoal text-start ps-2 border-bottom align-self-center`} name={data.id} value={data.full_name} onClick={() => { get_value(data) }}>{data.full_name} {data.phone_number}</div>
                                             ))
                                         }
                                     </div>

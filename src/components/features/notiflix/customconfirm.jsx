@@ -8,7 +8,7 @@ const customconfirm = () => {
         zindex: 4003,
         position: 'top',
         distance: '0rem',
-        backgroundColor: '#DBB98F',
+        backgroundColor: '#f2f2f2',
         borderRadius: '20px',
         backOverlay: true,
         backOverlayColor: 'rgba(0,0,0,0.5)',
@@ -27,7 +27,7 @@ const customconfirm = () => {
         buttonsFontSize: '1rem',
         buttonsMaxLength: 34,
         okButtonColor: '#f8f8f8',
-        okButtonBackground: '#96351E',
+        okButtonBackground: '#222023',
         cancelButtonColor: '#222023',
         cancelButtonBackground: '#ffffff',
         })

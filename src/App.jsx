@@ -185,6 +185,11 @@ function Navbar(props) {
       path: '/pharmacy',
       image: '/images/Pharmacy.png'
     },
+    {
+      title: 'Files',
+      path: '/Files',
+      image: '/images/folder.png'
+    }
 
   ]
 
@@ -1160,7 +1165,11 @@ function Pharmacy() {
     </>
   );
 }
-
+function Exports() {
+  return (
+    <div>Exports</div>
+  )
+}
 
 
 export { Navbar };
@@ -1170,3 +1179,4 @@ export { Pharmacy };
 export { Patients };
 export { Doctors };
 export { DailySaleReport };
+export { Exports }

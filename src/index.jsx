@@ -13,7 +13,7 @@ import './css/dashboard.css';
 import './css/appointment.css';
 import './css/pharmacy.css';
 import './css/login.css';
-import { Navbar, Doctorsection, Appointments, Patients, Doctors, Pharmacy, DailySaleReport } from './App'
+import { Navbar, Doctorsection, Appointments, Patients, Doctors, Pharmacy, DailySaleReport,Exports } from './App'
 import { WelcomeLoader } from './components/features/WelcomeLoader'
 //Notiflix
 import Notiflix from 'notiflix';
@@ -26,7 +26,6 @@ const TodayDocs = createContext();
 const Vitals = createContext();
 const Clinic = createContext();
 const Permissions = createContext()
-
 function Connectapp(props) {
   const d = new Date();
   const date = d.getDate() < 10 ? '0' + d.getDate() : d.getDate();
@@ -157,6 +156,7 @@ function Connectapp(props) {
                                   <Route path='/Doctors' element={<Doctors id={props.id} docapi={docapi} />} />
                                   <Route path='/DailySaleReport' element={<DailySaleReport id={props.id} cliniclist={cliniclist} docapi={docapi} />} />
                                   <Route path='/Pharmacy' element={<Pharmacy id={props.id} />} />
+                                  <Route path='/Files' element={<Exports id={props.id} />} />
                                 </Routes>
                               </Router>
                             </Vitals.Provider>

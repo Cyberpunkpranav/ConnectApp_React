@@ -671,7 +671,7 @@ function SEitemdetailssection(props) {
           <h5 className='text-charcoal p-0 m-0 fw-bold text-start ms-1'>{props.saleentryarr.grand_total ? props.saleentryarr.grand_total : 0}</h5>
         </div>
         <div className="col-auto align-self-end justify-content-end me-4">
-          <input type='checkbox' className='' value={Taxon ? Taxon : ''} onChange={() => { Taxon == true ? setTaxon(false) : setTaxon(true) }} /><label>Show Tax Details</label>
+          <input type='checkbox' className='form-check-input' value={Taxon ? Taxon : ''} onChange={() => { Taxon == true ? setTaxon(false) : setTaxon(true) }} /><label>Show Tax Details</label>
         </div>
 
       </div>
@@ -1719,7 +1719,7 @@ function NewSaleReturnentryform(props) {
       costing = Number(cost) * Number(qtytotreturn)
       return costing.toFixed(2)
     } else {
-      return costing
+      return cost
     }
   }
   const reversefunction = (date) => {
@@ -1737,7 +1737,7 @@ function NewSaleReturnentryform(props) {
       batchno: data.batch_no,
       expirydate: data.expiry_date,
       cost: data.sale_disc_mrp,
-      totalcost: data.cost,
+      totalcost: data.sale_disc_mrp,
       saleqty: data.sale_qty,
       qtytoReturn: data.sale_qty,
     }
@@ -1753,6 +1753,7 @@ function NewSaleReturnentryform(props) {
 
 
   const searchProduct = async () => {
+    medicinesref.current.style.display = 'block';
     setloadbills(true)
     try {
       await axios.get(`${url}/sale/return/item/search/by/id?item=${itemname}&bill_id=${billid}`).then((response) => {
@@ -1814,7 +1815,6 @@ function NewSaleReturnentryform(props) {
       console.log(e.message)
       setload(false)
     }
-
   }
 
   function confirmmessage() {
@@ -1863,14 +1863,15 @@ function NewSaleReturnentryform(props) {
           <div className="row p-0 m-0 justify-content-end">
             <div className="col-5">
               <h6 className="p-0 m-0 ms-3 fw-bold">Select Bill</h6>
-              <input className="form-control ms-2 rounded-1 bg-seashell" placeholder='Bill Id (Does not require initials)' value={billid ? billid : ''} onChange={(e) => { setbillid(e.target.value); setMedicineentriesArr([]) }} />
+              <input className="form-control ms-2 rounded-1 bg-seashell" placeholder='Bill Id (Does not require initials)' value={billid ? billid : ''} onChange={(e) => { setbillid(e.target.value); setMedicineentriesArr([]); }} />
             </div>
             <div className="col-5">
               <div className='position-relative'>
                 <h6 className="p-0 m-0 ms-3 fw-bold">Product ID</h6>
                 <input className='form-control bg-seashell' placeholder='Product Id (Require initials)' value={itemname ? itemname : ''}
                   onChange={(e) => {
-                    billid ? setitemname(e.target.value) : Notiflix.Notify.failure('Please Add Bill id First')
+                    billid ? setitemname(e.target.value) : Notiflix.Notify.failure('Please Add Bill id First');
+                    medicinesref.current.style.display = 'block';
                   }} />
                 <div ref={medicinesref} className='position-absolute rounded-2 bg-pearl col-12' style={{ zIndex: '1' }}>
                   {
@@ -2504,12 +2505,18 @@ function Purchaseentrysection(props) {
   )
 }
 function PEitemdetailssection(props) {
-  console.log(props.purchaseentryarr)
+
   const [medicine, setmedicine] = useState('block')
   const [vaccine, setvaccine] = useState('none')
   const [index, setindex] = useState(0)
   const Items = ['Medicine', 'Vaccine']
+  const reversefunction = (date) => {
+    if (date) {
+      date = date.split("-").reverse().join("-")
+      return date
+    }
 
+  }
 
   if (index == 0) {
     if (medicine == 'none') {
@@ -2531,11 +2538,13 @@ function PEitemdetailssection(props) {
     }
   }
   function TotalTaxRate(cgst, sgst, igst, qty) {
-    if (cgst && sgst && igst !== null || undefined) {
+    if (cgst && sgst || igst !== null || undefined) {
       let e = Number(Number(cgst) + Number(sgst) + Number(igst)) * Number(qty)
+      e = e.toFixed(2)
       return e
     }
   }
+  console.log(props.purchaseentryarr)
   return (
     <div className="container-fluid p-0 m-0 bg-seashell ">
       <div className="container-fluid bg-seashell p-0 m-0">
@@ -2562,7 +2571,7 @@ function PEitemdetailssection(props) {
 
 
       <div className=" d-flex justify-content-end me-5">
-        <input type='checkbox' className='' value={Taxon ? Taxon : ''} onChange={() => { Taxon == true ? setTaxon(false) : setTaxon(true) }} /><label>Show Tax Details</label>
+        <input type='checkbox' className='form-check-input' value={Taxon ? Taxon : ''} onChange={() => { Taxon == true ? setTaxon(false) : setTaxon(true) }} /><label>Show Tax Details</label>
       </div>
       <div className={`scroll bg-seashell scroll-y d-${medicine}`} style={{ minHeight: '70vh', Height: '70vh', maxHeight: '70vh' }}>
         <table className="table datatable table-responsive text-center bg-seashell"><thead>
@@ -2601,18 +2610,18 @@ function PEitemdetailssection(props) {
                       <td className='border p-0 m-0 align-middle'>{item && item.id !== null ? 'm' + item.id : 'N/A'}</td>
                       <td className='border p-0 m-0 align-middle'>{item.medicine && item.medicine.name !== null ? item.medicine.name : 'N/A'}</td>
                       <td className='border p-0 m-0 align-middle'>{item.batch_no && item.batch_no != null ? item.batch_no : 'N/A'}</td>
-                      <td className='border p-0 m-0 align-middle'>{item.expiry_date && item.expiry_date != null ? item.expiry_date : 'N/A'}</td>
+                      <td className='border p-0 m-0 align-middle'>{item.expiry_date && item.expiry_date != null ? reversefunction(item.expiry_date) : 'N/A'}</td>
                       <td className='border p-0 m-0 align-middle'>{item.mrp ? item.mrp : 'N/A'}</td>
                       <td className='border p-0 m-0 align-middle'>{item.rate ? item.rate : 'N/A'}</td>
                       <td className='border p-0 m-0 align-middle'>{item.qty ? item.qty : 'N/A'}</td>
                       <td className='border p-0 m-0 align-middle'>{item.discount ? item.discount : 'N/A'}</td>
                       <td className='border p-0 m-0 align-middle'>{item.trade_discount ? item.trade_discount : 'N/A'}</td>
                       <td className={`border p-0 m-0 align-middle d-${Taxon == true ? '' : 'none'}`}>{item.SGST_rate ? Number(item.SGST_rate) : ''}</td>
-                      <td className={`border p-0 m-0 align-middle d-${Taxon == true ? '' : 'none'}`}>{item.SGST ? Number(item.SGST) * Number(item.qty) : ''}</td>
+                      <td className={`border p-0 m-0 align-middle d-${Taxon == true ? '' : 'none'}`}>{item.SGST ? (Number(item.SGST) * Number(item.qty)).toFixed(2) : ''}</td>
                       <td className={`border p-0 m-0 align-middle d-${Taxon == true ? '' : 'none'}`}>{item.CGST_rate ? Number(item.CGST_rate) : ''}</td>
-                      <td className={`border p-0 m-0 align-middle d-${Taxon == true ? '' : 'none'}`}>{item.CGST ? Number(item.CGST) * Number(item.qty) : ''}</td>
+                      <td className={`border p-0 m-0 align-middle d-${Taxon == true ? '' : 'none'}`}>{item.CGST ? (Number(item.CGST) * Number(item.qty)).toFixed(2) : ''}</td>
                       <td className={`border p-0 m-0 align-middle d-${Taxon == true ? '' : 'none'}`}>{item.IGST_rate ? Number(item.IGST_rate) : ''}</td>
-                      <td className={`border p-0 m-0 align-middle d-${Taxon == true ? '' : 'none'}`}>{item.IGST ? Number(item.IGST) * Number(item.qty) : ''}</td>
+                      <td className={`border p-0 m-0 align-middle d-${Taxon == true ? '' : 'none'}`}>{item.IGST ? (Number(item.IGST) * Number(item.qty)).toFixed(2) : ''}</td>
                       <td className='border p-0 m-0 align-middle'>{TotalTaxPercent(item.CGST_rate, item.SGST_rate, item.IGST_rate)}</td>
                       <td className='border p-0 m-0 align-middle'>{TotalTaxRate(item.CGST, item.SGST, item.IGST, item.qty)}</td>
                       <td className='border p-0 m-0 align-middle'>{item.cost ? item.cost : 'N/A'}</td>
@@ -2673,7 +2682,7 @@ function PEitemdetailssection(props) {
                       <td className='border p-0 m-0 align-middle'>{item && item.id !== null ? 'v' + item.id : 'N/A'}</td>
                       <td className='border p-0 m-0 align-middle'>{item.vaccine && item.vaccine.name !== null ? item.vaccine.name : 'N/A'}</td>
                       <td className='border p-0 m-0 align-middle'>{item.batch_no && item.batch_no != null ? item.batch_no : 'N/A'}</td>
-                      <td className='border p-0 m-0 align-middle'>{item.expiry_date && item.expiry_date != null ? item.expiry_date : 'N/A'}</td>
+                      <td className='border p-0 m-0 align-middle'>{item.expiry_date && item.expiry_date != null ? reversefunction(item.expiry_date) : 'N/A'}</td>
                       <td className='border p-0 m-0 align-middle'>{item.mrp ? item.mrp : 'N/A'}</td>
                       <td className='border p-0 m-0 align-middle'>{item.rate ? item.rate : 'N/A'}</td>
                       <td className='border p-0 m-0 align-middle'>{item.qty ? item.qty : 'N/A'}</td>
@@ -2686,7 +2695,7 @@ function PEitemdetailssection(props) {
                       <td className={`border p-0 m-0 align-middle d-${Taxon == true ? '' : 'none'}`}>{item.IGST_rate ? item.IGST_rate : 'N/A'}</td>
                       <td className={`border p-0 m-0 align-middle d-${Taxon == true ? '' : 'none'}`}>{item.IGST ? item.IGST : 'N/A'}</td>
                       <td className='border p-0 m-0 align-middle'>{TotalTaxPercent(item.CGST_rate, item.SGST_rate, item.IGST_rate)}</td>
-                      <td className='border p-0 m-0 align-middle'>{TotalTaxRate(item.CGST, item.SGST, item.IGST)}</td>
+                      <td className='border p-0 m-0 align-middle'>{TotalTaxRate(item.CGST, item.SGST, item.IGST, item.qty)}</td>
                       <td className='border p-0 m-0 align-middle'>{item.cost ? item.cost : 'N/A'}</td>
                       <td className='border p-0 m-0 align-middle'>{item.total_amount ? item.total_amount : 'N/A'}</td>
                       {/* <td className='border p-0 m-0 align-middle'><button className='btn'><img src={process.env.PUBLIC_URL + "/images/qrcode.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1" /></button></td> */}
@@ -2905,32 +2914,32 @@ function Newpurchaseentryform(props) {
     let grosstotal = 0
     for (let i = 0; i < MedicineentriesArr.length; i++) {
       Type.push(MedicineentriesArr[i].type ? MedicineentriesArr[i].type : '')
-      Is_consumable.push(MedicineentriesArr[i].isconsumable ? MedicineentriesArr[i].isconsumable : '')
+      Is_consumable.push(MedicineentriesArr[i].isconsumable ? MedicineentriesArr[i].isconsumable : 0)
       MedId.push(MedicineentriesArr[i].Itemid ? MedicineentriesArr[i].Itemid : '')
       medname.push(MedicineentriesArr[i].Itemname ? MedicineentriesArr[i].Itemname : '')
       batches.push(MedicineentriesArr[i].batchno ? MedicineentriesArr[i].batchno : '')
       expirydate.push(MedicineentriesArr[i].expirydate ? MedicineentriesArr[i].expirydate : '')
       manufacturingDate.push(MedicineentriesArr[i].manufacturingDate ? MedicineentriesArr[i].manufacturingDate : '')
-      MRP.push(MedicineentriesArr[i].MRP ? MedicineentriesArr[i].MRP : '')
-      Rate.push(MedicineentriesArr[i].Rate ? MedicineentriesArr[i].Rate : '')
-      Discount.push(MedicineentriesArr[i].Discount ? MedicineentriesArr[i].Discount : 0)
-      tradeDiscount.push(MedicineentriesArr[i].tradeDiscount ? MedicineentriesArr[i].tradeDiscount : 0)
-      sgst.push(MedicineentriesArr[i].sgst ? MedicineentriesArr[i].sgst : '')
+      MRP.push(MedicineentriesArr[i].MRP ? Number(MedicineentriesArr[i].MRP) : '')
+      Rate.push(MedicineentriesArr[i].Rate ? Number(MedicineentriesArr[i].Rate) : '')
+      Discount.push(MedicineentriesArr[i].Discount ? Number(MedicineentriesArr[i].Discount) : 0)
+      tradeDiscount.push(MedicineentriesArr[i].tradeDiscount ? Number(MedicineentriesArr[i].tradeDiscount) : 0)
+      sgst.push(MedicineentriesArr[i].sgst ? Number(MedicineentriesArr[i].sgst) : '')
       sgstpercent.push(MedicineentriesArr[i].sgstper ? Number(MedicineentriesArr[i].sgstper) : 0)
-      cgst.push(MedicineentriesArr[i].cgst ? MedicineentriesArr[i].cgst : '')
+      cgst.push(MedicineentriesArr[i].cgst ? Number(MedicineentriesArr[i].cgst) : '')
       cgstpercent.push(MedicineentriesArr[i].cgstper ? Number(MedicineentriesArr[i].cgstper) : 0)
-      igst.push(MedicineentriesArr[i].igst ? MedicineentriesArr[i].igst : '')
+      igst.push(MedicineentriesArr[i].igst ? Number(MedicineentriesArr[i].igst) : '')
       igstpercent.push(MedicineentriesArr[i].igstper ? Number(MedicineentriesArr[i].igstper) : 0)
-      costperunit.push(MedicineentriesArr[i].costperunit ? MedicineentriesArr[i].costperunit : '')
-      totalamount.push(MedicineentriesArr[i].totalamount ? MedicineentriesArr[i].totalamount : '')
-      quantity.push(MedicineentriesArr[i].Qty ? MedicineentriesArr[i].Qty : '')
-      freequantity.push(MedicineentriesArr[i].freeQty ? MedicineentriesArr[i].freeQty : 0)
+      costperunit.push(MedicineentriesArr[i].costperunit ? Number(MedicineentriesArr[i].costperunit) : '')
+      totalamount.push(MedicineentriesArr[i].totalamount ? Number(MedicineentriesArr[i].totalamount) : '')
+      quantity.push(MedicineentriesArr[i].Qty ? Number(MedicineentriesArr[i].Qty) : '')
+      freequantity.push(MedicineentriesArr[i].freeQty ? Number(MedicineentriesArr[i].freeQty) : 0)
     }
 
     totalamount.forEach(item => {
       grosstotal += Number(item)
     })
-    console.log(grosstotal, Type, MedId, medname, batches, expirydate, manufacturingDate, MRP, Rate, Discount, tradeDiscount, sgst, sgstpercent, cgst, cgstpercent, igst, igstpercent, costperunit, totalamount, quantity, freequantity)
+    console.log(Is_consumable, grosstotal, Type, MedId, medname, batches, expirydate, manufacturingDate, MRP, Rate, Discount, tradeDiscount, sgst, sgstpercent, cgst, cgstpercent, igst, igstpercent, costperunit, totalamount, quantity, freequantity)
     var Data = {
       distributor_id: vendorid,
       purchase_order_id: po,
@@ -2938,7 +2947,7 @@ function Newpurchaseentryform(props) {
       bill_date: invoicedate,
       clinic_id: ClinicId,
       channel: channel,
-      IsConsumable: Is_consumable,
+      is_consumable: Is_consumable,
       bill_total: grosstotal,
       id: MedId,
       type: Type,
@@ -3341,6 +3350,7 @@ function Newpurchaseentryform(props) {
     }
   }
   // console.log(vendorid, vendorsearch, vendorcode, IsConsumable)
+  console.log(MedicineentriesArr)
   return (
 
     <div className="container-fluid p-0 m-0" style={{ zIndex: '2' }}>
@@ -3544,7 +3554,7 @@ function Newpurchaseentryform(props) {
                               <p className={`p-0 m-0 bg-pearl fw-bold text-charcoal75 rounded-4 ps-2 `} style={{ fontSize: '0.8rem' }}>{itemsearch.length} Search Results</p>
                               {
                                 itemsearch.map((data, i) => (
-                                  <div style={{ cursor: 'pointer' }} className={`p-0 ps-1 text-wrap  bg-${((i % 2) == 0) ? '' : 'lightyellow'}`} name={data.id} onClick={(e) => { setitemname(data.display_name ? data.display_name : data.name); setitemid(data.id); setitemtype(data.vaccines_id || data.vaccines_id == null ? 'v' : 'm'); medicinesref.current.style.display = 'none'; }}>{data.display_name ? data.display_name : data.name}</div>
+                                  <div style={{ cursor: 'pointer' }} className={`p-0 ps-1 text-wrap  bg-${((i % 2) == 0) ? '' : 'lightyellow'}`} name={data.id} onClick={(e) => { setitemname(data.display_name ? data.display_name : data.name); setitemid(data.id); setitemtype(data.vaccines_id ? 'v' : 'm'); medicinesref.current.style.display = 'none'; }}>{data.display_name ? data.display_name : data.name}</div>
                                 ))
                               }
                             </div>
@@ -4057,6 +4067,7 @@ function PRitemdetailssection(props) {
   function TotalTaxRate(cgst, sgst, igst, qty) {
     if (cgst && sgst && igst !== null || undefined) {
       let e = Number(Number(cgst) + Number(sgst) + Number(igst)) * Number(qty)
+      e = e.toFixed(2)
       return e
     }
   }
@@ -4664,6 +4675,7 @@ function Stockvaccinesection() {
   const [pagecount, setpagecount] = useState()
   const [pages, setpages] = useState()
   const [vaccineslist, setvaccineslist] = useState([])
+  const [vaccinearr, setvaccinearr] = useState([])
   const [load, setload] = useState()
   const [searchname, setsearchname] = useState('')
   const [index, setindex] = useState()
@@ -4705,6 +4717,7 @@ function Stockvaccinesection() {
         axios.get(`${url}/stock/list?search=${searchname}&limit=20&offset=${Data.selected * 10}`).then((response) => {
           console.log(response.data.data)
           setvaccineslist(response.data.data.vaccines)
+
           setload(false)
         }).catch(function error(e) {
           Notiflix.Notify.failure(e.message)
@@ -4717,37 +4730,94 @@ function Stockvaccinesection() {
     }
 
   }
+  const reversefunction = (date) => {
+    if (date) {
+      date = date.split("-").reverse().join("-")
+      return date
+    }
+
+  }
   useEffect(() => {
     GetPages()
     GetVaccines()
+    Get_Detailed_Data()
   }, [pagecount, searchname])
 
+  useEffect(() => {
+    Get_Detailed_Data()
+  }, [vaccineslist])
 
-  const CalculateBStock = (data) => {
-    let total = 0
-    data.map((item) => (
-      total += Number(item.current_stock)
-    ))
-    return total
-  }
-  const CalculateTStock = (data) => {
-    let total = 0
-    data.map((item) => (
-      total += Number(item.qty)
-    ))
-    return total
-  }
-  const GetStatus = (data) => {
-    let currentstock = 0
-    data.stock_info.map((item) => (
-      currentstock += Number(item.current_stock)
-    ))
-    if (currentstock <= data.alert_stock_count) {
-      return 1
-    } else {
-      return 0
+  const Get_Detailed_Data = () => {
+    setvaccinearr([])
+    for (let i = 0; i < vaccineslist.length; i++) {
+      for (let j = 0; j < vaccineslist[i].stock_info.length; j++) {
+        let vaccineobj = {
+          id: vaccineslist[i].id,
+          name: vaccineslist[i].name,
+          max_stock_count: vaccineslist[i].max_stock_count,
+          min_stock_count: vaccineslist[i].min_stock_count,
+          CGST: vaccineslist[i].stock_info[j].CGST,
+          CGST_rate: vaccineslist[i].stock_info[j].CGST_rate,
+          IGST: vaccineslist[i].stock_info[j].IGST,
+          IGST_rate: vaccineslist[i].stock_info[j].IGST_rate,
+          SGST: vaccineslist[i].stock_info[j].SGST,
+          SGST_rate: vaccineslist[i].stock_info[j].SGST_rate,
+          batch_no: vaccineslist[i].stock_info[j].batch_no,
+          channel: vaccineslist[i].stock_info[j].channel,
+          cost: vaccineslist[i].stock_info[j].cost,
+          current_stock: vaccineslist[i].stock_info[j].current_stock,
+          discount: vaccineslist[i].stock_info[j].discount,
+          expiry_date: vaccineslist[i].stock_info[j].expiry_date,
+          free_qty: vaccineslist[i].stock_info[j].free_qty,
+          Batch_stock_id: vaccineslist[i].stock_info[j].id,
+          mfd_date: vaccineslist[i].stock_info[j].mfd_date,
+          mrp: vaccineslist[i].stock_info[j].mrp,
+          purchase_entry_id: vaccineslist[i].stock_info[j].purchase_entry_id,
+          qty: vaccineslist[i].stock_info[j].qty,
+          rate: vaccineslist[i].stock_info[j].rate
+        }
+        if (vaccinearr == undefined && vaccinearr.length == 0) {
+          setvaccinearr(vaccineobj)
+        } else {
+          setvaccinearr(prevState => [...prevState, vaccineobj])
+        }
+      }
+
     }
+    return <></>;
   }
+
+  // const CalculateBStock = (data) => {
+  //   let total = 0
+  //   data.map((item) => (
+  //     total += Number(item.current_stock)
+  //   ))
+  //   return total
+  // }
+
+
+  const CalculateTStock = (id) => {
+    let totalarr = []
+    let total = 0
+    totalarr.map((item) => (
+      total += Number(item)
+    ))
+    console.log(totalarr)
+    return total
+  }
+
+
+  // const GetStatus = (data) => {
+  //   let currentstock = 0
+  //   data.stock_info.map((item) => (
+  //     currentstock += Number(item.current_stock)
+  //   ))
+  //   if (currentstock <= data.alert_stock_count) {
+  //     return 1
+  //   } else {
+  //     return 0
+  //   }
+  // }
   let c = 0
   const toggle_detailsform = () => {
     if (detailsform == 'none') {
@@ -4758,6 +4828,7 @@ function Stockvaccinesection() {
       setindex()
     }
   }
+  console.log(vaccinearr)
   return (
     <div className='p-0 m-0 vaccinestockinfo'>
       {/* <button className="button exportstock button-charcoal position-absolute"><img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt='displaying_image' className="img-fluid" style={{ width: `1.5rem` }} />Export Stock</button> */}
@@ -4767,16 +4838,20 @@ function Stockvaccinesection() {
       </div>
       <div className=' text-start text-charcoal p-2 ms-5 fw-bold'>Vaccine Stock Info</div>
       <div className='scroll scroll-y' style={{ 'height': '57vh', minHeight: '57vh', maxHeight: '57vh' }}>
-        <table className="table datatable text-center" >
+        <table className="table datatable text-start" >
           <thead className='position-sticky top-0 bg-pearl'>
-            <tr>
-              <th rowSpan='2' className='p-0 m-0 px-1 text-charcoal75 fw-bold'>ID</th>
-              <th rowSpan='2' className='p-0 m-0 px-1 text-charcoal75 fw-bold'>Vaccine Name</th>
-              <th rowSpan='2' className='p-0 m-0 px-1 text-charcoal75 fw-bold'>B.Stock</th>
-              <th rowSpan='2' className='p-0 m-0 px-1 text-charcoal75 fw-bold'>T.Stock</th>
-              <th rowSpan='2' className='p-0 m-0 px-1 text-charcoal75 fw-bold'>Status</th>
-              <th rowSpan='2' className='p-0 m-0 px-1 text-charcoal75 fw-bold'></th>
-              <th rowSpan='2' className='p-0 m-0 px-1 text-charcoal75 fw-bold'>Inventory</th>
+            <tr className='text-start'>
+              <th className='p-0 m-0 text-charcoal75 fw-bold'>ID</th>
+              <th className='p-0 m-0 text-charcoal75 fw-bold'>Vaccine Name</th>
+              <th className='p-0 m-0 text-charcoal75 fw-bold'>Batch No.</th>
+              <th className='p-0 m-0 text-charcoal75 fw-bold'>Expiry Date</th>
+              <th className='p-0 m-0 text-charcoal75 fw-bold'>MRP</th>
+              <th className='p-0 m-0 text-charcoal75 fw-bold'>Cost/Unit</th>
+              <th className='p-0 m-0 text-charcoal75 fw-bold'>B.Stock</th>
+              <th className='p-0 m-0 text-charcoal75 fw-bold'>T.Stock</th>
+              <th className='p-0 m-0 text-charcoal75 fw-bold'>Status</th>
+              <th className='p-0 m-0 text-charcoal75 fw-bold'></th>
+              <th className='p-0 m-0 text-charcoal75 fw-bold'>Inventory</th>
             </tr>
           </thead>
           {
@@ -4789,11 +4864,13 @@ function Stockvaccinesection() {
                 <td className='placeholder-glow'><div className='placeholder col-12 p-0 m-0 w-100 px-1'>Loading..</div></td>
                 <td className='placeholder-glow'><div className='placeholder col-12 p-0 m-0 w-100 px-1'>Loading..</div></td>
                 <td className='placeholder-glow'><div className='placeholder col-12 p-0 m-0 w-100 px-1'>Loading..</div></td>
-
+                <td className='placeholder-glow'><div className='placeholder col-12 p-0 m-0 w-100 px-1'>Loading..</div></td>
+                <td className='placeholder-glow'><div className='placeholder col-12 p-0 m-0 w-100 px-1'>Loading..</div></td>
+                <td className='placeholder-glow'><div className='placeholder col-12 p-0 m-0 w-100 px-1'>Loading..</div></td>
               </tr>
             ) : (
-              vaccineslist == undefined || vaccineslist.length == 0 ? (
-                <tbody className='' >
+              vaccinearr == undefined || vaccinearr.length == 0 ? (
+                <tbody className='text-center' >
                   <tr>
                     <td className='position-absolute text-charcoal fw-bolder start-0 end-0'>No Vaccines Found</td>
                   </tr>
@@ -4801,17 +4878,21 @@ function Stockvaccinesection() {
               ) : (
                 <tbody className=''>
                   {
-                    vaccineslist.map((data, i) => (
-                      <tr className={`align-middle text-center`}>
+                    vaccinearr.map((data, i) => (
+                      <tr className={`text-start`}>
                         <td className=' text-charcoal fw-bold'>{data.id}</td>
                         <td className=' text-charcoal fw-bold'>{data.name && data.name !== null ? data.name : ''}</td>
-                        <td className=' text-charcoal fw-bold'>{CalculateBStock(data.stock_info)}</td>
-                        <td className=' text-charcoal fw-bold'>{CalculateTStock(data.stock_info)}</td>
-                        <td className=' text-charcoal fw-bold'>{
+                        <td className=' text-charcoal fw-bold'>{data.batch_no}</td>
+                        <td className=' text-charcoal fw-bold'>{reversefunction(data.expiry_date)}</td>
+                        <td className=' text-charcoal fw-bold'>{data.mrp}</td>
+                        <td className=' text-charcoal fw-bold'>{(Number(data.cost) / Number(data.qty)).toFixed(2)}</td>
+                        <td className=' text-charcoal fw-bold'>{data.current_stock}</td>
+                        <td className=' text-charcoal fw-bold'>{CalculateTStock(data.id)}</td>
+                        {/* <td className=' text-charcoal fw-bold'>{
                           GetStatus(data) == 1 ? (
                             <img src={process.env.PUBLIC_URL + 'images/exclamation.png'} style={{ 'width': '1.5rem' }} />
                           ) : (<></>)
-                        }</td>
+                        }</td> */}
                         <td className='p-0 m-0 text-charcoal fw-bold align-items-center '>
                           <div className='vr rounded-2 align-self-center' style={{ padding: '0.8px' }}></div>
                         </td>
