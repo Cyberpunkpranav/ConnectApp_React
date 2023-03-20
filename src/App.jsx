@@ -219,7 +219,7 @@ function Navbar(props) {
                   ))
                 }
               </div>
-              
+
             </div>
             <div className="col-lg-auto col-xl-auto col-md-auto col-6 col-sm-2 text-center align-self-center position-relative p-0 m-0 ">
               <div className="dropdown">
@@ -527,12 +527,14 @@ function Appointments(props) {
       return ' | ' + '(' + arr.length + ' Appointments)'
     }
   }
+
+  console.log(getAppointments)
   return (
     <>
       <section className="page2appointment ">
         <div className="container-fluid">
           <div className="row justify-content-between">
-            <div className="col-6 col-sm-12 col-md-6 col-lg-4 col-xl-4">
+            <div className="col-6 col-sm-12 col-md-6 col-lg-6 col-xl-4">
               <div className="col-12 mt-3">
                 <h4 className="p-2">All Appointments</h4>
               </div>
@@ -546,7 +548,7 @@ function Appointments(props) {
                 </div>
               </div>
             </div>
-            <div className="col-6 col-sm-12 col-md-6 col-lg-4 col-xl-4 daterange">
+            <div className="col-6 col-sm-12 col-md-6 col-lg-6 col-xl-4 daterange">
               <div className="col-12 mt-3 mb-2">
                 <img src={process.env.PUBLIC_URL + "/images/today.png"} alt="displaying_image" style={{ width: "2rem" }} />
                 <span className="daterangetitle">Select Date Range</span>
@@ -576,22 +578,22 @@ function Appointments(props) {
           </div>
         </div>
         <section className="container-fluid scroll scroll-y mt-2 " style={{ minHeight: '60vh', maxHeight: '60vh' }}>
-          <table className="table text-center">
+          <table className="table text-start">
             <thead className="text-charcoal75 fw-bold">
               <tr className=" bg-pearl position-sticky top-0">
                 <th>Update</th>
-                <th>Status</th>
+                <th className="text-center">Status</th>
                 <th>Patient Name</th>
                 <th>Doctor Name</th>
                 <th>Phone Number</th>
                 <th>Date</th>
                 <th>Time</th>
                 <th>Total Amount</th>
-                <th>Amount Status</th>
+                <th className="text-center">Amount Status</th>
                 <th></th>
                 <th>Rx</th>
                 <th>F/U Date</th>
-                <th>Actions</th>
+                {/* <th>Actions</th> */}
                 <th className="bg-pearl">More</th>
               </tr>
             </thead>

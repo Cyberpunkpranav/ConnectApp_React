@@ -2014,7 +2014,7 @@ function NewSaleReturnentryform(props) {
               </div>
             </div>
           </div>
-          <div className="col-3 align-self-center">
+          <div className="col-6 align-self-center">
             {
               load ? (
                 <div className="col-6 py-2 pb-2 m-auto text-center">
@@ -2026,9 +2026,6 @@ function NewSaleReturnentryform(props) {
                 <button className='button button-charcoal px-5' onClick={confirmmessage}>Save Entry</button>
               )
             }
-          </div>
-          <div className="col-3 align-self-center">
-            <button className='button button-pearl border-charcoal text-charcoal px-4' disabled={load ? true : false} >Add To Cart</button>
           </div>
         </div>
       </div>
@@ -4618,7 +4615,7 @@ function NewPurchaseReturnentryform(props) {
               </div>
             </div>
           </div>
-          <div className="col-3 align-self-center">
+          <div className="col-6 align-self-center">
             {
               load ? (
                 <div className="col-6 py-2 pb-2 m-auto text-center">
@@ -4631,9 +4628,6 @@ function NewPurchaseReturnentryform(props) {
               )
 
             }
-          </div>
-          <div className="col-3 align-self-center">
-            <button className='button button-pearl border-charcoal text-charcoal px-4' >Add To Cart</button>
           </div>
         </div>
       </div>

@@ -517,7 +517,7 @@ function DoctorSchedule(props) {
                               <button className="button button p-0 m-0 px-1 py-1 button-pearl fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" style={{ width: "1.5rem" }} />
                               </button>
-                              <ul className="dropdown-menu">
+                              <ul className="dropdown-menu p-2">
                                 <li className="text-start p-0 m-0 border-bottom border-1" onClick={() => confirmmessage(data.patient.full_name, data.id)}>
                                   <button className="btn p-0 m-0" ><img src={process.env.PUBLIC_URL + "/images/speaker.png"} alt="displaying_image" className="ms-1" style={{ width: "1.8rem" }} /> Call Patient</button>
                                 </li>

@@ -9,7 +9,7 @@ import { URL } from '../../index'
 import '../../css/bootstrap.css'
 import '../../css/appointment.css'
 import { Bill } from './Bill'
-
+import { customconfirm } from '../features/notiflix/customconfirm'
 const SelectedAppointments = (props) => {
   const url = useContext(URL);
   let adminid = localStorage.getItem('id')
@@ -90,27 +90,140 @@ const SelectedAppointments = (props) => {
   }
   const Generate_Bill = async (id) => {
     Notiflix.Loading.circle('Generating Bill', {
+      backgroundColor: 'rgb(242, 242, 242,0.5)',
+      svgColor: '#96351E',
+      messageColor: '#96351E',
+      messageFontSize: '1.5rem'
+    })
+    try {
+      axios.post(`${url}/appointment/bill`, {
+        appointment_id: id,
+        admin_id: adminid
+      }).then((response) => {
+        console.log(response)
+        Notiflix.Notify.success(response.data.message)
+        window.open(response.data.data.bill_url, '_blank', 'noreferrer');
+        Notiflix.Loading.remove()
+      })
+    } catch (e) {
+      Notiflix.Notify.failure(e.message)
+      Notiflix.Loading.remove()
+    }
+  }
+  const Generate_Prescription = async (id) => {
+    Notiflix.Loading.circle('Generating Prescription', {
         backgroundColor: 'rgb(242, 242, 242,0.5)',
         svgColor: '#96351E',
         messageColor: '#96351E',
         messageFontSize: '1.5rem'
     })
     try {
-        axios.post(`${url}/appointment/bill`, {
+        axios.post(`${url}/swift/pdf`, {
             appointment_id: id,
-            admin_id: adminid
         }).then((response) => {
             console.log(response)
             Notiflix.Notify.success(response.data.message)
-            window.open(response.data.data.bill_url, '_blank', 'noreferrer');
             Notiflix.Loading.remove()
+            window.open(response.data.data.prescription_pdf, '_blank', 'noreferrer');
         })
     } catch (e) {
         Notiflix.Notify.failure(e.message)
         Notiflix.Loading.remove()
     }
 }
-  console.log(paymentindex)
+const Send_On_WhatsApp = async (id, phone, check) => {
+    let checkpres = check
+    if (phone == undefined || phone == null) {
+        Notiflix.Notify.failure('Please Add a Phone Number to send the message on WhatsApp')
+    } else {
+        Notiflix.Loading.circle('Sending Bill on Whats App', {
+            backgroundColor: 'rgb(242, 242, 242,0.5)',
+            svgColor: '#96351E',
+            messageColor: '#96351E',
+            messageFontSize: '1.5rem'
+        })
+        try {
+            axios.post(`${url}/send/bill/whatsapp`, {
+                appointment_id: id,
+                check_pres: checkpres,
+                admin_id: adminid
+            }).then((response) => {
+                console.log(response)
+                Notiflix.Notify.success(`${response.data.message}${checkpres == 1 ? ' with Prescription' : ' without Prescription'}`)
+                Notiflix.Loading.remove()
+            })
+        } catch (e) {
+            Notiflix.Notify.failure(e.message)
+            Notiflix.Loading.remove()
+        }
+    }
+
+}
+const Confirm_For_Prescription = (id, phone) => {
+
+    customconfirm()
+    Notiflix.Confirm.show(
+        `Choose Option to Send `,
+        `Do you want to send the Bill`,
+        'With the Prescription ?',
+        'Without the Prescription ?',
+        () => {
+            Send_On_WhatsApp(id, phone, 1)
+        },
+        () => {
+            Send_On_WhatsApp(id, phone, 0)
+        },
+        {
+        },
+    );
+}
+const Send_On_SMS = async (id, phone, check) => {
+    let checkpres = check
+    if (phone == undefined || phone == null) {
+        Notiflix.Notify.failure('Please Add a Phone Number to send the message on SMS')
+    } else {
+        Notiflix.Loading.circle('Sending Bill on SMS', {
+            backgroundColor: 'rgb(242, 242, 242,0.5)',
+            svgColor: '#96351E',
+            messageColor: '#96351E',
+            messageFontSize: '1.5rem'
+        })
+        try {
+            axios.post(`${url}/send/bill/sms`, {
+                appointment_id: id,
+                check_bill: 1,
+                check_pre: checkpres,
+            }).then((response) => {
+                console.log(response)
+                Notiflix.Notify.success(`${response.data.message}${checkpres == 1 ? ' with Prescription' : ' without Prescription'}`)
+                Notiflix.Loading.remove()
+            })
+        } catch (e) {
+            Notiflix.Notify.failure(e.message)
+            Notiflix.Loading.remove()
+        }
+    }
+
+}
+const Confirm_For_Prescription2 = (id, phone) => {
+
+    customconfirm()
+    Notiflix.Confirm.show(
+        `Choose Option to Send `,
+        `Do you want to send the Bill`,
+        'With the Prescription ?',
+        'Without the Prescription ?',
+        () => {
+            Send_On_SMS(id, phone, 1)
+        },
+        () => {
+            Send_On_SMS(id, phone, 0)
+        },
+        {
+        },
+    );
+}
+  console.log(paymentindex, props.getAppointments)
   return (
     <>
       {
@@ -154,7 +267,7 @@ const SelectedAppointments = (props) => {
                 <td>{data.patient != null && data.patient.full_name != null ? data.patient.full_name : 'N/A'}</td>
                 <td>{data.doctor != null && data.doctor.doctor_name != null ? data.doctor.doctor_name : 'N/A'}</td>
                 <td>{data.patient != null && data.patient.phone_number != null ? data.patient.phone_number : "N/A"}</td>
-                <td>{data.timeslot.date && data.timeslot.date !==null ? data.timeslot.date:''}</td>
+                <td>{data.timeslot.date && data.timeslot.date !== null ? data.timeslot.date : ''}</td>
                 <td>{props.tConvert(data.timeslot.time_from)}</td>
                 <td>{data.total_amount}</td>
                 <td><AmountPaid appointmentData={data} /></td>
@@ -163,15 +276,18 @@ const SelectedAppointments = (props) => {
                 </td>
                 <td><img src={process.env.PUBLIC_URL + "/images/vitals.png"} alt="displaying_image" style={{ width: "1.5rem" }} className='m-0 p-0' /> </td>
                 <td>{data.follow_up_date ? data.follow_up_date : ''}</td>
-                <td> <img src={process.env.PUBLIC_URL + "/images/cart.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1 m-0 p-0" /> </td>
+                {/* <td> <img src={process.env.PUBLIC_URL + "/images/cart.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1 m-0 p-0" /> </td> */}
                 <td><div className="dropdown text-decoration-none bg-transparent">
                   <button className="btn btn-white dropdown-toggle text-decoration-none" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" style={{ width: "1.5rem" }} />
                   </button>
-                  <ul className="dropdown-menu text-decoration-none bg-white" style={{ '-webkit-appearance': 'none', 'appearance': 'none' }}>
-                    <li  className='dropdown-item d-flex border-bottom p-0 m-0 align-items-center' onClick={() => { setbillindex(key); toggle_bill() }}>Bill</li>
-                    <li  className='dropdown-item d-flex border-bottom p-0 m-0 align-items-center' onClick={() => { setpaymentindex(key); toggle_payments(); }}>Payments</li>
-                    <li className='dropdown-item d-flex  p-0 m-0 align-items-center' onClick={() => { Generate_Bill(data.id) }}><img src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" style={{ width: "2rem" }} />Generate Bill</li>
+                  <ul className="dropdown-menu text-decoration-none bg-white p-2" style={{ '-webkit-appearance': 'none', 'appearance': 'none' ,width:'max-content' }}>
+                  <li className='dropdown-item d-flex border-bottom p-0 m-0 align-items-center' onClick={() => { setbillindex(key); toggle_bill() }}><img className='m-2 img-fluid' style={{ 'width': '1.8rem' }} src={process.env.PUBLIC_URL + 'images/bill.png'} />Bill</li>
+                                    <li className='dropdown-item d-flex border-bottom p-0 m-0 align-items-center' onClick={() => { setpaymentindex(key); toggle_payments(); }}><img className='m-2 img-fluid' style={{ 'width': '1.6rem' }} src={process.env.PUBLIC_URL + 'images/rupee.png'} />Payments</li>
+                                    <li className='dropdown-item d-flex border-bottom p-0 m-0 align-items-center' onClick={() => { Generate_Bill(data.id) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" style={{ width: "2rem" }} />Generate Bill</li>
+                                    <li className="dropdown-item d-flex border-bottom p-0 m-0 align-items-center" onClick={() => { Generate_Prescription(data.id) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" style={{ width: "2rem" }} /> Generate Prescription </li>
+                                    <li className="dropdown-item d-flex border-bottom p-0 m-0 align-items-center" onClick={() => { Confirm_For_Prescription(data.id, data.patient.phone_number) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/whatsapp.png"} alt="displaying_image" style={{ width: "2rem" }} /> Send on Whats App </li>
+                                    <li className="dropdown-item d-flex p-0 m-0 align-items-center" onClick={() => { Confirm_For_Prescription2(data.id, data.patient.phone_number) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/message.png"} alt="displaying_image" style={{ width: "1.5rem" }} />{' '}Send on SMS</li>
                   </ul>
                 </div></td>
                 {
@@ -194,7 +310,7 @@ const SelectedAppointments = (props) => {
                         toggle_bill={toggle_bill}
                         patientid={data.patient && data.patient.id != null ? data.patient.id : ""}
                         patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""}
-                        appointmentdata={props.getAppointments[key]}
+                        appointmentdata={props.appointmentdata[key]}
                         appointmentid={data.id}
                         doctorfee={data.doctor.consulationFee} /></td>
                   ) : (<></>)
