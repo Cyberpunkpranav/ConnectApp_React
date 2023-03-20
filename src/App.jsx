@@ -185,11 +185,11 @@ function Navbar(props) {
       path: '/pharmacy',
       image: '/images/Pharmacy.png'
     },
-    {
-      title: 'Files',
-      path: '/Files',
-      image: '/images/folder.png'
-    }
+    // {
+    //   title: 'Files',
+    //   path: '/Files',
+    //   image: '/images/folder.png'
+    // }
 
   ]
 
@@ -206,7 +206,7 @@ function Navbar(props) {
               <button className="button button-seashell shadow-none col-md-auto col-auto user position-relative p-0 m-0 ms-2" onClick={togglelogoutbtn}>
                 <p className="m-0 username text-decoration-none text-lg-start text-md-start text-center"> {props.username} </p>
                 <p className="m-0 userstatus text-decoration-none text-lg-start text-md-start text-center"><small className="text-muted">{props.designation}</small> </p>
-                <button className={`d-${logoutbtn} button button-lightred start-0 end-0 position-absolute text-burntumber w-75 fw-bolder`} style={{ zIndex: '1000' }} onClick={logout}>Logout</button>
+                <button className={`d-${logoutbtn} button button-lightred start-0 end-0 position-absolute text-burntumber w-100 fw-bolder`} style={{ zIndex: '1000' }} onClick={logout}>Logout</button>
               </button>
             </div>
             <div className="col-lg-auto col-xl-7 align-self-center col-sm-auto col-md-auto col-10 p-0 m-0 menu order-1 order-xl-0 order-sm-0 order-md-0 order-sm-0">
@@ -219,6 +219,7 @@ function Navbar(props) {
                   ))
                 }
               </div>
+              
             </div>
             <div className="col-lg-auto col-xl-auto col-md-auto col-6 col-sm-2 text-center align-self-center position-relative p-0 m-0 ">
               <div className="dropdown">
@@ -232,7 +233,7 @@ function Navbar(props) {
                 </ul>
               </div>
             </div>
-            <div className="col-lg-2 col-xl-2 col-md-2 col-sm-2 ms-md-2 align-self-center order-sm-2 order-2 position-relative p-0 m-0" style={{ zIndex: '5' }}>
+            <div className="col-lg-2 col-xl-2 col-md-2 col-sm-6 mt-sm-2 ms-md-2 align-self-center order-sm-2 order-2 position-relative p-0 m-0" style={{ zIndex: '5' }}>
               <input type="text" className="bg-pearl border border-1 text-center position-relative w-100" placeholder="search" onChange={(e) => setsearchtext(e.target.value)} />
               <div className="position-absolute bg-pearl end-0 shadow rounded-2 mt-2 border border-1">
                 <SearchField searchtext={searchtext} fetchapi={props.fetchapi} />
@@ -242,7 +243,7 @@ function Navbar(props) {
         </div>
       </div>
 
-      <div className={`col-lg-5 col-md-6 col-sm-12 col-12 rounded-4 p-2 me-2 mt-2 patientinfosection d-${patientform} border-start border-top border-2 position-absolute`} >
+      <div className={`col-lg-5 col-md-6 col-sm-12 col-12 rounded-4 p-2 me-2 mt-2 scroll patientinfosection d-${patientform} border-start border-top border-2 position-absolute`} >
         <AddPatient togglepatientform={togglepatientform} />
       </div>
       <div className={`col-lg-5 col-md-6 col-sm-12 rounded-4 p-2 me-2 mt-2 col-12 bg-seashell appointmentinfosection d-${appointmentform} border-start border-top border-2 position-absolute`} style={{ zIndex: '4', right: '0' }} >
@@ -530,22 +531,22 @@ function Appointments(props) {
     <>
       <section className="page2appointment ">
         <div className="container-fluid">
-          <div className="row">
-            <div className="col-md-8">
+          <div className="row justify-content-between">
+            <div className="col-6 col-sm-12 col-md-6 col-lg-4 col-xl-4">
               <div className="col-12 mt-3">
-                <h3 className="p-2">All Appointments</h3>
+                <h4 className="p-2">All Appointments</h4>
               </div>
               <div className="col-12 mt-2">
-                <div className="row p-0 m-0 g-lg-3 g-md-1">
+                <div className="row p-0 m-0 g-lg-3 g-md-1 g-sm-2">
                   {
                     options.map((data, index) => (
-                      <div className="col-auto"><button className={`button px-4 rounded-5 border-charcoal button-${optionsindex == index ? 'charcoal' : 'pearl'}`} key={index} onClick={(e) => { setoptionsindex(index); settype(data[1]) }}>{data[0]}</button></div>
+                      <div className="col-auto"><button className={`button-sm px-4 rounded-5 border-charcoal button-${optionsindex == index ? 'charcoal' : 'pearl'}`} key={index} onClick={(e) => { setoptionsindex(index); settype(data[1]) }}>{data[0]}</button></div>
                     ))
                   }
                 </div>
               </div>
             </div>
-            <div className="col-md-4 daterange">
+            <div className="col-6 col-sm-12 col-md-6 col-lg-4 col-xl-4 daterange">
               <div className="col-12 mt-3 mb-2">
                 <img src={process.env.PUBLIC_URL + "/images/today.png"} alt="displaying_image" style={{ width: "2rem" }} />
                 <span className="daterangetitle">Select Date Range</span>

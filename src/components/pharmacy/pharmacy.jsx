@@ -252,6 +252,32 @@ function Saleentrysection(props) {
       Notiflix.Loading.remove()
     }
   }
+  const Send_On_WhatsApp = async (id, phone) => {
+    if (phone == undefined || phone == null) {
+      Notiflix.Notify.failure('Please Add a Phone Number to send the message on WhatsApp')
+    } else {
+      Notiflix.Loading.circle('Sending Bill on Whats App', {
+        backgroundColor: 'rgb(242, 242, 242,0.5)',
+        svgColor: '#96351E',
+        messageColor: '#96351E',
+        messageFontSize: '1.5rem'
+      })
+      try {
+        axios.post(`${url}/sale/entry/send/bill/whatsapp`, {
+          sale_entry_id: id,
+          admin_id: adminid
+        }).then((response) => {
+          console.log(response)
+          Notiflix.Notify.success(response.data.message)
+          Notiflix.Loading.remove()
+        })
+      } catch (e) {
+        Notiflix.Notify.failure(e.message)
+        Notiflix.Loading.remove()
+      }
+    }
+
+  }
   console.log(saleentryarr, pages)
   return (
     <>
@@ -281,7 +307,7 @@ function Saleentrysection(props) {
         </div>
       </div>
       <div className='scroll scroll-y p-0 m-0 mt-2' style={{ minHeight: '40vh', height: '58vh', maxHeight: '70vh' }}>
-        <table className="table text-center table-responsive p-0 m-0">
+        <table className="table text-start table-responsive p-0 m-0">
           <thead className=' p-0 m-0 position-sticky top-0 bg-pearl'>
             <tr className=' p-0 m-0'>
               <th className='text-charcoal75 fw-bolder p-0 m-0 px-1'>Bill ID</th>
@@ -291,8 +317,8 @@ function Saleentrysection(props) {
               <th className='text-charcoal75 fw-bolder p-0 m-0 px-1'>Appointment Date</th>
               <th className='text-charcoal75 fw-bolder p-0 m-0 px-1'>Doctor Name</th>
               <th className='text-charcoal75 fw-bolder p-0 m-0 px-1'>Invoice No.</th>
-              <th className='text-charcoal75 fw-bolder p-0 m-0 px-1'>Status</th>
-              <th className='text-charcoal75 fw-bolder p-0 m-0 px-1'>Actions</th>
+              <th className='text-charcoal75 fw-bolder p-0 m-0 px-1 text-center'>Status</th>
+              <th className='text-charcoal75 fw-bolder p-0 m-0 px-1 text-center'>Actions</th>
               {/* <th className='text-charcoal75 fw-bolder p-0 m-0 px-1' rowspan='2'>more</th> */}
             </tr>
           </thead>
@@ -321,18 +347,18 @@ function Saleentrysection(props) {
                         <td className='text-charcoal fw-bold p-0 m-0 px-1'>{item.appointment && item.appointment != null && item.appointment.appointment_date && item.appointment.appointment_date != null ? reversefunction(item.appointment.appointment_date) : ''}</td>
                         <td className='text-charcoal fw-bold p-0 m-0 px-1'>{item.appointment && item.appointment != null && item.appointment.doctor && item.appointment.doctor.doctor_name != null ? item.appointment.doctor.doctor_name : ''}</td>
                         <td className='text-charcoal fw-bold p-0 m-0 px-1'>{item.appointment && item.appointment != null && item.appointment.bill_id && item.appointment.bill_id != null ? item.appointment.bill_id : ''}</td>
-                        <td className="text-charcoal fw-bold p-0 m-0 px-1">
+                        <td className="text-charcoal fw-bold p-0 m-0 px-1 text-center">
                           <select disabled={item.sale_entry_status == 4 ? true : false} className={` fw-bolder border-0 bg-${((i % 2) == 0) ? 'seashell' : 'pearl'} text-center rounded-pill  bg-${status_color(item.sale_entry_status)}`} name={item.id} onChange={(e) => { UpdateStatus(e, item.id) }} style={{ appearance: 'none' }}>
                             <option className="button" selected disabled>{status(item.sale_entry_status)}</option>
-                            <option key={0} className="text-lightred" value='1'>Confirmed</option>
-                            <option key={1} className="text-lightblue" value='2'>Payment Done</option>
-                            <option key={2} className="text-lightred" value='3'>Completed</option>
-                            <option key={3} className="text-pearl" value='4'>Cancelled</option>
+                            <option key={0} className="text-lightred bg-pearl" value='1'>Confirmed</option>
+                            <option key={1} className="text-lightblue  bg-pearl" value='2'>Payment Done</option>
+                            <option key={2} className="text-lightred  bg-pearl" value='3'>Completed</option>
+                            <option key={3} className="text-charcoal  bg-pearl" value='4'>Cancelled</option>
                           </select>
                         </td>
 
-                        <td className={`text-charcoal bg-transparent fw-bold p-0 m-0 px-1 `}>
-                          <div className={`dropdown  bg-${tabindex == i ? 'lightred' : ''} text-start text-decoration-none`}>
+                        <td className={`text-charcoal text-center bg-transparent fw-bold p-0 m-0 px-1 `}>
+                          <div className={`dropdown  bg-${tabindex == i ? 'lightred' : ''} text-center text-decoration-none`}>
                             <button className="btn p-0 m-0 px-1 py-1 text-decoration-none dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                               <img src={process.env.PUBLIC_URL + "/images/confirmed.png"} alt="displaying_image" style={{ width: "1.5rem" }} />
                             </button>
@@ -343,7 +369,9 @@ function Saleentrysection(props) {
                               <li className=" text-start border-bottom">    <button className="btn" onClick={() => { setindex(i); toggle_seidw() }}>
                                 <img src={process.env.PUBLIC_URL + "/images/archivebox.png"} alt="displaying_image" className="ms-1" style={{ width: "1.5rem" }} /> Inventory
                               </button></li>
-                              <li className="text-start"><button className="btn" onClick={() => { Generate_Bill(item.id) }}><img src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" style={{ width: "2rem" }} /> Generate Bill</button>
+                              <li className="text-start border-bottom"><button className="btn" onClick={() => { Generate_Bill(item.id) }}><img src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" style={{ width: "2rem" }} /> Generate Bill</button>
+                              </li>
+                              <li className="text-start"><button className="btn" onClick={() => { Send_On_WhatsApp(item.id, item.patient.phone_number) }}><img src={process.env.PUBLIC_URL + "/images/whatsapp.png"} alt="displaying_image" style={{ width: "2rem" }} /> Send Bill On WhatsApp </button>
                               </li>
                             </ul>
                           </div>
@@ -2378,13 +2406,12 @@ function Purchaseentrysection(props) {
       date = date.split("-").reverse().join("-")
       return date
     }
-
   }
 
   return (
     <>
       <button className="button addentrypurchase button-charcoal position-absolute" onClick={toggle_npef}><img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt='displaying_image' className="img-fluid" style={{ width: `1.5rem` }} />Entry Purchase</button>
-      <div className="row p-0 m-0 justify-content-lg-between">
+      <div className="row p-0 m-0 justify-content-between">
         <div className="col-3 col-md-auto col-lg-3 align-self-center text-center text-charcoal fw-bolder">Purchase Entry <span className='text-burntumber border-burntumber px-1 rounded-2'>{pagecount}</span></div>
         <div className="col-auto align-self-center m-1 ">
           <div className="row border-burntumber fw-bolder rounded-2 text-center justify-content-center ">
@@ -2402,7 +2429,7 @@ function Purchaseentrysection(props) {
             </div>
           </div>
         </div>
-        <div className="col-auto align-self-center me-lg-2">
+        <div className="col-2 col-md-2 col-lg-2 align-self-center me-lg-2 ">
           <ExportPurchaseEntry purchaseentryarr={purchaseentryarrExcel} fromdate={reversefunction(fromdate)} todate={reversefunction(todate)} />
         </div>
       </div>
@@ -4761,9 +4788,7 @@ function Stockvaccinesection() {
     setvaccinearr([])
     for (let i = 0; i < vaccineslist.length; i++) {
       let totalcurrentstockarr = []
-      for (let j = 0; j < vaccineslist[i].stock_info.length; j++) {
-        totalcurrentstockarr.push(vaccineslist[i].stock_info[j].current_stock)
-        // let ExpireDays = Get_Diff(vaccineslist[i].stock_info[j].expiry_date)
+      if (vaccineslist[i].stock_info.length == 0) {
         let vaccineobj = {
           id: vaccineslist[i].id,
           name: vaccineslist[i].name,
@@ -4771,37 +4796,58 @@ function Stockvaccinesection() {
           max_stock_count: vaccineslist[i].max_stock_count,
           alert_stock_count: vaccineslist[i].alert_stock_count,
           min_stock_count: vaccineslist[i].min_stock_count,
-          CGST: vaccineslist[i].stock_info[j].CGST,
-          CGST_rate: vaccineslist[i].stock_info[j].CGST_rate,
-          IGST: vaccineslist[i].stock_info[j].IGST,
-          IGST_rate: vaccineslist[i].stock_info[j].IGST_rate,
-          SGST: vaccineslist[i].stock_info[j].SGST,
-          SGST_rate: vaccineslist[i].stock_info[j].SGST_rate,
-          batch_no: vaccineslist[i].stock_info[j].batch_no,
-          channel: vaccineslist[i].stock_info[j].channel,
-          cost: vaccineslist[i].stock_info[j].cost,
-          current_stock: vaccineslist[i].stock_info[j].current_stock,
-          discount: vaccineslist[i].stock_info[j].discount,
-          expiry_date: vaccineslist[i].stock_info[j].expiry_date,
-          free_qty: vaccineslist[i].stock_info[j].free_qty,
-          Batch_stock_id: vaccineslist[i].stock_info[j].id,
-          mfd_date: vaccineslist[i].stock_info[j].mfd_date,
-          mrp: vaccineslist[i].stock_info[j].mrp,
-          purchase_entry_id: vaccineslist[i].stock_info[j].purchase_entry_id,
-          qty: vaccineslist[i].stock_info[j].qty,
-          rate: vaccineslist[i].stock_info[j].rate,
-          trade_discount: vaccineslist[i].stock_info[j].trade_discount,
-          total_amount: vaccineslist[i].stock_info[j].total_amount,
-          totalstock: totalcurrentstockarr,
-          // Days_to_expire: ExpireDays
-
         }
+        console.log(vaccineobj)
         if (vaccinearr == undefined && vaccinearr.length == 0) {
           setvaccinearr(vaccineobj)
         } else {
           setvaccinearr(prevState => [...prevState, vaccineobj])
         }
+
+      } else {
+        for (let j = 0; j < vaccineslist[i].stock_info.length; j++) {
+          totalcurrentstockarr.push(vaccineslist[i].stock_info[j].current_stock)
+          // let ExpireDays = Get_Diff(vaccineslist[i].stock_info[j].expiry_date)
+          let vaccineobj = {
+            id: vaccineslist[i].id,
+            name: vaccineslist[i].name,
+            manufacturer: vaccineslist[i].manufacturer,
+            max_stock_count: vaccineslist[i].max_stock_count,
+            alert_stock_count: vaccineslist[i].alert_stock_count,
+            min_stock_count: vaccineslist[i].min_stock_count,
+            CGST: vaccineslist[i].stock_info[j].CGST,
+            CGST_rate: vaccineslist[i].stock_info[j].CGST_rate,
+            IGST: vaccineslist[i].stock_info[j].IGST,
+            IGST_rate: vaccineslist[i].stock_info[j].IGST_rate,
+            SGST: vaccineslist[i].stock_info[j].SGST,
+            SGST_rate: vaccineslist[i].stock_info[j].SGST_rate,
+            batch_no: vaccineslist[i].stock_info[j].batch_no,
+            channel: vaccineslist[i].stock_info[j].channel,
+            cost: vaccineslist[i].stock_info[j].cost,
+            current_stock: vaccineslist[i].stock_info[j].current_stock,
+            discount: vaccineslist[i].stock_info[j].discount,
+            expiry_date: vaccineslist[i].stock_info[j].expiry_date,
+            free_qty: vaccineslist[i].stock_info[j].free_qty,
+            Batch_stock_id: vaccineslist[i].stock_info[j].id,
+            mfd_date: vaccineslist[i].stock_info[j].mfd_date,
+            mrp: vaccineslist[i].stock_info[j].mrp,
+            purchase_entry_id: vaccineslist[i].stock_info[j].purchase_entry_id,
+            qty: vaccineslist[i].stock_info[j].qty,
+            rate: vaccineslist[i].stock_info[j].rate,
+            trade_discount: vaccineslist[i].stock_info[j].trade_discount,
+            total_amount: vaccineslist[i].stock_info[j].total_amount,
+            totalstock: totalcurrentstockarr,
+            // Days_to_expire: ExpireDays
+
+          }
+          if (vaccinearr == undefined && vaccinearr.length == 0) {
+            setvaccinearr(vaccineobj)
+          } else {
+            setvaccinearr(prevState => [...prevState, vaccineobj])
+          }
+        }
       }
+
 
     }
   }
@@ -4828,24 +4874,30 @@ function Stockvaccinesection() {
   // }
 
   const CalculateTStock = (totalarr) => {
-    let total = 0
-    totalarr.map((item) => (
-      total += Number(item)
-    ))
-    return total
+    if (totalarr !== undefined) {
+      let total = 0
+      totalarr.map((item) => (
+        total += Number(item)
+      ))
+      return total
+    }
+
   }
 
   const GetStatus = (totalstockarr, alertstockcount) => {
-    let total = 0
-    totalstockarr.map((item) => (
-      total += Number(item)
-    ))
+    if (totalstockarr !== undefined) {
+      let total = 0
+      totalstockarr.map((item) => (
+        total += Number(item)
+      ))
 
-    if (total <= alertstockcount) {
-      return 1
-    } else {
-      return 0
+      if (total <= alertstockcount) {
+        return 1
+      } else {
+        return 0
+      }
     }
+
   }
 
   const toggle_detailsform = () => {
@@ -5156,19 +5208,19 @@ function Stockmedicinesection() {
     }
 
   }
-  const reversefunction2 = (date) => {
-    if (date) {
-      let newdate = []
-      let DATE = ''
-      date = date.split("-").reverse()
-      newdate.push(date[1])
-      newdate.push(date[0])
-      newdate.push(date[2])
-      DATE = newdate[0] + '/' + newdate[1] + '/' + newdate[2]
-      return DATE
-    }
+  // const reversefunction2 = (date) => {
+  //   if (date) {
+  //     let newdate = []
+  //     let DATE = ''
+  //     date = date.split("-").reverse()
+  //     newdate.push(date[1])
+  //     newdate.push(date[0])
+  //     newdate.push(date[2])
+  //     DATE = newdate[0] + '/' + newdate[1] + '/' + newdate[2]
+  //     return DATE
+  //   }
 
-  }
+  // }
   // const Get_Diff = (expiry) => {
   //   // let currentdate = reversefunction(Todaydate).replaceAll('-', '/')
   //   let expirydate = reversefunction2(expiry)
@@ -5211,7 +5263,7 @@ function Stockmedicinesection() {
   }, [medicineslist])
 
 
-  let c = 0
+
   const toggle_detailsform = () => {
     if (detailsform == 'none') {
       setdetailsform('block')
@@ -5231,7 +5283,7 @@ function Stockmedicinesection() {
       </div>
       <div className='text-start ms-5 text-charcoal fw-bold p-2'>Medicine Stock Info</div>
       <div className='scroll scroll-y p-0 m-0' style={{ 'height': '57vh', minHeight: '57vh', maxHeight: '57vh' }}>
-        <table className="table datatable text-center" >
+        <table className="table datatable text-start" >
           <thead className='position-sticky top-0 bg-pearl'>
             <tr>
               <th className='text-charcoal75 fw-bold'>No.</th>

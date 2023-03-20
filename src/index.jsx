@@ -156,7 +156,7 @@ function Connectapp(props) {
                                   <Route path='/Doctors' element={<Doctors id={props.id} docapi={docapi} />} />
                                   <Route path='/DailySaleReport' element={<DailySaleReport id={props.id} cliniclist={cliniclist} docapi={docapi} />} />
                                   <Route path='/Pharmacy' element={<Pharmacy id={props.id} />} />
-                                  <Route path='/Files' element={<Exports id={props.id} />} />
+                                  {/* <Route path='/Files' element={<Exports id={props.id} />} /> */}
                                 </Routes>
                               </Router>
                             </Vitals.Provider>

@@ -92,7 +92,7 @@ const SelectedTimeAppointment = (props) => {
             <div className="row p-0 m-0">
                 <div className="col-5">
                     <input type="text" placeholder='Search Patient using Number or Name' className="form-control bg-pearl border-0" value={searchinput ? searchinput : ''} onChange={(e) => { searchpatient(e); }} />
-                    <div className={`col-6 position-absolute d-${displaysearchlist} rounded-2 `} style={{zIndex:100}}>
+                    <div className={`col-6 position-absolute d-${displaysearchlist} rounded-2 `} style={{ zIndex: 100 }}>
                         {
                             searchload ? (
                                 <p className="btn col-12 text-charcoal75 bg-pearl p-0 m-0 ps-1 mt-1">Loading... </p>
@@ -103,7 +103,7 @@ const SelectedTimeAppointment = (props) => {
                                     <div className='mt-1 shadow rounded-2 bg-pearl border border-1 col-12 '>
                                         {
                                             searchlist.map((data, i) => (
-                                                <div className={`col-12 bg-${i % 2 == 0 ? 'lightred50' : 'pearl'} px-2 text-charcoal text-start ps-2 border-bottom align-self-center`} name={data.id} value={data.full_name} onClick={() => { get_value(data) }}>{data.full_name} {data.phone_number}</div>
+                                                <div style={{ cursor: 'pointer' }} className={`col-12 bg-${i % 2 == 0 ? 'lightred50' : 'pearl'} px-2 text-charcoal text-start ps-2 border-bottom align-self-center`} name={data.id} value={data.full_name} onClick={() => { get_value(data) }}>{data.full_name} {data.phone_number}</div>
                                             ))
                                         }
                                     </div>
@@ -116,8 +116,8 @@ const SelectedTimeAppointment = (props) => {
                 </div>
                 <div className="col-auto">
                     <div className="d-flex p-0 m-0 text-start justify-content-around">
-                        <button className='button button-charcoal-outline border-0 '>{props.DoctorID}. Dr.{props.DoctorName}</button>
-                        <input type="date" disabled value={APIDate} className=" bg-seashell border-0 text-charcoal text-center" />
+                        <div className='button button-charcoal50-outline'>{props.DoctorID}. Dr.{props.DoctorName}</div>
+                        <div className="button button-charcoal50-outline ms-3" >{APIDate}</div>
 
                     </div>
                 </div>

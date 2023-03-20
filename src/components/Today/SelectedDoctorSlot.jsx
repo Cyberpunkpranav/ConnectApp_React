@@ -79,19 +79,19 @@ const AddSelectedDoctorSlot = (props) => {
                     ))
                 }
             </div>
-            <div className="row mt-2">
-                <div className="col-6">
-                    <button className='button button-charcoal-outline'>{props.DoctorName}</button>
+            <div className="row mt-2 justify-content-center gx-2">
+                <div className="col-auto">
+                    <button className='button button-charcoal50-outline'>{props.DoctorName}</button>
                 </div>
-                <div className="col-6">
-                    <input type="date" disabled className="form-control col-10" value={APIDate} />
+                <div className="col-auto">
+                    <div type="date" disabled className="form-control col-10 button button-charcoal50-outline" >{APIDate}</div>
                 </div>
             </div>
             <hr />
             <div className="d-flex">
-                <input type="time" className="form-control" value={fromtime ? fromtime : ''} onChange={(e) => { setfromtime(e.target.value) }} />
+                <input type="time" className="form-control bg-seashell border-charcoal" value={fromtime ? fromtime : ''} onChange={(e) => { setfromtime(e.target.value) }} />
                 <div>_</div>
-                <input type="time" className="form-control" value={totime ? totime : ''} onChange={(e) => { settotime(e.target.value) }} />
+                <input type="time" className="form-control bg-seashell border-charcoal" value={totime ? totime : ''} onChange={(e) => { settotime(e.target.value) }} />
             </div>
 
 

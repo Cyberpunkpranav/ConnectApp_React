@@ -5,7 +5,7 @@ import axios from "axios"
 import Notiflix from 'notiflix'
 import { customconfirm } from '../features/notiflix/customconfirm'
 //Context APIs
-import { URL, TodayDate, DoctorsList, TodayDocs,Clinic } from '../../index'
+import { URL, TodayDate, DoctorsList, TodayDocs, Clinic } from '../../index'
 
 const AddDoctorSlot = (props) => {
   const url = useContext(URL)
@@ -139,7 +139,7 @@ const AddDoctorSlot = (props) => {
         ) : (
           <>
             <div className="col-6 py-2 pb-2 m-auto text-center">
-              <button type="button" className="btn done px-5" onClick={confirmmessage} > Done </button>
+              <button type="button" className="button button-charcoal px-5" onClick={confirmmessage} > Done </button>
             </div>
             <div className="col-6 pb-2 m-auto text-center">
               <button className="btn btn-light px-5" onClick={resetform}>Reset</button>

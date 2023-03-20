@@ -15,6 +15,9 @@ import { AddSelectedDoctorSlot } from './SelectedDoctorSlot'
 import { Vitalsoperation } from "./Vitals";
 import { Payments } from "./Payments";
 import { Bill } from "./Bill";
+import { Bootstrap_Confirm } from '../features/Bootstrap_Confirm'
+import '../../../node_modules/bootstrap/dist/js/bootstrap.bundle'
+import '../../../node_modules/bootstrap/js/dist/modal'
 
 function DoctorSchedule(props) {
   //Global Variables
@@ -40,7 +43,6 @@ function DoctorSchedule(props) {
   const [paymentsindex, setpaymentsindex] = useState()
   const [paymentsform, setpaymentsform] = useState('none')
   const [d_form, setd_form] = useState()
-
   // for UpdateAppointment
   const closeappointmentform = () => {
     if (appointmentform === "block") {
@@ -276,6 +278,123 @@ function DoctorSchedule(props) {
       Notiflix.Loading.remove()
     }
   }
+  const Generate_Prescription = async (id) => {
+    Notiflix.Loading.circle('Generating Prescription', {
+      backgroundColor: 'rgb(242, 242, 242,0.5)',
+      svgColor: '#96351E',
+      messageColor: '#96351E',
+      messageFontSize: '1.5rem'
+    })
+    try {
+      axios.post(`${url}/swift/pdf`, {
+        appointment_id: id,
+      }).then((response) => {
+        console.log(response)
+        Notiflix.Notify.success(response.data.message)
+        Notiflix.Loading.remove()
+        window.open(response.data.data.prescription_pdf, '_blank', 'noreferrer');
+      })
+    } catch (e) {
+      Notiflix.Notify.failure(e.message)
+      Notiflix.Loading.remove()
+    }
+  }
+  const Send_On_WhatsApp = async (id, phone, check) => {
+    let checkpres = check
+    if (phone == undefined || phone == null) {
+      Notiflix.Notify.failure('Please Add a Phone Number to send the message on WhatsApp')
+    } else {
+      Notiflix.Loading.circle('Sending Bill on Whats App', {
+        backgroundColor: 'rgb(242, 242, 242,0.5)',
+        svgColor: '#96351E',
+        messageColor: '#96351E',
+        messageFontSize: '1.5rem'
+      })
+      try {
+        axios.post(`${url}/send/bill/whatsapp`, {
+          appointment_id: id,
+          check_pres: checkpres,
+          admin_id: adminid
+        }).then((response) => {
+          console.log(response)
+          Notiflix.Notify.success(`${response.data.message}${checkpres == 1 ? ' with Prescription' : ' without Prescription'}`)
+          Notiflix.Loading.remove()
+        })
+      } catch (e) {
+        Notiflix.Notify.failure(e.message)
+        Notiflix.Loading.remove()
+      }
+    }
+
+  }
+  const Confirm_For_Prescription = (id, phone) => {
+
+    customconfirm()
+    Notiflix.Confirm.show(
+      `Choose Option to Send `,
+      `Do you want to send the Bill`,
+      'With the Prescription ?',
+      'Without the Prescription ?',
+      () => {
+        Send_On_WhatsApp(id, phone, 1)
+      },
+      () => {
+        Send_On_WhatsApp(id, phone, 0)
+      },
+      {
+      },
+    );
+  }
+  const Send_On_SMS = async (id, phone, check) => {
+    let checkpres = check
+    if (phone == undefined || phone == null) {
+      Notiflix.Notify.failure('Please Add a Phone Number to send the message on SMS')
+    } else {
+      Notiflix.Loading.circle('Sending Bill on SMS', {
+        backgroundColor: 'rgb(242, 242, 242,0.5)',
+        svgColor: '#96351E',
+        messageColor: '#96351E',
+        messageFontSize: '1.5rem'
+      })
+      try {
+        axios.post(`${url}/send/bill/sms`, {
+          appointment_id: id,
+          check_bill: 1,
+          check_pre: checkpres,
+        }).then((response) => {
+          console.log(response)
+          Notiflix.Notify.success(`${response.data.message}${checkpres == 1 ? ' with Prescription' : ' without Prescription'}`)
+          Notiflix.Loading.remove()
+        })
+      } catch (e) {
+        Notiflix.Notify.failure(e.message)
+        Notiflix.Loading.remove()
+      }
+    }
+
+  }
+  const Confirm_For_Prescription2 = (id, phone) => {
+
+    customconfirm()
+    Notiflix.Confirm.show(
+      `Choose Option to Send `,
+      `Do you want to send the Bill`,
+      'With the Prescription ?',
+      'Without the Prescription ?',
+      () => {
+        Send_On_SMS(id, phone, 1)
+      },
+      () => {
+        Send_On_SMS(id, phone, 0)
+      },
+      {
+      },
+    );
+  }
+  // const Modal = () => {
+  //   modalindex
+  // }
+  https://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/api/connect/swift/pdf
   return (
     <>
       <section id="doctorscheduledata">
@@ -307,7 +426,7 @@ function DoctorSchedule(props) {
                       <button className={`button-sm button-${timeindex == i ? 'charcoal' : 'charcoal-outline'} m-1`} onClick={(e) => { openAddApppointmentform(); settimeindex(i) }} key={i}>{tConvert(data[0])}</button>
                       {
                         timeindex == i ? (
-                          <section className={`d-${timeindex == i ? addappointmentform : 'none'} col-lg-8 col-md-8 col-sm-8 col-6 col-xl-6 appointmentinfosection position-absolute m-auto start-0 end-0 bg-seashell rounded-4 shadow-none border border-1`} style={{ zIndex: 4, top: '-1rem' }}>
+                          <section className={`d-${timeindex == i ? addappointmentform : 'none'} col-lg-8 col-md-8 col-sm-8 col-6 col-xl-6 shadow appointmentinfosection position-absolute m-auto start-0 end-0 bg-seashell rounded-4 border border-1`} style={{ zIndex: 4, top: '-1rem' }}>
                             <SelectedTimeAppointment fetchapi={props.fetchapi} closeAddAppointmentform={closeAddAppointmentform} DocClinic={props.DocClinic} DoctorID={props.DoctorID} DoctorName={props.DoctorName} timeindex={timeindex} selectedtime={data[0]} selectedtimeID={data[2]} />
                           </section>
                         ) : (
@@ -331,7 +450,7 @@ function DoctorSchedule(props) {
           <div className="col-auto m-0 p-0 align-items-center">
             <h5 className="p-0  ms-1 text-charcoal75 fw-bold my-2">Appointments</h5>
           </div>
-          <div className=" scroll scroll-y align-content-center align-items-center" style={{ maxHeight: '42vh', Height: '42vh' }}>
+          <div className=" scroll scroll-y align-content-center align-items-center" style={{ minHeight: '30vh', maxHeight: '42vh', Height: '42vh' }}>
             <table className="table datatable text-center">
               <thead className="p-0 m-0 px-2 bg-pearl" style={{ 'zIndex': '4' }}>
                 <tr className="p-0 m-0 position-sticky top-0">
@@ -345,9 +464,8 @@ function DoctorSchedule(props) {
                   <th className="border-0 bg-pearl" key={7}>Vitals</th>
                   <th className="border-0 bg-pearl" key={8}>Bill</th>
                   <th className="border-0 bg-pearl" key={9}>Payments</th>
-                  <th className="border-0 bg-pearl" key={10}>Call Patient</th>
-                  <th className="border-0 bg-pearl" key={11} >Bill</th>
-                  <th className="border-0 bg-pearl" key={12}>Prescription</th>
+                  <th className="border-0 bg-pearl" key={10}>more</th>
+
                 </tr>
               </thead>
               {
@@ -395,9 +513,30 @@ function DoctorSchedule(props) {
                             <td className={`py-0 bg-${vitalindex === i ? 'lightyellow' : ''}`}><button className="btn p-0 m-0" onClick={() => { setvitalindex(i); OpenVitals(); GetAppointmentVitals(data.id) }}><img src={process.env.PUBLIC_URL + "/images/vitals.png"} alt="displaying_image" style={{ width: "1.5rem" }} /></button></td>
                             <td className={`py-0 bg-${billindex === i ? 'lightyellow' : ''}`}> <button className="btn p-0 m-0" onClick={() => { setbillindex(i); OpenBillForm(); }}><img src={process.env.PUBLIC_URL + "/images/bill.png"} alt="displaying_image" style={{ width: "1.8rem" }} className="me-1" /></button>  </td>
                             <td className={`py-0 bg-${paymentsindex === i ? 'lightyellow' : ''}`}><button className="btn p-0 m-0" onClick={() => { setpaymentsindex(i); OpenPaymentsForm(); }}><img src={process.env.PUBLIC_URL + "/images/rupee.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1" /></button></td>
-                            <td className={`py-0`}><button className="btn p-0 m-0" onClick={() => confirmmessage(data.patient.full_name, data.id)}><img src={process.env.PUBLIC_URL + "/images/speaker.png"} alt="displaying_image" className="ms-1" style={{ width: "1.8rem" }} /></button></td>
-                            <td className={`py-0`}><button className="p-0 m-0 btn" onClick={() => { Generate_Bill(data.id) }}><img src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" style={{ width: "2rem" }} /></button></td>
-                            <td className={`py-0`}><a target='_blank' className='p-0 m-0 text-decoration-none text-charcoal fw-bold' href={`https://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/assets/swift_pdf/prescription_pdf_${data.id}.pdf`}><img src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" style={{ width: "2rem" }} /></a></td>
+                            <td><div className="dropdown">
+                              <button className="button button p-0 m-0 px-1 py-1 button-pearl fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" style={{ width: "1.5rem" }} />
+                              </button>
+                              <ul className="dropdown-menu">
+                                <li className="text-start p-0 m-0 border-bottom border-1" onClick={() => confirmmessage(data.patient.full_name, data.id)}>
+                                  <button className="btn p-0 m-0" ><img src={process.env.PUBLIC_URL + "/images/speaker.png"} alt="displaying_image" className="ms-1" style={{ width: "1.8rem" }} /> Call Patient</button>
+                                </li>
+                                <li className="text-start p-0 m-0 border-bottom border-1">
+                                  <button className="p-0 m-0 btn" onClick={() => { Generate_Bill(data.id) }}><img src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" style={{ width: "2rem" }} /> Generate Bill</button>
+                                </li>
+                                <li className="text-start p-0 m-0 border-bottom border-1">
+                                  <button className="p-0 m-0 btn" onClick={() => { Generate_Prescription(data.id) }}><img src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" style={{ width: "2rem" }} /> Generate Prescription</button>
+                                </li>
+                                <li className="text-start p-0 m-0 border-bottom border-1">
+                                  <button className="p-0 m-0 btn" onClick={() => { Confirm_For_Prescription(data.id, data.patient.phone_number) }}><img src={process.env.PUBLIC_URL + "/images/whatsapp.png"} alt="displaying_image" style={{ width: "2rem" }} /> Send on Whats App</button>
+                                </li>
+                                <li className="text-start p-0 m-0 border-bottom border-1">
+                                  <button className="p-0 m-0 btn" onClick={() => { Confirm_For_Prescription2(data.id, data.patient.phone_number) }}><img className='ms-1' src={process.env.PUBLIC_URL + "/images/message.png"} alt="displaying_image" style={{ width: "1.5rem" }} />{' '}Send on SMS</button>
+                                </li>
+
+
+                              </ul>
+                            </div></td>
                             {
                               tableindex === i ? (
                                 <td className={`updateappointment border border-1 rounded-3 bg-seashell mt-2 start-0 end-0 top-0 col-lg-8 col-md-10 col-sm-10 col-10 col-xl-5 d-${tableindex == i ? appointmentform : 'none'} position-absolute`}>

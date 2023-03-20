@@ -709,8 +709,8 @@ const Appointments_Dsr = (props) => {
           </div>
         </div>
       </div>
-      <div className='p-0 m-0 py-1 ps-2 bg-seashell border position-absolute w-100 bottom-0'>
-        <div className="row p-0 m-0">
+      <div className='p-0 m-0 py-1 ps-2 bg-seashell border position-absolute w-100 bottom-0 scroll'>
+        <div className="d-flex p-0 m-0 ">
           <div className="col-auto">
             <div className="row p-0 m-0 justify-content-start">
               <div className="col-auto">
