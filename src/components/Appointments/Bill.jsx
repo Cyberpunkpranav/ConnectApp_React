@@ -312,7 +312,7 @@ const Bill = (props) => {
     }, [])
     return (
         <div className='bg-seashell rounded-4 position-relative'>
-            <h5 className='text-burntumber fw-bold'>{props.patientname} Bill</h5>
+            <h5 className='text-charcoal text-center'>{props.patientname} Bill</h5>
             <button className='btn btn-close position-absolute top-0 end-0 me-2' onClick={() => { props.toggle_bill() }}></button>
             <hr className='p-0 m-0' />
             <div className='scroll'>

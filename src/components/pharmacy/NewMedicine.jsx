@@ -46,8 +46,13 @@ const NewMedicine = (props) => {
     if (displayname && name && saltname && manufacturer && strength && unit && pack && packtype && mfid && schedule && hsn && rack && maxsc && minsc && altsc && img) {
       try {
         await axios.post(`${url}/medicine/add`, data).then((response) => {
-          Notiflix.Notify.success(response.data.message)
+          props.ToggleNewMedicine()
           ClearFields()
+          if (response.data.status == true) {
+            Notiflix.Notify.success(response.data.message)
+          } else {
+            Notiflix.Notify.warning(response.data.message)
+          }
         })
       } catch (e) {
         Notiflix.Notify.failure(e.message)

@@ -239,7 +239,7 @@ const AllAppointmentslist = (props) => {
             {
                 props.isLoading == true ? (
 
-                    <div className='container position-absolute start-0 end-0' >
+                    <div className='container text-center position-absolute start-0 end-0' >
                         <h4>Hold on its Loading</h4>
                         <div className="spinner-grow bg-secondary col-2" role="status">
                             <span className="visually-hidden">Loading...</span>
@@ -247,7 +247,7 @@ const AllAppointmentslist = (props) => {
                     </div>
                 ) : (props.getAppointments.length == 0 ? (
 
-                    <div className="container text-charcoal fs-4 position-absolute start-0 end-0">
+                    <div className="container text-center text-charcoal fs-4 position-absolute start-0 end-0">
                         <p className="p-0 m-0 text-charcoal75 fw-bolder mt-3">No Appointments found for the selected Date & Doctor</p>
                     </div>
 
@@ -280,23 +280,21 @@ const AllAppointmentslist = (props) => {
                             <td className='text-charcoal fw-bold'>{data.timeslot && data.timeslot.time_from !== null ? props.tConvert(data.timeslot.time_from) : ''}</td>
                             <td className='text-charcoal fw-bold'>{data.total_amount && data.total_amount !== null ? data.total_amount : data.total_amount}</td>
                             <td className='text-charcoal fw-bold text-center'><AmountPaid appointmentData={data} /></td>
-                            <td className='p-0 m-0 text-charcoal fw-bold align-items-center '>
-                                <div className='vr rounded-2 h-100 align-self-center py-3' style={{ padding: '1px' }}></div>
-                            </td>
-                            <td><img src={process.env.PUBLIC_URL + "/images/vitals.png"} alt="displaying_image" style={{ width: "1.5rem" }} className='m-0 p-0' /> </td>
+
+                            {/* <td><img src={process.env.PUBLIC_URL + "/images/vitals.png"} alt="displaying_image" style={{ width: "1.5rem" }} className='m-0 p-0' /> </td> */}
                             <td>{reversefunction(data.follow_up_date ? data.follow_up_date : '')}</td>
                             {/* <td> <img src={process.env.PUBLIC_URL + "/images/cart.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1 m-0 p-0" /> </td> */}
-                            <td><div className="dropdown text-decoration-none">
+                            <td className='text-center'><div className="dropdown text-decoration-none">
                                 <button className="btn btn-white dropdown-toggle text-decoration-none" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" style={{ width: "1.5rem" }} />
                                 </button>
-                                <ul className="dropdown-menu text-decoration-none p-0 m-0 p-2" style={{ '-webkit-appearance': 'none',width:'max-content' }}>
+                                <ul className="dropdown-menu shadow-sm text-decoration-none p-0 m-0 p-2" style={{ '-webkit-appearance': 'none', width: 'max-content' }}>
                                     <li className='dropdown-item d-flex border-bottom p-0 m-0 align-items-center' onClick={() => { setbillindex(key); toggle_bill() }}><img className='m-2 img-fluid' style={{ 'width': '1.8rem' }} src={process.env.PUBLIC_URL + 'images/bill.png'} />Bill</li>
                                     <li className='dropdown-item d-flex border-bottom p-0 m-0 align-items-center' onClick={() => { setpaymentindex(key); toggle_payments(); }}><img className='m-2 img-fluid' style={{ 'width': '1.6rem' }} src={process.env.PUBLIC_URL + 'images/rupee.png'} />Payments</li>
                                     <li className='dropdown-item d-flex border-bottom p-0 m-0 align-items-center' onClick={() => { Generate_Bill(data.id) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" style={{ width: "2rem" }} />Generate Bill</li>
                                     <li className="dropdown-item d-flex border-bottom p-0 m-0 align-items-center" onClick={() => { Generate_Prescription(data.id) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" style={{ width: "2rem" }} /> Generate Prescription </li>
                                     <li className="dropdown-item d-flex border-bottom p-0 m-0 align-items-center" onClick={() => { Confirm_For_Prescription(data.id, data.patient.phone_number) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/whatsapp.png"} alt="displaying_image" style={{ width: "2rem" }} /> Send on Whats App </li>
-                                    <li className="dropdown-item d-flex p-0 m-0 align-items-center" onClick={() => { Confirm_For_Prescription2(data.id, data.patient.phone_number) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/message.png"} alt="displaying_image" style={{ width: "1.5rem" }} />{' '}Send on SMS</li>
+                                    <li className="dropdown-item d-flex p-0 m-0 align-items-center" onClick={() => { Confirm_For_Prescription2(data.id, data.patient.phone_number) }}><img className='m-2 img-fluid ms-2' src={process.env.PUBLIC_URL + "/images/message.png"} alt="displaying_image" style={{ width: "1.8rem" }} />{' '}Send on SMS</li>
                                 </ul>
                             </div></td>
                             {

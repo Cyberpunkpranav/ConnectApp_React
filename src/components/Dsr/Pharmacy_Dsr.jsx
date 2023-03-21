@@ -930,7 +930,7 @@ const Pharmacy_Dsr = (props) => {
 
               <table className='table'>
                 <thead className='text-start position-sticky top-0 bg-pearl '>
-                  <tr>
+                  <tr className='text-charcoal75'>
                     {/* <th rowspan='2' className='py-0' >SE ID</th> */}
                     <th rowspan='2' className='py-0' >SR ID</th>
                     <th rowspan='2' className='py-0' >Bill no.</th>
@@ -1061,7 +1061,6 @@ const Pharmacy_Dsr = (props) => {
                   currentTableRef={pendingsrecieved.current}
                 >
                   <button className='btn p-0 m-0 ms-5 bg-pearl border-charcoal px-2 py-1 fw-bold '> <img src={process.env.PUBLIC_URL + '/images/download.png'} style={{ 'width': '1.5rem' }} onClick={()=>{prxl('block')}} /> Export</button>
-
                 </DownloadTableExcel>
               </span>
             </div>

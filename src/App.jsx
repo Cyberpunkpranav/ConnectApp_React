@@ -431,6 +431,7 @@ function Appointments(props) {
 
   async function fetchallAppointmentslist() {
     if (doctorid) {
+      setgetAppointments([])
       try {
         setisselectedLoading(true);
         await axios.get(`${url}/appointment/list?clinic_id=${clinicID}&doctor_id=${doctorid}&from_date=${fromdate ? fromdate : APIDate}&to_date=${todate ? todate : fromdate ? fromdate : APIDate}&status=${type ? type : ''}`).then((response) => {
@@ -441,6 +442,7 @@ function Appointments(props) {
         alert(e)
       }
     } else {
+      setappointmentdata([])
       let listdata = []
       try {
         setvisibles()
@@ -528,7 +530,7 @@ function Appointments(props) {
     }
   }
 
-  console.log(getAppointments)
+  console.log(docnames, visibles, getAppointments.length, appointmentdata.length)
   return (
     <>
       <section className="page2appointment ">
@@ -542,7 +544,15 @@ function Appointments(props) {
                 <div className="row p-0 m-0 g-lg-3 g-md-1 g-sm-2">
                   {
                     options.map((data, index) => (
-                      <div className="col-auto"><button className={`button-sm px-4 rounded-5 border-charcoal button-${optionsindex == index ? 'charcoal' : 'pearl'}`} key={index} onClick={(e) => { setoptionsindex(index); settype(data[1]) }}>{data[0]}</button></div>
+                      <div className="col-auto">
+                        <button className={`button-sm px-4 rounded-5 border-charcoal position-relative button-${optionsindex == index ? 'charcoal' : 'pearl'}`} key={index} onClick={(e) => { setoptionsindex(index); settype(data[1]) }}>
+                          {data[0]}
+                          <span class={` d-${optionsindex == index ? '' : 'none'} position-absolute top-0 text-pearl start-100 translate-middle badge rounded-pill bg-burntumber border-burntumber`}>
+                            {doctorid ? appointmentdata.length : getAppointments.length}
+                            <span class="visually-hidden">unread messages</span>
+                          </span>
+                        </button>
+                      </div>
                     ))
                   }
                 </div>
@@ -561,12 +571,12 @@ function Appointments(props) {
               </div>
               <div className="col-12 mt-2">
                 <h6 className="text-burntumber bold fw-bolder">Select Doctor to see their appointments</h6>
-                <select className="form-control" value={doctorid ? doctorid : ''} onChange={(e) => { setdoctorid(e.target.value) }}>
+                <select className="form-control" disabled={fromdate == null} value={doctorid ? doctorid : ''} onChange={(e) => { setdoctorid(e.target.value) }}>
                   <option selected value="Select Doctor">Select Doctor</option>
                   {
                     visibles != null ? (
                       docnames.map((response, i) => (
-                        <option className={`form-control text-charcoal`} key={i} value={response[0]} >{response[0]}. Dr. {response[1]}{' '}{' '}{CountAppointments(response[0])}</option>
+                        <option className={`form-control text-charcoal`} key={i} value={response[0]} >Dr. {response[1]}{' '}{' '}{CountAppointments(response[0])}</option>
                       ))
 
                     ) : (<option>Loading..</option>)
@@ -577,7 +587,7 @@ function Appointments(props) {
             </div>
           </div>
         </div>
-        <section className="container-fluid scroll scroll-y mt-2 " style={{ minHeight: '60vh', maxHeight: '60vh' }}>
+        <section className="container-fluid scroll scroll-y mt-2 " style={{ minHeight: '68vh', maxHeight: '68vh' }}>
           <table className="table text-start">
             <thead className="text-charcoal75 fw-bold">
               <tr className=" bg-pearl position-sticky top-0">
@@ -590,11 +600,10 @@ function Appointments(props) {
                 <th>Time</th>
                 <th>Total Amount</th>
                 <th className="text-center">Amount Status</th>
-                <th></th>
-                <th>Rx</th>
+                {/* <th>Rx</th> */}
                 <th>F/U Date</th>
                 {/* <th>Actions</th> */}
-                <th className="bg-pearl">More</th>
+                <th className=" text-center bg-pearl">More</th>
               </tr>
             </thead>
             <tbody className="text-charcoal ">

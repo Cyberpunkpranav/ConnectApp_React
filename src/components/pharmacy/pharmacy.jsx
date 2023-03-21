@@ -1087,6 +1087,7 @@ function SaleEntryForm(props) {
   const [patientdata, setpatientdata] = useState([])
   const [doctorid, setdoctorid] = useState()
   const [doctorname, setdoctorname] = useState()
+  const [otherdoctor, setotherdoctor] = useState()
   const [clinicid, setclinicid] = useState(clinicID)
   const [ischecked, setischecked] = useState()
   const [Dc, setDc] = useState(0)
@@ -1297,49 +1298,57 @@ function SaleEntryForm(props) {
     let mrp = [];
     let GST = [];
     let Totalamount = []
-    for (let i = 0; i < SelectedProducts.length; i++) {
-      productids.push(SelectedProducts[i].type + SelectedProducts[i].productid)
-      proquantity.push(SelectedProducts[i].qtytoSale)
-      Discount.push(SelectedProducts[i].discount)
-      discountonmrp.push(SelectedProducts[i].disccost)
-      mrp.push(SelectedProducts[i].mainmrp)
-      GST.push(SelectedProducts[i].gst)
-      Totalamount.push(SelectedProducts[i].totalamt)
-    }
-    let Data = {
-      clinic_id: clinicid,
-      doctor_id: doctorid,
-      doctor_name: doctorname,
-      patient_id: patientid,
-      pro_id: productids,
-      qty: proquantity,
-      discount: Discount,
-      disc_mrp: discountonmrp,
-      main_mrp: mrp,
-      gst: GST,
-      total_amount: Totalamount,
-      grand_total: Grandtotal,
-      appointment_id: '',
-      add_to_cart: AtC,
-      deliver: Dc,
-      address_id: addressid,
-    }
-    setload(true)
-    try {
-      await axios.post(`${url}/sale/entry/save`, Data).then((response) => {
-        setload(false)
-        props.GETSalesList()
-        props.toggle_nsef()
-        Notiflix.Notify.success(response.data.message)
-        ClearForm()
-      }).catch(function error(e) {
-        console.log(e)
+    if (doctorname !== undefined || otherdoctor !== undefined) {
+      for (let i = 0; i < SelectedProducts.length; i++) {
+        productids.push(SelectedProducts[i].type + SelectedProducts[i].productid)
+        proquantity.push(SelectedProducts[i].qtytoSale)
+        Discount.push(SelectedProducts[i].discount)
+        discountonmrp.push(SelectedProducts[i].disccost)
+        mrp.push(SelectedProducts[i].mainmrp)
+        GST.push(SelectedProducts[i].gst)
+        Totalamount.push(SelectedProducts[i].totalamt)
+      }
+      let Data = {
+        clinic_id: clinicid,
+        doctor_id: doctorid,
+        doctor_name: doctorid ? doctorname : otherdoctor,
+        patient_id: patientid,
+        pro_id: productids,
+        qty: proquantity,
+        discount: Discount,
+        disc_mrp: discountonmrp,
+        main_mrp: mrp,
+        gst: GST,
+        total_amount: Totalamount,
+        grand_total: Grandtotal,
+        appointment_id: '',
+        add_to_cart: AtC,
+        deliver: Dc,
+        address_id: addressid,
+      }
+      setload(true)
+      try {
+        await axios.post(`${url}/sale/entry/save`, Data).then((response) => {
+          setload(false)
+          props.GETSalesList()
+          props.toggle_nsef()
+          if (response.data.status == true) {
+            Notiflix.Notify.success(response.data.message)
+          } else {
+            Notiflix.Notify.warning(response.data.message)
+          }
+          ClearForm()
+        }).catch(function error(e) {
+          console.log(e)
+          Notiflix.Notify.failure(e.message)
+          setload(false)
+        })
+      } catch (e) {
         Notiflix.Notify.failure(e.message)
         setload(false)
-      })
-    } catch (e) {
-      Notiflix.Notify.failure(e.message)
-      setload(false)
+      }
+    } else {
+      Notiflix.Notify.failure('Please Choose A Doctor to further proceed the sale entry')
     }
   }
   function confirmmessage() {
@@ -1485,7 +1494,7 @@ function SaleEntryForm(props) {
         <div className="col-4">
           <label>Other Doctor</label>
           <div className="col-12">
-            <input className='col-10 form-control bg-seashell' placeholder='Other Doctors' />
+            <input className='col-10 form-control bg-seashell' placeholder='Other Doctors' value={otherdoctor ? otherdoctor : ''} onChange={(e) => { setotherdoctor(e.target.value) }} />
           </div>
         </div>
 
@@ -2997,11 +3006,14 @@ function Newpurchaseentryform(props) {
     try {
       await axios.post(`${url}/purchase/entry/save`, Data).then((response) => {
         setload(false)
-        Notiflix.Notify.success(response.data.message)
         props.GETPurchaseList()
-
         setload(false)
         props.toggle_npef()
+        if (response.data.status == true) {
+          Notiflix.Notify.success(response.data.message)
+        } else {
+          Notiflix.Notify.warning(response.data.message)
+        }
       })
     } catch (e) {
       setload(false)
@@ -4408,7 +4420,6 @@ function NewPurchaseReturnentryform(props) {
     setload(true)
     try {
       await axios.post(`${url}/purchase/return/save`, Data).then((response) => {
-        Notiflix.Notify.success(response.data.message)
         props.GETPurchaseReturns()
         setMedicineentriesArr()
         setvendorname()
@@ -4416,6 +4427,11 @@ function NewPurchaseReturnentryform(props) {
         setitemname()
         setload(false)
         props.toggle_nref()
+        if (response.data.status == true) {
+          Notiflix.Notify.success(response.data.message)
+        } else {
+          Notiflix.Notify.warning(response.data.message)
+        }
       })
     } catch (e) {
       Notiflix.Notify.warning(e.message)

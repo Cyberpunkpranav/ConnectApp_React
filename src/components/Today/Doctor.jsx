@@ -450,7 +450,7 @@ function DoctorSchedule(props) {
           <div className="col-auto m-0 p-0 align-items-center">
             <h5 className="p-0  ms-1 text-charcoal75 fw-bold my-2">Appointments</h5>
           </div>
-          <div className=" scroll scroll-y align-content-center align-items-center" style={{ minHeight: '30vh', maxHeight: '42vh', Height: '42vh' }}>
+          <div className=" scroll scroll-y align-content-center align-items-center" style={{ minHeight: '55vh', maxHeight: '55vh', Height: '55vh' }}>
             <table className="table datatable text-center">
               <thead className="p-0 m-0 px-2 bg-pearl" style={{ 'zIndex': '4' }}>
                 <tr className="p-0 m-0 position-sticky top-0">
@@ -513,28 +513,16 @@ function DoctorSchedule(props) {
                             <td className={`py-0 bg-${vitalindex === i ? 'lightyellow' : ''}`}><button className="btn p-0 m-0" onClick={() => { setvitalindex(i); OpenVitals(); GetAppointmentVitals(data.id) }}><img src={process.env.PUBLIC_URL + "/images/vitals.png"} alt="displaying_image" style={{ width: "1.5rem" }} /></button></td>
                             <td className={`py-0 bg-${billindex === i ? 'lightyellow' : ''}`}> <button className="btn p-0 m-0" onClick={() => { setbillindex(i); OpenBillForm(); }}><img src={process.env.PUBLIC_URL + "/images/bill.png"} alt="displaying_image" style={{ width: "1.8rem" }} className="me-1" /></button>  </td>
                             <td className={`py-0 bg-${paymentsindex === i ? 'lightyellow' : ''}`}><button className="btn p-0 m-0" onClick={() => { setpaymentsindex(i); OpenPaymentsForm(); }}><img src={process.env.PUBLIC_URL + "/images/rupee.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1" /></button></td>
-                            <td><div className="dropdown">
+                            <td><div className="dropdown ">
                               <button className="button button p-0 m-0 px-1 py-1 button-pearl fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" style={{ width: "1.5rem" }} />
                               </button>
-                              <ul className="dropdown-menu p-2">
-                                <li className="text-start p-0 m-0 border-bottom border-1" onClick={() => confirmmessage(data.patient.full_name, data.id)}>
-                                  <button className="btn p-0 m-0" ><img src={process.env.PUBLIC_URL + "/images/speaker.png"} alt="displaying_image" className="ms-1" style={{ width: "1.8rem" }} /> Call Patient</button>
-                                </li>
-                                <li className="text-start p-0 m-0 border-bottom border-1">
-                                  <button className="p-0 m-0 btn" onClick={() => { Generate_Bill(data.id) }}><img src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" style={{ width: "2rem" }} /> Generate Bill</button>
-                                </li>
-                                <li className="text-start p-0 m-0 border-bottom border-1">
-                                  <button className="p-0 m-0 btn" onClick={() => { Generate_Prescription(data.id) }}><img src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" style={{ width: "2rem" }} /> Generate Prescription</button>
-                                </li>
-                                <li className="text-start p-0 m-0 border-bottom border-1">
-                                  <button className="p-0 m-0 btn" onClick={() => { Confirm_For_Prescription(data.id, data.patient.phone_number) }}><img src={process.env.PUBLIC_URL + "/images/whatsapp.png"} alt="displaying_image" style={{ width: "2rem" }} /> Send on Whats App</button>
-                                </li>
-                                <li className="text-start p-0 m-0 border-bottom border-1">
-                                  <button className="p-0 m-0 btn" onClick={() => { Confirm_For_Prescription2(data.id, data.patient.phone_number) }}><img className='ms-1' src={process.env.PUBLIC_URL + "/images/message.png"} alt="displaying_image" style={{ width: "1.5rem" }} />{' '}Send on SMS</button>
-                                </li>
-
-
+                              <ul className="dropdown-menu shadow-sm p-2" style={{ '-webkit-appearance': 'none', 'appearance': 'none', width: 'max-content' }}>
+                                <li className="dropdown-item d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => confirmmessage(data.patient.full_name, data.id)}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/speaker.png"} alt="displaying_image" style={{ width: "1.8rem" }} /> Call Patient</li>
+                                <li className="dropdown-item d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { Generate_Bill(data.id) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" style={{ width: "2rem" }} /> Generate Bill</li>
+                                <li className="dropdown-item d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { Generate_Prescription(data.id) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" style={{ width: "2rem" }} /> Generate Prescription</li>
+                                <li className="dropdown-item d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { Confirm_For_Prescription(data.id, data.patient.phone_number) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/whatsapp.png"} alt="displaying_image" style={{ width: "2rem" }} /> Send on Whats App</li>
+                                <li className="dropdown-item d-flex  p-0 m-0 align-items-center" onClick={() => { Confirm_For_Prescription2(data.id, data.patient.phone_number) }}><img className='m-2 img-fluid ms-2' src={process.env.PUBLIC_URL + "/images/message.png"} alt="displaying_image" style={{ width: "1.8rem" }} />Send on SMS</li>
                               </ul>
                             </div></td>
                             {

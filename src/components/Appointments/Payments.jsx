@@ -136,15 +136,15 @@ const Payments = (props) => {
     console.log(props.appointmentdata)
     return (
         <div className='bg-seashell rounded-2'>
-            <h5 className='fs-4'>{props.patientname} Payments Section</h5>
+            <h5 className='fs-5 text-center'>{props.patientname} Payments Section</h5>
             <button className='btn-close position-absolute end-0 p-2 top-0' onClick={props.toggle_payments}></button>
             <hr />
-            <div className="row p-0 m-0 gx-2 justify-content-center">
+            <div className="d-flex justify-content-center p-0 m-0 gx-2 mt-3">
                 {
                     blocks.map((Data, i) => (
-                        <div className="col-6 col-lg-4 col-md-6 col-xl-4 col-sm-6">
-                            <button className={`button button-${i === blocksindex ? 'charcoal' : 'seashell'} border border-dark`} onClick={() => { setblocksindex(i) }}>{Data}</button>
-                        </div>
+                       
+                            <button className={`button button-${i === blocksindex ? 'charcoal' : 'seashell'} border border-dark rounded-0`} onClick={() => { setblocksindex(i) }}>{Data}</button>
+                    
                     ))
                 }
 
