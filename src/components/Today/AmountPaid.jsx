@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-
+import '../../css/dashboard.css'
 const AmountPaid = (props) => {
 
     const [totalAmount, setTotalAmount] = useState(0)

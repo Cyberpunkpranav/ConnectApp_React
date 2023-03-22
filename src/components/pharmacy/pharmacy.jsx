@@ -31,15 +31,15 @@ function Salesection(props) {
   return (
     <>
 
-      <section className='purchasesection pt-1'>
+      <section className='salesection pt-1'>
         <div className="container-fluid p-0 m-0">
           <div className="row gx-3 p-0 m-0">
-            <div className="col-10  ">
+            <div className="col-10">
               <div className='row'>
                 {
                   first.map((e, i) => {
                     return (
-                      <div className="col-auto">
+                      <div className="col-auto salebuttons">
                         <button className={`btn btn-sm px-4 rounded-5 text-${i === second ? "light" : "dark"} bg-${i === second ? "charcoal" : "seashell"}`} onClick={(a) => setSecond(i)} >{e}</button>
                       </div>
                     )
@@ -54,7 +54,7 @@ function Salesection(props) {
       </section>
       <section className="tablesrender position-relative">
         <div className='container-fluid p-0 m-0 pt-3'>
-          <div className="scroll scroll-y">
+          <div className="">
             {_selectedScreen(second)}
           </div>
         </div>
@@ -281,28 +281,35 @@ function Saleentrysection(props) {
   console.log(saleentryarr, pages)
   return (
     <>
-      <button className="button addentrypurchase button-charcoal position-absolute" onClick={toggle_nsef}><img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt='displaying_image' className="img-fluid" style={{ width: `1.5rem` }} />Entry Sale</button>
-      <div className="row p-0 m-0 justify-content-lg-between justify-content-center">
-        <div className="col-2 col-md-2 col-lg-2 align-self-center text-center text-charcoal fw-bolder fs-6">
-          Sale Entry <span className='text-burntumber border-burntumber px-1 rounded-2'>{pagecount}</span>
+      <button className="button addentrypurchase button-charcoal position-absolute" onClick={toggle_nsef}>
+        <img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt='displaying_image' className="img-fluid" style={{ width: `1.5rem` }} />Entry Sale</button>
+      <div className="row p-0 m-0 justify-content-lg-between justify-content-md-around justify-content-center text-center">
+        <div className="col-lg-3 col-auto text-center ">
+          <button type='button' className="btn p-0 heading text-charcoal fw-bolder position-relative" style={{ width: 'fit-content' }}>
+            Sale Entry   <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-burntumber">
+              {pagecount}
+              <span class="visually-hidden">unread messages</span>
+            </span>
+          </button>
         </div>
-        <div className="col-auto align-self-center">
-          <div className="row border-burntumber fw-bolder rounded-2 text-center justify-content-center ">
+
+        <div className="form-control w-50  border-0 col-auto algin-middle">
+          <div className="row p-0 m-0 border-burntumber fw-bolder rounded-2 text-center justify-content-end algin-middle">
             {/* <div className="col-4 bg-pearl rounded-2">
               <select className='p-0 m-0 bg-pearl border-0 text-burntumber fw-bolder' value={channel ? channel : ''} onChange={(e) => { setchannel(e.target.value) }}>
                 <option className='border-0 text-burntumber fw-bolder' value='1'>Pharmacy</option>
                 <option className='border-0 text-burntumber fw-bolder' value='2'>Consumables</option>
               </select>
             </div> */}
-            <div className="col-6 text-burntumber fw-bolder bg-pearl rounded-2">
-              <input type='date' className='p-0 m-0 border-0 bg-pearl text-burntumber fw-bolder ' value={fromdate ? fromdate : ''} onChange={(e) => { setfromdate(e.target.value) }} />
+            <div className="col-6 p-0 m-0 ps-1 text-burntumber fw-bolder bg-pearl  rounded-2 algin-middle">
+              <input type='date' placeholder='fromdate' className='form-control p-0 m-0 border-0 bg-pearl text-burntumber text-center fw-bolder ' value={fromdate ? fromdate : currentDate ? currentDate : ''} onChange={(e) => { setfromdate(e.target.value) }} />
             </div>
-            <div className="col-6 text-burntumber fw-bolder bg-pearl rounded-2">
-              <input type='date' className='p-0 m-0 border-0 bg-pearl text-burntumber fw-bolder ' value={todate ? todate : ''} onChange={(e) => { settodate(e.target.value) }} />
+            <div className="col-6 p-0 m-0 pe-1 text-burntumber fw-bolder bg-pearl rounded-2 align-middle">
+              <input type='date' className='form-control p-0 m-0 border-0 bg-pearl text-burntumber text-center fw-bolder ' value={todate ? todate : currentDate ? currentDate : ''} onChange={(e) => { settodate(e.target.value) }} />
             </div>
           </div>
         </div>
-        <div className="col-2 col-md-2 col-lg-2 align-self-center">
+        <div className="col-1 export col-md-2 col-lg-2 align-self-center text-center me-3">
           <ExportSaleEntry saleentryarr={saleentryarrforExcel} fromdate={reversefunction(fromdate)} todate={reversefunction(todate)} />
         </div>
       </div>
@@ -324,15 +331,14 @@ function Saleentrysection(props) {
           </thead>
           {
             Loading ? (
-              <body className=' text-center' style={{ minHeight: '55vh', height: '55vh' }}>
+              <tbody className='text-center' style={{ minHeight: '55vh', height: '55vh' }}>
                 <tr className='position-absolute border-0 start-0 end-0 px-5'>
-                  <div class="d-flex align-items-center">
-                    <strong className='fs-5'>Getting Details please be Patient ...</strong>
-                    <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
+                  <div class="d-flex align-items-center spinner">
+                    <strong className='' style={{ fontSize: '1rem' }}>Getting Details please be Patient ...</strong>
+                    <div className="spinner-border ms-auto" role="status" aria-hidden="true"></div>
                   </div>
                 </tr>
-
-              </body>
+              </tbody>
 
             ) : (
               saleentryarr && saleentryarr.length != 0 ? (
@@ -405,11 +411,11 @@ function Saleentrysection(props) {
                   }
                 </tbody>
               ) : (
-                <body className='text-center p-0 m-0' style={{ minHeight: '55vh', maxHeight: '55vh' }}>
+                <tbody className='text-center p-0 m-0' style={{ minHeight: '55vh', maxHeight: '55vh' }}>
                   <div className='position-absolute border-0 start-0 end-0 mx-3 p-2'>
                     <strong className='text-charcoal fw-bolder text-center'>No Sale Entries</strong>
                   </div>
-                </body>
+                </tbody>
               )
             )
           }
@@ -441,19 +447,19 @@ function Saleentrysection(props) {
         < ReactPaginate
           previousLabel={'Previous'}
           nextLabel={'Next'}
-          breakLabel={'. . .'}
+          breakLabel={'.'}
           pageCount={pages}
           marginPagesDisplayed={3}
           pageRangeDisplayed={2}
           onPageChange={GETSalesList}
-          containerClassName={'pagination'}
+          containerClassName={'pagination scroll align-self-center align-items-center'}
           pageClassName={'page-item text-charcoal'}
           pageLinkClassName={'page-link text-decoration-none text-charcoal border-charcoal rounded-2 mx-1'}
           previousClassName={'btn button-charcoal-outline me-2'}
           previousLinkClassName={'text-decoration-none text-charcoal'}
           nextClassName={'btn button-charcoal-outline ms-2'}
           nextLinkClassName={'text-decoration-none text-charcoal'}
-          breakClassName={'mx-2 text-charcoal fw-bold fs-4'}
+          breakClassName={'d-flex mx-2 text-charcoal fw-bold fs-4'}
           breakLinkClassName={'text-decoration-none text-charcoal'}
           activeClassName={'active '}
         />
@@ -4817,7 +4823,7 @@ function Stockvaccinesection() {
       } else {
         for (let j = 0; j < vaccineslist[i].stock_info.length; j++) {
           totalcurrentstockarr.push(vaccineslist[i].stock_info[j].current_stock)
-          // let ExpireDays = Get_Diff(vaccineslist[i].stock_info[j].expiry_date)
+          let ExpireDays = Get_Diff(vaccineslist[i].stock_info[j].expiry_date)
           let vaccineobj = {
             id: vaccineslist[i].id,
             name: vaccineslist[i].name,
@@ -4847,7 +4853,7 @@ function Stockvaccinesection() {
             trade_discount: vaccineslist[i].stock_info[j].trade_discount,
             total_amount: vaccineslist[i].stock_info[j].total_amount,
             totalstock: totalcurrentstockarr,
-            // Days_to_expire: ExpireDays
+            Days_to_expire: ExpireDays
 
           }
           if (vaccinearr == undefined && vaccinearr.length == 0) {
@@ -4932,15 +4938,16 @@ function Stockvaccinesection() {
     }
 
   }
-  // const Get_Diff = (expiry) => {
-  //   // let currentdate = reversefunction(Todaydate).replaceAll('-', '/')
-  //   let expirydate = reversefunction2(expiry)
-  //   var date1 = new Date()
-  //   var date2 = new Date(expirydate)
-  //   const diffTime = Math.abs(date2 - date1);
-  //   const diffDays = Math.ceil(Number(diffTime) / (1000 * 60 * 60 * 24));
-  //   return diffDays
-  // }
+  const Get_Diff = (expiry) => {
+    // let currentdate = reversefunction(Todaydate).replaceAll('-', '/')
+    let expirydate = reversefunction2(expiry)
+    var date1 = new Date()
+    var date2 = new Date(expirydate)
+    const diffTime = Math.abs(date2 - date1);
+    let diffDays = Math.ceil(Number(diffTime) / (1000 * 60 * 60 * 24));
+    diffDays = (Number(diffDays) / 30).toFixed(1)
+    return diffDays
+  }
 
   useEffect(() => {
     GetPages()
@@ -4975,7 +4982,7 @@ function Stockvaccinesection() {
               <th className='text-charcoal75 fw-bold'>Cost/Unit</th>
               <th className='text-charcoal75 fw-bold'>B.Stock</th>
               <th className='text-charcoal75 fw-bold'>T.Stock</th>
-              {/* <th className='text-charcoal75 fw-bold text-center'>Expired in</th> */}
+              <th className='text-charcoal75 fw-bold text-center'>Expired in</th>
               <th className='text-charcoal75 fw-bold text-center'>Stock Status</th>
               <th className='text-charcoal75 fw-bold text-center'></th>
               <th className='text-charcoal75 fw-bold text-center'>more info</th>
@@ -5019,7 +5026,7 @@ function Stockvaccinesection() {
                         <td className=' text-charcoal fw-bold'>{data.cost}</td>
                         <td className=' text-charcoal fw-bold'>{data.current_stock}</td>
                         <td className=' text-charcoal fw-bold'>{CalculateTStock(data.totalstock)}</td>
-                        {/* <td className={`text-${data.Days_to_expire <= 60 ? 'burntumber' : 'charcoal'} fw-bold text-center`}>{data.Days_to_expire} Days</td> */}
+                        <td className={`text-${data.Days_to_expire <= 2 ? 'burntumber' : 'charcoal'} fw-bold text-center`}>{data.Days_to_expire} Months</td>
                         <td className=' text-charcoal fw-bold text-center'>
                           {
                             GetStatus(data.totalstock, data.alert_stock_count) == 1 ? (
@@ -5164,11 +5171,8 @@ function Stockmedicinesection() {
           } else {
             totalcurrentstockarr = []
           }
-          // if (medicineslist[i].stock_info[j].expiry_date) {
-          //   ExpireDays = Get_Diff(medicineslist[i].stock_info[j].expiry_date)
-          // } else {
-          //   ExpireDays = ''
-          // }
+          ExpireDays = Get_Diff(medicineslist[i].stock_info[j].expiry_date)
+
           let medicineobj = {
             id: medicineslist[i].id ? medicineslist[i].id : '',
             name: medicineslist[i].name ? medicineslist[i].name : '',
@@ -5218,28 +5222,29 @@ function Stockmedicinesection() {
     }
 
   }
-  // const reversefunction2 = (date) => {
-  //   if (date) {
-  //     let newdate = []
-  //     let DATE = ''
-  //     date = date.split("-").reverse()
-  //     newdate.push(date[1])
-  //     newdate.push(date[0])
-  //     newdate.push(date[2])
-  //     DATE = newdate[0] + '/' + newdate[1] + '/' + newdate[2]
-  //     return DATE
-  //   }
+  const reversefunction2 = (date) => {
+    if (date) {
+      let newdate = []
+      let DATE = ''
+      date = date.split("-").reverse()
+      newdate.push(date[1])
+      newdate.push(date[0])
+      newdate.push(date[2])
+      DATE = newdate[0] + '/' + newdate[1] + '/' + newdate[2]
+      return DATE
+    }
 
-  // }
-  // const Get_Diff = (expiry) => {
-  //   // let currentdate = reversefunction(Todaydate).replaceAll('-', '/')
-  //   let expirydate = reversefunction2(expiry)
-  //   var date1 = new Date()
-  //   var date2 = new Date(expirydate)
-  //   const diffTime = Math.abs(date2 - date1);
-  //   const diffDays = Math.ceil(Number(diffTime) / (1000 * 60 * 60 * 24));
-  //   return diffDays
-  // }
+  }
+  const Get_Diff = (expiry) => {
+    // let currentdate = reversefunction(Todaydate).replaceAll('-', '/')
+    let expirydate = reversefunction2(expiry)
+    var date1 = new Date()
+    var date2 = new Date(expirydate)
+    const diffTime = Math.abs(date2 - date1);
+    const diffDays = Math.ceil(Number(diffTime) / (1000 * 60 * 60 * 24));
+    diffDays = (Number(diffDays) / 30).toFixed(1)
+    return diffDays
+  }
   const GetStatus = (totalstockarr, alertstockcount) => {
     if (totalstockarr && alertstockcount) {
       let total = 0
@@ -5305,7 +5310,7 @@ function Stockmedicinesection() {
               <th className='text-charcoal75 fw-bold'>Cost/Unit</th>
               <th className='text-charcoal75 fw-bold'>B.Stock</th>
               <th className='text-charcoal75 fw-bold'>T.Stock</th>
-              {/* <th className='text-charcoal75 fw-bold text-center'>Expired in</th> */}
+              <th className='text-charcoal75 fw-bold text-center'>Expired in</th>
               <th className='text-charcoal75 fw-bold text-center'>Stock Status</th>
               <th className='text-charcoal75 fw-bold text-center'></th>
               <th className='text-charcoal75 fw-bold text-center'>more info</th>
@@ -5348,7 +5353,7 @@ function Stockmedicinesection() {
                         <td className=' text-charcoal fw-bold'>{data.cost}</td>
                         <td className=' text-charcoal fw-bold'>{data.current_stock}</td>
                         <td className=' text-charcoal fw-bold'>{data.totalstock ? CalculateTStock(data.totalstock) : ''}</td>
-                        {/* <td className={`text-${data.Days_to_expire ? data.Days_to_expire :'' <= 60 ? 'burntumber' : 'charcoal'} fw-bold text-center`}>{data.Days_to_expire? data.Days_to_expire:''} Days</td> */}
+                        <td className={`text-${data.Days_to_expire ? data.Days_to_expire : '' <= 2 ? 'burntumber' : 'charcoal'} fw-bold text-center`}>{data.Days_to_expire ? data.Days_to_expire : ''} Days</td>
                         <td className=' text-charcoal fw-bold text-center'>
                           {
                             GetStatus(data.totalstock, data.alert_stock_count) == 1 ? (

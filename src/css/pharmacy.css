@@ -27,6 +27,9 @@ html {
     background-color: var(--seashell);
     margin-top: 0.25rem;
 }
+.pharmacysection .fs-3{
+font-size: 1rem !important ;
+}
 
 /* .tablesrender .datatable th ,h3{
     color:gray;
@@ -120,3 +123,59 @@ html {
 .newpurchaseentrysection {
     top: -7.15rem;
 }
+ @media  (max-width:418px) {
+    .pharmacysection .gap-3{
+        gap: 0.3rem !important;
+    }
+    .pharmacysection .button{
+        padding:0.275rem 0.75rem !important;
+        font-size:0.8rem !important;
+    }
+    .salesection .salebuttons .btn{
+        padding:0.275rem 0.75rem !important;
+        font-size:0.8rem !important;
+    }
+    .tablesrender .button{
+        padding:0.275rem 0.75rem !important;
+        font-size:0.8rem !important;
+    }
+     .tablesrender .addentrypurchase{
+        right:1rem;
+        top:-2rem;
+    }
+    .addentrypurchase img{
+        width:1.2rem !important;
+    }
+    .tablesrender .row .heading{
+        font-size: 0.8rem;
+        padding:0px;
+        margin-right: 0.5rem;
+    }
+    .tablesrender .row input{
+        padding:0;
+        margin:0;
+        font-size: 0.6rem;
+        text-align: center;
+        align-items: center;
+        padding:0px;
+    }
+    .tablesrender .table{
+        font-size: 0.7rem !important;
+    }
+    .tablesrender .table .spinner{
+        font-size: 0.7rem !important;
+    }
+    .tablesrender .table .spinner .spinner-border{
+        font-size: 0.7rem !important;
+    }
+    .tablesrender .scroll-y{
+        height:52vh !important;
+        min-height:52vh !important;
+        max-height: 52vh !important;
+    }
+    .tablesrender .export .button{
+        width: min-content !important;
+        font-size: 0.7rem !important;
+        padding:0.1rem 0.1rem !important;
+    }
+ }

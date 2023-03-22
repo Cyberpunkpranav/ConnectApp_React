@@ -426,7 +426,7 @@ function DoctorSchedule(props) {
                       <button className={`button-sm button-${timeindex == i ? 'charcoal' : 'charcoal-outline'} m-1`} onClick={(e) => { openAddApppointmentform(); settimeindex(i) }} key={i}>{tConvert(data[0])}</button>
                       {
                         timeindex == i ? (
-                          <section className={`d-${timeindex == i ? addappointmentform : 'none'} col-lg-8 col-md-8 col-sm-8 col-6 col-xl-6 shadow appointmentinfosection position-absolute m-auto start-0 end-0 bg-seashell rounded-4 border border-1`} style={{ zIndex: 4, top: '-1rem' }}>
+                          <section className={`d-${timeindex == i ? addappointmentform : 'none'} col-lg-8 col-md-8 col-sm-8 col-12 col-xl-6 shadow quickappointment position-absolute m-auto start-0 end-0 bg-seashell rounded-4 border border-1`} style={{ zIndex: 4, top: '-1rem' }}>
                             <SelectedTimeAppointment fetchapi={props.fetchapi} closeAddAppointmentform={closeAddAppointmentform} DocClinic={props.DocClinic} DoctorID={props.DoctorID} DoctorName={props.DoctorName} timeindex={timeindex} selectedtime={data[0]} selectedtimeID={data[2]} />
                           </section>
                         ) : (
@@ -450,7 +450,7 @@ function DoctorSchedule(props) {
           <div className="col-auto m-0 p-0 align-items-center">
             <h5 className="p-0  ms-1 text-charcoal75 fw-bold my-2">Appointments</h5>
           </div>
-          <div className=" scroll scroll-y align-content-center align-items-center" style={{ minHeight: '55vh', maxHeight: '55vh', Height: '55vh' }}>
+          <div className=" scroll scroll-y align-content-center align-items-center" style={{ minHeight: '50vh', maxHeight: '50vh', Height: '50vh' }}>
             <table className="table datatable text-center">
               <thead className="p-0 m-0 px-2 bg-pearl" style={{ 'zIndex': '4' }}>
                 <tr className="p-0 m-0 position-sticky top-0">
@@ -514,7 +514,7 @@ function DoctorSchedule(props) {
                             <td className={`py-0 bg-${billindex === i ? 'lightyellow' : ''}`}> <button className="btn p-0 m-0" onClick={() => { setbillindex(i); OpenBillForm(); }}><img src={process.env.PUBLIC_URL + "/images/bill.png"} alt="displaying_image" style={{ width: "1.8rem" }} className="me-1" /></button>  </td>
                             <td className={`py-0 bg-${paymentsindex === i ? 'lightyellow' : ''}`}><button className="btn p-0 m-0" onClick={() => { setpaymentsindex(i); OpenPaymentsForm(); }}><img src={process.env.PUBLIC_URL + "/images/rupee.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1" /></button></td>
                             <td><div className="dropdown ">
-                              <button className="button button p-0 m-0 px-1 py-1 button-pearl fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                              <button className="button button p-0 m-0 px-1 py-1 bg-transparent border-0 p-0  fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" style={{ width: "1.5rem" }} />
                               </button>
                               <ul className="dropdown-menu shadow-sm p-2" style={{ '-webkit-appearance': 'none', 'appearance': 'none', width: 'max-content' }}>
@@ -527,25 +527,25 @@ function DoctorSchedule(props) {
                             </div></td>
                             {
                               tableindex === i ? (
-                                <td className={`updateappointment border border-1 rounded-3 bg-seashell mt-2 start-0 end-0 top-0 col-lg-8 col-md-10 col-sm-10 col-10 col-xl-5 d-${tableindex == i ? appointmentform : 'none'} position-absolute`}>
+                                <td className={`updateappointment shadow-sm border border-1 rounded-3 bg-seashell mt-2 start-0 end-0 top-0 col-lg-8 col-md-10 col-sm-12 col-12 col-xl-5 d-${tableindex == i ? appointmentform : 'none'} position-absolute`}>
                                   <UpdateAppointment fetchapi={props.fetchapi} fetchallAppointmentslist={props.fetchallAppointmentslist} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} patientid={data.patient != null && data.patient.id != null ? data.patient.id : ""} appointmentid={data.id} addappointmentform={addappointmentform} closeappointmentform={closeappointmentform} doctorid={props.doctorid} appointmentdoctorid={data.doctor.id} appointmentdate={data.appointment_date} appointmenttime={tConvert(data.timeslot.time_from)} /></td>
                               ) : (<></>)
                             }
                             {
                               vitalindex === i ? (
-                                <td className={`vitals bg-${vitalindex === i ? 'lightred' : ''} col-lg-7 col-md-8 col-sm-12 col-12 col-xl-5 position-absolute border border-1 shadow rounded-2 d-${vitalindex == i ? vitalsform : 'none'}`} style={{ zIndex: '3010' }}>
+                                <td className={`vitals bg-${vitalindex === i ? 'lightred' : ''} col-lg-7 col-md-8 col-sm-12 col-12 col-xl-5 position-absolute border border-1 shadow-sm rounded-2 d-${vitalindex == i ? vitalsform : 'none'}`} style={{ zIndex: '3010' }}>
                                   <Vitalsoperation GetAppointmentVitals={GetAppointmentVitals} CloseVitals={CloseVitals} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} appointmentid={data.id} appointmentvitalslist={appointmentvitalslist} loadvitals={loadvitals} patientid={data.patient && data.patient.id != null ? data.patient.id : ""} /></td>
                               ) : (<></>)
                             }
                             {
                               billindex == i ? (
-                                <td className={`bill d-${billindex == i ? billform : 'none'} col-lg-8 p-0 m-0 col-md-10 start-0 mx-auto mt-2 end-0 top-0 col-sm-12 col-12 col-xl-6 border border-1 rounded-3 shadow position-absolute`}>
+                                <td className={`bill d-${billindex == i ? billform : 'none'} col-lg-8 p-0 m-0 col-md-10 start-0 mx-auto mt-2 end-0 top-0 col-sm-12 col-12 col-xl-6 border border-1 rounded-3 shadow-sm position-absolute`}>
                                   <Bill fetchapi={props.fetchapi} CloseBillForm={CloseBillForm} patientid={data.patient && data.patient.id != null ? data.patient.id : ""} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} Appointmentlist={Appointmentlist} setsingleload={setsingleload} isLoading={isLoading} appointmentdata={appointmentdata} appointmentid={data.id} doctorfee={data.doctor.consulationFee} /></td>
                               ) : (<></>)
                             }
                             {
                               paymentsindex === i ? (
-                                <td className={`payments start-0 bg-seashell end-0 top-0 border border-1 rounded-3 col-lg-6 col-md-8 col-sm-10 col-10 mt-2 col-xl-8 position-absolute d-${paymentsindex == i ? paymentsform : 'none'}`}>
+                                <td className={`payments start-0 bg-seashell end-0 shadow-sm top-0 border border-1 rounded-3 col-lg-6 col-md-8 col-sm-10 col-10 mt-2 col-xl-8 position-absolute d-${paymentsindex == i ? paymentsform : 'none'}`}>
                                   <Payments ClosePaymentsForm={ClosePaymentsForm} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} appointmentid={data.id} patientid={data.patient && data.patient.id != null ? data.patient.id : ""} Appointmentlist={Appointmentlist} setsingleload={setsingleload} isLoading={isLoading} appointmentdata={appointmentdata} /></td>
                               ) : (<></>)
                             }
@@ -682,7 +682,7 @@ function Timecard(props) {
   }, [clinicid])
   // console.log(doctime, clinics, rooms, clinicid)
   return (
-    <div className="scroll align-items-center align-content-center my-auto mb-2">
+    <div className="scroll room_timecards align-items-center align-content-center my-auto mb-2">
       <div id="cardslot" className={`d-${isLoading ? 'none' : 'inline-flex'} m-1`}>
         <div className="card card1 p-0 m-0 text-start" id="card1" >
           <div className="card-body p-0 m-0">
@@ -702,7 +702,7 @@ function Timecard(props) {
                 startload ? (
                   <div className="text-charcoal spinner-border spinner-border-sm me-2 " role="status" aria-hidden="true" ></div>
                 ) : (
-                  <button className="btn p-0 m-0 mx-2" onClick={starttimeslot}><img src={process.env.PUBLIC_URL + 'images/play.png'} style={{ width: '1.8rem' }} /></button>
+                  <button className="btn playbutton p-0 m-0 mx-2" onClick={starttimeslot}><img src={process.env.PUBLIC_URL + 'images/play.png'} style={{ width: '1.8rem' }} /></button>
                 )
               }
 
@@ -737,18 +737,18 @@ function Timecard(props) {
                         <>
                           <div className="d-flex p-0 m-0 justify-content-center">
 
-                            <button type="text" className="btn p-0 m-0 float-end text-charcoal text-center">{(data.login_time) ? tConvert(data.login_time) : ''}</button>
+                            <button type="text" className="btn fromtime p-0 m-0 float-end text-charcoal text-center">{(data.login_time) ? tConvert(data.login_time) : ''}</button>
                             <div className='vr h-50 mx-2 align-self-center' style={{ padding: '0.9px' }}></div>
-                            <button type="text" className="btn p-0 m-0 text-charcoal float-end text-center">{(data.logout_time) ? tConvert(data.logout_time) : '__'}</button>
+                            <button type="text" className="btn totime p-0 m-0 text-charcoal float-end text-center">{(data.logout_time) ? tConvert(data.logout_time) : '__'}</button>
 
                           </div>
 
                           <div className="d-flex mx-2 ">
                             {
                               data.logout_time ? (
-                                <div id="totalhrs" className="btn p-0 m-0 text-charcoal fw-bold text-center me-3" defaultValue="00">{data.logout_time ? diff(data.login_time, data.logout_time) : ''}</div>
+                                <div id="totalhrs" className="btn p-0 m-0 timediff text-charcoal fw-bold text-center me-3" defaultValue="00">{data.logout_time ? diff(data.login_time, data.logout_time) : ''}</div>
                               ) : (
-                                <button className="btn p-0 m-0" value={data.id} onClick={(e) => { endtimeslot(data); setcardindex(i) }}><img src={process.env.PUBLIC_URL + 'images/pause.png'} onClick={(e) => { endtimeslot(e); setcardindex(i) }} style={{ width: '1.8rem' }} /></button>
+                                <button className="btn p-0 m-0 pausebutton" value={data.id} onClick={(e) => { endtimeslot(data); setcardindex(i) }}><img src={process.env.PUBLIC_URL + 'images/pause.png'} onClick={(e) => { endtimeslot(e); setcardindex(i) }} style={{ width: '1.8rem' }} /></button>
 
                               )
                             }

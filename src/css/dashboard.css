@@ -357,6 +357,9 @@ body {
     box-shadow: 0px 0px 0px 1600px#22202370;
     z-index: 2000;
 }
+.doctorscheduledata h5{
+    font-size:0.8rem ;
+}
 
 .doctorinfosection .specialitybtns {
     background-color: var(--Raffia);
@@ -698,6 +701,153 @@ body {
 
     .scroll::-webkit-scrollbar {
         height: 0.2rem;
+    }
+}
+
+@media  (max-width:418px){
+    .navsection .dropdown .button{
+        font-size:0.8rem;
+    }
+    .doctorsection .gap-3{
+        gap: 0.3rem !important;
+    }
+    .doctorsection .button{
+        padding:0.275rem 0.75rem !important;
+        font-size:0.8rem !important;
+    }
+    .patientsection .loader .button{
+        font-size:0.8rem !important; 
+    }
+    .patientsection .loader .spinner-grow{
+        font-size:0.8rem !important;
+        width:1rem !important;
+        height:1rem !important;
+    }
+    .patientsection .livetime{
+        font-size:1rem !important;
+    }
+    .patientsection .livetime2{
+        font-size:1rem !important;
+    }
+    .room_timecards p{
+        font-size:0.8rem !important;
+    }
+    .room_timecards select{
+        font-size:0.8rem !important;
+        padding:0.2rem 0.6rem !important;
+    }
+    .room_timecards .spinner-border{
+        font-size: 0.7rem !important;
+    }
+    .room_timecards .playbutton img{
+        width:1.3rem !important;
+    }
+    .room_timecards .pausebutton img{
+        width:1.3rem !important;
+    }
+    .room_timecards .fromtime{
+        font-size:0.8rem !important;
+    }
+    .room_timecards .totime{
+        font-size:0.8rem !important;
+    }
+    .room_timecards .timediff{
+        font-size:0.8rem !important;
+    }
+    .timeslotsection h5{
+        font-size:0.9rem !important;
+    }
+    .timeslotsection img{
+        width:1.3rem !important;
+    }
+    .timeslots .button-sm{
+        font-size:0.7rem !important;
+        padding:0.2rem 0.6rem !important;
+    }
+    .allappointmentsection .btn-sm{
+        font-size:0.7rem !important;
+        padding:0.2rem 0.6rem !important; 
+    }
+    .allappointmentsection h5{
+        font-size:0.9rem !important;
+    }
+
+    .allappointmentsection img{
+        width:1.2rem !important;
+    }
+
+    .allappointmentsection .table{
+        font-size: 0.7rem !important;
+    }
+
+    .allappointmentsection .scroll-y{
+        height:52vh !important;
+        min-height:52vh !important;
+        max-height: 52vh !important;
+    }
+     .quickappointment .clinics{
+        font-size: 0.7rem !important;
+     }
+     .quickappointment .clinics img{
+        width: 0.7rem !important;
+        align-items: center;
+     }
+     .quickappointment input{
+        padding:0.2rem 0.4rem !important; 
+        font-size: 0.7rem !important;
+     }
+     .quickappointment p{
+        font-size: 0.7rem !important;
+     }
+     .quickappointment .searchresult{
+        font-size: 0.7rem !important;
+     }
+     .quickappointment .selecteds .button{
+        padding:0.2rem 0.4rem !important; 
+        font-size: 0.6rem !important;
+     }
+     .quickappointment .spinner-border{
+        font-size: 0.7rem !important;
+    }
+    .quickappointment .donebutton .button{
+        padding:0.2rem 0.4rem !important; 
+        font-size: 0.7rem !important;
+    }
+    .quickappointment .btn-close{
+        width:1rem;
+        padding:0px;
+    }
+    .updateappointment .clinics{
+        font-size: 0.7rem !important;
+     }
+     .updateappointment .clinics img{
+        width: 0.7rem !important;
+        align-items: center;
+     }
+     .updateappointment select{
+        padding:0.2rem 0.4rem !important; 
+        font-size: 0.7rem !important;
+     }
+     .updateappointment input{
+        font-size: 0.6rem !important;
+        padding:0.2rem 0.4rem !important; 
+     }
+     .updateappointment .searchresult{
+        font-size: 0.7rem !important;
+     }
+     .updateappointment .button-sm{
+        padding:0.2rem 0.4rem !important; 
+        font-size: 0.6rem !important;
+     }
+     .updateappointment .spinner-border{
+        font-size: 0.7rem !important;
+    }
+    .updateappointment .selectedtime .button{
+        font-size: 0.7rem !important;
+        padding:0.2rem 0.4rem !important; 
+    }
+    .updateappointment .btn{
+        font-size: 0.7rem !important;
     }
 }
 

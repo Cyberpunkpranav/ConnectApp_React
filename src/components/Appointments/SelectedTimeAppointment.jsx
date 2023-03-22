@@ -4,7 +4,7 @@ import { useContext } from 'react'
 import { DoctorsList, URL, Doctorapi, TodayDate, Clinic } from '../../index'
 import Notiflix from 'notiflix';
 import '../../css/bootstrap.css'
-
+import '../../css/dashboard.css'
 const SelectedTimeAppointment = (props) => {
     //Global Variable
     const url = useContext(URL);
@@ -79,12 +79,13 @@ const SelectedTimeAppointment = (props) => {
     return (
         <>
             <h5 className="text-center m-0 p-0 mt-2">Quick Appointment  at <span className=' text-charcoal fw-bold border-0'>{tConvert(props.selectedtime)}</span></h5>
-            <button type="button" className="btn-close closebtn position-absolute" aria-label="Close" onClick={(e) => { props.closeAddAppointmentform() }} ></button>
+            <button type="button" className="btn-close closebtn position-absolute" disabled={load == true ? true:false} aria-label="Close" onClick={(e) => { props.closeAddAppointmentform() }} ></button>
             <hr className='p-0 m-0 mb-1' />
-            <div className=" text-start ms-3 ">
+            <div className=" text-start ms-3 clinics align-self-center mb-2 ">
                 {
                     cliniclist.map((data, i) => (
-                        <label className={`d-${clinicID == data.id ? 'block' : 'none'}`}><img src={process.env.PUBLIC_URL + '/images/location.png'} className='mb-2' style={{ width: '1.3rem' }} /> {data.title} {data.address}</label>
+                        <label className={`d-${clinicID == data.id ? 'block' : 'none'}`}>
+                            <img src={process.env.PUBLIC_URL + '/images/location.png'} className=' align-self-center ' style={{ width: '1.3rem' }} /> {data.title} {data.address}</label>
 
                     ))
                 }
@@ -100,7 +101,7 @@ const SelectedTimeAppointment = (props) => {
                                 searchlist.length == 0 ? (
                                     <p className="text-burntumber col-12 p-0 m-0 bg-pearl shadow rounded mt-1 p-2">Patient not found</p>
                                 ) : (
-                                    <div className='mt-1 shadow rounded-2 bg-pearl border border-1 col-12 '>
+                                    <div className='mt-1 searchresult shadow rounded-2 bg-pearl border border-1 col-12 '>
                                         {
                                             searchlist.map((data, i) => (
                                                 <div style={{ cursor: 'pointer' }} className={`col-12 bg-${i % 2 == 0 ? 'lightred50' : 'pearl'} px-2 text-charcoal text-start ps-2 border-bottom align-self-center`} name={data.id} value={data.full_name} onClick={() => { get_value(data) }}>{data.full_name} {data.phone_number}</div>
@@ -114,7 +115,7 @@ const SelectedTimeAppointment = (props) => {
                         }
                     </div>
                 </div>
-                <div className="col-auto">
+                <div className="col-auto selecteds">
                     <div className="d-flex p-0 m-0 text-start justify-content-around">
                         <div className='button button-charcoal50-outline'>{props.DoctorID}. Dr.{props.DoctorName}</div>
                         <div className="button button-charcoal50-outline ms-3" >{APIDate}</div>
@@ -134,7 +135,7 @@ const SelectedTimeAppointment = (props) => {
                         </div>
                     </div>
                 ) : (
-                    <div className="col-6 py-2 pb-2 m-auto text-center">
+                    <div className="col-6 donebutton py-2 pb-2 m-auto text-center">
                         <button className="button button-charcoal" onClick={BookAppointment}> Done </button>
                     </div>
 

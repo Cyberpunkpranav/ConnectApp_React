@@ -20,12 +20,13 @@ import Notiflix from 'notiflix';
 //Context Apis
 const TodayDate = createContext();
 const URL = createContext();
-const DoctorsList = createContext();
+const DoctorsList = createContext();  
 const Doctorapi = createContext();
 const TodayDocs = createContext();
 const Vitals = createContext();
 const Clinic = createContext();
 const Permissions = createContext()
+
 function Connectapp(props) {
   const d = new Date();
   const date = d.getDate() < 10 ? '0' + d.getDate() : d.getDate();

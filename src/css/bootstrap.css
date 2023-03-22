@@ -400,3 +400,10 @@ background: none;
         background-size:contain;
     }
 }
+@media  (max-width:418px) {
+    .pagination .btn{
+        padding:0.275rem 0.75rem !important;
+        font-size:0.8rem !important;
+    }
+
+}

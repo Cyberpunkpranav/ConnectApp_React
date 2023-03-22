@@ -29,7 +29,7 @@ import "./css/pharmacy.css";
 import "./css/bootstrap.css";
 import './css/patient.css';
 import './css/Doctors.css';
-
+import './css/livetime.css';
 import '../node_modules/bootstrap/js/dist/dropdown';
 // import '../node_modules/bootstrap/js/dist/collapse'
 // import "../node_modules/jquery/dist/jquery.min.js";
@@ -202,18 +202,18 @@ function Navbar(props) {
       <div className="navsection p-0 m-0 py-2">
         <div className="container-fluid p-0 m-0 ">
           <div className="row m-0 p-0 justify-content-evenly">
-            <div className="col-lg-auto col-xl-auto col-md-auto col-sm-auto col-6 p-0 m-0 text-start">
+            <div className="col-lg-auto col-xl-auto col-md-auto col-sm-auto col-3 p-0 m-0 text-start">
               <button className="button button-seashell shadow-none col-md-auto col-auto user position-relative p-0 m-0 ms-2" onClick={togglelogoutbtn}>
                 <p className="m-0 username text-decoration-none text-lg-start text-md-start text-center"> {props.username} </p>
                 <p className="m-0 userstatus text-decoration-none text-lg-start text-md-start text-center"><small className="text-muted">{props.designation}</small> </p>
                 <button className={`d-${logoutbtn} button button-lightred start-0 end-0 position-absolute text-burntumber w-100 fw-bolder`} style={{ zIndex: '1000' }} onClick={logout}>Logout</button>
               </button>
             </div>
-            <div className="col-lg-auto col-xl-7 align-self-center col-sm-auto col-md-auto col-10 p-0 m-0 menu order-1 order-xl-0 order-sm-0 order-md-0 order-sm-0">
-              <div className="row p-0 m-0 gx-auto justify-content-center">
+            <div className="col-lg-auto col-xl-7 align-self-center col-sm-auto col-md-auto col-12 p-0 m-0 menu order-1 order-xl-0 order-sm-0 order-md-0 order-sm-0">
+              <div className="row p-0 m-0 gx-auto justify-content-lg-center justify-content-md-center">
                 {
                   NavbarIcons.map((data, i) => (
-                    <div className={` ms-2 col-auto align-self-end `} onClick={() => sethighlighticon(data.path)}>
+                    <div className={` ms-lg-2 col-auto align-self-end `} onClick={() => sethighlighticon(data.path)}>
                       <Link to={data.path} className="text-decoration-none"> <div className="text-center"> <img src={process.env.PUBLIC_URL + data.image} alt="displaying_image" className={`img-fluid rounded-2 p-2 bg-${highlighticon ? highlighticon === data.path ? 'burntumber25' : 'seashell' : path === data.path ? 'burntumber50' : 'seashell'}`} style={{ width: `1.5rem`, boxSizing: 'content-box' }} /></div><p className="col-12 m-0 text-center">{data.title}</p>  </Link>
                     </div>
                   ))
@@ -221,7 +221,7 @@ function Navbar(props) {
               </div>
 
             </div>
-            <div className="col-lg-auto col-xl-auto col-md-auto col-6 col-sm-2 text-center align-self-center position-relative p-0 m-0 ">
+            <div className="col-lg-auto col-xl-auto col-md-auto col-2 col-sm-2 text-center align-self-center position-relative p-0 m-0 ">
               <div className="dropdown">
                 <button className="button button p-0 m-0 px-1 py-1 button-burntumber dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                   +Add
@@ -233,8 +233,8 @@ function Navbar(props) {
                 </ul>
               </div>
             </div>
-            <div className="col-lg-2 col-xl-2 col-md-2 col-sm-6 mt-sm-2 ms-md-2 align-self-center order-sm-2 order-2 position-relative p-0 m-0" style={{ zIndex: '5' }}>
-              <input type="text" className="bg-pearl border border-1 text-center position-relative w-100" placeholder="search" onChange={(e) => setsearchtext(e.target.value)} />
+            <div className="col-lg-2 col-xl-2 col-md-2 col-sm-6 col-6 mt-sm-2 ms-md-2 align-self-center order-sm-2 order-0 search text-center position-relative p-0 m-0" style={{ zIndex: '5' }}>
+              <input type="text" className="bg-pearl border border-1 text-center position-relative w-100 " placeholder="search" onChange={(e) => setsearchtext(e.target.value)} />
               <div className="position-absolute bg-pearl end-0 shadow rounded-2 mt-2 border border-1">
                 <SearchField searchtext={searchtext} fetchapi={props.fetchapi} />
               </div>
@@ -317,7 +317,7 @@ function Doctorsection(props) {
   const [Docval, setDocval] = useState(0)
   return (
     <>
-      <div className="container-fluid bg-seashell p-0 m-0 mt-1 scroll">
+      <div className="container-fluid doctorsection bg-seashell p-0 m-0 mt-1 scroll">
         <div className=" hstack gap-3 d-flex p-0 m-0 ms-1 p-1 align-items-center">
           {
             props.isLoading ? (
@@ -329,8 +329,11 @@ function Doctorsection(props) {
             ) : (
               props.todayDoc.map((data, i) => (
                 <>
-                  <div className='col-auto p-0 m-0'>
-                    <button key={i} className={`button rounded-3 p-0 m-0 py-1 px-2 btn-sm col-auto shadow-none text-${i === Doctor ? 'light' : 'charcoal75 fw-bolder'} button-${i === Doctor ? "charcoal" : "seashell"} border-${i === Doctor ? 'secondary' : 'none'}`} autoFocus={i === Doctor ? true : false} onFocus={() => { setDoctorID(data[0]); setDoctorName(data[1]); setDocClinic(data[2]) }} value={`${data[0]}.${data[1]}`} onClick={(a) => { setDoctor(i); }}>{`${data[0]}. Dr.${data[1]}`} </button>
+                  <div className='col-auto doctors p-0 m-0'>
+                    <button key={i} className={`button rounded-3 p-0 m-0 py-1 px-2 btn-sm col-auto shadow-none text-${i === Doctor ? 'light' : 'charcoal75 fw-bolder'} button-${i === Doctor ? "charcoal" : "seashell"} border-${i === Doctor ? 'secondary' : 'none'}`}
+                      autoFocus={i === Doctor ? true : false}
+                      onFocus={() => { setDoctorID(data[0]); setDoctorName(data[1]); setDocClinic(data[2]) }}
+                      value={`${data[0]}.${data[1]}`} onClick={(a) => { setDoctor(i); }}>{`Dr.${data[1]}`} </button>
                   </div>
                   <div className='vr rounded-2 h-75 align-self-center' style={{ padding: '0.8px' }}></div>
                 </>
@@ -341,23 +344,21 @@ function Doctorsection(props) {
               <img src={process.env.PUBLIC_URL + "/images/addicon.png"} alt="displaying_image" style={{ width: "1.5rem" }} />
             </button>
           </div>
-
-
         </div>
 
       </div>
       <section className="patientsection border-start p-0 m-0 border-5 border-dark border-opacity-50 position-relative">
         <div className="container-fluid p-0 m-0 my-2">
           <div className="row m-0 p-0 align-items-center">
-            <span className='col-auto fs-4 text-charcoal fw-bold'>{currentDate}</span>
+            <span className='col-auto livetime text-charcoal fw-bold' style={{ fontSize: '1.5rem' }}>{currentDate}</span>
             <div className=' col-auto vr align-self-center h-75' style={{ padding: '0.8px' }}></div>
-            <span className='col-auto fs-5'><Timer /></span>
+            <span className='col-auto livetime2' style={{ fontSize: '1.5rem' }}><Timer /></span>
 
           </div>
         </div>
         {
           props.Loading ? (
-            <div className=" position-absolute start-0 end-0 m-auto ">
+            <div className=" position-absolute start-0 end-0 m-auto loader ">
               <button class="button button-pearl shadow-none fs-3 fw-bolder text-charcoal75" type="button" disabled>
                 Please Be Patient While We are Fetching Data
                 <span class="spinner-grow spinner-grow ms-1 bg-brandy " role="status" aria-hidden="true"></span>
@@ -1154,7 +1155,7 @@ function Pharmacy() {
       <section className={`pharmacy position-relative`}>
         <div className="pharmacysection">
           <div className="container-fluid pharmacytabsection">
-            <div className=" hstack gap-3 d-flex p-0 m-0 ms-1 p-1 align-items-center">
+            <div className="  gap-3 d-flex p-0 m-0 ms-1 p-1 align-items-center">
               {menu.map((e, i) => {
                 return (
                   <>
@@ -1168,7 +1169,7 @@ function Pharmacy() {
             </div>
           </div>
         </div>
-        <div className="p-0 m-0 ms-1 text-charcoal fw-bold fs-4 ">
+        <div className="p-0 m-0 ms-1 text-charcoal fw-bold">
           {<Livetime />}
         </div>
         <div className="p-0 m-0">{_selectedmenu(menuindex)}</div>

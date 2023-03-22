@@ -21,7 +21,7 @@ const UpdateAppointment = (props) => {
     const [displaysearchlist, setdisplaysearchlist] = useState('none')
     const [patientid, setpatientid] = useState()
     const [doctorid, setdoctorid] = useState()
-    const [clinicid, setclinicid] = useState()
+    const [clinicid, setclinicid] = useState(clinicID)
     const [time, settime] = useState()
     const [timeindex, settimeindex] = useState()
     const [ischecked, setischecked] = useState()
@@ -128,7 +128,7 @@ const UpdateAppointment = (props) => {
     function UpdateAppointment(e) {
         if (props.appointmentid && doctorid && clinicid && time && adminid && props.patientid != null && props.patientid != 0) {
             try {
-                // console.log(props.appointmentid, Number(doctorid), Number(clinicid), Number(time), Number(adminid), Number(props.patientid))
+                console.log(props.appointmentid, Number(doctorid), Number(clinicid), Number(time), Number(adminid), Number(props.patientid))
                 setload(true)
                 axios.post(`${url}/update/appointment`, {
                     appointment_id: props.appointmentid,
@@ -205,17 +205,18 @@ const UpdateAppointment = (props) => {
         }
 
     }
+    console.log(props.appointmentid, Number(doctorid), Number(clinicid), Number(time), Number(adminid), Number(props.patientid))
     return (
         <div className='p-0 m-0 text-start'>
-            <h5 className="text-center mt-2">Update {props.patientname} Appointment Details</h5>
+            <h5 className="text-center">Update {props.patientname} Appointment Details</h5>
             <button type="button" className="btn-close closebtn position-absolute" disabled={load == true ? true : false} aria-label="Close" onClick={props.closeappointmentform} ></button>
-            <hr />
+            <hr className='p-0 m-0' />
             <div className="col-12">
-                <div className="col-12 location bg-seashell  border-0" >
+                <div className="col-12 clinics bg-seashell  border-0" >
                     {
                         cliniclist.map((data, i) => (
                             <div key={i} className={`d-${clinicID == data.id ? 'block' : 'none'} align-items-center text-charcoal `}>
-                                <img className='mb-1' src={process.env.PUBLIC_URL + '/images/location.png'} style={{ width: '1.3rem' }} />
+                                <img className='' src={process.env.PUBLIC_URL + '/images/location.png'} style={{ width: '1.3rem' }} />
                                 {data.title} {data.address}</div>
 
                         ))
@@ -244,12 +245,12 @@ const UpdateAppointment = (props) => {
                     </div>
                     <div className="col-md-auto col-auto m-0 p-0">
                         <label className="">Selected Date</label>
-                        <div className="col-12 bg-seashell"><input type="date" ref={dateref} className="form-control bg-seashell border-charcoal" onChange={getTimefrom} />
+                        <div className=" border-0 col-12 bg-seashell "><input type="date" ref={dateref} className="form-control bg-seashell border-charcoal" onChange={getTimefrom} />
                         </div>
                     </div>
                     <div className="col-md-3 col-sm-3 col-lg-3 col-3">
                         <label className='text-charcoal'>Selected Time</label>
-                        <div className="col-12">
+                        <div className="col-12 p-0 m-0 selectedtime">
                             <button className='button button-charcoal50-outline shadow-none' >{props.appointmenttime}</button>
                         </div>
 
@@ -291,11 +292,11 @@ const UpdateAppointment = (props) => {
                             </div>
                         ) : (
                             <>
-                                <div className="col-6 py-2 pb-2 m-auto text-center">
-                                    <button className='btn px-5 button-charcoal' onClick={confirmmessage}>Done</button>
+                                <div className="col-6 m-auto text-center">
+                                    <button className='btn button-charcoal' onClick={confirmmessage}>Done</button>
                                 </div>
-                                <div className="col-6 py-2 pb-2 m-auto text-center">
-                                    <button className="btn btn-light px-5 border " onClick={getCurrentTimeslots}>Set Previous</button>
+                                <div className="col-6 m-auto text-center">
+                                    <button className="btn btn-light  border " onClick={getCurrentTimeslots}>Set Previous</button>
                                 </div>
 
                             </>
