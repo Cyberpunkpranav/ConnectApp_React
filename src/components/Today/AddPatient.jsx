@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import axios from 'axios'
 import { useContext } from 'react'
 //Context APis
 import { URL } from '../../index'
 //Google maps
-import { geocodeByAddress, getLatLng } from 'react-google-places-autocomplete'
+import { geocodeByAddress, geocodeByPlaceId, getLatLng } from 'react-google-places-autocomplete'
 import GooglePlacesAutocomplete from "react-google-places-autocomplete"
 //Notiflix
 import Notiflix from 'notiflix';
@@ -28,7 +28,7 @@ const AddPatient = (props) => {
     const [linkid, setlinkid] = useState()
     const [lat, setlat] = useState()
     const [lng, setlng] = useState()
-
+    const [placeid, setplaceid] = useState()
     const [mainaccount, setmainaccount] = useState([])
     const [display, setdisplay] = useState("none")
     const [accountinput, setaccountinput] = useState()
@@ -78,7 +78,6 @@ const AddPatient = (props) => {
         setcountrycode()
     }
 
-
     let adminid = localStorage.getItem('id')
     async function NewPatient(e) {
         if (fullname && countrycode && phonenumber && DOB && gender && email && address && pincode && place && main && adminid) {
@@ -116,14 +115,56 @@ const AddPatient = (props) => {
 
     const [data, setData] = useState("");
     useEffect(() => {
+
+        if (data.value !== undefined && data.value.place_id !== undefined) {
+            setpincode()
+            console.log(data.value.place_id)
+            setplaceid()
+            // initialize the map
+            const map = new window.google.maps.Map({
+                center: { lat: lat, lng: lng },
+                zoom: 14
+            });
+            // initialize the PlacesService object with your API key and map
+            const placesService = new window.google.maps.places.PlacesService(map);
+
+            // send a getDetails request for the place using its Place ID
+            placesService.getDetails({
+                placeId: data.value.place_id
+            }, (placeResult, status) => {
+                if (status === 'OK') {
+                    console.log(placeResult)
+                    // find the address component with type "postal_code"
+                    const postalCodeComponent = placeResult.address_components.find(component => {
+                        return component.types.includes('postal_code');
+                    });
+
+                    if (postalCodeComponent) {
+                        const postalCode = postalCodeComponent.short_name;
+                        setpincode(postalCode);
+                    } else {
+                        Notiflix.Notify.warning('Postal code not found for this place.');
+                    }
+                } else {
+                    Notiflix.Notify.failure(`Failed to get place details: ${status}`);
+                }
+            });
+        } else {
+            console.log(data)
+        }
+
         data === "" ? setData("") : setData(data);
         setplace(data.label)
     }, [data]);
 
+    useEffect(() => {
+
+    }, [placeid]);
+
     if (place) {
         geocodeByAddress(place).then(results => getLatLng(results[0])).then(({ lat, lng }) => { setlat(lat); setlng(lng) });
     }
-
+    console.log(pincode)
     const confirmmessage = () => {
         customconfirm()
         Notiflix.Confirm.show(
@@ -406,7 +447,7 @@ const AddPatient = (props) => {
                 <hr />
                 <div className="col-10 pb-2 m-auto">
                     <label htmlFor="inputAddress" className="mb-2">Add Address</label>
-                    <input type="text" className="form-control" id="inputAddress" value={address ? address : ''} placeholder="Location" onChange={(e) => { setaddress(e.target.value) }} required />
+                    <input type="text" className="form-control" id="inputAddress" value={address ? address : ''} placeholder="Address" onChange={(e) => { setaddress(e.target.value) }} required />
                 </div>
                 <div className="row p-0 m-0 py-2">
                     <div className="col-6 m-auto">
@@ -480,7 +521,7 @@ const AddPatient = (props) => {
                     ) : (
                         <>
                             <div className="col-6 py-2 pb-2 m-auto text-center">
-                                <button type="button" className="btn done px-5" onClick={confirmmessage} > Done </button>
+                                <button type="button" className="btn done button-charcoal px-5" onClick={confirmmessage} > Done </button>
                             </div>
                             <div className="col-6 pb-2 m-auto text-center">
                                 <button className="btn btn-light px-5" onClick={resetform}>Reset</button>

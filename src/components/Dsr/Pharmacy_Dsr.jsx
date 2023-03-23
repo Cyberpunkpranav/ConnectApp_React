@@ -23,8 +23,8 @@ const Pharmacy_Dsr = (props) => {
   const [load, setload] = useState()
   const [pd, setpd] = useState('none')
   const [se, setse] = useState('block')
-  const [pr,setpr] = useState('block')
-  const [prxl,setprxl]=useState('none')
+  const [pr, setpr] = useState('block')
+  const [prxl, setprxl] = useState('none')
   const [pageindex, setpageindex] = useState()
 
   const PharmacyList = async () => {
@@ -44,7 +44,7 @@ const Pharmacy_Dsr = (props) => {
   }
   useEffect(() => {
     PharmacyList()
-  }, [props.fromdate, props.todate,props.clinic])
+  }, [props.fromdate, props.todate, props.clinic])
 
 
 
@@ -451,8 +451,6 @@ const Pharmacy_Dsr = (props) => {
     })
     return sum
   }
-
-
   function SumPendingpayments(i) {
     let PendingPaymentsSumarr = []
     let sum = 0
@@ -499,13 +497,13 @@ const Pharmacy_Dsr = (props) => {
       <div className=''>
         <ul className="nav nav-pills mb-3 ms-2 ms-lg-3 ms-md-1 ms-sm-1" id="pills-tab" role="tablist">
           <li className="nav-item" role="presentation">
-            <button className="nav-link active p-0 m-0 py-1 px-3" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true" onClick={() => { setpageindex(0) }}>Sale Entries<span class=" p-0 m-0 ms-2 badge text-lightyellow fs-6 fw-normal">{SaleEntryList.length}</span></button>
+            <button className="nav-link active p-0 m-0 py-1 px-3 rounded-pill" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true" onClick={() => { setpageindex(0) }}>Sale Entries<span class=" p-0 m-0 ms-2 badge text-lightyellow fs-6 fw-normal">{SaleEntryList.length}</span></button>
           </li>
-          <li className="nav-item" role="presentation">
-            <button className="nav-link p-0 m-0 py-1 px-3" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false" onClick={() => { setpageindex(1) }}>Sale Returns<span class=" p-0 m-0 ms-2 badge text-lightyellow fs-6 fw-normal">{SaleReturnList.length}</span></button>
+          <li className="nav-item ms-lg-3 ms-md-2 ms-sm-1 ms-1" role="presentation">
+            <button className="nav-link p-0 m-0 py-1 px-3 rounded-pill" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false" onClick={() => { setpageindex(1) }}>Sale Returns<span class=" p-0 m-0 ms-2 badge text-lightyellow fs-6 fw-normal">{SaleReturnList.length}</span></button>
           </li>
-          <li className="nav-item" role="presentation">
-            <button className="nav-link p-0 m-0 py-1 px-3" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false" onClick={() => { setpageindex(2) }}>Pendings Recieved<span class=" p-0 m-0 ms-2 badge text-lightyellow fs-6 fw-normal">{PendingPaid.length}</span></button>
+          <li className="nav-item ms-lg-3 ms-md-2 ms-sm-1 ms-1" role="presentation">
+            <button className="nav-link p-0 m-0 py-1 px-3 rounded-pill" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false" onClick={() => { setpageindex(2) }}>Pendings Recieved<span class=" p-0 m-0 ms-2 badge text-lightyellow fs-6 fw-normal">{PendingPaid.length}</span></button>
           </li>
         </ul>
 
@@ -912,7 +910,6 @@ const Pharmacy_Dsr = (props) => {
                 <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForPoints()}</h6>
               </div>
             </div>
-
             <div className=' saleoptions mt-2 position-absolute end-0 me-md-2 me-5 text-end'>
               <span>
                 <DownloadTableExcel
@@ -925,7 +922,6 @@ const Pharmacy_Dsr = (props) => {
                 </DownloadTableExcel>
               </span>
             </div>
-
             <div className='container-fluid p-0 m-0 scroll scroll-y salereturns mt-2' ref={salereturn} style={{ minHeight: '60vh', maxHeight: '60vh' }}>
 
               <table className='table'>
@@ -1020,7 +1016,6 @@ const Pharmacy_Dsr = (props) => {
             </div>
           </div>
 
-
           <div className="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">
             <h6 className="text-charcoal fw-bold p-0 m-0 ms-2 ms-lg-3 ms-md-1 ms-sm-1">Payments</h6>
             <div className="row m-0 g-2 mt-md-2 p-0 text-start justify-content-start">
@@ -1060,7 +1055,7 @@ const Pharmacy_Dsr = (props) => {
                   sheet="Pendings Recieved"
                   currentTableRef={pendingsrecieved.current}
                 >
-                  <button className='btn p-0 m-0 ms-5 bg-pearl border-charcoal px-2 py-1 fw-bold '> <img src={process.env.PUBLIC_URL + '/images/download.png'} style={{ 'width': '1.5rem' }} onClick={()=>{prxl('block')}} /> Export</button>
+                  <button className='btn p-0 m-0 ms-5 bg-pearl border-charcoal px-2 py-1 fw-bold '> <img src={process.env.PUBLIC_URL + '/images/download.png'} style={{ 'width': '1.5rem' }} onClick={() => { prxl('block') }} /> Export</button>
                 </DownloadTableExcel>
               </span>
             </div>
@@ -1078,7 +1073,7 @@ const Pharmacy_Dsr = (props) => {
                     <th className='py-0'>Amt Recieved</th>
                     <th className='py-0' >Total Received</th>
                   </tr>
-               
+
                 </thead>
 
                 {
@@ -1111,8 +1106,8 @@ const Pharmacy_Dsr = (props) => {
                               <td>{data.sale_entry && data.sale_entry.bill_date !== null ? reversefunction(data.sale_entry.bill_date) : ''}</td>
                               <td>{data.pending_date && data.pending_date !== null ? reversefunction(data.pending_date) : ''}</td>
                               <td>{data.paid_date && data.paid_date !== null ? reversefunction(data.paid_date) : ''}</td>
-                              <td>{data.payment_method_details && data.payment_method_details != null ? Object.keys(JSON.parse(data.payment_method_details)) +'' : ''}</td>
-                              <td>{data.payment_method_details && data.payment_method_details != null ? Object.values(JSON.parse(data.payment_method_details)) +'' : ''}</td>
+                              <td>{data.payment_method_details && data.payment_method_details != null ? Object.keys(JSON.parse(data.payment_method_details)) + '' : ''}</td>
+                              <td>{data.payment_method_details && data.payment_method_details != null ? Object.values(JSON.parse(data.payment_method_details)) + '' : ''}</td>
                               <td>{data.paid_amount && data.paid_amount !== null ? data.paid_amount : ''}</td>
                             </tr>
                           ))

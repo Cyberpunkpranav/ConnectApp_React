@@ -350,31 +350,14 @@ body::-webkit-scrollbar-thumb:hover {
 .border-charcoal {
     border: 1px solid var(--charcoal);
 }
-.accordion-button {
-    background-color: var(--pearl);
-    border:none
-}
-.accordion-button:not(.collapsed){
-    background-color: var(--seashell);
-    border:none
-}
-.accordion-button:not(.collapsed){
-color:var(--burntumber)
-}
-.accordion-button:not(.collapsed)::after{
-background-image: none;
-}
-.accordion-button:focus{
-border-color:none;
-box-shadow:none;
 
-}
 .nav-item .active{
     background-color: var(--charcoal) !important;
     color:var(--pearl)
 }
 .nav-item .nav-link {
-color:var(--charcoal)
+color:var(--charcoal);
+background-color:var(--seashell);
 }
 .form-check-input:checked{
 background-color: var(--burntumber);

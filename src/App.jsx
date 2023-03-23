@@ -243,7 +243,7 @@ function Navbar(props) {
         </div>
       </div>
 
-      <div className={`col-lg-5 col-md-6 col-sm-12 col-12 rounded-4 p-2 me-2 mt-2 scroll patientinfosection d-${patientform} border-start border-top border-2 position-absolute`} >
+      <div className={`col-lg-5 col-md-6 col-sm-12 col-12 rounded-4 p-2 me-lg-2 me-md-2 mt-2 top-0 scroll patientinfosection d-${patientform} border-start border-top border-2 position-absolute`} >
         <AddPatient togglepatientform={togglepatientform} />
       </div>
       <div className={`col-lg-5 col-md-6 col-sm-12 rounded-4 p-2 me-2 mt-2 col-12 bg-seashell appointmentinfosection d-${appointmentform} border-start border-top border-2 position-absolute`} style={{ zIndex: '4', right: '0' }} >
@@ -251,7 +251,7 @@ function Navbar(props) {
       </div>
       {
         Docval == 1 ? (
-          <div className={`col-lg-5 col-md-6 col-sm-12 col-12 px-2 me-2 mt-2  rounded-4 doctorinfosection d-${doctorform}  border-start border-top border-2 position-absolute`} >
+          <div className={`col-lg-5 col-md-6 col-sm-12 col-12 px-2 me-lg-2 me-md-2 mt-lg-2 mt-md-2 mt-1  rounded-4 doctorinfosection d-${doctorform}  border-start border-top border-2 position-absolute`} >
             <AddDoctorSlot toggledoctorform={toggledoctorform} staticBackdrop4={'staticBackdrop3'} fetchapi={props.fetchapi} />
 
           </div>
@@ -398,7 +398,7 @@ function Doctorsection(props) {
       </section>
       {
         Docval == 1 ? (
-          <div className={`col-lg-5 col-md-6 col-sm-12 col-12 top-0 doctorinfosection d-${doctorform} me-2 mt-2 rounded-4  border-start border-top border-2 position-absolute`} >
+          <div className={`col-lg-5 col-md-6 col-sm-12 col-12 top-0 doctorinfosection d-${doctorform} me-lg-2  me-md-2 mt-2 rounded-4  border-start border-top border-2 position-absolute`} >
             <AddDoctorSlot toggledoctorform={toggledoctorform} staticBackdrop4={'staticBackdrop4'} fetchapi={props.fetchapi} />
           </div>
         ) : (

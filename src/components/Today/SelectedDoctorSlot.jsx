@@ -68,10 +68,10 @@ const AddSelectedDoctorSlot = (props) => {
     return (
 
         <div className='container position-relative'>
-            <h5 className="text-center">Quick Add TimeSlots</h5>
+            <h5 className="text-center pt-1">Quick Add TimeSlots</h5>
             <button type="button" className="btn-close closebtn position-absolute" aria-label="Close" onClick={props.CloseAddQuickSlots} ></button>
-            <hr />
-            <div className="col-12 text-center">
+            <hr className='p-0 m-0' />
+            <div className="col-12 text-center clinics">
                 {
                     cliniclist.map((data, i) => (
                         <label className={`d-${clinicID == data.id ? 'block' : 'none'}`}><img src={process.env.PUBLIC_URL + '/images/location.png'} style={{ width: '1.5rem' }} />{data.title} {data.address}</label>
@@ -87,15 +87,16 @@ const AddSelectedDoctorSlot = (props) => {
                     <div type="date" disabled className="form-control col-10 button button-charcoal50-outline" >{APIDate}</div>
                 </div>
             </div>
-            <hr />
-            <div className="d-flex">
-                <input type="time" className="form-control bg-seashell border-charcoal" value={fromtime ? fromtime : ''} onChange={(e) => { setfromtime(e.target.value) }} />
-                <div>_</div>
-                <input type="time" className="form-control bg-seashell border-charcoal" value={totime ? totime : ''} onChange={(e) => { settotime(e.target.value) }} />
+            <div className="row p-0 m-0 mt-2 justify-content-center">
+                <div className="col-5">
+                    <input type="time" className="form-control bg-seashell border-charcoal" value={fromtime ? fromtime : ''} onChange={(e) => { setfromtime(e.target.value) }} />
+                </div>
+                <div className='col-auto'>-</div>
+                <div className="col-5">
+                    <input type="time" className="form-control bg-seashell border-charcoal" value={totime ? totime : ''} onChange={(e) => { settotime(e.target.value) }} />
+                </div>
+
             </div>
-
-
-            <hr />
             <div className="col-6 py-2 pb-2 m-auto text-center">
                 <button className="button button-charcoal px-5" onClick={confirmmessage} > Done </button>
             </div>
