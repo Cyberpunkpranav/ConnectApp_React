@@ -296,7 +296,7 @@ const SelectedAppointments = (props) => {
                 </div></td>
                 {
                   tableindex == key ? (
-                    <td className={`UpdateAppointment d-${tableindex == key ? appointmentform : 'none'} position-absolute`} style={{ top: '-10rem' }}>
+                    <td className={` d-${tableindex == key ? appointmentform : 'none'}  updateappointment bg-seashell col-lg-8 col-xl-5 col-md-8 col-sm-10 col-12 start-0 end-0  mx-auto top-0 border border-1 rounded-3 position-absolute`} style={{ zIndex: '3', marginTop: '10rem' }}>
                       <UpdateAppointment fetchallAppointmentslist={props.fetchallAppointmentslist}
                         patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : 'N/A'}
                         patientid={data.patient && data.patient.id !== null ? data.patient.id : 'N/A'} appointmentid={data.id && data.id !== null ? data.id : 'N/A'}

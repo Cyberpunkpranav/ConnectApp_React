@@ -174,7 +174,6 @@ function Saleentrysection(props) {
     }
   }
 
-
   useEffect(() => {
     GetPages()
   }, [channel, fromdate, todate])
@@ -5202,7 +5201,7 @@ function Stockmedicinesection() {
             trade_discount: medicineslist[i].stock_info[j].trade_discount ? medicineslist[i].stock_info[j].trade_discount : '',
             total_amount: medicineslist[i].stock_info[j].total_amount ? medicineslist[i].stock_info[j].total_amount : '',
             totalstock: totalcurrentstockarr ? totalcurrentstockarr : '',
-            // Days_to_expire: ExpireDays ? ExpireDays : ''
+            Days_to_expire: ExpireDays ? ExpireDays : ''
 
           }
           console.log(medicineobj)
@@ -5241,7 +5240,7 @@ function Stockmedicinesection() {
     var date1 = new Date()
     var date2 = new Date(expirydate)
     const diffTime = Math.abs(date2 - date1);
-    const diffDays = Math.ceil(Number(diffTime) / (1000 * 60 * 60 * 24));
+    let diffDays = Math.ceil(Number(diffTime) / (1000 * 60 * 60 * 24));
     diffDays = (Number(diffDays) / 30).toFixed(1)
     return diffDays
   }
@@ -5353,7 +5352,7 @@ function Stockmedicinesection() {
                         <td className=' text-charcoal fw-bold'>{data.cost}</td>
                         <td className=' text-charcoal fw-bold'>{data.current_stock}</td>
                         <td className=' text-charcoal fw-bold'>{data.totalstock ? CalculateTStock(data.totalstock) : ''}</td>
-                        <td className={`text-${data.Days_to_expire ? data.Days_to_expire : '' <= 2 ? 'burntumber' : 'charcoal'} fw-bold text-center`}>{data.Days_to_expire ? data.Days_to_expire : ''} Days</td>
+                        <td className={`text-${data.Days_to_expire ? data.Days_to_expire : '' <= 2 ? 'burntumber' : 'charcoal'} fw-bold text-center`}>{data.Days_to_expire ? data.Days_to_expire : ''} Months</td>
                         <td className=' text-charcoal fw-bold text-center'>
                           {
                             GetStatus(data.totalstock, data.alert_stock_count) == 1 ? (

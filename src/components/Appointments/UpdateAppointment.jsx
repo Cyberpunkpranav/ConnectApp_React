@@ -200,23 +200,22 @@ const UpdateAppointment = (props) => {
 
     }
     return (
-        <div className=' text-start position-relative p-0 m-0'>
+        <div className='fw-light text-start position-relative p-0 m-0'>
             <h5 className="text-center">Update {props.patientname} Appointment Details</h5>
-            <button type="button" className="btn-close closebtn position-absolute" aria-label="Close" disabled={load == true ? true : false} onClick={props.closeappointmentform} ></button>
-            <hr />
+            <button type="button" className="btn-close closebtn position-absolute top-0" aria-label="Close" disabled={load == true ? true : false} onClick={props.closeappointmentform} ></button>
+            <hr className='p-0 m-0' />
             <div className="col-12">
-             
-                <div className="col-12 bg-seashell align-self-center  border-0" >
+                <div className="col-12 clinics bg-seashell align-self-center border-0" >
                     {
                         cliniclist.map((data, i) => (
-                            <label key={i} className={`d-${clinicID == data.id ? 'block' : 'none'} `}><img src={process.env.PUBLIC_URL + '/images/location.png'} style={{width:'1.5rem'}}/> {data.title} {data.address}</label>
+                            <label key={i} className={`d-${clinicID == data.id ? 'block' : 'none'} `}>
+                            <img src={process.env.PUBLIC_URL + '/images/location.png'} style={{width:'1.5rem'}}/> {data.title} {data.address}</label>
 
                         ))
                     }
                 </div>
-                <hr className='p-0 m-0 my-1' />
-                <div className="row p-0 m-0 ms-5">
-                    <div className="col-md-4">
+                <div className="row p-0 m-0 ms-5 mt-1">
+                    <div className="col-md-4 col-4 ">
                         <label>Selected Doctor</label>
                         <div className="col-12">
                             <select className="col-10 form-control button-charcoal-outline" ref={docref} onChange={getTimeslots}>
@@ -236,13 +235,14 @@ const UpdateAppointment = (props) => {
                             </select>
                         </div>
                     </div>
-                    <div className="col-md-auto m-0 p-0">
+                    <div className="col-md-auto col-4 m-0 p-0">
                         <label className="">Selected Date</label>
-                        <div className="col-12"><input type="date" ref={dateref} className="form-control border-charcoal bg-seashell" onChange={getTimefrom} />
+                        <div className="col-12">
+                        <input type="date" ref={dateref} className="form-control border-charcoal bg-seashell" onChange={getTimefrom} />
                         </div>
                     </div>
-                    <div className="col-md-3 col-lg-3 col-3">
-                        <label>Selected Time</label>
+                    <div className="col-md-3 col-lg-3 col-4">
+                        <label className='text-charcoal50'>Selected Time</label>
                         <div className="col-12">
                             <button className='button button-charcoal50 shadow-none' disabled >{props.appointmenttime}</button>
                         </div>
@@ -250,9 +250,7 @@ const UpdateAppointment = (props) => {
                     </div>
                 </div>
 
-                <hr />
-
-                <p className="m-0 mb-2">Select another Time Slot</p>
+                <p className="m-0 mb-md-2 mt-2">Select another Time Slot</p>
                 <div className="scroll align-items-center justify-content-around col-12">
                     {ApiDocTimefrom ? (
                         <>

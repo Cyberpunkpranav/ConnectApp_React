@@ -26,6 +26,30 @@ body {
 
 
 /*---------------------------------------------------------navbar css----------------------------------------------------------------------*/
+
+.Clinicslist .logo{
+    width:10.5rem;
+}
+.bg_a{
+    padding:0px;
+    z-index:-1;
+}
+ .bg_a img{
+    margin-top:17%;
+   margin-left:50%;
+    width:50%;
+
+}
+ .Clinicslist h4{
+    padding:0;
+    margin-top:20%;
+    margin-left:20%;
+    width:max-content;
+}
+.Clinicslist .clinics{
+    margin-left:20%;
+    width:max-content;
+}
 .navsection {
     background-color: var(--seashell);
     font-family: 'Urbanist', sans-serif;
@@ -143,36 +167,6 @@ body {
     background-color: var(--burntumber);
     color: var(--pearl);
 }
-
-
-
-/*----------------------draggable css--------------------------------------------------*/
-.DraggableDiv {
-    /* to allow the draggable div's to scroll with the content make the position absolute */
-    position: fixed;
-    top: 0;
-    left: 0;
-}
-
-.DraggableDiv div {
-    padding: 5px;
-}
-
-.DraggableDiv .Header {
-    cursor: move;
-    font-weight: bold;
-    color: #ffffff;
-    border-bottom: 1px solid #000000;
-    background-color: #566895;
-}
-
-#DraggableDiv2 {
-    cursor: move;
-    top: 40%;
-    left: 25%;
-}
-
-/*----------------------draggable css--------------------------------------------------*/
 
 /*----------------------search animation css--------------------------------------------------*/
 .Search-box {
@@ -316,10 +310,9 @@ body {
     font-family: 'Urbanist', sans-serif;
     z-index: 5;
     right: 0;
- 
-    box-shadow: 0px 0px 0px 1600px#22202370;
+    /* box-shadow: 0px 0px 0px 1600px#22202370; */
     overflow-y: scroll;
-    max-height: 45rem;
+    max-height: 40rem;
     min-height: 30rem;
 }
 
@@ -351,11 +344,11 @@ body {
 }
 
 .doctorinfosection {
-    background-color: var(--seashell);
+    /* background-color: var(--seashell); */
     right: 0;
     font-family: 'Urbanist', sans-serif;
-    box-shadow: 0px 0px 0px 1600px#22202370;
-    z-index: 2000;
+    /* box-shadow: 0px 0px 0px 1600px#22202370; */
+    z-index: 4;
 }
 .doctorscheduledata h5{
     font-size:0.8rem ;
@@ -386,8 +379,7 @@ body {
     color: var(--charcoal);
 }
 
-#cardslot,
-.card {
+#cardslot,.card {
     width: fit-content;
 }
 
@@ -704,7 +696,39 @@ body {
     }
 }
 
-@media  (max-width:418px){
+@media  (max-width:512px){
+
+    .Clinicslist .logo{
+        width:7.5rem;
+    }
+    .bg_a{
+        padding:0px;
+        z-index:-1;
+    }
+     .bg_a img{
+        margin-top:65%;
+       margin-left:50%;
+    
+    }
+     .Clinicslist h4{
+        margin-top:30%;
+        margin-left:5%;
+        width:max-content;
+    }
+    .Clinicslist .clinics{
+        margin-left:0%;
+        width:max-content;
+        text-align: justify;
+    }
+    
+    .navsection {
+        justify-content: center;
+        text-align: center;
+    }
+    .navsection img{
+        width:1.5rem !important;
+        padding:0.3rem !important;
+    }
     .navsection .dropdown .button{
         font-size:0.8rem;
     }

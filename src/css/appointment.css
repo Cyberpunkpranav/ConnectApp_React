@@ -33,10 +33,13 @@ body {
     min-height: 62vh;
 }
 
-
-
-
-
+.page2appointment .daterange img{
+    width:2rem;
+}
+.page2appointment section{
+    min-height: 68vh;
+    max-height: 68vh;
+  } 
 
 .page2appointment tr:nth-child(even) {
     background-color: var(--seashell);
@@ -56,33 +59,6 @@ input[placeholder-shown] {
     color: black;
 }
 
-/* .page2appointment .allbtn,
-.page2appointment .cancelledbtn,
-.page2appointment .completedbtn,
-.page2appointment .unattandedbtn {
-    background-color: var(--pearl);
-    color: var(--charcoal);
-    border: 1px solid var(--charcoal);
-
-}
-
-.page2appointment .allbtn:hover,
-.page2appointment .cancelledbtn:hover,
-.page2appointment .completedbtn:hover,
-.page2appointment .unattandedbtn:hover {
-    border: 1px solid var(--charcoal);
-    box-shadow: 1px 0px 5px 1px var(--charcoal);
-}
-
-.page2appointment .allbtn:focus,
-.page2appointment .cancelledbtn:focus,
-.page2appointment .completedbtn:focus,
-.page2appointment .unattandedbtn:focus {
-    background-color: var(--charcoal);
-    color: var(--pearl);
-    box-shadow: 1px 0px 5px 1px var(--charcoal);
-
-} */
 
 .page2appointment .daterangetitle {
     color: var(--burntumber);
@@ -103,3 +79,72 @@ input[placeholder-shown] {
     min-height: 20rem;
 }
 
+ @media (max-width:512px){
+   .page2appointment section{
+      min-height: 55vh;
+      max-height: 55vh;
+    }
+    .page2appointment h4{
+        font-size:1rem !important;
+    }
+    .page2appointment h6{
+        font-size:0.76rem !important;
+    }
+    .page2appointment .button-sm{
+        font-size: 0.8rem !important;
+        padding:0.2rem 0.9rem !important; 
+    }
+    .page2appointment span{
+        font-size:0.7rem; 
+    }
+    .page2appointment .daterange .button-sm{
+        padding:0.2rem !important;
+        font-size:0.8rem !important; 
+    }
+    .page2appointment .daterange img{
+        width:1.3rem !important;
+    }
+    .page2appointment .form-control{
+        padding:0.3rem;
+        font-size:0.8rem;
+    }
+    .page2appointment table{
+        font-size:0.7rem;
+
+    }
+    .page2appointment table thead{
+        padding:0px !important;
+    }
+    .page2appointment table tbody{
+        padding:0px !important;
+        margin:0px !important;
+    }
+    .page2appointment table img{
+        width:1.3rem !important;
+    }
+    .page2appointment table .btn{
+        font-size:0.7rem !important;
+    }
+    .page2appointment table .dropdown{
+        padding:0px !important;
+        margin:0px !important;
+    }
+   .page2appointment .updateappointment h5{
+        font-size:0.8rem !important;
+    }
+    .page2appointment .updateappointment .btn-close{
+        margin:0px !important;
+    }
+    .page2appointment .updateappointment .clinics {
+        font-size:0.7rem;
+    }
+    .page2appointment .updateappointment .button{
+        padding:0.2rem 0.4rem !important; 
+        font-size: 0.7rem !important;
+    }
+    .page2appointment .updateappointment .button-sm{
+        padding:0.2rem 0.4rem !important; 
+        font-size: 0.6rem !important;
+     }
+
+ }

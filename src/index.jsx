@@ -13,14 +13,14 @@ import './css/dashboard.css';
 import './css/appointment.css';
 import './css/pharmacy.css';
 import './css/login.css';
-import { Navbar, Doctorsection, Appointments, Patients, Doctors, Pharmacy, DailySaleReport,Exports } from './App'
+import { Navbar, Doctorsection, Appointments, Patients, Doctors, Pharmacy, DailySaleReport, Exports } from './App'
 import { WelcomeLoader } from './components/features/WelcomeLoader'
 //Notiflix
 import Notiflix from 'notiflix';
 //Context Apis
 const TodayDate = createContext();
 const URL = createContext();
-const DoctorsList = createContext();  
+const DoctorsList = createContext();
 const Doctorapi = createContext();
 const TodayDocs = createContext();
 const Vitals = createContext();
@@ -118,7 +118,7 @@ function Connectapp(props) {
   }
 
   return (
-    <div className='bg-pearl'style={{height:'100vh'}}>
+    <div className='bg-pearl' style={{ height: '100vh' }}>
       {
         isWelcomeLoading == 0 ? (
           <>
@@ -126,18 +126,33 @@ function Connectapp(props) {
           </>
         ) : (
           ClinicId == 'null' ? (
-            <div className='container w-50 text-center rounded-4 bg-pearl' style={{ marginTop: '10%' }}>
-              <img src={process.env.PUBLIC_URL + "/images/logo.png"} alt='image' className='img-fluid p-0 m-0' style={{ width: '10rem' }} />
-              <h4>Select Clinic</h4>
-              {
-                cliniclist.map((data, i) => (
-                  <>
-                    <label><input type="checkbox" className="radio form me-1" checked={ischecked === i ? true : false} name={data.id} onClick={(e) => { setclinicid(e.target.name); setischecked(i); }} /> {data.title} {data.address}</label>
-                    <br /></>
-                ))
-              }
-              <button className='button button-burntumber my-4 pt-2' onClick={Gomain}>Submit</button>
+            <div className='position-relative'>
+              <div className='bg_a'>
+                <img src={process.env.PUBLIC_URL + "/images/a.png"} alt='image' className='img-fluid' />
+              </div>
+              <div className=' Clinicslist position-absolute top-0 text-charcoal'>
+                <img src={process.env.PUBLIC_URL + "/images/logo.png"} alt='image' className='img-fluid logo p-0 m-0 start-0 top-0' /><span className=''>aartas | Connect App</span>
+                <h4 className=''>Select Clinic</h4>
+                <div className='container-fluid clinics'>
+                  <div className="row p-0 m-0 ">
+                    <div className="col-lg-10 col-12">
+                      {
+                        cliniclist.map((data, i) => (
+                          <div div className='= text-start mx-auto  '>
+                            <label className=''><input type="checkbox" className="radio form-check-input me-1" checked={ischecked === i ? true : false} name={data.id} onClick={(e) => { setclinicid(e.target.name); setischecked(i); }} /> {data.title} {data.address}</label>
+                            <br /></div>
+                        ))
+                      }
+                    </div>
+                    <div className="col-lg-2 col-12 mt-lg-0 mt-md-0 mt-sm-0 mt-2 ">
+                      <button className='button button-seashell' onClick={Gomain}><img className='img-fluid' style={{ width: '1.5rem' }} src={process.env.PUBLIC_URL + '/images/right-arrow.png'} /></button>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
             </div>
+
           ) : (
             <>
               <Permissions.Provider value={props.permissions} >
@@ -176,15 +191,14 @@ function Connectapp(props) {
 }
 
 function Switchpage() {
-  // const [auth, setauth] = useState(true);
+
   const [email, setemail] = useState('flex');
   const [next, setnext] = useState('none');
   const [password, setpassword] = useState('none');
   const [passvisibility, setpassvisibility] = useState('password');
   const [load, setload] = useState()
   const [permissions, setpermissions] = useState([])
-  // 'Access-Control-Allow-Methods': '*',
-  // "Access-Control-Allow-Headers": "'Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token'",
+
   const topassword = () => {
     setpassword('flex');
     setemail('none');
@@ -246,61 +260,61 @@ function Switchpage() {
       return <Connectapp username={localStorage.getItem('name')} designation={localStorage.getItem('designation')} id={localStorage.getItem('id')} permissions={permissions} />
     } else {
       return (
-  
-          <div className='loginform p-0 m-0'>
-            {/* <div className="navbar mb-5 justify-content-end">
+
+        <div className='loginform p-0 m-0'>
+          {/* <div className="navbar mb-5 justify-content-end">
               <img src={process.env.PUBLIC_URL + "/images/logo.png"} alt='image' className="float-end img-fluid col-lg-1 col-3 me-lg-5 me-2" />
             </div> */}
-            <section className="signinsection">
-              <div className=" p-0 m-0 formsection ">
-                <h4 className='text-center text-charcoal fw-semibold mb-4'>Login to Aartas</h4>
-                <form autoComplete="off" onSubmit={(e) => Submit(e)}>
-                  <div className="">
-                    <div className={`row d-${email} justify-content-center p-0 m-0`} id="userinput">
-                      <div className="col-1"></div>
-                      <div className="col-lg-6 col-md-8 col-sm-10 col-10 align-items-center d-flex userinput">
-                        <p className="m-0 ms-1" id="inputheading">Enter your Aartas Email ID</p>
-                        <input type="email" className="form-control bg-seashell" id="email" placeholder="example@aartas.com" value={logininput.email} autoComplete="false" onChange={(e) => { handleinput(e); if (e.target.value != '') { setnext('block'); } if (e.target.value == '') { setnext('none'); } }} />
-                      </div>
-                      <div className={`col-lg-1 d-flex  col-2 align-items-center`}>
-                        <a className={`next d-${next} text-decoration-none text-center text-charcoal p-2 rounded`} id="next" onClick={topassword}>Next</a>
-                      </div>
-
+          <section className="signinsection">
+            <div className=" p-0 m-0 formsection ">
+              <h4 className='text-center text-charcoal fw-semibold mb-4'>Login to Aartas</h4>
+              <form autoComplete="off" onSubmit={(e) => Submit(e)}>
+                <div className="">
+                  <div className={`row d-${email} justify-content-center p-0 m-0`} id="userinput">
+                    <div className="col-1"></div>
+                    <div className="col-lg-6 col-md-8 col-sm-10 col-10 align-items-center d-flex userinput">
+                      <p className="m-0 ms-1" id="inputheading">Enter your Aartas Email ID</p>
+                      <input type="email" className="form-control bg-seashell" id="email" placeholder="example@aartas.com" value={logininput.email} autoComplete="false" onChange={(e) => { handleinput(e); if (e.target.value != '') { setnext('block'); } if (e.target.value == '') { setnext('none'); } }} />
                     </div>
-                    <div className={`row d-${password} justify-content-center`} id="passinput">
-                      <div className="col-lg-1 col-2 col-md-1 align-items-center d-flex">
-                        <a className="back text-decoration-none text-center p-2 rounded" onClick={toemail}>Back</a>
-                      </div>
-                      {
-                        load ? (
-                          <div className="col-lg-6 col-md-8 col-sm-10 col-10 py-1 pb-1 userinput text-center">
-                            <div class="spinner-border" role="status">
-                              <span class="visually-hidden">Loading...</span>
-                            </div>
-                          </div>) : (
-                          <div className="col-lg-6 col-md-8 col-sm-10 col-10 align-items-center d-flex userinput">
-                            <p className="m-0" id="inputheading">Enter your Password</p>
-                            <input type={passvisibility} className="form-control bg-seashell" id="password" placeholder="examplepassword123" autoComplete="new-password" onChange={(e) => handleinput(e)} value={logininput.password} />
-                          </div>
-                        )
-                      }
-                      <div className="col-1 align-items-center justify-content-center d-flex">
-                        <button type="button" className=" p-2 rounded submit text-center" disabled={load == true ? true : false} onClick={Submit}>Submit</button>
-                      </div>
-                      <div className="col-12 p-0 m-0">
-                        <div className="col text-center">
-                          <input className="form-check-input" onClick={passwordvisibility} type="checkbox" value="" id="flexCheckDefault" />
-                          <label className="form-check-label ms-2 text-charcoal" htmlFor="flexCheckDefault">Check Password</label>
-                        </div>
-                      </div>
-                      <div className="col-5 text-center d-none"><a href="#" className="text-decoration-none">forgot password</a></div>
-
+                    <div className={`col-lg-1 d-flex  col-2 align-items-center`}>
+                      <a className={`next d-${next} text-decoration-none text-center text-charcoal p-2 rounded`} id="next" onClick={topassword}>Next</a>
                     </div>
+
                   </div>
-                </form>
-              </div>
-            </section>
-          </div>
+                  <div className={`row d-${password} justify-content-center`} id="passinput">
+                    <div className="col-lg-1 col-2 col-md-1 align-items-center d-flex">
+                      <a className="back text-decoration-none text-center p-lg-2 p-md-2 p-1 rounded" onClick={toemail}>Back</a>
+                    </div>
+                    {
+                      load ? (
+                        <div className="col-lg-6 col-md-8 col-sm-10 col-10 py-1 pb-1 userinput text-center">
+                          <div class="spinner-border" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                          </div>
+                        </div>) : (
+                        <div className="col-lg-6 col-md-8 col-sm-10 col-10 align-items-center d-flex userinput">
+                          <p className="m-0" id="inputheading">Enter your Password</p>
+                          <input type={passvisibility} className="form-control bg-seashell" id="password" placeholder="examplepassword123" autoComplete="new-password" onChange={(e) => handleinput(e)} value={logininput.password} />
+                        </div>
+                      )
+                    }
+                    <div className="col-1 align-items-center justify-content-center d-flex">
+                      <button type="button" className=" p-lg-2 p-md-2 p-1 rounded submit text-center" disabled={load == true ? true : false} onClick={Submit}>Submit</button>
+                    </div>
+                    <div className="col-12 p-0 m-0">
+                      <div className="col text-center">
+                        <input className="form-check-input" onClick={passwordvisibility} type="checkbox" value="" id="flexCheckDefault" />
+                        <label className="form-check-label ms-2 text-charcoal" htmlFor="flexCheckDefault">Check Password</label>
+                      </div>
+                    </div>
+                    <div className="col-5 text-center d-none"><a href="#" className="text-decoration-none">forgot password</a></div>
+
+                  </div>
+                </div>
+              </form>
+            </div>
+          </section>
+        </div>
       )
     }
   }

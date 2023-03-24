@@ -209,8 +209,8 @@ function Navbar(props) {
                 <button className={`d-${logoutbtn} button button-lightred start-0 end-0 position-absolute text-burntumber w-100 fw-bolder`} style={{ zIndex: '1000' }} onClick={logout}>Logout</button>
               </button>
             </div>
-            <div className="col-lg-auto col-xl-7 align-self-center col-sm-auto col-md-auto col-12 p-0 m-0 menu order-1 order-xl-0 order-sm-0 order-md-0 order-sm-0">
-              <div className="row p-0 m-0 gx-auto justify-content-lg-center justify-content-md-center">
+            <div className="col-lg-auto col-xl-7 align-self-center col-sm-auto col-md-auto col-12 p-0 m-0 menu order-1 order-xl-0 order-sm-0 order-md-0 order-sm-0 mt-lg-0 mt-md-0 md-sm-0 mt-2">
+              <div className="row p-0 m-0 gx-auto justify-content-lg-center justify-content-md-center justify-content-center">
                 {
                   NavbarIcons.map((data, i) => (
                     <div className={` ms-lg-2 col-auto align-self-end `} onClick={() => sethighlighticon(data.path)}>
@@ -243,17 +243,16 @@ function Navbar(props) {
         </div>
       </div>
 
-      <div className={`col-lg-5 col-md-6 col-sm-12 col-12 rounded-4 p-2 me-lg-2 me-md-2 mt-2 top-0 scroll patientinfosection d-${patientform} border-start border-top border-2 position-absolute`} >
+      <div className={`col-lg-5 col-md-6 col-sm-12 col-12 rounded-4 p-2 me-lg-2 me-md-2 mt-2 scroll patientinfosection d-${patientform} border position-absolute`} >
         <AddPatient togglepatientform={togglepatientform} />
       </div>
-      <div className={`col-lg-5 col-md-6 col-sm-12 rounded-4 p-2 me-2 mt-2 col-12 bg-seashell appointmentinfosection d-${appointmentform} border-start border-top border-2 position-absolute`} style={{ zIndex: '4', right: '0' }} >
+      <div className={`col-lg-5 col-md-6 col-sm-12 rounded-4 p-2 me-lg-2 me-md-2 mt-2 col-12 bg-seashell appointmentinfosection d-${appointmentform} border-start border-top border-2 position-absolute`} style={{ zIndex: '4', right: '0' }} >
         <AddAppointment toggleappointmentform={toggleappointmentform} formshift={formshift} fetchapi={props.fetchapi} />
       </div>
       {
         Docval == 1 ? (
-          <div className={`col-lg-5 col-md-6 col-sm-12 col-12 px-2 me-lg-2 me-md-2 mt-lg-2 mt-md-2 mt-1  rounded-4 doctorinfosection d-${doctorform}  border-start border-top border-2 position-absolute`} >
+          <div className={`col-lg-5 col-md-6 col-sm-12 col-12 px-2 me-lg-2 me-md-2 mt-lg-2 mt-md-2 mt-1 bg-seashell  rounded-4 doctorinfosection d-${doctorform} shadow-sm border position-absolute`} >
             <AddDoctorSlot toggledoctorform={toggledoctorform} staticBackdrop4={'staticBackdrop3'} fetchapi={props.fetchapi} />
-
           </div>
         ) : (
           <div></div>
@@ -398,7 +397,7 @@ function Doctorsection(props) {
       </section>
       {
         Docval == 1 ? (
-          <div className={`col-lg-5 col-md-6 col-sm-12 col-12 top-0 doctorinfosection d-${doctorform} me-lg-2  me-md-2 mt-2 rounded-4  border-start border-top border-2 position-absolute`} >
+          <div className={`col-lg-5 col-md-6 col-sm-12 col-12 doctorinfosection d-${doctorform} me-lg-2 top-0  me-md-2 rounded-4 border bg-seashell shadow-sm position-absolute`} style={{ zIndex: '2', marginTop: '5.1rem' }} >
             <AddDoctorSlot toggledoctorform={toggledoctorform} staticBackdrop4={'staticBackdrop4'} fetchapi={props.fetchapi} />
           </div>
         ) : (
@@ -530,25 +529,28 @@ function Appointments(props) {
       return ' | ' + '(' + arr.length + ' Appointments)'
     }
   }
+  // useEffect(() => {
 
-  console.log(docnames, visibles, getAppointments.length, appointmentdata.length)
+  // }, [fromdate, todate])
+
+  // console.log(docnames, visibles, getAppointments.length, appointmentdata.length)
   return (
     <>
       <section className="page2appointment ">
         <div className="container-fluid">
           <div className="row justify-content-between">
-            <div className="col-6 col-sm-12 col-md-6 col-lg-6 col-xl-4">
+            <div className="col-12 col-sm-12 col-md-8 col-lg-6 col-xl-4">
               <div className="col-12 mt-3">
-                <h4 className="p-2">All Appointments</h4>
+                <h4 className="p-lg-2 p-md-2 p-sm-2">All Appointments</h4>
               </div>
               <div className="col-12 mt-2">
-                <div className="row p-0 m-0 g-lg-3 g-md-1 g-sm-2">
+                <div className="row p-0 m-0 g-lg-2 g-md-2 g-sm-2 g-2">
                   {
                     options.map((data, index) => (
                       <div className="col-auto">
                         <button className={`button-sm px-4 rounded-5 border-charcoal position-relative button-${optionsindex == index ? 'charcoal' : 'pearl'}`} key={index} onClick={(e) => { setoptionsindex(index); settype(data[1]) }}>
                           {data[0]}
-                          <span class={` d-${optionsindex == index ? '' : 'none'} position-absolute top-0 text-pearl start-100 translate-middle badge rounded-pill bg-burntumber border-burntumber`}>
+                          <span class={` d-${optionsindex == index ? '' : 'none'} position-absolute top-0 text-pearl start-100 translate-middle badge rounded-pill bg-burntumber border-burntumber`} style={{ zIndex: '2' }}>
                             {doctorid ? appointmentdata.length : getAppointments.length}
                             <span class="visually-hidden">unread messages</span>
                           </span>
@@ -559,23 +561,23 @@ function Appointments(props) {
                 </div>
               </div>
             </div>
-            <div className="col-6 col-sm-12 col-md-6 col-lg-6 col-xl-4 daterange">
+            <div className="col-12 col-sm-12 col-md-4 col-lg-6 col-xl-4 daterange">
               <div className="col-12 mt-3 mb-2">
-                <img src={process.env.PUBLIC_URL + "/images/today.png"} alt="displaying_image" style={{ width: "2rem" }} />
+                <img src={process.env.PUBLIC_URL + "/images/today.png"} alt="displaying_image" />
                 <span className="daterangetitle">Select Date Range</span>
                 <button className="float-end button-sm button-burntumber" onClick={clearfields}>Clear</button>
               </div>
               <div className="d-flex g-md-3">
-                <input placeholder="Start Date" className="form-control" value={fromdate ? fromdate : ''} type="date" onChange={(e) => { setfromdate(e.target.value) }} />
+                <input placeholder="Start Date" className="form-control" value={fromdate ? fromdate : APIDate ? APIDate : ''} onFocus={() => { settodate(); setdoctorid() }} type="date" onChange={(e) => { setfromdate(e.target.value) }} />
                 <div className="text-center">_</div>
-                <input disabled={fromdate == null} value={todate ? todate : ''} placeholder="End Date" className="form-control" type="date" onChange={(e) => { settodate(e.target.value) }} />
+                <input disabled={fromdate == null} value={todate ? todate : fromdate ? fromdate : APIDate ? APIDate : ''} placeholder="End Date" className="form-control" type="date" onChange={(e) => { settodate(e.target.value) }} />
               </div>
               <div className="col-12 mt-2">
                 <h6 className="text-burntumber bold fw-bolder">Select Doctor to see their appointments</h6>
-                <select className="form-control" disabled={fromdate == null} value={doctorid ? doctorid : ''} onChange={(e) => { setdoctorid(e.target.value) }}>
+                <select className="form-control" value={doctorid ? doctorid : ''} onChange={(e) => { setdoctorid(e.target.value) }}>
                   <option selected value="Select Doctor">Select Doctor</option>
                   {
-                    visibles != null ? (
+                    visibles ? (
                       docnames.map((response, i) => (
                         <option className={`form-control text-charcoal`} key={i} value={response[0]} >Dr. {response[1]}{' '}{' '}{CountAppointments(response[0])}</option>
                       ))
@@ -588,7 +590,7 @@ function Appointments(props) {
             </div>
           </div>
         </div>
-        <section className="container-fluid scroll scroll-y mt-2 " style={{ minHeight: '68vh', maxHeight: '68vh' }}>
+        <section className="container-fluid scroll scroll-y mt-2 " >
           <table className="table text-start">
             <thead className="text-charcoal75 fw-bold">
               <tr className=" bg-pearl position-sticky top-0">
@@ -695,7 +697,6 @@ function Patients() {
       }
     }
   }
-
   function confirmmessage(name, patientid) {
     customconfirm()
     Notiflix.Confirm.show(
@@ -713,7 +714,6 @@ function Patients() {
       },
     );
   }
-
   const reversefunction = (date) => {
     if (date) {
       date = date.split("-").reverse().join("-")
