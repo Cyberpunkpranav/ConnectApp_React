@@ -39,7 +39,7 @@ function Salesection(props) {
                 {
                   first.map((e, i) => {
                     return (
-                      <div className="col-auto salebuttons">
+                      <div className="col-auto salebuttons ">
                         <button className={`btn btn-sm px-4 rounded-5 text-${i === second ? "light" : "dark"} bg-${i === second ? "charcoal" : "seashell"}`} onClick={(a) => setSecond(i)} >{e}</button>
                       </div>
                     )
@@ -282,33 +282,27 @@ function Saleentrysection(props) {
     <>
       <button className="button addentrypurchase button-charcoal position-absolute" onClick={toggle_nsef}>
         <img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt='displaying_image' className="img-fluid" style={{ width: `1.5rem` }} />Entry Sale</button>
-      <div className="row p-0 m-0 justify-content-lg-between justify-content-md-around justify-content-center text-center">
-        <div className="col-lg-3 col-auto text-center ">
-          <button type='button' className="btn p-0 heading text-charcoal fw-bolder position-relative" style={{ width: 'fit-content' }}>
-            Sale Entry   <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-burntumber">
-              {pagecount}
-              <span class="visually-hidden">unread messages</span>
-            </span>
-          </button>
+      <div className="row p-0 m-0 justify-content-lg-between justify-content-md-evenly justify-content-center text-center">
+        <div className="col-lg-2 col-md-2 col-3 text-center p-0 m-0 ">
+          <button type='button' className="btn p-0 m-0 heading text-charcoal fw-bolder  " style={{ width: 'fit-content' }}>{pagecount}  {pagecount > 0 ? 'Sale Entries' : 'Sale Entry'} </button>
         </div>
-
-        <div className="form-control w-50  border-0 col-auto algin-middle">
-          <div className="row p-0 m-0 border-burntumber fw-bolder rounded-2 text-center justify-content-end algin-middle">
+        <div className="col-lg-8 col-md-8 col-7  p-0 m-0  border-0">
+          <div className="row p-0 m-0 border-burntumber fw-bolder rounded-2">
             {/* <div className="col-4 bg-pearl rounded-2">
               <select className='p-0 m-0 bg-pearl border-0 text-burntumber fw-bolder' value={channel ? channel : ''} onChange={(e) => { setchannel(e.target.value) }}>
                 <option className='border-0 text-burntumber fw-bolder' value='1'>Pharmacy</option>
                 <option className='border-0 text-burntumber fw-bolder' value='2'>Consumables</option>
               </select>
             </div> */}
-            <div className="col-6 p-0 m-0 ps-1 text-burntumber fw-bolder bg-pearl  rounded-2 algin-middle">
-              <input type='date' placeholder='fromdate' className='form-control p-0 m-0 border-0 bg-pearl text-burntumber text-center fw-bolder ' value={fromdate ? fromdate : currentDate ? currentDate : ''} onChange={(e) => { setfromdate(e.target.value) }} />
+            <div className="col-6 p-0 m-0 text-burntumber text-center fw-bolder bg-pearl  rounded-2 ">
+              <input type='date' placeholder='fromdate' className='p-0 m-0 border-0 bg-pearl text-burntumber text-center fw-bolder ' value={fromdate ? fromdate : currentDate ? currentDate : ''} onChange={(e) => { setfromdate(e.target.value) }} />
             </div>
-            <div className="col-6 p-0 m-0 pe-1 text-burntumber fw-bolder bg-pearl rounded-2 align-middle">
-              <input type='date' className='form-control p-0 m-0 border-0 bg-pearl text-burntumber text-center fw-bolder ' value={todate ? todate : currentDate ? currentDate : ''} onChange={(e) => { settodate(e.target.value) }} />
+            <div className="col-6 p-0 m-0  text-burntumber text-center fw-bolder bg-pearl rounded-2">
+              <input type='date' className=' p-0 m-0 border-0 bg-pearl text-burntumber text-center fw-bolder' value={todate ? todate : fromdate ? fromdate : currentDate ? currentDate : ''} onChange={(e) => { settodate(e.target.value) }} />
             </div>
           </div>
         </div>
-        <div className="col-1 export col-md-2 col-lg-2 align-self-center text-center me-3">
+        <div className="col-2 p-0 m-0 export col-md-2 col-lg-2 align-self-center text-center ">
           <ExportSaleEntry saleentryarr={saleentryarrforExcel} fromdate={reversefunction(fromdate)} todate={reversefunction(todate)} />
         </div>
       </div>
@@ -2433,10 +2427,10 @@ function Purchaseentrysection(props) {
               </select>
             </div>
             <div className="col-4 text-burntumber fw-bolder bg-pearl">
-              <input type='date' className='p-0 m-0 border-0 text-burntumber fw-bolder bg-pearl ' value={fromdate ? fromdate : ''} onChange={(e) => { setfromdate(e.target.value) }} />
+              <input type='date' className=' p-0 m-0 border-0 text-burntumber fw-bolder bg-pearl ' value={fromdate ? fromdate : currentDate ? currentDate : ''} onChange={(e) => { setfromdate(e.target.value) }} />
             </div>
             <div className="col-4 text-burntumber fw-bolder bg-pearl rounded-2">
-              <input type='date' className='p-0 m-0 border-0 text-burntumber fw-bolder bg-pearl ' value={todate ? todate : ''} onChange={(e) => { settodate(e.target.value) }} />
+              <input type='date' className=' p-0 m-0 border-0 text-burntumber fw-bolder bg-pearl ' value={todate ? todate : fromdate ? fromdate : currentDate ? currentDate : ''} onChange={(e) => { settodate(e.target.value) }} />
             </div>
           </div>
         </div>
@@ -5043,7 +5037,7 @@ function Stockvaccinesection() {
                         </td>
                         {
                           index == i ? (
-                            <td className={`stockdetailsfrom bg-white border border-1 col-lg-11 rounded-4 shadow p-0 col-md-11 col-sm-11 col-10 col-xl-6 d-${index == i ? detailsform : 'none'} position-absolute start-0 end-0 top-0`}>
+                            <td className={`stockdetailsfrom bg-white border border-1 col-lg-11 rounded-4 shadow p-0 col-md-12 col-sm-11 col-10 col-xl-6 d-${index == i ? detailsform : 'none'} position-absolute start-0 end-0 top-0`}>
                               <VaccinesectionItemDetails toggle_detailsform={toggle_detailsform} data={vaccinearr[i]} />
                             </td>
                           ) : (<></>)
@@ -5424,27 +5418,25 @@ function VaccinesectionItemDetails(props) {
       <h6 className='text-center text-charcoal fw-bold pt-2'>{props.data.name}</h6>
       <hr className='p-0 m-0' />
       <button className='btn-close position-absolute end-0 top-0 p-1 m-1' onClick={props.toggle_detailsform}></button>
-      <p className='bg-pearl m-0 p-0 border rounded-2 p-2 ms-3 mt-2 align-middle' style={{ width: 'fit-content' }}>
-        <span className='text-charocal fw-bold p-0 m-0'>Total</span><span className='vr mx-2'></span><span className='text-charocal fw-bold p-0 m-0'>  {props.data.total_amount ? props.data.total_amount : ''}</span>
-      </p>
-      <div className='p-0 m-0 scroll'>
+
+      <div className='p-0 m-0 scroll py-4'>
         <table className='table text-center scroll'>
           <thead>
             <tr>
               <th>Channel</th>
-              <th>Manuf.</th>
               <th>Expiry</th>
+              <th>Qty</th>
               <th>MRP</th>
               <th>Disc%</th>
               <th>Rate</th>
-              <th className='bg-seashell'>CGST%</th>
               <th className='bg-seashell'>CGST</th>
-              <th className='bg-seashell'>SGST%</th>
+              <th className='bg-seashell'>CGST%</th>
               <th className='bg-seashell'>SGST</th>
-              <th className='bg-seashell'>IGST%</th>
+              <th className='bg-seashell'>SGST%</th>
               <th className='bg-seashell'>IGST</th>
+              <th className='bg-seashell'>IGST%</th>
               <th>Cost</th>
-              <th>Qty</th>
+
               <th>Total Amt.</th>
             </tr>
           </thead>
@@ -5452,8 +5444,8 @@ function VaccinesectionItemDetails(props) {
 
             <tr className='p-0 m-0 px-1'>
               <td className='p-0 m-0 px-1'>{props.data.channel == 1 ? 'Pharmacy' : 'Clinic'}</td>
-              <td className='p-0 m-0 px-1'>{props.data.mfd_date ? reversefunction(props.data.mfd_date) : ''}</td>
               <td className='p-0 m-0 px-1'>{props.data.expiry_date ? reversefunction(props.data.expiry_date) : ''}</td>
+              <td className='p-0 m-0 px-1'>{props.data.qty ? props.data.qty : ''}</td>
               <td className='p-0 m-0 px-1'>{props.data.mrp ? props.data.mrp : ''}</td>
               <td className='p-0 m-0 px-1'>{props.data.discount && props.data.trade_discount ? Number(props.data.discount) + Number(props.data.trade_discount) : props.data.discount ? props.data.discount : props.data.trade_discount}</td>
               <td className='p-0 m-0 px-1'>{props.data.rate ? props.data.rate : ''}</td>
@@ -5464,7 +5456,7 @@ function VaccinesectionItemDetails(props) {
               <td className='p-0 m-0 px-1 bg-seashell'>{props.data.IGST ? props.data.IGST : ''}</td>
               <td className='p-0 m-0 px-1 bg-seashell'>{props.data.IGST_rate ? props.data.IGST_rate : ''}</td>
               <td className='p-0 m-0 px-1'>{props.data.cost ? props.data.cost : ''}</td>
-              <td className='p-0 m-0 px-1'>{props.data.qty ? props.data.qty : ''}</td>
+
               <td className='p-0 m-0 px-1'>{props.data.total_amount ? props.data.total_amount : ''}</td>
 
             </tr>

@@ -20,7 +20,21 @@
     --charcoal75: #222023ad;
     --lightred50:#e8ad988a;
 }
+select  {
+-webkit-appearance:none ;
 
+} 
+
+input[type='date']{
+ -webkit-appearance:none ; 
+ 
+}
+input[type='text']{
+    -webkit-appearance:none ; 
+   }
+input[type='checkbox']{
+    -webkit-appearance:none ; 
+   }
 /*---------------------------------------------------bodyscrollbar css-------------------------------------------------------------------- */
 body::-webkit-scrollbar {
     height: 0.7rem;
@@ -383,10 +397,13 @@ background: none;
         background-size:contain;
     }
 }
-@media  (max-width:418px) {
+@media  (max-width:512px) {
     .pagination .btn{
-        padding:0.275rem 0.75rem !important;
-        font-size:0.8rem !important;
+        padding:0.275rem 0.65rem !important;
+        font-size:0.7rem !important;
     }
-
+    .pagination .page-link{
+        padding:0.275rem 0.45rem !important;
+        font-size:0.7rem !important;
+    }
 }

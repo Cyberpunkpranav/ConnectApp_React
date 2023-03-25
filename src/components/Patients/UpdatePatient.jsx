@@ -9,7 +9,7 @@ import { geocodeByAddress, getLatLng } from 'react-google-places-autocomplete'
 import GooglePlacesAutocomplete from "react-google-places-autocomplete"
 import Notiflix from 'notiflix';
 import '../../css/bootstrap.css';
-
+import '../../css/patient.css';
 const UpdatePatient = (props) => {
     const url = useContext(URL);
     let adminid = localStorage.getItem('id')
@@ -165,6 +165,43 @@ const UpdatePatient = (props) => {
 
     const [data, setData] = useState("");
     useEffect(() => {
+
+        if (data.value !== undefined && data.value.place_id !== undefined) {
+            setpincode()
+            console.log(data.value.place_id)
+            // initialize the map
+            const map = new window.google.maps.Map({
+                center: { lat: lat, lng: lng },
+                zoom: 14
+            });
+            // initialize the PlacesService object with your API key and map
+            const placesService = new window.google.maps.places.PlacesService(map);
+
+            // send a getDetails request for the place using its Place ID
+            placesService.getDetails({
+                placeId: data.value.place_id
+            }, (placeResult, status) => {
+                if (status === 'OK') {
+                    console.log(placeResult)
+                    // find the address component with type "postal_code"
+                    const postalCodeComponent = placeResult.address_components.find(component => {
+                        return component.types.includes('postal_code');
+                    });
+
+                    if (postalCodeComponent) {
+                        const postalCode = postalCodeComponent.short_name;
+                        setpincode(postalCode);
+                    } else {
+                        Notiflix.Notify.warning('Postal code not found for this place.');
+                    }
+                } else {
+                    Notiflix.Notify.failure(`Failed to get place details: ${status}`);
+                }
+            });
+        } else {
+            console.log(data)
+        }
+
         data === "" ? setData("") : setData(data);
         setplace(data.label)
     }, [data]);
@@ -177,7 +214,7 @@ const UpdatePatient = (props) => {
         <>
             <h5 className="text-center mt-2 position-relative">Update Patient Details </h5>
             <button type="button" className="btn-close closebtn position-absolute" aria-label="Close" onClick={props.CloseUpdatePatient} ></button>
-            <hr />
+            <hr className='p-0 m-0' />
             <div className="col-12">
                 <div className="form-group col-10 m-auto py-3">
                     <label htmlFor="inputEmail4" className="mb-2">Enter Number</label>

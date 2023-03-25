@@ -134,24 +134,25 @@ const Payments = (props) => {
     }
     // console.log(advancepaymentmethods)
     console.log(props.appointmentdata)
+    console.log(advancepaid)
     return (
         <div className='bg-seashell rounded-2'>
-            <h5 className='fs-5 text-center'>{props.patientname} Payments Section</h5>
+            <h5 className='text-center'>{props.patientname} Payments Section</h5>
             <button className='btn-close position-absolute end-0 p-2 top-0' onClick={props.toggle_payments}></button>
-            <hr />
             <div className="d-flex justify-content-center p-0 m-0 gx-2 mt-3">
                 {
                     blocks.map((Data, i) => (
-                       
-                            <button className={`button button-${i === blocksindex ? 'charcoal' : 'seashell'} border border-dark rounded-0`} onClick={() => { setblocksindex(i) }}>{Data}</button>
-                    
+
+                        <button className={`button button-${i === blocksindex ? 'charcoal' : 'seashell'} border border-dark rounded-0`} onClick={() => { setblocksindex(i) }}>{Data}</button>
+
                     ))
                 }
 
             </div>
             <hr />
             <div className={`container-fluid p-0 m-0 text-center d-${blocksindex === 0 ? 'block' : 'none'}`}>
-                <h5 className='text-burntumber fw-bolder mb-3 mt-2'>Advance Payment from {props.patientname}</h5>
+
+                <h5 className='text-charcoal fw-bolder mb-3 mt-2'>Advance Payment from {props.patientname}</h5>
                 {
                     loadadvancepayments || props.isLoading ? (
                         <div className="col-6 py-2 pb-2 m-auto text-center">
@@ -161,11 +162,23 @@ const Payments = (props) => {
                         </div>
                     ) : (
                         advancepaid && advancepaid.advnace_total !== 0 ? (
-                            <div className='row align-items-center p-0 m-0'>
-                                <h6 className='text-charcoal col-6 fw-bold mt-2'>Advance Amount Balance</h6>
-                                <input className=' col-6 p-0 m-0 form-control w-50 text-center bg-seashell ' value={advancepaid.advnace_total} />
-                                <hr />
+                            <div className='text-center'>
+                                <table className='table'>
+                                    <tr>
+                                        <th>Description</th>
+                                        <th>Amount</th>
+                                    </tr>
+                                    <tr className='align-middle'>
+                                        <td></td>
+                                        <td>{advancepaid.advnace_total}</td>
+                                    </tr>
+                                </table>
                             </div>
+                            // <div className='row align-items-center p-0 m-0'>
+                            //     <h6 className='text-charcoal col-6 fw-bold mt-2'>Advance Amount Balance</h6>
+                            //     <input className=' col-6 p-0 m-0 form-control w-50 text-center bg-seashell ' value={advancepaid.advnace_total} />
+                            //     <hr />
+                            // </div>
 
                         ) : (
                             <div className='bg-lightyellow text-center fw-bolder rounded-2 p-2'>No Advance Payments Found</div>
@@ -173,9 +186,9 @@ const Payments = (props) => {
 
                     )
                 }
-                <h5 className='text-burntumber fw-bolder mb-3 mt-2'>Add Advance Payment</h5>
+                <h5 className='text-charcoal fw-bolder mb-3 mt-2'>Add Advance Payment</h5>
                 <label className='text-charcoal fw-bold'>Description</label>
-                <input type='text' className='form-control p-0 m-0 p-1 bg-seashell mb-3' value={Description ? Description : ''} onChange={(e) => setDescription(e.target.value)} />
+                <input type='text' className='form-control p-0 m-0 p-1 bg-seashell mb-3 w-75 mx-auto' value={Description ? Description : ''} onChange={(e) => setDescription(e.target.value)} />
                 <label className='text-charcoal fw-bold'>Select Payment Method</label>
                 {
                     advancepaymentmethods.map((data, i) => (
@@ -205,7 +218,7 @@ const Payments = (props) => {
                 <div className="container-fluid text-center mt-2">
                     <button className='btn py-0' onClick={() => setadvancepaymentmethods(prevState => [...prevState, advancepaymentmethoddetails])}><img src={process.env.PUBLIC_URL + '/images/add.png'} className='img-fluid' style={{ width: '2rem' }} /></button>
                 </div>
-                <button className='button button-burntumber mt-4' onClick={AddadvancePaymentMethods}>Save</button>
+                <button className='button button-charcoal mt-lg-4 mt-md-3 mt-1'  disabled={Description ? false : true} onClick={AddadvancePaymentMethods}>Save</button>
             </div>
 
             <div className={`container-fluid p-0 m-0 d-${blocksindex === 1 ? 'block' : 'none'} text-center`}>
@@ -300,7 +313,7 @@ const Payments = (props) => {
                                 <div className="container-fluid text-center mt-2">
                                     <button className='btn py-0' onClick={() => setpendingpaymentmethods(prevState => [...prevState, pendingpaymentmethoddetails])}><img src={process.env.PUBLIC_URL + '/images/add.png'} className='img-fluid' style={{ width: '2rem' }} /></button>
                                 </div>
-                                <button className='button button-burntumber mt-4' onClick={UpdatePendingPayments}>Save</button>
+                                <button className='button button-charcoal mt-lg-4 mt-md-3 mt-1' onClick={UpdatePendingPayments}>Save</button>
                             </>
                         )
                     ) : (

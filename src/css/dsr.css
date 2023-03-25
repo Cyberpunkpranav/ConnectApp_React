@@ -113,3 +113,15 @@ background-color: var(--seashell);
         top:15vh;
     }
 }
+
+@media (max-width:512px){
+    .Appointments_Dsrsection .tab-pane p{
+        font-size:0.6rem;
+    }
+    .Appointments_Dsrsection .tab-pane h6{
+        font-size:0.7rem;
+    }
+    /* .Appointments_Dsrsection .tab-pane div{
+
+    } */
+}

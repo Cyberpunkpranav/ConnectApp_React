@@ -163,11 +163,23 @@ const Payments = (props) => {
                         </div>
                     ) : (
                         advancepaid && advancepaid.advnace_total !== 0 ? (
-                            <div className='row align-items-center p-0 m-0'>
-                                <h6 className='text-charcoal col-6 fw-bold mt-2'>Advance Amount Balance</h6>
-                                <input className=' col-6 p-0 m-0 form-control w-50 text-center bg-seashell ' value={advancepaid.advnace_total} />
-                                <hr />
+                            <div className='text-center'>
+                                <table className='table'>
+                                    <tr>
+                                        <th>Description</th>
+                                        <th>Amount</th>
+                                    </tr>
+                                    <tr className='align-middle'>
+                                        <td></td>
+                                        <td>{advancepaid.advnace_total}</td>
+                                    </tr>
+                                </table>
                             </div>
+                            // <div className='row align-items-center p-0 m-0'>
+                            //     <h6 className='text-charcoal col-6 fw-bold mt-2'>Advance Amount Balance</h6>
+                            //     <input className=' col-6 p-0 m-0 form-control w-50 text-center bg-seashell ' value={advancepaid.advnace_total} />
+                            //     <hr />
+                            // </div>
 
                         ) : (
                             <div className='bg-lightyellow text-center fw-bolder rounded-2 p-2'>No Advance Payments Found</div>
@@ -175,7 +187,7 @@ const Payments = (props) => {
 
                     )
                 }
-                <hr/>
+                <hr />
                 <h5 className='text-burntumber fw-bolder mb-3 mt-3'>Add Advance Payment</h5>
                 <label className='text-charcoal fw-bold'>Description</label>
                 <input type='text' className='form-control p-0 m-0 p-1 w-75 bg-seashell mb-3 mx-auto' value={Description ? Description : ''} onChange={(e) => setDescription(e.target.value)} />
@@ -208,7 +220,7 @@ const Payments = (props) => {
                 <div className="container-fluid text-center mt-2">
                     <button className='btn py-0' onClick={() => setadvancepaymentmethods(prevState => [...prevState, advancepaymentmethoddetails])}><img src={process.env.PUBLIC_URL + '/images/add.png'} className='img-fluid' style={{ width: '2rem' }} /></button>
                 </div>
-                <button className='button button-burntumber mt-4 mb-2' disabled={Description?false:true} onClick={AddadvancePaymentMethods}>Save</button>
+                <button className='button button-charcoal mt-lg-4 mt-md-3 mt-1 mb-2' disabled={Description ? false : true} onClick={AddadvancePaymentMethods}>Save</button>
             </div>
 
             <div className={`container-fluid p-0 m-0 d-${blocksindex === 1 ? 'block' : 'none'} text-center`}>
@@ -303,7 +315,7 @@ const Payments = (props) => {
                                 <div className="container-fluid text-center mt-2">
                                     <button className='btn py-0' onClick={() => setpendingpaymentmethods(prevState => [...prevState, pendingpaymentmethoddetails])}><img src={process.env.PUBLIC_URL + '/images/add.png'} className='img-fluid' style={{ width: '2rem' }} /></button>
                                 </div>
-                                <button className='button button-burntumber mt-4 mb-2'  onClick={UpdatePendingPayments}>Save</button>
+                                <button className='button button-charcoal mt-lg-4 mt-md-3 mt-1 mb-2' onClick={UpdatePendingPayments}>Save</button>
                             </>
                         )
                     ) : (

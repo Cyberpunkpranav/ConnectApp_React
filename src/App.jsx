@@ -738,8 +738,8 @@ function Patients() {
   }
   return (
     <section className="patientsection text-center position-relative">
-      <div className="conatainer">
-        <input className="form-control m-auto mt-2" placeholder="Search Patient By Name or Number" style={{ width: '30rem' }} onChange={(e) => { setpatientsearch(e.target.value); getAllPatients(); }} onBlur={getAllPatients} />
+      <div className="conatainer searchbar">
+        <input className=" form-control m-auto mt-2" placeholder="Search Patient By Name or Number" onChange={(e) => { setpatientsearch(e.target.value); getAllPatients(); }} onBlur={getAllPatients} />
       </div>
       <div className="container-fluid p-0 m-0 scroll scroll-y " style={{ minHeight: '30rem' }}>
         <table className="table text-start" >
@@ -764,8 +764,8 @@ function Patients() {
             Loading ? (
               <tbody className=' text-center' style={{ minHeight: '30vh' }}>
                 <tr className='position-absolute border-0 start-0 end-0 px-5'>
-                  <div class="d-flex align-items-center">
-                    <strong className='fs-5'>Getting Details please be Patient ...</strong>
+                  <div class="d-flex align-items-center spinner">
+                    <strong className=''>Getting Details please be Patient ...</strong>
                     <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
                   </div>
                 </tr>
@@ -783,12 +783,12 @@ function Patients() {
                 <tbody>
                   {
                     PatientsList && PatientsList.map((data, i) => (
-                      <tr>
+                      <tr className="align-middle">
                         <td><button className="btn p-0 m-0" onClick={(e) => { settabindex(i); OpenUpdatePatient(i) }}><img src={process.env.PUBLIC_URL + "/images/confirmed.png"} style={{ width: "1.5rem" }} /></button>
                           {form == i ? (
 
 
-                            <section id={i} className={`updatepatientform text-start position-absolute d-${tabindex == i ? updatepatient : 'none'} bg-seashell rounded-2 shadow`}>
+                            <section id={i} className={`updatepatientform text-start position-absolute d-${tabindex == i ? updatepatient : 'none'} bg-seashell rounded-2 shadow-sm border`}>
                               <UpdatePatient index={i} getAllPatients={getAllPatients} CloseUpdatePatient={CloseUpdatePatient} patientid={data.id} data={data} phonecountrycode={data.phone_country_code ? data.phone_country_code : 'N/A'} PhoneNo={data.phone_number ? Number(data.phone_number) : ''} dob={data.dob ? data.dob : ''} gender={data.gender ? data.gender : ''} full_name={data.full_name ? data.full_name : ''} email={data.email ? data.email : ''} pincode={data.pin_code ? data.pin_code : ''} location={data.location ? data.location : ''} parent={data.parent} linkid={data.link_id ? data.link_id : ''} relation={data.relation} latitude={data.latitude} longitude={data.longitude} />
                             </section>
                           ) : (<></>)
@@ -817,17 +817,17 @@ function Patients() {
         </table>
       </div>
 
-      <div className="d-flex text-center justify-content-center mt-3">
+      <div className="container-fluid mt-2 d-flex justify-content-center">
 
         < ReactPaginate
           previousLabel={'Previous'}
           nextLabel={'Next'}
-          breakLabel={'. . .'}
+          breakLabel={'.'}
           pageCount={pages}
           marginPagesDisplayed={3}
           pageRangeDisplayed={2}
           onPageChange={getAllPatients}
-          containerClassName={'pagination'}
+          containerClassName={'pagination scroll align-self-center align-items-center'}
           pageClassName={'page-item text-charcoal'}
           pageLinkClassName={'page-link text-decoration-none text-charcoal border-charcoal rounded-2 mx-1'}
           previousClassName={'btn button-charcoal-outline me-2'}
@@ -913,8 +913,8 @@ function Doctors() {
 
   return (
     <section className="Doctorspage text-center position-relative">
-      <div className="conatainer">
-        <input className="form-control m-auto mt-2" placeholder="Search Doctor" style={{ width: '30rem' }} onChange={(e) => { setDoctorssearch(e.target.value) }} />
+      <div className="conatainer searchbar">
+        <input className="form-control m-auto mt-2" placeholder="Search Doctor"  onChange={(e) => { setDoctorssearch(e.target.value) }} />
       </div>
       <div className="container-fluid p-0 m-0 scroll scroll-y" style={{ minHeight: '30rem' }}>
         <table className="table text-start" >
@@ -936,7 +936,7 @@ function Doctors() {
               <tbody className=' text-center' style={{ minHeight: '30vh' }}>
                 <tr className='position-absolute border-0 start-0 end-0 px-5'>
                   <div class="d-flex align-items-center">
-                    <strong className='fs-5'>Getting Details please be Patient ...</strong>
+                    <strong className=''>Getting Details please be Patient ...</strong>
                     <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
                   </div>
                 </tr>

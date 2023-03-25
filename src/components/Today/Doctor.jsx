@@ -533,7 +533,7 @@ function DoctorSchedule(props) {
                             }
                             {
                               vitalindex === i ? (
-                                <td className={`vitals bg-${vitalindex === i ? 'lightred' : ''} col-lg-7 col-md-8 col-sm-12 col-12 col-xl-5 position-absolute border border-1 shadow-sm rounded-2 d-${vitalindex == i ? vitalsform : 'none'}`} style={{ zIndex: '3010' }}>
+                                <td className={`vitals bg-${vitalindex === i ? 'lightred' : ''} col-lg-7 col-md-8 col-sm-12 col-12 col-xl-5 position-absolute border border-1 shadow-sm rounded-2 d-${vitalindex == i ? vitalsform : 'none'}`} style={{ zIndex: '3' }}>
                                   <Vitalsoperation GetAppointmentVitals={GetAppointmentVitals} CloseVitals={CloseVitals} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} appointmentid={data.id} appointmentvitalslist={appointmentvitalslist} loadvitals={loadvitals} patientid={data.patient && data.patient.id != null ? data.patient.id : ""} /></td>
                               ) : (<></>)
                             }
@@ -545,7 +545,7 @@ function DoctorSchedule(props) {
                             }
                             {
                               paymentsindex === i ? (
-                                <td className={`payments start-0 bg-seashell end-0 shadow-sm top-0 border border-1 rounded-3 col-lg-6 col-md-8 col-sm-10 col-10 mt-2 col-xl-8 position-absolute d-${paymentsindex == i ? paymentsform : 'none'}`}>
+                                <td className={`payments start-0 bg-seashell end-0 shadow-sm top-0 border border-1 rounded-3 col-lg-6 col-md-8 col-sm-12 col-12 mt-2 col-xl-8 position-absolute d-${paymentsindex == i ? paymentsform : 'none'}`}>
                                   <Payments ClosePaymentsForm={ClosePaymentsForm} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} appointmentid={data.id} patientid={data.patient && data.patient.id != null ? data.patient.id : ""} Appointmentlist={Appointmentlist} setsingleload={setsingleload} isLoading={isLoading} appointmentdata={appointmentdata} /></td>
                               ) : (<></>)
                             }

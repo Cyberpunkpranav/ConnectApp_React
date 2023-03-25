@@ -15,14 +15,12 @@
     --charcoal50: #22202331;
     --charcoal75: #222023ad;
 }
-
+/* textarea,input.text, input[type="text"], input[type="button"], input[type="submit"], .input-checkbox {
+    -webkit-appearance:none;
+    } */
 body {
     font-family: 'Urbanist', sans-serif;
 }
-
-
-
-
 
 /*--------------------------------------------------------------page2appointment css--------------------------------------------------------*/
 .page2appointment {
@@ -146,5 +144,11 @@ input[placeholder-shown] {
         padding:0.2rem 0.4rem !important; 
         font-size: 0.6rem !important;
      }
-
+     .payments h5{
+        font-size: 0.9rem;
+     }
+     .payments .button{
+        padding:0.2rem 0.4rem !important; 
+        font-size: 0.7rem !important;
+    }
  }

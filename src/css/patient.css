@@ -24,7 +24,9 @@ max-height:70vh
 .patientsection tr:nth-child(even) {
     background-color: var(--seashell);
 }
-
+.patientsection .searchbar .form-control{
+        width: 30rem
+}
 .patientsection .updatepatientform {
     min-height: 30rem;
     max-height:40rem;
@@ -37,4 +39,49 @@ max-height:70vh
     overflow: auto ;
     margin:0 auto;
     z-index:2;
+}
+@media  (max-width:512px) {
+    .patientsection .searchbar .form-control{
+        width:20rem;
+        padding:0.3rem 0.6rem
+    }
+    .patientsection table{
+        font-size:0.7rem;
+    }
+    .patientsection strong{
+        font-size:0.8rem;
+    }
+ 
+    .patientsection .spinner-border{
+        font-size: 1rem !important;
+        padding:0.3rem !important;
+    }
+    .patientsection img{
+        width:1rem !important;
+    }
+    .updatepatientform{
+        top:1rem;
+    }
+    .updatepatientform h5{
+        font-size: 0.9rem;
+    }
+    .updatepatientform select{
+        font-size:0.7rem !important;
+        padding:0.3rem 0.6rem !important
+    }
+    .updatepatientform input{
+        font-size:0.7rem !important;
+        padding:0.3rem 0.6rem !important
+    }
+    .updatepatientform  .btn{
+        padding:0.275rem 0.75rem !important;
+        font-size:0.8rem !important;
+    }
+    .updatepatientform .btn-group{
+        font-size:0.7rem !important;
+    }
+    .updatepatientform .button{
+        padding:0.275rem 0.75rem !important;
+        font-size:0.8rem !important;
+    }
 }

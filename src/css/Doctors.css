@@ -21,3 +21,27 @@
 .Doctorspage .scroll-y{
     max-height:70vh;
 }
+.Doctorspage .searchbar .form-control{
+    width: 30rem
+}
+
+@media  (max-width:512px) {
+.Doctorspage .searchbar .form-control{
+    width:20rem;
+    padding:0.3rem 0.6rem
+}
+.Doctorspage table{
+    font-size:0.7rem;
+}
+.Doctorspage strong{
+    font-size:0.8rem;
+}
+
+.Doctorspage .spinner-border{
+    font-size: 1rem !important;
+    padding:0.3rem !important;
+}
+.Doctorspage img{
+    width:1rem !important;
+}
+}

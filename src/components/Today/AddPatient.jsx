@@ -157,9 +157,6 @@ const AddPatient = (props) => {
         setplace(data.label)
     }, [data]);
 
-    useEffect(() => {
-
-    }, [placeid]);
 
     if (place) {
         geocodeByAddress(place).then(results => getLatLng(results[0])).then(({ lat, lng }) => { setlat(lat); setlng(lng) });

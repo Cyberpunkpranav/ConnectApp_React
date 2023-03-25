@@ -540,31 +540,31 @@ const Appointments_Dsr = (props) => {
         <div className="tab-pane fade show active text-start" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
           <h6 className="text-charcoal fw-bold p-0 m-0 ms-2 ms-lg-3 ms-md-1 ms-sm-1">Payments</h6>
           <div className="row m-0 g-2 mt-md-2 p-0 text-start justify-content-start">
-            <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-2 ms-lg-3  bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+            <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
               <p className='fw-bold text-charcoal75 text-start p-0 m-0 justify-content-start'>CASH</p>
               <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForCash()}</h6>
             </div>
-            <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-2 ms-sm-2 ms-lg-3 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+            <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
               <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>CARD</p>
               <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForCard()}</h6>
             </div>
-            <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-2 ms-sm-2 ms-lg-3 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+            <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
               <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>PAYTM</p>
               <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForPaytm()}</h6>
             </div>
-            <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-2 ms-sm-2 ms-lg-3 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+            <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
               <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>PHONEPE</p>
               <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForPhonepe()}</h6>
             </div>
-            <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-2 ms-sm-2 ms-lg-3 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+            <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
               <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>WIRE</p>
               <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForWireTransfer()}</h6>
             </div>
-            <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-2 ms-sm-2 ms-lg-3 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+            <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
               <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>RAZORPAY</p>
               <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForRazorPay()}</h6>
             </div>
-            <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-3 ms-md-2 ms-sm-2 ms-lg-3 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+            <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
               <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>POINTS</p>
               <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForPoints()}</h6>
             </div>
@@ -756,31 +756,31 @@ const Appointments_Dsr = (props) => {
         <div className="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
           <h6 className="text-charcoal fw-bold p-0 m-0 ms-2 ms-lg-3 ms-md-1 ms-sm-1">Payments</h6>
           <div className="row m-0 g-2 mt-md-2 p-0 text-start justify-content-start">
-            <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-2 ms-lg-3  bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+            <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1  bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
               <p className='fw-bold text-charcoal75 text-start p-0 m-0 justify-content-start'>CASH</p>
               <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForCash()}</h6>
             </div>
-            <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-2 ms-sm-2 ms-lg-3 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+            <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
               <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>CARD</p>
               <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForCard()}</h6>
             </div>
-            <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-2 ms-sm-2 ms-lg-3 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+            <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
               <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>PAYTM</p>
               <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForPaytm()}</h6>
             </div>
-            <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-2 ms-sm-2 ms-lg-3 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+            <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
               <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>PHONEPE</p>
               <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForPhonepe()}</h6>
             </div>
-            <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-2 ms-sm-2 ms-lg-3 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+            <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
               <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>WIRE</p>
               <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForWireTransfer()}</h6>
             </div>
-            <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-2 ms-sm-2 ms-lg-3 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+            <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
               <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>RAZORPAY</p>
               <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForRazorPay()}</h6>
             </div>
-            <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-3 ms-md-2 ms-sm-2 ms-lg-3 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+            <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
               <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>POINTS</p>
               <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForPoints()}</h6>
             </div>
@@ -890,31 +890,31 @@ const Appointments_Dsr = (props) => {
         <div className="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">
           <h6 className="text-charcoal fw-bold p-0 m-0 ms-2 ms-lg-3 ms-md-1 ms-sm-1">Payments</h6>
           <div className="row m-0 g-2 mt-md-2 p-0 text-start justify-content-start">
-            <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-2 ms-lg-3  bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+            <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
               <p className='fw-bold text-charcoal75 text-start p-0 m-0 justify-content-start'>CASH</p>
               <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForCash()}</h6>
             </div>
-            <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-2 ms-sm-2 ms-lg-3 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+            <div className="col-auto col-md-auto col-lg-auto text-start  py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
               <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>CARD</p>
               <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForCard()}</h6>
             </div>
-            <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-2 ms-sm-2 ms-lg-3 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+            <div className="col-auto col-md-auto col-lg-auto text-start  py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
               <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>PAYTM</p>
               <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForPaytm()}</h6>
             </div>
-            <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-2 ms-sm-2 ms-lg-3 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+            <div className="col-auto col-md-auto col-lg-auto text-start  py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
               <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>PHONEPE</p>
               <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForPhonepe()}</h6>
             </div>
-            <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-2 ms-sm-2 ms-lg-3 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+            <div className="col-auto col-md-auto col-lg-auto text-start  py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
               <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>WIRE</p>
               <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForWireTransfer()}</h6>
             </div>
-            <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-2 ms-sm-2 ms-lg-3 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+            <div className="col-auto col-md-auto col-lg-auto text-start  py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
               <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>RAZORPAY</p>
               <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForRazorPay()}</h6>
             </div>
-            <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-3 ms-md-2 ms-sm-2 ms-lg-3 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+            <div className="col-auto col-md-auto col-lg-auto text-start  py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
               <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>POINTS</p>
               <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForPoints()}</h6>
             </div>
