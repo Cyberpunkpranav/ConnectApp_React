@@ -4,9 +4,7 @@ import ReactDOM from 'react-dom/client';
 import { useState, useEffect } from "react";
 import { createContext } from 'react'
 import axios from "axios";
-
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-//Css
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.js';
 import './css/dashboard.css';

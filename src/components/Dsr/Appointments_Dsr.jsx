@@ -485,7 +485,7 @@ const Appointments_Dsr = (props) => {
     <div className='Appointments_Dsrsection'>
       <div className='position-relative'>
 
-        <div className="col position-absolute top-0 " style={{ marginTop: '-3.1rem', marginLeft: '26rem' }}>
+        <div className="col export_dropdown position-absolute top-0 ">
           <div className="dropdown">
             <button className="button button p-0 m-0 px-1 py-1 button-pearl text-burntumber  fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
               Exports
@@ -596,19 +596,19 @@ const Appointments_Dsr = (props) => {
 
               {
                 loading ? (
-                  <body className=' text-start' style={{ minHeight: '55vh' }}>
+                  <tbody className='text-start' style={{ minHeight: '55vh' }}>
                     <tr className='position-absolute border-0 start-0 end-0 px-5 '>
                       <div class="d-flex align-items-center">
-                        <strong className='fs-5'>Getting Details please be Patient ...</strong>
+                        <strong className=''>Getting Details please be Patient ...</strong>
                         <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
                       </div>
                     </tr>
 
-                  </body>
+                  </tbody>
                 ) : (
                   Appointments.length == 0 ? (
                     <tbody >
-                      <tr className='position-relative text-burntumber mt-1 m-auto'>
+                      <tr className='position-relative text-burntumber mt-1 text-center m-auto'>
                         <td className=' position-absolute start-0 end-0 text-charcoal fw-bold mt-1'>No Appointments</td></tr>
                     </tbody>
                   ) : (
@@ -648,7 +648,7 @@ const Appointments_Dsr = (props) => {
                 )
               }
 
-            </table>
+            </table>  
             <table className={`table text-center bg-pearl d-none d-${appxl} `} ref={Appointmentref}>
               <thead className='position-sticky top-0 bg-pearl'>
                 <tr className='bg-pearl'>

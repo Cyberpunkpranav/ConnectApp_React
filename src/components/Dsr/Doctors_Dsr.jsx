@@ -13,6 +13,7 @@ const Doctors_Dsr = (props) => {
   const [load, setload] = useState(false)
   const [Appointments, setAppointments] = useState([])
   const [DocTimetyp1, setDocTimetyp1] = useState()
+  const [pageindex, setpageindex] = useState()
   const tableref = useRef()
   const Doctorwisetable = useRef()
 
@@ -138,7 +139,6 @@ const Doctors_Dsr = (props) => {
     } else {
       return 0
     }
-
   }
   function tConvert(time) {
 
@@ -217,7 +217,37 @@ const Doctors_Dsr = (props) => {
   }
   return (
     <div className="container-fluid Doctors_Dsrsection">
-      <div className='py-2'>
+      <div className='position-relative'>
+        <div className="col export_dropdown position-absolute top-0 ">
+          <div className="dropdown">
+            <button className="button button p-0 m-0 px-1 py-1 button-pearl text-burntumber  fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Exports
+            </button>
+            <ul className="dropdown-menu" >
+              <li className="text-center border-bottom">
+                <DownloadTableExcel
+                  filename={`${reversefunction(props.fromdate) + ' to ' + reversefunction(props.todate)} All Doctors Login/Logout Details`}
+                  sheet="Login/Logout Details"
+                  currentTableRef={tableref.current}
+                >
+                  <button className='button-sm button-pearl'>All Doctors Login/Logout Details Export </button>
+
+                </DownloadTableExcel></li>
+              <li className="text-center  border-bottom">
+                <DownloadTableExcel
+                  filename={`${reversefunction(props.fromdate) + ' to ' + reversefunction(props.todate)} Doctors Summary`}
+                  sheet="Summary Report"
+                  currentTableRef={Doctorwisetable.current}
+                >
+                  <button className='button-sm button-pearl'>Doctors Summary Export</button>
+
+                </DownloadTableExcel></li>
+
+            </ul>
+          </div>
+        </div>
+      </div>
+      {/* <div className='py-2'>
         <div className="container-fluid m-0 p-0">
           <div className="row p-0 m-0 justify-content-around">
             <div className="col-4 col-lg-3 col-md-4 col-sm-4 py-2 border border-1 rounded-2 shadow-sm">
@@ -259,109 +289,123 @@ const Doctors_Dsr = (props) => {
               </div>
             </div>
             <div className="col-4 col-lg-3 col-md-4 col-sm-4 border border-1 rounded-2 shadow-sm text-center align-items-center">
-              {/* <h6 className='text-charcoa50 fw-bold'>Summary</h6> */}
-              <div className="col-12 col-lg-12 p-0 m-0 bg-lightyellow rounded-2 align-self-center mt-2 fw-bold">Total Time <hr className='p-0 m-0' /> {TotalTime()}</div>
+              <h6 className='text-charcoa50 fw-bold'>Summary</h6>
+              <div className="col-12 col-lg-12 p-0 m-0 bg-lightyellow rounded-2 align-self-center mt-2 fw-bold">Total Time :- {TotalTime()}</div>
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
+      <ul className="nav nav-pills mb-3 ms-2 ms-lg-2 ms-md-2 ms-sm-2" id="pills-tab" role="tablist">
+        <li className="nav-item" role="presentation">
+          <button onClick={() => { setpageindex(0) }} className="nav-link active p-0 m-0 py-1 px-3 rounded-pill" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true" >Doctor's Login</button>
+        </li>
+        <li className="nav-item ms-lg-3 ms-md-2 ms-sm-1 ms-1" role="presentation">
+          <button onClick={() => { setpageindex(1) }} className="nav-link p-0 m-0 py-1 px-3 rounded-pill" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Login's Summary</button>
+        </li>
+        <li className="nav-item ms-lg-3 ms-md-2 ms-sm-1 ms-1" role="presentation">
+          <button className="button button-pearl text-burntumber fw-bold p-0 m-0 py-1 px-3 "  type="button" role="tab" aria-controls="pills-profile" aria-selected="false"> {TotalTime()}</button>
+        </li>
+      </ul>
+      <div className="tab-content" id="pills-tabContent ">
+        <div className="tab-pane fade show active text-start" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
+          <div className='container-fluid scroll scroll-y doctordsrtable' ref={tableref}>
+            <span className='d-none'>Total Time:{TotalTime()}</span>
+            <table className='table text-start' >
+              <thead>
+                <tr>
+                  <th>Id</th>
+                  <th>Doctors Name</th>
+                  <th>Mobile</th>
+                  <th>Date</th>
+                  <th>Roomnumber</th>
+                  <th>RoomType</th>
+                  <th>Start Time</th>
+                  <th>End Time</th>
+                  <th>Total Hours</th>
+                </tr>
+              </thead>
+              {
+                load ? (
+                  <tbody className='position-relative'>
+                    <tr className='position-absolute start-0 end-0 fw-bolder text-charcoal'>Loading Doctors Login History </tr>
+                  </tbody>
+                ) : (
+                  Appointments.length == 0 || Appointments == undefined ? (
+                    <tbody className='position-relative'>
+                      <tr className='position-absolute start-0 end-0 fw-bolder text-charcoal'>No Doctors Login History Found </tr>
+                    </tbody>
+                  ) : (
+                    <tbody className='border'>
+                      {
+                        Appointments.map((data, i) => (
+                          <tr key={i}>
+                            <td>{data.id ? data.id : 'N/A'}</td>
+                            <td>{data.doctor ? data.doctor.doctor_name && data.doctor.doctor_name != null ? data.doctor.doctor_name : 'N/A' : 'N/A'}</td>
+                            <td>{data.doctor ? data.doctor.phone_number ? data.doctor.phone_number : 'N/A' : "DoctorNotFound"}</td>
+                            <td>{data.date && data.date != null ? reversefunction(data.date) : 'N/A'}</td>
+                            <td>{data.room ? data.room.room_number && data.room.room_number != null ? data.room.room_number : 'N/A' : "RoomNotFound"}</td>
+                            <td>{data.room ? data.room.room_type == 1 ? 'Consultation' : 'Procedure' : 'N/A'}</td>
+                            <td>{data.login_time ? tConvert(data.login_time) : 'N/A'}</td>
+                            <td>{data.logout_time ? tConvert(data.logout_time) : 'N/A'}</td>
+                            <td>{data.login_time && data.login_time != null && data.logout_time && data.logout_time != null ? diff(data.login_time, data.logout_time) : 'N/A'}</td>
+                          </tr>
 
-      <h6 className=' p-0 m-0 text-charcoal75 fw-semibold ms-2 '>Doctors Login/Logout Details : {Appointments.length}  </h6>
-      <div className='container-fluid scroll scroll-y doctordsrtable' ref={tableref}>
-        <span className='d-none'>Total Time:{TotalTime()}</span>
-        <table className='table text-center border' >
-          <thead>
-            <tr>
-              <th>Id</th>
-              <th>Doctors Name</th>
-              <th>Mobile</th>
-              <th>Date</th>
-              <th>Roomnumber</th>
-              <th>RoomType</th>
-              <th>Start Time</th>
-              <th>End Time</th>
-              <th>Total Hours</th>
-            </tr>
-          </thead>
-          {
-            load ? (
-              <tbody className='position-relative'>
-                <tr className='position-absolute start-0 end-0 fw-bolder text-charcoal'>Loading Doctors Login History </tr>
-              </tbody>
-            ) : (
-              Appointments.length == 0 || Appointments == undefined ? (
-                <tbody className='position-relative'>
-                  <tr className='position-absolute start-0 end-0 fw-bolder text-charcoal'>No Doctors Login History Found </tr>
-                </tbody>
-              ) : ( 
-                <tbody className='border'>
-                  {
-                    Appointments.map((data, i) => (
-                      <tr key={i}>
-                        <td>{data.id ? data.id : 'N/A'}</td>
-                        <td>{data.doctor ? data.doctor.doctor_name && data.doctor.doctor_name != null ? data.doctor.doctor_name : 'N/A' : 'N/A'}</td>
-                        <td>{data.doctor ? data.doctor.phone_number ? data.doctor.phone_number : 'N/A' : "DoctorNotFound"}</td>
-                        <td>{data.date && data.date != null ? reversefunction(data.date) : 'N/A'}</td>
-                        <td>{data.room ? data.room.room_number && data.room.room_number != null ? data.room.room_number : 'N/A' : "RoomNotFound"}</td>
-                        <td>{data.room ? data.room.room_type == 1 ? 'Consultation' : 'Procedure' : 'N/A'}</td>
-                        <td>{data.login_time ? tConvert(data.login_time) : 'N/A'}</td>
-                        <td>{data.logout_time ? tConvert(data.logout_time) : 'N/A'}</td>
-                        <td>{data.login_time && data.login_time != null && data.logout_time && data.logout_time != null ? diff(data.login_time, data.logout_time) : 'N/A'}</td>
+                        ))
+                      }
+                    </tbody>
+                  )
+                )
+
+              }
+            </table>
+          </div>
+        </div>
+        <div className="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
+          <div className='container-fluid scroll scroll-y doctordsrtable' ref={Doctorwisetable}>
+            <table className='table text-start'>
+              <thead className='position-sticky top-0 bg-pearl'>
+                <tr>
+                  <th className='my-0 py-0' rowspan='2'>Doctor Id</th>
+                  <th className='my-0 py-0' rowspan='2'>Doctor Name</th>
+                  <th className='my-0 py-0' colspan='2' scope='colgroup'>Consultation</th>
+                  <th className='my-0 py-0' colspan='2' scope='colgroup'>Procedure</th>
+                </tr>
+                <tr>
+                  <th className='py-0 my-0 bg-pearl' scope='col'>Total Hours</th>
+                  <th className='py-0 my-0 bg-pearl' scope='col'>Total Minutes</th>
+                  <th className='py-0 my-0 bg-pearl' scope='col'>Total Hours</th>
+                  <th className='py-0 my-0 bg-pearl' scope='col'>Total Minutes</th>
+                </tr>
+              </thead>
+
+              {
+                DocTimetyp1 == undefined || DocTimetyp1.length == 0 ? (
+                  <tbody>
+                    <tr>Loading...</tr>
+                  </tbody>
+                ) : (
+                  <tbody>{
+                    DocTimetyp1.map((data) => (
+                      <tr className='border'>
+                        <td className='border'>{data[0]}</td>
+                        <td className='border'>{data[1]}</td>
+                        <td className='border'>{data[4]}</td>
+                        <td className='border'>{data[5]}</td>
+                        <td className='border'>0</td>
+                        <td className='border'>0</td>
                       </tr>
-
                     ))
                   }
-                </tbody>
-              )
-            )
-
-          }
-
-
-        </table>
-
-      </div>
-      <h6 className='text-charcoal75 fw-bolder p-0 m-0'>Doctor Summary</h6>
-      <div className='container-fluid scroll scroll-y doctordsrtable' ref={Doctorwisetable}>
-        <table className='table text-center'>
-          <thead className='position-sticky top-0 bg-pearl'>
-            <tr>
-              <th className='my-0 py-0' rowspan='2'>Doctor Id</th>
-              <th className='my-0 py-0' rowspan='2'>Doctor Name</th>
-              <th className='my-0 py-0' colspan='2' scope='colgroup'>Consultation</th>
-              <th className='my-0 py-0' colspan='2' scope='colgroup'>Procedure</th>
-            </tr>
-            <tr>
-              <th className='py-0 my-0 bg-pearl' scope='col'>Total Hours</th>
-              <th className='py-0 my-0 bg-pearl' scope='col'>Total Minutes</th>
-              <th className='py-0 my-0 bg-pearl' scope='col'>Total Hours</th>
-              <th className='py-0 my-0 bg-pearl' scope='col'>Total Minutes</th>
-            </tr>
-          </thead>
-
-          {
-            DocTimetyp1 == undefined || DocTimetyp1.length == 0 ? (
-              <tbody>
-                <tr>Loading...</tr>
-              </tbody>
-            ) : (
-              <tbody>{
-                DocTimetyp1.map((data) => (
-                  <tr className='border'>
-                    <td className='border'>{data[0]}</td>
-                    <td className='border'>{data[1]}</td>
-                    <td className='border'>{data[4]}</td>
-                    <td className='border'>{data[5]}</td>
-                    <td className='border'>0</td>
-                    <td className='border'>0</td>
-                  </tr>
-                ))
+                  </tbody>
+                )
               }
-              </tbody>
-            )
-          }
-        </table>
+            </table>
+          </div>
+        </div>
+
       </div>
+
+
     </div>
   )
 }

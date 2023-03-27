@@ -65,6 +65,18 @@
     border-top: 1px solid var(--charcoal50);
     border-bottom: 1px solid var(--charcoal50);
 }
+.Appointments_Dsrsection .export_dropdown{
+  margin-top: -3.1rem;
+  margin-left:26rem;
+}
+.Pharmacy_Dsrsection .export_dropdown{
+    margin-top: -3.1rem;
+    margin-left:26rem;
+  }
+.Doctors_Dsrsection .export_dropdown{
+    margin-top: -3.1rem;
+    margin-left:26rem;
+  }
 
 .Appointments_Dsrsection .CARD3,.Pharmacy_Dsrsection .CARD3 {
     border-left: 3px solid var(--lightgreen);
@@ -81,8 +93,8 @@
     background-color:var(--seashell)
 }
  .doctordsrtable{
-    height:32vh;
-    max-height:32vh;
+    height:52vh;
+    max-height:52vh;
 }
 .Pharmacy_Dsrsection .maintable{
     max-height:32rem;
@@ -101,13 +113,13 @@ background-color: var(--seashell);
 }
 .Appointments_Dsrsection .Pendingpay tr:nth-child(even){
     background-color: var(--seashell);
-    }
+}
 .Appointments_Dsrsection  .Advancepay  tr:nth-child(even){
         background-color: var(--seashell);
-        }
-    .saleoptions{
+}
+.saleoptions{
         top:20vh
-    }  
+}  
 @media (max-width:810px){
     .saleoptions{
         top:15vh;
@@ -115,13 +127,110 @@ background-color: var(--seashell);
 }
 
 @media (max-width:512px){
+    .DSRsection .gap-3{
+        gap: 0.3rem !important;
+    }
+    .DSRsection .button{
+        padding:0.275rem 0.75rem !important;
+        font-size:0.8rem !important;
+    }
+    .Appointments_Dsrsection .export_dropdown{
+        margin-top: -2.7rem;
+        margin-left:18rem;
+      }
     .Appointments_Dsrsection .tab-pane p{
-        font-size:0.6rem;
+        font-size:0.5rem;
     }
     .Appointments_Dsrsection .tab-pane h6{
+        font-size:0.6rem;
+    }
+    .Appointments_Dsrsection .tab-pane h5{
         font-size:0.7rem;
     }
-    /* .Appointments_Dsrsection .tab-pane div{
+    .Appointments_Dsrsection .nav-item{
+        padding:0.15rem 0rem !important;
+        font-size:0.6rem !important;
+        margin: 0 !important;
+    }
+    .Appointments_Dsrsection span{
+        font-size:0.7rem !important;
+    }
+    .Appointments_Dsrsection table{
+        font-size: 0.7rem !important;
+    }
+    .Appointments_Dsrsection strong{
+        font-size: 0.7rem;
+    }
+    .Appointments_Dsrsection .spinner-border{
+        font-size: 0.7rem !important;
+        padding: 0.7rem !important;
+    }
 
-    } */
+    .Doctors_Dsrsection .export_dropdown{
+        margin-top: -2.7rem;
+        margin-left:17.5rem;
+      }
+    .Doctors_Dsrsection .tab-pane p{
+        font-size:0.5rem;
+    }
+    .Doctors_Dsrsection .tab-pane h6{
+        font-size:0.6rem;
+    }
+    .Doctors_Dsrsection .tab-pane h5{
+        font-size:0.7rem;
+    }
+    .Doctors_Dsrsection .nav-item{
+        padding:0.15rem 0rem !important;
+        font-size:0.6rem !important;
+        margin: 0 !important;
+    }
+    .Doctors_Dsrsection table{
+        font-size: 0.7rem !important;
+    }
+    .Pharmacy_Dsrsection .tab-pane p{
+        font-size:0.5rem;
+    }
+    .Pharmacy_Dsrsection .tab-pane h6{
+        font-size:0.6rem;
+    }
+    .Pharmacy_Dsrsection .tab-pane h5{
+        font-size:0.7rem;
+    }
+    .Pharmacy_Dsrsection .nav-item{
+        padding:0.15rem 0rem !important;
+        font-size:0.6rem !important;
+        margin: 0 !important;
+    }
+    .Pharmacy_Dsrsection span{
+        font-size:0.7rem !important;
+    }
+    .Pharmacy_Dsrsection table{
+        font-size: 0.7rem !important;
+    }
+    .Pharmacy_Dsrsection strong{
+        font-size: 0.7rem;
+    }
+    .Pharmacy_Dsrsection .spinner-border{
+        font-size: 0.7rem !important;
+        padding: 0.7rem !important;
+    }
+    .Pharmacy_Dsrsection .saleoptions{
+        top:26vh;
+        margin-right:1rem !important;
+    }
+    .Pharmacy_Dsrsection .saleoptions .btn{
+        padding:0.275rem 0.45rem !important;
+        font-size:0.6rem !important;
+    }
+    .Pharmacy_Dsrsection .saleoptions img{
+        width:1rem !important;
+    }
+    .Pharmacy_Dsrsection .export_dropdown{
+        margin-top: -2.7rem;
+        margin-left:17.5rem;
+      }
+
+    .Pharmacy_Dsrsection .selector label{
+        font-size: 0.7rem;
+    }
 }

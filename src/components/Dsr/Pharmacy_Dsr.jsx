@@ -471,7 +471,6 @@ const Pharmacy_Dsr = (props) => {
       return date
     }
   }
-
   function Conditionaldisplay(i) {
     if (se == 'block') {
       setse('none')
@@ -485,14 +484,52 @@ const Pharmacy_Dsr = (props) => {
   // d-${Pendingsonly.current.checked = true ? Conditionaldisplay(i) : ''}
   return (
     <div className='Pharmacy_Dsrsection p-0 m-0'>
-      <div>
+      <div className='position-relative'>
+        <div className="col export_dropdown position-absolute top-0 ">
+          <div className="dropdown">
+            <button className="button button p-0 m-0 px-1 py-1 button-pearl text-burntumber  fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"> Exports </button>
+            <ul className="dropdown-menu" >
+              <li className="text-justify border-bottom">
+                <span className={`d-${se}`}>
+                  <DownloadTableExcel
+                    filename={`${reversefunction(props.fromdate) + ' to ' + reversefunction(props.todate)} Sale Entries`}
+                    sheet="Sale Entries"
+                    currentTableRef={saleentry.current}
+                  >
+                    <button className='btn p-0 m-0 bg-pearl'>All Export</button>
 
-        {/* <div className="col-lg-2 col-md-2 col-sm-2 col-2 CARD3 rounded-2">
-            <h6 className='text-lightgreen mt-2'>Exports</h6>
-            <button className='button button-pearl border-bottom-lightgreen ms-lg-2'>CSV</button>
-            <button className='button button-pearl border-bottom-lightgreen ms-lg-2'>Excel</button>
-          </div> */}
+                  </DownloadTableExcel>
+                </span>
+                <span className={`d-${pd}`}>
+                  <DownloadTableExcel
+                    filename={`${reversefunction(props.fromdate) + ' to ' + reversefunction(props.todate)} Pending Sale Entries`}
+                    sheet="Pendings"
+                    currentTableRef={Pendingsonly.current}
+                  >
+                    <button className='btn p-0 m-0 bg-pearl '>Pending Export</button>
 
+                  </DownloadTableExcel>
+                </span></li>
+              <li className="text-justify  border-bottom">
+                <DownloadTableExcel
+                  filename={`${reversefunction(props.fromdate) + ' to ' + reversefunction(props.todate)} Sale Returns`}
+                  sheet="Sale Returns"
+                  currentTableRef={salereturn.current}
+                >
+                  <button className='btn p-0 m-0 bg-pearl'>Sale Returns Export</button>
+                </DownloadTableExcel></li>
+              <li className="text-justify">
+                <DownloadTableExcel
+                  filename={`${reversefunction(props.fromdate) + ' to ' + reversefunction(props.todate)} Pendings Recieved`}
+                  sheet="Pendings Recieved"
+                  currentTableRef={pendingsrecieved.current}
+                >
+                  <button className='btn p-0 m-0 bg-pearl ' onClick={() => { prxl('block') }} >Pendings Recieved Export</button>
+                </DownloadTableExcel>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
       <div className=''>
         <ul className="nav nav-pills mb-3 ms-2 ms-lg-3 ms-md-1 ms-sm-1" id="pills-tab" role="tablist">
@@ -512,31 +549,31 @@ const Pharmacy_Dsr = (props) => {
           <div className="tab-pane fade show active text-start" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
             <h6 className="text-charcoal fw-bold p-0 m-0 ms-2 ms-lg-3 ms-md-1 ms-sm-1">Payments</h6>
             <div className="row m-0 g-2 mt-md-2 p-0 text-start justify-content-start">
-              <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-2 ms-lg-3  bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+              <div className="col-auto col-md-auto col-lg-auto text-start  py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
                 <p className='fw-bold text-charcoal75 text-start p-0 m-0 justify-content-start'>CASH</p>
                 <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForCash()}</h6>
               </div>
-              <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-2 ms-sm-2 ms-lg-3 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+              <div className="col-auto col-md-auto col-lg-auto text-start  py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
                 <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>CARD</p>
                 <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForCard()}</h6>
               </div>
-              <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-2 ms-sm-2 ms-lg-3 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+              <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
                 <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>PAYTM</p>
                 <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForPaytm()}</h6>
               </div>
-              <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-2 ms-sm-2 ms-lg-3 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+              <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
                 <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>PHONEPE</p>
                 <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForPhonepe()}</h6>
               </div>
-              <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-2 ms-sm-2 ms-lg-3 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+              <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
                 <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>WIRE</p>
                 <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForWireTransfer()}</h6>
               </div>
-              <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-2 ms-sm-2 ms-lg-3 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+              <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
                 <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>RAZORPAY</p>
                 <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForRazorPay()}</h6>
               </div>
-              <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-3 ms-md-2 ms-sm-2 ms-lg-3 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+              <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
                 <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>POINTS</p>
                 <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForPoints()}</h6>
               </div>
@@ -544,13 +581,13 @@ const Pharmacy_Dsr = (props) => {
 
             {/* onClick={()=>{setse('block')}} */}
             <div className=' saleoptions mt-2 position-absolute end-0 me-md-2 me-5 text-end'>
-              <span className={`d-${se}`}>
+              {/* <span className={`d-${se}`}>
                 <DownloadTableExcel
                   filename={`${reversefunction(props.fromdate) + ' to ' + reversefunction(props.todate)} Sale Entries`}
                   sheet="Sale Entries"
                   currentTableRef={saleentry.current}
                 >
-                  <button className='btn p-0 m-0 ms-5 bg-pearl border-charcoal px-2 py-1 fw-bold '> <img src={process.env.PUBLIC_URL + '/images/download.png'} style={{ 'width': '1.5rem' }} />All Export</button>
+                  <button className='btn p-0 m-0 ms-lg-5 ms-md-5 ms-sm-3 ms-1 bg-pearl border-charcoal px-2 py-1 fw-bold '> <img src={process.env.PUBLIC_URL + '/images/download.png'} style={{ 'width': '1.5rem' }} />All Export</button>
 
                 </DownloadTableExcel>
               </span>
@@ -563,8 +600,11 @@ const Pharmacy_Dsr = (props) => {
                   <button className='btn p-0 m-0 ms-5 fw-bold bg-pearl border-charcoal px-2 py-1 '> <img src={process.env.PUBLIC_URL + '/images/download.png'} style={{ 'width': '1.5rem' }} />Pending Export</button>
 
                 </DownloadTableExcel>
-              </span>
-              <input ref={Pendingsonly} type="checkbox" className='form-check-input ms-2' onChange={() => { Conditionaldisplay() }} /><label className='text-burntumber fw-bold'>Show Pendings Only</label>
+              </span> */}
+              <div className='selector '>
+                <input ref={Pendingsonly} type="checkbox" className='form-check-input ms-2' onChange={() => { Conditionaldisplay() }} /><label className='text-burntumber fw-bold'>Show Pendings Only</label>
+              </div>
+
             </div>
             <div className={`container-fluid p-0 m-0 scroll scroll-y mt-2 saleentries d-${se}`} ref={saleentry} style={{ minHeight: '60vh', maxHeight: '60vh' }}>
               <table className='table'>
@@ -586,7 +626,7 @@ const Pharmacy_Dsr = (props) => {
                     <body className=' text-start' style={{ minHeight: '55vh' }}>
                       <tr className='position-absolute border-0 start-0 end-0 px-5 '>
                         <div class="d-flex align-items-center">
-                          <strong className='fs-5'>Getting Details please be Patient ...</strong>
+                          <strong className=''>Getting Details please be Patient ...</strong>
                           <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
                         </div>
                       </tr>
@@ -877,49 +917,47 @@ const Pharmacy_Dsr = (props) => {
               </div>
             </div>
           </div>
-
           <div className="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
             <h6 className="text-charcoal fw-bold p-0 m-0 ms-2 ms-lg-3 ms-md-1 ms-sm-1">Payments</h6>
             <div className="row m-0 g-2 p-0 text-start">
-              <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-lg-3  bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+              <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
                 <p className='fw-bold text-charcoal75 text-start p-0 m-0 justify-content-start'>CASH</p>
                 <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForCash()}</h6>
               </div>
-              <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-1 ms-sm-1 ms-lg-3 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+              <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
                 <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>CARD</p>
                 <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForCard()}</h6>
               </div>
-              <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-1 ms-sm-1 ms-lg-3 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+              <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
                 <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>PAYTM</p>
                 <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForPaytm()}</h6>
               </div>
-              <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-1 ms-sm-1 ms-lg-3 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+              <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
                 <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>PHONEPE</p>
                 <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForPhonepe()}</h6>
               </div>
-              <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-1 ms-sm-1 ms-lg-3 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+              <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
                 <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>WIRE</p>
                 <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForWireTransfer()}</h6>
               </div>
-              <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-1 ms-sm-1 ms-lg-3 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+              <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
                 <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>RAZORPAY</p>
                 <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForRazorPay()}</h6>
               </div>
-              <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-3 ms-md-1 ms-sm-1 ms-lg-3 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+              <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
                 <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>POINTS</p>
                 <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForPoints()}</h6>
               </div>
             </div>
-            <div className=' saleoptions mt-2 position-absolute end-0 me-md-2 me-5 text-end'>
+            <div className=' saleoptions mt-lg-2 mt-md-2 position-absolute end-0 me-md-2 me-lg-5 me-1 text-end'>
               <span>
-                <DownloadTableExcel
+                {/* <DownloadTableExcel
                   filename={`${reversefunction(props.fromdate) + ' to ' + reversefunction(props.todate)} Sale Returns`}
                   sheet="Sale Returns"
                   currentTableRef={salereturn.current}
                 >
-                  <button className='btn p-0 m-0 ms-5 bg-pearl border-charcoal px-2 py-1 fw-bold '> <img src={process.env.PUBLIC_URL + '/images/download.png'} style={{ 'width': '1.5rem' }} /> Export</button>
-
-                </DownloadTableExcel>
+                  <button className='btn p-0 m-0 ms-lg-5 ms-md-5 ms-sm-3 ms-1 bg-pearl border-charcoal fw-bold '> <img src={process.env.PUBLIC_URL + '/images/download.png'} style={{ 'width': '1.5rem' }} /> Export</button>
+                </DownloadTableExcel> */}
               </span>
             </div>
             <div className='container-fluid p-0 m-0 scroll scroll-y salereturns mt-2' ref={salereturn} style={{ minHeight: '60vh', maxHeight: '60vh' }}>
@@ -954,7 +992,7 @@ const Pharmacy_Dsr = (props) => {
                     <body className=' text-start' style={{ minHeight: '55vh' }}>
                       <tr className='position-absolute border-0 start-0 end-0 px-5'>
                         <div class="d-flex align-items-center">
-                          <strong className='fs-5'>Getting Details please be Patient ...</strong>
+                          <strong className=''>Getting Details please be Patient ...</strong>
                           <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
                         </div>
                       </tr>
@@ -1019,36 +1057,36 @@ const Pharmacy_Dsr = (props) => {
           <div className="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">
             <h6 className="text-charcoal fw-bold p-0 m-0 ms-2 ms-lg-3 ms-md-1 ms-sm-1">Payments</h6>
             <div className="row m-0 g-2 mt-md-2 p-0 text-start justify-content-start">
-              <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-2 ms-lg-3  bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+              <div className="col-auto col-md-auto col-lg-auto text-start  py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
                 <p className='fw-bold text-charcoal75 text-start p-0 m-0 justify-content-start'>CASH</p>
                 <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForCash()}</h6>
               </div>
-              <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-2 ms-sm-2 ms-lg-3 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+              <div className="col-auto col-md-auto col-lg-auto text-start  py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
                 <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>CARD</p>
                 <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForCard()}</h6>
               </div>
-              <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-2 ms-sm-2 ms-lg-3 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+              <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
                 <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>PAYTM</p>
                 <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForPaytm()}</h6>
               </div>
-              <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-2 ms-sm-2 ms-lg-3 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+              <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
                 <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>PHONEPE</p>
                 <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForPhonepe()}</h6>
               </div>
-              <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-2 ms-sm-2 ms-lg-3 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+              <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
                 <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>WIRE</p>
                 <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForWireTransfer()}</h6>
               </div>
-              <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-2 ms-md-2 ms-sm-2 ms-lg-3 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+              <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
                 <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>RAZORPAY</p>
                 <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForRazorPay()}</h6>
               </div>
-              <div className="col-auto col-md-auto col-lg-auto text-start py-1 px-3 ms-3 ms-md-2 ms-sm-2 ms-lg-3 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+              <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
                 <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>POINTS</p>
                 <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForPoints()}</h6>
               </div>
             </div>
-            <div className=' saleoptions mt-2 position-absolute end-0 me-md-2 me-5 text-end'>
+            {/* <div className=' saleoptions mt-2 position-absolute end-0 me-md-2 me-5 text-end'>
               <span>
                 <DownloadTableExcel
                   filename={`${reversefunction(props.fromdate) + ' to ' + reversefunction(props.todate)} Pendings Recieved`}
@@ -1058,7 +1096,7 @@ const Pharmacy_Dsr = (props) => {
                   <button className='btn p-0 m-0 ms-5 bg-pearl border-charcoal px-2 py-1 fw-bold '> <img src={process.env.PUBLIC_URL + '/images/download.png'} style={{ 'width': '1.5rem' }} onClick={() => { prxl('block') }} /> Export</button>
                 </DownloadTableExcel>
               </span>
-            </div>
+            </div> */}
             <div className={`container-fluid p-0 m-0 scroll scroll-y pendingpayrecieve mt-2`} ref={pendingsrecieved} style={{ minHeight: '60vh', maxHeight: '60vh' }}>
               <table className='table'>
                 <thead className='text-start position-sticky top-0 bg-pearl '>
