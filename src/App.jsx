@@ -7,7 +7,7 @@ import ReactPaginate from 'react-paginate';
 import { URL, TodayDate, DoctorsList, Doctorapi, Permissions } from '../src/index'
 //Components
 import { DoctorSchedule, Timecard } from "./components/Today/Doctor"
-import { Salesection, Purchasesection, Stocksection, PEitemdetailssection, } from "./components/pharmacy/pharmacy"
+import { Salesection, Purchasesection, Stocksection, Listsection } from "./components/pharmacy/pharmacy"
 import { Livetime } from "./components/features/livetime"
 import { Newpurchaseentryarray } from "./components/pharmacy/apiarrays"
 import { AddAppointment } from './components/Today/AddAppointment'
@@ -914,7 +914,7 @@ function Doctors() {
   return (
     <section className="Doctorspage text-center position-relative">
       <div className="conatainer searchbar">
-        <input className="form-control m-auto mt-2" placeholder="Search Doctor"  onChange={(e) => { setDoctorssearch(e.target.value) }} />
+        <input className="form-control m-auto mt-2" placeholder="Search Doctor" onChange={(e) => { setDoctorssearch(e.target.value) }} />
       </div>
       <div className="container-fluid p-0 m-0 scroll scroll-y" style={{ minHeight: '30rem' }}>
         <table className="table text-start" >
@@ -1130,7 +1130,7 @@ function DailySaleReport(props) {
 
 function Pharmacy() {
 
-  let menu = ["Sale", "Stock Info", "Purchase"];
+  let menu = ["Sale", "Stock Info", "Purchase", "Lists"];
   const [menuindex, setmenuindex] = useState(0);
   const _selectedmenu = (_menu) => {
     if (_menu === 0) {
@@ -1148,7 +1148,10 @@ function Pharmacy() {
     if (_menu === 2) {
       return <Purchasesection />;
     }
-    return <div className="fs-2">Nothing Selected</div>;
+    if (_menu === 3) {
+      return <Listsection />;
+    }
+    return <div className="">Nothing Selected</div>;
   };
   return (
     <>

@@ -24,7 +24,7 @@ const Pharmacy_Dsr = (props) => {
   const [pd, setpd] = useState('none')
   const [se, setse] = useState('block')
   const [pr, setpr] = useState('block')
-  const [prxl, setprxl] = useState('none')
+  const [prxl, setprxl] = useState('none') 
   const [pageindex, setpageindex] = useState()
 
   const PharmacyList = async () => {

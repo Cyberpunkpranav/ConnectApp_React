@@ -247,7 +247,7 @@ const AllAppointmentslist = (props) => {
                     </div>
                 ) : (props.getAppointments.length == 0 ? (
 
-                    <div className="container text-center text-charcoal fs-4 position-absolute start-0 end-0">
+                    <div className="container text-center text-charcoal position-absolute start-0 end-0">
                         <p className="p-0 m-0 text-charcoal75 fw-bolder mt-3">No Appointments found for the selected Date & Doctor</p>
                     </div>
 
@@ -318,7 +318,7 @@ const AllAppointmentslist = (props) => {
                             }
                             {
                                 paymentindex == key ? (
-                                    <td className={` payments top-0 start-0 end-0 mx-auto bg-seashell col-lg-6 col-md-8 col-sm-12 col-12 col-xl-6 rounded-2 border border-1 position-absolute shadow  d-${paymentindex == key ? paymentsform : 'none'}`} style={{ zIndex: '3', marginTop: '10rem' }}>
+                                    <td className={`payments top-0 start-0 end-0 mx-auto bg-seashell col-lg-6 col-md-8 col-sm-12 col-12 col-xl-6 rounded-2 border border-1 position-absolute shadow  d-${paymentindex == key ? paymentsform : 'none'}`} style={{ zIndex: '3', marginTop: '10rem' }}>
                                         <Payments
                                             toggle_payments={toggle_payments}
                                             appointmentdata={props.getAppointments[key]}

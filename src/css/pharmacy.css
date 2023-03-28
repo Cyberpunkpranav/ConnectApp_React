@@ -66,6 +66,11 @@ font-size: 1rem !important ;
 .vaccinestockinfo .datatable tr:nth-child(even) {
     background-color: var(--seashell);
 }
+.vaccinestockinfo .scroll-y{
+    height: 57vh;
+    min-height:57vh;
+    max-height: 57vh;
+}
 
 .itemdetailsform {
     left: 25%;
@@ -99,17 +104,25 @@ font-size: 1rem !important ;
     box-sizing: border-box;
     padding-left: 3rem;
 }
-
+    .searchbtn{
+    width: 2rem ;
+    right: 0 ;
+    left: 0 ; 
+    top: 0.25rem ; 
+}
 .medicinesearch::placeholder {
     padding-left: 0.5rem;
 
 }
 
-.exportstock .searchbutton {
-    top: 0rem;
-    right: 0rem;
+ .searchbutton {
+   top: 0.25rem;
+   right: 1rem;
 }
-
+.addpurchase{
+    right:0.4rem;
+    top:-2.8rem;
+}
 
 .newsaleentryform {
     top: -7.15rem;
@@ -132,12 +145,29 @@ font-size: 1rem !important ;
         font-size:0.8rem !important;
     }
     .salesection .salebuttons .btn{
-        padding:0.275rem 0.75rem !important;
-        font-size:0.8rem !important;
+        padding:0.275rem 0.45rem !important;
+        font-size:0.7rem !important;
+    }
+    .purchasesection .btn-sm{
+        padding:0.275rem 0.45rem !important;
+        font-size:0.7rem !important;
+    }
+
+     .addpurchase{
+        right:0.4rem;
+        top:-0.1rem;
+        padding:0.1rem !important;
+        font-size:0.6rem !important;
+    }
+    .addpurchase img{
+        width:0.8rem !important;
+    }
+    .purchasesection .gap-3{
+        gap: 0.3rem !important;
     }
     .tablesrender .button{
-        padding:0.275rem 0.75rem !important;
-        font-size:0.8rem !important;
+        padding:0.275rem 0.45rem !important;
+        font-size:0.7rem !important;
     }
      .tablesrender .addentrypurchase{
         right:1rem;
@@ -150,6 +180,11 @@ font-size: 1rem !important ;
         font-size: 0.7rem;
         padding:0px;
         margin-right: 0.5rem;
+    }
+    .tablesrender .row select{
+        padding:0px;
+        margin:0px;
+        font-size: 0.6rem;
     }
     .tablesrender .row input{
         padding:0px;
@@ -175,4 +210,39 @@ font-size: 1rem !important ;
         font-size: 0.7rem !important;
         padding:0.1rem 0.4rem !important;
     }
+    .stocksection .btn-sm{
+        font-size: 0.8rem !important;
+        padding:0.2rem 0.65rem !important;
+    }
+    .vaccinesearch{
+        padding:0.1rem;
+        padding-left:1.4rem;
+        font-size:0.7rem;
+    }
+    .searchbtn{
+        width: 1.2rem ;
+        right: 0 ;
+        left: 0.3rem ; 
+        top: 0rem ; 
+    }
+    .exportstock {
+        top:-1.7rem;
+        right:0.5rem;
+    }
+    .exportstock img{
+        width:1rem !important;
+    }
+    .tablesrender .pt-3{
+        padding-top:0.2rem !important;
+    }
+    .vaccinestockinfo .heading{
+        font-size:0.7rem;
+    }
+    .tablesrender .heading{
+        font-size:0.8rem !important;
+    }
+    .tablesrender img{
+        width:1rem !important;
+    }
+ 
  }

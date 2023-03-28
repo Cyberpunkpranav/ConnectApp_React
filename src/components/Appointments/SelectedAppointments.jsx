@@ -245,7 +245,7 @@ const SelectedAppointments = (props) => {
         ) : (
 
           props.appointmentdata.length == 0 ? (
-            <div className="container text-center text-charcoal fs-4 position-absolute start-0 end-0">
+            <div className="container text-center text-charcoal position-absolute start-0 end-0">
               <p className="p-0 m-0 text-charcoal75 fw-bolder mt-3">No Appointments found for the selected Date & Doctor</p>
             </div>
           ) : (

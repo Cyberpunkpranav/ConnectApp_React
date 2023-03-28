@@ -282,7 +282,7 @@ function Saleentrysection(props) {
     <>
       <button className="button addentrypurchase button-charcoal position-absolute" onClick={toggle_nsef}>
         <img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt='displaying_image' className="img-fluid" style={{ width: `1.5rem` }} />Entry Sale</button>
-      <div className="row p-0 m-0 justify-content-lg-between justify-content-md-evenly justify-content-center text-center">
+      <div className="row p-0 m-0 justify-content-lg-between justify-content-md-evenly justify-content-center text-center mt-2">
         <div className="col-lg-2 col-md-2 col-3 text-center p-0 m-0 ">
           <button type='button' className="btn p-0 m-0 heading text-charcoal fw-bolder  " style={{ width: 'fit-content' }}>{pagecount}  {pagecount > 0 ? 'Sale Entries' : 'Sale Entry'} </button>
         </div>
@@ -375,14 +375,7 @@ function Saleentrysection(props) {
                             </ul>
                           </div>
 
-
-
                         </td>
-
-                        {/* <td className={`text-charcoal fw-bold p-0 m-0 px-1 `}>
-                          <button className="btn position-relative cursor-pointer more p-0 m-0">
-                            <img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" style={{ width: "1.5rem" }} />
-                          </button></td> */}
 
                         <td className={`position-absolute mt-1 d-${i == index ? seidw : 'none'} start-0 end-0 border border-1 bg-seashell p-0 m-0`} style={{ zIndex: '2', top: '-7.5rem', 'height': '90vh' }} >
                           {
@@ -415,28 +408,7 @@ function Saleentrysection(props) {
         </table>
       </div>
       <div className="container-fluid mt-2 d-flex justify-content-center">
-        {/* <div className="d-flex p-0 m-0 justify-content-center text-center">
 
-          <button className="btn  border-charcoal p-0 m-0 px-1 me-2" ref={previousref} value={prevoffset} onClick={(e) => { getpreviouspages(e); }} style={{ marginTop: '0.15rem' }}>Previous</button>
-
-          <div className="col-auto col-xl-auto col-sm-8 col-md-8 p-0 m-0 scroll" ref={pageref}>
-            {
-              pages ? (
-                <div className='d-inline-flex'>
-                  {
-                    pages.map((page, i) => (
-                      <button className={`button rounded-3 ms-2 button-${nxtoffset - 1 == i ? 'charcoal' : 'pearl'}   shadow-${nxtoffset - 1 == i ? 'lg' : 'none'}`} value={page} id={page} onClick={(e) => { GETSalesList(i) }} key={i}>{page}</button>
-                    ))
-                  }
-                </div>
-              ) : (
-                <div>Loading...</div>
-              )
-
-            }
-          </div>
-          <button className={`btn p-0 m-0 px-1 border-charcoal ms-2`} ref={nextref} value={nxtoffset} onClick={(e) => { getnextpages(e); }} style={{ marginTop: '0.15rem' }}>Next</button>
-        </div> */}
         < ReactPaginate
           previousLabel={'Previous'}
           nextLabel={'Next'}
@@ -952,25 +924,21 @@ function SaleReturns() {
     <>
       <button className="button addentrypurchase button-charcoal position-absolute" onClick={toggle_nref}><img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt='displaying_image' className="img-fluid" style={{ width: `1.5rem` }} />Entry Return</button>
       <div classsName='p-0 m-0'>
-        <div className="row p-0 m-0 justify-content-lg-between justify-content-center">
-          <div className="col-2 col-md-2 col-lg-2 text-center align-self-center text-charcoal fw-bolder fs-6">Sale Return <span className='text-burntumber border-burntumber px-1 rounded-2'>{pagecount}</span> </div>
-          <div className="col-auto align-self-center m-1 justify-content-center ">
-            <div className="row border-burntumber fw-bolder rounded-2 text-center justify-content-center ">
-              {/* <div className="col-auto ">
-                <select className='p-0 m-0 border-0 text-burntumber fw-bolder rounded-2' value={channel ? channel : ''} onChange={(e) => { setchannel(e.target.value) }}>
-                  <option className='border-0 text-burntumber fw-bolder' value='1'>Pharmacy</option>
-                  <option className='border-0 text-burntumber fw-bolder' value='2'>Consumables</option>
-                </select>
-              </div> */}
-              <div className="col-auto text-burntumber bg-pearl fw-bolder rounded-2">
-                <input type='date' className='p-0 m-0 border-0 text-burntumber  bg-pearl fw-bolder' placeholder='fromdate' value={fromdate ? fromdate : ''} onChange={(e) => { setfromdate(e.target.value) }} />
+        <div className="row p-0 m-0 justify-content-lg-between justify-content-md-evenly justify-content-center text-center mt-2">
+          <div className="col-lg-2 col-md-2 col-3 text-center p-0 m-0 ">
+            <button type='button' className="btn p-0 m-0 heading text-charcoal fw-bolder  " style={{ width: 'fit-content' }}>{pagecount}  {pagecount > 0 ? 'Sale Returns' : 'Sale Return'} </button>
+          </div>
+          <div className="col-lg-8 col-md-8 col-7  p-0 m-0  border-0 ">
+            <div className="row p-0 m-0 border-burntumber fw-bolder rounded-2 text-center justify-content-center ">
+              <div className="col-6 p-0 m-0 text-burntumber text-center fw-bolder bg-pearl  rounded-2 ">
+                <input type='date' placeholder='fromdate' className='p-0 m-0 border-0 bg-pearl text-burntumber text-center fw-bolder ' value={fromdate ? fromdate : currentDate ? currentDate : ''} onChange={(e) => { setfromdate(e.target.value) }} />
               </div>
-              <div className="col-auto  text-burntumber bg-pearl fw-bolder rounded-2">
-                <input type='date' className='p-0 m-0 border-0 text-burntumber fw-bolder bg-pearl' placeholder='fromdate' value={todate ? todate : ''} onChange={(e) => { settodate(e.target.value) }} />
+              <div className="col-6 p-0 m-0 text-burntumber bg-pearl fw-bolder rounded-2">
+                <input type='date' className='p-0 m-0 border-0 text-burntumber fw-bolder bg-pearl' placeholder='todate' value={todate ? todate : fromdate ? fromdate : currentDate ? currentDate : ''} onChange={(e) => { settodate(e.target.value) }} />
               </div>
             </div>
           </div>
-          <div className="col-2 col-lg-2 col-md-2 align-self-center">
+          <div className="col-md-2 col-lg-2 col-2 p-0 m-0 export align-self-center text-center ">
             <ExportSaleReturn salereturnarr={salereturnarrExcel} fromdate={reversefunction(fromdate)} todate={reversefunction(todate)} />
           </div>
         </div>
@@ -2252,46 +2220,45 @@ export { Salesection }
 
 //  ---------------------------------------------------------------purchase------------------------------------------------------------------
 function Purchasesection(props) {
-  const first = ["Purchase Orders", "Purchase Entry", "Purchase Returns"];
+  const first = ["Purchase Entry", "Purchase Returns", "Purchase Orders"];
   const [second, setSecond] = useState(0);
 
   const _selectedScreen = (_selected) => {
+
     if (_selected === 0) {
-      return <Purchaseordersection />
-    }
-    if (_selected === 1) {
       return <Purchaseentrysection function={props.func} function2={props.function} />
     }
-    if (_selected === 2) {
+    if (_selected === 1) {
       return <PurchaseReturns />
     }
-    return <div className='fs-2'>Nothing Selected</div>
+    if (_selected === 2) {
+      return <Purchaseordersection />
+    }
+    return <div className=''>Nothing Selected</div>
 
   }
   return (
     <>
-
       <section className='purchasesection'>
 
-        <div className="row p-0 m-0 mt-1 gx-3">
+        <div className="row p-0 m-0 mt-1 gx-lg-3 gx-md-2">
 
-          <div className='row p-0 m-0'>
-            {
-              first.map((e, i) => {
-                return (
-                  <div className="col-auto">
-                    <button className={`btn btn-sm px-4 rounded-5 text-${i === second ? "light" : "dark"} bg-${i === second ? "charcoal" : "seashell"}`} onClick={(a) => setSecond(i)} >{e}</button>
-                  </div>
-                )
-              }
+          {
+            first.map((e, i) => {
+              return (
+                <div className="col-auto">
+                  <button className={`btn btn-sm px-lg-4 px-md-3 rounded-pill text-${i === second ? "light" : "dark"} bg-${i === second ? "charcoal" : "seashell"}`} onClick={(a) => setSecond(i)} >{e}</button>
+                </div>
               )
             }
-          </div>
+            )
+          }
+
         </div>
       </section>
       <section className="tablesrender position-relative">
-        <div className='container-fluid pt-4 p-0 m-0'>
-          <div className="scroll scroll-y">
+        <div className='container-fluid mt-lg-4 mt-md-3 mt-2 p-0 m-0'>
+          <div className="">
             {_selectedScreen(second)}
           </div>
         </div>
@@ -2415,26 +2382,28 @@ function Purchaseentrysection(props) {
 
   return (
     <>
-      <button className="button addentrypurchase button-charcoal position-absolute" onClick={toggle_npef}><img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt='displaying_image' className="img-fluid" style={{ width: `1.5rem` }} />Entry Purchase</button>
-      <div className="row p-0 m-0 justify-content-between">
-        <div className="col-3 col-md-auto col-lg-3 align-self-center text-center text-charcoal fw-bolder">Purchase Entry <span className='text-burntumber border-burntumber px-1 rounded-2'>{pagecount}</span></div>
-        <div className="col-auto align-self-center m-1 ">
-          <div className="row border-burntumber fw-bolder rounded-2 text-center justify-content-center ">
-            <div className="col-4 bg-pearl rounded-2">
+      <button className="button addpurchase button-charcoal position-absolute" onClick={toggle_npef}><img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt='displaying_image' className="img-fluid" style={{ width: `1.5rem` }} />Entry Purchase</button>
+      <div className="row p-0 m-0 justify-content-lg-between justify-content-md-evenly justify-content-left text-center">
+        <div className="col-lg-2 col-md-2 col-3 text-center p-0 m-0 order-lg-0 order-md-0 order-sm-0 order-0 ms-lg-0 ms-md-0 ms-sm-0 ms-4">
+          <button type='button' className="btn p-0 m-0 heading text-charcoal fw-bolder  " style={{ width: 'fit-content' }}>{pagecount}  {pagecount > 0 ? 'Purchase Entries' : 'Purchase Entry'} </button>
+        </div>
+        <div className="col-lg-8 col-md-7 col-11 ms-lg-0 ms-md-0 ms-sm-0 ms-3 align-self-center p-0 m-0 order-lg-1 order-md-1 order-sm-1 order-2 mt-lg-0 mt-md-0 mt-1  ">
+          <div className="row p-0 m-0 border-burntumber fw-bolder rounded-2 text-center justify-content-center ">
+            <div className="col-4 p-0 m-0  bg-pearl rounded-2">
               <select className='p-0 m-0 border-0 text-burntumber fw-bolder bg-pearl' value={channel ? channel : ''} onChange={(e) => { setchannel(e.target.value) }}>
                 <option className='border-0 text-burntumber fw-bolder' value='1'>Pharmacy</option>
                 <option className='border-0 text-burntumber fw-bolder' value='2'>Consumables</option>
               </select>
             </div>
-            <div className="col-4 text-burntumber fw-bolder bg-pearl">
+            <div className="col-4 p-0 m-0 text-burntumber fw-bolder bg-pearl">
               <input type='date' className=' p-0 m-0 border-0 text-burntumber fw-bolder bg-pearl ' value={fromdate ? fromdate : currentDate ? currentDate : ''} onChange={(e) => { setfromdate(e.target.value) }} />
             </div>
-            <div className="col-4 text-burntumber fw-bolder bg-pearl rounded-2">
-              <input type='date' className=' p-0 m-0 border-0 text-burntumber fw-bolder bg-pearl ' value={todate ? todate : fromdate ? fromdate : currentDate ? currentDate : ''} onChange={(e) => { settodate(e.target.value) }} />
+            <div className="col-4 p-0 m-0  text-burntumber fw-bolder bg-pearl rounded-2">
+              <input type='date' className=' p-0 m-0 border-0 text-burntumber fw-bolder bg-pearl rounded-2 ' value={todate ? todate : fromdate ? fromdate : currentDate ? currentDate : ''} onChange={(e) => { settodate(e.target.value) }} />
             </div>
           </div>
         </div>
-        <div className="col-2 col-md-2 col-lg-2 align-self-center me-lg-2 ">
+        <div className="col-2 export col-md-2 col-lg-2 align-self-center order-lg-2 order-md-2 order-sm-0 order-1 ">
           <ExportPurchaseEntry purchaseentryarr={purchaseentryarrExcel} fromdate={reversefunction(fromdate)} todate={reversefunction(todate)} />
         </div>
       </div>
@@ -2459,11 +2428,10 @@ function Purchaseentrysection(props) {
                 <body className=' text-center' style={{ minHeight: '55vh' }}>
                   <tr className='position-absolute border-0 start-0 end-0 px-5'>
                     <div class="d-flex align-items-center">
-                      <strong className='fs-5'>Getting Details please be Patient ...</strong>
+                      <strong className=''>Getting Details please be Patient ...</strong>
                       <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
                     </div>
                   </tr>
-
                 </body>
 
               ) : (
@@ -2492,9 +2460,7 @@ function Purchaseentrysection(props) {
                         </tr>
 
                       ))
-
                     }
-
                   </tbody>
                 ) : (
                   <tbody className='text-center position-relative p-0 m-0 ' style={{ minHeight: '55vh' }}>
@@ -3960,11 +3926,13 @@ function PurchaseReturns() {
   }
   return (
     <>
-      <button className="button addentrypurchase button-charcoal position-absolute" onClick={toggle_nref}><img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt='displaying_image' className="img-fluid" style={{ width: `1.5rem` }} />Entry Return</button>
-      <div className="row p-0 m-0 justify-content-lg-between">
-        <div className="col-3 col-md-auto col-lg-3 align-self-center text-center text-charcoal fw-bolder fs-6 ">Purchase Return <span className='text-burntumber border-burntumber px-1 rounded-2'>{pagecount}</span></div>
-        <div className="col-auto align-self-center ">
-          <div className="row border-burntumber bg-pearl fw-bolder rounded-2 text-center justify-content-center ">
+      <button className="button addpurchase button-charcoal position-absolute" onClick={toggle_nref}><img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt='displaying_image' className="img-fluid" style={{ width: `1.5rem` }} />Entry Return</button>
+      <div className="row p-0 m-0 justify-content-lg-between justify-content-md-evenly justify-content-left text-center">
+        <div className="col-lg-2 col-md-2 col-4 text-center p-0 m-0 order-lg-0 order-md-0 order-sm-0 order-0 ms-lg-0 ms-md-0 ms-sm-0 ms-1 ">
+          <button type='button' className="btn p-0 m-0 heading text-charcoal fw-bolder  " style={{ width: 'fit-content' }}>{pagecount}  {pagecount > 0 ? 'Purchase Returns' : 'Purchase Return'} </button>
+        </div>
+        <div className="col-lg-8 col-md-7 col-sm-7 col-11 ms-lg-0 ms-md-0 ms-sm-0 ms-3 align-self-center p-0 m-0 order-lg-1 order-md-1 order-sm-1 order-2 mt-lg-0 mt-md-0 mt-1  ">
+          <div className="row p-0 m-0 border-burntumber fw-bolder rounded-2 text-center justify-content-center ">
             <div className="col-4">
               <select className='p-0 m-0 border-0 text-burntumber bg-pearl fw-bolder' value={channel ? channel : ''} onChange={(e) => { setchannel(e.target.value) }}>
                 <option className='border-0 text-burntumber fw-bolder' value='1'>Pharmacy</option>
@@ -3972,14 +3940,14 @@ function PurchaseReturns() {
               </select>
             </div>
             <div className="col-4 text-burntumber fw-bolder bg-pearl ">
-              <input type='date' className='p-0 m-0 border-0 bg-pearl text-burntumber fw-bolder ' value={fromdate ? fromdate : ''} onChange={(e) => { setfromdate(e.target.value) }} />
+              <input type='date' className='p-0 m-0 border-0 bg-pearl text-burntumber fw-bolder ' value={fromdate ? fromdate : currentDate ? currentDate : ''} onChange={(e) => { setfromdate(e.target.value) }} />
             </div>
             <div className="col-4 text-burntumber fw-bolder bg-pearl rounded-2 ">
-              <input type='date' className='p-0 m-0 border-0 bg-pearl text-burntumber fw-bolder ' value={todate ? todate : ''} onChange={(e) => { settodate(e.target.value) }} />
+              <input type='date' className='p-0 m-0 border-0 bg-pearl text-burntumber fw-bolder ' value={todate ? todate : fromdate ? fromdate : currentDate ? currentDate : ''} onChange={(e) => { settodate(e.target.value) }} />
             </div>
           </div>
         </div>
-        <div className="col-2 col-md-2 col-lg-2 align-self-center me-lg-2 ">
+        <div className="col-2 export col-md-2 col-lg-2 align-self-center order-lg-2 order-md-2 order-sm-0 order-1 ">
           <ExportPurchaseReturn purchasereturnarr={purchasereturnarrExcel} fromdate={reversefunction(fromdate)} todate={reversefunction(todate)} />
         </div>
       </div>
@@ -4439,7 +4407,6 @@ function NewPurchaseReturnentryform(props) {
     }
 
   }
-
   function confirmmessage() {
     customconfirm()
     Notiflix.Confirm.show(
@@ -4457,7 +4424,6 @@ function NewPurchaseReturnentryform(props) {
       },
     );
   }
-
   async function DeleteMedicine(id) {
     let obj = []
     obj.push(MedicineentriesArr.filter(function (e) {
@@ -4660,7 +4626,7 @@ export { PEitemdetailssection };
 //-------------------------------------------------------------------------Stock Info---------------------------------------------------------
 
 function Stocksection() {
-  let menu = ["Vaccines", "Medicines", "Medicine List"];
+  let menu = ["Vaccines", "Medicines"];
   const [menuindex, setmenuindex] = useState(0);
   const _selectedmenu = (_menu) => {
     if (_menu === 0) {
@@ -4668,9 +4634,6 @@ function Stocksection() {
     }
     if (_menu === 1) {
       return <div className=""><Stockmedicinesection /></div>
-    }
-    if (_menu === 2) {
-      return <div className=""><MedicineList /></div>
     }
     return <div className='fs-2'>Nothing Selected</div>
 
@@ -4698,7 +4661,7 @@ function Stocksection() {
       </section>
       <section className="tablesrender position-relative">
         <div className='container-fluid pt-3'>
-          <div className="scroll scroll-y">
+          <div className="">
             {_selectedmenu(menuindex)}
           </div>
         </div>
@@ -4956,13 +4919,13 @@ function Stockvaccinesection() {
   console.log(vaccinearr)
   return (
     <div className='p-0 m-0 vaccinestockinfo'>
-      <button className="button exportstock button-charcoal position-absolute"><img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt='displaying_image' className="img-fluid" style={{ width: `1.5rem` }} />Export Stock</button>
-      <div className='position-absolute searchbutton' style={{ top: '0.25rem', right: '1rem' }}>
+      {/* <button className="button exportstock button-charcoal position-absolute"><img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt='displaying_image' className="img-fluid" style={{ width: `1.5rem` }} />Export Stock</button> */}
+      <div className='position-absolute searchbutton' >
         <input type="text" className=" form-control d-inline vaccinesearch bg-pearl" placeholder="Vaccine Name" onChange={(e) => { setsearchname(e.target.value); }} />
-        <button className="btn p-0 m-0 bg-transparent border-0 position-absolute" style={{ width: '2rem', right: '0', left: '0', top: '0.25rem' }}><img src={process.env.PUBLIC_URL + "/images/search.png"} alt="displaying_image" className="img-fluid p-0 m-0" /></button>
+        <button className="btn searchbtn p-0 m-0 bg-transparent border-0 position-absolute"><img src={process.env.PUBLIC_URL + "/images/search.png"} alt="displaying_image" className="img-fluid p-0 m-0" /></button>
       </div>
-      <div className=' text-start text-charcoal p-2 ms-5 fw-bold'>Vaccine Stock Info</div>
-      <div className='scroll scroll-y' style={{ 'height': '57vh', minHeight: '57vh', maxHeight: '57vh' }}>
+      <div className='heading text-start text-charcoal p-lg-2 p-md-2 p-2 ms-lg-5 ms-md-3 ms-1 fw-bold'>Vaccine Stock Info</div>
+      <div className='scroll scroll-y'>
         <table className="table datatable text-start" >
           <thead className='position-sticky top-0 bg-pearl'>
             <tr className='text-start'>
@@ -5287,9 +5250,9 @@ function Stockmedicinesection() {
       {/* <button className="button exportstock button-charcoal position-absolute"><img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt='displaying_image' className="img-fluid" style={{ width: `1.5rem` }} />Export Stock</button> */}
       <div className='position-absolute searchbutton' style={{ top: '0.25rem', right: '1rem' }}>
         <input type="text" className=" form-control d-inline vaccinesearch bg-pearl" placeholder="Medicine Name" onChange={(e) => { setsearchname(e.target.value); }} />
-        <button className="btn p-0 m-0 bg-transparent border-0 position-absolute" style={{ width: '2rem', right: '0', left: '0', top: '0.25rem' }}><img src={process.env.PUBLIC_URL + "/images/search.png"} alt="displaying_image" className="img-fluid p-0 m-0" /></button>
+        <button className="btn searchbtn p-0 m-0 bg-transparent border-0 position-absolute" ><img src={process.env.PUBLIC_URL + "/images/search.png"} alt="displaying_image" className="img-fluid p-0 m-0" /></button>
       </div>
-      <div className='text-start ms-5 text-charcoal fw-bold p-2'>Medicine Stock Info</div>
+      <div className='heading text-start ms-lg-5 ms-md-3 ms-1 text-charcoal fw-bold p-2'>Medicine Stock Info</div>
       <div className='scroll scroll-y p-0 m-0' style={{ 'height': '57vh', minHeight: '57vh', maxHeight: '57vh' }}>
         <table className="table datatable text-start" >
           <thead className='position-sticky top-0 bg-pearl'>
@@ -5385,21 +5348,21 @@ function Stockmedicinesection() {
         < ReactPaginate
           previousLabel={'Previous'}
           nextLabel={'Next'}
-          breakLabel={'. . .'}
+          breakLabel={'.'}
           pageCount={pages}
           marginPagesDisplayed={3}
           pageRangeDisplayed={2}
           onPageChange={GetMedicines}
-          containerClassName={'pagination'}
+          containerClassName={'pagination scroll align-self-center align-items-center'}
           pageClassName={'page-item text-charcoal'}
           pageLinkClassName={'page-link text-decoration-none text-charcoal border-charcoal rounded-2 mx-1'}
           previousClassName={'btn button-charcoal-outline me-2'}
           previousLinkClassName={'text-decoration-none text-charcoal'}
           nextClassName={'btn button-charcoal-outline ms-2'}
           nextLinkClassName={'text-decoration-none text-charcoal'}
-          breakClassName={'mx-2 text-charcoal fw-bold fs-4'}
+          breakClassName={'d-flex mx-2 text-charcoal fw-bold fs-4'}
           breakLinkClassName={'text-decoration-none text-charcoal'}
-          activeClassName={'active'}
+          activeClassName={'active '}
         />
       </div>
 
@@ -5536,6 +5499,54 @@ function MedicinesectionItemDetails(props) {
 
   )
 }
+//-------------------------------------------------------------------------Lists---------------------------------------------------------
+function Listsection() {
+  let menu = ["Vaccines", "Medicines"];
+  const [menuindex, setmenuindex] = useState(0);
+  const _selectedmenu = (_menu) => {
+    if (_menu === 0) {
+      return <div className=""><VaccineList /></div>
+    }
+    if (_menu === 1) {
+      return <div className=""><MedicineList /></div>
+    }
+    return <div className='fs-2'>Nothing Selected</div>
+
+  }
+  return (
+    <>
+      <section className='stocksection pt-1'>
+        <div className="container-fluid">
+          <div className="row gx-3">
+            <div className='row m-0 p-0'>
+              {
+                menu.map((e, i) => {
+                  return (
+                    <div className="col-auto">
+                      <button className={`btn btn-sm px-4 rounded-5 text-${i === menuindex ? "light" : "dark"} bg-${i === menuindex ? "charcoal" : "seashell"}`} onClick={(a) => setmenuindex(i)} >{e}</button>
+                    </div>
+                  )
+                }
+                )
+              }
+            </div>
+
+          </div>
+        </div>
+      </section>
+      <section className="tablesrender position-relative">
+        <div className='container-fluid mt-lg-3 mt-md-3 mt-sm-2 mt-1'>
+          <div className="">
+            {_selectedmenu(menuindex)}
+          </div>
+        </div>
+      </section>
+    </>
+  )
+}
+function VaccineList() {
+
+}
 function MedicineList() {
   const url = useContext(URL)
   const [pagecount, setpagecount] = useState()
@@ -5636,7 +5647,7 @@ function MedicineList() {
   }
   return (
     <div>
-      <div className='text-start ms-5 text-charcoal fw-bold p-2'>Medicines List</div>
+      <div className='heading text-start ms-lg-5 ms-md-3 ms-sm-3 ms-1 text-charcoal fw-bold p-2'>Medicines List</div>
       <div className='scroll scroll-y p-0 m-0 overflow-scroll' style={{ 'height': '57vh', minHeight: '57vh', maxHeight: '57vh' }}  >
         <table className="table datatable text-start" >
           <thead className='position-sticky top-0 bg-pearl'>
@@ -5707,21 +5718,21 @@ function MedicineList() {
         < ReactPaginate
           previousLabel={'Previous'}
           nextLabel={'Next'}
-          breakLabel={'. . .'}
+          breakLabel={'.'}
           pageCount={pages}
           marginPagesDisplayed={3}
           pageRangeDisplayed={2}
           onPageChange={medcinelist}
-          containerClassName={'pagination'}
+          containerClassName={'pagination scroll align-self-center align-items-center'}
           pageClassName={'page-item text-charcoal'}
           pageLinkClassName={'page-link text-decoration-none text-charcoal border-charcoal rounded-2 mx-1'}
           previousClassName={'btn button-charcoal-outline me-2'}
           previousLinkClassName={'text-decoration-none text-charcoal'}
           nextClassName={'btn button-charcoal-outline ms-2'}
           nextLinkClassName={'text-decoration-none text-charcoal'}
-          breakClassName={'mx-2 text-charcoal fw-bold fs-4'}
+          breakClassName={'d-flex mx-2 text-charcoal fw-bold fs-4'}
           breakLinkClassName={'text-decoration-none text-charcoal'}
-          activeClassName={'active'}
+          activeClassName={'active '}
         />
       </div>
 
@@ -5729,6 +5740,4 @@ function MedicineList() {
   )
 }
 export { Stocksection };
-
-
-
+export { Listsection }
