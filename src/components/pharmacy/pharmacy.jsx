@@ -2496,7 +2496,7 @@ function Purchaseentrysection(props) {
           />
         </div>
       </div>
-      <section className={`newpurchaseentrysection position-absolute start-0 end-0 bg-seashell border border-1 d-${npef}`} style={{ 'height': '90vh' }}  >
+      <section className={`newpurchaseentrysection position-absolute start-0 end-0 bottom-0 bg-seashell border border-1 d-${npef}`} style={{ 'height': '90vh' }}  >
         {<Newpurchaseentryform toggle_npef={toggle_npef} GETPurchaseList={GETPurchaseList} />}
       </section>
     </>
@@ -4037,7 +4037,7 @@ function PurchaseReturns() {
         />
       </div>
 
-      <section className={`newreturnentrysection position-absolute bg-seashell border border-1 start-0 end-0  d-${nref}`} style={{ 'top': '-7.15rem', Height: '90vh' }}  >
+      <section className={`newreturnentrysection position-absolute bg-seashell border border-1 start-0 end-0  d-${nref}`}  >
         {<NewPurchaseReturnentryform toggle_nref={toggle_nref} GETPurchaseReturns={GETPurchaseReturns} />}
       </section>
     </>
@@ -4584,13 +4584,13 @@ function NewPurchaseReturnentryform(props) {
       </div>
       <div className='col-12 position-absolute start-0 end-0 bottom-0 rounded-bottom text-center bg-pearl align-items-center border border-1 py-3'>
         <div className="row p-0 m-0">
-          <div className="col-6">
+          <div className="col-auto">
             <div className="row">
-              <div className="col-3">
+              <div className="col-auto">
                 <p className='text-charcoal75 p-0 m-0 fw-bolder card-title text-start ms-3'> Order Total </p>
                 <h4 className='text-charcoal  p-0 m-0 fw-bolder card-header text-start ps-3'>{Grand()}</h4>
               </div>
-              <div className="col-3">
+              <div className="col-auto">
                 <p className='text-charcoal75 p-0 m-0 fw-bolder card-title text-start ms-3'> Total Items</p>
                 <h4 className='text-charcoal  p-0 m-0 fw-bolder card-header text-start ps-3'>{MedicineentriesArr ? MedicineentriesArr.length : 0}</h4>
               </div>
@@ -5697,7 +5697,7 @@ function MedicineList() {
 
                         {
                           index == i ? (
-                            <td className={` text-start  d-${index == i ? NewMed : 'none'} border position-absolute start-0 end-0 top-0 bg-seashell`} style={{ padding: 0, marginTop: '-7.15rem' }}>
+                            <td className={` text-start  d-${index == i ? NewMed : 'none'} border position-absolute start-0 end-0 top-0 bg-seashell`} style={{ padding: 0, marginTop: '-7.15rem', zIndex: '2' }}>
                               <UpdateMedicine ToggleNewMedicine={ToggleNewMedicine} data={medicines[i]} />
                             </td>
                           ) : (<></>)
