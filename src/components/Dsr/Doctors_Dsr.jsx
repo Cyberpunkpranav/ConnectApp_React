@@ -303,14 +303,14 @@ const Doctors_Dsr = (props) => {
           <button onClick={() => { setpageindex(1) }} className="nav-link p-0 m-0 py-1 px-3 rounded-pill" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Login's Summary</button>
         </li>
         <li className="nav-item ms-lg-3 ms-md-2 ms-sm-1 ms-1" role="presentation">
-          <button className="button button-pearl text-burntumber fw-bold p-0 m-0 py-1 px-3 "  type="button" role="tab" aria-controls="pills-profile" aria-selected="false"> {TotalTime()}</button>
+          <button className="button button-pearl text-burntumber fw-bold p-0 m-0 py-1 px-3 " type="button" role="tab" aria-controls="pills-profile" aria-selected="false"> {TotalTime()}</button>
         </li>
       </ul>
       <div className="tab-content" id="pills-tabContent ">
         <div className="tab-pane fade show active text-start" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
           <div className='container-fluid scroll scroll-y doctordsrtable' ref={tableref}>
             <span className='d-none'>Total Time:{TotalTime()}</span>
-            <table className='table text-start' >
+            <table className='table text-start'>
               <thead>
                 <tr>
                   <th>Id</th>
@@ -332,22 +332,22 @@ const Doctors_Dsr = (props) => {
                 ) : (
                   Appointments.length == 0 || Appointments == undefined ? (
                     <tbody className='position-relative'>
-                      <tr className='position-absolute start-0 end-0 fw-bolder text-charcoal'>No Doctors Login History Found </tr>
+                      <tr className='position-absolute start-0 end-0 mx-auto fw-bolder text-charcoal'>No Doctors Login History Found </tr>
                     </tbody>
                   ) : (
                     <tbody className='border'>
                       {
                         Appointments.map((data, i) => (
                           <tr key={i}>
-                            <td>{data.id ? data.id : 'N/A'}</td>
+                            <td>{data.id ? data.id : ''}</td>
                             <td>{data.doctor ? data.doctor.doctor_name && data.doctor.doctor_name != null ? data.doctor.doctor_name : 'N/A' : 'N/A'}</td>
-                            <td>{data.doctor ? data.doctor.phone_number ? data.doctor.phone_number : 'N/A' : "DoctorNotFound"}</td>
-                            <td>{data.date && data.date != null ? reversefunction(data.date) : 'N/A'}</td>
-                            <td>{data.room ? data.room.room_number && data.room.room_number != null ? data.room.room_number : 'N/A' : "RoomNotFound"}</td>
-                            <td>{data.room ? data.room.room_type == 1 ? 'Consultation' : 'Procedure' : 'N/A'}</td>
-                            <td>{data.login_time ? tConvert(data.login_time) : 'N/A'}</td>
-                            <td>{data.logout_time ? tConvert(data.logout_time) : 'N/A'}</td>
-                            <td>{data.login_time && data.login_time != null && data.logout_time && data.logout_time != null ? diff(data.login_time, data.logout_time) : 'N/A'}</td>
+                            <td>{data.doctor ? data.doctor.phone_number ? data.doctor.phone_number : '' : ""}</td>
+                            <td>{data.date && data.date != null ? reversefunction(data.date) : ''}</td>
+                            <td>{data.room ? data.room.room_number && data.room.room_number != null ? data.room.room_number : 'N/A' : ""}</td>
+                            <td>{data.room ? data.room.room_type == 1 ? 'Consultation' : 'Procedure' : ''}</td>
+                            <td>{data.login_time ? tConvert(data.login_time) : '--'}</td>
+                            <td>{data.logout_time ? tConvert(data.logout_time) : '--'}</td>
+                            <td>{data.login_time && data.login_time != null && data.logout_time && data.logout_time != null ? diff(data.login_time, data.logout_time) : '--'}</td>
                           </tr>
 
                         ))
@@ -367,8 +367,8 @@ const Doctors_Dsr = (props) => {
                 <tr>
                   <th className='my-0 py-0' rowspan='2'>Doctor Id</th>
                   <th className='my-0 py-0' rowspan='2'>Doctor Name</th>
-                  <th className='my-0 py-0' colspan='2' scope='colgroup'>Consultation</th>
-                  <th className='my-0 py-0' colspan='2' scope='colgroup'>Procedure</th>
+                  <th className='my-0 py-0 border-0 bg-seashell border-bottom' colspan='2' scope='colgroup'>Consultation</th>
+                  <th className='my-0 py-0 border-0 bg-seashell border-bottom' colspan='2' scope='colgroup'>Procedure</th>
                 </tr>
                 <tr>
                   <th className='py-0 my-0 bg-pearl' scope='col'>Total Hours</th>
@@ -386,13 +386,13 @@ const Doctors_Dsr = (props) => {
                 ) : (
                   <tbody>{
                     DocTimetyp1.map((data) => (
-                      <tr className='border'>
-                        <td className='border'>{data[0]}</td>
-                        <td className='border'>{data[1]}</td>
-                        <td className='border'>{data[4]}</td>
-                        <td className='border'>{data[5]}</td>
-                        <td className='border'>0</td>
-                        <td className='border'>0</td>
+                      <tr className=''>
+                        <td className=''>{data[0]}</td>
+                        <td className=''>{data[1]}</td>
+                        <td className=''>{data[4]}</td>
+                        <td className=''>{data[5]}</td>
+                        <td className=''>0</td>
+                        <td className=''>0</td>
                       </tr>
                     ))
                   }

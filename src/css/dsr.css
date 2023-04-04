@@ -21,7 +21,7 @@
     border-top: 1px solid var(--charcoal50);
     border-bottom: 1px solid var(--charcoal50);
     cursor: pointer;
-    appearance: none;
+    appearance: none;   
 }
 .DSRsection .fromdate{
     padding-top:6px;
@@ -29,8 +29,6 @@
     border:0px;
     border-top: 1px solid var(--charcoal50);
     border-bottom: 1px solid var(--charcoal50);
-
-    
 }
 .DSRsection .dash{
     padding-top:6px;
@@ -93,8 +91,8 @@
     background-color:var(--seashell)
 }
  .doctordsrtable{
-    height:52vh;
-    max-height:52vh;
+    height:70vh;
+    max-height:70vh;
 }
 .Pharmacy_Dsrsection .maintable{
     max-height:32rem;
