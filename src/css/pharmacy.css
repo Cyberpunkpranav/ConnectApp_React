@@ -129,12 +129,13 @@ font-size: 1rem !important ;
 }
 
 .newreturnentrysection {
-    top: -8.15rem;
-    height:90vh;
+    top: -7.15rem;
+    height:89vh;
 }
 
 .newpurchaseentrysection {
     top: -8.15rem;
+    height:90vh;
 }
  @media  (max-width:512px) {
     .pharmacysection .gap-3{

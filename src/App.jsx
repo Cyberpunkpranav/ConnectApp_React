@@ -41,7 +41,8 @@ import { customconfirm } from "./components/features/notiflix/customconfirm"
 
 
 function Navbar(props) {
-
+  console.log(props.permissions)
+    console.log(props.permissions.dashboard_all)
   // const chatinputref = useRef()
   // const [chat, setchat] = useState('')
   // const [chatarr, setchatarr] = useState([])
@@ -278,6 +279,8 @@ function Navbar(props) {
 }
 
 function Doctorsection(props) {
+  console.log(props.permissions)
+  // console.log(props.permissions.dashboard_all)
   const month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December",];
   var weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday",];
   const d = new Date();

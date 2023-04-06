@@ -62,10 +62,8 @@ function Connectapp(props) {
   useEffect(() => {
     VitalsList()
   }, [])
-  console.log(props.permissions)
-  let p = Object.values(props.permissions)
-  console.log(p)
 
+  // console.log(Object.entries(props.permissions))
   async function fetchapi() {
     try {
       setLoading(true);
@@ -162,9 +160,9 @@ function Connectapp(props) {
                           <TodayDocs.Provider value={todayDoc}>
                             <Vitals.Provider value={vitalslist}>
                               <Router>
-                                <Navbar username={props.username} designation={props.designation} id={props.id} fetchapi={fetchapi} />
+                                <Navbar permissions={props.permissions} username={props.username} designation={props.designation} id={props.id} fetchapi={fetchapi} />
                                 <Routes>
-                                  <Route path='/' element={<Doctorsection id={props.id} fetchapi={fetchapi} todayDoc={todayDoc} Loading={Loading} docapi={docapi} />} />
+                                  <Route path='/' permissions={props.permissions} element={<Doctorsection id={props.id} fetchapi={fetchapi} todayDoc={todayDoc} Loading={Loading} docapi={docapi} />} />
                                   <Route path='/Appointments' element={<Appointments id={props.id} fetchapi={fetchapi} />} />
                                   <Route path='/Patients' element={<Patients id={props.id} />} />
                                   <Route path='/Doctors' element={<Doctors id={props.id} docapi={docapi} />} />
@@ -252,10 +250,10 @@ function Switchpage() {
     })
   }
 
-  console.log(permissions)
+  // console.log(permissions.toString().replace(/['"]+/g, ''))
   function Changepage() {
     if (localemail !== null && localemail !== '') {
-      return <Connectapp username={localStorage.getItem('name')} designation={localStorage.getItem('designation')} id={localStorage.getItem('id')} permissions={permissions} />
+      return <Connectapp username={localStorage.getItem('name')} designation={localStorage.getItem('designation')} id={localStorage.getItem('id')} permissions={permissions.toString().replace(/['"]+/g, '')} />
     } else {
       return (
 

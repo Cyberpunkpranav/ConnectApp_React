@@ -1031,7 +1031,7 @@ function SaleReturns() {
           />
         </div>
       </div>
-      <section className={`newreturnentrysection position-absolute start-0 end-0 border border-1 bg-seashell d-${nref}`} style={{ 'height': '90vh' }}  >
+      <section className={`newreturnentrysection position-absolute start-0 end-0 border border-1 bg-seashell d-${nref}`}  >
         {<NewSaleReturnentryform toggle_nref={toggle_nref} GETSaleReturns={GETSaleReturns} />}
       </section>
     </>
@@ -1980,11 +1980,11 @@ function NewSaleReturnentryform(props) {
         <div className="row p-0 m-0">
           <div className="col-6">
             <div className="row">
-              <div className="col-3">
+              <div className="col-auto">
                 <p className='text-charcoal75 p-0 m-0 fw-bolder card-title text-start ms-3'> Order Total </p>
                 <h4 className='text-charcoal  p-0 m-0 fw-bolder card-header text-start ps-3'>{Grand()}</h4>
               </div>
-              <div className="col-3">
+              <div className="col-auto">
                 <p className='text-charcoal75 p-0 m-0 fw-bolder card-title text-start ms-3'> Total Items</p>
                 <h4 className='text-charcoal  p-0 m-0 fw-bolder card-header text-start ps-3'>{MedicineentriesArr ? MedicineentriesArr.length : 0}</h4>
               </div>
@@ -2496,7 +2496,7 @@ function Purchaseentrysection(props) {
           />
         </div>
       </div>
-      <section className={`newpurchaseentrysection position-absolute start-0 end-0 bottom-0 bg-seashell border border-1 d-${npef}`} style={{ 'height': '90vh' }}  >
+      <section className={`newpurchaseentrysection position-absolute start-0 end-0 bg-seashell border border-1 d-${npef}`}>
         {<Newpurchaseentryform toggle_npef={toggle_npef} GETPurchaseList={GETPurchaseList} />}
       </section>
     </>
@@ -3389,7 +3389,7 @@ function Newpurchaseentryform(props) {
               <div className="col-auto">
                 <div className="row p-0 m-0">
                   <div className="col-auto">
-                    <input type="checkbox" className="" checked={channel == 1 ? true : false} value='1' onClick={(e) => { setchannel(e.target.value) }} />
+                    <input type="checkbox" className="form-check-input" checked={channel == 1 ? true : false} value='1' onClick={(e) => { setchannel(e.target.value) }} />
                   </div>
                   <div className="col-auto">
                     <span className="ms-0">Pharmacy</span>
@@ -3399,7 +3399,7 @@ function Newpurchaseentryform(props) {
               <div className="col-auto">
                 <div className="row">
                   <div className="col-auto">
-                    <input type="checkbox" className="" checked={channel == 2 ? true : false} value='2' onClick={(e) => { setchannel(e.target.value) }} />
+                    <input type="checkbox" className="form-check-input" checked={channel == 2 ? true : false} value='2' onClick={(e) => { setchannel(e.target.value) }} />
                   </div>
                   <div className="col-auto">
                     <span className="ms-0">Clinic</span>
@@ -4596,7 +4596,7 @@ function NewPurchaseReturnentryform(props) {
               </div>
             </div>
           </div>
-          <div className="col-6 align-self-center">
+          <div className="col-4 mx-auto align-self-center text-end">
             {
               load ? (
                 <div className="col-6 py-2 pb-2 m-auto text-center">
