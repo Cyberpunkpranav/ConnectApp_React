@@ -45,11 +45,10 @@ const AddSelectedDoctorSlot = (props) => {
         }
 
     }
-
     const confirmmessage = () => {
         customconfirm()
         Notiflix.Confirm.show(
-            `Update Appointment Details`,
+            `Update Doctor Slot`,
             `Do you surely want to add the selected Doctor Time Slots`,
             'Yes',
             'No',
@@ -63,7 +62,12 @@ const AddSelectedDoctorSlot = (props) => {
             },
         );
     }
-
+    const reversefunction = (date) => {
+        if (date) {
+          date = date.split("-").reverse().join("-")
+          return date
+        }
+      }
 
     return (
 
@@ -84,7 +88,7 @@ const AddSelectedDoctorSlot = (props) => {
                     <button className='button button-charcoal50-outline'>{props.DoctorName}</button>
                 </div>
                 <div className="col-auto">
-                    <div type="date" disabled className="form-control col-10 button button-charcoal50-outline" >{APIDate}</div>
+                    <div type="date" disabled className="form-control col-10 button button-charcoal50-outline" >{reversefunction(APIDate)}</div>
                 </div>
             </div>
             <div className="row p-0 m-0 mt-2 justify-content-center">

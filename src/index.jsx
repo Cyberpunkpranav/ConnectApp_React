@@ -44,7 +44,7 @@ function Connectapp(props) {
   const [ischecked, setischecked] = useState()
   const [cliniclist, setcliniclist] = useState([])
   const [vitalslist, setvitalslist] = useState()
-
+  const [path, setpath] = useState()
   async function Clinics() {
     await axios.get(`${url}/clinic/list`).then((response) => {
       setcliniclist(response.data.data)
@@ -160,14 +160,14 @@ function Connectapp(props) {
                           <TodayDocs.Provider value={todayDoc}>
                             <Vitals.Provider value={vitalslist}>
                               <Router>
-                                <Navbar permissions={props.permissions} username={props.username} designation={props.designation} id={props.id} fetchapi={fetchapi} />
+                                <Navbar permissions={props.permissions} path={path} username={props.username} designation={props.designation} id={props.id} fetchapi={fetchapi} />
                                 <Routes>
-                                  <Route path='/' permissions={props.permissions} element={<Doctorsection id={props.id} fetchapi={fetchapi} todayDoc={todayDoc} Loading={Loading} docapi={docapi} />} />
-                                  <Route path='/Appointments' element={<Appointments id={props.id} fetchapi={fetchapi} />} />
-                                  <Route path='/Patients' element={<Patients id={props.id} />} />
-                                  <Route path='/Doctors' element={<Doctors id={props.id} docapi={docapi} />} />
-                                  <Route path='/DailySaleReport' element={<DailySaleReport id={props.id} cliniclist={cliniclist} docapi={docapi} />} />
-                                  <Route path='/Pharmacy' element={<Pharmacy id={props.id} />} />
+                                  <Route path='/' onChange={() => setpath('/')} permissions={props.permissions} element={<Doctorsection id={props.id} fetchapi={fetchapi} todayDoc={todayDoc} Loading={Loading} docapi={docapi} />} />
+                                  <Route path='/Appointments' onChange={() => setpath('/Appointments')} element={<Appointments id={props.id} fetchapi={fetchapi} />} />
+                                  <Route path='/Patients' onChange={() => setpath('/Patients')} element={<Patients id={props.id} />} />
+                                  <Route path='/Doctors' onChange={() => setpath('/Doctors')} element={<Doctors id={props.id} docapi={docapi} />} />
+                                  <Route path='/DailySaleReport' onChange={() => setpath('/DailySaleReport')} element={<DailySaleReport id={props.id} cliniclist={cliniclist} docapi={docapi} />} />
+                                  <Route path='/Pharmacy' onChange={() => setpath('/Pharmacy')} element={<Pharmacy id={props.id} />} />
                                   {/* <Route path='/Files' element={<Exports id={props.id} />} /> */}
                                 </Routes>
                               </Router>
@@ -220,10 +220,10 @@ function Switchpage() {
     logindata[e.target.id] = e.target.value;
     setlogininput(logindata);
   }
-  const localemail = localStorage.getItem("email");
+  const localemail = localStorage.getItem("email")
   async function Submit() {
     setload(true)
-    await axios.post('https://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/api/connect/login', {
+    await axios.post(`https://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/api/connect/login`, {
       email: localemail || logininput.email,
       password: logininput.password
     }).then((response) => {
@@ -249,11 +249,14 @@ function Switchpage() {
 
     })
   }
+  let p = permissions.toString().replace(/['"]+/g, '')
+  p = p.replace(/[{}]+/g, '')
 
-  // console.log(permissions.toString().replace(/['"]+/g, ''))
+  console.log(p)
+
   function Changepage() {
     if (localemail !== null && localemail !== '') {
-      return <Connectapp username={localStorage.getItem('name')} designation={localStorage.getItem('designation')} id={localStorage.getItem('id')} permissions={permissions.toString().replace(/['"]+/g, '')} />
+      return <Connectapp username={localStorage.getItem('name')} designation={localStorage.getItem('designation')} id={localStorage.getItem('id')} permissions={permissions} />
     } else {
       return (
 
@@ -391,4 +394,4 @@ root.render(
 );
 // ReactDOM.render(<Switchpage />, document.getElementById("root"));
 
-export { TodayDate, URL, DoctorsList, Doctorapi, TodayDocs, Vitals, Clinic, Permissions };
+export { TodayDate, URL, DoctorsList, Doctorapi, TodayDocs, Vitals, Clinic, Permissions }; 

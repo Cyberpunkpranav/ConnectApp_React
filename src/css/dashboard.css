@@ -446,7 +446,9 @@ body {
     border: 1px solid var(--burntumber);
     color: var(--burntumber);
 }
-
+.quickappointment{
+    backdrop-filter: blur(2px);
+}
 
 /*------------------------------------------------------------------Common css--------------------------------------------------------------*/
 

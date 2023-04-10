@@ -2,13 +2,14 @@ import axios from 'axios';
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import { URL, TodayDate, DoctorsList, Clinic } from '../../index';
 import { ExportPurchaseEntry, ExportPurchaseReturn, ExportSaleEntry, ExportSaleReturn } from '../pharmacy/Exports'
+import { QRcode } from '../features/qrcode';
 import Notiflix from 'notiflix';
 import ReactPaginate from 'react-paginate';
 import * as XLSX from 'xlsx';
 import { customconfirm } from '../features/notiflix/customconfirm';
 import '../../css/bootstrap.css';
-import '../../css/pharmacy.css';
 import '../../css/dashboard.css'
+import '../../css/pharmacy.css';
 import { Purchaseorderarray, Pharmacystocktable, POitemdetailsarray } from './apiarrays';
 import { NewMedicine } from './NewMedicine';
 import { UpdateMedicine } from './UpdateMedicine';
@@ -1428,7 +1429,7 @@ function SaleEntryForm(props) {
         <div className="col-4">
           <label className="m-0">Search Using Phone or Name</label>
           <input type="text" className="form-control bg-seashell selectpatient col-10 position-relative" placeholder='Search for Patients' value={searchinput ? searchinput : ''} onFocus={() => setsearchload(true)} onChange={searchpatient} />
-          <div className={`col-auto d-${displaysearchlist} searchinput position-absolute rounded-2 shadow bg-pearl px-2`} style={{ width: 'max-content', zIndex: '2' }}>
+          <div className={`col-auto d-${displaysearchlist} text-decoration-none searchinput position-absolute rounded-2 shadow bg-pearl px-2`} style={{ width: 'max-content', zIndex: '2' }}>
             {
               searchload == true || searchinput == undefined ? (
                 <p className="btn text-charcoal75 fs-6 p-0 m-0 ps-1">Loading... </p>
@@ -1437,13 +1438,14 @@ function SaleEntryForm(props) {
                   <p className="text-danger btn fs-6 p-0 m-0">Patient not found</p>
                 ) : (
                   searchlist.map((data) => (
-                    <div className='col-auto p-0 m-0 ms-1 bg-pearl text-charcoal text-start px-1 border-bottom' style={{ width: 'max-content' }} onClick={() => { get_value(data.id, data.full_name, data) }}>{data.full_name} {data.phone_number}</div>
+                    <div className='col-auto p-0 m-0 ms-1 bg-pearl text-decoration-none list-style-none text-charcoal text-start px-1 border-bottom' style={{ width: 'max-content' }} onClick={() => { get_value(data.id, data.full_name, data) }}>{data.full_name} {data.phone_number}</div>
                   )))
 
               )
 
             }
           </div>
+
         </div>
         <div className="col-4">
           <label>Select Doctor</label>
@@ -2290,7 +2292,7 @@ function Purchaseentrysection(props) {
   const [npef, setnpef] = useState("none");
   const [pages, setpages] = useState()
   const [pagecount, setpagecount] = useState()
-
+  const [qr, setqr] = useState('none')
   function GetPages() {
     try {
       axios.get(`${url}/purchase/entry?clinic_id=${ClinicID}&channel=${channel}&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`).then((response) => {
@@ -2379,13 +2381,81 @@ function Purchaseentrysection(props) {
       return date
     }
   }
+  function GenerateQR(props) {
+    console.log(props.purchaseentry)
+    let medicines = props.purchaseentry.medicines ? props.purchaseentry.medicines : 0
+    let vaccines = props.purchaseentry.vaccines ? props.purchaseentry.vaccines : 0
+    let medicineobj = {}
+    let vaccineobj = {}
+    let medcount = []
+    let vaccount = []
+    if (props.purchaseentry.medicines !== undefined && props.purchaseentry.medicines.length !== 0) {
+      for (let i = 0; i < medicines.length; i++) {
+        for (let j = 0; j < props.purchaseentry.medicines[i].qty; j++) {
+          medicineobj[j] = {
+            id: 'm' + props.purchaseentry.medicines[i].id,
+            name: props.purchaseentry.medicines[i].medicine.name,
+            qrcode: <QRcode id={'m' + props.purchaseentry.medicines[i].id} />
+          }
+          medcount.push(medicineobj[j])
+        }
+      }
+    }
+    if (props.purchaseentry.vaccines !== undefined && props.purchaseentry.vaccines.length !== 0) {
+      for (let i = 0; i < vaccines.length; i++) {
+        for (let j = 0; j < props.purchaseentry.vaccines[i].qty; j++) {
+          vaccineobj[j] = {
+            id: 'v' + props.purchaseentry.vaccines[i].id,
+            name: props.purchaseentry.vaccines[i].vaccine.name,
+            qrcode: <QRcode id={'v' + props.purchaseentry.vaccines[i].id} />
+          }
+          vaccount.push(vaccineobj[j])
+        }
 
+      }
+    }
+
+    console.log(medcount, vaccount)
+    return (
+      <div className="container-fluid">
+        <h5 className='text-charcoal75 fw-bold'>Medicines</h5>
+        <div className="row">
+          {
+            medcount.map((Data) => (
+              <div className='col-auto m-2' key={Data}>
+                <p className='text-charcoal75'>{Data.name} | {Data.id}</p>
+                <div className="container">
+                  {Data.qrcode}
+                </div>
+              </div>
+
+            ))
+          }
+        </div>
+        <h5 className='text-charcoal75 fw-bold mt-2'>Vaccines</h5>
+        <div className="row">
+          {
+            vaccount.map((Data) => (
+              <div className='col-auto m-2' key={Data}>
+                <p className='text-charcoal75'>{Data.name} | {Data.id}</p>
+                <div className="container">
+                  {Data.qrcode}
+                </div>
+              </div>
+
+            ))
+          }
+        </div>
+      </div>
+    )
+
+  }
   return (
     <>
       <button className="button addpurchase button-charcoal position-absolute" onClick={toggle_npef}><img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt='displaying_image' className="img-fluid" style={{ width: `1.5rem` }} />Entry Purchase</button>
       <div className="row p-0 m-0 justify-content-lg-between justify-content-md-evenly justify-content-left text-center">
         <div className="col-lg-2 col-md-2 col-3 text-center p-0 m-0 order-lg-0 order-md-0 order-sm-0 order-0 ms-lg-0 ms-md-0 ms-sm-0 ms-4">
-          <button type='button' className="btn p-0 m-0 heading text-charcoal fw-bolder  " style={{ width: 'fit-content' }}>{pagecount}  {pagecount > 0 ? 'Purchase Entries' : 'Purchase Entry'} </button>
+          <button type='button' className="btn p-0 m-0 heading text-charcoal fw-bolder  " style={{ width: 'fit-content' }}>{pagecount}  {pagecount > 1 ? 'Purchase Entries' : 'Purchase Entry'} </button>
         </div>
         <div className="col-lg-8 col-md-7 col-11 ms-lg-0 ms-md-0 ms-sm-0 ms-3 align-self-center p-0 m-0 order-lg-1 order-md-1 order-sm-1 order-2 mt-lg-0 mt-md-0 mt-1  ">
           <div className="row p-0 m-0 border-burntumber fw-bolder rounded-2 text-center justify-content-center ">
@@ -2408,19 +2478,19 @@ function Purchaseentrysection(props) {
         </div>
       </div>
       <div>
-        <div className='scroll scroll-y overflow-scroll p-0 m-0' style={{ minHeight: '56vh', height: '56vh' }}>
-          <table className="table text-center p-0 m-0">
+        <div className='scroll scroll-y overflow-scroll p-0 m-0 mt-2' style={{ minHeight: '56vh', height: '56vh' }}>
+          <table className="table p-0 m-0">
             <thead className='p-0 m-0 align-middle position-sticky top-0 bg-pearl'>
               <tr>
-                <th className='fw-bolder text-charcoal75' scope='col'>PE ID</th>
-                <th className='fw-bolder text-charcoal75' scope='col'>PO ID</th>
-                <th className='fw-bolder text-charcoal75' scope='col'>Channel</th>
-                <th className='fw-bolder text-charcoal75' scope='col'>Invoice No.</th>
-                <th className='fw-bolder text-charcoal75' scope='col'>Bill Date</th>
-                <th className='fw-bolder text-charcoal75' scope='col'>Bill Total</th>
-                <th className='fw-bolder text-charcoal75' scope='col'>Vendor</th>
-                <th className='fw-bolder text-charcoal75' scope='col'>Actions</th>
-                <th className='fw-bolder text-charcoal75' scope='col' style={{ zIndex: '3' }}>more</th>
+                <th className='fw-bolder py-0 my-0  text-charcoal75' scope='col'>PE ID</th>
+                <th className='fw-bolder py-0 my-0  text-charcoal75' scope='col'>PO ID</th>
+                <th className='fw-bolder py-0 my-0  text-charcoal75' scope='col'>Channel</th>
+                <th className='fw-bolder py-0 my-0  text-charcoal75' scope='col'>Invoice No.</th>
+                <th className='fw-bolder py-0 my-0  text-charcoal75' scope='col'>Bill Date</th>
+                <th className='fw-bolder py-0 my-0  text-charcoal75' scope='col'>Bill Total</th>
+                <th className='fw-bolder py-0 my-0  text-charcoal75' scope='col'>Vendor</th>
+                <th className='fw-bolder py-0 my-0 text-center  text-charcoal75' scope='col'>Actions</th>
+                {/* <th className='fw-bolder p-0 m-0  text-charcoal75 text-center' scope='col' style={{ zIndex: '3' }}>more</th> */}
               </tr>
             </thead>
             {
@@ -2440,27 +2510,48 @@ function Purchaseentrysection(props) {
                     {
                       purchaseentryarr.map((item, i) => (
                         <tr key={i} className={`bg-${((i % 2) == 0) ? 'seashell' : 'pearl'} align-middle`}>
-                          <td className='p-0 m-0 text-charcoal fw-bold'>PE-{item.bill_id}</td>
-                          <td className='p-0 m-0 text-charcoal fw-bold'>{item.purchase_order_id && item.purchase_order_id !== null ? item.purchase_order_id : 'N/A'}</td>
-                          <td className='p-0 m-0 text-charcoal fw-bold'>{item.channel && item.channel == 1 ? "Pharmacy" : "Clinic"}</td>
-                          <td className='p-0 m-0 text-charcoal fw-bold'>{item.invoice_no ? item.invoice_no : 'N/A'}</td>
-                          <td className='p-0 m-0 text-charcoal fw-bold'>{item.bill_date && item.bill_date ? reversefunction(item.bill_date) : 'N/A'}</td>
-                          <td className='p-0 m-0 text-charcoal fw-bold'>{item.bill_total && item.bill_total ? "Rs. " + item.bill_total : 'N/A'}</td>
-                          <td className='p-0 m-0 text-charcoal fw-bold'>{item.distributor && item.distributor != null && item.distributor.entity_name && item.distributor.entity_name != null ? item.distributor.entity_name : 'N/A'}</td>
-                          <td className='p-0 m-0 text-charcoal fw-bold'><button className='btn'><img src={process.env.PUBLIC_URL + "/images/cart.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1" /></button><button className="btn" onClick={() => { setindex(i); toggle_peidw() }}><img src={process.env.PUBLIC_URL + "/images/archivebox.png"} alt="displaying_image" className="ms-1" style={{ width: "1.5rem" }} /></button></td>
-                          <td className='p-0 m-0 text-charcoal fw-bold'><button className="btn position-relative cursor-pointer more p-0 m-0"><img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" style={{ width: "1.5rem" }} /></button></td>
-                          <td className={` position-absolute d-${i == index ? peidw : 'none'} border border-1 start-0 end-0 bg-seashell p-0 m-0`} style={{ top: '-7.5rem', zIndex: '2' }} >
+                          <td className='py-0 my-0 text-charcoal fw-bold ps-2'>PE-{item.bill_id}</td>
+                          <td className='py-0 my-0 text-charcoal fw-bold'>{item.purchase_order_id && item.purchase_order_id !== null ? item.purchase_order_id : 'N/A'}</td>
+                          <td className='py-0 my-0 text-charcoal fw-bold'>{item.channel && item.channel == 1 ? "Pharmacy" : "Clinic"}</td>
+                          <td className='py-0 my-0 text-charcoal fw-bold'>{item.invoice_no ? item.invoice_no : 'N/A'}</td>
+                          <td className='py-0 my-0 text-charcoal fw-bold'>{item.bill_date && item.bill_date ? reversefunction(item.bill_date) : 'N/A'}</td>
+                          <td className='py-0 my-0 text-charcoal fw-bold'>{item.bill_total && item.bill_total ? "Rs. " + item.bill_total : 'N/A'}</td>
+                          <td className='py-0 my-0 text-charcoal fw-bold'>{item.distributor && item.distributor != null && item.distributor.entity_name && item.distributor.entity_name != null ? item.distributor.entity_name : 'N/A'}</td>
+                          <td className='py-0 my-0 text-charcoal fw-bold text-center'>
+                            {/* <button className='btn'><img src={process.env.PUBLIC_URL + "/images/cart.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1" /></button> */}
+                            <button className="btn" onClick={() => { setindex(i); toggle_peidw() }}><img src={process.env.PUBLIC_URL + "/images/archivebox.png"} alt="displaying_image" className="ms-1" style={{ width: "1.5rem" }} /></button>
+                            <button className='btn' onClick={() => { setqr(i) }}>
+                              <img src={process.env.PUBLIC_URL + "/images/qrcode.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1" />
+                            </button>
+                          </td>
+                          {/* <td className='p-0 m-0 text-charcoal fw-bold text-center'>
+                            <button className="btn position-relative cursor-pointer more p-0 m-0"><img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" style={{ width: "1.5rem" }} /></button>
+                          </td> */}
+                          <td className={` position-absolute d-${i == index ? peidw : 'none'} border border-1 start-0 end-0 bg-seashell p-0 m-0`} style={{ top: '-8.5rem', zIndex: '5' }} >
                             {
                               i == index ? (
                                 <PEitemdetailssection purchaseentryarr={purchaseentryarr[i]} itembillid={"PE-" + item.bill_id} toggle_peidw={toggle_peidw} />
                               ) : (<></>)
                             }
                           </td>
+                          <td className={`position-absolute start-0 text-start bg-pearl container-fluid d-${qr == i ? 'block' : 'none'}`} style={{ top: '-8.5rem', zIndex: '5', height: '89vh' }}>
+                            {
+                              i == qr ? (
+                                <div className="container-fluid position-relative">
+                                  <button type="button" className="btn-close closebtn position-absolute end-0 me-2" onClick={() => setqr()} aria-label="Close"></button>
+                                  <div className='row'>
+                                    <GenerateQR purchaseentry={purchaseentryarr[i]} />
+                                  </div>
+                                </div>
+                              ) : (<></>)
 
+                            }
+                          </td>
                         </tr>
 
                       ))
                     }
+
                   </tbody>
                 ) : (
                   <tbody className='text-center position-relative p-0 m-0 ' style={{ minHeight: '55vh' }}>
@@ -2508,6 +2599,7 @@ function PEitemdetailssection(props) {
   const [vaccine, setvaccine] = useState('none')
   const [index, setindex] = useState(0)
   const Items = ['Medicine', 'Vaccine']
+  const [qr, setqr] = useState('none')
   const reversefunction = (date) => {
     if (date) {
       date = date.split("-").reverse().join("-")
@@ -2541,6 +2633,22 @@ function PEitemdetailssection(props) {
       e = e.toFixed(2)
       return e
     }
+  }
+  function GenerateQR(props) {
+    let count = []
+    for (let i = 0; i < props.qty; i++) {
+      count.push(props.qty)
+    }
+    // console.log(count)
+    return (
+      count.map((data) => (
+        <div className='col-auto m-2' key={data}>
+          <QRcode id={props.id} />
+        </div>
+      ))
+
+    )
+
   }
   console.log(props.purchaseentryarr)
   return (
@@ -2586,6 +2694,7 @@ function PEitemdetailssection(props) {
             <th colspan={Taxon == true ? '8' : '2'} scope='col-group' className='border p-0 m-0 px-1'>Total Tax</th>
             <th rowspan='2' className='border p-0 m-0 px-1'>Cost</th>
             <th rowspan='2' className='border p-0 m-0 px-1'>Total</th>
+            <th rowspan='2' className='border p-0 m-0 px-1'>Print QR</th>
 
           </tr>
           <tr>
@@ -2624,6 +2733,23 @@ function PEitemdetailssection(props) {
                       <td className='border p-0 m-0 align-middle'>{TotalTaxRate(item.CGST, item.SGST, item.IGST, item.qty)}</td>
                       <td className='border p-0 m-0 align-middle'>{item.cost ? item.cost : 'N/A'}</td>
                       <td className='border p-0 m-0 align-middle'>{item.total_amount ? item.total_amount : 'N/A'}</td>
+                      <td className='border p-0 m-0 align-middle'>
+                        <button className='btn' onClick={() => { setqr(_key) }}>
+                          <img src={process.env.PUBLIC_URL + "/images/qrcode.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1" />
+                        </button></td>
+                      <div className={`position-absolute top-0 start-0  text-start bg-pearl container-fluid d-${qr == _key ? 'block' : 'none'}`} style={{ top: '-4.2rem', zIndex: '5', height: '89vh' }}>
+                        <div className="container-fluid position-relative">
+                          <button type="button" className="btn-close closebtn position-absolute end-0 me-2" onClick={() => setqr()} aria-label="Close"></button>
+                          <p className='mt-2 text-burntumber border-1 '>{item.medicine && item.medicine.name !== null ? item.medicine.name : 'N/A'} | {item && item.id !== null ? 'm' + item.id : 'N/A'}</p>
+                          <div className='row'>
+                            <GenerateQR qty={item.qty} id={'m' + item.id} />
+                          </div>
+
+                        </div>
+
+                      </div>
+
+
                     </tr>
                   ))
                 }
@@ -2658,7 +2784,7 @@ function PEitemdetailssection(props) {
             <th colspan={Taxon == true ? '8' : '2'} scope='col-group' className={`border p-0 m-0 px-1`}>Total Tax</th>
             <th rowspan='2' className='border p-0 m-0 px-1'>Cost </th>
             <th rowspan='2' className='border p-0 m-0 px-1'>Total </th>
-            {/* <th rowspan='2' className='border p-0 m-0 px-1'>Print QR</th> */}
+            <th rowspan='2' className='border p-0 m-0 px-1'>Print QR</th>
           </tr>
           <tr>
             <th scope='col' className={`border p-0 m-0 px-1 d-${Taxon == true ? '' : 'none'}`}>CGST%</th>
@@ -2696,7 +2822,19 @@ function PEitemdetailssection(props) {
                       <td className='border p-0 m-0 align-middle'>{TotalTaxRate(item.CGST, item.SGST, item.IGST, item.qty)}</td>
                       <td className='border p-0 m-0 align-middle'>{item.cost ? item.cost : 'N/A'}</td>
                       <td className='border p-0 m-0 align-middle'>{item.total_amount ? item.total_amount : 'N/A'}</td>
-                      {/* <td className='border p-0 m-0 align-middle'><button className='btn'><img src={process.env.PUBLIC_URL + "/images/qrcode.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1" /></button></td> */}
+                      <td className='border p-0 m-0 align-middle'>
+                        <button className='btn' onClick={() => { setqr(_key) }}>
+                          <img src={process.env.PUBLIC_URL + "/images/qrcode.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1" />
+                        </button></td>
+                      <div className={`position-absolute top-0 start-0  text-start bg-pearl container-fluid d-${qr == _key ? 'block' : 'none'}`} style={{ top: '-8.2rem', zIndex: '5', height: '89vh' }}>
+                        <div className="container-fluid position-relative">
+                          <button type="button" className="btn-close closebtn position-absolute end-0 me-2" onClick={() => setqr()} aria-label="Close"></button>
+                          <p className='mt-2 text-burntumber border-1 '>{item.vaccine && item.vaccine.name !== null ? item.vaccine.name : 'N/A'} | {item && item.id !== null ? 'v' + item.id : 'N/A'}</p>
+                          <div className='row'>
+                            <GenerateQR qty={item.qty} id={'v' + item.id} />
+                          </div>
+                        </div>
+                      </div>
                     </tr>
                   ))
                 }
@@ -2716,7 +2854,7 @@ function PEitemdetailssection(props) {
           }
         </table>
       </div>
-    </div>
+    </div >
 
   )
 }

@@ -42,7 +42,7 @@ import { customconfirm } from "./components/features/notiflix/customconfirm"
 
 function Navbar(props) {
   console.log(props.permissions)
-    console.log(props.permissions.dashboard_all)
+  console.log(props.permissions.dashboard_all)
   // const chatinputref = useRef()
   // const [chat, setchat] = useState('')
   // const [chatarr, setchatarr] = useState([])
@@ -234,7 +234,7 @@ function Navbar(props) {
                 </ul>
               </div>
             </div>
-            <div className="col-lg-2 col-xl-2 col-md-2 col-sm-6 col-6 mt-sm-2 ms-md-2 align-self-center order-sm-2 order-0 search text-center position-relative p-0 m-0" style={{ zIndex: '5' }}>
+            <div className="col-lg-2 col-xl-2 col-md-2 col-sm-6 col-6 mt-sm-2 ms-md-2 align-self-center order-sm-2 order-0 search text-center position-relative p-0 m-0" style={{ zIndex: '3' }} >
               <input type="text" className="bg-pearl border border-1 text-center position-relative w-100 " placeholder="search" onChange={(e) => setsearchtext(e.target.value)} />
               <div className="position-absolute bg-pearl end-0 shadow rounded-2 mt-2 border border-1">
                 <SearchField searchtext={searchtext} fetchapi={props.fetchapi} />
@@ -511,7 +511,6 @@ function Appointments(props) {
     return status_color
   }
 
-
   const options = [['All', ''], ['Cancelled', 3], ['Completed', 10], ['Unattended', 9]]
   const [optionsindex, setoptionsindex] = useState(0)
 
@@ -533,9 +532,7 @@ function Appointments(props) {
     }
   }
   // useEffect(() => {
-
   // }, [fromdate, todate])
-
   // console.log(docnames, visibles, getAppointments.length, appointmentdata.length)
   return (
     <>

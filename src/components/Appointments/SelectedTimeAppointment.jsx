@@ -92,22 +92,22 @@ const SelectedTimeAppointment = (props) => {
             </div>
             <div className="row p-0 m-0">
                 <div className="col-5">
-                    <input type="text" placeholder='Search Patient using Number or Name' className="form-control bg-pearl border-0" value={searchinput ? searchinput : ''} onChange={(e) => { searchpatient(e); }} />
+                    <input type="text" placeholder='Search Patient using Number or Name' className="form-control bg-pearl border-0" value={searchinput ? searchinput : ''} onChange={(e) => { searchpatient(e) }} />
                     <div className={`col-6 position-absolute d-${displaysearchlist} rounded-2 `} style={{ zIndex: 100 }}>
                         {
                             searchload ? (
-                                <p className="btn col-12 text-charcoal75 bg-pearl p-0 m-0 ps-1 mt-1">Loading... </p>
+                                <option className="btn col-12 text-charcoal75 bg-pearl p-0 m-0 ps-1 mt-1">Loading... </option>
                             ) : (
-                                searchlist.length == 0 ? (
-                                    <p className="text-burntumber col-12 p-0 m-0 bg-pearl shadow rounded mt-1 p-2">Patient not found</p>
+                                searchlist==undefined && searchlist.length == 0 ? (
+                                    <option className="text-burntumber col-12 p-0 m-0 bg-pearl shadow rounded mt-1 p-2">Patient not found</option>
                                 ) : (
-                                    <div className='mt-1 searchresult shadow rounded-2 bg-pearl border border-1 col-12 '>
-                                        {
+                                    // <div className='mt-1 searchresult shadow rounded-2 p-1 bg-pearl border border-1 col-12 '>
+                                        // {
                                             searchlist.map((data, i) => (
-                                                <div style={{ cursor: 'pointer' }} className={`col-12 bg-${i % 2 == 0 ? 'lightred50' : 'pearl'} px-2 text-charcoal text-start ps-2 border-bottom align-self-center`} name={data.id} value={data.full_name} onClick={() => { get_value(data) }}>{data.full_name} {data.phone_number}</div>
+                                                <option style={{ cursor: 'pointer' }} className={`col-12 bg-${i % 2 == 0 ? 'seashell' : 'pearl'} px-2 text-charcoal text-start ps-2 border-bottom align-self-center`} name={data.id} value={data.full_name} onClick={() => { get_value(data) }}>{data.full_name} {data.phone_number}</option>
                                             ))
-                                        }
-                                    </div>
+                                        // }
+                                    // {/* </div> */}
                                 )
 
                             )
