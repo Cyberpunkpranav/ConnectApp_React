@@ -5,13 +5,14 @@ import { UpdateAppointment } from './UpdateAppointment'
 import { Payments } from './Payments.jsx'
 import AmountPaid from '../Today/AmountPaid'
 import Notiflix from 'notiflix';
-import { URL } from '../../index'
+import { URL, Permissions } from '../../index'
 import '../../css/bootstrap.css'
 import '../../css/appointment.css'
 import { Bill } from './Bill'
 import { customconfirm } from '../features/notiflix/customconfirm'
 const SelectedAppointments = (props) => {
   const url = useContext(URL);
+  const permission = useContext(Permissions)
   let adminid = localStorage.getItem('id')
   const [appointmentform, setappointmentform] = useState("none");
   const [d_form, setd_form] = useState()
@@ -252,11 +253,11 @@ const SelectedAppointments = (props) => {
 
             props.appointmentdata.map((data, key) => (
               <tr id={key} className='text-charcoal fw-bold align-middle'>
-                <td className='ps-3'>
+                <td className={`ps-3 d-${permission.appointment_edit == 1 ? '' : 'none'}`}>
                   <img src={process.env.PUBLIC_URL + "/images/confirmed.png"} style={{ width: "1.5rem" }} onClick={(e) => { settableindex(key); openapppointmentform(); }} className="btn p-0 m-0" />
                 </td>
                 <td>
-                  <select className={`py-1 fw-bold rounded-pill text-center button-${props.status_color(data.appointment_status)}`} name={data.id} onChange={(e) => { UpadteStatus(e) }}>
+                  <select disabled={permission.appointment_edit == 1 ? false : true} className={`py-1 fw-bold rounded-pill text-center button-${props.status_color(data.appointment_status)}`} name={data.id} onChange={(e) => { UpadteStatus(e) }}>
                     <option className="button" selected disabled>{props.status(data.appointment_status)}</option>
                     <option className="button-lightred" value='1'>Pending</option>
                     <option className="button-lightblue" value='2'>Booked</option>
@@ -287,7 +288,7 @@ const SelectedAppointments = (props) => {
                   </button>
                   <ul className="dropdown-menu text-decoration-none bg-white p-2" style={{ '-webkit-appearance': 'none', 'appearance': 'none', width: 'max-content' }}>
                     <li className='dropdown-item d-flex border-bottom p-0 m-0 align-items-center' onClick={() => { setbillindex(key); toggle_bill() }}><img className='m-2 img-fluid' style={{ 'width': '1.8rem' }} src={process.env.PUBLIC_URL + 'images/bill.png'} />Bill</li>
-                    <li className='dropdown-item d-flex border-bottom p-0 m-0 align-items-center' onClick={() => { setpaymentindex(key); toggle_payments(); }}><img className='m-2 img-fluid' style={{ 'width': '1.6rem' }} src={process.env.PUBLIC_URL + 'images/rupee.png'} />Payments</li>
+                    <li className={`dropdown-item  border-bottom p-0 m-0 align-items-center d-${permission.appointment_charges_edit == 1 ? '' : 'none'}`} onClick={() => { setpaymentindex(key); toggle_payments(); }}><img className='m-2 img-fluid' style={{ 'width': '1.6rem' }} src={process.env.PUBLIC_URL + 'images/rupee.png'} />Payments</li>
                     <li className='dropdown-item d-flex border-bottom p-0 m-0 align-items-center' onClick={() => { Generate_Bill(data.id) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" style={{ width: "2rem" }} />Generate Bill</li>
                     <li className="dropdown-item d-flex border-bottom p-0 m-0 align-items-center" onClick={() => { Generate_Prescription(data.id) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" style={{ width: "2rem" }} /> Generate Prescription </li>
                     <li className="dropdown-item d-flex border-bottom p-0 m-0 align-items-center" onClick={() => { Confirm_For_Prescription(data.id, data.patient.phone_number) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/whatsapp.png"} alt="displaying_image" style={{ width: "2rem" }} /> Send on Whats App </li>

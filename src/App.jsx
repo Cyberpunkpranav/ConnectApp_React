@@ -31,18 +31,14 @@ import './css/patient.css';
 import './css/Doctors.css';
 import './css/livetime.css';
 import '../node_modules/bootstrap/js/dist/dropdown';
-// import '../node_modules/bootstrap/js/dist/collapse'
-// import "../node_modules/jquery/dist/jquery.min.js";
-// import "../node_modules/bootstrap/dist/js/bootstrap.min.js"
-// import "../node_modules/bootstrap/js/src/collapse.js";
-//Notiflix
 import Notiflix from 'notiflix';
 import { customconfirm } from "./components/features/notiflix/customconfirm"
 
 
 function Navbar(props) {
-  console.log(props.permissions)
-  console.log(props.permissions.dashboard_all)
+  // console.log(props.permissions)
+  // console.log(JSON.parse(props.permissions))
+  // console.log(props.permissions.dashboard_all)
   // const chatinputref = useRef()
   // const [chat, setchat] = useState('')
   // const [chatarr, setchatarr] = useState([])
@@ -116,6 +112,7 @@ function Navbar(props) {
     localStorage.removeItem('id');
     localStorage.removeItem('designation');
     localStorage.removeItem('ClinicId');
+    localStorage.removeItem('roleId');
     window.location.reload(true);
   }
 
@@ -156,35 +153,41 @@ function Navbar(props) {
     {
       title: 'Today',
       path: '/',
-      image: '/images/today.png'
+      image: '/images/today.png',
+      display: props.permissions.dashboard_view !== undefined ? props.permissions.dashboard_view : 0
 
     },
     {
       title: 'Appointments',
       path: '/Appointments',
-      image: '/images/appointment.png'
+      image: '/images/appointment.png',
+      display: props.permissions.appointment_view !== undefined ? props.permissions.appointment_view : 0
 
     },
     {
       title: 'Patients',
       path: '/Patients',
-      image: '/images/patient.png'
+      image: '/images/patient.png',
+      display: props.permissions.patient_view !== undefined ? props.permissions.patient_view : 0
 
     },
     {
       title: 'Doctors',
       path: '/Doctors',
-      image: '/images/doctor.png'
+      image: '/images/doctor.png',
+      display: props.permissions.doctor_view !== undefined ? props.permissions.doctor_view : 0
     },
     {
       title: 'DSR',
       path: '/DailySaleReport',
-      image: '/images/dsr.png'
+      image: '/images/dsr.png',
+      display: props.permissions.dsr_pharmacy == undefined && props.permissions.dsr_appointment == undefined && props.permissions.dsr_doctor_timings == undefined ? 0 : 1
     },
     {
       title: 'Pharmacy',
       path: '/pharmacy',
-      image: '/images/Pharmacy.png'
+      image: '/images/Pharmacy.png',
+      display: props.permissions.purchase_entry_view == undefined && props.permissions.purchase_orders_view == undefined && props.permissions.purchase_return_view == undefined && props.permissions.sale_entry_view == undefined && props.permissions.sale_return_view == undefined ? 0 : 1
     },
     // {
     //   title: 'Files',
@@ -214,7 +217,7 @@ function Navbar(props) {
               <div className="row p-0 m-0 gx-auto justify-content-lg-center justify-content-md-center justify-content-center">
                 {
                   NavbarIcons.map((data, i) => (
-                    <div className={` ms-lg-2 col-auto align-self-end `} onClick={() => sethighlighticon(data.path)}>
+                    <div className={` ms-lg-2 col-auto align-self-end d-${data.display == 1 ? '' : 'none'} `} onClick={() => sethighlighticon(data.path)}>
                       <Link to={data.path} className="text-decoration-none"> <div className="text-center"> <img src={process.env.PUBLIC_URL + data.image} alt="displaying_image" className={`img-fluid rounded-2 p-2 bg-${highlighticon ? highlighticon === data.path ? 'burntumber25' : 'seashell' : path === data.path ? 'burntumber50' : 'seashell'}`} style={{ width: `1.5rem`, boxSizing: 'content-box' }} /></div><p className="col-12 m-0 text-center">{data.title}</p>  </Link>
                     </div>
                   ))
@@ -223,14 +226,14 @@ function Navbar(props) {
 
             </div>
             <div className="col-lg-auto col-xl-auto col-md-auto col-2 col-sm-2 text-center align-self-center position-relative p-0 m-0 ">
-              <div className="dropdown">
+              <div className={`dropdown d-${props.permissions.patient_add == undefined && props.permissions.doctor_add == undefined && props.permissions.appointment_add == undefined ? 'none' : ''}`}>
                 <button className="button button p-0 m-0 px-1 py-1 button-burntumber dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                   +Add
                 </button>
                 <ul className="dropdown-menu">
-                  <li><button className="dropdown-item border-bottom" onClick={() => { togglepatientform() }}>+ Patient</button></li>
-                  <li><button className="dropdown-item border-bottom" onClick={() => { toggleappointmentform() }}>+ Appointment</button></li>
-                  <li><button className="dropdown-item " onClick={() => { toggledoctorform() }}>+ Doctor</button></li>
+                  <li><button className={`dropdown-item border-bottom d-${props.permissions.patient_add == 1 ? '' : 'none'}`} onClick={() => { togglepatientform() }}>+ Patient</button></li>
+                  <li className={`d-${props.permissions.appointment_add == 1 ? '' : 'none'}`}><button className="dropdown-item border-bottom" onClick={() => { toggleappointmentform() }}>+ Appointment</button></li>
+                  <li><button className={`dropdown-item d-${props.permissions.doctor_add == 1 ? '' : 'none'} `} onClick={() => { toggledoctorform() }}>+ Doctor</button></li>
                 </ul>
               </div>
             </div>
@@ -279,8 +282,7 @@ function Navbar(props) {
 }
 
 function Doctorsection(props) {
-  console.log(props.permissions)
-  // console.log(props.permissions.dashboard_all)
+  const permission = useContext(Permissions)
   const month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December",];
   var weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday",];
   const d = new Date();
@@ -342,7 +344,7 @@ function Doctorsection(props) {
               ))
             )}
           <div className='col-auto'>
-            <button className="btn bg-transparent border-0 d-inline-flex" id="adddoctorbtn" onClick={toggledoctorform} >
+            <button className={`btn bg-transparent border-0 d-${permission.doctor_add ? 'inline-flex' : 'none'}`} id="adddoctorbtn" onClick={toggledoctorform} >
               <img src={process.env.PUBLIC_URL + "/images/addicon.png"} alt="displaying_image" style={{ width: "1.5rem" }} />
             </button>
           </div>
@@ -378,7 +380,7 @@ function Doctorsection(props) {
               doctorindex.map((data, i) => (
                 data == Doctor ? (
                   <div key={i}>
-                    <div className="p-0 m-0 my-2">
+                    <div className={`p-0 m-0 my-2 d-${permission.dashboard_all == 1 ? '' : 'none'}`}>
                       <Timecard docid={props.todayDoc[Doctor][0]} _selected={Doctor} />
                     </div>
                     <div className="p-0 m-0 my-2">
@@ -416,6 +418,7 @@ function Doctorsection(props) {
 function Appointments(props) {
   //Global Variables
   const APIDate = useContext(TodayDate)
+  const permission = useContext(Permissions)
   const url = useContext(URL)
   const clinicID = localStorage.getItem('ClinicId')
   const docnames = useContext(DoctorsList)
@@ -594,7 +597,7 @@ function Appointments(props) {
           <table className="table text-start">
             <thead className="text-charcoal75 fw-bold">
               <tr className=" bg-pearl position-sticky top-0">
-                <th>Update</th>
+                <th className={`d-${permission.appointment_edit == 1 ? '' : 'none'}`}>Update</th>
                 <th className="text-center">Status</th>
                 <th>Patient Name</th>
                 <th>Doctor Name</th>
@@ -631,6 +634,7 @@ function Appointments(props) {
 
 function Patients() {
   const url = useContext(URL)
+  const permission = useContext(Permissions)
   const adminid = localStorage.getItem('id')
   const [PatientsList, setPatientsList] = useState([])
   const [pages, setpages] = useState()
@@ -745,7 +749,7 @@ function Patients() {
         <table className="table text-start" >
           <thead>
             <tr>
-              <th>Update</th>
+              <th className={`d-${permission.patient_edit == 1 ? '' : 'none'}`}>Update</th>
               <th>Patient Name</th>
               <th>Gender</th>
               <th>DOB</th>
@@ -755,7 +759,7 @@ function Patients() {
               <th>Pincode</th>
               <th>Phone Number</th>
               <th>Is Main Account</th>
-              <th>Delete</th>
+              <th className={`d-${permission.patient_delete == 1 ? '' : 'none'}`}>Delete</th>
               {/* <th>More</th> */}
             </tr>
           </thead>
@@ -784,10 +788,9 @@ function Patients() {
                   {
                     PatientsList && PatientsList.map((data, i) => (
                       <tr className="align-middle">
-                        <td><button className="btn p-0 m-0" onClick={(e) => { settabindex(i); OpenUpdatePatient(i) }}><img src={process.env.PUBLIC_URL + "/images/confirmed.png"} style={{ width: "1.5rem" }} /></button>
+                        <td className={`d-${permission.patient_edit == 1 ? '' : 'none'}`}>
+                          <button className="btn p-0 m-0" onClick={(e) => { settabindex(i); OpenUpdatePatient(i) }}><img src={process.env.PUBLIC_URL + "/images/confirmed.png"} style={{ width: "1.5rem" }} /></button>
                           {form == i ? (
-
-
                             <section id={i} className={`updatepatientform text-start position-absolute d-${tabindex == i ? updatepatient : 'none'} bg-seashell rounded-2 shadow-sm border`}>
                               <UpdatePatient index={i} getAllPatients={getAllPatients} CloseUpdatePatient={CloseUpdatePatient} patientid={data.id} data={data} phonecountrycode={data.phone_country_code ? data.phone_country_code : 'N/A'} PhoneNo={data.phone_number ? Number(data.phone_number) : ''} dob={data.dob ? data.dob : ''} gender={data.gender ? data.gender : ''} full_name={data.full_name ? data.full_name : ''} email={data.email ? data.email : ''} pincode={data.pin_code ? data.pin_code : ''} location={data.location ? data.location : ''} parent={data.parent} linkid={data.link_id ? data.link_id : ''} relation={data.relation} latitude={data.latitude} longitude={data.longitude} />
                             </section>
@@ -799,13 +802,11 @@ function Patients() {
                         <td>{data.gender ? data.gender : 'N/A'}</td>
                         <td>{data.dob ? reversefunction(data.dob) : 'N/A'}</td>
                         <td>{data.email ? data.email : 'N/A'}</td>
-                        {/* <td>{data.address.length != 0 ? data.address[0].address_line1 ? data.address[0].address_line1 : 'N/A' : ''}{data.address.length != 0 ? data.address[0].address_line2 ? ' | ' + data.address[0].address_line2 : '' : 'N/A'} </td>
-                      <td>{data.location ? data.location : 'N/A'}</td> */}
                         <td>{data.pin_code ? data.pin_code : 'N/A'}</td>
                         <td>{data.phone_number ? data.phone_number : 'N/A'}</td>
                         <td>{data.parent ? ' No' : 'Yes'}</td>
-                        <td><button className="btn p-0 m-0" onClick={(e) => { confirmmessage(data.full_name, data.id); }}><img src={process.env.PUBLIC_URL + "/images/delete.png"} alt="displaying_image" style={{ width: "1.5rem" }} /></button></td>
-                        {/* <td><button className="btn p-0 m-0"><img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" style={{ width: "1.5rem" }} /></button></td> */}
+                        <td className={`d-${permission.patient_delete == 1 ? '' : 'none'}`}>
+                          <button className="btn p-0 m-0" onClick={(e) => { confirmmessage(data.full_name, data.id); }}><img src={process.env.PUBLIC_URL + "/images/delete.png"} alt="displaying_image" style={{ width: "1.5rem" }} /></button></td>
                       </tr>
 
                     ))
@@ -1010,6 +1011,7 @@ function Doctors() {
 }
 
 function DailySaleReport(props) {
+  const permission = useContext(Permissions)
   const month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December",];
   var weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday",];
   const d = new Date();
@@ -1019,8 +1021,23 @@ function DailySaleReport(props) {
   const Doctors = useContext(DoctorsList)
   const CurrentDate = useContext(TodayDate)
   const clinicid = localStorage.getItem('ClinicId')
-  const options = ['Appointments', 'Doctors', 'Pharmacy']
-  const [menu, setmenu] = useState(0)
+  const options = [
+    {
+      option: 'Appointments',
+      display: permission.dsr_appointments ? 1 : 0,
+    },
+    {
+      option: 'Doctors',
+      display: permission.dsr_doctor_timings ? 1 : 0,
+    },
+    {
+      option: 'Pharmacy',
+      display: permission.dsr_pharmacy ? 1 : 0
+    }
+
+  ]
+  // permission.dsr_appointments ? 0 :  permission.dsr_doctor_timings ? 1 : permission.dsr_pharmacy ? 2:''
+  const [menu, setmenu] = useState(permission.dsr_appointments ? 0 : permission.dsr_doctor_timings ? 1 : permission.dsr_pharmacy ? 2 : '')
   const [type, settype] = useState('text')
   const [doctorid, setdoctorid] = useState()
   const [fromdate, setfromdate] = useState()
@@ -1029,18 +1046,17 @@ function DailySaleReport(props) {
 
 
   function ToggleOptions(_menu) {
-    if (_menu == 0) {
+    if (permission.dsr_appointments == 1 && _menu == 0) {
       return <Appointments_Dsr clinic={clinic} doctorid={doctorid} fromdate={fromdate ? fromdate : CurrentDate} todate={todate ? todate : fromdate} />
     }
-    if (_menu == 1) {
+    if (permission.dsr_doctor_timings == 1 && _menu == 1) {
       return <Doctors_Dsr clinicid={clinicid} doctorid={doctorid} fromdate={fromdate ? fromdate : CurrentDate} todate={todate ? todate : fromdate} />
     }
-    if (menu == 2) {
+    if (permission.dsr_pharmacy == 1 && menu == 2) {
       return <Pharmacy_Dsr clinicid={clinicid} doctorid={doctorid} fromdate={fromdate ? fromdate : CurrentDate} todate={todate ? todate : fromdate} />
     }
-    return <div>Nothing Selected</div>
+    return <div>Please Select an Option from above</div>
   }
-
 
   return (
 
@@ -1051,10 +1067,10 @@ function DailySaleReport(props) {
             {
               options.map((data, i) => (
                 <>
-                  <div className='col-auto p-0 m-0'>
-                    <button className={`button m-0 p-0 px-2 py-1 ms-1 border-0 button-${i == menu ? 'charcoal' : ''} `} id={i} key={i} onClick={() => { setmenu(i) }}>{data}</button>
+                  <div className={`col-auto p-0 m-0 d-${data.display == 1 ? '' : 'none'}`}>
+                    <button className={`button m-0 p-0 px-2 py-1 ms-1 border-0 button-${i == menu ? 'charcoal' : ''} `} id={i} key={i} onClick={() => { setmenu(i) }}>{data.option}</button>
                   </div>
-                  <div className="vr rounded-2 h-50 align-self-center" style={{ padding: '0.8px' }}></div>
+                  <div className={`vr rounded-2 h-50 align-self-center d-${data.display == 1 ? '' : 'none'}`} style={{ padding: '0.8px' }}></div>
                 </>
               ))
             }

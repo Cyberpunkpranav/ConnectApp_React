@@ -3,8 +3,9 @@ import axios from 'axios'
 import '../../css/dashboard.css'
 import { AddAppointment } from '../Today/AddAppointment'
 import { URL } from '../../index'
-
+import { Permissions } from '../../index'
 const SearchField = (props) => {
+    const permission = useContext(Permissions)
     const url = useContext(URL)
     const [searchload, setsearchload] = useState()
     const [searchlist, setsearchlist] = useState([])
@@ -54,17 +55,25 @@ const SearchField = (props) => {
                         searchlist && searchlist.length == 0 ? (
                             <div className="text-danger btn fs-6 p-0 m-0" style={{ width: '50vh' }}>Patient not found. Add as new to book appointments</div>
                         ) : (
+                            <div>
+                            <p className='text-secondary p-0 m-0 text-start fw-bold ps-2' style={{fontSize:'0.8rem'}}>{searchlist.length} search results</p>
+                            {
                             searchlist && searchlist.map((data) => (
                                 <div className='row p-0 m-0 bg-pearl p-1 border-top rounded-bottom' style={{ width: '50vh' }}>
-                                    <div className="col-9 col-xl-9 col-lg-9 p-0 m-0">
+
+                                    <div className="col-9 col-xl-9 col-lg-9 p-0 m-0 text-start ps-2">
                                         <button className=' p-0 m-0 border-0 text-charcoal bg-pearl text-start' >{data.full_name} {data.phone_number}</button>
                                     </div>
                                     <div className="col-auto col-xl-auto col-lg-auto p-0 m-0 align-self-center justify-content-center">
-                                        <button className="button button-burntumber border-0 p-0 m-0 px-1" name={data.id} value={data.full_name} onClick={(e) => get_value(e)} style={{ fontSize: '0.8rem' }}>+Appointment</button>
+                                        <button className={`button button-burntumber border-0 p-0 m-0 px-1 d-${permission.appointment_add == 1 ? '' : 'none'}`} name={data.id} value={data.full_name} onClick={(e) => get_value(e)} style={{ fontSize: '0.8rem' }}>+Appointment</button>
                                     </div>
                                 </div>
 
-                            )))
+                            ))
+                        }
+                            </div>
+                            )
+                      
 
                     )
 

@@ -63,7 +63,6 @@ function Connectapp(props) {
     VitalsList()
   }, [])
 
-  // console.log(Object.entries(props.permissions))
   async function fetchapi() {
     try {
       setLoading(true);
@@ -103,16 +102,14 @@ function Connectapp(props) {
       )
     }
   }
-
   useEffect(() => {
     fetchapi();
   }, [ClinicId])
-
   async function Gomain() {
     localStorage.setItem('ClinicId', clinicid)
     setisWelcomeLoading(0)
   }
-
+  console.log(props.permissions)
   return (
     <div className='bg-pearl' style={{ height: '100vh' }}>
       {
@@ -134,14 +131,14 @@ function Connectapp(props) {
                     <div className="col-lg-10 col-12">
                       {
                         cliniclist.map((data, i) => (
-                          <div div className='= text-start mx-auto  '>
+                          <div div className=' text-start mx-auto  '>
                             <label className=''><input type="checkbox" className="radio form-check-input me-1" checked={ischecked === i ? true : false} name={data.id} onClick={(e) => { setclinicid(e.target.name); setischecked(i); }} /> {data.title} {data.address}</label>
                             <br /></div>
                         ))
                       }
                     </div>
                     <div className="col-lg-2 col-12 mt-lg-0 mt-md-0 mt-sm-0 mt-2 ">
-                      <button className='button button-seashell' onClick={Gomain}><img className='img-fluid' style={{ width: '1.5rem' }} src={process.env.PUBLIC_URL + '/images/right-arrow.png'} /></button>
+                      <button className='button button-seashell' disabled={clinicid == undefined ? true : false} onClick={Gomain}><img className='img-fluid' style={{ width: '1.5rem' }} src={process.env.PUBLIC_URL + '/images/right-arrow.png'} /></button>
                     </div>
                   </div>
 
@@ -160,10 +157,16 @@ function Connectapp(props) {
                           <TodayDocs.Provider value={todayDoc}>
                             <Vitals.Provider value={vitalslist}>
                               <Router>
-                                <Navbar permissions={props.permissions} path={path} username={props.username} designation={props.designation} id={props.id} fetchapi={fetchapi} />
+                                <Navbar path={path} permissions={props.permissions} username={props.username} designation={props.designation} id={props.id} fetchapi={fetchapi} />
                                 <Routes>
-                                  <Route path='/' onChange={() => setpath('/')} permissions={props.permissions} element={<Doctorsection id={props.id} fetchapi={fetchapi} todayDoc={todayDoc} Loading={Loading} docapi={docapi} />} />
-                                  <Route path='/Appointments' onChange={() => setpath('/Appointments')} element={<Appointments id={props.id} fetchapi={fetchapi} />} />
+
+                                  <Route path='/' onChange={() => setpath('/')} element={<Doctorsection id={props.id} fetchapi={fetchapi} todayDoc={todayDoc} Loading={Loading} docapi={docapi} />} />
+                                  {
+                                    props.permissions.appointment_view == 1 ? (
+                                      <Route path='/Appointments' onChange={() => setpath('/Appointments')} element={<Appointments id={props.id} fetchapi={fetchapi} />} />
+                                    ) : (<></>)
+                                  }
+
                                   <Route path='/Patients' onChange={() => setpath('/Patients')} element={<Patients id={props.id} />} />
                                   <Route path='/Doctors' onChange={() => setpath('/Doctors')} element={<Doctors id={props.id} docapi={docapi} />} />
                                   <Route path='/DailySaleReport' onChange={() => setpath('/DailySaleReport')} element={<DailySaleReport id={props.id} cliniclist={cliniclist} docapi={docapi} />} />
@@ -194,6 +197,7 @@ function Switchpage() {
   const [passvisibility, setpassvisibility] = useState('password');
   const [load, setload] = useState()
   const [permissions, setpermissions] = useState([])
+  const [roleId, setroleId] = useState()
 
   const topassword = () => {
     setpassword('flex');
@@ -222,6 +226,7 @@ function Switchpage() {
   }
   const localemail = localStorage.getItem("email")
   async function Submit() {
+    setroleId()
     setload(true)
     await axios.post(`https://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/api/connect/login`, {
       email: localemail || logininput.email,
@@ -234,7 +239,8 @@ function Switchpage() {
         localStorage.setItem('designation', response.data.data.roles.title);
         localStorage.setItem('id', response.data.data.id);
         localStorage.setItem('ClinicId', response.data.data.clinic_id)
-        setpermissions(response.data.data.roles.permissions)
+        localStorage.setItem('roleId', response.data.data.roles.id)
+        setroleId()
         Changepage()
         // window.location.reload(true);
 
@@ -249,10 +255,29 @@ function Switchpage() {
 
     })
   }
-  let p = permissions.toString().replace(/['"]+/g, '')
-  p = p.replace(/[{}]+/g, '')
+  let role = localStorage.getItem('roleId')
+  async function Permissions() {
+    await axios.post(`https://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/api/connect/role/permissions/list`, {
+      role_id: role ?role:1
+    }).then((response) => {
+      console.log(response)
+      if (response.data.status === true) {
+        setpermissions(response.data.data.permissions)
+        Changepage()
+        // window.location.reload(true);
 
-  console.log(p)
+      } else {
+        Notiflix.Report.failure(
+          'Invalid Credentials',
+          'Check your username password and try again',
+          'Retry',
+        )
+      }
+    })
+  }
+  useEffect(() => {
+    Permissions()
+  }, [role])
 
   function Changepage() {
     if (localemail !== null && localemail !== '') {
@@ -261,9 +286,6 @@ function Switchpage() {
       return (
 
         <div className='loginform p-0 m-0'>
-          {/* <div className="navbar mb-5 justify-content-end">
-              <img src={process.env.PUBLIC_URL + "/images/logo.png"} alt='image' className="float-end img-fluid col-lg-1 col-3 me-lg-5 me-2" />
-            </div> */}
           <section className="signinsection">
             <div className=" p-0 m-0 formsection ">
               <h4 className='text-center text-charcoal fw-semibold mb-4'>Login to Aartas</h4>
@@ -307,7 +329,6 @@ function Switchpage() {
                       </div>
                     </div>
                     <div className="col-5 text-center d-none"><a href="#" className="text-decoration-none">forgot password</a></div>
-
                   </div>
                 </div>
               </form>
@@ -319,70 +340,6 @@ function Switchpage() {
   }
 
   return (
-    // <>
-    //   <div className='container-fluid loginform'>
-    //     <div className="navbar mb-5 justify-content-end">
-    //       <img src={process.env.PUBLIC_URL + "/images/logo.png"} alt='image' className="float-end img-fluid col-lg-1 col-3 me-lg-5 me-2" />
-    //     </div>
-
-
-    //     <section className="signinsection mb-5">
-    //       <div className="container rounded py-5 bg-light bg-opacity-75">
-    //         <div className="container justify-content-center">
-    //           <p className="text-center mt-2 m-auto" id="text2"><img src={process.env.PUBLIC_URL + "/images/slogan2.png"} className="img-fluid" /></p>
-
-    //         </div>
-    //         <form autoComplete="off" onSubmit={(e) => Submit(e)}>
-    //           <div className="mt-4">
-    //             <div className={`row d-${email} justify-content-center mb-4`} id="userinput">
-    //               <div className="col-1"></div>
-    //               <div className="col-lg-6 col-md-8 col-sm-10 col-10 align-items-center d-flex userinput">
-    //                 <p className="m-0 ms-1" id="inputheading">Enter your Aartas Email ID</p>
-    //                 <input type="email" className="form-control" id="email" placeholder="example@aartas.com" value={logininput.email} autoComplete="false" onChange={(e) => { handleinput(e); if (e.target.value != '') { setnext('block'); } if (e.target.value == '') { setnext('none'); } }} />
-    //               </div>
-    //               <div className={`col-lg-1 d-flex  col-2 align-items-center`}>
-    //                 <a className={`next d-${next} text-decoration-none text-center p-2 rounded`} id="next" onClick={topassword}>Next</a>
-    //               </div>
-
-    //             </div>
-    //             <div className={`row d-${password} justify-content-center`} id="passinput">
-    //               <div className="col-lg-1 col-2 col-md-1 align-items-center d-flex">
-    //                 <a className="back text-decoration-none text-center p-2 rounded" onClick={toemail}>Back</a>
-    //               </div>
-    //               {
-    //                 load ? (
-    //                   <div className="col-lg-6 col-md-8 col-sm-10 col-10 py-1 pb-1 userinput text-center">
-    //                     <div class="spinner-border" role="status">
-    //                       <span class="visually-hidden">Loading...</span>
-    //                     </div>
-    //                   </div>) : (
-    //                   <div className="col-lg-6 col-md-8 col-sm-10 col-10 align-items-center d-flex userinput">
-    //                     <p className="m-0" id="inputheading">Enter your Password</p>
-    //                     <input type={passvisibility} className="form-control" id="password" placeholder="examplepassword123" autoComplete="new-password" onChange={(e) => handleinput(e)} value={logininput.password} />
-    //                   </div>
-    //                 )
-    //               }
-    //               <div className="col-1 align-items-center justify-content-center d-flex">
-    //                 <button type="button" className=" p-2 rounded submit text-center" disabled={load == true ? true : false} onClick={Submit}>Submit</button>
-    //               </div>
-
-
-    //               <div className="col-12">
-    //                 <div className="col text-center">
-    //                   <input className="form-check-input" onClick={passwordvisibility} type="checkbox" value="" id="flexCheckDefault" />
-    //                   <label className="form-check-label" htmlFor="flexCheckDefault">Check Password</label>
-    //                 </div>
-    //               </div>
-    //               <div className="col-5 text-center"><a href="#" className="text-decoration-none">forgot password</a></div>
-
-    //             </div>
-    //           </div>
-    //         </form>
-    //       </div>
-    //     </section>
-    //   </div>
-    // </>
-
     Changepage()
 
   )

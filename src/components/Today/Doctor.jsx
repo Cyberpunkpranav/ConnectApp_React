@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 import { useState, useEffect, useContext } from "react";
 import AmountPaid from './AmountPaid';
-import { URL, TodayDate, Clinic } from '../../index'
+import { URL, TodayDate, Clinic, Permissions } from '../../index'
 import Notiflix from 'notiflix';
 import { customconfirm } from "../features/notiflix/customconfirm";
 import { customloading } from "../features/notiflix/customloading"
@@ -23,6 +23,7 @@ function DoctorSchedule(props) {
   //Global Variables
   const url = useContext(URL)
   const Date = useContext(TodayDate)
+  const permission = useContext(Permissions)
   const adminid = localStorage.getItem('id')
   //Use States
   const [appointmentdata, setappointmentdata] = useState([]);
@@ -110,7 +111,6 @@ function DoctorSchedule(props) {
     }
     return status
   }
-
   function status_color(number) {
     let status_color;
     for (let j = 0; j < array.length; j++) {
@@ -121,9 +121,6 @@ function DoctorSchedule(props) {
     }
     return status_color
   }
-
-
-
   async function UpadteStatus(e) {
     if (e.target.value && adminid && e.target.name) {
       try {
@@ -150,8 +147,6 @@ function DoctorSchedule(props) {
       Notiflix.Notify.alert('Please try Again')
     }
   }
-
-
   const openAddApppointmentform = () => {
     setaddappointmentform('block')
   }
@@ -426,7 +421,7 @@ function DoctorSchedule(props) {
                       <button className={`button-sm button-${timeindex == i ? 'charcoal' : 'charcoal-outline'} m-1`} onClick={(e) => { openAddApppointmentform(); settimeindex(i) }} key={i}>{tConvert(data[0])}</button>
                       {
                         timeindex == i ? (
-                          <div  className={`d-${timeindex == i ? addappointmentform : 'none'} col-lg-8 col-md-8 col-sm-12 col-12 col-xl-6 shadow quickappointment position-absolute m-auto start-0 end-0 bg-seashell rounded-4 border border-1`} style={{ zIndex: 4, top: '-1rem' }}>
+                          <div className={`d-${timeindex == i ? addappointmentform : 'none'} col-lg-8 col-md-8 col-sm-12 col-12 col-xl-6 shadow quickappointment position-absolute m-auto start-0 end-0 bg-seashell rounded-4 border border-1`} style={{ zIndex: 4, top: '-1rem' }}>
                             <SelectedTimeAppointment fetchapi={props.fetchapi} closeAddAppointmentform={closeAddAppointmentform} DocClinic={props.DocClinic} DoctorID={props.DoctorID} DoctorName={props.DoctorName} timeindex={timeindex} selectedtime={data[0]} selectedtimeID={data[2]} />
                           </div>
                         ) : (
@@ -462,8 +457,8 @@ function DoctorSchedule(props) {
                   <th className="border-0 bg-pearl" key={5}>Total Amount</th>
                   <th className="border-0 bg-pearl" key={6}>Amount Status</th>
                   <th className="border-0 bg-pearl" key={7}>Vitals</th>
-                  <th className="border-0 bg-pearl" key={8}>Bill</th>
-                  <th className="border-0 bg-pearl" key={9}>Payments</th>
+                  <th className={`border-0 bg-pearl d-${permission.appointment_charges_edit ? '' : 'none'}`} key={8}>Bill</th>
+                  <th className={`border-0 bg-pearl d-${permission.appointment_charges_edit ? '' : 'none'}`} key={9}>Payments</th>
                   <th className="border-0 bg-pearl" key={10}>more</th>
 
                 </tr>
@@ -491,7 +486,7 @@ function DoctorSchedule(props) {
                               </button>
                             </td>
                             <td className="">
-                              <select className={` fw-bolder rounded-5 p-1 text-center button-${status_color(data.appointment_status)}`} name={data.id} onChange={(e) => { UpadteStatus(e) }}>
+                              <select disabled={permission.appointment_edit == 1 ? false : true} className={` fw-bolder rounded-5 p-1 text-center button-${status_color(data.appointment_status)}`} name={data.id} onChange={(e) => { UpadteStatus(e) }}>
                                 <option className="button" selected disabled>{status(data.appointment_status)}</option>
                                 <option key={0} className="button-lightred" value='1'>Pending</option>
                                 <option key={1} className="button-lightblue" value='2'>Booked</option>
@@ -511,8 +506,8 @@ function DoctorSchedule(props) {
                             <td className="py-0">{data.total_amount}</td>
                             <td className="py-0"><AmountPaid appointmentData={data} Appointmentlist={Appointmentlist} /> </td>
                             <td className={`py-0 bg-${vitalindex === i ? 'lightyellow' : ''}`}><button className="btn p-0 m-0" onClick={() => { setvitalindex(i); OpenVitals(); GetAppointmentVitals(data.id) }}><img src={process.env.PUBLIC_URL + "/images/vitals.png"} alt="displaying_image" style={{ width: "1.5rem" }} /></button></td>
-                            <td className={`py-0 bg-${billindex === i ? 'lightyellow' : ''}`}> <button className="btn p-0 m-0" onClick={() => { setbillindex(i); OpenBillForm(); }}><img src={process.env.PUBLIC_URL + "/images/bill.png"} alt="displaying_image" style={{ width: "1.8rem" }} className="me-1" /></button>  </td>
-                            <td className={`py-0 bg-${paymentsindex === i ? 'lightyellow' : ''}`}><button className="btn p-0 m-0" onClick={() => { setpaymentsindex(i); OpenPaymentsForm(); }}><img src={process.env.PUBLIC_URL + "/images/rupee.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1" /></button></td>
+                            <td className={`py-0 d-${permission.appointment_charges_edit ? '' : 'none'} bg-${billindex === i ? 'lightyellow' : ''}`}> <button className="btn p-0 m-0" onClick={() => { setbillindex(i); OpenBillForm(); }}><img src={process.env.PUBLIC_URL + "/images/bill.png"} alt="displaying_image" style={{ width: "1.8rem" }} className="me-1" /></button>  </td>
+                            <td className={`py-0 d-${permission.appointment_charges_edit ? '' : 'none'} bg-${paymentsindex === i ? 'lightyellow' : ''}`}><button className="btn p-0 m-0" onClick={() => { setpaymentsindex(i); OpenPaymentsForm(); }}><img src={process.env.PUBLIC_URL + "/images/rupee.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1" /></button></td>
                             <td><div className="dropdown ">
                               <button className="button button p-0 m-0 px-1 py-1 bg-transparent border-0 p-0  fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" style={{ width: "1.5rem" }} />
