@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useState, useEffect, useContext, useRef } from 'react';
-import { URL, TodayDate, DoctorsList, Clinic } from '../../index';
+import { URL, TodayDate, DoctorsList, Clinic, Permissions } from '../../index';
 import { ExportPurchaseEntry, ExportPurchaseReturn, ExportSaleEntry, ExportSaleReturn } from '../pharmacy/Exports'
 import { QRcode } from '../features/qrcode';
 import Notiflix from 'notiflix';
@@ -16,7 +16,17 @@ import { UpdateMedicine } from './UpdateMedicine';
 
 //-------------------------------------------------Sales------------------------------------------------------------------------------------------
 function Salesection(props) {
-  const first = ["Sale Entry", "Sale Returns"];
+  const permission = useContext(Permissions)
+  const first = [
+    {
+      option: "Sale Entry",
+      display: permission.sale_entry_view ? 1 : 0
+    },
+    {
+      option: "Sale Returns",
+      display: permission.sale_return_view ? 1 : 0
+    }
+  ];
   const [second, setSecond] = useState(0);
 
   const _selectedScreen = (_selected) => {
@@ -40,8 +50,8 @@ function Salesection(props) {
                 {
                   first.map((e, i) => {
                     return (
-                      <div className="col-auto salebuttons ">
-                        <button className={`btn btn-sm px-4 rounded-5 text-${i === second ? "light" : "dark"} bg-${i === second ? "charcoal" : "seashell"}`} onClick={(a) => setSecond(i)} >{e}</button>
+                      <div className={`col-auto salebuttons d-${e.display == 1 ? '' : 'none'}`}>
+                        <button className={`btn btn-sm px-4 rounded-5 text-${i === second ? "light" : "dark"} bg-${i === second ? "charcoal" : "seashell"}`} onClick={(a) => setSecond(i)} >{e.option}</button>
                       </div>
                     )
                   }
@@ -64,6 +74,7 @@ function Salesection(props) {
   )
 }
 function Saleentrysection(props) {
+  const permission = useContext(Permissions)
   const currentDate = useContext(TodayDate)
   const ClinicID = localStorage.getItem('ClinicId')
   const adminid = localStorage.getItem('id')
@@ -281,7 +292,7 @@ function Saleentrysection(props) {
   console.log(saleentryarr, pages)
   return (
     <>
-      <button className="button addentrypurchase button-charcoal position-absolute" onClick={toggle_nsef}>
+      <button className={`button addentrypurchase button-charcoal position-absolute d-${permission.sale_entry_add == 1 ? '' : 'none'}`} onClick={toggle_nsef}>
         <img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt='displaying_image' className="img-fluid" style={{ width: `1.5rem` }} />Entry Sale</button>
       <div className="row p-0 m-0 justify-content-lg-between justify-content-md-evenly justify-content-center text-center mt-2">
         <div className="col-lg-2 col-md-2 col-3 text-center p-0 m-0 ">
@@ -363,12 +374,13 @@ function Saleentrysection(props) {
                               <img src={process.env.PUBLIC_URL + "/images/confirmed.png"} alt="displaying_image" style={{ width: "1.5rem" }} />
                             </button>
                             <ul className="dropdown-menu  text-start" >
-                              <li className="text-start border-bottom"><button className={`btn`} onClick={() => { settabindex(i); toggle_payments() }}>
+                              <li className={`text-start border-bottom `}><button className={`btn`} onClick={() => { settabindex(i); toggle_payments() }}>
                                 <img src={process.env.PUBLIC_URL + "/images/rupee.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1" />Payments
                               </button></li>
-                              <li className=" text-start border-bottom">    <button className="btn" onClick={() => { setindex(i); toggle_seidw() }}>
-                                <img src={process.env.PUBLIC_URL + "/images/archivebox.png"} alt="displaying_image" className="ms-1" style={{ width: "1.5rem" }} /> Inventory
-                              </button></li>
+                              <li className=" text-start border-bottom">
+                                <button className="btn" onClick={() => { setindex(i); toggle_seidw() }}>
+                                  <img src={process.env.PUBLIC_URL + "/images/archivebox.png"} alt="displaying_image" className="ms-1" style={{ width: "1.5rem" }} /> Inventory
+                                </button></li>
                               <li className="text-start border-bottom"><button className="btn" onClick={() => { Generate_Bill(item.id) }}><img src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" style={{ width: "2rem" }} /> Generate Bill</button>
                               </li>
                               <li className="text-start"><button className="btn" onClick={() => { Send_On_WhatsApp(item.id, item.patient.phone_number) }}><img src={process.env.PUBLIC_URL + "/images/whatsapp.png"} alt="displaying_image" style={{ width: "2rem" }} /> Send Bill On WhatsApp </button>
@@ -438,6 +450,7 @@ function Saleentrysection(props) {
 }
 function SaleEntrypayments(props) {
   const url = useContext(URL)
+  const permission = useContext(Permissions)
   const adminid = localStorage.getItem('id')
   const [paymentmethods, setpaymentmethods] = useState()
   const [previouspayments, setpreviouspayments] = useState([])
@@ -538,8 +551,9 @@ function SaleEntrypayments(props) {
     }
 
   }
+  console.log(paymentmethods)
   return (
-    <div className='p-0 m-0'>
+    <div className='p-0 m-0 text-center'>
       <h6 className='text-center mt-2 fw-bold'>{props.itembillid} Payments</h6>
       <hr className='p-0 m-0 mt-1' />
       <button className='btn-close position-absolute top-0 end-0 p-2 m-2 ' onClick={() => props.toggle_payments()}></button>
@@ -553,34 +567,85 @@ function SaleEntrypayments(props) {
         {
           paymentmethods ? (
             paymentmethods.map((data, i) => (
-              <div className={`row p-0 m-0  justify-content-end g-2`}>
-                <div className="col-4 ">
-                  <select className='form-control border-success py-1 text-center' value={data.paymentmethod} onChange={(e) => { data.paymentmethod = e.target.value; setpaymentmethods(prevState => [...prevState]) }}>
-                    <option className='text-charcoal75 fw-bolder'>Payment Method</option>
-                    <option value='Cash'>Cash</option>
-                    <option value='Card'>Card</option>
-                    <option value='Paytm'>Paytm</option>
-                    <option value='Phonepe'>Phone Pe</option>
-                    <option value='Wire-Transfer'>Wire Transfer</option>
-                    <option value='Razorpay'>Razorpay</option>
-                    <option value='Points'>Points</option>
-                    <option value='Adjust-Advance'>Adjust-Advance</option>
-                  </select>
+              // permission.sale_entry_charges_edit == 1
+
+              permission.sale_entry_charges_edit == 1 ? (
+                <div className={`row p-0 m-0 justify-content-end g-2`}>
+                  <div className="col-4 ">
+                    <select className='form-control border-success py-1 text-center' value={data.paymentmethod} onChange={(e) => { data.paymentmethod = e.target.value; setpaymentmethods(prevState => [...prevState]) }}>
+                      <option className='text-charcoal75 fw-bolder'>Payment Method</option>
+                      <option value='Cash'>Cash</option>
+                      <option value='Card'>Card</option>
+                      <option value='Paytm'>Paytm</option>
+                      <option value='Phonepe'>Phone Pe</option>
+                      <option value='Wire-Transfer'>Wire Transfer</option>
+                      <option value='Razorpay'>Razorpay</option>
+                      <option value='Points'>Points</option>
+                      <option value='Adjust-Advance'>Adjust-Advance</option>
+                    </select>
+                  </div>
+                  <div className="col-4 text-center ">
+                    <input className='form-control border-success py-1 text-center' value={data.amount} onChange={(e) => { data.amount = e.target.value; setpaymentmethods(prevState => [...prevState]) }} />
+                  </div>
+                  <div className="col-2 text-center">
+                    <button className='btn btn-sm p-0 m-0' onClick={() => { DeletePaymentMethods(i); setpaymentmethods(prevState => [...prevState]) }}><img src={process.env.PUBLIC_URL + '/images/delete.png'} className='img-fluid' style={{ width: '1.5rem' }} /></button>
+                  </div>
                 </div>
-                <div className="col-4 text-center ">
-                  <input className='form-control border-success py-1 text-center' value={data.amount} onChange={(e) => { data.amount = e.target.value; setpaymentmethods(prevState => [...prevState]) }} />
-                </div>
-                <div className="col-2 text-center">
-                  <button className='btn btn-sm p-0 m-0' onClick={() => { DeletePaymentMethods(i); setpaymentmethods(prevState => [...prevState]) }}><img src={process.env.PUBLIC_URL + '/images/delete.png'} className='img-fluid' style={{ width: '1.5rem' }} /></button>
-                </div>
-              </div>
+              ) : (
+                props.saleentryarr.payment_method_details == null ? (
+                  <div className={`row p-0 m-0 justify-content-end g-2`}>
+                    <div className="col-4 ">
+                      <select className='form-control border-success py-1 text-center' value={data.paymentmethod} onChange={(e) => { data.paymentmethod = e.target.value; setpaymentmethods(prevState => [...prevState]) }}>
+                        <option className='text-charcoal75 fw-bolder'>Payment Method</option>
+                        <option value='Cash'>Cash</option>
+                        <option value='Card'>Card</option>
+                        <option value='Paytm'>Paytm</option>
+                        <option value='Phonepe'>Phone Pe</option>
+                        <option value='Wire-Transfer'>Wire Transfer</option>
+                        <option value='Razorpay'>Razorpay</option>
+                        <option value='Points'>Points</option>
+                        <option value='Adjust-Advance'>Adjust-Advance</option>
+                      </select>
+                    </div>
+                    <div className="col-4 text-center ">
+                      <input className='form-control border-success py-1 text-center' value={data.amount} onChange={(e) => { data.amount = e.target.value; setpaymentmethods(prevState => [...prevState]) }} />
+                    </div>
+                    <div className="col-2 text-center">
+                      <button className='btn btn-sm p-0 m-0' onClick={() => { DeletePaymentMethods(i); setpaymentmethods(prevState => [...prevState]) }}><img src={process.env.PUBLIC_URL + '/images/delete.png'} className='img-fluid' style={{ width: '1.5rem' }} /></button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className={`row p-0 m-0 justify-content-center g-2`}>
+                    <div className="col-4 text-center ">
+                      <input className='form-control py-1' disabled={true} value={data.paymentmethod} />
+                    </div>
+                    <div className="col-4 text-center ">
+                      <input className='form-control py-1 text-center' disabled={true} value={data.amount} onChange={(e) => { data.amount = e.target.value; setpaymentmethods(prevState => [...prevState]) }} />
+                    </div>
+                  </div>
+                )
+
+              )
             ))
           ) : (<></>)
 
         }
-        <div className="container-fluid text-center mt-2">
-          <button className='btn py-0' onClick={AddMethods}>
-            <img src={process.env.PUBLIC_URL + '/images/add.png'} className='img-fluid' style={{ width: '2rem' }} /></button>
+        <div className={`container-fluid text-center mt-2 `}>
+          {
+            permission.sale_entry_charges_edit == 1 ? (
+              <button className='btn py-0' onClick={AddMethods}>
+                <img src={process.env.PUBLIC_URL + '/images/add.png'} className='img-fluid' style={{ width: '2rem' }} />
+              </button>
+            ) : (
+              props.saleentryarr.payment_method_details == null ? (
+                <button className='btn py-0' onClick={AddMethods}>
+                  <img src={process.env.PUBLIC_URL + '/images/add.png'} className='img-fluid' style={{ width: '2rem' }} />
+                </button>
+              ) : (<></>)
+
+            )
+          }
+
         </div>
       </div>
 
@@ -606,7 +671,7 @@ function SaleEntrypayments(props) {
         }
 
       </div>
-    </div>
+    </div >
   )
 }
 function SEitemdetailssection(props) {
@@ -2222,7 +2287,21 @@ export { Salesection }
 
 //  ---------------------------------------------------------------purchase------------------------------------------------------------------
 function Purchasesection(props) {
-  const first = ["Purchase Entry", "Purchase Returns", "Purchase Orders"];
+  const permission = useContext(Permissions)
+  const first = [
+    {
+      option: "Purchase Entry",
+      display: permission.purchase_entry_view,
+    },
+    {
+      option: "Purchase Returns",
+      display: permission.purchase_return_view
+    },
+    {
+      option: "Purchase Orders",
+      display: permission.purchase_orders_view
+    }
+  ];
   const [second, setSecond] = useState(0);
 
   const _selectedScreen = (_selected) => {
@@ -2248,8 +2327,8 @@ function Purchasesection(props) {
           {
             first.map((e, i) => {
               return (
-                <div className="col-auto">
-                  <button className={`btn btn-sm px-lg-4 px-md-3 rounded-pill text-${i === second ? "light" : "dark"} bg-${i === second ? "charcoal" : "seashell"}`} onClick={(a) => setSecond(i)} >{e}</button>
+                <div className={`col-auto d-${e.display == 1 ? '' : 'none'}`}>
+                  <button className={`btn btn-sm px-lg-4 px-md-3 rounded-pill text-${i === second ? "light" : "dark"} bg-${i === second ? "charcoal" : "seashell"}`} onClick={(a) => setSecond(i)} >{e.option}</button>
                 </div>
               )
             }
@@ -2271,6 +2350,7 @@ function Purchasesection(props) {
 function Purchaseentrysection(props) {
   const currentDate = useContext(TodayDate)
   const ClinicID = localStorage.getItem('ClinicId')
+  const permission = useContext(Permissions)
   const url = useContext(URL)
   const [peidw, setpeidw] = useState("none");
 

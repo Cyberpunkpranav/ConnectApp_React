@@ -233,7 +233,7 @@ function Navbar(props) {
                 <ul className="dropdown-menu">
                   <li><button className={`dropdown-item border-bottom d-${props.permissions.patient_add == 1 ? '' : 'none'}`} onClick={() => { togglepatientform() }}>+ Patient</button></li>
                   <li className={`d-${props.permissions.appointment_add == 1 ? '' : 'none'}`}><button className="dropdown-item border-bottom" onClick={() => { toggleappointmentform() }}>+ Appointment</button></li>
-                  <li><button className={`dropdown-item d-${props.permissions.doctor_add == 1 ? '' : 'none'} `} onClick={() => { toggledoctorform() }}>+ Doctor</button></li>
+                  <li><button className={`dropdown-item  `} onClick={() => { toggledoctorform() }}>+ Doctor</button></li>
                 </ul>
               </div>
             </div>
@@ -344,7 +344,7 @@ function Doctorsection(props) {
               ))
             )}
           <div className='col-auto'>
-            <button className={`btn bg-transparent border-0 d-${permission.doctor_add ? 'inline-flex' : 'none'}`} id="adddoctorbtn" onClick={toggledoctorform} >
+            <button className={`btn bg-transparent border-0 `} id="adddoctorbtn" onClick={toggledoctorform} >
               <img src={process.env.PUBLIC_URL + "/images/addicon.png"} alt="displaying_image" style={{ width: "1.5rem" }} />
             </button>
           </div>
@@ -357,7 +357,6 @@ function Doctorsection(props) {
             <span className='col-auto livetime text-charcoal fw-bold' style={{ fontSize: '1.5rem' }}>{currentDate}</span>
             <div className=' col-auto vr align-self-center h-75' style={{ padding: '0.8px' }}></div>
             <span className='col-auto livetime2' style={{ fontSize: '1.5rem' }}><Timer /></span>
-
           </div>
         </div>
         {
@@ -1145,8 +1144,26 @@ function DailySaleReport(props) {
 }
 
 function Pharmacy() {
+  const permission = useContext(Permissions)
+  let menu = [
+    {
+      option: "Sale",
+      display: permission.sale_entry_view == undefined && permission.ale_return_view == undefined ? 0 : 1,
+    },
+    {
+      option: "Stock Info",
+      display: permission.purchase_entry_view == undefined && permission.purchase_orders_view == undefined && permission.purchase_return_view == undefined ? 0 : 1,
+    },
+    {
+      option: "Purchase",
+      display: permission.purchase_entry_view == undefined && permission.purchase_orders_view == undefined && permission.purchase_return_view == undefined ? 0 : 1,
+    },
+    {
+      option: "Lists",
+      display: permission.vaccine_view == undefined && permission.medicine_view==undefined ? 0:1,
+    }
 
-  let menu = ["Sale", "Stock Info", "Purchase", "Lists"];
+  ];
   const [menuindex, setmenuindex] = useState(0);
   const _selectedmenu = (_menu) => {
     if (_menu === 0) {
@@ -1175,16 +1192,18 @@ function Pharmacy() {
         <div className="pharmacysection">
           <div className="container-fluid pharmacytabsection">
             <div className="  gap-3 d-flex p-0 m-0 ms-1 p-1 align-items-center">
-              {menu.map((e, i) => {
-                return (
-                  <>
-                    <div className="col-auto p-0 m-0">
-                      <button className={`button rounded-2 p-0 m-0 py-1 px-4 btn-sm col-auto shadow-none text-${i === menuindex ? 'light' : 'charcoal75 fw-bolder'} button-${i === menuindex ? "charcoal" : "seashell"} border-${i === menuindex ? 'secondary' : 'none'}`} onClick={(a) => setmenuindex(i)} > {e} </button>
-                    </div>
-                    <div className='vr rounded-2 h-75 align-self-center' style={{ padding: '0.8px' }}></div>
-                  </>
-                );
-              })}
+              {
+                menu.map((e, i) => {
+                  return (
+                    <>
+                      <div className={`col-auto p-0 m-0 d-${e.display == 1 ? '' : 'none'}`}>
+                        <button className={`button rounded-2 p-0 m-0 py-1 px-4 btn-sm col-auto shadow-none text-${i === menuindex ? 'light' : 'charcoal75 fw-bolder'} button-${i === menuindex ? "charcoal" : "seashell"} border-${i === menuindex ? 'secondary' : 'none'}`} onClick={(a) => setmenuindex(i)} > {e.option} </button>
+                      </div>
+                      <div className={`vr rounded-2 h-75 align-self-center d-${e.display == 1 ? '' : 'none'}`} style={{ padding: '0.8px' }}></div>
+                    </>
+                  );
+                })
+              }
             </div>
           </div>
         </div>
