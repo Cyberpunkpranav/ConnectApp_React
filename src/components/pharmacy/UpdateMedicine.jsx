@@ -55,7 +55,7 @@ const UpdateMedicine = (props) => {
   }
   const UpdateMedicine = async () => {
     const Data = {
-      medicine_id:data.id,
+      medicine_id: data.id,
       display_name: displayname,
       name: name,
       salt_name: saltname,
@@ -71,18 +71,18 @@ const UpdateMedicine = (props) => {
       max_stock_count: Number(maxsc),
       min_stock_count: Number(minsc),
       alert_stock_count: Number(altsc),
-      image:img ?  {
-        name:img[0].name,
-        size:img[0].size,
-        type:img[0].type,
-        webkitRelativePath:img[0].webkitRelativePath,
-        lastModifiedDate:img[0].lastModifiedDate,
-        lastModified:img[0].lastModified
+      image: img ? {
+        name: img[0].name,
+        size: img[0].size,
+        type: img[0].type,
+        webkitRelativePath: img[0].webkitRelativePath,
+        lastModifiedDate: img[0].lastModifiedDate,
+        lastModified: img[0].lastModified
 
-      } :''
+      } : ''
     }
     console.log(props.data)
-console.log(props.data.id)
+    console.log(props.data.id)
     try {
       await axios.post(`${url}/medicine/update`, Data).then((response) => {
         console.log(response)
@@ -118,7 +118,7 @@ console.log(props.data.id)
   return (
     <div className='position-relative bg-seashell p-0 m-0'>
       <h5 className='p-0 m-0 text-center py-2 border-bottom'>Update Medicine</h5>
-      <button className='btn btn-close position-absolute end-0 top-0 mt-1 me-1' onClick={props.ToggleNewMedicine}></button>
+      <button className='btn btn-close position-absolute end-0 top-0 mt-1 me-1' onClick={props.ToggleUpdateMedicine}></button>
       <div className='scroll scroll-y' style={{ height: '78vh' }}>
         <div className="row p-0 m-0">
           <div className="row p-0 m-0 justify-content-end">
@@ -256,7 +256,7 @@ console.log(props.data.id)
           </div>
         </div>
       </div>
-      <div className='bg-pearl border p-3 align-items-center '>
+      <div className='bg-pearl border p-2 align-items-center '>
         <div className="row p-0 m-0 text-center justify-content-between align-items-center align-self-center">
 
           <div className="col-6">

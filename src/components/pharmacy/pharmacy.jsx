@@ -2532,7 +2532,8 @@ function Purchaseentrysection(props) {
   }
   return (
     <>
-      <button className="button addpurchase button-charcoal position-absolute" onClick={toggle_npef}><img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt='displaying_image' className="img-fluid" style={{ width: `1.5rem` }} />Entry Purchase</button>
+      <button className={`button addpurchase button-charcoal position-absolute d-${permission.purchase_entry_add == 1 ? '' : 'none'}`} onClick={toggle_npef}>
+        <img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt='displaying_image' className="img-fluid" style={{ width: `1.5rem` }} />Entry Purchase</button>
       <div className="row p-0 m-0 justify-content-lg-between justify-content-md-evenly justify-content-left text-center">
         <div className="col-lg-2 col-md-2 col-3 text-center p-0 m-0 order-lg-0 order-md-0 order-sm-0 order-0 ms-lg-0 ms-md-0 ms-sm-0 ms-4">
           <button type='button' className="btn p-0 m-0 heading text-charcoal fw-bolder  " style={{ width: 'fit-content' }}>{pagecount}  {pagecount > 1 ? 'Purchase Entries' : 'Purchase Entry'} </button>
@@ -5719,7 +5720,16 @@ function MedicinesectionItemDetails(props) {
 }
 //-------------------------------------------------------------------------Lists---------------------------------------------------------
 function Listsection() {
-  let menu = ["Vaccines", "Medicines"];
+  const permission = useContext(Permissions)
+  let menu = [
+    {
+      option: "Vaccines",
+      display: permission.vaccine_view
+    }, {
+      option: "Medicines",
+      display: permission.medicine_view
+    }];
+
   const [menuindex, setmenuindex] = useState(0);
   const _selectedmenu = (_menu) => {
     if (_menu === 0) {
@@ -5741,7 +5751,7 @@ function Listsection() {
                 menu.map((e, i) => {
                   return (
                     <div className="col-auto">
-                      <button className={`btn btn-sm px-4 rounded-5 text-${i === menuindex ? "light" : "dark"} bg-${i === menuindex ? "charcoal" : "seashell"}`} onClick={(a) => setmenuindex(i)} >{e}</button>
+                      <button className={`btn btn-sm px-4 rounded-5 text-${i === menuindex ? "light" : "dark"} bg-${i === menuindex ? "charcoal" : "seashell"}`} onClick={(a) => setmenuindex(i)} >{e.option}</button>
                     </div>
                   )
                 }
@@ -5767,12 +5777,15 @@ function VaccineList() {
 }
 function MedicineList() {
   const url = useContext(URL)
+  const permission = useContext(Permissions)
   const [pagecount, setpagecount] = useState()
   const [pages, setpages] = useState()
   const [medicines, setmedicines] = useState([])
   const [load, setload] = useState(false)
   const [index, setindex] = useState()
   const [NewMed, setNewMed] = useState('none')
+  const [UptMed, setUptMed] = useState('none')
+
 
   function GetPages() {
     try {
@@ -5822,13 +5835,23 @@ function MedicineList() {
     medcinelist()
   }, [pagecount])
 
+
   const ToggleNewMedicine = () => {
     if (NewMed == 'block') {
       setNewMed('none')
-      setindex()
     }
     if (NewMed == 'none') {
       setNewMed('block')
+    }
+  }
+
+  const ToggleUpdateMedicine = () => {
+    if (UptMed == 'none') {
+      setUptMed('block')
+    }
+    if (UptMed == 'block') {
+      setUptMed('none')
+      setindex()
     }
   }
 
@@ -5864,19 +5887,22 @@ function MedicineList() {
     );
   }
   return (
-    <div>
+    <div className='position-relative'>
       <div className='heading text-start ms-lg-5 ms-md-3 ms-sm-3 ms-1 text-charcoal fw-bold p-2'>Medicines List</div>
+      <div className={` p-0 m-0 align-self-center ms-1 position-absolute top-0 end-0 d-${permission.medicine_add == 1 ? '' : 'none'} `}>
+        <button className="button button-charcoal m-0 p-0 py-1 px-4" onClick={ToggleNewMedicine}> <img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt="displaying_image" style={{ width: "1.5rem" }} /> Medicine </button>
+      </div>
       <div className='scroll scroll-y p-0 m-0 overflow-scroll' style={{ 'height': '57vh', minHeight: '57vh', maxHeight: '57vh' }}  >
         <table className="table datatable text-start" >
           <thead className='position-sticky top-0 bg-pearl'>
             <tr>
-              <th rowSpan='2' className='p-0 m-0 px-1 text-charcoal75 fw-bold'>Update</th>
+              <th rowSpan='2' className={`p-0 m-0 px-1 text-charcoal75 fw-bold d-${permission.medicine_edit == 1 ? '' : 'none'}`}>Update</th>
               <th rowSpan='2' className='p-0 m-0 px-1 text-charcoal75 fw-bold'>Display Name</th>
               <th rowSpan='2' className='p-0 m-0 px-1 text-charcoal75 fw-bold'> Name</th>
               <th rowSpan='2' className='p-0 m-0 px-1 text-charcoal75 fw-bold'>Salt Name</th>
               <th rowSpan='2' className='p-0 m-0 px-1 text-charcoal75 fw-bold'>HSN Code</th>
               <th rowSpan='2' className='p-0 m-0 px-1 text-charcoal75 fw-bold'>Manufacturer</th>
-              <th rowSpan='2' className='p-0 m-0 px-1 text-charcoal75 fw-bold'>Delete</th>
+              <th rowSpan='2' className={`p-0 m-0 px-1 text-charcoal75 fw-bold d-${permission.medicine_delete == 1 ? '' : 'none'}`}>Delete</th>
             </tr>
           </thead>
           {
@@ -5900,9 +5926,9 @@ function MedicineList() {
                 <tbody className=''>
                   {
                     medicines.map((data, i) => (
-                      <tr className={`bg-${i % 2 == 0 ? 'seashell' : 'pearl'} align-middle text-start`}>
-                        <td className={`py-0 bg-${index === i ? 'lightyellow' : ''}`}>
-                          <button className="btn m-0 p-0" key={i} onClick={(e) => { ToggleNewMedicine(); setindex(i) }}>
+                      <tr className={` bg-${i % 2 == 0 ? 'seashell' : 'pearl'} align-middle text-start`}>
+                        <td className={`py-0 bg-${index === i ? 'lightyellow' : ''} d-${permission.medicine_edit == 1 ? '' : 'none'}`}>
+                          <button className="btn m-0 p-0" key={i} onClick={(e) => { ToggleUpdateMedicine(); setindex(i) }}>
                             <img src={process.env.PUBLIC_URL + "/images/confirmed.png"} alt="displaying_image" className="img-fluid" style={{ width: "1.5rem" }} key={i} />
                           </button>
                         </td>
@@ -5911,12 +5937,11 @@ function MedicineList() {
                         <td className=' text-charcoal fw-bold'>{data.salt_name && data.salt_name !== null ? data.salt_name : ''}</td>
                         <td className=' text-charcoal fw-bold'>{data.hsn_code && data.hsn_code !== null ? data.hsn_code : ''}</td>
                         <td className=' text-charcoal fw-bold'>{data.manufacturer && data.manufacturer !== null ? data.manufacturer : ''}</td>
-                        <td><button className='btn p-0 m-0' onClick={() => { confirmmessage(data.name, data.id) }}><img src={process.env.PUBLIC_URL + '/images/delete.png'} style={{ width: '1.5rem' }} /></button></td>
-
+                        <td className={`d-${permission.medicine_delete == 1 ? '' : 'none'}`}><button className='btn p-0 m-0' onClick={() => { confirmmessage(data.name, data.id) }}><img src={process.env.PUBLIC_URL + '/images/delete.png'} style={{ width: '1.5rem' }} /></button></td>
                         {
                           index == i ? (
-                            <td className={` text-start  d-${index == i ? NewMed : 'none'} border position-absolute start-0 end-0 top-0 bg-seashell`} style={{ padding: 0, marginTop: '-7.15rem', zIndex: '2' }}>
-                              <UpdateMedicine ToggleNewMedicine={ToggleNewMedicine} data={medicines[i]} />
+                            <td className={` text-start  d-${index == i ? UptMed : 'none'} border position-absolute start-0 end-0 top-0 bg-seashell`} style={{ padding: 0, marginTop: '-8.15rem', zIndex: '2' }}>
+                              <UpdateMedicine ToggleUpdateMedicine={ToggleUpdateMedicine} data={medicines[i]} />
                             </td>
                           ) : (<></>)
                         }
@@ -5932,6 +5957,9 @@ function MedicineList() {
           }
         </table>
       </div>
+      <section className={`position-absolute border-1 shadow start-0 bg-seashell rounded-2 end-0 d-${NewMed}`} style={{ top: '-8.15rem', zIndex: '2' }}>
+        <NewMedicine ToggleNewMedicine={ToggleNewMedicine} />
+      </section>
       <div className="container-fluid d-flex justify-content-center mt-2">
         < ReactPaginate
           previousLabel={'Previous'}
