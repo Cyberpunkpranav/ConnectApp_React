@@ -5802,7 +5802,6 @@ function MedicineList() {
       setload(false)
     }
   }
-
   const medcinelist = async (Data) => {
     if (Data == undefined || Data.selected == undefined) {
       setload(true)
@@ -5834,8 +5833,6 @@ function MedicineList() {
     GetPages()
     medcinelist()
   }, [pagecount])
-
-
   const ToggleNewMedicine = () => {
     if (NewMed == 'block') {
       setNewMed('none')
@@ -5844,7 +5841,6 @@ function MedicineList() {
       setNewMed('block')
     }
   }
-
   const ToggleUpdateMedicine = () => {
     if (UptMed == 'none') {
       setUptMed('block')
@@ -5854,7 +5850,6 @@ function MedicineList() {
       setindex()
     }
   }
-
   const DeleteMedicine = async (medid) => {
     try {
       await axios.post(`${url}/medicine/delete`, {

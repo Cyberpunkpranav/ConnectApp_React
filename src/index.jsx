@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom/client';
 import { useState, useEffect } from "react";
 import { createContext } from 'react'
 import axios from "axios";
+import { encrypt, decrypt } from 'n-krypta'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.js';
@@ -24,8 +25,10 @@ const TodayDocs = createContext();
 const Vitals = createContext();
 const Clinic = createContext();
 const Permissions = createContext()
+const Secretkey = createContext()
 
 function Connectapp(props) {
+  const secretkey = 'aartasclinishare'
   const d = new Date();
   const date = d.getDate() < 10 ? '0' + d.getDate() : d.getDate();
   const monthcount = d.getMonth() + 1 < 10 ? `0${d.getMonth() + 1}` : d.getMonth() + 1;
@@ -148,40 +151,36 @@ function Connectapp(props) {
 
           ) : (
             <>
-              <Permissions.Provider value={props.permissions} >
-                <Doctorapi.Provider value={ConnectDoctorapi}>
-                  <DoctorsList.Provider value={docapi}>
-                    <URL.Provider value={url}>
-                      <Clinic.Provider value={cliniclist}>
-                        <TodayDate.Provider value={APIDate}>
-                          <TodayDocs.Provider value={todayDoc}>
-                            <Vitals.Provider value={vitalslist}>
-                              <Router>
-                                <Navbar path={path} permissions={props.permissions} username={props.username} designation={props.designation} id={props.id} fetchapi={fetchapi} />
-                                <Routes>
-
-                                  <Route path='/' onChange={() => setpath('/')} element={<Doctorsection id={props.id} fetchapi={fetchapi} todayDoc={todayDoc} Loading={Loading} docapi={docapi} />} />
-                                  {
-                                    props.permissions.appointment_view == 1 ? (
-                                      <Route path='/Appointments' onChange={() => setpath('/Appointments')} element={<Appointments id={props.id} fetchapi={fetchapi} />} />
-                                    ) : (<></>)
-                                  }
-
-                                  <Route path='/Patients' onChange={() => setpath('/Patients')} element={<Patients id={props.id} />} />
-                                  <Route path='/Doctors' onChange={() => setpath('/Doctors')} element={<Doctors id={props.id} docapi={docapi} />} />
-                                  <Route path='/DailySaleReport' onChange={() => setpath('/DailySaleReport')} element={<DailySaleReport id={props.id} cliniclist={cliniclist} docapi={docapi} />} />
-                                  <Route path='/Pharmacy' onChange={() => setpath('/Pharmacy')} element={<Pharmacy id={props.id} />} />
-                                  {/* <Route path='/Files' element={<Exports id={props.id} />} /> */}
-                                </Routes>
-                              </Router>
-                            </Vitals.Provider>
-                          </TodayDocs.Provider>
-                        </TodayDate.Provider>
-                      </Clinic.Provider>
-                    </URL.Provider>
-                  </DoctorsList.Provider>
-                </Doctorapi.Provider>
-              </Permissions.Provider>
+              <Secretkey.Provider value={'aartasclinishare'}>
+                <Permissions.Provider value={props.permissions} >
+                  <Doctorapi.Provider value={ConnectDoctorapi}>
+                    <DoctorsList.Provider value={docapi}>
+                      <URL.Provider value={url}>
+                        <Clinic.Provider value={cliniclist}>
+                          <TodayDate.Provider value={APIDate}>
+                            <TodayDocs.Provider value={todayDoc}>
+                              <Vitals.Provider value={vitalslist}>
+                                <Router>
+                                  <Navbar path={path} permissions={props.permissions} username={props.username} designation={props.designation} id={props.id} fetchapi={fetchapi} />
+                                  <Routes>
+                                    <Route path='/' onChange={() => setpath('/')} element={<Doctorsection id={props.id} fetchapi={fetchapi} todayDoc={todayDoc} Loading={Loading} docapi={docapi} />} />
+                                    <Route path='/Appointments' onChange={() => setpath('/Appointments')} element={<Appointments id={props.id} fetchapi={fetchapi} />} />
+                                    <Route path='/Patients' onChange={() => setpath('/Patients')} element={<Patients id={props.id} />} />
+                                    <Route path='/Doctors' onChange={() => setpath('/Doctors')} element={<Doctors id={props.id} docapi={docapi} />} />
+                                    <Route path='/DailySaleReport' onChange={() => setpath('/DailySaleReport')} element={<DailySaleReport id={props.id} cliniclist={cliniclist} docapi={docapi} />} />
+                                    <Route path='/Pharmacy' onChange={() => setpath('/Pharmacy')} element={<Pharmacy id={props.id} />} />
+                                    {/* <Route path='/Files' element={<Exports id={props.id} />} /> */}
+                                  </Routes>
+                                </Router>
+                              </Vitals.Provider>
+                            </TodayDocs.Provider>
+                          </TodayDate.Provider>
+                        </Clinic.Provider>
+                      </URL.Provider>
+                    </DoctorsList.Provider>
+                  </Doctorapi.Provider>
+                </Permissions.Provider>
+              </Secretkey.Provider>
             </>
           ))
       }
@@ -225,6 +224,7 @@ function Switchpage() {
     setlogininput(logindata);
   }
   const localemail = localStorage.getItem("email")
+  const secretkey = 'aartasclinishare'
   async function Submit() {
     setroleId()
     setload(true)
@@ -234,16 +234,14 @@ function Switchpage() {
     }).then((response) => {
       setload(false)
       if (response.data.status === true) {
-        localStorage.setItem('email', logininput.email);
-        localStorage.setItem('name', response.data.data.name);
-        localStorage.setItem('designation', response.data.data.roles.title);
+        localStorage.setItem('email', encrypt(logininput.email, secretkey));
+        localStorage.setItem('name', encrypt(response.data.data.name, secretkey));
+        localStorage.setItem('designation', encrypt(response.data.data.roles.title, secretkey));
         localStorage.setItem('id', response.data.data.id);
         localStorage.setItem('ClinicId', response.data.data.clinic_id)
         localStorage.setItem('roleId', response.data.data.roles.id)
         setroleId()
         Changepage()
-        // window.location.reload(true);
-
       } else {
         Notiflix.Report.failure(
           'Invalid Credentials',
@@ -258,7 +256,7 @@ function Switchpage() {
   let role = localStorage.getItem('roleId')
   async function Permissions() {
     await axios.post(`https://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/api/connect/role/permissions/list`, {
-      role_id: role ?role:1
+      role_id: role ? role : 1
     }).then((response) => {
       console.log(response)
       if (response.data.status === true) {
@@ -280,8 +278,13 @@ function Switchpage() {
   }, [role])
 
   function Changepage() {
+
+
     if (localemail !== null && localemail !== '') {
-      return <Connectapp username={localStorage.getItem('name')} designation={localStorage.getItem('designation')} id={localStorage.getItem('id')} permissions={permissions} />
+      const Username = decrypt(localStorage.getItem('name'), secretkey)
+      const Designation = decrypt(localStorage.getItem('designation'), secretkey)
+      const Id = decrypt(localStorage.getItem('id'), secretkey)
+      return <Connectapp username={Username} designation={Designation} id={Id} permissions={permissions} />
     } else {
       return (
 
@@ -341,7 +344,6 @@ function Switchpage() {
 
   return (
     Changepage()
-
   )
 }
 
@@ -351,4 +353,4 @@ root.render(
 );
 // ReactDOM.render(<Switchpage />, document.getElementById("root"));
 
-export { TodayDate, URL, DoctorsList, Doctorapi, TodayDocs, Vitals, Clinic, Permissions }; 
+export { TodayDate, URL, DoctorsList, Doctorapi, TodayDocs, Vitals, Clinic, Permissions, Secretkey }; 

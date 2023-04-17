@@ -421,7 +421,7 @@ function DoctorSchedule(props) {
                       <button className={`button-sm button-${timeindex == i ? 'charcoal' : 'charcoal-outline'} m-1`} onClick={(e) => { openAddApppointmentform(); settimeindex(i) }} key={i}>{tConvert(data[0])}</button>
                       {
                         timeindex == i ? (
-                          <div className={`d-${timeindex == i ? addappointmentform : 'none'} col-lg-8 col-md-8 col-sm-12 col-12 col-xl-6 shadow quickappointment position-absolute m-auto start-0 end-0 bg-seashell rounded-4 border border-1`} style={{ zIndex: 4, top: '-1rem' }}>
+                          <div className={`d-${timeindex == i ? addappointmentform : 'none'} col-lg-8 col-md-10 col-sm-12 col-12 col-xl-6 shadow quickappointment position-absolute m-auto start-0 end-0 bg-seashell rounded-4 border border-1`} style={{ zIndex: 4, top: '-1rem' }}>
                             <SelectedTimeAppointment fetchapi={props.fetchapi} closeAddAppointmentform={closeAddAppointmentform} DocClinic={props.DocClinic} DoctorID={props.DoctorID} DoctorName={props.DoctorName} timeindex={timeindex} selectedtime={data[0]} selectedtimeID={data[2]} />
                           </div>
                         ) : (

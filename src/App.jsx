@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom"
 import { useState, useEffect, useContext, useRef } from "react"
 import axios from "axios"
+import { encrypt, decrypt } from 'n-krypta'
 import ReactPaginate from 'react-paginate';
 // import { w3cwebsocket as websocket } from 'websocket'
 //Context APIs
-import { URL, TodayDate, DoctorsList, Doctorapi, Permissions } from '../src/index'
+import { URL, TodayDate, DoctorsList, Doctorapi, Permissions, Secretkey } from '../src/index'
 //Components
 import { DoctorSchedule, Timecard } from "./components/Today/Doctor"
 import { Salesection, Purchasesection, Stocksection, Listsection } from "./components/pharmacy/pharmacy"
@@ -63,6 +64,7 @@ function Navbar(props) {
   //     console.log('client closed')
   //   }
   // }
+  const secretkey = useContext(Secretkey)
   const permission = useContext(Permissions)
   console.log(permission)
   const [addoption, setaddoption] = useState("none");
@@ -117,19 +119,19 @@ function Navbar(props) {
   }
 
 
-  function inactivelogout() {
-    window.addEventListener('touchmove', function (e) {
-      let screenx = 0;
-      let screeny = 0;
-      if (e.changedTouches.clientX && e.changedTouches.clientY) {
-        screenx = e.changedTouches.clientX;
-        screeny = e.changedTouches.clientY;
-        console.log(screenx, screeny, true)
-      } else {
-        console.log('false')
-      }
-    })
-  }
+  // function inactivelogout() {
+  //   window.addEventListener('touchmove', function (e) {
+  //     let screenx = 0;
+  //     let screeny = 0;
+  //     if (e.changedTouches.clientX && e.changedTouches.clientY) {
+  //       screenx = e.changedTouches.clientX;
+  //       screeny = e.changedTouches.clientY;
+  //       console.log(screenx, screeny, true)
+  //     } else {
+  //       console.log('false')
+  //     }
+  //   })
+  // }
 
 
   const [logoutbtn, setlogoutbtn] = useState('none');
@@ -282,6 +284,7 @@ function Navbar(props) {
 }
 
 function Doctorsection(props) {
+  const secretkey = useContext(Secretkey)
   const permission = useContext(Permissions)
   const month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December",];
   var weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday",];
@@ -415,11 +418,14 @@ function Doctorsection(props) {
 }
 
 function Appointments(props) {
+  const secretkey = useContext(Secretkey)
   //Global Variables
   const APIDate = useContext(TodayDate)
   const permission = useContext(Permissions)
   const url = useContext(URL)
-  const clinicID = localStorage.getItem('ClinicId')
+  let clinicID = localStorage.getItem('ClinicId')
+  clinicID = decrypt(clinicID, secretkey)
+  console.log(clinicID, secretkey)
   const docnames = useContext(DoctorsList)
   //Appointments use state
   const [doctorid, setdoctorid] = useState()
@@ -649,7 +655,7 @@ function Patients() {
         setpages(Math.round(response.data.data.total_count / 10) + 1)
         setLoading(false)
       }).catch((e) => {
-        Notiflix.Notify.warning(e)
+        Notiflix.Notify.warning(e.message)
         setLoading(false)
       })
     } catch (e) {
@@ -662,7 +668,6 @@ function Patients() {
       setLoading(true)
       setPatientsList()
       await axios.get(`${url}/patient/list?search=${patientsearch ? patientsearch : ''}&limit=10&offset=0`).then((response) => {
-        console.log(response)
         setPatientsList(response.data.data.patients_list)
       })
       setLoading(false)
@@ -1160,7 +1165,7 @@ function Pharmacy() {
     },
     {
       option: "Lists",
-      display: permission.vaccine_view == undefined && permission.medicine_view==undefined ? 0:1,
+      display: permission.vaccine_view == undefined && permission.medicine_view == undefined ? 0 : 1,
     }
 
   ];
