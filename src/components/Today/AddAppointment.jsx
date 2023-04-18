@@ -271,7 +271,7 @@ const AddAppointment = (props) => {
                     ) : (
                         <>
                             <div className="col-6 py-2 pb-2 m-auto text-center">
-                                <button className="btn button button-burntumber px-5" onClick={confirmmessage}> Done </button>
+                                <button className="btn button button-charcoal px-5" onClick={confirmmessage}> Done </button>
                             </div>
                             <div className="col-6 pb-2 m-auto text-center">
                                 <button className="btn btn-light px-5" onClick={resetform}>Reset</button>
