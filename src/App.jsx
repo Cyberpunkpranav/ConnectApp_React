@@ -424,8 +424,6 @@ function Appointments(props) {
   const permission = useContext(Permissions)
   const url = useContext(URL)
   let clinicID = localStorage.getItem('ClinicId')
-  clinicID = decrypt(clinicID, secretkey)
-  console.log(clinicID, secretkey)
   const docnames = useContext(DoctorsList)
   //Appointments use state
   const [doctorid, setdoctorid] = useState()
