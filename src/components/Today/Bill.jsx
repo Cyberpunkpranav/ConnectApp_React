@@ -528,7 +528,7 @@ const Bill = (props) => {
                                 </div>
                             </div>
                         ) : (
-                            <div className="row p-0 m-0">
+                            <div className="row p-0 m-0 text-center">
                                 <div className="col-6 justify-content-center">
                                     <button className='button button-burntumber' onClick={confirmmessage}>Save</button>
                                 </div>

@@ -200,7 +200,6 @@ function Navbar(props) {
 
   return (
     <>
-      <button className='parentclose d-none position-absolute'></button>
       <div className="navsection p-0 m-0 py-1">
         <div className="container-fluid p-0 m-0 ">
           <div className="row m-0 p-0 justify-content-between align-items-center">
@@ -330,7 +329,7 @@ function Doctorsection(props) {
   const [Docval, setDocval] = useState(0)
   return (
     <>
-      <div className="container-fluid doctorsection p-0 m-0 mt-1 ms-1 scroll">
+      <div className="container-fluid doctorsection p-0 m-0 mt-1 ps-1 scroll">
         {/* <div className="container-fluid p-0 m-0 my-2">
           <div className="row m-0 p-0 align-items-center">
             <span className='col-auto livetime text-charcoal fw-bold' style={{ fontSize: '1rem' }}>{currentDate}</span>
@@ -351,6 +350,7 @@ function Doctorsection(props) {
                 <>
                   <div className='col-auto doctors p-0 m-0'>
                     <button key={i} className={` button rounded-1 p-0 m-0 py-1 px-3 btn-sm col-auto shadow-none text-${i === Doctor ? 'light' : 'charcoal75 fw-bolder'} button-${i === Doctor ? "charcoal" : "pearl"} border-${i === Doctor ? 'secondary' : 'none'}`}
+                      style={{ fontSize: '0.9rem' }}
                       autoFocus={i === Doctor ? true : false}
                       onFocus={() => { setDoctorID(data[0]); setDoctorName(data[1]); setDocClinic(data[2]) }}
                       value={`${data[0]}.${data[1]}`} onClick={(a) => { setDoctor(i); }}>{`Dr. ${data[1]}`} </button>
@@ -560,11 +560,11 @@ function Appointments(props) {
                   {
                     options.map((data, index) => (
                       <div className="col-auto">
-                        <button className={`button-sm px-4 rounded-5 border-charcoal position-relative button-${optionsindex == index ? 'charcoal' : 'pearl'}`} key={index} onClick={(e) => { setoptionsindex(index); settype(data[1]) }}>
+                        <button className={`button-sm px-4 rounded-5 border-charcoal mx-1 position-relative button-${optionsindex == index ? 'charcoal' : 'pearl'}`} key={index} onClick={(e) => { setoptionsindex(index); settype(data[1]) }}>
                           {data[0]}
-                          <span class={` d-${optionsindex == index ? '' : 'none'} position-absolute top-0 text-pearl start-100 translate-middle badge rounded-pill bg-burntumber border-burntumber`} style={{ zIndex: '2' }}>
+                          <span class={` d-${optionsindex == index ? '' : 'none'} position-absolute top-0 text-pearl start-100 translate-middle badge fw-normal px-2 rounded-pill bg-burntumber border-burntumber`} style={{ zIndex: '2' }}>
                             {doctorid ? appointmentdata.length : getAppointments.length}
-                            <span class="visually-hidden">unread messages</span>
+                            <span class="visually-hidden"></span>
                           </span>
                         </button>
                       </div>
@@ -576,7 +576,7 @@ function Appointments(props) {
             <div className="col-12 col-sm-12 col-md-4 col-lg-6 col-xl-4 daterange">
               <div className="col-12 mt-3 mb-2">
                 <img src={process.env.PUBLIC_URL + "/images/today.png"} alt="displaying_image" />
-                <span className="daterangetitle">Select Date Range</span>
+                <span className="text-burntumber fw-bold">Select Date Range</span>
                 <button className="float-end button-sm button-burntumber" onClick={clearfields}>Clear</button>
               </div>
               <div className="d-flex g-md-3">
@@ -607,16 +607,15 @@ function Appointments(props) {
             <thead className="text-charcoal75 fw-bold">
               <tr className=" bg-pearl position-sticky top-0">
                 <th className={`d-${permission.appointment_edit == 1 ? '' : 'none'}`}>Update</th>
-                <th className="text-center">Status</th>
-                <th>Patient Name</th>
+                <th className="">Status</th>
+                <th>Patient</th>
                 <th>Doctor Name</th>
-                <th>Phone Number</th>
-                <th>Date</th>
+                {/* <th>Phone Number</th> */}
+                <th>Date & F/U Date</th>
                 <th>Time</th>
-                <th>Total Amount</th>
-                <th className="text-center">Amount Status</th>
+                <th>Amount</th>
                 {/* <th>Rx</th> */}
-                <th>F/U Date</th>
+                {/* <th>F/U Date</th> */}
                 {/* <th>Actions</th> */}
                 <th className=" text-center bg-pearl">More</th>
               </tr>
@@ -1118,7 +1117,7 @@ function DailySaleReport(props) {
                   </div></button></li>
                 <li className="text-center"><button className="dropdown-item border-bottom " >
                   <div className="col-auto p-0 m-0 ">
-                    <select className="bg-pearl text-center bg-transparent border-0  px-2 text-charcoal px-1 py-2 py-md-1" value={doctorid ? doctorid : ''} onChange={(e) => setdoctorid(e.target.value)}>
+                    <select className="bg-pearl text-center bg-transparent border-0 text-charcoal px-1 py-2 py-md-1" value={doctorid ? doctorid : ''} onChange={(e) => setdoctorid(e.target.value)}>
                       <option value='Doctors'>Doctor</option>
                       {
                         Doctors.map((data) => (

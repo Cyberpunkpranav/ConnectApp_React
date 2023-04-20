@@ -402,14 +402,14 @@ function DoctorSchedule(props) {
     <>
       <section id="doctorscheduledata">
         <section className="timeslotsection">
-          <div className="container-fluid p-0 m-0 ms-1 ">
+          <div className="container-fluid p-0 m-0 ps-1 ">
             <div className="row p-0 m-0">
               <div className=" col-12 p-0 m-0 align-items-center">
-                <div className="d-flex align-items-center p-0 m-0 mt-3 mb-2">
+                <div className="row align-items-center p-0 m-0 mt-3 mb-2">
                   <div className="col-auto">
                     <h6 className="p-0 m-0 ms-1 text-charcoal fw-bolder">Time Slots Avaliable</h6>
                   </div>
-                  <div className="col-2 ms-2">
+                  <div className="col-2 ps-2">
                     <button className="btn m-0 p-0">
                       <img src={process.env.PUBLIC_URL + "/images/addicon.png"} style={{ width: "1.5rem" }} alt="displaying_image" onClick={OpenAddQuickSlots} />
                     </button>
@@ -425,7 +425,7 @@ function DoctorSchedule(props) {
                 props.todayDoc[props._selected][3].map((data, i) => (
                   data[1] == 0 ? (
                     <>
-                      <button className={`button-sm button-${timeindex == i ? 'charcoal' : 'charcoal-outline'} m-1 px-2 py-1 rounded-1`} onClick={(e) => { openAddApppointmentform(); settimeindex(i) }} key={i}>{tConvert(data[0])}</button>
+                      <button className={`button-sm button-${timeindex == i ? 'charcoal' : 'charcoal-outline'} m-1 px-3 py-2 fw-bold rounded-1`} style={{ letterSpacing: '1px' }} onClick={(e) => { openAddApppointmentform(); settimeindex(i) }} key={i}>{tConvert(data[0])}</button>
                       {
                         timeindex == i ? (
                           <div className={`d-${timeindex == i ? addappointmentform : 'none'} col-lg-8 col-md-10 col-sm-12 col-12 col-xl-6 shadow quickappointment position-absolute m-auto start-0 end-0 bg-seashell rounded-4 border border-1`} style={{ zIndex: 4, top: '-3rem' }}>
@@ -438,7 +438,7 @@ function DoctorSchedule(props) {
 
                     </>
                   ) : (
-                    <button disabled className="button button-sm button-charcoal50-outline m-1 px-2 py-1 rounded-1" key={i}>{tConvert(data[0])}</button>
+                    <button disabled className=" button-sm button-charcoal50-outline m-1 px-3 py-2 rounded-1 fw-bold" key={i} style={{ letterSpacing: '1px' }}>{tConvert(data[0])}</button>
                   )
 
                 ))
@@ -452,13 +452,13 @@ function DoctorSchedule(props) {
           <div className="col-auto m-0 p-0 align-items-center">
             <h6 className="p-0 ms-1 text-charcoal fw-bold mt-3 mb-2">Appointments</h6>
           </div>
-          <div className=" scroll scroll-y align-content-center align-items-center" style={{ minHeight: '50vh', maxHeight: '50vh', Height: '50vh' }}>
+          <div className=" scroll scroll-y align-content-center align-items-center" style={{ minHeight: '60vh', maxHeight: '60vh', Height: '60vh' }}>
             <table className="table datatable text-start">
               <thead className="p-0 m-0 px-2 bg-pearl" style={{ 'zIndex': '4' }}>
-                <tr className="p-0 m-0 position-sticky top-0" style={{ fontSize: '0.75rem' }}>
+                <tr className="p-0 m-0 position-sticky text-charcoal75 top-0" style={{ fontSize: '0.75rem' }}>
                   <th className="border-0 bg-pearl text-center" key={0}>Update</th>
                   <th className="border-0 bg-pearl text-start" key={3}>Time</th>
-                  <th className="border-0 bg-pearl" key={2}>Patient Name</th>
+                  <th className="border-0 bg-pearl" key={2}>Patient</th>
                   <th className="border-0 bg-pearl text-start" key={1}>Status</th>
                   <th className="border-0 bg-pearl" key={4}> Amount</th>
                   {/* <th className="border-0 bg-pearl" key={5}>Amount Status</th> */}
@@ -494,7 +494,7 @@ function DoctorSchedule(props) {
                             <td className="py-0 text-start fw-bold" style={{ letterSpacing: '1px' }}>{tConvert(data.timeslot.time_from)}</td>
                             <td className="py-0 ">
                               <div className="row p-0 m-0" style={{ width: 'fit-content' }}>
-                                <div className="col-12 p-0 m-0">
+                                <div className="col-12 p-0 m-0 fw-bold">
                                   {data.patient ? data.patient.full_name !== null ? data.patient.full_name : 'N/A' : 'N/A'}
                                 </div>
                                 <div className="col-auto p-0 m-0 text-burntumber fw-bold" style={{ fontSize: '0.75rem', letterSpacing: '1px' }}>
@@ -508,9 +508,9 @@ function DoctorSchedule(props) {
                                 <div className="col-1 p-0 m-0 me-2">
                                   <div className={`rounded-circle border-1 button-${status_color(data.appointment_status)}`} style={{ height: '12px', width: '12px' }}></div>
                                 </div>
-                                <div className="col-4 p-0 m-0">
-                                  <select disabled={permission.appointment_edit == 1 ? false : true} className={`bg-transparent border-0 text-start `} style={{ fontSize: '0.75rem' }} name={data.id} onChange={(e) => { UpadteStatus(e) }}>
-                                    <option className="" selected disabled>{status(data.appointment_status)}</option>
+                                <div className="col-auto p-0 m-0">
+                                  <select disabled={permission.appointment_edit == 1 ? false : true} className={`bg-transparent border-0 text-start fw-bold `} style={{ fontSize: '0.75rem' }} name={data.id} onChange={(e) => { UpadteStatus(e) }}>
+                                    <option className="fw-bold" selected disabled>{status(data.appointment_status)}</option>
                                     <option key={0} className="button-lightred" value='1'>Pending</option>
                                     <option key={1} className="button-lightblue" value='2'>Booked</option>
                                     <option key={2} className="button-lightred" value='3'>Cancelled</option>
@@ -561,7 +561,7 @@ function DoctorSchedule(props) {
                             </div></td>
                             {
                               tableindex === i ? (
-                                <td className={`updateappointment shadow-sm border border-1 rounded-1 bg-seashell mt-2 start-0 end-0 top-0 col-lg-8 col-md-10 col-sm-12 col-12 col-xl-5 d-${tableindex == i ? appointmentform : 'none'} position-absolute`}>
+                                <td className={`updateappointment shadow-sm border border-1 rounded-1 bg-seashell mt-2 start-0 end-0 top-0 col-lg-8 col-md-10 col-sm-12 col-12 col-xl-5 d-${tableindex == i ? appointmentform : 'none'} position-absolute`} style={{width:'fit-content'}}>
                                   <UpdateAppointment fetchapi={props.fetchapi} fetchallAppointmentslist={props.fetchallAppointmentslist} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} patientid={data.patient != null && data.patient.id != null ? data.patient.id : ""} appointmentid={data.id} addappointmentform={addappointmentform} closeappointmentform={closeappointmentform} doctorid={props.doctorid} appointmentdoctorid={data.doctor.id} appointmentdate={data.appointment_date} appointmenttime={tConvert(data.timeslot.time_from)} /></td>
                               ) : (<></>)
                             }

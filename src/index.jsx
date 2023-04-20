@@ -114,77 +114,75 @@ function Connectapp(props) {
   }
   console.log(props.permissions)
   return (
-    <div className='bg-pearl' style={{ height: '100vh' }}>
-      {
-        isWelcomeLoading == 0 ? (
-          <>
-            <WelcomeLoader />
-          </>
-        ) : (
-          ClinicId == 'null' ? (
-            <div className='position-relative'>
-              <div className='bg_a'>
-                <img src={process.env.PUBLIC_URL + "/images/a.png"} alt='image' className='img-fluid' />
-              </div>
-              <div className=' Clinicslist position-absolute top-0 text-charcoal'>
-                <img src={process.env.PUBLIC_URL + "/images/logo.png"} alt='image' className='img-fluid logo p-0 m-0 start-0 top-0' /><span className=''>aartas | Connect App</span>
-                <h4 className=''>Select Clinic</h4>
-                <div className='container-fluid clinics'>
-                  <div className="row p-0 m-0 ">
-                    <div className="col-lg-10 col-12">
-                      {
-                        cliniclist.map((data, i) => (
-                          <div div className=' text-start mx-auto  '>
-                            <label className=''><input type="checkbox" className="radio form-check-input me-1" checked={ischecked === i ? true : false} name={data.id} onClick={(e) => { setclinicid(e.target.name); setischecked(i); }} /> {data.title} {data.address}</label>
-                            <br /></div>
-                        ))
-                      }
-                    </div>
-                    <div className="col-lg-2 col-12 mt-lg-0 mt-md-0 mt-sm-0 mt-2 ">
-                      <button className='button button-seashell' disabled={clinicid == undefined ? true : false} onClick={Gomain}><img className='img-fluid' style={{ width: '1.5rem' }} src={process.env.PUBLIC_URL + '/images/right-arrow.png'} /></button>
-                    </div>
-                  </div>
-
+    
+    isWelcomeLoading == 0 ? (
+      <>
+        <WelcomeLoader />
+      </>
+    ) : (
+      ClinicId == 'null' ? (
+        <div className='position-relative'>
+          <div className='bg_a'>
+            <img src={process.env.PUBLIC_URL + "/images/a.png"} alt='image' className='img-fluid' />
+          </div>
+          <div className=' Clinicslist position-absolute top-0 text-charcoal'>
+            <img src={process.env.PUBLIC_URL + "/images/logo.png"} alt='image' className='img-fluid logo p-0 m-0 start-0 top-0' /><span className=''>aartas | Connect App</span>
+            <h4 className=''>Select Clinic</h4>
+            <div className='container-fluid clinics'>
+              <div className="row p-0 m-0 ">
+                <div className="col-lg-10 col-12">
+                  {
+                    cliniclist.map((data, i) => (
+                      <div div className=' text-start mx-auto  '>
+                        <label className=''><input type="checkbox" className="radio form-check-input me-1" checked={ischecked === i ? true : false} name={data.id} onClick={(e) => { setclinicid(e.target.name); setischecked(i); }} /> {data.title} {data.address}</label>
+                        <br /></div>
+                    ))
+                  }
+                </div>
+                <div className="col-lg-2 col-12 mt-lg-0 mt-md-0 mt-sm-0 mt-2 ">
+                  <button className='button button-seashell' disabled={clinicid == undefined ? true : false} onClick={Gomain}><img className='img-fluid' style={{ width: '1.5rem' }} src={process.env.PUBLIC_URL + '/images/right-arrow.png'} /></button>
                 </div>
               </div>
-            </div>
 
-          ) : (
-            <>
-              <Secretkey.Provider value={'aartasclinishare'}>
-                <Permissions.Provider value={props.permissions} >
-                  <Doctorapi.Provider value={ConnectDoctorapi}>
-                    <DoctorsList.Provider value={docapi}>
-                      <URL.Provider value={url}>
-                        <Clinic.Provider value={cliniclist}>
-                          <TodayDate.Provider value={APIDate}>
-                            <TodayDocs.Provider value={todayDoc}>
-                              <Vitals.Provider value={vitalslist}>
-                                <Router>
-                                  <Navbar path={path} permissions={props.permissions} username={props.username} designation={props.designation} id={props.id} fetchapi={fetchapi} />
-                                  <Routes>
-                                    <Route path='/' onChange={() => setpath('/')} element={<Doctorsection id={props.id} fetchapi={fetchapi} todayDoc={todayDoc} Loading={Loading} docapi={docapi} />} />
-                                    <Route path='/Appointments' onChange={() => setpath('/Appointments')} element={<Appointments id={props.id} fetchapi={fetchapi} />} />
-                                    <Route path='/Patients' onChange={() => setpath('/Patients')} element={<Patients id={props.id} />} />
-                                    <Route path='/Doctors' onChange={() => setpath('/Doctors')} element={<Doctors id={props.id} docapi={docapi} />} />
-                                    <Route path='/DailySaleReport' onChange={() => setpath('/DailySaleReport')} element={<DailySaleReport id={props.id} cliniclist={cliniclist} docapi={docapi} />} />
-                                    <Route path='/Pharmacy' onChange={() => setpath('/Pharmacy')} element={<Pharmacy id={props.id} />} />
-                                    {/* <Route path='/Files' element={<Exports id={props.id} />} /> */}
-                                  </Routes>
-                                </Router>
-                              </Vitals.Provider>
-                            </TodayDocs.Provider>
-                          </TodayDate.Provider>
-                        </Clinic.Provider>
-                      </URL.Provider>
-                    </DoctorsList.Provider>
-                  </Doctorapi.Provider>
-                </Permissions.Provider>
-              </Secretkey.Provider>
-            </>
-          ))
-      }
-    </div>
+            </div>
+          </div>
+        </div>
+
+      ) : (
+        <>
+          <Secretkey.Provider value={'aartasclinishare'}>
+            <Permissions.Provider value={props.permissions} >
+              <Doctorapi.Provider value={ConnectDoctorapi}>
+                <DoctorsList.Provider value={docapi}>
+                  <URL.Provider value={url}>
+                    <Clinic.Provider value={cliniclist}>
+                      <TodayDate.Provider value={APIDate}>
+                        <TodayDocs.Provider value={todayDoc}>
+                          <Vitals.Provider value={vitalslist}>
+                            <Router>
+                              <Navbar path={path} permissions={props.permissions} username={props.username} designation={props.designation} id={props.id} fetchapi={fetchapi} />
+                              <Routes>
+                                <Route path='/' onChange={() => setpath('/')} element={<Doctorsection id={props.id} fetchapi={fetchapi} todayDoc={todayDoc} Loading={Loading} docapi={docapi} />} />
+                                <Route path='/Appointments' onChange={() => setpath('/Appointments')} element={<Appointments id={props.id} fetchapi={fetchapi} />} />
+                                <Route path='/Patients' onChange={() => setpath('/Patients')} element={<Patients id={props.id} />} />
+                                <Route path='/Doctors' onChange={() => setpath('/Doctors')} element={<Doctors id={props.id} docapi={docapi} />} />
+                                <Route path='/DailySaleReport' onChange={() => setpath('/DailySaleReport')} element={<DailySaleReport id={props.id} cliniclist={cliniclist} docapi={docapi} />} />
+                                <Route path='/Pharmacy' onChange={() => setpath('/Pharmacy')} element={<Pharmacy id={props.id} />} />
+                                {/* <Route path='/Files' element={<Exports id={props.id} />} /> */}
+                              </Routes>
+                            </Router>
+                          </Vitals.Provider>
+                        </TodayDocs.Provider>
+                      </TodayDate.Provider>
+                    </Clinic.Provider>
+                  </URL.Provider>
+                </DoctorsList.Provider>
+              </Doctorapi.Provider>
+            </Permissions.Provider>
+          </Secretkey.Provider>
+        </>
+      ))
+
   );
 }
 

@@ -94,8 +94,6 @@ const UpdateAppointment = (props) => {
         e.preventDefault()
         settime(e.target.value)
     }
-
-
     async function getTimeslots(e) {
         setdoctorid(e.target.value)
         dateref.current.value = '';
@@ -108,8 +106,6 @@ const UpdateAppointment = (props) => {
         }
         setApikeyDocTimeslots(Timeslots)
     }
-
-
     async function getTimefrom(e) {
         setApiDocTimefrom([])
         let timefrom = []
@@ -204,21 +200,27 @@ const UpdateAppointment = (props) => {
             <h5 className="text-center">Update {props.patientname} Appointment Details</h5>
             <button type="button" className="btn-close closebtn position-absolute top-0" aria-label="Close" disabled={load == true ? true : false} onClick={props.closeappointmentform} ></button>
             <hr className='p-0 m-0' />
-            <div className="col-12">
-                <div className="col-12 clinics bg-seashell align-self-center border-0" >
+            <div className="col-12 ps-1">
+                <div className="col-12 clinics bg-seashell align-self-center border-0 ps-2" >
                     {
                         cliniclist.map((data, i) => (
-                            <label key={i} className={`d-${clinicID == data.id ? 'block' : 'none'} `}>
-                                <img src={process.env.PUBLIC_URL + '/images/location.png'} style={{ width: '1.5rem' }} /> {data.title} {data.address}</label>
-
+                            <div key={i} className={`d-${clinicID == data.id ? 'block' : 'none'} `}>
+                                <div className="row p-0 m-0 align-items-end">
+                                    <div className="col-auto p-0 m-0 me-1">
+                                        <img src={process.env.PUBLIC_URL + '/images/location.png'} style={{ width: '1.5rem' }} />
+                                    </div>
+                                    <div className="col-auto p-0 m-0 fw-bold" style={{ letterSpacing: '1px' }}>
+                                        {data.title} {data.address}
+                                    </div>
+                                </div></div>
                         ))
                     }
                 </div>
-                <div className="row p-0 m-0 ms-5 mt-1">
+                <div className="row p-0 m-0 mt-2 pe-2">
                     <div className="col-md-4 col-4 ">
-                        <label>Selected Doctor</label>
+                        <label className="fw-bold" style={{ letterSpacing: '1px' }}>Selected Doctor</label>
                         <div className="col-12">
-                            <select className="col-10 form-control button-charcoal-outline" ref={docref} onChange={getTimeslots}>
+                            <select className="col-10 form-control button-charcoal-outline rounded-1" ref={docref} onChange={getTimeslots}>
                                 <option defaultValue="Select Doctor" >Select Doctor</option>
                                 {
                                     TodayDoctors ? (
@@ -226,23 +228,20 @@ const UpdateAppointment = (props) => {
                                             <option className={` text-${HighlightOptions(data[0]) ? 'pearl' : HighlightOptions(data[0])} bg-${HighlightOptions(data[0]) ? HighlightOptions(data[0]) : 'seashell'}`} name={HighlightOptions(data[0]) ? 'Currently Avaliable' : ''} selected={data[0] === props.appointmentdoctorid ? true : false} value={data[0]}>{data[0]}.{data[1]} {Avaliablemessage(data[0])}</option>
                                         ))
                                     ) : (
-                                        <div>Loading</div>
+                                        <div>Loading...</div>
                                     )
-
-
-
                                 }
                             </select>
                         </div>
                     </div>
                     <div className="col-md-auto col-4 m-0 p-0">
-                        <label className="">Selected Date</label>
+                        <label className="fw-bold" style={{ letterSpacing: '1px' }}>Selected Date</label>
                         <div className="col-12">
-                            <input type="date" ref={dateref} className="form-control border-charcoal bg-seashell" onChange={getTimefrom} />
+                            <input type="date" ref={dateref} className="form-control border-charcoal bg-seashell  rounded-1" onChange={getTimefrom} />
                         </div>
                     </div>
                     <div className="col-md-3 col-lg-3 col-4">
-                        <label className='text-charcoal50'>Selected Time</label>
+                        <label className="fw-bold text-charcoal50" style={{ letterSpacing: '1px' }}>Selected Time</label>
                         <div className="col-12">
                             <button className='button button-charcoal50 shadow-none' disabled >{props.appointmenttime}</button>
                         </div>
@@ -250,16 +249,16 @@ const UpdateAppointment = (props) => {
                     </div>
                 </div>
 
-                <p className="m-0 mb-md-2 mt-2">Select another Time Slot</p>
-                <div className="scroll align-items-center justify-content-around col-12">
+                <p className="m-0 p-0 mb-md-2 mt-2 ps-2 fw-bold" style={{ letterSpacing: '1px' }}>Select another Time Slot</p>
+                <div className="scroll align-items-center justify-content-around col-12 ms-2">
                     {ApiDocTimefrom ? (
                         <>
                             {
                                 ApiDocTimefrom.map((data, key) => (
                                     data[2] == 0 ? (
-                                        <button className={`button-sm button-${timeindex == key ? 'charcoal' : 'charcoal-outline'}  m-1`} id={key} value={data[0]} onClick={(e) => { gettime_value(e); settimeindex(key) }}>{tConvert(data[1])}</button>
+                                        <button style={{ letterSpacing: '1px' }} className={`button-sm button-${timeindex == key ? 'charcoal' : 'charcoal-outline'} rounded-1 px-3 py-2 fw-bold  m-1`} id={key} value={data[0]} onClick={(e) => { gettime_value(e); settimeindex(key) }}>{tConvert(data[1])}</button>
                                     ) : (
-                                        <button disabled className="button-sm button-charcoa50 m-1" id={key} value={data[0]}>{tConvert(data[1])}</button>
+                                        <button style={{ letterSpacing: '1px' }} disabled className="button-sm button-charcoa50 px-3 py-2 fw-bold m-1 rounded-1" id={key} value={data[0]}>{tConvert(data[1])}</button>
                                     )
                                 ))
                             }
@@ -282,11 +281,11 @@ const UpdateAppointment = (props) => {
                         </div>
                     ) : (
                         <>
-                            <div className="col-6 py-2 pb-2 m-auto text-center">
-                                <button className='btn px-5 button-charcoal' onClick={confirmmessage}>Done</button>
+                            <div className="col-auto py-2 pb-2 m-auto text-center">
+                                <button className='btn button-charcoal' onClick={confirmmessage}>Done</button>
                             </div>
-                            <div className="col-6 py-2 pb-2 m-auto text-center">
-                                <button className="btn btn-light px-5" onClick={getCurrentTimeslots}>Set Previous</button>
+                            <div className="col-auto py-2 pb-2 m-auto text-center">
+                                <button className="btn btn-light" onClick={getCurrentTimeslots}>Set Previous</button>
                             </div>
                         </>
                     )

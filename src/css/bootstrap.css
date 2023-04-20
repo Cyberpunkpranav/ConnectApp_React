@@ -19,7 +19,7 @@ img{
     width:1.3rem !important;
 }
 span{
-    font-size: 0.75rem !important;
+    font-size: 0.85rem !important;
 }
 h6{
     font-size: 0.85rem !important;
@@ -52,13 +52,15 @@ font-size: 0.75rem !important;
 input{
     font-size: 0.75rem !important; 
 }
+label{
+    font-size: 0.75rem !important;    
+}
 .dropdown-toggle::after {
     content: none;
 }
 input[type='date']{
  -webkit-appearance:none ;
  font-size: 0.75rem !important; 
- 
 }
 input[type='text']{
     -webkit-appearance:none ; 

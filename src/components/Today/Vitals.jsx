@@ -130,7 +130,9 @@ const Vitalsoperation = (props) => {
         ) : (
           props.appointmentvitalslist.length == 0 ? (
             <>
-              <div className='bg-lightred p-2 mb-2 text-center align-items-center '><h6 className='text-center text-charcoal-75 fw-bold mb-0'>No Vitals Added</h6></div>
+              <div className='bg-lightred p-2 mb-2 text-center align-items-center '>
+                <h6 className='text-center text-charcoal-75 fw-bold mb-0'>No Vitals Added</h6>
+                </div>
             </>
           ) : (
             props.appointmentvitalslist.map((data, i) => (
@@ -194,7 +196,7 @@ const Vitalsoperation = (props) => {
           ) : (
             <div className="row p-0 m-0 justify-content-center mt-2">
               <div className="col-4 p-0 m-0">
-                <select className='  border-0 text-center bg-seashell' value={vitalid ? vitalid : ''} onChange={(e) => { setvitalid(e.target.value) }}>
+                <select className='  border-0 text-end bg-seashell' value={vitalid ? vitalid : ''} onChange={(e) => { setvitalid(e.target.value) }}>
                   <option>Select Vitals</option>
                   {
                     vitals.map((data) => (
@@ -236,7 +238,10 @@ const Vitalsoperation = (props) => {
 
 
       </div>
-      <button className='button button-charcoal' onClick={props.CloseVitals}>Done</button>
+      <div className="container text-center">
+      <button className='button button-charcoal mx-auto' onClick={props.CloseVitals}>Done</button>
+      </div>
+
     </div>
   )
 }
