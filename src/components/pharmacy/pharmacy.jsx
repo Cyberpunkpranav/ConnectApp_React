@@ -51,7 +51,7 @@ function Salesection(props) {
                   first.map((e, i) => {
                     return (
                       <div className={`col-auto salebuttons d-${e.display == 1 ? '' : 'none'}`}>
-                        <button className={`btn btn-sm px-4 rounded-5 text-${i === second ? "light" : "dark"} bg-${i === second ? "charcoal" : "seashell"}`} onClick={(a) => setSecond(i)} >{e.option}</button>
+                        <button className={`btn btn-sm rounded-pill text-${i === second ? "light" : "dark"} bg-${i === second ? "charcoal" : "seashell"}`} onClick={(a) => setSecond(i)} >{e.option}</button>
                       </div>
                     )
                   }
@@ -299,17 +299,17 @@ function Saleentrysection(props) {
           <button type='button' className="btn p-0 m-0 heading text-charcoal fw-bolder  " style={{ width: 'fit-content' }}>{pagecount}  {pagecount > 0 ? 'Sale Entries' : 'Sale Entry'} </button>
         </div>
         <div className="col-lg-8 col-md-8 col-7  p-0 m-0  border-0">
-          <div className="row p-0 m-0 border-burntumber fw-bolder rounded-2">
-            {/* <div className="col-4 bg-pearl rounded-2">
+          <div className="row p-0 m-0 border-burntumber fw-bolder rounded-1">
+            {/* <div className="col-4 bg-pearl rounded-1">
               <select className='p-0 m-0 bg-pearl border-0 text-burntumber fw-bolder' value={channel ? channel : ''} onChange={(e) => { setchannel(e.target.value) }}>
                 <option className='border-0 text-burntumber fw-bolder' value='1'>Pharmacy</option>
                 <option className='border-0 text-burntumber fw-bolder' value='2'>Consumables</option>
               </select>
             </div> */}
-            <div className="col-6 p-0 m-0 text-burntumber text-center fw-bolder bg-pearl  rounded-2 ">
+            <div className="col-6 p-0 m-0 text-burntumber text-center fw-bolder bg-pearl  rounded-1 ">
               <input type='date' placeholder='fromdate' className='p-0 m-0 border-0 bg-pearl text-burntumber text-center fw-bolder ' value={fromdate ? fromdate : currentDate ? currentDate : ''} onChange={(e) => { setfromdate(e.target.value) }} />
             </div>
-            <div className="col-6 p-0 m-0  text-burntumber text-center fw-bolder bg-pearl rounded-2">
+            <div className="col-6 p-0 m-0  text-burntumber text-center fw-bolder bg-pearl rounded-1">
               <input type='date' className=' p-0 m-0 border-0 bg-pearl text-burntumber text-center fw-bolder' value={todate ? todate : fromdate ? fromdate : currentDate ? currentDate : ''} onChange={(e) => { settodate(e.target.value) }} />
             </div>
           </div>
@@ -432,7 +432,7 @@ function Saleentrysection(props) {
           onPageChange={GETSalesList}
           containerClassName={'pagination scroll align-self-center align-items-center'}
           pageClassName={'page-item text-charcoal'}
-          pageLinkClassName={'page-link text-decoration-none text-charcoal border-charcoal rounded-2 mx-1'}
+          pageLinkClassName={'page-link text-decoration-none text-charcoal border-charcoal rounded-1 mx-1'}
           previousClassName={'btn button-charcoal-outline me-2'}
           previousLinkClassName={'text-decoration-none text-charcoal'}
           nextClassName={'btn button-charcoal-outline ms-2'}
@@ -730,7 +730,7 @@ function SEitemdetailssection(props) {
       </div>
 
       <div className="row p-0 m-0 justify-content-between">
-        <div className="col-auto ms-2 mb-2 text-burntumber rounded-2 fw-bolder bg-pearl" >
+        <div className="col-auto ms-2 mb-2 text-burntumber rounded-1 fw-bolder bg-pearl" >
           <p className='text-charcoal p-0 m-0 ms-1 text-start'>Grand Total</p>
           <hr className='p-0 m-0' />
           <h5 className='text-charcoal p-0 m-0 fw-bold text-start ms-1'>{props.saleentryarr.grand_total ? props.saleentryarr.grand_total : 0}</h5>
@@ -995,11 +995,11 @@ function SaleReturns() {
             <button type='button' className="btn p-0 m-0 heading text-charcoal fw-bolder  " style={{ width: 'fit-content' }}>{pagecount}  {pagecount > 0 ? 'Sale Returns' : 'Sale Return'} </button>
           </div>
           <div className="col-lg-8 col-md-8 col-7  p-0 m-0  border-0 ">
-            <div className="row p-0 m-0 border-burntumber fw-bolder rounded-2 text-center justify-content-center ">
-              <div className="col-6 p-0 m-0 text-burntumber text-center fw-bolder bg-pearl  rounded-2 ">
+            <div className="row p-0 m-0 border-burntumber fw-bolder rounded-1 text-center justify-content-center ">
+              <div className="col-6 p-0 m-0 text-burntumber text-center fw-bolder bg-pearl  rounded-1 ">
                 <input type='date' placeholder='fromdate' className='p-0 m-0 border-0 bg-pearl text-burntumber text-center fw-bolder ' value={fromdate ? fromdate : currentDate ? currentDate : ''} onChange={(e) => { setfromdate(e.target.value) }} />
               </div>
-              <div className="col-6 p-0 m-0 text-burntumber bg-pearl fw-bolder rounded-2">
+              <div className="col-6 p-0 m-0 text-burntumber bg-pearl fw-bolder rounded-1">
                 <input type='date' className='p-0 m-0 border-0 text-burntumber fw-bolder bg-pearl' placeholder='todate' value={todate ? todate : fromdate ? fromdate : currentDate ? currentDate : ''} onChange={(e) => { settodate(e.target.value) }} />
               </div>
             </div>
@@ -1086,7 +1086,7 @@ function SaleReturns() {
             onPageChange={GETSaleReturns}
             containerClassName={'pagination'}
             pageClassName={'page-item text-charcoal'}
-            pageLinkClassName={'page-link text-decoration-none text-charcoal border-charcoal rounded-2 mx-1'}
+            pageLinkClassName={'page-link text-decoration-none text-charcoal border-charcoal rounded-1 mx-1'}
             previousClassName={'btn button-charcoal-outline me-2'}
             previousLinkClassName={'text-decoration-none text-charcoal'}
             nextClassName={'btn button-charcoal-outline ms-2'}
@@ -1464,7 +1464,7 @@ function SaleEntryForm(props) {
         <div className=" form-switch justify-content-center position-relative">
           <label className="form-check-label text-charcoal fw-bolder" for="flexSwitchCheckDefault">Deliver to Customer</label>
           <input className="form-check-input ms-2 outline-none text-center" type="checkbox" role="switch" id="flexSwitchCheckDefault" checked={Dc == 1 ? true : false} onChange={() => { DC() }} />
-          <div className={`d-${addressform} position-absolute start-0 end-0 m-5 mt-0 top-0 bg-pearl shadow rounded-2 `} style={{ zIndex: 2 }} ref={patientaddref}>
+          <div className={`d-${addressform} position-absolute start-0 end-0 m-5 mt-0 top-0 bg-pearl shadow rounded-1 `} style={{ zIndex: 2 }} ref={patientaddref}>
             <div className='p-0 m-0 position-relative text-wrap'>
               <button className='btn btn-close position-absolute end-0 p-1 m-1' onClick={() => { addressid ? setaddressform('none') : setaddressform('none') }}></button>
               {
@@ -1494,7 +1494,7 @@ function SaleEntryForm(props) {
         <div className="col-4">
           <label className="m-0">Search Using Phone or Name</label>
           <input type="text" className="form-control bg-seashell selectpatient col-10 position-relative" placeholder='Search for Patients' value={searchinput ? searchinput : ''} onFocus={() => setsearchload(true)} onChange={searchpatient} />
-          <div className={`col-auto d-${displaysearchlist} text-decoration-none searchinput position-absolute rounded-2 shadow bg-pearl px-2`} style={{ width: 'max-content', zIndex: '2' }}>
+          <div className={`col-auto d-${displaysearchlist} text-decoration-none searchinput position-absolute rounded-1 shadow bg-pearl px-2`} style={{ width: 'max-content', zIndex: '2' }}>
             {
               searchload == true || searchinput == undefined ? (
                 <p className="btn text-charcoal75 fs-6 p-0 m-0 ps-1">Loading... </p>
@@ -1554,18 +1554,18 @@ function SaleEntryForm(props) {
                   setproducts();
                   stockref.current.style.display = 'none'
                 }} />
-              <div ref={medicinesref} className='position-absolute rounded-2 mt-1' style={{ Width: 'max-content', zIndex: '1' }} >
+              <div ref={medicinesref} className='position-absolute rounded-1 mt-1' style={{ Width: 'max-content', zIndex: '1' }} >
                 {
                   itemsearch ? (
                     loadsearch ? (
-                      <div className='rounded-2 p-1 bg-pearl'>
+                      <div className='rounded-1 p-1 bg-pearl'>
                         Searching Please wait....
                         <div className="spinner-border my-auto" style={{ width: "1rem", height: "1rem" }} role="status" >
                           <span className="sr-only"> </span> </div>
                       </div>
                     ) : (
                       loadsearch == false && itemsearch.length == 0 ? (
-                        <div className="bg-burntumber text-light rounded-2 p-1">Oops! Not Avaliable</div>
+                        <div className="bg-burntumber text-light rounded-1 p-1">Oops! Not Avaliable</div>
                       ) : (
                         <div className={`rounded-4 border border-1 bg-pearl p-1 d-${itemsearch && itemsearch.length > 0 ? 'block' : 'none'}`}>
                           <p className={`text-start p-0 m-0 m-1 fw-bold text-charcoal75 ms-2`} style={{ fontSize: '0.8rem' }}>{itemsearch.length} Search Results</p>
@@ -1619,19 +1619,19 @@ function SaleEntryForm(props) {
               OR
             </div>
             <div className="col-4 ">
-              <input className='form-control bg-seashell border border-1 rounded-2' value={itemid ? itemid : ''} placeholder='Search Product by ID' onChange={(e) => { searchmedbyId(e.target.value); setitemid(e.target.value); medbyidref.current.style.display = 'block' }} />
-              <div ref={medbyidref} className='position-absolute rounded-2 mt-1' style={{ Width: 'max-content', zIndex: '2' }} >
+              <input className='form-control bg-seashell border border-1 rounded-1' value={itemid ? itemid : ''} placeholder='Search Product by ID' onChange={(e) => { searchmedbyId(e.target.value); setitemid(e.target.value); medbyidref.current.style.display = 'block' }} />
+              <div ref={medbyidref} className='position-absolute rounded-1 mt-1' style={{ Width: 'max-content', zIndex: '2' }} >
                 {
                   itembyid ? (
                     loadbyId ? (
-                      <div className='rounded-2 p-1 bg-pearl'>
+                      <div className='rounded-1 p-1 bg-pearl'>
                         Searching Please wait....
                         <div className="spinner-border my-auto" style={{ width: "1rem", height: "1rem" }} role="status" >
                           <span className="sr-only"> </span> </div>
                       </div>
                     ) : (
                       loadbyId == false && itembyid.length == 0 ? (
-                        <div className="bg-burntumber text-light rounded-2 p-1">Oops! Not Avaliable</div>
+                        <div className="bg-burntumber text-light rounded-1 p-1">Oops! Not Avaliable</div>
                       ) : (
                         itembyid.map((data, i) => (
                           <div style={{ cursor: 'pointer', Width: 'max-content' }} className={`p-0 p-1 rounded-pill shadow bg-${((i % 2) == 0) ? 'pearl' : 'seashell'} fs-6 `}
@@ -1944,18 +1944,18 @@ function NewSaleReturnentryform(props) {
                     billid ? setitemname(e.target.value) : Notiflix.Notify.failure('Please Add Bill id First');
                     medicinesref.current.style.display = 'block';
                   }} />
-                <div ref={medicinesref} className='position-absolute rounded-2 bg-pearl col-12' style={{ zIndex: '1' }}>
+                <div ref={medicinesref} className='position-absolute rounded-1 bg-pearl col-12' style={{ zIndex: '1' }}>
                   {
                     billsearch ? (
                       loadbills ? (
-                        <div className='rounded-2 p-1'>
+                        <div className='rounded-1 p-1'>
                           Searching Please wait....
                           <div className="spinner-border my-auto" style={{ width: "1rem", height: "1rem" }} role="status" >
                             <span className="sr-only"> </span> </div>
                         </div>
                       ) : (
                         billsearch.length == 0 ? (
-                          <div className="bg-burntumber text-light rounded-2 p-1">Oops! Not Avaliable</div>
+                          <div className="bg-burntumber text-light rounded-1 p-1">Oops! Not Avaliable</div>
                         ) : (
                           billsearch.map((data, i) => (
                             <div style={{ cursor: 'pointer' }} className={`p-0 ps-1 shadow bg-${((i % 2) == 0) ? 'pearl' : 'lightyellow'} fs-6 `} name={data.id}
@@ -2328,7 +2328,7 @@ function Purchasesection(props) {
             first.map((e, i) => {
               return (
                 <div className={`col-auto d-${e.display == 1 ? '' : 'none'}`}>
-                  <button className={`btn btn-sm px-lg-4 px-md-3 rounded-pill text-${i === second ? "light" : "dark"} bg-${i === second ? "charcoal" : "seashell"}`} onClick={(a) => setSecond(i)} >{e.option}</button>
+                  <button className={`btn btn-sm rounded-pill text-${i === second ? "light" : "dark"} bg-${i === second ? "charcoal" : "seashell"}`} onClick={(a) => setSecond(i)} >{e.option}</button>
                 </div>
               )
             }
@@ -2539,8 +2539,8 @@ function Purchaseentrysection(props) {
           <button type='button' className="btn p-0 m-0 heading text-charcoal fw-bolder  " style={{ width: 'fit-content' }}>{pagecount}  {pagecount > 1 ? 'Purchase Entries' : 'Purchase Entry'} </button>
         </div>
         <div className="col-lg-8 col-md-7 col-11 ms-lg-0 ms-md-0 ms-sm-0 ms-3 align-self-center p-0 m-0 order-lg-1 order-md-1 order-sm-1 order-2 mt-lg-0 mt-md-0 mt-1  ">
-          <div className="row p-0 m-0 border-burntumber fw-bolder rounded-2 text-center justify-content-center ">
-            <div className="col-4 p-0 m-0  bg-pearl rounded-2">
+          <div className="row p-0 m-0 border-burntumber fw-bolder rounded-1 text-center justify-content-center ">
+            <div className="col-4 p-0 m-0  bg-pearl rounded-1">
               <select className='p-0 m-0 border-0 text-burntumber fw-bolder bg-pearl' value={channel ? channel : ''} onChange={(e) => { setchannel(e.target.value) }}>
                 <option className='border-0 text-burntumber fw-bolder' value='1'>Pharmacy</option>
                 <option className='border-0 text-burntumber fw-bolder' value='2'>Consumables</option>
@@ -2549,8 +2549,8 @@ function Purchaseentrysection(props) {
             <div className="col-4 p-0 m-0 text-burntumber fw-bolder bg-pearl">
               <input type='date' className=' p-0 m-0 border-0 text-burntumber fw-bolder bg-pearl ' value={fromdate ? fromdate : currentDate ? currentDate : ''} onChange={(e) => { setfromdate(e.target.value) }} />
             </div>
-            <div className="col-4 p-0 m-0  text-burntumber fw-bolder bg-pearl rounded-2">
-              <input type='date' className=' p-0 m-0 border-0 text-burntumber fw-bolder bg-pearl rounded-2 ' value={todate ? todate : fromdate ? fromdate : currentDate ? currentDate : ''} onChange={(e) => { settodate(e.target.value) }} />
+            <div className="col-4 p-0 m-0  text-burntumber fw-bolder bg-pearl rounded-1">
+              <input type='date' className=' p-0 m-0 border-0 text-burntumber fw-bolder bg-pearl rounded-1 ' value={todate ? todate : fromdate ? fromdate : currentDate ? currentDate : ''} onChange={(e) => { settodate(e.target.value) }} />
             </div>
           </div>
         </div>
@@ -2657,7 +2657,7 @@ function Purchaseentrysection(props) {
             onPageChange={GETPurchaseList}
             containerClassName={'pagination'}
             pageClassName={'page-item text-charcoal'}
-            pageLinkClassName={'page-link text-decoration-none text-charcoal border-charcoal rounded-2 mx-1'}
+            pageLinkClassName={'page-link text-decoration-none text-charcoal border-charcoal rounded-1 mx-1'}
             previousClassName={'btn button-charcoal-outline me-2'}
             previousLinkClassName={'text-decoration-none text-charcoal'}
             nextClassName={'btn button-charcoal-outline ms-2'}
@@ -3635,11 +3635,11 @@ function Newpurchaseentryform(props) {
                 <div className="col-5">
                   <h6 className="p-0 m-0 ms-3 fw-bold">Select Vendor</h6>
                   <input className="form-control ms-2 rounded-1" placeholder='Search Vendors' value={vendorname ? vendorname : ''} onChange={(e) => { searchvendors(e.target.value); setvendorname(e.target.value); setvendorid(); setvendorcode() }} />
-                  <div ref={vendorsref} className='position-absolute ms-2 rounded-2 bg-pearl col-2' style={{ zIndex: '5' }} >
+                  <div ref={vendorsref} className='position-absolute ms-2 rounded-1 bg-pearl col-2' style={{ zIndex: '5' }} >
                     {
                       vendorsearch ? (
                         loadvendors ? (
-                          <div className='rounded-2 p-1 bg-pearl mt-1 border shadow' style={{ width: 'fit-content' }}>
+                          <div className='rounded-1 p-1 bg-pearl mt-1 border shadow' style={{ width: 'fit-content' }}>
                             Searching Please wait....
                             <div className="spinner-border my-auto" style={{ width: "1rem", height: "1rem" }} role="status" >
                               <span className="sr-only"></span>
@@ -3647,9 +3647,9 @@ function Newpurchaseentryform(props) {
                           </div>
                         ) : (
                           vendorsearch.length == 0 ? (
-                            <div className="bg-burntumber text-light rounded-2 p-2">Oops! Not Avaliable</div>
+                            <div className="bg-burntumber text-light rounded-1 p-2">Oops! Not Avaliable</div>
                           ) : (
-                            <div className='bg-pearl border shadow rounded-2 p-1' style={{ zIndex: '40', width: 'fit-content' }}>
+                            <div className='bg-pearl border shadow rounded-1 p-1' style={{ zIndex: '40', width: 'fit-content' }}>
                               {
                                 vendorsearch.map((data, i) => (
                                   <div style={{ cursor: 'pointer' }} className={`p-0 p-1 d-${vendorsearch == undefined || vendorsearch.length > 0 ? '' : 'none'}  bg-${((i % 2) == 0) ? 'pearl' : 'lightblue'} fs-6 `} name={data.id} onClick={(e) => { setvendorname(data.entity_name); setvendorid(data.id); setvendorcode(data.state_code); filterclinic(); vendorsref.current.style.display = 'none'; }}>{data.entity_name}</div>
@@ -3678,7 +3678,7 @@ function Newpurchaseentryform(props) {
                 <div className="col-6">
                   <div className="row">
                     <div className="col-5">
-                      <input ref={Tableref} className='form-control w-100 p-0 m-0 px-2 py-1 rounded-2 bg-pearl' onChange={SubmitExcel} type='file' />
+                      <input ref={Tableref} className='form-control w-100 p-0 m-0 px-2 py-1 rounded-1 bg-pearl' onChange={SubmitExcel} type='file' />
                     </div>
                     <div className="col-5 text-end">
                       <button className='button button-lightyellow p-0 m-0 px-3 py-1' onClick={ConvertExcel}>Submit</button>
@@ -3761,14 +3761,14 @@ function Newpurchaseentryform(props) {
                     {
                       itemsearch ? (
                         loadsearch ? (
-                          <div className='rounded-2 p-1 bg-pearl'>
+                          <div className='rounded-1 p-1 bg-pearl'>
                             Searching Please wait....
                             <div className="spinner-border my-auto" style={{ width: "1rem", height: "1rem" }} role="status" >
                               <span className="sr-only"> </span> </div>
                           </div>
                         ) : (
                           itemsearch.length == 0 ? (
-                            <div className="bg-burntumber text-light rounded-2 p-1 text-wrap">Oops! Not Avaliable</div>
+                            <div className="bg-burntumber text-light rounded-1 p-1 text-wrap">Oops! Not Avaliable</div>
                           ) : (
                             <div className={`mt-1 rounded-4 bg-pearl shadow px-1 pb-2 d-${itemsearch && itemsearch.length > 1 ? 'block' : 'none'}`}>
                               <p className={`p-0 m-0 bg-pearl fw-bold text-charcoal75 rounded-4 ps-2 `} style={{ fontSize: '0.8rem' }}>{itemsearch.length} Search Results</p>
@@ -3823,7 +3823,7 @@ function Newpurchaseentryform(props) {
                     <label className="mb-2">Trade Disc. &#40;%&#41;</label>
                     <input type="number" max="10" className="form-control bg-seashell rate rounded-1  m-auto" placeholder="00" value={trddisc ? trddisc : ''} onChange={(e) => { settrddisc(e.target.value) }} required />
                   </div>
-                  <hr />832-0
+                  <hr />
                   <div className={`col-12 ps-2 py-2 d-${vendorcode == clinicstatecode ? 'block' : 'none'}`}>
                     <div className="row align-items-center p-0 m-0">
                       <div className="col-2 ">
@@ -4151,7 +4151,7 @@ function PurchaseReturns() {
           <button type='button' className="btn p-0 m-0 heading text-charcoal fw-bolder  " style={{ width: 'fit-content' }}>{pagecount}  {pagecount > 0 ? 'Purchase Returns' : 'Purchase Return'} </button>
         </div>
         <div className="col-lg-8 col-md-7 col-sm-7 col-11 ms-lg-0 ms-md-0 ms-sm-0 ms-3 align-self-center p-0 m-0 order-lg-1 order-md-1 order-sm-1 order-2 mt-lg-0 mt-md-0 mt-1  ">
-          <div className="row p-0 m-0 border-burntumber fw-bolder rounded-2 text-center justify-content-center ">
+          <div className="row p-0 m-0 border-burntumber fw-bolder rounded-1 text-center justify-content-center ">
             <div className="col-4">
               <select className='p-0 m-0 border-0 text-burntumber bg-pearl fw-bolder' value={channel ? channel : ''} onChange={(e) => { setchannel(e.target.value) }}>
                 <option className='border-0 text-burntumber fw-bolder' value='1'>Pharmacy</option>
@@ -4161,7 +4161,7 @@ function PurchaseReturns() {
             <div className="col-4 text-burntumber fw-bolder bg-pearl ">
               <input type='date' className='p-0 m-0 border-0 bg-pearl text-burntumber fw-bolder ' value={fromdate ? fromdate : currentDate ? currentDate : ''} onChange={(e) => { setfromdate(e.target.value) }} />
             </div>
-            <div className="col-4 text-burntumber fw-bolder bg-pearl rounded-2 ">
+            <div className="col-4 text-burntumber fw-bolder bg-pearl rounded-1 ">
               <input type='date' className='p-0 m-0 border-0 bg-pearl text-burntumber fw-bolder ' value={todate ? todate : fromdate ? fromdate : currentDate ? currentDate : ''} onChange={(e) => { settodate(e.target.value) }} />
             </div>
           </div>
@@ -4245,7 +4245,7 @@ function PurchaseReturns() {
           onPageChange={GETPurchaseReturns}
           containerClassName={'pagination'}
           pageClassName={'page-item text-charcoal'}
-          pageLinkClassName={'page-link text-decoration-none text-charcoal border-charcoal rounded-2 mx-1'}
+          pageLinkClassName={'page-link text-decoration-none text-charcoal border-charcoal rounded-1 mx-1'}
           previousClassName={'btn button-charcoal-outline me-2'}
           previousLinkClassName={'text-decoration-none text-charcoal'}
           nextClassName={'btn button-charcoal-outline ms-2'}
@@ -4672,18 +4672,18 @@ function NewPurchaseReturnentryform(props) {
             <div className="col-5">
               <h6 className="p-0 m-0 ms-3 fw-bold">Select Distributor</h6>
               <input className="form-control ms-2 rounded-1 bg-seashell" placeholder='Search Vendors' value={vendorname ? vendorname : ''} onChange={(e) => { searchvendors(e.target.value); setvendorname(e.target.value); setvendorid(); setMedicineentriesArr([]) }} />
-              <div ref={vendorsref} className='position-absolute ms-2 rounded-2 bg-pearl col-2' style={{ display: 'none', zIndex: '1' }} >
+              <div ref={vendorsref} className='position-absolute ms-2 rounded-1 bg-pearl col-2' style={{ display: 'none', zIndex: '1' }} >
                 {
                   vendorsearch ? (
                     loadvendors ? (
-                      <div className='rounded-2 p-1'>
+                      <div className='rounded-1 p-1'>
                         Searching Please wait....
                         <div className="spinner-border my-auto" style={{ width: "1rem", height: "1rem" }} role="status" >
                           <span className="sr-only"> </span> </div>
                       </div>
                     ) : (
                       vendorsearch.length == 0 ? (
-                        <div className="bg-burntumber text-light rounded-2 p-1">Oops! Not Avaliable</div>
+                        <div className="bg-burntumber text-light rounded-1 p-1">Oops! Not Avaliable</div>
                       ) : (
                         vendorsearch.map((data, i) => (
                           <div style={{ cursor: 'pointer' }} className={`p-0 p-1  bg-${((i % 2) == 0) ? 'pearl' : 'lightblue'} fs-6 `} name={data.id} onClick={(e) => { setvendorname(data.entity_name); setvendorid(data.id); vendorsref.current.style.display = 'none'; }}>{data.entity_name}</div>
@@ -4701,18 +4701,18 @@ function NewPurchaseReturnentryform(props) {
                   onChange={(e) => {
                     vendorid ? setitemname(e.target.value) : Notiflix.Notify.failure('Please Add Vendor First')
                   }} />
-                <div ref={medicinesref} className='position-absolute rounded-2 bg-pearl col-12' style={{ zIndex: '1' }}>
+                <div ref={medicinesref} className='position-absolute rounded-1 bg-pearl col-12' style={{ zIndex: '1' }}>
                   {
                     itemsearch ? (
                       loadsearch ? (
-                        <div className='rounded-2 p-1'>
+                        <div className='rounded-1 p-1'>
                           Searching Please wait....
                           <div className="spinner-border my-auto" style={{ width: "1rem", height: "1rem" }} role="status" >
                             <span className="sr-only"> </span> </div>
                         </div>
                       ) : (
                         itemsearch.length == 0 ? (
-                          <div className="bg-burntumber text-light rounded-2 p-1">Oops! Not Avaliable</div>
+                          <div className="bg-burntumber text-light rounded-1 p-1">Oops! Not Avaliable</div>
                         ) : (
                           itemsearch.map((data, i) => (
                             <div style={{ cursor: 'pointer' }} className={`p-0 ps-1 shadow bg-${((i % 2) == 0) ? 'pearl' : 'lightyellow'} fs-6 `} name={data.id}
@@ -4867,7 +4867,7 @@ function Stocksection() {
                 menu.map((e, i) => {
                   return (
                     <div className="col-auto">
-                      <button className={`btn btn-sm px-4 rounded-5 text-${i === menuindex ? "light" : "dark"} bg-${i === menuindex ? "charcoal" : "seashell"}`} onClick={(a) => setmenuindex(i)} >{e}</button>
+                      <button className={`btn btn-sm rounded-pill text-${i === menuindex ? "light" : "dark"} bg-${i === menuindex ? "charcoal" : "seashell"}`} onClick={(a) => setmenuindex(i)} >{e}</button>
                     </div>
                   )
                 }
@@ -5210,7 +5210,7 @@ function Stockvaccinesection() {
                           }
                         </td>
                         <td className='p-0 m-0 text-charcoal fw-bold align-items-center text-center '>
-                          <div className='vr rounded-2 align-self-center' style={{ padding: '0.8px' }}></div>
+                          <div className='vr rounded-1 align-self-center' style={{ padding: '0.8px' }}></div>
                         </td>
                         <td className={` bg-${index == i ? 'lightyellow' : ''} p-0 m-0 text-charcoal fw-bold text-center`}>
                           <button className='btn p-0 m-0' onClick={() => { setindex(i); toggle_detailsform() }}>
@@ -5247,7 +5247,7 @@ function Stockvaccinesection() {
           onPageChange={GetVaccines}
           containerClassName={'pagination'}
           pageClassName={'page-item text-charcoal'}
-          pageLinkClassName={'page-link text-decoration-none text-charcoal border-charcoal rounded-2 mx-1'}
+          pageLinkClassName={'page-link text-decoration-none text-charcoal border-charcoal rounded-1 mx-1'}
           previousClassName={'btn button-charcoal-outline me-2'}
           previousLinkClassName={'text-decoration-none text-charcoal'}
           nextClassName={'btn button-charcoal-outline ms-2'}
@@ -5537,7 +5537,7 @@ function Stockmedicinesection() {
                           }
                         </td>
                         <td className='p-0 m-0 text-charcoal fw-bold align-items-center text-center '>
-                          <div className='vr rounded-2 align-self-center' style={{ padding: '0.8px' }}></div>
+                          <div className='vr rounded-1 align-self-center' style={{ padding: '0.8px' }}></div>
                         </td>
                         <td className={` bg-${index == i ? 'lightyellow' : ''} p-0 m-0 text-charcoal fw-bold text-center`}>
                           <button className='btn p-0 m-0' onClick={() => { setindex(i); toggle_detailsform() }}>
@@ -5574,7 +5574,7 @@ function Stockmedicinesection() {
           onPageChange={GetMedicines}
           containerClassName={'pagination scroll align-self-center align-items-center'}
           pageClassName={'page-item text-charcoal'}
-          pageLinkClassName={'page-link text-decoration-none text-charcoal border-charcoal rounded-2 mx-1'}
+          pageLinkClassName={'page-link text-decoration-none text-charcoal border-charcoal rounded-1 mx-1'}
           previousClassName={'btn button-charcoal-outline me-2'}
           previousLinkClassName={'text-decoration-none text-charcoal'}
           nextClassName={'btn button-charcoal-outline ms-2'}
@@ -5665,7 +5665,7 @@ function MedicinesectionItemDetails(props) {
       <h6 className='text-center text-charcoal fw-bold pt-2'>{props.data.name}</h6>
       <hr className='p-0 m-0' />
       <button className='btn-close position-absolute end-0 top-0 p-1 m-1' onClick={props.toggle_detailsform}></button>
-      <p className='bg-pearl m-0 p-0 border rounded-2 p-2 ms-3 mt-2 align-middle' style={{ width: 'fit-content' }}>
+      <p className='bg-pearl m-0 p-0 border rounded-1 p-2 ms-3 mt-2 align-middle' style={{ width: 'fit-content' }}>
         <span className='text-charocal fw-bold p-0 m-0'>Total</span><span className='vr mx-2'></span><span className='text-charocal fw-bold p-0 m-0'>  {props.data.total_amount ? props.data.total_amount : ''}</span>
       </p>
       <div className='p-0 m-0 scroll'>
@@ -5751,7 +5751,7 @@ function Listsection() {
                 menu.map((e, i) => {
                   return (
                     <div className="col-auto">
-                      <button className={`btn btn-sm px-4 rounded-5 text-${i === menuindex ? "light" : "dark"} bg-${i === menuindex ? "charcoal" : "seashell"}`} onClick={(a) => setmenuindex(i)} >{e.option}</button>
+                      <button className={`btn btn-sm rounded-pill text-${i === menuindex ? "light" : "dark"} bg-${i === menuindex ? "charcoal" : "seashell"}`} onClick={(a) => setmenuindex(i)} >{e.option}</button>
                     </div>
                   )
                 }
@@ -5952,7 +5952,7 @@ function MedicineList() {
           }
         </table>
       </div>
-      <section className={`position-absolute border-1 shadow start-0 bg-seashell rounded-2 end-0 d-${NewMed}`} style={{ top: '-8.15rem', zIndex: '2' }}>
+      <section className={`position-absolute border-1 shadow start-0 bg-seashell rounded-1 end-0 d-${NewMed}`} style={{ top: '-8.15rem', zIndex: '2' }}>
         <NewMedicine ToggleNewMedicine={ToggleNewMedicine} />
       </section>
       <div className="container-fluid d-flex justify-content-center mt-2">
@@ -5966,7 +5966,7 @@ function MedicineList() {
           onPageChange={medcinelist}
           containerClassName={'pagination scroll align-self-center align-items-center'}
           pageClassName={'page-item text-charcoal'}
-          pageLinkClassName={'page-link text-decoration-none text-charcoal border-charcoal rounded-2 mx-1'}
+          pageLinkClassName={'page-link text-decoration-none text-charcoal border-charcoal rounded-1 mx-1'}
           previousClassName={'btn button-charcoal-outline me-2'}
           previousLinkClassName={'text-decoration-none text-charcoal'}
           nextClassName={'btn button-charcoal-outline ms-2'}

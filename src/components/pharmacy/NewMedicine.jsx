@@ -2,8 +2,8 @@ import axios from 'axios'
 import React, { useContext, useState } from 'react'
 import Notiflix from 'notiflix'
 import { URL } from '../../index'
-import { customconfirm } from '../features/notiflix/customconfirm';
-import '../../css/bootstrap.css'
+import { customconfirm } from '../features/notiflix/customconfirm'
+
 
 const NewMedicine = (props) => {
   const url = useContext(URL)
@@ -76,7 +76,7 @@ const NewMedicine = (props) => {
       },
       {
       },
-    );
+    )
   }
   const ClearFields = async () => {
     setdisplayname()

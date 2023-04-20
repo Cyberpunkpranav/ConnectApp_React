@@ -18,13 +18,11 @@
 /* textarea,input.text, input[type="text"], input[type="button"], input[type="submit"], .input-checkbox {
     -webkit-appearance:none;
     } */
-body {
-    font-family: 'Urbanist', sans-serif;
-}
+
 
 /*--------------------------------------------------------------page2appointment css--------------------------------------------------------*/
 .page2appointment {
-    font-family: 'Urbanist', sans-serif;
+
     color: var(--charcoal);
     z-index: -2;
     max-height: 62vh;
@@ -44,7 +42,7 @@ body {
 }
 
 .page2appointment h3 {
-    font-family: 'Urbanist', sans-serif;
+
     font-weight: 600;
     color: var(--charcoal);
 }
@@ -61,12 +59,10 @@ input[placeholder-shown] {
 .page2appointment .daterangetitle {
     color: var(--burntumber);
     font-weight: 600;
-    font-family: 'Urbanist', sans-serif;
+
 }
 
-.page2appointment input {
-    font-family: 'Urbanist', sans-serif;
-}
+
 
 /*--------------------------------------------------------------page2appointment css--------------------------------------------------------*/
 

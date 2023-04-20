@@ -9,7 +9,7 @@ import '../../css/dashboard.css'
 const Payments = (props) => {
     const url = useContext(URL)
     const adminid = localStorage.getItem('id')
-    const [blocksindex, setblocksindex] = useState(0)
+    const [blocksindex, setblocksindex] = useState(props.paymentsi == undefined ? 0 : 1)
     const blocks = ['Advance payments', 'Pending Payments']
     //Pending Payments
     const [pendingpayments, setpendingpayments] = useState([])
@@ -182,7 +182,7 @@ const Payments = (props) => {
                             // </div>
 
                         ) : (
-                            <div className='bg-lightyellow text-center fw-bolder rounded-2 p-2'>No Advance Payments Found</div>
+                            <div className='bg-lightyellow text-center fw-bolder rounded-1 p-2'>No Advance Payments Found</div>
                         )
 
                     )
@@ -279,7 +279,7 @@ const Payments = (props) => {
                                     pendingpayments.map((Data) => (
                                         <div className={`d-${Data.is_paid == 0 ? 'block' : 'none'} text-center`}>
                                             <h5 className='text-burntumber fw-bolder mt-2'>Pending Remains</h5>
-                                            <div className=' bg-danger text-light fw-bolder fs-5 text-center' >{Data.pending_amount}</div>
+                                            <div className=' bg-danger text-light fw-bolder  text-center' >{Data.pending_amount}</div>
                                             {
                                                 pendingpaymentmethods.map((data, i) => (
                                                     <div className={`text-center`}>
@@ -319,7 +319,14 @@ const Payments = (props) => {
                             </>
                         )
                     ) : (
-                        <div className='rounded-2 bg-lightgreen fw-bolder p-2 my-4'>No Pending Payments Found</div>
+                        
+                            props.paymentsi !==undefined ?(
+                                <div className='rounded-1 bg-lightgreen fw-bolder p-2 my-4'>Please generate the bill first</div>
+                            ):(
+                                <div className='rounded-1 bg-lightgreen fw-bolder p-2 my-4'>No Pending Payments Found</div>
+                            )
+                        
+         
                     )
                 }
             </div>

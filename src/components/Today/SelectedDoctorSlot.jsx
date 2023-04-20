@@ -12,13 +12,13 @@ const AddSelectedDoctorSlot = (props) => {
     const APIDate = useContext(TodayDate)
     const Doctors = useContext(DoctorsList)
     const cliniclist = useContext(Clinic)
-    const admin_id = localStorage.getItem('id');
+    const admin_id = localStorage.getItem('id')
     const clinicID = localStorage.getItem('ClinicId')
-    const [adddoctorfortoday, setadddoctorfortoday] = useState();
-    const [docdate, setdocdate] = useState();
-    const [fromtime, setfromtime] = useState();
-    const [totime, settotime] = useState();
-    const [clinicid, setclinicid] = useState(clinicID);
+    const [adddoctorfortoday, setadddoctorfortoday] = useState()
+    const [docdate, setdocdate] = useState()
+    const [fromtime, setfromtime] = useState()
+    const [totime, settotime] = useState()
+    const [clinicid, setclinicid] = useState(clinicID)
 
     async function AddSelectedDoctorSlot() {
 
@@ -35,7 +35,7 @@ const AddSelectedDoctorSlot = (props) => {
                 clinic_id: clinicid,
                 admin_id: admin_id
             }).then((response) => {
-                Notiflix.Loading.remove();
+                Notiflix.Loading.remove()
                 props.CloseAddQuickSlots()
                 props.fetchapi()
                 Notiflix.Notify.success(response.data.message)
@@ -60,14 +60,14 @@ const AddSelectedDoctorSlot = (props) => {
             },
             {
             },
-        );
+        )
     }
     const reversefunction = (date) => {
         if (date) {
-          date = date.split("-").reverse().join("-")
-          return date
+            date = date.split("-").reverse().join("-")
+            return date
         }
-      }
+    }
 
     return (
 

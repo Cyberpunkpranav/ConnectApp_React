@@ -250,7 +250,7 @@ const Doctors_Dsr = (props) => {
       {/* <div className='py-2'>
         <div className="container-fluid m-0 p-0">
           <div className="row p-0 m-0 justify-content-around">
-            <div className="col-4 col-lg-3 col-md-4 col-sm-4 py-2 border border-1 rounded-2 shadow-sm">
+            <div className="col-4 col-lg-3 col-md-4 col-sm-4 py-2 border border-1 rounded-1 shadow-sm">
               <h6 className='text-charcoa50 fw-bold'>Total Report</h6>
               <div className="row gx-1">
                 <div className="col-6 col-lg-6 col-md-6 p-0 m-0">
@@ -269,7 +269,7 @@ const Doctors_Dsr = (props) => {
                 </div>
               </div>
             </div>
-            <div className="col-4 col-lg-3 col-md-4 col-sm-4 py-2 border border-1 rounded-2 shadow-sm">
+            <div className="col-4 col-lg-3 col-md-4 col-sm-4 py-2 border border-1 rounded-1 shadow-sm">
               <h6 className='text-charcoa50 fw-bold'>Doctor Wise Report</h6>
               <div className="row gx-1">
                 <div className="col-6 col-lg-6 col-md-6 p-0 m-0">
@@ -288,9 +288,9 @@ const Doctors_Dsr = (props) => {
                 </div>
               </div>
             </div>
-            <div className="col-4 col-lg-3 col-md-4 col-sm-4 border border-1 rounded-2 shadow-sm text-center align-items-center">
+            <div className="col-4 col-lg-3 col-md-4 col-sm-4 border border-1 rounded-1 shadow-sm text-center align-items-center">
               <h6 className='text-charcoa50 fw-bold'>Summary</h6>
-              <div className="col-12 col-lg-12 p-0 m-0 bg-lightyellow rounded-2 align-self-center mt-2 fw-bold">Total Time :- {TotalTime()}</div>
+              <div className="col-12 col-lg-12 p-0 m-0 bg-lightyellow rounded-1 align-self-center mt-2 fw-bold">Total Time :- {TotalTime()}</div>
             </div>
           </div>
         </div>

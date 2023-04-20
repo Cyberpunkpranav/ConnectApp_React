@@ -3,7 +3,6 @@ import { useState, useEffect, useContext, useRef } from 'react'
 import { DownloadTableExcel } from 'react-export-table-to-excel';
 import axios from "axios"
 import { TodayDate, URL } from '../../index'
-import '../../css/bootstrap.css';
 import '../../css/dashboard.css'
 import '../../css/appointment.css'
 import '../../css/dsr.css'

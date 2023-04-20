@@ -136,7 +136,7 @@ const Payments = (props) => {
     console.log(props.appointmentdata)
     console.log(advancepaid)
     return (
-        <div className='bg-seashell rounded-2'>
+        <div className='bg-seashell rounded-1'>
             <h5 className='text-center'>{props.patientname} Payments Section</h5>
             <button className='btn-close position-absolute end-0 p-2 top-0' onClick={props.toggle_payments}></button>
             <div className="d-flex justify-content-center p-0 m-0 gx-2 mt-3">
@@ -181,7 +181,7 @@ const Payments = (props) => {
                             // </div>
 
                         ) : (
-                            <div className='bg-lightyellow text-center fw-bolder rounded-2 p-2'>No Advance Payments Found</div>
+                            <div className='bg-lightyellow text-center fw-bolder rounded-1 p-2'>No Advance Payments Found</div>
                         )
 
                     )
@@ -218,7 +218,7 @@ const Payments = (props) => {
                 <div className="container-fluid text-center mt-2">
                     <button className='btn py-0' onClick={() => setadvancepaymentmethods(prevState => [...prevState, advancepaymentmethoddetails])}><img src={process.env.PUBLIC_URL + '/images/add.png'} className='img-fluid' style={{ width: '2rem' }} /></button>
                 </div>
-                <button className='button button-charcoal mt-lg-4 mt-md-3 mt-1'  disabled={Description ? false : true} onClick={AddadvancePaymentMethods}>Save</button>
+                <button className='button button-charcoal mt-lg-4 mt-md-3 mt-1' disabled={Description ? false : true} onClick={AddadvancePaymentMethods}>Save</button>
             </div>
 
             <div className={`container-fluid p-0 m-0 d-${blocksindex === 1 ? 'block' : 'none'} text-center`}>
@@ -277,7 +277,7 @@ const Payments = (props) => {
                                     pendingpayments.map((Data) => (
                                         <div className={`d-${Data.is_paid == 0 ? 'block' : 'none'} text-center`}>
                                             <h5 className='text-burntumber fw-bolder mt-2'>Pending Remains</h5>
-                                            <div className=' bg-danger text-light fw-bolder fs-5 text-center' >{Data.pending_amount}</div>
+                                            <div className=' bg-danger text-light fw-bolder  text-center' >{Data.pending_amount}</div>
                                             {
                                                 pendingpaymentmethods.map((data, i) => (
                                                     <div className={`text-center`}>
@@ -317,7 +317,7 @@ const Payments = (props) => {
                             </>
                         )
                     ) : (
-                        <div className='rounded-2 bg-lightgreen fw-bolder p-2'>No Pending Payments Found</div>
+                        <div className='rounded-1 bg-lightgreen fw-bolder p-2'>No Pending Payments Found</div>
                     )
                 }
             </div>

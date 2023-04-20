@@ -191,11 +191,7 @@ function Navbar(props) {
       image: '/images/Pharmacy.png',
       display: props.permissions.purchase_entry_view == undefined && props.permissions.purchase_orders_view == undefined && props.permissions.purchase_return_view == undefined && props.permissions.sale_entry_view == undefined && props.permissions.sale_return_view == undefined ? 0 : 1
     },
-    // {
-    //   title: 'Files',
-    //   path: '/Files',
-    //   image: '/images/folder.png'
-    // }
+
 
   ]
 
@@ -205,44 +201,54 @@ function Navbar(props) {
   return (
     <>
       <button className='parentclose d-none position-absolute'></button>
-      <div className="navsection p-0 m-0 py-2">
+      <div className="navsection p-0 m-0 py-1">
         <div className="container-fluid p-0 m-0 ">
-          <div className="row m-0 p-0 justify-content-evenly">
-            <div className="col-lg-auto col-xl-auto col-md-auto col-sm-auto col-3 p-0 m-0 text-start">
+          <div className="row m-0 p-0 justify-content-between align-items-center">
+            <div className="col-lg-auto col-xl-auto col-md-auto col-sm-auto col-3 p-0 m-0 ms-2 text-start">
               <button className="button button-seashell shadow-none col-md-auto col-auto user position-relative p-0 m-0 ms-2" onClick={togglelogoutbtn}>
-                <p className="m-0 username text-decoration-none text-lg-start text-md-start text-center"> {props.username} </p>
-                <p className="m-0 userstatus text-decoration-none text-lg-start text-md-start text-center"><small className="text-muted">{props.designation}</small> </p>
+                <h1 className="m-0 username text-decoration-none  text-start fw-bold"> {props.username} </h1>
+                <div className="m-0 userstatus text-decoration-none text-start text-burntumber fw-semibold" >{props.designation} </div>
                 <button className={`d-${logoutbtn} button button-lightred start-0 end-0 position-absolute text-burntumber w-100 fw-bolder`} style={{ zIndex: '1000' }} onClick={logout}>Logout</button>
               </button>
             </div>
-            <div className="col-lg-auto col-xl-7 align-self-center col-sm-auto col-md-auto col-12 p-0 m-0 menu order-1 order-xl-0 order-sm-0 order-md-0 order-sm-0 mt-lg-0 mt-md-0 md-sm-0 mt-2">
-              <div className="row p-0 m-0 gx-auto justify-content-lg-center justify-content-md-center justify-content-center">
+            <div className="col-lg-auto col-xl-7 align-self-center col-sm-auto col-md-auto col-12 p-0 m-0 menu order-1 order-xl-0 order-sm-0 order-md-0 order-sm-0 mt-lg-0 mt-md-0 md-sm-0">
+              <div className="row p-0 m-0 justify-content-center">
                 {
                   NavbarIcons.map((data, i) => (
-                    <div className={` ms-lg-2 col-auto align-self-end d-${data.display == 1 ? '' : 'none'} `} onClick={() => sethighlighticon(data.path)}>
-                      <Link to={data.path} className="text-decoration-none"> <div className="text-center"> <img src={process.env.PUBLIC_URL + data.image} alt="displaying_image" className={`img-fluid rounded-2 p-2 bg-${highlighticon ? highlighticon === data.path ? 'burntumber25' : 'seashell' : path === data.path ? 'burntumber50' : 'seashell'}`} style={{ width: `1.5rem`, boxSizing: 'content-box' }} /></div><p className="col-12 m-0 text-center">{data.title}</p>  </Link>
+                    <div className={`col-auto p-0 m-0 align-self-end d-${data.display == 1 ? '' : 'none'} `} onClick={() => sethighlighticon(data.path)}>
+                      <Link to={data.path} className="text-decoration-none"> <div className="text-center"> <img src={process.env.PUBLIC_URL + data.image} alt="displaying_image" className={`img-fluid rounded-1 p-2 bg-${highlighticon ? highlighticon === data.path ? 'burntumber25' : 'seashell' : path === data.path ? 'burntumber25' : 'seashell'}`}
+                        style={{ width: `1.2rem`, boxSizing: 'content-box' }} /></div>
+                        <p className="col-12 m-0 p-0 px-2 text-center fw-semibold" style={{ fontSize: '0.5rem' }}>{data.title}</p></Link>
                     </div>
+
                   ))
                 }
-              </div>
 
-            </div>
-            <div className="col-lg-auto col-xl-auto col-md-auto col-2 col-sm-2 text-center align-self-center position-relative p-0 m-0 ">
-              <div className={`dropdown d-${props.permissions.patient_add == undefined && props.permissions.doctor_add == undefined && props.permissions.appointment_add == undefined ? 'none' : ''}`}>
-                <button className="button button p-0 m-0 px-1 py-1 button-burntumber dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  +Add
-                </button>
-                <ul className="dropdown-menu">
-                  <li><button className={`dropdown-item border-bottom d-${props.permissions.patient_add == 1 ? '' : 'none'}`} onClick={() => { togglepatientform() }}>+ Patient</button></li>
-                  <li className={`d-${props.permissions.appointment_add == 1 ? '' : 'none'}`}><button className="dropdown-item border-bottom" onClick={() => { toggleappointmentform() }}>+ Appointment</button></li>
-                  <li><button className={`dropdown-item  `} onClick={() => { toggledoctorform() }}>+ Doctor</button></li>
-                </ul>
               </div>
             </div>
-            <div className="col-lg-2 col-xl-2 col-md-2 col-sm-6 col-6 mt-sm-2 ms-md-2 align-self-center order-sm-2 order-0 search text-center position-relative p-0 m-0" style={{ zIndex: '3' }} >
-              <input type="text" className="bg-pearl border border-1 text-center position-relative w-100 " placeholder="search" onChange={(e) => setsearchtext(e.target.value)} />
-              <div className="position-absolute bg-pearl end-0 shadow rounded-2 mt-2 border border-1">
-                <SearchField searchtext={searchtext} fetchapi={props.fetchapi} />
+            {/* className="col-lg-2 col-xl-2 col-md-2 col-sm-6 col-6 mt-sm-2  search text-center position-relative" */}
+            <div className="col-lg-auto col-xl-auto col-md-auto col-auto col-sm-auto text-center align-self-center position-relative p-0 m-0 order-sm-2 order-0 ">
+              <div className="row p-0 m-0">
+                {/* col-xl-2 col-md-auto col-sm-auto col-6  */}
+                <div className={`col-auto pe-1 p-0 m-0 dropdown text-decoration-none d-${props.permissions.patient_add == undefined && props.permissions.doctor_add == undefined && props.permissions.appointment_add == undefined ? 'none' : ''}`}>
+                  <button className="button p-0 m-0 px-2 pe-2 py-1 button-burntumber dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <span className="mx-1 pe-1 ">+</span>
+                    Add
+                  </button>
+                  <ul className="dropdown-menu">
+                    <li><button className={`dropdown-item border-bottom d-${props.permissions.patient_add == 1 ? '' : 'none'}`} onClick={() => { togglepatientform() }}>+ Patient</button></li>
+                    <li className={`d-${props.permissions.appointment_add == 1 ? '' : 'none'}`}><button className="dropdown-item border-bottom" onClick={() => { toggleappointmentform() }}>+ Appointment</button></li>
+                    <li><button className={`dropdown-item  `} onClick={() => { toggledoctorform() }}>+ Doctor</button></li>
+                  </ul>
+                </div>
+                <div className="col-auto p-0 m-0  pe-2 " style={{ zIndex: '3' }} >
+                  <input type="text" className=" rounded-1 text-charcoal bg-charcoal25 border border-1 text-center position-relative py-1  " placeholder="search" onChange={(e) => setsearchtext(e.target.value)} />
+                  <div className="position-absolute bg-pearl end-0 shadow mt-1 rounded-1 border border-1">
+                    <SearchField searchtext={searchtext} fetchapi={props.fetchapi} />
+                  </div>
+
+                </div>
+
               </div>
             </div>
           </div>
@@ -268,13 +274,13 @@ function Navbar(props) {
       {/* <div className="position-absolute bottom-0 end-0 me-5 mb-3 d-block" style={{ zIndex: 1000 }}>
         <button className={`btn p-0 m-0 d-${openchat == 'block' ? 'none' : 'block'}`} onClick={() => { openchat == 'none' ? setopenchat('block') : setopenchat('none') }}><img src={process.env.PUBLIC_URL + 'images/chat.png'} style={{ width: '2.5rem' }} /></button>
         <div className={`container d-${openchat == 'none' ? 'none' : 'block'}`}>
-          <div className="bg-lightgreen border border-1 rounded-2 overflow-scroll" style={{ maxHeight: '15rem' }}>
+          <div className="bg-lightgreen border border-1 rounded-1 overflow-scroll" style={{ maxHeight: '15rem' }}>
             {
               chatarr.flat().map((data) => (
                 <div className="text-end me-2">{data}</div>
               ))}</div>
           <button className="btn btn-close" onClick={() => { openchat == 'none' ? setopenchat('block') : setopenchat('none') }}></button>
-          <input className="bg-seashell rounded-2 border border-1" ref={chatinputref} onBlur={(e) => { setchat(e.target.value) }} />
+          <input className="bg-seashell rounded-1 border border-1" ref={chatinputref} onBlur={(e) => { setchat(e.target.value) }} />
           <button className="btn p-0 m-0" onClick={sendmessage}><img src={process.env.PUBLIC_URL + 'images/completed.png'} style={{ width: '1.8rem' }} /></button>
         </div>
 
@@ -324,8 +330,15 @@ function Doctorsection(props) {
   const [Docval, setDocval] = useState(0)
   return (
     <>
-      <div className="container-fluid doctorsection bg-seashell p-0 m-0 mt-1 scroll">
-        <div className=" hstack gap-3 d-flex p-0 m-0 ms-1 p-1 align-items-center">
+      <div className="container-fluid doctorsection p-0 m-0 mt-1 ms-1 scroll">
+        {/* <div className="container-fluid p-0 m-0 my-2">
+          <div className="row m-0 p-0 align-items-center">
+            <span className='col-auto livetime text-charcoal fw-bold' style={{ fontSize: '1rem' }}>{currentDate}</span>
+            <div className=' col-auto vr align-self-center h-75' style={{ padding: '0.8px' }}></div>
+            <span className='col-auto livetime2' style={{ fontSize: '1rem' }}><Timer /></span>
+          </div>
+        </div> */}
+        <div className=" hstack gap-3 d-flex p-0 m-0 py-1 ps-1 align-items-center">
           {
             props.isLoading ? (
               <div className='col-3'>
@@ -337,12 +350,12 @@ function Doctorsection(props) {
               props.todayDoc.map((data, i) => (
                 <>
                   <div className='col-auto doctors p-0 m-0'>
-                    <button key={i} className={`button rounded-3 p-0 m-0 py-1 px-2 btn-sm col-auto shadow-none text-${i === Doctor ? 'light' : 'charcoal75 fw-bolder'} button-${i === Doctor ? "charcoal" : "seashell"} border-${i === Doctor ? 'secondary' : 'none'}`}
+                    <button key={i} className={` button rounded-1 p-0 m-0 py-1 px-3 btn-sm col-auto shadow-none text-${i === Doctor ? 'light' : 'charcoal75 fw-bolder'} button-${i === Doctor ? "charcoal" : "pearl"} border-${i === Doctor ? 'secondary' : 'none'}`}
                       autoFocus={i === Doctor ? true : false}
                       onFocus={() => { setDoctorID(data[0]); setDoctorName(data[1]); setDocClinic(data[2]) }}
-                      value={`${data[0]}.${data[1]}`} onClick={(a) => { setDoctor(i); }}>{`Dr.${data[1]}`} </button>
+                      value={`${data[0]}.${data[1]}`} onClick={(a) => { setDoctor(i); }}>{`Dr. ${data[1]}`} </button>
                   </div>
-                  <div className='vr rounded-2 h-75 align-self-center' style={{ padding: '0.8px' }}></div>
+                  <div className='vr rounded-1 h-75 align-self-center' style={{ padding: '0.8px' }}></div>
                 </>
               ))
             )}
@@ -354,17 +367,10 @@ function Doctorsection(props) {
         </div>
 
       </div>
-      <section className="patientsection border-start p-0 m-0 border-5 border-dark border-opacity-50 position-relative">
-        <div className="container-fluid p-0 m-0 my-2">
-          <div className="row m-0 p-0 align-items-center">
-            <span className='col-auto livetime text-charcoal fw-bold' style={{ fontSize: '1.5rem' }}>{currentDate}</span>
-            <div className=' col-auto vr align-self-center h-75' style={{ padding: '0.8px' }}></div>
-            <span className='col-auto livetime2' style={{ fontSize: '1.5rem' }}><Timer /></span>
-          </div>
-        </div>
+      <section className="patientsection p-0 m-0 ps-1 position-relative">
         {
           props.Loading ? (
-            <div className=" position-absolute start-0 end-0 m-auto loader ">
+            <div className=" position-absolute start-0 ms-2 end-0 m-auto loader ">
               <button class="button button-pearl shadow-none fs-3 fw-bolder text-charcoal75" type="button" disabled>
                 Please Be Patient While We are Fetching Data
                 <span class="spinner-grow spinner-grow ms-1 bg-brandy " role="status" aria-hidden="true"></span>
@@ -793,7 +799,7 @@ function Patients() {
                         <td className={`d-${permission.patient_edit == 1 ? '' : 'none'}`}>
                           <button className="btn p-0 m-0" onClick={(e) => { settabindex(i); OpenUpdatePatient(i) }}><img src={process.env.PUBLIC_URL + "/images/confirmed.png"} style={{ width: "1.5rem" }} /></button>
                           {form == i ? (
-                            <section id={i} className={`updatepatientform text-start position-absolute d-${tabindex == i ? updatepatient : 'none'} bg-seashell rounded-2 shadow-sm border`}>
+                            <section id={i} className={`updatepatientform text-start position-absolute d-${tabindex == i ? updatepatient : 'none'} bg-seashell rounded-1 shadow-sm border`}>
                               <UpdatePatient index={i} getAllPatients={getAllPatients} CloseUpdatePatient={CloseUpdatePatient} patientid={data.id} data={data} phonecountrycode={data.phone_country_code ? data.phone_country_code : 'N/A'} PhoneNo={data.phone_number ? Number(data.phone_number) : ''} dob={data.dob ? data.dob : ''} gender={data.gender ? data.gender : ''} full_name={data.full_name ? data.full_name : ''} email={data.email ? data.email : ''} pincode={data.pin_code ? data.pin_code : ''} location={data.location ? data.location : ''} parent={data.parent} linkid={data.link_id ? data.link_id : ''} relation={data.relation} latitude={data.latitude} longitude={data.longitude} />
                             </section>
                           ) : (<></>)
@@ -832,7 +838,7 @@ function Patients() {
           onPageChange={getAllPatients}
           containerClassName={'pagination scroll align-self-center align-items-center'}
           pageClassName={'page-item text-charcoal'}
-          pageLinkClassName={'page-link text-decoration-none text-charcoal border-charcoal rounded-2 mx-1'}
+          pageLinkClassName={'page-link text-decoration-none text-charcoal border-charcoal rounded-1 mx-1'}
           previousClassName={'btn button-charcoal-outline me-2'}
           previousLinkClassName={'text-decoration-none text-charcoal'}
           nextClassName={'btn button-charcoal-outline ms-2'}
@@ -997,7 +1003,7 @@ function Doctors() {
           onPageChange={getAllDoctors}
           containerClassName={'pagination'}
           pageClassName={'page-item text-charcoal'}
-          pageLinkClassName={'page-link text-decoration-none text-charcoal border-charcoal rounded-2 mx-1'}
+          pageLinkClassName={'page-link text-decoration-none text-charcoal border-charcoal rounded-1 mx-1'}
           previousClassName={'btn button-charcoal-outline me-2'}
           previousLinkClassName={'text-decoration-none text-charcoal'}
           nextClassName={'btn button-charcoal-outline ms-2'}
@@ -1072,7 +1078,7 @@ function DailySaleReport(props) {
                   <div className={`col-auto p-0 m-0 d-${data.display == 1 ? '' : 'none'}`}>
                     <button className={`button m-0 p-0 px-2 py-1 ms-1 border-0 button-${i == menu ? 'charcoal' : ''} `} id={i} key={i} onClick={() => { setmenu(i) }}>{data.option}</button>
                   </div>
-                  <div className={`vr rounded-2 h-50 align-self-center d-${data.display == 1 ? '' : 'none'}`} style={{ padding: '0.8px' }}></div>
+                  <div className={`vr rounded-1 h-50 align-self-center d-${data.display == 1 ? '' : 'none'}`} style={{ padding: '0.8px' }}></div>
                 </>
               ))
             }
@@ -1200,9 +1206,9 @@ function Pharmacy() {
                   return (
                     <>
                       <div className={`col-auto p-0 m-0 d-${e.display == 1 ? '' : 'none'}`}>
-                        <button className={`button rounded-2 p-0 m-0 py-1 px-4 btn-sm col-auto shadow-none text-${i === menuindex ? 'light' : 'charcoal75 fw-bolder'} button-${i === menuindex ? "charcoal" : "seashell"} border-${i === menuindex ? 'secondary' : 'none'}`} onClick={(a) => setmenuindex(i)} > {e.option} </button>
+                        <button className={`button rounded-1 p-0 m-0 py-1 px-4 btn-sm col-auto shadow-none text-${i === menuindex ? 'light' : 'charcoal75 fw-bolder'} button-${i === menuindex ? "charcoal" : "seashell"} border-${i === menuindex ? 'secondary' : 'none'}`} onClick={(a) => setmenuindex(i)} > {e.option} </button>
                       </div>
-                      <div className={`vr rounded-2 h-75 align-self-center d-${e.display == 1 ? '' : 'none'}`} style={{ padding: '0.8px' }}></div>
+                      <div className={`vr rounded-1 h-75 align-self-center d-${e.display == 1 ? '' : 'none'}`} style={{ padding: '0.8px' }}></div>
                     </>
                   );
                 })
@@ -1210,7 +1216,7 @@ function Pharmacy() {
             </div>
           </div>
         </div>
-        <div className="p-0 m-0 ms-1 text-charcoal fw-bold">
+        <div className="p-0 m-0 ms-1 text-charcoal75 fw-bold " style={{ letterSpacing: '1.2px' }}>
           {<Livetime />}
         </div>
         <div className="p-0 m-0">{_selectedmenu(menuindex)}</div>

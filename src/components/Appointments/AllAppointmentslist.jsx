@@ -6,7 +6,7 @@ import '../../../node_modules/bootstrap/js/dist/dropdown'
 import { UpdateAppointment } from './UpdateAppointment'
 import { Bill } from './Bill'
 import '../../css/appointment.css'
-import '../../css/bootstrap.css'
+
 import '../../../node_modules/bootstrap/js/dist/dropdown'
 import { Payments } from './Payments.jsx'
 import Notiflix from 'notiflix';
@@ -301,14 +301,14 @@ const AllAppointmentslist = (props) => {
                             </div></td>
                             {
                                 tableindex == key ? (
-                                    <td className={` d-${tableindex == key ? appointmentform : 'none'} updateappointment bg-seashell col-lg-8 col-xl-5 col-md-8 col-sm-10 col-12 start-0 end-0 fw-none  mx-auto top-0 border border-1 rounded-3 position-absolute`} style={{ zIndex: '3', marginTop: '10rem' }}>
+                                    <td className={` d-${tableindex == key ? appointmentform : 'none'} updateappointment bg-seashell col-lg-8 col-xl-5 col-md-8 col-sm-10 col-12 start-0 end-0 fw-none  mx-auto top-0 border border-1 rounded-1 position-absolute`} style={{ zIndex: '3', marginTop: '10rem' }}>
                                         <UpdateAppointment fetchallAppointmentslist={props.fetchallAppointmentslist} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} patientid={data.patient != null && data.patient.id != null ? data.patient.id : ""} appointmentid={data.id} closeappointmentform={closeappointmentform} doctorid={props.doctorid} fetchapi={props.fetchapi} appointmentdoctorid={data.doctor.id} appointmentdate={data.appointment_date} appointmenttime={tConvert(data.timeslot.time_from)} />
                                     </td>
                                 ) : (<></>)
                             }
                             {
                                 billindex == key ? (
-                                    <td className={`bill d-${billindex == key ? billform : 'none'} bg-seashell col-lg-8 col-md-10 start-0 mx-auto end-0 top-0 col-sm-12 col-12 col-xl-6 border border-2 rounded-2 shadow-sm position-absolute`} style={{ zIndex: '3', marginTop: '6rem' }}>
+                                    <td className={`bill d-${billindex == key ? billform : 'none'} bg-seashell col-lg-8 col-md-10 start-0 mx-auto end-0 top-0 col-sm-12 col-12 col-xl-6 border border-2 rounded-1 shadow-sm position-absolute`} style={{ zIndex: '3', marginTop: '6rem' }}>
                                         <Bill fetchallAppointmentslist={props.fetchallAppointmentslist}
                                             toggle_bill={toggle_bill}
                                             patientid={data.patient && data.patient.id != null ? data.patient.id : ""}
@@ -320,7 +320,7 @@ const AllAppointmentslist = (props) => {
                             }
                             {
                                 paymentindex == key ? (
-                                    <td className={`payments top-0 start-0 end-0 mx-auto bg-seashell col-lg-6 col-md-8 col-sm-12 col-12 col-xl-6 rounded-2 border border-1 position-absolute shadow  d-${paymentindex == key ? paymentsform : 'none'}`} style={{ zIndex: '3', marginTop: '10rem' }}>
+                                    <td className={`payments top-0 start-0 end-0 mx-auto bg-seashell col-lg-6 col-md-8 col-sm-12 col-12 col-xl-6 rounded-1 border border-1 position-absolute shadow  d-${paymentindex == key ? paymentsform : 'none'}`} style={{ zIndex: '3', marginTop: '10rem' }}>
                                         <Payments
                                             toggle_payments={toggle_payments}
                                             appointmentdata={props.getAppointments[key]}

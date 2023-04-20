@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useContext } from 'react'
 import { DoctorsList, URL, Doctorapi, TodayDate, Clinic } from '../../index'
-import Notiflix from 'notiflix';
-import '../../css/bootstrap.css'
+import Notiflix from 'notiflix'
+
 import '../../css/dashboard.css'
 const SelectedTimeAppointment = (props) => {
     //Global Variable
-    const url = useContext(URL);
+    const url = useContext(URL)
     const cliniclist = useContext(Clinic)
     const APIDate = useContext(TodayDate)
     const adminid = localStorage.getItem('id')
@@ -25,13 +25,13 @@ const SelectedTimeAppointment = (props) => {
 
     // Functions
     function tConvert(time) {
-        time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
+        time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time]
         if (time.length > 1) {
-            time = time.slice(1);
-            time[3] = +time[0] < 12 ? ' AM ' : ' PM ';
-            time[0] = +time[0] % 12 || 12;
+            time = time.slice(1)
+            time[3] = +time[0] < 12 ? ' AM ' : ' PM '
+            time[0] = +time[0] % 12 || 12
         }
-        return time.join('');
+        return time.join('')
     }
     async function searchpatient(e) {
         setsearchload(true)
@@ -42,15 +42,15 @@ const SelectedTimeAppointment = (props) => {
         })
 
         if (searchinput && searchinput.length > 1) {
-            setdisplaysearchlist('block');
+            setdisplaysearchlist('block')
         } else {
-            setdisplaysearchlist('none');
+            setdisplaysearchlist('none')
         }
     }
     const get_value = (data) => {
         setsearchinput(data.full_name)
         setpatientid(data.id)
-        setdisplaysearchlist('none');
+        setdisplaysearchlist('none')
     }
     const gettime_value = (e) => {
         settime(APIDate)
@@ -65,13 +65,13 @@ const SelectedTimeAppointment = (props) => {
                 timeslot_id: props.selectedtimeID[0],
                 admin_id: adminid
             }).then((response) => {
-                Notiflix.Notify.success(response.data.message);
+                Notiflix.Notify.success(response.data.message)
                 setload(false)
                 props.closeAddAppointmentform()
                 props.fetchapi()
             })
         } else {
-            Notiflix.Notify.warning('Please Fill all Detais');
+            Notiflix.Notify.warning('Please Fill all Detais')
             setload(false)
         }
     }
@@ -79,7 +79,7 @@ const SelectedTimeAppointment = (props) => {
     return (
         <>
             <h5 className="text-center m-0 p-0 mt-2">Quick Appointment  at <span className=' text-charcoal fw-bold border-0'>{tConvert(props.selectedtime)}</span></h5>
-            <button type="button" className="btn-close closebtn position-absolute" disabled={load == true ? true:false} aria-label="Close" onClick={(e) => { props.closeAddAppointmentform() }} ></button>
+            <button type="button" className="btn-close closebtn position-absolute" disabled={load == true ? true : false} aria-label="Close" onClick={(e) => { props.closeAddAppointmentform() }} ></button>
             <hr className='p-0 m-0 mb-1' />
             <div className=" text-start ms-3 clinics align-self-center mb-2 ">
                 {
@@ -93,20 +93,20 @@ const SelectedTimeAppointment = (props) => {
             <div className="row p-0 m-0">
                 <div className="col-5">
                     <input type="text" placeholder='Search Patient using Number or Name' className="form-control bg-pearl border-0" value={searchinput ? searchinput : ''} onChange={(e) => { searchpatient(e) }} />
-                    <div className={`col-6 position-absolute d-${displaysearchlist} rounded-2 `} style={{ zIndex: 100 }}>
+                    <div className={`col-6 position-absolute d-${displaysearchlist} rounded-1 `} style={{ zIndex: 100 }}>
                         {
                             searchload ? (
                                 <option className="btn col-12 text-charcoal75 bg-pearl p-0 m-0 ps-1 mt-1">Loading... </option>
                             ) : (
-                                searchlist==undefined && searchlist.length == 0 ? (
+                                searchlist == undefined && searchlist.length == 0 ? (
                                     <option className="text-burntumber col-12 p-0 m-0 bg-pearl shadow rounded mt-1 p-2">Patient not found</option>
                                 ) : (
-                                    // <div className='mt-1 searchresult shadow rounded-2 p-1 bg-pearl border border-1 col-12 '>
-                                        // {
-                                            searchlist.map((data, i) => (
-                                                <option style={{ cursor: 'pointer' }} className={`col-12 bg-${i % 2 == 0 ? 'seashell' : 'pearl'} px-2 text-charcoal text-start ps-2 border-bottom align-self-center`} name={data.id} value={data.full_name} onClick={() => { get_value(data) }}>{data.full_name} {data.phone_number}</option>
-                                            ))
-                                        // }
+                                    // <div className='mt-1 searchresult shadow rounded-1 p-1 bg-pearl border border-1 col-12 '>
+                                    // {
+                                    searchlist.map((data, i) => (
+                                        <option style={{ cursor: 'pointer' }} className={`col-12 bg-${i % 2 == 0 ? 'seashell' : 'pearl'} px-2 text-charcoal text-start ps-2 border-bottom align-self-center`} name={data.id} value={data.full_name} onClick={() => { get_value(data) }}>{data.full_name} {data.phone_number}</option>
+                                    ))
+                                    // }
                                     // {/* </div> */}
                                 )
 

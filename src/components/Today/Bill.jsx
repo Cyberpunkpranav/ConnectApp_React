@@ -370,7 +370,7 @@ const Bill = (props) => {
                             </div>
 
                             <div className="container-fluid text-start p-2">
-                                <div className='bg-seashell rounded-2 position-relative'>
+                                <div className='bg-seashell rounded-1 position-relative'>
                                     <h6 className='p-1 text-charcoal fw-bolder'>ExtraCharges</h6>
                                     {
                                         props.isLoading ? (
@@ -434,11 +434,11 @@ const Bill = (props) => {
                                     </div>
                                 </div>
                             </div>
-                            <div className="container-fluid p-2 text-center rounded-2 bg-lightyellow mt-2">
+                            <div className="container-fluid p-2 text-center rounded-1 bg-lightyellow mt-2">
                                 <div className="row text-center p-0 m-0 align-items-center">
                                     <div className='col-4 align-self-end'>
                                         <label className=' fw-bolder text-charcoal text-wrap'>Grand Total</label>
-                                        <input className='form-control text-success text-center border-0 fw-bolder p-0 fs-5 bg-seashell' value={Get_Grand_Total()} />
+                                        <input className='form-control text-success text-center border-0 fw-bolder p-0  bg-seashell' value={Get_Grand_Total()} />
                                     </div>
                                     <div className="col-4 align-self-end">
                                         <label className=' fw-bolder text-charcoal text-wrap'>Advance Amount Balance</label>
@@ -451,9 +451,9 @@ const Bill = (props) => {
                                                 </div>
                                             ) : (
                                                 advancepayments ? (
-                                                    <input className='form-control text-lightgreen text-center border-0 fw-bolder p-0 fs-5 bg-seashell' value={advancepayments.advnace_total} />
+                                                    <input className='form-control text-lightgreen text-center border-0 fw-bolder p-0  bg-seashell' value={advancepayments.advnace_total} />
                                                 ) : (
-                                                    <div className='bg-lightred text-center fw-bolder rounded-2 p-2'>No Advance Payments Found</div>
+                                                    <div className='bg-lightred text-center fw-bolder rounded-1 p-2'>No Advance Payments Found</div>
                                                 )
 
                                             )
@@ -462,7 +462,7 @@ const Bill = (props) => {
                                     </div>
                                     <div className="col-4 align-self-end">
                                         <label className=' fw-bolder text-charcoal text-wrap'>Consumables Amount</label>
-                                        <input className='form-control text-primary text-center border-0 fw-bolder p-0 fs-5 bg-seashell' />
+                                        <input className='form-control text-primary text-center border-0 fw-bolder p-0  bg-seashell' />
                                     </div>
 
                                 </div>

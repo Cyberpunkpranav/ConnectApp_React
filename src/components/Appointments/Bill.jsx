@@ -42,34 +42,34 @@ const Bill = (props) => {
     async function AddExtraCharges() {
         let extracharges = []
 
-           
-                for (let j = 0; j < props.appointmentdata.other_charges.length; j++) {
-                    extracharges.push({
-                        description: props.appointmentdata.other_charges[j].description != null ? props.appointmentdata.other_charges[j].description : 'N/A',
-                        amount: props.appointmentdata.other_charges[j].total_amount != null ? props.appointmentdata.other_charges[j].total_amount : 0,
-                        discount: props.appointmentdata.other_charges[j].discount != null ? props.appointmentdata.other_charges[j].discount : 0,
-                        cgst: props.appointmentdata.other_charges[j] != null && props.appointmentdata.other_charges[j].gst_rate != null ? props.appointmentdata.other_charges[j].gst_rate / 2 : 0,
-                        sgst: props.appointmentdata.other_charges[j] != null && props.appointmentdata.other_charges[j].gst_rate != null ? props.appointmentdata.other_charges[j].gst_rate / 2 : 0,
-                        gross_amount: props.appointmentdata.other_charges[j].final_amount && props.appointmentdata.other_charges[j].final_amount !== null ? props.appointmentdata.other_charges[j].final_amount : '',
-                        id: props.appointmentdata.other_charges[j].id && props.appointmentdata.other_charges[j].id != null ? props.appointmentdata.other_charges[j].id : ''
-                    })
 
-                }
-                setaartasdiscount(props.appointmentdata.aartas_discount)
-                setdocdiscount(props.appointmentdata.doc_discount)
-                setconstext(props.appointmentdata.cons_text)
-            
-        
+        for (let j = 0; j < props.appointmentdata.other_charges.length; j++) {
+            extracharges.push({
+                description: props.appointmentdata.other_charges[j].description != null ? props.appointmentdata.other_charges[j].description : 'N/A',
+                amount: props.appointmentdata.other_charges[j].total_amount != null ? props.appointmentdata.other_charges[j].total_amount : 0,
+                discount: props.appointmentdata.other_charges[j].discount != null ? props.appointmentdata.other_charges[j].discount : 0,
+                cgst: props.appointmentdata.other_charges[j] != null && props.appointmentdata.other_charges[j].gst_rate != null ? props.appointmentdata.other_charges[j].gst_rate / 2 : 0,
+                sgst: props.appointmentdata.other_charges[j] != null && props.appointmentdata.other_charges[j].gst_rate != null ? props.appointmentdata.other_charges[j].gst_rate / 2 : 0,
+                gross_amount: props.appointmentdata.other_charges[j].final_amount && props.appointmentdata.other_charges[j].final_amount !== null ? props.appointmentdata.other_charges[j].final_amount : '',
+                id: props.appointmentdata.other_charges[j].id && props.appointmentdata.other_charges[j].id != null ? props.appointmentdata.other_charges[j].id : ''
+            })
+
+        }
+        setaartasdiscount(props.appointmentdata.aartas_discount)
+        setdocdiscount(props.appointmentdata.doc_discount)
+        setconstext(props.appointmentdata.cons_text)
+
+
         setextrachargecount(extracharges)
     }
     async function AddPaymentMethods() {
         let Payments = []
         let amounts = []
         let allamounts = []
-                Payments.push(Object.keys(JSON.parse(props.appointmentdata.payment_method_details)))
-                amounts.push(Object.values(JSON.parse(props.appointmentdata.payment_method_details)))
-            
-        
+        Payments.push(Object.keys(JSON.parse(props.appointmentdata.payment_method_details)))
+        amounts.push(Object.values(JSON.parse(props.appointmentdata.payment_method_details)))
+
+
         let paymentobj = []
         let p = {
             paymentmethod: '',
@@ -327,7 +327,7 @@ const Bill = (props) => {
                         <>
                             <div className="container-fluid text-start p-2 position-relative">
                                 <h6 className='fw-bolder text-charcoal'>Consultation</h6>
-                                <label className='position-absolute end-0 top-0 mt-1 me-4 text-cahrcoal fw-bolder'><input type='checkbox'disabled ={true} checked={AddConsAmt} onClick={AddConsAmt == props.doctorfee ? () => setAddConsAmt(0) : () => setAddConsAmt(props.doctorfee)} />Add Consultation Amount</label>
+                                <label className='position-absolute end-0 top-0 mt-1 me-4 text-cahrcoal fw-bolder'><input type='checkbox' disabled={true} checked={AddConsAmt} onClick={AddConsAmt == props.doctorfee ? () => setAddConsAmt(0) : () => setAddConsAmt(props.doctorfee)} />Add Consultation Amount</label>
                                 <div className="row p-0 m-0">
                                     <div className="col-6">
                                         <label className='text-charcoal75 fw-bold'>Doctor's Consultation Charge</label>
@@ -351,23 +351,23 @@ const Bill = (props) => {
                                 <div className="row p-0 m-0">
                                     <div className="col-6">
                                         <label className='text-charcoal75 fw-bold'>Coupon</label>
-                                        <input className='form-control bg-seashell' disabled ={true} value={coupondiscount ? coupondiscount : ''} onChange={(e) => setcoupondiscount(e.target.value)} />
+                                        <input className='form-control bg-seashell' disabled={true} value={coupondiscount ? coupondiscount : ''} onChange={(e) => setcoupondiscount(e.target.value)} />
                                     </div>
                                     <div className="col-6">
                                         <label className='text-charcoal75 fw-bold'>Doctor</label>
-                                        <input className='form-control bg-seashell text-center'disabled ={true} value={docdiscount ? docdiscount : ''} onChange={(e) => setdocdiscount(e.target.value)} />
+                                        <input className='form-control bg-seashell text-center' disabled={true} value={docdiscount ? docdiscount : ''} onChange={(e) => setdocdiscount(e.target.value)} />
                                     </div>
                                 </div>
                                 <div className="row p-0 m-0">
                                     <div className="col-6">
                                         <label className='text-charcoal75 fw-bold'>Aartas</label>
-                                        <input className='form-control bg-seashell text-center' disabled ={true} value={aartasdiscount ? aartasdiscount : ''} onChange={(e) => setaartasdiscount(e.target.value)} />
+                                        <input className='form-control bg-seashell text-center' disabled={true} value={aartasdiscount ? aartasdiscount : ''} onChange={(e) => setaartasdiscount(e.target.value)} />
                                     </div>
                                 </div>
                             </div>
 
                             <div className="container-fluid text-start p-2">
-                                <div className='bg-seashell rounded-2 position-relative'>
+                                <div className='bg-seashell rounded-1 position-relative'>
                                     <h6 className='p-1 text-charcoal fw-bolder'>ExtraCharges</h6>
                                     {
                                         props.isLoading ? (
@@ -382,11 +382,11 @@ const Bill = (props) => {
                                                     <div className="row p-0 m-0">
                                                         <div className="col-3 p-0 m-0">
                                                             <label className='fw-bold text-charcoal75'>Description</label>
-                                                            <input className='form-control p-0 bg-seashell m-0 text-center' disabled ={true} value={data.description ? data.description : ''} onChange={(e) => { data.description = e.target.value; Calculate_gst(data.amount, data.discount, data.cgst, data.sgst) }} />
+                                                            <input className='form-control p-0 bg-seashell m-0 text-center' disabled={true} value={data.description ? data.description : ''} onChange={(e) => { data.description = e.target.value; Calculate_gst(data.amount, data.discount, data.cgst, data.sgst) }} />
                                                         </div>
                                                         <div className="col-2 p-0 m-0">
                                                             <label className='fw-bold text-charcoal75'>Amount</label>
-                                                            <input type='number' className='form-control text-center bg-seashell p-0 m-0' disabled ={true} value={data.amount ? data.amount : ''} onChange={(e) => { data.amount = e.target.value; data.gross_amount = Calculate_gst(data.amount, data.discount, data.cgst, data.sgst) }} />
+                                                            <input type='number' className='form-control text-center bg-seashell p-0 m-0' disabled={true} value={data.amount ? data.amount : ''} onChange={(e) => { data.amount = e.target.value; data.gross_amount = Calculate_gst(data.amount, data.discount, data.cgst, data.sgst) }} />
                                                         </div>
                                                         <div className="col-2 m-0 p-0 ">
                                                             <label className='fw-bold text-charcoal75'>Discount</label>
@@ -394,15 +394,15 @@ const Bill = (props) => {
                                                         </div>
                                                         <div className="col-2 m-0 p-0">
                                                             <label className='fw-bold text-charcoal75'>FinalAmount</label>
-                                                            <input type='number' className='form-control  text-center bg-seashell p-0 m-0' disabled ={true} value={data.amount && data.discount ? data.amount - data.discount : ''} onChange={(e) => { data.gross_amount = Calculate_gst(data.amount, data.discount, data.cgst, data.sgst); }} />
+                                                            <input type='number' className='form-control  text-center bg-seashell p-0 m-0' disabled={true} value={data.amount && data.discount ? data.amount - data.discount : ''} onChange={(e) => { data.gross_amount = Calculate_gst(data.amount, data.discount, data.cgst, data.sgst); }} />
                                                         </div>
                                                         <div className="col-1 p-0 m-0">
                                                             <label className='fw-bold text-charcoal75'>GST %</label>
-                                                            <input type='number' className='form-control text-center bg-seashell p-0 m-0' disabled ={true} value={data.cgst && data.sgst ? data.cgst + data.sgst : ''} onChange={(e) => { data.cgst = (e.target.value / 2); data.sgst = (e.target.value / 2); data.gross_amount = Calculate_gst(data.amount, data.discount, data.cgst, data.sgst); }} />
+                                                            <input type='number' className='form-control text-center bg-seashell p-0 m-0' disabled={true} value={data.cgst && data.sgst ? data.cgst + data.sgst : ''} onChange={(e) => { data.cgst = (e.target.value / 2); data.sgst = (e.target.value / 2); data.gross_amount = Calculate_gst(data.amount, data.discount, data.cgst, data.sgst); }} />
                                                         </div>
                                                         <div className="col-1 p-0 m-0">
                                                             <label className='text-center fw-bold text-charcoal75'>Total </label>
-                                                            <input className=' form-control text-center bg-seashell p-0' disabled ={true} value={data.gross_amount ? data.gross_amount : ''} />
+                                                            <input className=' form-control text-center bg-seashell p-0' disabled={true} value={data.gross_amount ? data.gross_amount : ''} />
                                                         </div>
                                                         <div className="col-auto align-self-end d-none">
                                                             <button className='btn btn-sm p-0 m-0' onClick={() => { DeleteExtraCharges(i); setpaymentmethods(prevState => [...prevState]) }}><img src={process.env.PUBLIC_URL + '/images/delete.png'} className='img-fluid' style={{ width: '1.5rem' }} /></button>
@@ -423,19 +423,19 @@ const Bill = (props) => {
                                 <div className="row p-0 m-0">
                                     <div className="col-6">
                                         <label className='text-charcoal75 fw-bold'>SGST</label>
-                                        <input className='form-control bg-seashell' disabled ={true} value={SGST ? SGST : Get_total_Seperate_gsts()} onChange={(e) => setSGST(e.target.value)} />
+                                        <input className='form-control bg-seashell' disabled={true} value={SGST ? SGST : Get_total_Seperate_gsts()} onChange={(e) => setSGST(e.target.value)} />
                                     </div>
                                     <div className="col-6">
                                         <label className='text-charcoal75 fw-bold'>CGST</label>
-                                        <input className='form-control bg-seashell' disabled ={true} value={CGST ? CGST : Get_total_Seperate_gsts()} onChange={(e) => setCGST(e.target.value)} />
+                                        <input className='form-control bg-seashell' disabled={true} value={CGST ? CGST : Get_total_Seperate_gsts()} onChange={(e) => setCGST(e.target.value)} />
                                     </div>
                                 </div>
                             </div>
-                            <div className="container-fluid p-2 text-center rounded-2 bg-lightyellow mt-2">
+                            <div className="container-fluid p-2 text-center rounded-1 bg-lightyellow mt-2">
                                 <div className="row text-center p-0 m-0 align-items-center">
                                     <div className='col-4 align-self-end'>
                                         <label className=' fw-bolder text-charcoal text-wrap'>Grand Total</label>
-                                        <input className='form-control text-success text-center border-0 fw-bolder p-0 fs-5 bg-seashell' disabled ={true} value={Get_Grand_Total()} />
+                                        <input className='form-control text-success text-center border-0 fw-bolder p-0  bg-seashell' disabled={true} value={Get_Grand_Total()} />
                                     </div>
                                     <div className="col-4 align-self-end">
                                         <label className=' fw-bolder text-charcoal text-wrap'>Advance Amount Balance</label>
@@ -448,9 +448,9 @@ const Bill = (props) => {
                                                 </div>
                                             ) : (
                                                 advancepayments ? (
-                                                    <input className='form-control text-lightgreen text-center border-0 fw-bolder p-0 fs-5 bg-seashell' disabled ={true} value={advancepayments.advnace_total} />
+                                                    <input className='form-control text-lightgreen text-center border-0 fw-bolder p-0  bg-seashell' disabled={true} value={advancepayments.advnace_total} />
                                                 ) : (
-                                                    <div className='bg-lightred text-center fw-bolder rounded-2 p-2'>No Advance Payments Found</div>
+                                                    <div className='bg-lightred text-center fw-bolder rounded-1 p-2'>No Advance Payments Found</div>
                                                 )
 
                                             )
@@ -459,7 +459,7 @@ const Bill = (props) => {
                                     </div>
                                     <div className="col-4 align-self-end">
                                         <label className=' fw-bolder text-charcoal text-wrap'>Consumables Amount</label>
-                                        <input className='form-control text-primary text-center border-0 fw-bolder p-0 fs-5 bg-seashell' disabled ={true} />
+                                        <input className='form-control text-primary text-center border-0 fw-bolder p-0  bg-seashell' disabled={true} />
                                     </div>
 
                                 </div>
@@ -486,7 +486,7 @@ const Bill = (props) => {
                                     paymentmethods.map((data, i) => (
                                         <div className="row p-0 m-0 justify-content-center m-2 ps-2">
                                             <div className="col-4 p-0 mx-2">
-                                                <select className='form-control bg-seashell py-1' disabled ={true} value={data.paymentmethod} onChange={(e) => { data.paymentmethod = e.target.value; setpaymentmethods(prevState => [...prevState]) }}>
+                                                <select className='form-control bg-seashell py-1' disabled={true} value={data.paymentmethod} onChange={(e) => { data.paymentmethod = e.target.value; setpaymentmethods(prevState => [...prevState]) }}>
                                                     <option className='text-charcoal75 fw-bolder'>Payment Method</option>
                                                     <option value='Cash'>Cash</option>
                                                     <option value='Card'>Card</option>
@@ -499,7 +499,7 @@ const Bill = (props) => {
                                                 </select>
                                             </div>
                                             <div className="col-4 p-0 m-0">
-                                                <input className='form-control bg-seashell py-1' disabled ={true} value={data.amount} onChange={(e) => { data.amount = e.target.value; setpaymentmethods(prevState => [...prevState]) }} />
+                                                <input className='form-control bg-seashell py-1' disabled={true} value={data.amount} onChange={(e) => { data.amount = e.target.value; setpaymentmethods(prevState => [...prevState]) }} />
                                             </div>
                                             <div className="col-2 d-none">
                                                 <button className='btn btn-sm p-0 m-0' onClick={() => { DeletePaymentMethods(i); setpaymentmethods(prevState => [...prevState]) }}><img src={process.env.PUBLIC_URL + '/images/delete.png'} className='img-fluid' style={{ width: '1.5rem' }} /></button>

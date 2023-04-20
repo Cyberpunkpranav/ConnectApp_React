@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useContext } from 'react'
 import axios from 'axios'
 import { DoctorsList, URL, Doctorapi, TodayDocs } from '../../index'
 import Notiflix from 'notiflix';
-import '../../css/bootstrap.css';
+
 import '../../css/appointment.css';
 import { customconfirm } from '../features/notiflix/customconfirm'
 
@@ -209,7 +209,7 @@ const UpdateAppointment = (props) => {
                     {
                         cliniclist.map((data, i) => (
                             <label key={i} className={`d-${clinicID == data.id ? 'block' : 'none'} `}>
-                            <img src={process.env.PUBLIC_URL + '/images/location.png'} style={{width:'1.5rem'}}/> {data.title} {data.address}</label>
+                                <img src={process.env.PUBLIC_URL + '/images/location.png'} style={{ width: '1.5rem' }} /> {data.title} {data.address}</label>
 
                         ))
                     }
@@ -238,7 +238,7 @@ const UpdateAppointment = (props) => {
                     <div className="col-md-auto col-4 m-0 p-0">
                         <label className="">Selected Date</label>
                         <div className="col-12">
-                        <input type="date" ref={dateref} className="form-control border-charcoal bg-seashell" onChange={getTimefrom} />
+                            <input type="date" ref={dateref} className="form-control border-charcoal bg-seashell" onChange={getTimefrom} />
                         </div>
                     </div>
                     <div className="col-md-3 col-lg-3 col-4">

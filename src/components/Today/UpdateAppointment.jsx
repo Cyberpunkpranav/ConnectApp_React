@@ -3,7 +3,6 @@ import axios from 'axios'
 
 import { DoctorsList, URL, Doctorapi, TodayDocs } from '../../index'
 import Notiflix from 'notiflix';
-import '../../css/bootstrap.css';
 import '../../css/appointment.css';
 import { customconfirm } from '../features/notiflix/customconfirm'
 

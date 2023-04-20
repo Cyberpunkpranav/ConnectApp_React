@@ -4,11 +4,9 @@ import { useContext } from 'react'
 import { URL } from '../../index'
 import { customconfirm } from '../features/notiflix/customconfirm'
 // import {useJsApiLoader, Autocomplete } from '@react-google-maps/api'
-
 import { geocodeByAddress, getLatLng } from 'react-google-places-autocomplete'
 import GooglePlacesAutocomplete from "react-google-places-autocomplete"
 import Notiflix from 'notiflix';
-import '../../css/bootstrap.css';
 import '../../css/patient.css';
 const UpdatePatient = (props) => {
     const url = useContext(URL);

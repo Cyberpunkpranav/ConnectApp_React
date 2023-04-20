@@ -7,7 +7,7 @@ import { URL } from '../../index'
 import '../../css/dashboard.css'
 import '../../css/appointment.css'
 import '../../css/dsr.css'
-import '../../css/bootstrap.css'
+
 const Pharmacy_Dsr = (props) => {
   const Pendingsonly = useRef()
   const saleentry = useRef()
@@ -24,7 +24,7 @@ const Pharmacy_Dsr = (props) => {
   const [pd, setpd] = useState('none')
   const [se, setse] = useState('block')
   const [pr, setpr] = useState('block')
-  const [prxl, setprxl] = useState('none') 
+  const [prxl, setprxl] = useState('none')
   const [pageindex, setpageindex] = useState()
 
   const PharmacyList = async () => {
@@ -693,7 +693,7 @@ const Pharmacy_Dsr = (props) => {
                     <body className=' text-center' style={{ minHeight: '55vh' }}>
                       <tr className='position-absolute border-0 start-0 end-0 px-5'>
                         <div class="d-flex align-items-center">
-                          <strong className='fs-5'>Getting Details please be Patient ...</strong>
+                          <strong className=''>Getting Details please be Patient ...</strong>
                           <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
                         </div>
                       </tr>
@@ -771,7 +771,7 @@ const Pharmacy_Dsr = (props) => {
                     <body className=' text-start' style={{ minHeight: '55vh' }}>
                       <tr className='position-absolute border-0 start-0 end-0 px-5'>
                         <div class="d-flex align-items-center">
-                          <strong className='fs-5'>Getting Details please be Patient ...</strong>
+                          <strong className=''>Getting Details please be Patient ...</strong>
                           <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
                         </div>
                       </tr>
@@ -849,7 +849,7 @@ const Pharmacy_Dsr = (props) => {
                     <body className=' text-center' style={{ minHeight: '55vh' }}>
                       <tr className='position-absolute border-0 start-0 end-0 px-5'>
                         <div class="d-flex align-items-center">
-                          <strong className='fs-5'>Getting Details please be Patient ...</strong>
+                          <strong className=''>Getting Details please be Patient ...</strong>
                           <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
                         </div>
                       </tr>
@@ -1119,7 +1119,7 @@ const Pharmacy_Dsr = (props) => {
                     <body className=' text-start' style={{ minHeight: '55vh' }}>
                       <tr className='position-absolute border-0 start-0 end-0 px-5'>
                         <div class="d-flex align-items-center">
-                          <strong className='fs-5'>Getting Details please be Patient ...</strong>
+                          <strong className=''>Getting Details please be Patient ...</strong>
                           <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
                         </div>
                       </tr>
@@ -1188,7 +1188,7 @@ const Pharmacy_Dsr = (props) => {
                     <body className=' text-start' style={{ minHeight: '55vh' }}>
                       <tr className='position-absolute border-0 start-0 end-0 px-5'>
                         <div class="d-flex align-items-center">
-                          <strong className='fs-5'>Getting Details please be Patient ...</strong>
+                          <strong className=''>Getting Details please be Patient ...</strong>
                           <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
                         </div>
                       </tr>

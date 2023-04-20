@@ -1,8 +1,8 @@
 .livetime{
-    font-size:1.5rem;
+    font-size:1.3rem
 }
 @media (max-width:418px) {
     .livetime{
-        font-size:1rem;
+        font-size:1rem
     }
 }

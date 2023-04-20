@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { URL, Vitals } from '../../index'
-import '../../css/bootstrap.css'
+
 import '../../css/dashboard.css'
 import axios from 'axios'
 import Notiflix from 'notiflix'
@@ -116,7 +116,7 @@ const Vitalsoperation = (props) => {
   }
   // console.log(props.appointmentvitalslist)
   return (
-    <div className='bg-seashell rounded-2 position-relative pb-4'>
+    <div className='bg-seashell rounded-1 position-relative pb-4'>
       <h5 className='p-1 text-center'>{props.patientname} Vitals</h5>
       <button className=' btn-close position-absolute top-0 end-0 m-1 me-2' disabled={props.loadvitals ? true : false} onClick={props.CloseVitals}></button>
       <button className='btn p-0 m-0 position-absolute top-0 start-0 ms-2 m-1' onClick={refresh}><img src={process.env.PUBLIC_URL + '/images/refresh.png'} style={{ width: '1.5rem' }} /></button>

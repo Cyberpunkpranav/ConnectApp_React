@@ -10,7 +10,7 @@ import GooglePlacesAutocomplete from "react-google-places-autocomplete"
 import Notiflix from 'notiflix';
 import { customconfirm } from '../features/notiflix/customconfirm'
 //Css
-import '../../css/bootstrap.css'
+
 
 const AddPatient = (props) => {
     const url = useContext(URL);

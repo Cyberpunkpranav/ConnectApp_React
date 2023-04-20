@@ -3,7 +3,7 @@ import axios from 'axios'
 import { useContext } from 'react'
 import { DoctorsList, URL, Doctorapi, TodayDocs } from '../../index'
 import Notiflix from 'notiflix';
-import '../../css/bootstrap.css'
+
 import { customconfirm } from '../features/notiflix/customconfirm'
 
 const AddAppointment = (props) => {
@@ -33,15 +33,15 @@ const AddAppointment = (props) => {
     useEffect(() => {
         ClinicList()
     }, [])
-    
-    function setfromsearch(){
+
+    function setfromsearch() {
         setpatientid(props.patientidfromsearch)
         setsearchinput(props.patientnamefromsearch)
     }
-    useEffect(()=>{
+    useEffect(() => {
         setfromsearch()
-    },[props.patientidfromsearch])
-    console.log(patientid,searchinput)
+    }, [props.patientidfromsearch])
+    console.log(patientid, searchinput)
     function tConvert(time) {
 
         time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
@@ -59,7 +59,7 @@ const AddAppointment = (props) => {
         setsearchinput(e.target.value)
         axios.get(`${url}/patient/list?search=${searchinput}&limit=5&offset=0`).then((response) => {
             setsearchlist(response.data.data.patients_list)
-                    setsearchload(false)
+            setsearchload(false)
         })
         if (searchinput && searchinput.length > 1) {
             setdisplaysearchlist('block');
@@ -206,8 +206,8 @@ const AddAppointment = (props) => {
                 <div className="col-12 bg-seashell  border-0" >
                     {
                         cliniclist.map((data, i) => (
-                                <label className={`d-${clinicID==data.id?'block':'none'}`}><input type="checkbox" className={`radio form me-1 `} key={i} checked={clinicID==data.id ? true : false} name={data.id} /> {data.title} {data.address}</label>
-                    
+                            <label className={`d-${clinicID == data.id ? 'block' : 'none'}`}><input type="checkbox" className={`radio form me-1 `} key={i} checked={clinicID == data.id ? true : false} name={data.id} /> {data.title} {data.address}</label>
+
                         ))
                     }
                 </div>

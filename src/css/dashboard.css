@@ -1,8 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Urbanist&display=swap');
+/* * {
 
-html {
-    font-family: 'Urbanist', sans-serif;
-}
+} */
 
 :root {
     --burntumber: #96351E;
@@ -52,8 +51,8 @@ body {
 }
 .navsection {
     background-color: var(--seashell);
-    font-family: 'Urbanist', sans-serif;
-    box-shadow: 0px 1px 6px 0px black;
+    /* font-family: 'Urbanist', sans-serif; */
+    box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.151);
 }
 
 .navsection .menu p {
@@ -88,7 +87,7 @@ body {
 }
 
 .navsection .userstatus {
-    font-size: 1rem;
+    font-size: 0.75rem;
     letter-spacing: 0.009rem;
 }
 
@@ -99,17 +98,12 @@ body {
 }
 
 /*---------------------------------------------------------navbar css----------------------------------------------------------------------*/
-.doctorsection {
-    background-color: var(--seashell);
-}
+
 
 .doctorsection i {
     font-size: 200%;
 }
 
-.search input {
-    text-align: center;
-}
 
 .searchbtn {
     border: none;
@@ -120,7 +114,7 @@ body {
 }
 
 .searchlist {
-    z-index: 3000;
+    z-index: 3;
 }
 
 .patientsearch input {
@@ -244,9 +238,6 @@ body {
 /*---------------------------------------------------------------Doctor Section css-----------------------------------------------------------*/
 
 
-.doctorsection {
-    font-family: 'Urbanist', sans-serif;
-}
 
 .doctorsection .doctorbutton {
     border: 1px solid var(--charcoal);
@@ -297,7 +288,7 @@ body {
     font-size: 1.2rem;
     border: none;
     color: var(--charcoal);
-    font-family: 'Urbanist', sans-serif;
+
 }
 
 .addpatient:hover {
@@ -307,7 +298,7 @@ body {
 
 .patientinfosection {
     background-color: var(--seashell);
-    font-family: 'Urbanist', sans-serif;
+
     z-index: 5;
     right: 0;
     /* box-shadow: 0px 0px 0px 1600px#22202370; */
@@ -346,7 +337,7 @@ body {
 .doctorinfosection {
     /* background-color: var(--seashell); */
     right: 0;
-    font-family: 'Urbanist', sans-serif;
+
     /* box-shadow: 0px 0px 0px 1600px#22202370; */
     z-index: 4;
 }
@@ -359,9 +350,6 @@ body {
     color: var(--charcoal);
 }
 
-.patientsection {
-    font-family: 'Urbanist', sans-serif;
-}
 
 .patientsection #livetime {
     font-weight: 800;
@@ -393,9 +381,7 @@ body {
     font-weight: 800;
 }
 
-.timeslotsection {
-    font-family: 'Urbanist', sans-serif;
-}
+
 
 .allappointmentsection .datatable tr:nth-child(even) {
     background-color: var(--seashell);
