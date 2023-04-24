@@ -182,14 +182,14 @@ const AddPatient = (props) => {
     }
     return (
         <>
-            <h5 className="text-center mt-2 position-relative"> Patient Details </h5>
-            <button type="button" className="btn-close closebtn position-absolute" aria-label="Close" onClick={props.togglepatientform} ></button>
+            <h5 className="text-center position-relative fw-bold position-stic"> Patient Details </h5>
+            <button type="button" className="btn-close closebtn position-absolute pt-2" aria-label="Close" onClick={props.togglepatientform} ></button>
             <hr />
-            <div className="col-12">
+            <div className="col-12 fw-bold">
                 <div className="form-group col-10 m-auto py-3">
                     <label htmlFor="inputEmail4" className="mb-2">Enter Number</label>
                     <div className="row m-0 p-0 justify-content-center">
-                        <div className="col-4">
+                        <div className="col-4 ps-0">
                             <select name="countryCode" className="form-control" value={countrycode ? countrycode : ''} onChange={(e) => { setcountrycode(e.target.value) }}>
                                 <option defaultValue='Country Code' >Country Code</option>
                                 <option data-countrycode="IN" value="91">India (+91)</option>
@@ -408,7 +408,7 @@ const AddPatient = (props) => {
                                 <option data-countrycode="ZW" value="263">Zimbabwe (+263)</option>
                             </select>
                         </div>
-                        <div className="col-8">
+                        <div className="col-8 pe-0">
                             <input type="number" className="form-control patientnumber m-auto" id="inputEmail4" value={phonenumber ? phonenumber : ''} onChange={(e) => { setphonenumber(e.target.value) }} placeholder="Phone Number" required />
                         </div>
                     </div>

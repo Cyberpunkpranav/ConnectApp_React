@@ -231,8 +231,8 @@ function Navbar(props) {
                 {/* col-xl-2 col-md-auto col-sm-auto col-6  */}
                 <div className={`col-auto pe-1 p-0 m-0 dropdown text-decoration-none d-${props.permissions.patient_add == undefined && props.permissions.doctor_add == undefined && props.permissions.appointment_add == undefined ? 'none' : ''}`}>
                   <button className="button p-0 m-0 px-2 pe-2 py-1 button-burntumber dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <span className="mx-1 pe-1 ">+</span>
-                    Add
+                    {/* <span className="mx-1 pe-1 ">+</span> */}
+                    + Add
                   </button>
                   <ul className="dropdown-menu">
                     <li><button className={`dropdown-item border-bottom d-${props.permissions.patient_add == 1 ? '' : 'none'}`} onClick={() => { togglepatientform() }}>+ Patient</button></li>
@@ -798,7 +798,7 @@ function Patients() {
                         <td className={`d-${permission.patient_edit == 1 ? '' : 'none'}`}>
                           <button className="btn p-0 m-0" onClick={(e) => { settabindex(i); OpenUpdatePatient(i) }}><img src={process.env.PUBLIC_URL + "/images/confirmed.png"} style={{ width: "1.5rem" }} /></button>
                           {form == i ? (
-                            <section id={i} className={`updatepatientform text-start position-absolute d-${tabindex == i ? updatepatient : 'none'} bg-seashell rounded-1 shadow-sm border`}>
+                            <section id={i} className={`updatepatientform text-start position-absolute d-${tabindex == i ? updatepatient : 'none'} bg-seashell top-0 rounded-1 shadow-sm border`}>
                               <UpdatePatient index={i} getAllPatients={getAllPatients} CloseUpdatePatient={CloseUpdatePatient} patientid={data.id} data={data} phonecountrycode={data.phone_country_code ? data.phone_country_code : 'N/A'} PhoneNo={data.phone_number ? Number(data.phone_number) : ''} dob={data.dob ? data.dob : ''} gender={data.gender ? data.gender : ''} full_name={data.full_name ? data.full_name : ''} email={data.email ? data.email : ''} pincode={data.pin_code ? data.pin_code : ''} location={data.location ? data.location : ''} parent={data.parent} linkid={data.link_id ? data.link_id : ''} relation={data.relation} latitude={data.latitude} longitude={data.longitude} />
                             </section>
                           ) : (<></>)

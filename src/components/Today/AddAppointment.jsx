@@ -199,7 +199,7 @@ const AddAppointment = (props) => {
                 </div>
 
                 <div className="col-12 p-0">
-                    <a href="/#" className="btn text-decoration-none btn-sm done" onClick={props.formshift}> Add User </a>
+                    <a href="/#" className="btn text-decoration-none btn-sm button-burntumber p-0 m-0 px-1 m-1" onClick={props.formshift}> Add User </a>
                 </div>
                 <hr />
                 <label>Select Location</label>

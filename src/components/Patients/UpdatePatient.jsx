@@ -537,7 +537,7 @@ const UpdatePatient = (props) => {
 
                 </div>
                 <div className="col-6 py-2 pb-2 m-auto text-center">
-                    <button className="btn button-burntumber" onClick={confirmmessage} > Save Changes </button>
+                    <button className="btn button-charcoal" onClick={confirmmessage} > Save Changes </button>
                 </div>
                 <div className="col-6 pb-2 m-auto text-center">
                     <button className="btn button-pearl " onClick={currentvalue}>Set Previous</button>

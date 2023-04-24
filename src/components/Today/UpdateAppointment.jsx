@@ -250,7 +250,7 @@ const UpdateAppointment = (props) => {
                         </div>
                     </div>
                     <div className="col-md-3 col-sm-3 col-lg-3 col-3">
-                        <label className='text-charcoal'>Selected Time</label>
+                        <label className='text-charcoal50 fw-bold'>Selected Time</label>
                         <div className="col-12 p-0 m-0 selectedtime">
                             <button className='button button-charcoal50-outline rounded-1 fw-bold shadow-none' style={{ letterSpacing: '1px' }} >{props.appointmenttime}</button>
                         </div>

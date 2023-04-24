@@ -1,11 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Urbanist&display=swap');
 body{
     font-family: 'Urbanist', sans-serif;
+    letter-spacing: 0.5px;
 }
 table{
     font-size: 0.75rem !important;
 }
 p{
+    font-size: 0.75rem !important;
+}
+div{
     font-size: 0.75rem !important;
 }
 h4{
@@ -19,11 +23,12 @@ img{
     width:1.3rem !important;
 }
 span{
-    font-size: 0.85rem !important;
+    font-size: 0.75rem !important;
 }
 h6{
     font-size: 0.85rem !important;
 }
+
 :root {
     --burntumber: #96351E;
     --burntumber50: #96341e75;

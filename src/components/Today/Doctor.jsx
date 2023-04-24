@@ -537,7 +537,7 @@ function DoctorSchedule(props) {
                                 </button>
                                 {
                                   paymentsi == i ? (
-                                    <td className={`payments start-0 bg-seashell end-0 shadow-sm top-0 border border-1 rounded-1 col-lg-6 col-md-8 col-sm-12 col-12 mt-2 col-xl-8 position-absolute d-${paymentsi == i ? paymentsform : 'none'}`}>
+                                    <td className={`payments start-0 bg-seashell end-0 shadow-sm top-0 border border-1 rounded-1 col-lg-6 col-md-8 col-sm-12 col-12 mt-2 col-xl-8 position-absolute px-5 py-2 d-${paymentsi == i ? paymentsform : 'none'}`} >
                                       <Payments ClosePaymentsForm={ClosePaymentsForm2} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} appointmentid={data.id} patientid={data.patient && data.patient.id != null ? data.patient.id : ""} Appointmentlist={Appointmentlist} setsingleload={setsingleload} isLoading={isLoading} appointmentdata={appointmentdata} paymentsi={paymentsi} /></td>
                                   ) : (<></>)
                                 }
@@ -561,7 +561,7 @@ function DoctorSchedule(props) {
                             </div></td>
                             {
                               tableindex === i ? (
-                                <td className={`updateappointment shadow-sm border border-1 rounded-1 bg-seashell mt-2 start-0 end-0 top-0 col-lg-8 col-md-10 col-sm-12 col-12 col-xl-5 d-${tableindex == i ? appointmentform : 'none'} position-absolute`} style={{width:'fit-content'}}>
+                                <td className={`updateappointment shadow-sm border border-1 rounded-1 bg-seashell mt-2 start-0 end-0 top-0 col-lg-8 col-md-8 col-sm-11 col-11 col-xl-5 d-${tableindex == i ? appointmentform : 'none'} position-absolute`}>
                                   <UpdateAppointment fetchapi={props.fetchapi} fetchallAppointmentslist={props.fetchallAppointmentslist} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} patientid={data.patient != null && data.patient.id != null ? data.patient.id : ""} appointmentid={data.id} addappointmentform={addappointmentform} closeappointmentform={closeappointmentform} doctorid={props.doctorid} appointmentdoctorid={data.doctor.id} appointmentdate={data.appointment_date} appointmenttime={tConvert(data.timeslot.time_from)} /></td>
                               ) : (<></>)
                             }
@@ -574,12 +574,12 @@ function DoctorSchedule(props) {
                             {
                               billindex == i ? (
                                 <td className={`bill d-${billindex == i ? billform : 'none'} col-lg-8 p-0 m-0 col-md-10 start-0 mx-auto mt-2 end-0 top-0 col-sm-12 col-12 col-xl-6 border border-1 rounded-1 shadow-sm position-absolute`}>
-                                  <Bill fetchapi={props.fetchapi} CloseBillForm={CloseBillForm} patientid={data.patient && data.patient.id != null ? data.patient.id : ""} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} Appointmentlist={Appointmentlist} setsingleload={setsingleload} isLoading={isLoading} appointmentdata={appointmentdata} appointmentid={data.id} doctorfee={data.doctor.consulationFee} /></td>
+                                  <Bill fetchapi={props.fetchapi} CloseBillForm={CloseBillForm} patientid={data.patient && data.patient.id != null ? data.patient.id : ""} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} Appointmentlist={Appointmentlist} setsingleload={setsingleload} isLoading={isLoading} appointmentdata={appointmentdata} appointmentid={data.id} doctorfee={data.doctor.consulationFee} billform={billform} /></td>
                               ) : (<></>)
                             }
                             {
                               paymentsindex === i ? (
-                                <td className={`payments start-0 bg-seashell end-0 shadow-sm top-0 border border-1 rounded-1 col-lg-6 col-md-8 col-sm-12 col-12 mt-2 col-xl-8 position-absolute d-${paymentsindex == i ? paymentsform : 'none'}`}>
+                                <td className={`payments start-0 bg-seashell end-0 shadow-sm top-0 border border-1 rounded-1 col-lg-6 col-md-8 col-sm-12 col-12 mt-2 col-xl-8 ps-3 px-5 py-2 position-absolute d-${paymentsindex == i ? paymentsform : 'none'}`}>
                                   <Payments ClosePaymentsForm={ClosePaymentsForm} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} appointmentid={data.id} patientid={data.patient && data.patient.id != null ? data.patient.id : ""} Appointmentlist={Appointmentlist} setsingleload={setsingleload} isLoading={isLoading} appointmentdata={appointmentdata} /></td>
                               ) : (<></>)
                             }

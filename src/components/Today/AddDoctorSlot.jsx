@@ -94,36 +94,37 @@ const AddDoctorSlot = (props) => {
   }
   return (
 
-    <div className='container px-2'>
-      <h5 className="text-center mt-2">Slot Details</h5>
+    <div className='container px-2 fw-bold'>
+      <h5 className="text-center mt-2 fw-bold">Slot Details</h5>
       <button type="button" className="btn-close closebtn position-absolute" disabled={load == true ? true : false} aria-label="Close" onClick={props.toggledoctorform} ></button>
       <hr />
       <div className="col-12">
+        <label className='ps-1'>Doctor</label>
         <select className="col-10 form-control selectdoctor" value={adddoctorfortoday ? adddoctorfortoday : ''} onChange={(e) => { setadddoctorfortoday(e.target.value) }}>
           <option defaultValue="Select Doctor">Select Doctor</option>
           {
             Doctors.map((data) => (
-              <option value={data[0]}>{data[0]}.{data[1]}{' '}{Avaliablemessage(data[0])}</option>
+              <option value={data[0]}>Dr. {data[1]}{' '}{Avaliablemessage(data[0])}</option>
             ))
           }
         </select>
       </div>
       <hr />
-      <label>Clinic</label>
+      <label className='ps-1'>Clinic</label>
 
       <div className="col-12">
         {
           cliniclist.map((data, i) => (
-            <label className={`d-${clinicID == data.id ? 'block' : 'none'}`}><input type="checkbox" className="radio form me-1" checked={clinicID == data.id ? true : false} /> {data.title} {data.address}</label>
+            <label className={`d-${clinicID == data.id ? 'block' : 'none'} text-burntumber`}><input type="checkbox" className="radio form-check-input me-1" checked={clinicID == data.id ? true : false} /> {data.title} {data.address}</label>
 
           ))
         }
       </div>
       <hr />
-      <label>Date</label>
+      <label className='ps-1'>Date</label>
       <div className="col-12"><input type="date" className="form-control col-10" value={docdate ? docdate : ''} onChange={(e) => { setdocdate(e.target.value) }} /></div>
       <hr />
-      <label>Time From</label>
+      <label >Time From</label>
       <div className="col-12"><input type="time" className="form-control col-10" value={fromtime ? fromtime : ''} onChange={(e) => { setfromtime(e.target.value) }} /></div>
       <hr />
       <label>Time To</label>

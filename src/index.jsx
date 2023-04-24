@@ -232,9 +232,9 @@ function Switchpage() {
     }).then((response) => {
       setload(false)
       if (response.data.status === true) {
-        localStorage.setItem('email', encrypt(logininput.email, secretkey));
-        localStorage.setItem('name', encrypt(response.data.data.name, secretkey));
-        localStorage.setItem('designation', encrypt(response.data.data.roles.title, secretkey));
+        localStorage.setItem('email',logininput.email);
+        localStorage.setItem('name',response.data.data.name);
+        localStorage.setItem('designation',response.data.data.roles.title);
         localStorage.setItem('id', response.data.data.id);
         localStorage.setItem('ClinicId', response.data.data.clinic_id)
         localStorage.setItem('roleId', response.data.data.roles.id)
@@ -279,8 +279,8 @@ function Switchpage() {
 
 
     if (localemail !== null && localemail !== '') {
-      const Username = decrypt(localStorage.getItem('name'), secretkey)
-      const Designation = decrypt(localStorage.getItem('designation'), secretkey)
+      const Username = localStorage.getItem('name')
+      const Designation = localStorage.getItem('designation')
       const Id = decrypt(localStorage.getItem('id'), secretkey)
       return <Connectapp username={Username} designation={Designation} id={Id} permissions={permissions} />
     } else {

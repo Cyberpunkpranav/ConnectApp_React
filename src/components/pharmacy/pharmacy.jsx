@@ -41,7 +41,6 @@ function Salesection(props) {
   }
   return (
     <>
-
       <section className='salesection pt-1'>
         <div className="container-fluid p-0 m-0">
           <div className="row gx-3 p-0 m-0">

@@ -252,60 +252,60 @@ const SelectedAppointments = (props) => {
           ) : (
 
             props.appointmentdata.map((data, key) => (
-              <tr id={key} className='text-charcoal fw-bold align-middle'>
+              <tr id={key} className='text-charcoal fw-bold align-middle text-start'>
                 <td className={`ps-3 d-${permission.appointment_edit == 1 ? '' : 'none'} bg-${tableindex == key ? 'lightyellow' : ''}`}>
                   <img src={process.env.PUBLIC_URL + "/images/confirmed.png"} style={{ width: "1.5rem" }} onClick={(e) => { settableindex(key); openapppointmentform(); }} className="btn p-0 m-0" />
                 </td>
                 <td>
-                <div className="row p-0 m-0 align-items-center">
-                  <div className="col-1 p-0 m-0 me-2">
+                  <div className="row p-0 m-0 align-items-center">
+                    <div className="col-1 p-0 m-0 me-2">
                       <div className={`rounded-circle border-1 button-${props.status_color(data.appointment_status)}`} style={{ height: '12px', width: '12px' }}></div>
-                  </div>
-                  <div className="col-auto p-0 m-0 ">
-                  <select disabled={permission.appointment_edit == 1 ? false : true} className={`fw-bold bg-transparent border-0 `} name={data.id} onChange={(e) => { UpadteStatus(e) }}>
-                    <option className="button text-start" selected disabled>{props.status(data.appointment_status)}</option>
-                    <option className="button-lightred" value='1'>Pending</option>
-                    <option className="button-lightblue" value='2'>Booked</option>
-                    <option className="button-lightred" value='3'>Cancelled</option>
-                    <option className="button-pearl" value='4'>QR Generated</option>
-                    <option className="button-brandy" value='5'>Checked_in</option>
-                    <option className="button-lightred" value='6'>Vitals Done</option>
-                    <option className="button-lightyellow" value='7'>In_apppointment</option>
-                    <option className="button-lightgreen" value='8'>Payment done</option>
-                    <option className="button-lightyellow" value='9'>Unattained</option>
-                    <option className="button-lightgreen" value='10'>Completed</option>
-                  </select>
-                  </div>
+                    </div>
+                    <div className="col-auto p-0 m-0 ">
+                      <select disabled={permission.appointment_edit == 1 ? false : true} className={`fw-bold bg-transparent border-0 `} name={data.id} onChange={(e) => { UpadteStatus(e) }}>
+                        <option className="button text-start" selected disabled>{props.status(data.appointment_status)}</option>
+                        <option className="button-lightred" value='1'>Pending</option>
+                        <option className="button-lightblue" value='2'>Booked</option>
+                        <option className="button-lightred" value='3'>Cancelled</option>
+                        <option className="button-pearl" value='4'>QR Generated</option>
+                        <option className="button-brandy" value='5'>Checked_in</option>
+                        <option className="button-lightred" value='6'>Vitals Done</option>
+                        <option className="button-lightyellow" value='7'>In_apppointment</option>
+                        <option className="button-lightgreen" value='8'>Payment done</option>
+                        <option className="button-lightyellow" value='9'>Unattained</option>
+                        <option className="button-lightgreen" value='10'>Completed</option>
+                      </select>
+                    </div>
                   </div>
                 </td>
                 {/* <td><button className={`btn button-${props.status_color(data.appointment_status)} text-charcoal fw-bold rounded-5`}>{props.status(data.appointment_status)}</button></td> */}
                 <td>
                   <div className="col-auto">
-                  {data.patient != null && data.patient.full_name != null ? data.patient.full_name : ''}
+                    {data.patient != null && data.patient.full_name != null ? data.patient.full_name : ''}
                   </div>
                   <div className="col-auto text-burntumber">
-                  {data.patient != null && data.patient.phone_number != null ? data.patient.phone_number : ""}
+                    {data.patient != null && data.patient.phone_number != null ? data.patient.phone_number : ""}
                   </div>
-                  </td>
+                </td>
                 <td>{data.doctor != null && data.doctor.doctor_name != null ? data.doctor.doctor_name : ''}</td>
                 {/* <td></td> */}
                 <td>
                   <div className="col-auto">
-                  {data.timeslot.date && data.timeslot.date !== null ? reversefunction(data.timeslot.date) : ''}
+                    {data.timeslot.date && data.timeslot.date !== null ? reversefunction(data.timeslot.date) : ''}
                   </div>
                   <div className="col-auto text-burntumber">
-                  {data.follow_up_date ? 'F/U- ' + reversefunction(data.follow_up_date ? data.follow_up_date : '') : ''}
+                    {data.follow_up_date ? 'F/U- ' + reversefunction(data.follow_up_date ? data.follow_up_date : '') : ''}
                   </div>
                 </td>
                 <td>{props.tConvert(data.timeslot.time_from)}</td>
                 <td>
                   <div className="col-auto">
-                  {data.total_amount}
+                    {data.total_amount}
                   </div>
                   <div className="col-auto">
-                  <AmountPaid appointmentData={data} />
+                    <AmountPaid appointmentData={data} />
                   </div>
-                 </td>
+                </td>
                 {/* <td className=''></td> */}
                 {/* <td><img src={process.env.PUBLIC_URL + "/images/vitals.png"} alt="displaying_image" style={{ width: "1.5rem" }} className='m-0 p-0' /> </td> */}
                 {/* <td>{data.follow_up_date ? data.follow_up_date : ''}</td> */}
@@ -325,7 +325,7 @@ const SelectedAppointments = (props) => {
                 </div></td>
                 {
                   tableindex == key ? (
-                    <td className={` d-${tableindex == key ? appointmentform : 'none'}  updateappointment bg-seashell col-lg-8 col-xl-5 col-md-8 col-sm-10 col-12 start-0 end-0  mx-auto top-0 border border-1 rounded-1 position-absolute`} style={{ zIndex: '3', marginTop: '10rem',width:'fit-content' }}>
+                    <td className={` d-${tableindex == key ? appointmentform : 'none'}  updateappointment bg-seashell col-lg-8 col-xl-5 col-md-8 col-sm-10 col-12 start-0 end-0  mx-auto top-0 border border-1 rounded-1 position-absolute`} style={{ zIndex: '3', marginTop: '10rem' }}>
                       <UpdateAppointment fetchallAppointmentslist={props.fetchallAppointmentslist}
                         patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : 'N/A'}
                         patientid={data.patient && data.patient.id !== null ? data.patient.id : 'N/A'} appointmentid={data.id && data.id !== null ? data.id : 'N/A'}

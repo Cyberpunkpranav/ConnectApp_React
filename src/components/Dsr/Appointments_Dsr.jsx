@@ -486,7 +486,7 @@ const Appointments_Dsr = (props) => {
 
         <div className="col export_dropdown position-absolute top-0 ">
           <div className="dropdown">
-            <button className="button button p-0 m-0 px-1 py-1 button-pearl text-burntumber  fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <button className=" button p-0 m-0 px-1 py-1 button-pearl text-burntumber  fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
               Exports
             </button>
             <ul className="dropdown-menu" >
@@ -524,51 +524,51 @@ const Appointments_Dsr = (props) => {
 
       <ul className="nav nav-pills mb-3 ms-2 ms-lg-2 ms-md-2 ms-sm-2" id="pills-tab" role="tablist">
         <li className="nav-item" role="presentation">
-          <button onClick={() => { setpageindex(0) }} className="nav-link active p-0 m-0 py-1 px-3 rounded-pill" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true" >Appointments<span class=" p-0 m-0 ms-2 badge text-lightyellow fs-6 fw-normal">{Appointments.length}</span></button>
+          <button onClick={() => { setpageindex(0) }} className="nav-link active p-0 m-0 py-1 px-3 rounded-pill" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true" >Appointments<span class=" p-0 m-0 ms-2 badge text-lightyellow fw-normal">{Appointments.length}</span></button>
         </li>
         <li className="nav-item ms-lg-3 ms-md-2 ms-sm-1 ms-1" role="presentation">
-          <button onClick={() => { setpageindex(1) }} className="nav-link p-0 m-0 py-1 px-3 rounded-pill" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Pendings Paid<span class=" p-0 m-0 ms-2 badge text-lightyellow fs-6 fw-normal">{pendingpaid.length}</span></button>
+          <button onClick={() => { setpageindex(1) }} className="nav-link p-0 m-0 py-1 px-3 rounded-pill" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Pendings Paid<span class=" p-0 m-0 ms-2 badge text-lightyellow fw-normal">{pendingpaid.length}</span></button>
         </li>
         <li className="nav-item ms-lg-3 ms-md-2 ms-sm-1 ms-1" role="presentation">
-          <button onClick={() => { setpageindex(2) }} className="nav-link p-0 m-0 py-1 px-3 rounded-pill" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Advance Payments<span class=" p-0 m-0 ms-2 badge text-lightyellow fs-6 fw-normal">{advancepaid.length}</span></button>
+          <button onClick={() => { setpageindex(2) }} className="nav-link p-0 m-0 py-1 px-3 rounded-pill" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Advance Payments<span class=" p-0 m-0 ms-2 badge text-lightyellow fw-normal">{advancepaid.length}</span></button>
         </li>
       </ul>
 
 
       <div className="tab-content" id="pills-tabContent ">
         <div className="tab-pane fade show active text-start" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
-          <h6 className="text-charcoal fw-bold p-0 m-0 ms-2 ms-lg-3 ms-md-1 ms-sm-1">Payments</h6>
-          <div className="row m-0 g-2 mt-md-2 p-0 text-start justify-content-start">
-            <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+          {/* <h6 className="text-charcoal fw-bold p-0 m-0 ms-2 ms-lg-3 ms-md-3 ms-sm-1">Payments</h6> */}
+          <div className="row m-0 g-2 mt-md-2 p-0 ms-md-1 text-start justify-content-start">
+            <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 ps-md-2 ps-1 pe-md-3 pe-md-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
               <p className='fw-bold text-charcoal75 text-start p-0 m-0 justify-content-start'>CASH</p>
-              <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForCash()}</h6>
+              <h6 className='fw-bold p-0 m-0 text-start'>₹ {payment_method_detailsForCash()}</h6>
             </div>
-            <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+            <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 ps-md-2 ps-1 pe-md-3 pe-md-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
               <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>CARD</p>
-              <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForCard()}</h6>
+              <h6 className='fw-bold p-0 m-0 text-start'>₹ {payment_method_detailsForCard()}</h6>
             </div>
-            <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+            <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 ps-md-2 ps-1 pe-md-3 pe-md-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
               <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>PAYTM</p>
-              <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForPaytm()}</h6>
+              <h6 className='fw-bold p-0 m-0 text-start'>₹ {payment_method_detailsForPaytm()}</h6>
             </div>
-            <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+            <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 ps-md-2 ps-1 pe-md-3 pe-md-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
               <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>PHONEPE</p>
-              <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForPhonepe()}</h6>
+              <h6 className='fw-bold p-0 m-0 text-start'>₹ {payment_method_detailsForPhonepe()}</h6>
             </div>
-            <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+            <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 ps-md-2 ps-1 pe-md-3 pe-md-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
               <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>WIRE</p>
-              <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForWireTransfer()}</h6>
+              <h6 className='fw-bold p-0 m-0 text-start'>₹ {payment_method_detailsForWireTransfer()}</h6>
             </div>
-            <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+            <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 ps-md-2 ps-1 pe-md-3 pe-md-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
               <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>RAZORPAY</p>
-              <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForRazorPay()}</h6>
+              <h6 className='fw-bold p-0 m-0 text-start'>₹ {payment_method_detailsForRazorPay()}</h6>
             </div>
-            <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+            <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 ps-md-2 ps-1 pe-md-3 pe-md-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
               <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>POINTS</p>
-              <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForPoints()}</h6>
+              <h6 className='fw-bold p-0 m-0 text-start'>₹ {payment_method_detailsForPoints()}</h6>
             </div>
           </div>
-          <div className=' scroll scroll-y pb-5' style={{ maxHeight: '58vh' }}>
+          <div className=' scroll scroll-y pb-5 mt-2' style={{ maxHeight: '58vh' }}>
             <table className='table text-start bg-pearl '>
               <thead className='position-sticky top-0 bg-pearl'>
                 <tr className='bg-pearl'>
@@ -606,8 +606,8 @@ const Appointments_Dsr = (props) => {
                   </tbody>
                 ) : (
                   Appointments.length == 0 ? (
-                    <tbody >
-                      <tr className='position-relative text-burntumber mt-1 text-center m-auto'>
+                    <tbody className='position-relative text-burntumber mt-1 text-center ' >
+                      <tr >
                         <td className=' position-absolute start-0 end-0 text-charcoal fw-bold mt-1'>No Appointments</td></tr>
                     </tbody>
                   ) : (
@@ -647,7 +647,7 @@ const Appointments_Dsr = (props) => {
                 )
               }
 
-            </table>  
+            </table>
             <table className={`table text-center bg-pearl d-none d-${appxl} `} ref={Appointmentref}>
               <thead className='position-sticky top-0 bg-pearl'>
                 <tr className='bg-pearl'>
@@ -731,18 +731,17 @@ const Appointments_Dsr = (props) => {
             </table>
           </div>
           <div className='p-0 m-0 py-1 ps-2 bg-seashell border position-absolute w-100 bottom-0 scroll'>
-            <div className="d-flex p-0 m-0 ">
-              <div className="col-auto">
-                <div className="row p-0 m-0 justify-content-end">
+            <div className="row p-0 m-0 ">
+              <div className="col-auto p-0 m-0">
+                <div className="row p-0 m-0">
                   <div className="col-auto">
                     <h6 className='fw-bold text-charcoal75 '>Grand Total</h6>
-                    <h5 className='fw-bold'>Rs. {GrandTotal()}</h5>
+                    <h5 className='fw-bold text-start'>₹ {GrandTotal()}</h5>
                   </div>
                   <div className="col-auto">
                     <h6 className='fw-bold text-charcoal75 '>Total Pending Amounts</h6>
-                    <h5 className='fw-bold text-burntumber'>Rs. {TotalPendingPayment()}</h5>
+                    <h5 className='fw-bold text-burntumber text-start'>₹ {TotalPendingPayment()}</h5>
                   </div>
-
                 </div>
               </div>
 
@@ -755,33 +754,33 @@ const Appointments_Dsr = (props) => {
         <div className="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
           <h6 className="text-charcoal fw-bold p-0 m-0 ms-2 ms-lg-3 ms-md-1 ms-sm-1">Payments</h6>
           <div className="row m-0 g-2 mt-md-2 p-0 text-start justify-content-start">
-            <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1  bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+            <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 ps-md-2 ps-1 pe-md-3 pe-md-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1  bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
               <p className='fw-bold text-charcoal75 text-start p-0 m-0 justify-content-start'>CASH</p>
-              <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForCash()}</h6>
+              <h6 className='fw-bold p-0 m-0 text-start'>₹ {payment_method_detailsForCash()}</h6>
             </div>
-            <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+            <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 ps-md-2 ps-1 pe-md-3 pe-md-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
               <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>CARD</p>
-              <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForCard()}</h6>
+              <h6 className='fw-bold p-0 m-0 text-start'>₹ {payment_method_detailsForCard()}</h6>
             </div>
-            <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+            <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 ps-md-2 ps-1 pe-md-3 pe-md-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
               <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>PAYTM</p>
-              <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForPaytm()}</h6>
+              <h6 className='fw-bold p-0 m-0 text-start'>₹ {payment_method_detailsForPaytm()}</h6>
             </div>
-            <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+            <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 ps-md-2 ps-1 pe-md-3 pe-md-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
               <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>PHONEPE</p>
-              <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForPhonepe()}</h6>
+              <h6 className='fw-bold p-0 m-0 text-start'>₹ {payment_method_detailsForPhonepe()}</h6>
             </div>
-            <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+            <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 ps-md-2 ps-1 pe-md-3 pe-md-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
               <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>WIRE</p>
-              <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForWireTransfer()}</h6>
+              <h6 className='fw-bold p-0 m-0 text-start'>₹ {payment_method_detailsForWireTransfer()}</h6>
             </div>
-            <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+            <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 ps-md-2 ps-1 pe-md-3 pe-md-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
               <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>RAZORPAY</p>
-              <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForRazorPay()}</h6>
+              <h6 className='fw-bold p-0 m-0 text-start'>₹ {payment_method_detailsForRazorPay()}</h6>
             </div>
-            <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+            <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 ps-md-2 ps-1 pe-md-3 pe-md-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
               <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>POINTS</p>
-              <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForPoints()}</h6>
+              <h6 className='fw-bold p-0 m-0 text-start'>₹ {payment_method_detailsForPoints()}</h6>
             </div>
           </div>
           <div className=' scroll scroll-y pb-5' style={{ maxHeight: '58vh' }}>
@@ -879,7 +878,7 @@ const Appointments_Dsr = (props) => {
                 <div className="row p-0 m-0 justify-content-start">
                   <div className="col-auto">
                     <h6 className='fw-bold text-charcoal75 '>Recieved Pending Amount</h6>
-                    <h5 className='fw-bold'>Rs. {PendingAmountRecieved()}</h5>
+                    <h5 className='fw-bold'>₹ {PendingAmountRecieved()}</h5>
                   </div>
                 </div>
               </div>
@@ -889,33 +888,33 @@ const Appointments_Dsr = (props) => {
         <div className="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">
           <h6 className="text-charcoal fw-bold p-0 m-0 ms-2 ms-lg-3 ms-md-1 ms-sm-1">Payments</h6>
           <div className="row m-0 g-2 mt-md-2 p-0 text-start justify-content-start">
-            <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+            <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 ps-md-2 ps-1 pe-md-3 pe-md-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
               <p className='fw-bold text-charcoal75 text-start p-0 m-0 justify-content-start'>CASH</p>
-              <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForCash()}</h6>
+              <h6 className='fw-bold p-0 m-0 text-start'>₹ {payment_method_detailsForCash()}</h6>
             </div>
-            <div className="col-auto col-md-auto col-lg-auto text-start  py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+            <div className="col-auto col-md-auto col-lg-auto text-start  py-lg-1 py-md-1 px-lg-3 ps-md-2 ps-1 pe-md-3 pe-md-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
               <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>CARD</p>
-              <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForCard()}</h6>
+              <h6 className='fw-bold p-0 m-0 text-start'>₹ {payment_method_detailsForCard()}</h6>
             </div>
-            <div className="col-auto col-md-auto col-lg-auto text-start  py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+            <div className="col-auto col-md-auto col-lg-auto text-start  py-lg-1 py-md-1 px-lg-3 ps-md-2 ps-1 pe-md-3 pe-md-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
               <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>PAYTM</p>
-              <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForPaytm()}</h6>
+              <h6 className='fw-bold p-0 m-0 text-start'>₹ {payment_method_detailsForPaytm()}</h6>
             </div>
-            <div className="col-auto col-md-auto col-lg-auto text-start  py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+            <div className="col-auto col-md-auto col-lg-auto text-start  py-lg-1 py-md-1 px-lg-3 ps-md-2 ps-1 pe-md-3 pe-md-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
               <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>PHONEPE</p>
-              <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForPhonepe()}</h6>
+              <h6 className='fw-bold p-0 m-0 text-start'>₹ {payment_method_detailsForPhonepe()}</h6>
             </div>
-            <div className="col-auto col-md-auto col-lg-auto text-start  py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+            <div className="col-auto col-md-auto col-lg-auto text-start  py-lg-1 py-md-1 px-lg-3 ps-md-2 ps-1 pe-md-3 pe-md-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
               <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>WIRE</p>
-              <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForWireTransfer()}</h6>
+              <h6 className='fw-bold p-0 m-0 text-start'>₹ {payment_method_detailsForWireTransfer()}</h6>
             </div>
-            <div className="col-auto col-md-auto col-lg-auto text-start  py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+            <div className="col-auto col-md-auto col-lg-auto text-start  py-lg-1 py-md-1 px-lg-3 ps-md-2 ps-1 pe-md-3 pe-md-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
               <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>RAZORPAY</p>
-              <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForRazorPay()}</h6>
+              <h6 className='fw-bold p-0 m-0 text-start'>₹ {payment_method_detailsForRazorPay()}</h6>
             </div>
-            <div className="col-auto col-md-auto col-lg-auto text-start  py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
+            <div className="col-auto col-md-auto col-lg-auto text-start  py-lg-1 py-md-1 px-lg-3 ps-md-2 ps-1 pe-md-3 pe-md-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
               <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>POINTS</p>
-              <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForPoints()}</h6>
+              <h6 className='fw-bold p-0 m-0 text-start'>₹ {payment_method_detailsForPoints()}</h6>
             </div>
           </div>
           <div className=' scroll scroll-y pb-5' style={{ maxHeight: '58vh' }}>
@@ -1009,7 +1008,7 @@ const Appointments_Dsr = (props) => {
                 <div className="row p-0 m-0 justify-content-start">
                   <div className="col-auto">
                     <h6 className='fw-bold text-charcoal75 '>Recieved Advance Amount</h6>
-                    <h5 className='fw-bold'>Rs. {AdvancedAmountRecieved()}</h5>
+                    <h5 className='fw-bold'>₹ {AdvancedAmountRecieved()}</h5>
                   </div>
                 </div>
               </div>

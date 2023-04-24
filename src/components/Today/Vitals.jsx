@@ -132,7 +132,7 @@ const Vitalsoperation = (props) => {
             <>
               <div className='bg-lightred p-2 mb-2 text-center align-items-center '>
                 <h6 className='text-center text-charcoal-75 fw-bold mb-0'>No Vitals Added</h6>
-                </div>
+              </div>
             </>
           ) : (
             props.appointmentvitalslist.map((data, i) => (
@@ -185,7 +185,7 @@ const Vitalsoperation = (props) => {
 
         )
       }
-      <div className="container-fluid">
+      <div className="container-fluid mt-2">
         {
           loadvitals ? (
             <div className="col-6 py-2 pb-2 m-auto text-center">
@@ -194,9 +194,9 @@ const Vitalsoperation = (props) => {
               </div>
             </div>
           ) : (
-            <div className="row p-0 m-0 justify-content-center mt-2">
-              <div className="col-4 p-0 m-0">
-                <select className='  border-0 text-end bg-seashell' value={vitalid ? vitalid : ''} onChange={(e) => { setvitalid(e.target.value) }}>
+            <div className="row justify-content-end align-items-center">
+              <div className="col-3">
+                <select className='form-control p-0 text-center border-0 text-end bg-seashell' value={vitalid ? vitalid : ''} onChange={(e) => { setvitalid(e.target.value) }}>
                   <option>Select Vitals</option>
                   {
                     vitals.map((data) => (
@@ -206,18 +206,18 @@ const Vitalsoperation = (props) => {
                 </select>
               </div>
               <div className="col-2">
-                <input className='form-control bg-seashell text-center p-0 border-start-0 border-end-0 border-top-0 rounded-0 border-bottom-burntumber' value={vitalvalue ? vitalvalue : ''} onChange={(e) => { setvitalvalue(e.target.value) }} />
+                <input className='form-control bg-seashell text-center p-0 border-start-0 border-end-0 border-top-0 border-bottom-burntumber' value={vitalvalue ? vitalvalue : ''} onChange={(e) => { setvitalvalue(e.target.value) }} />
               </div>
-              <div className="col-1 p-0 m-0">
+              <div className="col-1">
                 {
                   vitalid ? (
-                    <p className='text-charcoal text-center'>{Vitalunit(vitalid)}</p>
+                    <p className='text-charcoal text-center p-0 m-0'>{Vitalunit(vitalid)}</p>
                   ) : (
-                    <p className='text-charcoal text-center'>Unit</p>
+                    <p className='text-charcoal text-center p-0 m-0'>Unit</p>
                   )
                 }
               </div>
-              <div className="col-auto">
+              <div className="col-2 px-1">
                 {
                   loadvitals ? (
                     <div className="col-6 py-2 pb-2 m-auto text-center">
@@ -231,15 +231,15 @@ const Vitalsoperation = (props) => {
                 }
 
               </div>
-              <div className="col-1"></div>
+              <div className="col-2"></div>
             </div>
           )
         }
 
 
       </div>
-      <div className="container text-center">
-      <button className='button button-charcoal mx-auto' onClick={props.CloseVitals}>Done</button>
+      <div className="container text-center mt-3">
+        <button className='button button-charcoal mx-auto' onClick={props.CloseVitals}>Done</button>
       </div>
 
     </div>

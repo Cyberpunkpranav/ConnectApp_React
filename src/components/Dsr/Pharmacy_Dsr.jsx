@@ -534,13 +534,13 @@ const Pharmacy_Dsr = (props) => {
       <div className=''>
         <ul className="nav nav-pills mb-3 ms-2 ms-lg-3 ms-md-1 ms-sm-1" id="pills-tab" role="tablist">
           <li className="nav-item" role="presentation">
-            <button className="nav-link active p-0 m-0 py-1 px-3 rounded-pill" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true" onClick={() => { setpageindex(0) }}>Sale Entries<span class=" p-0 m-0 ms-2 badge text-lightyellow fs-6 fw-normal">{SaleEntryList.length}</span></button>
+            <button className="nav-link active p-0 m-0 py-1 px-3 rounded-pill" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true" onClick={() => { setpageindex(0) }}>Sale Entries<span class=" p-0 m-0 ms-2 badge text-lightyellow  fw-normal">{SaleEntryList.length}</span></button>
           </li>
           <li className="nav-item ms-lg-3 ms-md-2 ms-sm-1 ms-1" role="presentation">
-            <button className="nav-link p-0 m-0 py-1 px-3 rounded-pill" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false" onClick={() => { setpageindex(1) }}>Sale Returns<span class=" p-0 m-0 ms-2 badge text-lightyellow fs-6 fw-normal">{SaleReturnList.length}</span></button>
+            <button className="nav-link p-0 m-0 py-1 px-3 rounded-pill" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false" onClick={() => { setpageindex(1) }}>Sale Returns<span class=" p-0 m-0 ms-2 badge text-lightyellow  fw-normal">{SaleReturnList.length}</span></button>
           </li>
           <li className="nav-item ms-lg-3 ms-md-2 ms-sm-1 ms-1" role="presentation">
-            <button className="nav-link p-0 m-0 py-1 px-3 rounded-pill" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false" onClick={() => { setpageindex(2) }}>Pendings Recieved<span class=" p-0 m-0 ms-2 badge text-lightyellow fs-6 fw-normal">{PendingPaid.length}</span></button>
+            <button className="nav-link p-0 m-0 py-1 px-3 rounded-pill" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false" onClick={() => { setpageindex(2) }}>Pendings Recieved<span class=" p-0 m-0 ms-2 badge text-lightyellow  fw-normal">{PendingPaid.length}</span></button>
           </li>
         </ul>
 
@@ -551,31 +551,31 @@ const Pharmacy_Dsr = (props) => {
             <div className="row m-0 g-2 mt-md-2 p-0 text-start justify-content-start">
               <div className="col-auto col-md-auto col-lg-auto text-start  py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
                 <p className='fw-bold text-charcoal75 text-start p-0 m-0 justify-content-start'>CASH</p>
-                <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForCash()}</h6>
+                <h6 className='fw-bold p-0 m-0 text-start'>₹ {payment_method_detailsForCash()}</h6>
               </div>
               <div className="col-auto col-md-auto col-lg-auto text-start  py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
                 <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>CARD</p>
-                <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForCard()}</h6>
+                <h6 className='fw-bold p-0 m-0 text-start'>₹ {payment_method_detailsForCard()}</h6>
               </div>
               <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
                 <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>PAYTM</p>
-                <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForPaytm()}</h6>
+                <h6 className='fw-bold p-0 m-0 text-start'>₹ {payment_method_detailsForPaytm()}</h6>
               </div>
               <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
                 <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>PHONEPE</p>
-                <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForPhonepe()}</h6>
+                <h6 className='fw-bold p-0 m-0 text-start'>₹ {payment_method_detailsForPhonepe()}</h6>
               </div>
               <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
                 <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>WIRE</p>
-                <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForWireTransfer()}</h6>
+                <h6 className='fw-bold p-0 m-0 text-start'>₹ {payment_method_detailsForWireTransfer()}</h6>
               </div>
               <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
                 <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>RAZORPAY</p>
-                <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForRazorPay()}</h6>
+                <h6 className='fw-bold p-0 m-0 text-start'>₹ {payment_method_detailsForRazorPay()}</h6>
               </div>
               <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
                 <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>POINTS</p>
-                <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForPoints()}</h6>
+                <h6 className='fw-bold p-0 m-0 text-start'>₹ {payment_method_detailsForPoints()}</h6>
               </div>
             </div>
 
@@ -602,7 +602,7 @@ const Pharmacy_Dsr = (props) => {
                 </DownloadTableExcel>
               </span> */}
               <div className='selector '>
-                <input ref={Pendingsonly} type="checkbox" className='form-check-input ms-2' onChange={() => { Conditionaldisplay() }} /><label className='text-burntumber fw-bold'>Show Pendings Only</label>
+                <input ref={Pendingsonly} type="checkbox" className='form-check-input ms-2 me-1' onChange={() => { Conditionaldisplay() }} /><label className='text-burntumber fw-bold'>Show Pendings Only</label>
               </div>
 
             </div>
@@ -908,11 +908,11 @@ const Pharmacy_Dsr = (props) => {
               <div className="row p-0 m-0">
                 <div className="col-auto">
                   <h6 className='fw-bold text-charcoal75 '>Total Pending Payments</h6>
-                  <h5 className='fw-bold'>Rs. {TotalPendingPayment()}</h5>
+                  <h5 className='fw-bold'>₹ {TotalPendingPayment()}</h5>
                 </div>
                 <div className="col-auto">
                   <h6 className='fw-bold text-charcoal75 '>Grand Total</h6>
-                  <h5 className='fw-bold'>Rs. {GrandTotal()}</h5>
+                  <h5 className='fw-bold'>₹ {GrandTotal()}</h5>
                 </div>
               </div>
             </div>
@@ -922,31 +922,31 @@ const Pharmacy_Dsr = (props) => {
             <div className="row m-0 g-2 p-0 text-start">
               <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
                 <p className='fw-bold text-charcoal75 text-start p-0 m-0 justify-content-start'>CASH</p>
-                <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForCash()}</h6>
+                <h6 className='fw-bold p-0 m-0 text-start'>₹ {payment_method_detailsForCash()}</h6>
               </div>
               <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
                 <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>CARD</p>
-                <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForCard()}</h6>
+                <h6 className='fw-bold p-0 m-0 text-start'>₹ {payment_method_detailsForCard()}</h6>
               </div>
               <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
                 <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>PAYTM</p>
-                <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForPaytm()}</h6>
+                <h6 className='fw-bold p-0 m-0 text-start'>₹ {payment_method_detailsForPaytm()}</h6>
               </div>
               <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
                 <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>PHONEPE</p>
-                <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForPhonepe()}</h6>
+                <h6 className='fw-bold p-0 m-0 text-start'>₹ {payment_method_detailsForPhonepe()}</h6>
               </div>
               <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
                 <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>WIRE</p>
-                <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForWireTransfer()}</h6>
+                <h6 className='fw-bold p-0 m-0 text-start'>₹ {payment_method_detailsForWireTransfer()}</h6>
               </div>
               <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
                 <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>RAZORPAY</p>
-                <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForRazorPay()}</h6>
+                <h6 className='fw-bold p-0 m-0 text-start'>₹ {payment_method_detailsForRazorPay()}</h6>
               </div>
               <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
                 <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>POINTS</p>
-                <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForPoints()}</h6>
+                <h6 className='fw-bold p-0 m-0 text-start'>₹ {payment_method_detailsForPoints()}</h6>
               </div>
             </div>
             <div className=' saleoptions mt-lg-2 mt-md-2 position-absolute end-0 me-md-2 me-lg-5 me-1 text-end'>
@@ -1048,7 +1048,7 @@ const Pharmacy_Dsr = (props) => {
               <div className="row p-0 m-0">
                 <div className="col-auto">
                   <h6 className='fw-bold text-charcoal75 '>Grand Total</h6>
-                  <h5 className='fw-bold'>Rs. {GrandTotal()}</h5>
+                  <h5 className='fw-bold'>₹ {GrandTotal()}</h5>
                 </div>
               </div>
             </div>
@@ -1059,31 +1059,31 @@ const Pharmacy_Dsr = (props) => {
             <div className="row m-0 g-2 mt-md-2 p-0 text-start justify-content-start">
               <div className="col-auto col-md-auto col-lg-auto text-start  py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
                 <p className='fw-bold text-charcoal75 text-start p-0 m-0 justify-content-start'>CASH</p>
-                <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForCash()}</h6>
+                <h6 className='fw-bold p-0 m-0 text-start'>₹ {payment_method_detailsForCash()}</h6>
               </div>
               <div className="col-auto col-md-auto col-lg-auto text-start  py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
                 <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>CARD</p>
-                <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForCard()}</h6>
+                <h6 className='fw-bold p-0 m-0 text-start'>₹ {payment_method_detailsForCard()}</h6>
               </div>
               <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
                 <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>PAYTM</p>
-                <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForPaytm()}</h6>
+                <h6 className='fw-bold p-0 m-0 text-start'>₹ {payment_method_detailsForPaytm()}</h6>
               </div>
               <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
                 <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>PHONEPE</p>
-                <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForPhonepe()}</h6>
+                <h6 className='fw-bold p-0 m-0 text-start'>₹ {payment_method_detailsForPhonepe()}</h6>
               </div>
               <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
                 <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>WIRE</p>
-                <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForWireTransfer()}</h6>
+                <h6 className='fw-bold p-0 m-0 text-start'>₹ {payment_method_detailsForWireTransfer()}</h6>
               </div>
               <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
                 <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>RAZORPAY</p>
-                <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForRazorPay()}</h6>
+                <h6 className='fw-bold p-0 m-0 text-start'>₹ {payment_method_detailsForRazorPay()}</h6>
               </div>
               <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
                 <p className='fw-bold text-charcoal75 text-start p-0 m-0 '>POINTS</p>
-                <h6 className='fw-bold p-0 m-0 text-start'>Rs. {payment_method_detailsForPoints()}</h6>
+                <h6 className='fw-bold p-0 m-0 text-start'>₹ {payment_method_detailsForPoints()}</h6>
               </div>
             </div>
             {/* <div className=' saleoptions mt-2 position-absolute end-0 me-md-2 me-5 text-end'>
@@ -1237,7 +1237,7 @@ const Pharmacy_Dsr = (props) => {
               <div className="row p-0 m-0">
                 <div className="col-auto">
                   <h6 className='fw-bold text-charcoal75 '>Total Amount Recieved</h6>
-                  <h5 className='fw-bold'>Rs. {GrandTotal()}</h5>
+                  <h5 className='fw-bold'>₹ {GrandTotal()}</h5>
                 </div>
               </div>
             </div>
