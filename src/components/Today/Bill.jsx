@@ -390,7 +390,7 @@ const Bill = (props) => {
                                             extrachargecount.map((data, i) => (
                                                 <div className="container-fluid p-0 m-0">
                                                     <div className="row p-0 m-0">
-                                                        <div className="col-2">
+                                                        <div className="col-3">
                                                             <label className='fw-bold text-charcoal75 text-start ps-1'>Description</label>
                                                             <input className='form-control bg-seashell m-0 text-start fw-bold ' value={data.description ? data.description : ''} onChange={(e) => { data.description = e.target.value; Calculate_gst(data.amount, data.discount, data.cgst, data.sgst) }} />
                                                         </div>
@@ -465,12 +465,9 @@ const Bill = (props) => {
                                 </div>
 
                             </div>
-                            <div className="container-fluid p-2 mt-2">
-                                <div className="row text-center p-0 m-0 align-items-center">
-                                    <div className='col-4 align-self-end text-start'>
-                                        <label className=' fw-bolder text-charcoal text-wrap text-start'>Grand Total</label>
-                                        <input className='form-control rounded-1 text-lightgreen text-start border-0 fw-bolder p-0  bg-seashell' value={Get_Grand_Total()} />
-                                    </div>
+                            <div className="container-fluid p-1 mt-2">
+                                <div className="row text-center p-0 m-0 align-items-center p-0 m-0">
+
                                     <div className="col-4 align-self-end text-start">
                                         <label className=' fw-bolder text-charcoal text-wrap text-start'>Advance Amount Balance</label>
                                         {
@@ -482,9 +479,10 @@ const Bill = (props) => {
                                                 </div>
                                             ) : (
                                                 advancepayments ? (
-                                                    <input className='form-control text-lightgreen text-start border-0 rounded-1 fw-bolder p-0  bg-seashell' value={advancepayments.advnace_total} />
+                                                    <div className='text-success text-start border-0 rounded-1 fw-bolder p-0  bg-seashell'>{'₹'+ advancepayments.advnace_total}</div>
+                                                    // <input className='form-control text-success text-start border-0 rounded-1 fw-bolder p-0  bg-seashell' value= />
                                                 ) : (
-                                                    <div className='bg-lightred text-center fw-bolder rounded-1 p-2'>No Advance Payments Found</div>
+                                                    <div className='bg-lightred text-center fw-bold rounded-1 p-2'>No Advance Payments Found</div>
                                                 )
 
                                             )
@@ -492,8 +490,8 @@ const Bill = (props) => {
 
                                     </div>
                                     <div className="col-4 align-self-end text-start">
-                                        <label className=' fw-bolder text-charcoal text-start text-wrap'>Consumables Amount</label>
-                                        <input disabled={true} className='form-control text-start rounded-1  border-0 fw-bolder p-0 text-charcoal50' defaultValue='not available' />
+                                        <label className='fw-bolder text-charcoal text-start text-wrap'>Consumables Amount</label>
+                                        <input disabled={true} className='form-control text-start rounded-1  border-0 fw-bolder p-0 text-charcoal50' defaultValue=' not available' />
                                     </div>
                                 </div>
                             </div>
@@ -504,27 +502,25 @@ const Bill = (props) => {
                                     </div>
                                     <div className="col-auto p-0 m-0">
                                         <button className='btn p-0 ms-1' onClick={() => setpaymentmethods(prevState => [...prevState, paymentmethoddetails])}><img src={process.env.PUBLIC_URL + '/images/add.png'} className='img-fluid' style={{ width: '2rem' }} /></button>
-
                                     </div>
                                 </div>
 
-
-                                <div className="row justify-content-center p-0 m-0 mt-2">
-                                    <div className="col-5 text-end p-0 m-0 me-3 ">
-                                        <span className=" text-end p-0 m-0 text-charcoal fw-bold"> Total Amount: </span>
-                                        <span className='text-lightgreen fw-bold'> {paymentmethods && paymentmethods.length > 0 ? Total_Amount() : 0}</span>
+                                <div className=" justify-content-start p-0 m-0 mt-2 me-3">
+                                    <div className="col-5 text-start p-0 m-0">
+                                        <span className=" text-end p-0 m-0 text-charcoal fw-bold ps-1">Amount Recieved: </span>
+                                        <span className='text-success fw-bolder'> {paymentmethods && paymentmethods.length > 0 ?'₹' + Total_Amount() : '₹'+0}</span>
                                     </div>
                                     <div className='col-5 text-start m-0 p-0'>
-                                        <span className="text-wrap text-center p-0 m-0 fw-bold"> Return Amount: </span>
-                                        <span className="text-start align-self-end p-0 m-0 text-burntumber fw-bold"> {Return_Amount()} </span>
+                                        {/* <span className="text-wrap text-center p-0 m-0 fw-bold ps-1"> Return Amount: </span> */}
+                                        <span className="text-start align-self-end p-0 m-0 text-burntumber fw-bolder"> {Return_Amount() > 0 ? 'Amount Exceeded' : ''} </span>
                                     </div>
                                 </div>
 
                                 {
                                     paymentmethods.map((data, i) => (
-                                        <div className="row p-0 m-0 justify-content-end m-2 ps-2">
-                                            <div className="col-4 p-0 mx-2">
-                                                <select className='form-control bg-seashell py-1 fw-bold' value={data.paymentmethod} onChange={(e) => { data.paymentmethod = e.target.value; setpaymentmethods(prevState => [...prevState]) }}>
+                                        <div className="row p-0 m-0 justify-content-start mt-3 mb-3">
+                                            <div className="col-4 p-0 me-2 ms-1">
+                                                <select className='form-control bg-seashell fw-bold' value={data.paymentmethod} onChange={(e) => { data.paymentmethod = e.target.value; setpaymentmethods(prevState => [...prevState]) }}>
                                                     <option className='text-charcoal75 fw-bolder'>Payment Method</option>
                                                     <option value='Cash'>Cash</option>
                                                     <option value='Card'>Card</option>
@@ -537,7 +533,7 @@ const Bill = (props) => {
                                                 </select>
                                             </div>
                                             <div className="col-4 p-0 m-0">
-                                                <input className='form-control bg-seashell py-1 fw-bold' value={data.amount} onChange={(e) => { data.amount = e.target.value; setpaymentmethods(prevState => [...prevState]) }} />
+                                                <input className='form-control bg-seashell fw-bold' value={data.amount} onChange={(e) => { data.amount = e.target.value; setpaymentmethods(prevState => [...prevState]) }} />
                                             </div>
                                             <div className="col-2">
                                                 <button className='btn btn-sm p-0 m-0' onClick={() => { DeletePaymentMethods(i); setpaymentmethods(prevState => [...prevState]) }}><img src={process.env.PUBLIC_URL + '/images/delete.png'} className='img-fluid' style={{ width: '1rem' }} /></button>
@@ -550,9 +546,7 @@ const Bill = (props) => {
                         </>
                     )
                 }
-
-                <hr />
-                <div className="container-fluid pb-2">
+                <div className="container-fluid pb-2 position-sticky bottom-0 bg-seashell border border-1 ">
                     {
                         load ? (
                             <div className="col-6 py-2 pb-2 m-auto text-center">
@@ -561,12 +555,17 @@ const Bill = (props) => {
                                 </div>
                             </div>
                         ) : (
-                            <div className="row p-0 m-0 text-center">
-                                <div className="col-6 justify-content-center">
-                                    <button className='button button-charcoal' onClick={confirmmessage}>Save</button>
+                            <div className="row p-0 m-0 text-center align-items-center mt-1 ">
+                                <div className='col-4 align-self-end text-start'>
+                                    <label className=' fw-bolder text-charcoal text-wrap text-start'>Grand Total</label>
+                                    <input className='form-control rounded-1 text-success text-start border-0 fw-bolder p-0  bg-seashell' value={'₹'+ Get_Grand_Total()} />
                                 </div>
-                                <div className="col-6 justify-content-center">
+                                <div className="col-6 d-flex justify-content-end">
                                     <button className='button button-pearl' onClick={AddtoCart}>Add to Cart</button>
+                                </div>
+                                <div className="col-sm-auto col-2 d-flex justify-content-start ps-2">
+                                    <button className='button button-charcoal ' onClick={confirmmessage}>Save</button>
+
                                 </div>
                             </div>
                         )

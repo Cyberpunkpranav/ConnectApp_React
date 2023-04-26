@@ -265,7 +265,7 @@ const AllAppointmentslist = (props) => {
                                     <div className="col-1 p-0 m-0 me-2">
                                         <div className={`rounded-circle border-1 button-${props.status_color(data.appointment_status)}`} style={{ height: '12px', width: '12px' }}></div>
                                     </div>
-                                    <div className="col-auto p-0 m-0 ">
+                                    <div className="col-5 p-0 m-0 ">
                                         <select disabled={permission.appointment_edit == 1 ? false : true} className={`bg-transparent fw-bold border-0 `} name={data.id} onChange={(e) => { UpadteStatus(e) }}>
                                             <option className="button text-start" selected disabled>{props.status(data.appointment_status)}</option>
                                             <option className="button-lightred" value='1'>Pending</option>

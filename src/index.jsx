@@ -114,7 +114,7 @@ function Connectapp(props) {
   }
   console.log(props.permissions)
   return (
-    
+
     isWelcomeLoading == 0 ? (
       <>
         <WelcomeLoader />
@@ -232,9 +232,9 @@ function Switchpage() {
     }).then((response) => {
       setload(false)
       if (response.data.status === true) {
-        localStorage.setItem('email',logininput.email);
-        localStorage.setItem('name',response.data.data.name);
-        localStorage.setItem('designation',response.data.data.roles.title);
+        localStorage.setItem('email', logininput.email);
+        localStorage.setItem('name', response.data.data.name);
+        localStorage.setItem('designation', response.data.data.roles.title);
         localStorage.setItem('id', response.data.data.id);
         localStorage.setItem('ClinicId', response.data.data.clinic_id)
         localStorage.setItem('roleId', response.data.data.roles.id)

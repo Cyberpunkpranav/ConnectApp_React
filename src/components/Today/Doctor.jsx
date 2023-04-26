@@ -405,11 +405,11 @@ function DoctorSchedule(props) {
           <div className="container-fluid p-0 m-0 ps-1 ">
             <div className="row p-0 m-0">
               <div className=" col-12 p-0 m-0 align-items-center">
-                <div className="row align-items-center p-0 m-0 mt-3 mb-2">
-                  <div className="col-auto">
-                    <h6 className="p-0 m-0 ms-1 text-charcoal fw-bolder">Time Slots Avaliable</h6>
+                <div className="row align-items-center p-0 m-0 mt-3 mb-2 ms-0">
+                  <div className="col-auto p-0 m-0">
+                    <h6 className="p-0 m-0 text-charcoal fw-bolder text-start">Time Slots Avaliable</h6>
                   </div>
-                  <div className="col-2 ps-2">
+                  <div className="col-2 ps-1">
                     <button className="btn m-0 p-0">
                       <img src={process.env.PUBLIC_URL + "/images/addicon.png"} style={{ width: "1.5rem" }} alt="displaying_image" onClick={OpenAddQuickSlots} />
                     </button>
@@ -450,9 +450,9 @@ function DoctorSchedule(props) {
 
         <section className="allappointmentsection p-0 m-0 ms-1">
           <div className="col-auto m-0 p-0 align-items-center">
-            <h6 className="p-0 ms-1 text-charcoal fw-bold mt-3 mb-2">Appointments</h6>
+            <h6 className="p-0 ms-1 text-charcoal fw-bolder mt-3 mb-2">Appointments</h6>
           </div>
-          <div className=" scroll scroll-y align-content-center align-items-center" style={{ minHeight: '60vh', maxHeight: '60vh', Height: '60vh' }}>
+          <div className=" scroll scroll-y align-content-center align-items-center" style={{ minHeight: '55vh', maxHeight: '55vh', Height: '55h' }}>
             <table className="table datatable text-start">
               <thead className="p-0 m-0 px-2 bg-pearl" style={{ 'zIndex': '4' }}>
                 <tr className="p-0 m-0 position-sticky text-charcoal75 top-0" style={{ fontSize: '0.75rem' }}>
@@ -464,7 +464,6 @@ function DoctorSchedule(props) {
                   {/* <th className="border-0 bg-pearl" key={5}>Amount Status</th> */}
                   <th className="text-center border-0 bg-pearl" key={6}>Vitals</th>
                   <th className={`text-center border-0 bg-pearl d-${permission.appointment_charges_edit ? '' : 'none'}`} key={7}>Bill</th>
-                  <th className={`text-center border-0 bg-pearl d-${permission.appointment_charges_edit ? '' : 'none'}`} key={8}>Payments</th>
                   <th className="border-0 bg-pearl" key={9}>more</th>
 
                 </tr>
@@ -506,9 +505,9 @@ function DoctorSchedule(props) {
                             <td className=" text-start">
                               <div className="row p-0 m-0 align-items-center">
                                 <div className="col-1 p-0 m-0 me-2">
-                                  <div className={`rounded-circle border-1 button-${status_color(data.appointment_status)}`} style={{ height: '12px', width: '12px' }}></div>
+                                  <div className={`rounded-circle border-1 button-${status_color(data.appointment_status)} fontmain`} style={{ height: '12px', width: '12px' }}></div>
                                 </div>
-                                <div className="col-auto p-0 m-0">
+                                <div className="col-5 p-0 m-0">
                                   <select disabled={permission.appointment_edit == 1 ? false : true} className={`bg-transparent border-0 text-start fw-bold `} style={{ fontSize: '0.75rem' }} name={data.id} onChange={(e) => { UpadteStatus(e) }}>
                                     <option className="fw-bold" selected disabled>{status(data.appointment_status)}</option>
                                     <option key={0} className="button-lightred" value='1'>Pending</option>
@@ -528,7 +527,7 @@ function DoctorSchedule(props) {
 
                             {/* <td className="py-0" style={{ fontSize: '0.75rem' }}>{data.total_amount}</td> */}
                             <td className="py-0 text-start">
-                              <div className="col p-0 m-0 fw-bold" style={{ fontSize: '0.75rem', letterSpacing: '1px' }}>
+                              <div className="col p-0 m-0 fw-bold fontmain" style={{ fontSize: '0.75rem', letterSpacing: '1px' }}>
                                 ₹{data.total_amount}
                               </div>
                               <div className="col p-0 m-0 text-start">
@@ -546,7 +545,6 @@ function DoctorSchedule(props) {
                             </td>
                             <td className={` text-center py-0 bg-${vitalindex === i ? 'lightyellow' : ''}`}><button className="btn p-0 m-0" onClick={() => { setvitalindex(i); OpenVitals(); GetAppointmentVitals(data.id) }}><img src={process.env.PUBLIC_URL + "/images/vitals.png"} alt="displaying_image" style={{ width: "1rem" }} /></button></td>
                             <td className={` text-center py-0 d-${permission.appointment_charges_edit ? '' : 'none'} bg-${billindex === i ? 'lightyellow' : ''}`}> <button className="btn p-0 m-0" onClick={() => { setbillindex(i); OpenBillForm(); }}><img src={process.env.PUBLIC_URL + "/images/bill.png"} alt="displaying_image" style={{ width: "1rem" }} className="me-1" /></button>  </td>
-                            <td className={` text-center py-0 d-${permission.appointment_charges_edit ? '' : 'none'} bg-${paymentsindex === i ? 'lightyellow' : ''}`}><button className="btn p-0 m-0" onClick={() => { setpaymentsindex(i); OpenPaymentsForm(); }}><img src={process.env.PUBLIC_URL + "/images/rupee.png"} alt="displaying_image" style={{ width: "1rem" }} className="me-1" /></button></td>
                             <td><div className="dropdown ">
                               <button className="button button p-0 m-0 px-1 py-1 bg-transparent border-0 p-0  fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" style={{ width: "1rem" }} />
@@ -556,7 +554,8 @@ function DoctorSchedule(props) {
                                 <li className="dropdown-item d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { Generate_Bill(data.id) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" style={{ width: "2rem" }} /> Generate Bill</li>
                                 <li className="dropdown-item d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { Generate_Prescription(data.id) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" style={{ width: "2rem" }} /> Generate Prescription</li>
                                 <li className="dropdown-item d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { Confirm_For_Prescription(data.id, data.patient.phone_number) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/whatsapp.png"} alt="displaying_image" style={{ width: "2rem" }} /> Send on Whats App</li>
-                                <li className="dropdown-item d-flex  p-0 m-0 align-items-center" onClick={() => { Confirm_For_Prescription2(data.id, data.patient.phone_number) }}><img className='m-2 img-fluid ms-2' src={process.env.PUBLIC_URL + "/images/message.png"} alt="displaying_image" style={{ width: "1.8rem" }} />Send on SMS</li>
+                                <li className="dropdown-item d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { Confirm_For_Prescription2(data.id, data.patient.phone_number) }}><img className='m-2 img-fluid ms-2' src={process.env.PUBLIC_URL + "/images/message.png"} alt="displaying_image" style={{ width: "1.8rem" }} />Send on SMS</li>
+                                <li className={`dropdown-item p-0 m-0 align-items-center p-2  d-${permission.appointment_charges_edit ? 'flex' : 'none'}`} onClick={() => { setpaymentsindex(i); OpenPaymentsForm(); }}><img src={process.env.PUBLIC_URL + "/images/rupee.png"}  alt="displaying_image" style={{ width: "0.8rem" }}/>Payments</li>
                               </ul>
                             </div></td>
                             {

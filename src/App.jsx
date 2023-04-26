@@ -203,21 +203,21 @@ function Navbar(props) {
       <div className="navsection p-0 m-0 py-1">
         <div className="container-fluid p-0 m-0 ">
           <div className="row m-0 p-0 justify-content-between align-items-center">
-            <div className="col-lg-auto col-xl-auto col-md-auto col-sm-auto col-3 p-0 m-0 ms-2 text-start">
+            <div className="col-lg-auto col-xl-auto col-md-auto col-sm-auto col-auto p-0 m-0 ms-2 text-start">
               <button className="button button-seashell shadow-none col-md-auto col-auto user position-relative p-0 m-0 ms-2" onClick={togglelogoutbtn}>
                 <h1 className="m-0 username text-decoration-none  text-start fw-bold"> {props.username} </h1>
-                <div className="m-0 userstatus text-decoration-none text-start text-burntumber fw-semibold" >{props.designation} </div>
+                <div className="m-0 userstatus text-decoration-none text-start text-burntumber fw-bold" >{props.designation} </div>
                 <button className={`d-${logoutbtn} button button-lightred start-0 end-0 position-absolute text-burntumber w-100 fw-bolder`} style={{ zIndex: '1000' }} onClick={logout}>Logout</button>
               </button>
             </div>
-            <div className="col-lg-auto col-xl-7 align-self-center col-sm-auto col-md-auto col-12 p-0 m-0 menu order-1 order-xl-0 order-sm-0 order-md-0 order-sm-0 mt-lg-0 mt-md-0 md-sm-0">
+            <div className="col-lg-auto col-xl-7 align-self-center col-sm-auto col-md-auto col-auto p-0 m-0 menu order-0 order-xl-0 order-sm-0 order-md-0 order-sm-0 mt-lg-0 mt-md-0 md-sm-0">
               <div className="row p-0 m-0 justify-content-center">
                 {
                   NavbarIcons.map((data, i) => (
                     <div className={`col-auto p-0 m-0 align-self-end d-${data.display == 1 ? '' : 'none'} `} onClick={() => sethighlighticon(data.path)}>
                       <Link to={data.path} className="text-decoration-none"> <div className="text-center"> <img src={process.env.PUBLIC_URL + data.image} alt="displaying_image" className={`img-fluid rounded-1 p-2 bg-${highlighticon ? highlighticon === data.path ? 'burntumber25' : 'seashell' : path === data.path ? 'burntumber25' : 'seashell'}`}
                         style={{ width: `1.2rem`, boxSizing: 'content-box' }} /></div>
-                        <p className="col-12 m-0 p-0 px-2 text-center fw-semibold" style={{ fontSize: '0.5rem' }}>{data.title}</p></Link>
+                        <p className="col-12 m-0 p-0 px-2 text-center fw-bold" style={{ fontSize: '0.5rem' }}>{data.title}</p></Link>
                     </div>
 
                   ))
@@ -226,10 +226,10 @@ function Navbar(props) {
               </div>
             </div>
             {/* className="col-lg-2 col-xl-2 col-md-2 col-sm-6 col-6 mt-sm-2  search text-center position-relative" */}
-            <div className="col-lg-auto col-xl-auto col-md-auto col-auto col-sm-auto text-center align-self-center position-relative p-0 m-0 order-sm-2 order-0 ">
+            <div className="col-lg-auto col-xl-auto col-md-auto col-4 col-sm-auto text-center align-self-center position-relative p-0 m-0 order-sm-2 order-0 ">
               <div className="row p-0 m-0">
                 {/* col-xl-2 col-md-auto col-sm-auto col-6  */}
-                <div className={`col-auto pe-1 p-0 m-0 dropdown text-decoration-none d-${props.permissions.patient_add == undefined && props.permissions.doctor_add == undefined && props.permissions.appointment_add == undefined ? 'none' : ''}`}>
+                <div className={`col-sm-auto col-auto  pe-1 p-0 m-0 dropdown text-decoration-none me-sm-1 d-${props.permissions.patient_add == undefined && props.permissions.doctor_add == undefined && props.permissions.appointment_add == undefined ? 'none' : ''}`}>
                   <button className="button p-0 m-0 px-2 pe-2 py-1 button-burntumber dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     {/* <span className="mx-1 pe-1 ">+</span> */}
                     + Add
@@ -240,14 +240,12 @@ function Navbar(props) {
                     <li><button className={`dropdown-item  `} onClick={() => { toggledoctorform() }}>+ Doctor</button></li>
                   </ul>
                 </div>
-                <div className="col-auto p-0 m-0  pe-2 " style={{ zIndex: '3' }} >
+                <div className="col-sm-auto col-12 p-0 m-0  pe-sm-2 mt-sm-0 mt-2  " style={{ zIndex: '3' }} >
                   <input type="text" className=" rounded-1 text-charcoal bg-charcoal25 border border-1 text-center position-relative py-1  " placeholder="search" onChange={(e) => setsearchtext(e.target.value)} />
                   <div className="position-absolute bg-pearl end-0 shadow mt-1 rounded-1 border border-1">
                     <SearchField searchtext={searchtext} fetchapi={props.fetchapi} />
                   </div>
-
                 </div>
-
               </div>
             </div>
           </div>
@@ -551,7 +549,7 @@ function Appointments(props) {
       <section className="page2appointment ">
         <div className="container-fluid">
           <div className="row justify-content-between">
-            <div className="col-12 col-sm-12 col-md-8 col-lg-6 col-xl-4">
+            <div className="col-12 col-sm-12 col-md-7 col-lg-6 col-xl-6">
               <div className="col-12 mt-3">
                 <h4 className="p-lg-2 p-md-2 p-sm-2">All Appointments</h4>
               </div>
@@ -573,7 +571,7 @@ function Appointments(props) {
                 </div>
               </div>
             </div>
-            <div className="col-12 col-sm-12 col-md-4 col-lg-6 col-xl-4 daterange">
+            <div className="col-12 col-sm-12 col-md-5 col-lg-6 col-xl-6 daterange">
               <div className="col-12 mt-3 mb-2">
                 <img src={process.env.PUBLIC_URL + "/images/today.png"} alt="displaying_image" />
                 <span className="text-burntumber fw-bold">Select Date Range</span>
@@ -585,7 +583,7 @@ function Appointments(props) {
                 <input disabled={fromdate == null} value={todate ? todate : fromdate ? fromdate : APIDate ? APIDate : ''} placeholder="End Date" className="form-control" type="date" onChange={(e) => { settodate(e.target.value) }} />
               </div>
               <div className="col-12 mt-2">
-                <h6 className="text-burntumber bold fw-bolder">Select Doctor to see their appointments</h6>
+                <h6 className="text-burntumber fw-bold">Select Doctor to see their appointments</h6>
                 <select className="form-control" value={doctorid ? doctorid : ''} onChange={(e) => { setdoctorid(e.target.value) }}>
                   <option selected value="Select Doctor">Select Doctor</option>
                   {

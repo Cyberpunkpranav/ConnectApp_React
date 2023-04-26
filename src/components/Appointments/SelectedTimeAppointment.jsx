@@ -93,12 +93,12 @@ const SelectedTimeAppointment = (props) => {
             <div className="row p-0 m-0">
                 <div className="col-5">
                     <input type="text" placeholder='Search Patient using Number or Name' className="form-control bg-pearl border-0" value={searchinput ? searchinput : ''} onChange={(e) => { searchpatient(e) }} />
-                    <div className={`col-6 position-absolute d-${displaysearchlist} rounded-1 `} style={{ zIndex: 100 }}>
+                    <div className={`col-6 position-absolute d-${displaysearchlist} rounded-1 `} style={{ zIndex: 3 }}>
                         {
                             searchload ? (
                                 <option className="btn col-12 text-charcoal75 bg-pearl p-0 m-0 ps-1 mt-1">Loading... </option>
                             ) : (
-                                searchlist == undefined && searchlist.length == 0 ? (
+                                searchlist !== undefined && searchlist.length == 0 ? (
                                     <option className="text-burntumber col-12 p-0 m-0 bg-pearl shadow rounded mt-1 p-2">Patient not found</option>
                                 ) : (
                                     // <div className='mt-1 searchresult shadow rounded-1 p-1 bg-pearl border border-1 col-12 '>

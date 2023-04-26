@@ -347,9 +347,9 @@ const Payments = (props) => {
                     ) : (
 
                         props.paymentsi !== undefined ? (
-                            <div className='rounded-1 bg-lightgreen fw-bolder p-2 my-4'>Please generate the bill first</div>
+                            <div className='rounded-1 bg-lightgreen text-white fw-bolder p-2 my-4'>Please see or update the bill first</div>
                         ) : (
-                            <div className='rounded-1 bg-lightgreen fw-bolder p-2 my-4'>No Pending Payments Found</div>
+                            <div className='rounded-1 bg-lightgreen text-white fw-bolder p-2 my-4'>No Pending Payments Found</div>
                         )
 
 

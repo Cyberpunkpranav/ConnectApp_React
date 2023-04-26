@@ -65,18 +65,15 @@
 }
 .Appointments_Dsrsection .export_dropdown{
   margin-top: -2.85rem;
-  right:0;
-  margin-right: 32rem;
+  margin-left: 18rem;
 }
 .Pharmacy_Dsrsection .export_dropdown{
     margin-top: -2.85rem;
-    right:0;
-    margin-right: 32rem;
+    margin-left: 18rem;
   }
 .Doctors_Dsrsection .export_dropdown{
     margin-top: -2.85rem;
-    right:0;
-    margin-right: 32rem;
+    margin-left: 17.5rem;
   }
 
 .Appointments_Dsrsection .CARD3,.Pharmacy_Dsrsection .CARD3 {
@@ -136,17 +133,17 @@ background-color: var(--seashell);
         font-size:0.8rem !important;
     }
     .Appointments_Dsrsection .export_dropdown{
-        margin-top: -2.7rem;
+        margin-top: -2.9rem;
         margin-left:18rem;
       }
     .Appointments_Dsrsection .tab-pane p{
         font-size:0.5rem;
     }
     .Appointments_Dsrsection .tab-pane h6{
-        font-size:0.6rem;
+        font-size:0.75rem !important;
     }
     .Appointments_Dsrsection .tab-pane h5{
-        font-size:0.7rem;
+        font-size:0.75rem !important;
     }
     .Appointments_Dsrsection .nav-item{
         padding:0.15rem 0rem !important;
