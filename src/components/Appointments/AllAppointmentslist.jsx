@@ -316,8 +316,8 @@ const AllAppointmentslist = (props) => {
                               
                              </td> */}
                             {/* <td> <img src={process.env.PUBLIC_URL + "/images/cart.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1 m-0 p-0" /> </td> */}
-                            <td className='text-center'><div className="dropdown text-decoration-none">
-                                <button className="btn btn-white dropdown-toggle text-decoration-none" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <td className='text-end'><div className="dropdown text-decoration-none">
+                                <button className="button p-0 m-0 px-1 py-1 bg-transparent border-0 p-0  fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" style={{ width: "1.5rem" }} />
                                 </button>
                                 <ul className="dropdown-menu shadow-sm text-decoration-none p-0 m-0 p-2" style={{ '-webkit-appearance': 'none', width: 'max-content' }}>

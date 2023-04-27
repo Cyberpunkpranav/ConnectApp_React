@@ -64,7 +64,6 @@ function Navbar(props) {
   //     console.log('client closed')
   //   }
   // }
-  const secretkey = useContext(Secretkey)
   const permission = useContext(Permissions)
   console.log(permission)
   const [addoption, setaddoption] = useState("none");
@@ -207,7 +206,7 @@ function Navbar(props) {
               <button className="button button-seashell shadow-none col-md-auto col-auto user position-relative p-0 m-0 ms-2" onClick={togglelogoutbtn}>
                 <h1 className="m-0 username text-decoration-none  text-start fw-bold"> {props.username} </h1>
                 <div className="m-0 userstatus text-decoration-none text-start text-burntumber fw-bold" >{props.designation} </div>
-                <button className={`d-${logoutbtn} button button-lightred start-0 end-0 position-absolute text-burntumber w-100 fw-bolder`} style={{ zIndex: '1000' }} onClick={logout}>Logout</button>
+                <button className={`d-${logoutbtn} button button-lightred start-0 end-0 position-absolute text-burntumber w-100 fw-bolder logoutbtn`} style={{ zIndex: '1000' }} onClick={logout}>Logout</button>
               </button>
             </div>
             <div className="col-lg-auto col-xl-7 align-self-center col-sm-auto col-md-auto col-auto p-0 m-0 menu order-0 order-xl-0 order-sm-0 order-md-0 order-sm-0 mt-lg-0 mt-md-0 md-sm-0">
@@ -217,7 +216,7 @@ function Navbar(props) {
                     <div className={`col-auto p-0 m-0 align-self-end d-${data.display == 1 ? '' : 'none'} `} onClick={() => sethighlighticon(data.path)}>
                       <Link to={data.path} className="text-decoration-none"> <div className="text-center"> <img src={process.env.PUBLIC_URL + data.image} alt="displaying_image" className={`img-fluid rounded-1 p-2 bg-${highlighticon ? highlighticon === data.path ? 'burntumber25' : 'seashell' : path === data.path ? 'burntumber25' : 'seashell'}`}
                         style={{ width: `1.2rem`, boxSizing: 'content-box' }} /></div>
-                        <p className="col-12 m-0 p-0 px-2 text-center fw-bold" style={{ fontSize: '0.5rem' }}>{data.title}</p></Link>
+                        <p className="col-12 m-0 p-0 px-2 text-center fw-bold text-charcoal">{data.title}</p></Link>
                     </div>
 
                   ))
@@ -615,7 +614,7 @@ function Appointments(props) {
                 {/* <th>Rx</th> */}
                 {/* <th>F/U Date</th> */}
                 {/* <th>Actions</th> */}
-                <th className=" text-center bg-pearl">More</th>
+                <th className=" text-end bg-pearl">More</th>
               </tr>
             </thead>
             <tbody className="text-charcoal ">
@@ -751,8 +750,8 @@ function Patients() {
         <input className=" form-control m-auto mt-2" placeholder="Search Patient By Name or Number" onChange={(e) => { setpatientsearch(e.target.value); getAllPatients(); }} onBlur={getAllPatients} />
       </div>
       <div className="container-fluid p-0 m-0 scroll scroll-y " style={{ minHeight: '30rem' }}>
-        <table className="table text-start" >
-          <thead>
+        <table className="table text-start fw-bold" >
+          <thead className="text-charcoal75">
             <tr>
               <th className={`d-${permission.patient_edit == 1 ? '' : 'none'}`}>Update</th>
               <th>Patient Name</th>
@@ -923,8 +922,8 @@ function Doctors() {
         <input className="form-control m-auto mt-2" placeholder="Search Doctor" onChange={(e) => { setDoctorssearch(e.target.value) }} />
       </div>
       <div className="container-fluid p-0 m-0 scroll scroll-y" style={{ minHeight: '30rem' }}>
-        <table className="table text-start" >
-          <thead>
+        <table className="table text-start fw-bold" >
+          <thead className="text-charcoal75">
             <tr>
               <th>Update</th>
               <th>Name</th>
