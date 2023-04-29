@@ -368,8 +368,8 @@ function Saleentrysection(props) {
                         </td>
 
                         <td className={`text-charcoal text-center bg-transparent fw-bold p-0 m-0 px-1 `}>
-                          <div className={`dropdown  bg-${tabindex == i ? 'lightred' : ''} text-center text-decoration-none`}>
-                            <button className="btn p-0 m-0 px-1 py-1 text-decoration-none dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          <div className={`dropdown  bg-${tabindex == i ? 'lightred' : ''} d-inline-block text-center text-decoration-none`}>
+                            <button className="button border-0 p-0 m-0 px-1 py-1 text-decoration-none dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                               <img src={process.env.PUBLIC_URL + "/images/confirmed.png"} alt="displaying_image" style={{ width: "1.5rem" }} />
                             </button>
                             <ul className="dropdown-menu  text-start" >
@@ -386,7 +386,6 @@ function Saleentrysection(props) {
                               </li>
                             </ul>
                           </div>
-
                         </td>
 
                         <td className={`position-absolute mt-1 d-${i == index ? seidw : 'none'} start-0 end-0 border border-1 bg-seashell p-0 m-0`} style={{ zIndex: '2', top: '-7.5rem', 'height': '90vh' }} >
@@ -1096,7 +1095,7 @@ function SaleReturns() {
           />
         </div>
       </div>
-      <section className={`newreturnentrysection position-absolute start-0 end-0 border border-1 bg-seashell d-${nref}`}  >
+      <section className={`newsalereturnform position-absolute start-0 end-0 border border-1 bg-seashell d-${nref}`}  >
         {<NewSaleReturnentryform toggle_nref={toggle_nref} GETSaleReturns={GETSaleReturns} />}
       </section>
     </>
@@ -1821,7 +1820,6 @@ function NewSaleReturnentryform(props) {
     }
   }
 
-
   const searchProduct = async () => {
     medicinesref.current.style.display = 'block';
     setloadbills(true)
@@ -2284,7 +2282,7 @@ function SRitemdetailssection(props) {
 }
 export { Salesection }
 
-//  ---------------------------------------------------------------purchase------------------------------------------------------------------
+//  ---------------------------------------------------------------purchase-----------------------------------------------------------------------------------------
 function Purchasesection(props) {
   const permission = useContext(Permissions)
   const first = [
@@ -4255,7 +4253,7 @@ function PurchaseReturns() {
         />
       </div>
 
-      <section className={`newreturnentrysection position-absolute bg-seashell border border-1 start-0 end-0  d-${nref}`}  >
+      <section className={`newreturnentrysection position-absolute bg-seashell border border-1 start-0 end-0 d-${nref}`}  >
         {<NewPurchaseReturnentryform toggle_nref={toggle_nref} GETPurchaseReturns={GETPurchaseReturns} />}
       </section>
     </>
@@ -5717,7 +5715,7 @@ function MedicinesectionItemDetails(props) {
 
   )
 }
-//-------------------------------------------------------------------------Lists---------------------------------------------------------
+//-------------------------------------------------------------------------Lists--------------------------------------------------------------
 function Listsection() {
   const permission = useContext(Permissions)
   let menu = [
@@ -5979,5 +5977,5 @@ function MedicineList() {
     </div>
   )
 }
-export { Stocksection };
+export { Stocksection }
 export { Listsection }

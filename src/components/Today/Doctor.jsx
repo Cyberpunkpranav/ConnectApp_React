@@ -18,6 +18,7 @@ import { Bill } from "./Bill";
 import { Bootstrap_Confirm } from '../features/Bootstrap_Confirm'
 import '../../../node_modules/bootstrap/dist/js/bootstrap.bundle'
 import '../../../node_modules/bootstrap/js/dist/modal'
+import { AddConsumables } from "./AddConsumables";
 
 function DoctorSchedule(props) {
   //Global Variables
@@ -34,8 +35,10 @@ function DoctorSchedule(props) {
   const [addappointmentform, setaddappointmentform] = useState('none')
   const [appointmentid, setappointmentid] = useState()
   const [timeindex, settimeindex] = useState()
+  const [consumablesindex, setconsumablesindex] = useState()
   const [addquickslots, setaddquickslots] = useState('none')
   const [vitalsform, setvitalsform] = useState('none')
+  const [consumables, setconsumables] = useState('none')
   const [vitalindex, setvitalindex] = useState()
   const [appointmentvitalslist, setappointmentvitalslist] = useState([])
   const [loadvitals, setloadvitals] = useState()
@@ -337,12 +340,16 @@ function DoctorSchedule(props) {
       `Do you want to send the Bill`,
       'With the Prescription ?',
       'Without the Prescription ?',
+      // 'Cancel',
       () => {
         Send_On_WhatsApp(id, phone, 1)
       },
       () => {
         Send_On_WhatsApp(id, phone, 0)
       },
+      // () => {
+      //   return 0
+      // },
       {
       },
     );
@@ -393,6 +400,17 @@ function DoctorSchedule(props) {
       },
     );
   }
+  const toggleConsumables = () => {
+    if (consumables === 'none') {
+      setconsumables('block')
+    }
+    if (consumables === 'block') {
+      setconsumables('none')
+      setconsumablesindex()
+    }
+
+  }
+
   // const Modal = () => {
   //   modalindex
   // }
@@ -464,8 +482,8 @@ function DoctorSchedule(props) {
                   {/* <th className="border-0 bg-pearl" key={5}>Amount Status</th> */}
                   <th className="text-center border-0 bg-pearl" key={6}>Vitals</th>
                   <th className={`text-center border-0 bg-pearl d-${permission.appointment_charges_edit ? '' : 'none'}`} key={7}>Bill</th>
+                  <th className="border-0 bg-pearl text-center" key={9}>Consumables</th>
                   <th className="border-0 bg-pearl text-center" key={9}>more</th>
-
                 </tr>
               </thead>
               {
@@ -545,19 +563,21 @@ function DoctorSchedule(props) {
                             </td>
                             <td className={` text-center py-0 bg-${vitalindex === i ? 'lightyellow' : ''}`}><button className="btn p-0 m-0" onClick={() => { setvitalindex(i); OpenVitals(); GetAppointmentVitals(data.id) }}><img src={process.env.PUBLIC_URL + "/images/vitals.png"} alt="displaying_image" style={{ height: "1.5rem" }} /></button></td>
                             <td className={` text-center py-0 d-${permission.appointment_charges_edit ? '' : 'none'} bg-${billindex === i ? 'lightyellow' : ''}`}> <img src={process.env.PUBLIC_URL + "/images/bill.png"} onClick={() => { setbillindex(i); OpenBillForm(); }} alt="displaying_image" className="me-1" />  </td>
-                            <td className="text-center"><div className="dropdown ">
-                              <button className="button p-0 m-0 px-1 py-1 bg-transparent border-0 p-0  fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" style={{ width: "1rem" }} />
-                              </button>
-                              <ul className="dropdown-menu shadow-sm p-2" style={{ '-webkit-appearance': 'none', 'appearance': 'none', width: 'max-content' }}>
-                                <li className="dropdown-item d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => confirmmessage(data.patient.full_name, data.id)}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/speaker.png"} alt="displaying_image" style={{ width: "1.8rem" }} /> Call Patient</li>
-                                <li className="dropdown-item d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { Generate_Bill(data.id) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" style={{ width: "2rem" }} /> Generate Bill</li>
-                                <li className="dropdown-item d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { Generate_Prescription(data.id) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" style={{ width: "2rem" }} /> Generate Prescription</li>
-                                <li className="dropdown-item d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { Confirm_For_Prescription(data.id, data.patient.phone_number) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/whatsapp.png"} alt="displaying_image" style={{ width: "2rem" }} /> Send on Whats App</li>
-                                <li className="dropdown-item d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { Confirm_For_Prescription2(data.id, data.patient.phone_number) }}><img className='m-2 img-fluid ms-2' src={process.env.PUBLIC_URL + "/images/message.png"} alt="displaying_image" style={{ width: "1.8rem" }} />Send on SMS</li>
-                                <li className={`dropdown-item p-0 m-0 align-items-center p-2  d-${permission.appointment_charges_edit ? 'flex' : 'none'}`} onClick={() => { setpaymentsindex(i); OpenPaymentsForm(); }}><img src={process.env.PUBLIC_URL + "/images/rupee.png"} alt="displaying_image" style={{ width: "0.8rem" }} />Payments</li>
-                              </ul>
-                            </div></td>
+                            <td className={` text-center py-0  bg-${consumablesindex === i ? 'lightyellow' : ''}`}> <img src={process.env.PUBLIC_URL + "/images/bill.png"} onClick={() => { setconsumablesindex(i); toggleConsumables(); }} alt="displaying_image" className="me-1" />  </td>
+                            <td className="text-center">
+                              <div className="dropdown d-inline-block  ">
+                                <button className="button p-0 m-0 px-1 py-1 bg-transparent border-0 p-0  fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                  <img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" style={{ width: "1rem" }} />
+                                </button>
+                                <ul className="dropdown-menu shadow-sm p-2" style={{ '-webkit-appearance': 'none', 'appearance': 'none', width: 'max-content' }}>
+                                  <li className="dropdown-item d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => confirmmessage(data.patient.full_name, data.id)}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/speaker.png"} alt="displaying_image" style={{ width: "1.8rem" }} /> Call Patient</li>
+                                  <li className="dropdown-item d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { Generate_Bill(data.id) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" style={{ width: "2rem" }} /> Generate Bill</li>
+                                  <li className="dropdown-item d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { Generate_Prescription(data.id) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" style={{ width: "2rem" }} /> Generate Prescription</li>
+                                  <li className="dropdown-item d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { Confirm_For_Prescription(data.id, data.patient.phone_number) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/whatsapp.png"} alt="displaying_image" style={{ width: "2rem" }} /> Send on Whats App</li>
+                                  <li className="dropdown-item d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { Confirm_For_Prescription2(data.id, data.patient.phone_number) }}><img className='m-2 img-fluid ms-2' src={process.env.PUBLIC_URL + "/images/message.png"} alt="displaying_image" style={{ width: "1.8rem" }} />Send on SMS</li>
+                                  <li className={`dropdown-item p-0 m-0 align-items-center p-2  d-${permission.appointment_charges_edit ? 'flex' : 'none'}`} onClick={() => { setpaymentsindex(i); OpenPaymentsForm(); }}><img src={process.env.PUBLIC_URL + "/images/rupee.png"} alt="displaying_image" style={{ width: "0.8rem" }} />Payments</li>
+                                </ul>
+                              </div></td>
                             {
                               tableindex === i ? (
                                 <td className={`updateappointment shadow-sm border border-1 rounded-1 bg-seashell mt-2 start-0 end-0 top-0 col-lg-8 col-md-8 col-sm-11 col-11 col-xl-5 d-${tableindex == i ? appointmentform : 'none'} position-absolute`}>
@@ -580,6 +600,13 @@ function DoctorSchedule(props) {
                               paymentsindex === i ? (
                                 <td className={`payments start-0 bg-seashell end-0 shadow-sm top-0 border border-1 rounded-1 col-lg-6 col-md-8 col-sm-12 col-12 mt-2 col-xl-8 ps-3 px-5 py-2 position-absolute d-${paymentsindex == i ? paymentsform : 'none'}`}>
                                   <Payments ClosePaymentsForm={ClosePaymentsForm} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} appointmentid={data.id} patientid={data.patient && data.patient.id != null ? data.patient.id : ""} Appointmentlist={Appointmentlist} setsingleload={setsingleload} isLoading={isLoading} appointmentdata={appointmentdata} /></td>
+                              ) : (<></>)
+                            }
+                            {
+                              consumablesindex == i ? (
+                                <td className={`consumables mx-auto position-absolute bg-seashell shadow-sm top-0 border border-1 rounded-1 start-0 end-0 col-lg-10 col-md-8 col-sm-12 col-12 mt-2 col-xl-8  d-${consumablesindex == i ? consumables : 'none'}`} >
+                                  <AddConsumables existedconsumables={appointmentdata[i].medicine_used} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} appointmentid={data.id} toggleConsumables={toggleConsumables} />
+                                </td>
                               ) : (<></>)
                             }
                           </tr>

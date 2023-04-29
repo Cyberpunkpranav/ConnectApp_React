@@ -75,6 +75,7 @@ const SelectedTimeAppointment = (props) => {
             setload(false)
         }
     }
+    console.log(displaysearchlist)
     // Functions
     return (
         <>

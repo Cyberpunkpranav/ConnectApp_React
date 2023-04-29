@@ -90,7 +90,6 @@ font-size: 1rem !important ;
     right: 1rem;
 }
 
-
 .newpurchaseentryform {
     z-index: 2;
 }
@@ -110,7 +109,6 @@ font-size: 1rem !important ;
 }
 .medicinesearch::placeholder {
     padding-left: 0.5rem;
-
 }
 
  .searchbutton {
@@ -127,13 +125,39 @@ font-size: 1rem !important ;
 }
 
 .newreturnentrysection {
-    top: -7.15rem;
+    top: -8.15rem;
     height:89vh;
 }
 
 .newpurchaseentrysection {
-    top: -9rem;
+    top: -8.15rem;
     height:90vh;
+}
+.newsalereturnform{
+    top: -6.95rem;
+    height:89vh;  
+}
+
+@media (max-width:820px) {
+    
+.newpurchaseentrysection {
+    top: -7.96rem;
+    height:80vh;
+}
+.newreturnentrysection {
+    top: -7.96rem;
+    height:80vh;
+}
+.newsaleentryform {
+    top: -6.9rem;
+    height:80vh;
+}
+.newsalereturnform{
+    top: -6.95rem;
+    height:89vh;  
+}
+
+
 }
 
  @media  (max-width:512px) {

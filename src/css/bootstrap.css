@@ -54,6 +54,9 @@ img{
     width:1.5rem !important;
     cursor: pointer;
 }
+.bg-a{
+  width: 40vh !important;
+}
 span{
     font-size: 0.75rem !important;
 }
@@ -482,10 +485,14 @@ ul li{
     animation-name: animatelogout;
     animation-duration: 0.5s;
 }
-.d-block{
+.d-block ,button{
     animation-name: animateupdate;
     animation-duration: 0.3s;
 }
+/* .animatebuttons{
+    animation-name: animateupdate;
+    animation-duration: 0.3s;
+} */
  @keyframes animatedropdown {
     from{
         transform: translateY(15vh);

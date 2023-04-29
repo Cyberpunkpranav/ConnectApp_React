@@ -196,7 +196,7 @@ function Navbar(props) {
 
   //Searchfield input
   const [searchtext, setsearchtext] = useState()
-
+ 
   return (
     <>
       <div className="navsection p-0 m-0 py-1">
@@ -209,7 +209,7 @@ function Navbar(props) {
                 <button className={`d-${logoutbtn} button button-lightred start-0 end-0 position-absolute text-burntumber w-100 fw-bolder logoutbtn`} style={{ zIndex: '1000' }} onClick={logout}>Logout</button>
               </button>
             </div>
-            <div className="col-lg-auto col-xl-7 align-self-center col-sm-auto col-md-auto col-auto p-0 m-0 menu order-0 order-xl-0 order-sm-0 order-md-0 order-sm-0 mt-lg-0 mt-md-0 md-sm-0">
+            <div className="col-lg-auto col-xl-7 align-self-center col-sm-auto col-md-auto col-auto p-0 m-0 menu order-1 order-xl-0 order-sm-0 order-md-0 order-sm-0 mt-lg-0 mt-md-0 md-sm-0">
               <div className="row p-0 m-0 justify-content-center">
                 {
                   NavbarIcons.map((data, i) => (
@@ -561,7 +561,7 @@ function Appointments(props) {
                           {data[0]}
                           <span class={` d-${optionsindex == index ? '' : 'none'} position-absolute top-0 text-pearl start-100 translate-middle badge fw-normal px-2 rounded-pill bg-burntumber border-burntumber`} style={{ zIndex: '2' }}>
                             {doctorid ? appointmentdata.length : getAppointments.length}
-                            <span class="visually-hidden"></span>
+  
                           </span>
                         </button>
                       </div>
@@ -1202,7 +1202,7 @@ function Pharmacy() {
                   return (
                     <>
                       <div className={`col-auto p-0 m-0 d-${e.display == 1 ? '' : 'none'}`}>
-                        <button className={`button rounded-1 p-0 m-0 py-1 px-4 btn-sm col-auto shadow-none text-${i === menuindex ? 'light' : 'charcoal75 fw-bolder'} button-${i === menuindex ? "charcoal" : "seashell"} border-${i === menuindex ? 'secondary' : 'none'}`} onClick={(a) => setmenuindex(i)} > {e.option} </button>
+                        <button className={`button animatebuttons rounded-1 p-0 m-0 py-1 px-4 btn-sm col-auto shadow-none text-${i === menuindex ? 'light' : 'charcoal75 fw-bolder'} button-${i === menuindex ? "charcoal" : "seashell"} border-${i === menuindex ? 'secondary' : 'none'}`} onClick={(a) => setmenuindex(i)} > {e.option} </button>
                       </div>
                       <div className={`vr rounded-1 h-75 align-self-center d-${e.display == 1 ? '' : 'none'}`} style={{ padding: '0.8px' }}></div>
                     </>

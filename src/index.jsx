@@ -123,23 +123,24 @@ function Connectapp(props) {
       ClinicId == 'null' ? (
         <div className='position-relative'>
           <div className='bg_a'>
-            <img src={process.env.PUBLIC_URL + "/images/a.png"} alt='image' className='img-fluid' />
+            <img src={process.env.PUBLIC_URL + "/images/a.png"} alt='image' className='img-fluid bg-a'  />
           </div>
-          <div className=' Clinicslist position-absolute top-0 text-charcoal'>
-            <img src={process.env.PUBLIC_URL + "/images/logo.png"} alt='image' className='img-fluid logo p-0 m-0 start-0 top-0' /><span className=''>aartas | Connect App</span>
+          <div className=' Clinicslist position-absolute top-0 start-0 end-0 text-charcoal'>
+            {/* <img src={process.env.PUBLIC_URL + "/images/logo.png"} alt='image' className='img-fluid logo p-0 m-0 start-0 top-0' /> */}
+            <h1 className='fs-2 ms-3 p-2'>aartas | Connect App</h1>
             <h4 className=''>Select Clinic</h4>
             <div className='container-fluid clinics'>
               <div className="row p-0 m-0 ">
                 <div className="col-lg-10 col-12">
                   {
                     cliniclist.map((data, i) => (
-                      <div div className=' text-start mx-auto  '>
+                      <div div className='text-start mx-auto'>
                         <label className=''><input type="checkbox" className="radio form-check-input me-1" checked={ischecked === i ? true : false} name={data.id} onClick={(e) => { setclinicid(e.target.name); setischecked(i); }} /> {data.title} {data.address}</label>
                         <br /></div>
                     ))
                   }
                 </div>
-                <div className="col-lg-2 col-12 mt-lg-0 mt-md-0 mt-sm-0 mt-2 ">
+                <div className="col-lg-2 col-12 mt-lg-0 mt-md-3 mt-sm-0 mt-2 ">
                   <button className='button button-seashell' disabled={clinicid == undefined ? true : false} onClick={Gomain}><img className='img-fluid' style={{ width: '1.5rem' }} src={process.env.PUBLIC_URL + '/images/right-arrow.png'} /></button>
                 </div>
               </div>
