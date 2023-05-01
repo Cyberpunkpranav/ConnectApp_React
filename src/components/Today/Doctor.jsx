@@ -19,7 +19,7 @@ import { Bootstrap_Confirm } from '../features/Bootstrap_Confirm'
 import '../../../node_modules/bootstrap/dist/js/bootstrap.bundle'
 import '../../../node_modules/bootstrap/js/dist/modal'
 import { AddConsumables } from "./AddConsumables";
-
+import { SaleEntryForm } from '../pharmacy/pharmacy';
 function DoctorSchedule(props) {
   //Global Variables
   const url = useContext(URL)
@@ -35,6 +35,7 @@ function DoctorSchedule(props) {
   const [addappointmentform, setaddappointmentform] = useState('none')
   const [appointmentid, setappointmentid] = useState()
   const [timeindex, settimeindex] = useState()
+  const [saleindex, setsaleindex] = useState()
   const [consumablesindex, setconsumablesindex] = useState()
   const [addquickslots, setaddquickslots] = useState('none')
   const [vitalsform, setvitalsform] = useState('none')
@@ -48,6 +49,7 @@ function DoctorSchedule(props) {
   const [paymentsi, setpaymentsi] = useState()
   const [paymentsform, setpaymentsform] = useState('none')
   const [d_form, setd_form] = useState()
+  const [nsef, setnsef] = useState("none");
   // for UpdateAppointment
   const closeappointmentform = () => {
     if (appointmentform === "block") {
@@ -410,7 +412,15 @@ function DoctorSchedule(props) {
     }
 
   }
-
+  const toggle_nsef = () => {
+    if (nsef === 'none') {
+      setnsef('block')
+    }
+    if (nsef === 'block') {
+      setnsef('none')
+      setsaleindex()
+    }
+  }
   // const Modal = () => {
   //   modalindex
   // }
@@ -474,7 +484,7 @@ function DoctorSchedule(props) {
             <table className="table text-start">
               <thead className="p-0 m-0 px-2 bg-pearl" style={{ 'zIndex': '4' }}>
                 <tr className="p-0 m-0 position-sticky text-charcoal75 top-0" style={{ fontSize: '0.75rem' }}>
-                  <th className="border-0 bg-pearl text-start" key={0}>Update</th>
+                  <th className="border-0 bg-pearl text-center" key={0}>Update</th>
                   <th className="border-0 bg-pearl text-start" key={3}>Time</th>
                   <th className="border-0 bg-pearl" key={2}>Patient</th>
                   <th className="border-0 bg-pearl text-start" key={1}>Status</th>
@@ -503,7 +513,7 @@ function DoctorSchedule(props) {
                       ) : (
                         appointmentdata.map((data, i) => (
                           <tr className='align-middle'>
-                            <td className={`py-0 bg-${tableindex === i ? 'lightyellow' : ''}  text-start`}>
+                            <td className={`py-0 bg-${tableindex === i ? 'lightyellow' : ''}  text-center`}>
                               <button className="btn m-0 p-0" key={i} onClick={(e) => { openapppointmentform(); settableindex(i); setappointmentid(data.id) }}>
                                 <img src={process.env.PUBLIC_URL + "/images/confirmed.png"} alt="displaying_image" className="img-fluid" style={{ width: "1rem" }} key={i} />
                               </button>
@@ -563,9 +573,17 @@ function DoctorSchedule(props) {
                             </td>
                             <td className={` text-center py-0 bg-${vitalindex === i ? 'lightyellow' : ''}`}><button className="btn p-0 m-0" onClick={() => { setvitalindex(i); OpenVitals(); GetAppointmentVitals(data.id) }}><img src={process.env.PUBLIC_URL + "/images/vitals.png"} alt="displaying_image" style={{ height: "1.5rem" }} /></button></td>
                             <td className={` text-center py-0 d-${permission.appointment_charges_edit ? '' : 'none'} bg-${billindex === i ? 'lightyellow' : ''}`}> <img src={process.env.PUBLIC_URL + "/images/bill.png"} onClick={() => { setbillindex(i); OpenBillForm(); }} alt="displaying_image" className="me-1" />  </td>
-                            <td className={` text-center py-0  bg-${consumablesindex === i ? 'lightyellow' : ''}`}> <img src={process.env.PUBLIC_URL + "/images/bill.png"} onClick={() => { setconsumablesindex(i); toggleConsumables(); }} alt="displaying_image" className="me-1" />  </td>
+                            <td className={` text-center py-0  bg-${consumablesindex === i ? 'lightyellow' : ''}`}>
+                              <button className={`button-sm border-0 p-0 m-0 position-relative bg-${consumablesindex === i ? 'lightyellow' : 'transparent'}`}>
+                                <img src={process.env.PUBLIC_URL + "/images/bill.png"} onClick={() => { setconsumablesindex(i); toggleConsumables(); }} alt="displaying_image" className="me-1" />
+                                <span class={` position-absolute top-0 text-charcoal fw-bold start-100 translate-middle badge fw-normal px-auto rounded-circle bg-lightyellow`} style={{ zIndex: '2' }}>
+                                  {appointmentdata[i].medicine_used.length}
+                                </span>
+                              </button>
+
+                            </td>
                             <td className="text-center">
-                              <div className="dropdown d-inline-block  ">
+                              <div className="dropdown d-inline-block ">
                                 <button className="button p-0 m-0 px-1 py-1 bg-transparent border-0 p-0  fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                   <img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" style={{ width: "1rem" }} />
                                 </button>
@@ -575,6 +593,7 @@ function DoctorSchedule(props) {
                                   <li className="dropdown-item d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { Generate_Prescription(data.id) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" style={{ width: "2rem" }} /> Generate Prescription</li>
                                   <li className="dropdown-item d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { Confirm_For_Prescription(data.id, data.patient.phone_number) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/whatsapp.png"} alt="displaying_image" style={{ width: "2rem" }} /> Send on Whats App</li>
                                   <li className="dropdown-item d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { Confirm_For_Prescription2(data.id, data.patient.phone_number) }}><img className='m-2 img-fluid ms-2' src={process.env.PUBLIC_URL + "/images/message.png"} alt="displaying_image" style={{ width: "1.8rem" }} />Send on SMS</li>
+                                  <li className="dropdown-item d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { toggle_nsef(); setsaleindex(i) }}><img className='m-2 img-fluid ms-2' src={process.env.PUBLIC_URL + "/images/medicine.png"} alt="displaying_image" style={{ width: "1.8rem" }} />Buy Medicines</li>
                                   <li className={`dropdown-item p-0 m-0 align-items-center p-2  d-${permission.appointment_charges_edit ? 'flex' : 'none'}`} onClick={() => { setpaymentsindex(i); OpenPaymentsForm(); }}><img src={process.env.PUBLIC_URL + "/images/rupee.png"} alt="displaying_image" style={{ width: "0.8rem" }} />Payments</li>
                                 </ul>
                               </div></td>
@@ -604,10 +623,18 @@ function DoctorSchedule(props) {
                             }
                             {
                               consumablesindex == i ? (
-                                <td className={`consumables mx-auto position-absolute bg-seashell shadow-sm top-0 border border-1 rounded-1 start-0 end-0 col-lg-10 col-md-8 col-sm-12 col-12 mt-2 col-xl-8  d-${consumablesindex == i ? consumables : 'none'}`} >
-                                  <AddConsumables existedconsumables={appointmentdata[i].medicine_used} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} appointmentid={data.id} toggleConsumables={toggleConsumables} />
+                                <td className={`consumables mx-auto position-absolute bg-seashell shadow-sm top-0 border border-1 rounded-1 start-0 end-0 col-lg-10 col-md-11 col-sm-12 col-12 mt-2 col-xl-8  d-${consumablesindex == i ? consumables : 'none'}`} style={{zIndex:'4'}} >
+                                  <AddConsumables appointmentdata={appointmentdata[i]} Appointmentlist={Appointmentlist} existedconsumables={appointmentdata[i].medicine_used} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} appointmentid={data.id} toggleConsumables={toggleConsumables} />
                                 </td>
                               ) : (<></>)
+                            }
+                            {
+                              saleindex == i ? (
+                                <td className={`saleentryform mx-auto position-absolute bg-seashell shadow-sm top-0 border border-1 rounded-1 start-0 end-0 col-lg-10 col-md-11 col-sm-12 col-12 mt-2 col-xl-8  d-${saleindex == i ? saleindex : 'none'}`} style={{zIndex:'4'}} >
+                                  <SaleEntryForm saleindex={saleindex} toggle_nsef={toggle_nsef}  patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} patientid={data.patient && data.patient.id != null ? data.patient.id : ""} />
+                                </td>
+                              ) : (<></>)
+
                             }
                           </tr>
 

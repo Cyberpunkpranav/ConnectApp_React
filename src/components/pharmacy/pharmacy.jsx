@@ -1114,7 +1114,7 @@ function SaleEntryForm(props) {
   const [searchinput, setsearchinput] = useState()
   const [searchlist, setsearchlist] = useState([])
   const [displaysearchlist, setdisplaysearchlist] = useState('none')
-  const [patientid, setpatientid] = useState()
+  const [patientid, setpatientid] = useState(props.patientid ? props.patientid : '')
   const [patientdata, setpatientdata] = useState([])
   const [doctorid, setdoctorid] = useState()
   const [doctorname, setdoctorname] = useState()
@@ -1361,8 +1361,10 @@ function SaleEntryForm(props) {
       try {
         await axios.post(`${url}/sale/entry/save`, Data).then((response) => {
           setload(false)
-          props.GETSalesList()
-          props.toggle_nsef()
+          if (props.saleindex == undefined) {
+            props.GETSalesList()
+            props.toggle_nsef()
+          }
           if (response.data.status == true) {
             Notiflix.Notify.success(response.data.message)
           } else {
@@ -1435,13 +1437,13 @@ function SaleEntryForm(props) {
     setpatientdata()
   }
 
-  // console.log(patientid, doctorid, doctorname, Dc, itemname, itemid)
+  console.log(patientid, doctorid, doctorname, Dc, itemname, itemid)
   // console.log(SelectedProducts, Grandtotal)
   // console.log(patientdata)
   let c = 0
-  console.log(products, addressid, Dc, SelectedProducts)
-  console.log(itembyid)
-  console.log(itemsearch)
+  // console.log(products, addressid, Dc, SelectedProducts)
+  // console.log(itembyid)
+  // console.log(itemsearch)
   return (
 
     <div className="container-fluid p-0 m-0">
@@ -1491,7 +1493,7 @@ function SaleEntryForm(props) {
       <div className="row p-0 m-0">
         <div className="col-4">
           <label className="m-0">Search Using Phone or Name</label>
-          <input type="text" className="form-control bg-seashell selectpatient col-10 position-relative" placeholder='Search for Patients' value={searchinput ? searchinput : ''} onFocus={() => setsearchload(true)} onChange={searchpatient} />
+          <input type="text" className="form-control bg-seashell selectpatient col-10 position-relative" placeholder='Search for Patients' value={props.patientname ? props.patientname : searchinput ? searchinput : ''} onFocus={() => setsearchload(true)} onChange={searchpatient} />
           <div className={`col-auto d-${displaysearchlist} text-decoration-none searchinput position-absolute rounded-1 shadow bg-pearl px-2`} style={{ width: 'max-content', zIndex: '2' }}>
             {
               searchload == true || searchinput == undefined ? (
@@ -2281,6 +2283,7 @@ function SRitemdetailssection(props) {
   )
 }
 export { Salesection }
+export { SaleEntryForm }
 
 //  ---------------------------------------------------------------purchase-----------------------------------------------------------------------------------------
 function Purchasesection(props) {

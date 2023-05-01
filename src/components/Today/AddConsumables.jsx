@@ -16,7 +16,6 @@ const AddConsumables = (props) => {
     const patientaddref = useRef(null)
     const stockref = useRef(null)
     const [searchinput, setsearchinput] = useState()
-
     const [doctorid, setdoctorid] = useState()
     const [doctorname, setdoctorname] = useState()
     const [otherdoctor, setotherdoctor] = useState()
@@ -35,7 +34,9 @@ const AddConsumables = (props) => {
     const [SelectedProducts, setSelectedProducts] = useState([])
     const [Grandtotal, setGrandtotal] = useState()
     const [loadsearch, setloadsearch] = useState()
-    const [ce, setce] = useState()
+    const [ce, setce] = useState('none')
+    const [nursenotes, setnursenotes] = useState('')
+    const [deleteload, setdeleteload] = useState(false)
 
 
     const reversefunction = (date) => {
@@ -45,8 +46,6 @@ const AddConsumables = (props) => {
         }
 
     }
-
-
     const searchmeds = async (search) => {
         setloadsearch(true)
         try {
@@ -100,7 +99,6 @@ const AddConsumables = (props) => {
             cost = cost.toFixed(2)
             return cost
         }
-
     }
     function CalTotalAmount(qty, cst, realcst) {
         let cost = cst
@@ -215,7 +213,9 @@ const AddConsumables = (props) => {
             await axios.post(`${url}/save/consumable`, Data).then((response) => {
                 setload(false)
                 if (response.data.status == true) {
+                    NurseNotes()
                     Notiflix.Notify.success(response.data.message)
+                    props.Appointmentlist()
                 } else {
                     Notiflix.Notify.warning(response.data.message)
                 }
@@ -229,7 +229,6 @@ const AddConsumables = (props) => {
             setload(false)
         }
     }
-
     function confirmmessage() {
         customconfirm()
         Notiflix.Confirm.show(
@@ -255,8 +254,35 @@ const AddConsumables = (props) => {
             setce('none')
         }
     }
-    return (
+    const NurseNotes = async () => {
+        try {
+            await axios.post(`${url}/save/nursing/notes`, {
+                appointment_id: props.appointmentid,
+                notes: nursenotes
+            }).then((response) => {
+                Notiflix.Notify.success(response.data.message)
+            })
+        } catch (e) {
+            Notiflix.Notify.warning(e.data.message)
+        }
+    }
+    const RemoveConsumable = async (ID) => {
+        setdeleteload(true)
+        try {
+            await axios.post(`${url}/remove/consumable`, {
+                id: ID
+            }).then((response) => {
+                setdeleteload(false)
+                props.Appointmentlist()
+                Notiflix.Notify.success(response.data.message)
+            })
+        } catch (e) {
+            setdeleteload(false)
+            Notiflix.Notify.warning(e.data.message)
+        }
+    }
 
+    return (
         <div className="container-fluid p-0 m-0">
             <div className='position-relative mb-3'>
                 <h5 className='text-start text-charcoal fw-bold '>{props.patientname} Consumables</h5>
@@ -265,17 +291,72 @@ const AddConsumables = (props) => {
             <button className='button-sm border-0 mx-1 position-relative float-end p-0 mt-2 me-5' onClick={toggle_consumables_existed} >
                 <span className=' fw-bold'>Consumables</span>
                 <img src={process.env.PUBLIC_URL + 'images/cart.png'} />
-
                 <span class={` position-absolute top-0 text-pearl start-100 translate-middle badge fw-normal px-auto rounded-circle bg-burntumber border-burntumber`} style={{ zIndex: '2' }}>
                     {props.existedconsumables.length}
                 </span>
-
             </button>
-            <div className={`d-${ce}`}>
+            <div className={`d-${ce} position-absolute start-0 end-0 top-0 bg-seashell`} style={{ zIndex: '6', height: '60vh' }}>
+                <h5 className='text-start text-charcoal fw-bold p-2'>{props.patientname} Consumables</h5>
+                <h6 className='text-start text-charcoal fw-bold p-1 ps-2 pb-0 '>Consumables Added </h6>
+                <img src={process.env.PUBLIC_URL + 'images/leftarrow.png'} className='ms-2' onClick={toggle_consumables_existed} />
+                <div className="scroll">
+                    <table className='table fw-bold p-0 m-0'>
+                        <thead className='p-0 m-0 top-0 bg-seashell'>
+                            <tr>
+                                <th>Item ID</th>
+                                <th>Item Name</th>
+                                <th>MRP</th>
+                                <th>Disc %</th>
+                                <th>Cost</th>
+                                <th>Total Amount</th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
+                        {
+                            props.existedconsumables && props.existedconsumables.length !== 0 ? (
+                                <tbody className='p-0 m-0 bg-pearl'>
+                                    {
+                                        props.existedconsumables.map((data) => (
+                                            <tr className={`align-middle bg-${Number(data.disccost) < Number(data.cost) ? 'lightred50' : ''}`}>
+                                                <td>m{data.medicies_stocks_id}</td>
+                                                <td>{data.medicine.display_name}</td>
+                                                <td>₹{data.main_mrp}</td>
+                                                <td className='text-center p-0 m-0'>{data.discount} </td>
+                                                <td>₹{data.disc_mrp}</td>
+                                                <td>₹{data.total_amount}</td>
+                                                <td>
+                                                    {
+                                                        deleteload ? (
+                                                            <div className="text-charcoal spinner-border spinner-border-sm me-2 " role="status" aria-hidden="true" ></div>
+                                                        ) : (
+                                                            <img src={process.env.PUBLIC_URL + 'images/delete.png'} onClick={() => { RemoveConsumable(data.id) }} />
+                                                        )
+                                                    }
+                                                </td>
+                                            </tr>
+                                        ))
+                                    }
+                                </tbody>
+                            ) : (
+                                <tbody className='position-relative'>
+                                    <tr className='p-0 m-0 text-center'>
+                                        <td className='position-absolute text-charcoal75 fw-bold start-0 end-0'>No Consumabels Added</td>
+                                    </tr>
+                                </tbody>
+                            )
+                        }
+                    </table>
+                </div>
+                <div className="container-fluid fw-bold mt-3 ">
+                    <h6 className='fw-bold'>Nursing Notes</h6>
+                    <p className='d-inline-block w-100 text-wrap bg-pearl p-2 rounded-2 '>
+                        {props.appointmentdata.nursing_notes}
+                    </p>
+                </div>
 
             </div>
 
-            <div className="container-fluid text-start p-0 m-0 mt-3">
+            <div className={`container-fluid text-start p-0 m-0 mt-3 d-${ce === 'block' ? 'none' : 'block'}`}>
                 <div className="col-12 justify-content-center">
                     <h6 className='text-charcoal fw-bolder text-start ms-1'>Search Consumables</h6>
                     <hr className='p-0 m-0' />
@@ -357,7 +438,7 @@ const AddConsumables = (props) => {
                             </div>
                             <div></div>
                         </div>
-                        <div className='col-1 text-burntumber fw-bold align-self-center'>
+                        <div className='col-1 text-burntumber text-center fw-bold align-self-center'>
                             OR
                         </div>
                         <div className="col-4 ">
@@ -471,7 +552,7 @@ const AddConsumables = (props) => {
                 </div>
                 <div className="container p-0 m-0 mb-5 pb-5">
                     <h6 className='fw-bold p-0 m-0 ps-0 ms-0 my-2'>Nurse notes</h6>
-                    <textarea className='col-12 form-control w-100' style={{ width: '95vh', height: '10vh' }}></textarea>
+                    <textarea className='col-12 form-control w-100' value={nursenotes ? nursenotes : ''} onChange={(e) => setnursenotes(e.target.value)} style={{ width: '95vh', height: '10vh' }}></textarea>
                 </div>
 
             </div>
@@ -493,7 +574,7 @@ const AddConsumables = (props) => {
                             </div>
                         </div>
                     </div>
-                    <div className="col-3 align-self-center">
+                    <div className="col-6 align-self-center text-center">
                         {
                             load ? (
                                 <div className="col-6 py-2 pb-2 m-auto text-start">

@@ -56,7 +56,7 @@ const SearchField = (props) => {
                             <div className="text-danger btn fs-6 p-0 m-0" style={{ width: '50vh' }}>Patient not found. Add as new to book appointments</div>
                         ) : (
                             <div>
-                                <p className='text-secondary p-0 m-0 text-start fw-bold ps-2' style={{ fontSize: '0.8rem' }}>{searchlist.length} search results</p>
+                                {/* <p className='text-secondary p-0 m-0 text-start fw-bold ps-2' style={{ fontSize: '0.8rem' }}>{searchlist.length} searches found</p> */}
                                 {
                                     searchlist && searchlist.map((data) => (
                                         <div className='row p-0 m-0 bg-pearl p-1 border-top rounded-bottom' style={{ width: '50vh' }}>

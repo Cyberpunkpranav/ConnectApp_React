@@ -196,7 +196,7 @@ function Navbar(props) {
 
   //Searchfield input
   const [searchtext, setsearchtext] = useState()
- 
+
   return (
     <>
       <div className="navsection p-0 m-0 py-1">
@@ -561,7 +561,7 @@ function Appointments(props) {
                           {data[0]}
                           <span class={` d-${optionsindex == index ? '' : 'none'} position-absolute top-0 text-pearl start-100 translate-middle badge fw-normal px-2 rounded-pill bg-burntumber border-burntumber`} style={{ zIndex: '2' }}>
                             {doctorid ? appointmentdata.length : getAppointments.length}
-  
+
                           </span>
                         </button>
                       </div>
@@ -603,7 +603,7 @@ function Appointments(props) {
           <table className="table text-start">
             <thead className="text-charcoal75 fw-bold">
               <tr className=" bg-pearl position-sticky top-0">
-                <th className={`d-${permission.appointment_edit == 1 ? '' : 'none'}`}>Update</th>
+                <th className={`text-center d-${permission.appointment_edit == 1 ? '' : 'none'}`}>Update</th>
                 <th className="">Status</th>
                 <th>Patient</th>
                 <th>Doctor Name</th>
@@ -614,7 +614,7 @@ function Appointments(props) {
                 {/* <th>Rx</th> */}
                 {/* <th>F/U Date</th> */}
                 {/* <th>Actions</th> */}
-                <th className=" text-end bg-pearl">More</th>
+                <th className=" text-center bg-pearl">More</th>
               </tr>
             </thead>
             <tbody className="text-charcoal ">
