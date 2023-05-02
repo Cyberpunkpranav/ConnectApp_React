@@ -297,8 +297,8 @@ const AddConsumables = (props) => {
             </button>
             <div className={`d-${ce} position-absolute start-0 end-0 top-0 bg-seashell`} style={{ zIndex: '6', height: '60vh' }}>
                 <h5 className='text-start text-charcoal fw-bold p-2'>{props.patientname} Consumables</h5>
+                <img src={process.env.PUBLIC_URL + 'images/leftarrow.png'} className='ms-2 mb-2' onClick={toggle_consumables_existed} />
                 <h6 className='text-start text-charcoal fw-bold p-1 ps-2 pb-0 '>Consumables Added </h6>
-                <img src={process.env.PUBLIC_URL + 'images/leftarrow.png'} className='ms-2' onClick={toggle_consumables_existed} />
                 <div className="scroll">
                     <table className='table fw-bold p-0 m-0'>
                         <thead className='p-0 m-0 top-0 bg-seashell'>
@@ -316,25 +316,32 @@ const AddConsumables = (props) => {
                             props.existedconsumables && props.existedconsumables.length !== 0 ? (
                                 <tbody className='p-0 m-0 bg-pearl'>
                                     {
-                                        props.existedconsumables.map((data) => (
-                                            <tr className={`align-middle bg-${Number(data.disccost) < Number(data.cost) ? 'lightred50' : ''}`}>
-                                                <td>m{data.medicies_stocks_id}</td>
-                                                <td>{data.medicine.display_name}</td>
-                                                <td>₹{data.main_mrp}</td>
-                                                <td className='text-center p-0 m-0'>{data.discount} </td>
-                                                <td>₹{data.disc_mrp}</td>
-                                                <td>₹{data.total_amount}</td>
-                                                <td>
-                                                    {
-                                                        deleteload ? (
-                                                            <div className="text-charcoal spinner-border spinner-border-sm me-2 " role="status" aria-hidden="true" ></div>
-                                                        ) : (
-                                                            <img src={process.env.PUBLIC_URL + 'images/delete.png'} onClick={() => { RemoveConsumable(data.id) }} />
-                                                        )
-                                                    }
-                                                </td>
+                                        props.existedconsumables.length !== 0 ? (
+                                            props.existedconsumables.map((data) => (
+                                                <tr className={`align-middle bg-${Number(data.disccost) < Number(data.cost) ? 'lightred50' : ''}`}>
+                                                    <td>m{data.medicies_stocks_id}</td>
+                                                    <td>{data.medicine.display_name}</td>
+                                                    <td>₹{data.main_mrp}</td>
+                                                    <td className='text-center p-0 m-0'>{data.discount} </td>
+                                                    <td>₹{data.disc_mrp}</td>
+                                                    <td>₹{data.total_amount}</td>
+                                                    <td>
+                                                        {
+                                                            deleteload ? (
+                                                                <div className="text-charcoal spinner-border spinner-border-sm me-2 " role="status" aria-hidden="true" ></div>
+                                                            ) : (
+                                                                <img src={process.env.PUBLIC_URL + 'images/delete.png'} onClick={() => { RemoveConsumable(data.id) }} />
+                                                            )
+                                                        }
+                                                    </td>
+                                                </tr>
+                                            ))
+                                        ) : (<tbody>
+                                            <tr>
+                                                No consumables Found
                                             </tr>
-                                        ))
+                                        </tbody>)
+
                                     }
                                 </tbody>
                             ) : (
@@ -349,7 +356,7 @@ const AddConsumables = (props) => {
                 </div>
                 <div className="container-fluid fw-bold mt-3 ">
                     <h6 className='fw-bold'>Nursing Notes</h6>
-                    <p className='d-inline-block w-100 text-wrap bg-pearl p-2 rounded-2 '>
+                    <p className='d-inline-block w-100 text-wrap bg-pearl p-2 rounded-2 ' style={{ minHeight: '10vh' }}>
                         {props.appointmentdata.nursing_notes}
                     </p>
                 </div>

@@ -355,7 +355,7 @@ function Saleentrysection(props) {
                         <td className='text-charcoal fw-bold p-0 m-0 px-1'>{item.bill_date && item.bill_date ? reversefunction(item.bill_date) : ''}</td>
                         <td className='text-charcoal fw-bold p-0 m-0 px-1'>{item.grand_total && item.grand_total ? "Rs. " + item.grand_total : ''}</td>
                         <td className='text-charcoal fw-bold p-0 m-0 px-1'>{item.appointment && item.appointment != null && item.appointment.appointment_date && item.appointment.appointment_date != null ? reversefunction(item.appointment.appointment_date) : ''}</td>
-                        <td className='text-charcoal fw-bold p-0 m-0 px-1'>{item.appointment && item.appointment != null && item.appointment.doctor && item.appointment.doctor.doctor_name != null ? item.appointment.doctor.doctor_name : ''}</td>
+                        <td className='text-charcoal fw-bold p-0 m-0 px-1'>{item && item.doctor_name != null ? item.doctor_name : ''}</td>
                         <td className='text-charcoal fw-bold p-0 m-0 px-1'>{item.appointment && item.appointment != null && item.appointment.bill_id && item.appointment.bill_id != null ? item.appointment.bill_id : ''}</td>
                         <td className="text-charcoal fw-bold p-0 m-0 px-1 text-center">
                           <select disabled={item.sale_entry_status == 4 ? true : false} className={` fw-bolder border-0 bg-${((i % 2) == 0) ? 'seashell' : 'pearl'} text-center rounded-pill  bg-${status_color(item.sale_entry_status)}`} name={item.id} onChange={(e) => { UpdateStatus(e, item.id) }} style={{ appearance: 'none' }}>
@@ -1111,13 +1111,13 @@ function SaleEntryForm(props) {
   const medbyidref = useRef(null);
   const patientaddref = useRef(null)
   const stockref = useRef(null)
-  const [searchinput, setsearchinput] = useState()
+  const [searchinput, setsearchinput] = useState(props.patientname ? props.patientname : '')
   const [searchlist, setsearchlist] = useState([])
   const [displaysearchlist, setdisplaysearchlist] = useState('none')
   const [patientid, setpatientid] = useState(props.patientid ? props.patientid : '')
   const [patientdata, setpatientdata] = useState([])
-  const [doctorid, setdoctorid] = useState()
-  const [doctorname, setdoctorname] = useState()
+  const [doctorid, setdoctorid] = useState(props.DoctorID ? props.DoctorID : '')
+  const [doctorname, setdoctorname] = useState(props.DoctorName ? props.DoctorName : '')
   const [otherdoctor, setotherdoctor] = useState()
   const [clinicid, setclinicid] = useState(clinicID)
   const [ischecked, setischecked] = useState()
@@ -1493,7 +1493,7 @@ function SaleEntryForm(props) {
       <div className="row p-0 m-0">
         <div className="col-4">
           <label className="m-0">Search Using Phone or Name</label>
-          <input type="text" className="form-control bg-seashell selectpatient col-10 position-relative" placeholder='Search for Patients' value={props.patientname ? props.patientname : searchinput ? searchinput : ''} onFocus={() => setsearchload(true)} onChange={searchpatient} />
+          <input type="text" className="form-control bg-seashell selectpatient col-10 position-relative" placeholder='Search for Patients' value={searchinput ? searchinput : ''} onFocus={() => setsearchload(true)} onChange={searchpatient} />
           <div className={`col-auto d-${displaysearchlist} text-decoration-none searchinput position-absolute rounded-1 shadow bg-pearl px-2`} style={{ width: 'max-content', zIndex: '2' }}>
             {
               searchload == true || searchinput == undefined ? (

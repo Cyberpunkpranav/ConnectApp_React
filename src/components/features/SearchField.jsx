@@ -47,7 +47,7 @@ const SearchField = (props) => {
     console.log(searchlist)
     return (
         <>
-            <div className={`col-12 d-${displaysearchlist} searchlist bg-pearl rounded-1 p-0 m-0`} style={{ minHeight: '4rem' }}>
+            <div className={`col-12 d-${displaysearchlist} searchlist bg-pearl rounded-2 p-0 m-0`} style={{ minHeight: '4rem' }}>
                 {
                     searchload ? (
                         <div className="row p-0 m-0 text-charcoal75 fs-6 rounded-1" style={{ width: '50vh' }}>Loading... </div>
@@ -55,17 +55,17 @@ const SearchField = (props) => {
                         searchlist && searchlist.length == 0 ? (
                             <div className="text-danger btn fs-6 p-0 m-0" style={{ width: '50vh' }}>Patient not found. Add as new to book appointments</div>
                         ) : (
-                            <div>
+                            <div className='rounded-2'>
                                 {/* <p className='text-secondary p-0 m-0 text-start fw-bold ps-2' style={{ fontSize: '0.8rem' }}>{searchlist.length} searches found</p> */}
                                 {
                                     searchlist && searchlist.map((data) => (
-                                        <div className='row p-0 m-0 bg-pearl p-1 border-top rounded-bottom' style={{ width: '50vh' }}>
+                                        <div className='row p-0 m-0 bg-pearl p-1 border-top rounded-bottom align-items-center ' style={{ width: '50vh' }}>
 
                                             <div className="col-9 col-xl-9 col-lg-9 p-0 m-0 text-start ps-2">
-                                                <button className=' p-0 m-0 border-0 text-charcoal bg-pearl text-start' >{data.full_name} {data.phone_number}</button>
+                                                <button className=' p-0 m-0 border-0 text-charcoal bg-pearl text-start fw-bold ' >{data.full_name} {data.phone_number}</button>
                                             </div>
                                             <div className="col-auto col-xl-auto col-lg-auto p-0 m-0 align-self-center justify-content-center">
-                                                <button className={`button button-burntumber border-0 p-0 m-0 px-1 d-${permission.appointment_add == 1 ? '' : 'none'}`} name={data.id} value={data.full_name} onClick={(e) => get_value(e)} style={{ fontSize: '0.8rem' }}>+Appointment</button>
+                                                <button className={`button button-pearl text-burntumber fw-bold border-0 p-0 m-0 d-${permission.appointment_add == 1 ? '' : 'none'}`} name={data.id} value={data.full_name} onClick={(e) => get_value(e)} style={{ fontSize: '0.8rem' }}>+Appointment</button>
                                             </div>
                                         </div>
 

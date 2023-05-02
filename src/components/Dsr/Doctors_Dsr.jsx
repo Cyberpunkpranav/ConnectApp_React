@@ -310,8 +310,8 @@ const Doctors_Dsr = (props) => {
         <div className="tab-pane fade show active text-start" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
           <div className='container-fluid scroll scroll-y doctordsrtable' ref={tableref}>
             <span className='d-none'>Total Time:{TotalTime()}</span>
-            <table className='table text-start'>
-              <thead>
+            <table className='table text-start fw-bold'>
+              <thead className='position-sticky top-0 bg-pearl'>
                 <tr>
                   <th>Id</th>
                   <th>Doctors Name</th>
@@ -362,7 +362,7 @@ const Doctors_Dsr = (props) => {
         </div>
         <div className="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
           <div className='container-fluid scroll scroll-y doctordsrtable' ref={Doctorwisetable}>
-            <table className='table text-start'>
+            <table className='table text-start fw-bold'>
               <thead className='position-sticky top-0 bg-pearl'>
                 <tr>
                   <th className='my-0 py-0' rowspan='2'>Doctor Id</th>

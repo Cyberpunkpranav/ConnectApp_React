@@ -604,8 +604,8 @@ const Pharmacy_Dsr = (props) => {
               <div className='selector '>
                 <input ref={Pendingsonly} type="checkbox" className='form-check-input ms-2 me-1' onChange={() => { Conditionaldisplay() }} /><label className='text-burntumber fw-bold'>Show Pendings Only</label>
               </div>
-
             </div>
+
             <div className={`container-fluid p-0 m-0 scroll scroll-y mt-2 saleentries d-${se}`} ref={saleentry} style={{ minHeight: '60vh', maxHeight: '60vh' }}>
               <table className='table'>
                 <thead className='text-start position-sticky top-0 bg-pearl'>
@@ -648,9 +648,9 @@ const Pharmacy_Dsr = (props) => {
                               <td className='fw-bold text-charcoal py-0 px-0 px-2'>{data && data.bill_date !== null ? reversefunction(data.bill_date) : ''}</td>
                               <td className='fw-bold text-charcoal py-0 px-0 px-2'>{data && data.patient && data.patient.full_name !== null ? data.patient.full_name : ''}</td>
                               <td className='fw-bold text-charcoal py-0 px-0 px-2'>{data && data.doctor_name !== null ? 'Dr. ' + data.doctor_name : ''}</td>
-                              <td className='fw-bold text-charcoal py-0 px-0 px-2'>{data.grand_total && data.grand_total !== null ? data.grand_total : ''}</td>
-                              <td className='fw-bold text-charcoal py-0 px-0 px-2'>{data.payment_method_details && data.payment_method_details != null ? Object.values(JSON.parse(data.payment_method_details)) + '' : ''}</td>
-                              <td className='fw-bold text-charcoal py-0 px-0 px-2'>{SumPendingpayments(i)}</td>
+                              <td className='fw-bold text-charcoal py-0 px-0 px-2'>₹{data.grand_total && data.grand_total !== null ? data.grand_total : ''}</td>
+                              <td className='fw-bold text-charcoal py-0 px-0 px-2'>₹{data.payment_method_details && data.payment_method_details != null ? Object.values(JSON.parse(data.payment_method_details)) + '' : ''}</td>
+                              <td className='fw-bold text-charcoal py-0 px-0 px-2'>₹{SumPendingpayments(i)}</td>
                               <td className='fw-bold text-charcoal py-0 px-0 px-2'>{data.payment_method_details && data.payment_method_details != null ? Object.keys(JSON.parse(data.payment_method_details)) + '' : ''}</td>
                               <td className='fw-bold text-charcoal text-center'>{SumPendingpayments(i) !== 0 ?
                                 <button className='button p-0 m-0 px-4 fw-bold text-charcoal rounded-pill button-lightred'>Pending</button>
@@ -708,7 +708,7 @@ const Pharmacy_Dsr = (props) => {
                       </tbody>
                     ) : (
                       // d-${SumPendingpayments(i) > 0 ? '':'none'}
-                      <tbody className='text-start'>
+                      <tbody className='text-start align-middle'>
                         {
                           SaleEntryList.map((data, i) => (
 
@@ -719,9 +719,9 @@ const Pharmacy_Dsr = (props) => {
                                 <td className='fw-bold text-charcoal py-0 px-0 px-2'>{data && data.bill_date !== null ? reversefunction(data.bill_date) : ''}</td>
                                 <td className='fw-bold text-charcoal py-0 px-0 px-2'>{data && data.patient && data.patient.full_name !== null ? data.patient.full_name : ''}</td>
                                 <td className='fw-bold text-charcoal py-0 px-0 px-2'>{data && data.doctor_name !== null ? 'Dr. ' + data.doctor_name : ''}</td>
-                                <td className='fw-bold text-charcoal py-0 px-0 px-2'>{data.grand_total && data.grand_total !== null ? data.grand_total : ''}</td>
-                                <td className='fw-bold text-charcoal py-0 px-0 px-2'>{data.payment_method_details && data.payment_method_details != null ? Object.values(JSON.parse(data.payment_method_details)) + '' : ''}</td>
-                                <td className='fw-bold text-charcoal py-0 px-0 px-2'>{SumPendingpayments(i)}</td>
+                                <td className='fw-bold text-charcoal py-0 px-0 px-2'>₹{data.grand_total && data.grand_total !== null ? data.grand_total : ''}</td>
+                                <td className='fw-bold text-charcoal py-0 px-0 px-2'>₹{data.payment_method_details && data.payment_method_details != null ? Object.values(JSON.parse(data.payment_method_details)) + '' : ''}</td>
+                                <td className='fw-bold text-charcoal py-0 px-0 px-2'>₹{SumPendingpayments(i)}</td>
                                 <td className='fw-bold text-charcoal py-0 px-0 px-2'>{data.payment_method_details && data.payment_method_details != null ? Object.keys(JSON.parse(data.payment_method_details)) + '' : ''}</td>
                                 <td className='fw-bold text-charcoal text-center'><button className='button p-0 m-0 px-4 fw-bold text-charcoal rounded-pill button-lightred'>Pending</button></td>
                               </tr>
@@ -962,7 +962,7 @@ const Pharmacy_Dsr = (props) => {
             </div>
             <div className='container-fluid p-0 m-0 scroll scroll-y salereturns mt-2' ref={salereturn} style={{ minHeight: '60vh', maxHeight: '60vh' }}>
 
-              <table className='table'>
+              <table className='table fw-bold'>
                 <thead className='text-start position-sticky top-0 bg-pearl '>
                   <tr className='text-charcoal75'>
                     {/* <th rowspan='2' className='py-0' >SE ID</th> */}
@@ -1026,7 +1026,7 @@ const Pharmacy_Dsr = (props) => {
                               <td>{data.sale_entry.payment_method_details && data.sale_entry.payment_method_details != null ? JSON.parse(data.sale_entry.payment_method_details).Points : ''}</td>
                               <td>{data.sale_entry && data.sale_entry.grand_total !== null ? data.sale_entry.grand_total : ''}</td> */}
                               <td>{data.return_date && data.return_date !== null ? reversefunction(data.return_date) : ''}</td>
-                              <td>{data.grand_total && data.grand_total !== null ? data.grand_total : ''}</td>
+                              <td>₹{data.grand_total && data.grand_total !== null ? data.grand_total : ''}</td>
                               {/* : data.sale_entry.payment_method_details && data.sale_entry.payment_method_details != null ? JSON.parse(data.sale_entry.payment_method_details).Card */}
                             </tr>
                           ))
@@ -1053,7 +1053,6 @@ const Pharmacy_Dsr = (props) => {
               </div>
             </div>
           </div>
-
           <div className="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">
             <h6 className="text-charcoal fw-bold p-0 m-0 ms-2 ms-lg-3 ms-md-1 ms-sm-1">Payments</h6>
             <div className="row m-0 g-2 mt-md-2 p-0 text-start justify-content-start">
@@ -1145,8 +1144,8 @@ const Pharmacy_Dsr = (props) => {
                               <td>{data.pending_date && data.pending_date !== null ? reversefunction(data.pending_date) : ''}</td>
                               <td>{data.paid_date && data.paid_date !== null ? reversefunction(data.paid_date) : ''}</td>
                               <td>{data.payment_method_details && data.payment_method_details != null ? Object.keys(JSON.parse(data.payment_method_details)) + '' : ''}</td>
-                              <td>{data.payment_method_details && data.payment_method_details != null ? Object.values(JSON.parse(data.payment_method_details)) + '' : ''}</td>
-                              <td>{data.paid_amount && data.paid_amount !== null ? data.paid_amount : ''}</td>
+                              <td>₹{data.payment_method_details && data.payment_method_details != null ? Object.values(JSON.parse(data.payment_method_details)) + '' : ''}</td>
+                              <td>₹{data.paid_amount && data.paid_amount !== null ? data.paid_amount : ''}</td>
                             </tr>
                           ))
                         }

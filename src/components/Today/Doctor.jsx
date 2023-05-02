@@ -623,15 +623,15 @@ function DoctorSchedule(props) {
                             }
                             {
                               consumablesindex == i ? (
-                                <td className={`consumables mx-auto position-absolute bg-seashell shadow-sm top-0 border border-1 rounded-1 start-0 end-0 col-lg-10 col-md-11 col-sm-12 col-12 mt-2 col-xl-8  d-${consumablesindex == i ? consumables : 'none'}`} style={{zIndex:'4'}} >
+                                <td className={`consumables mx-auto position-absolute bg-seashell shadow-sm top-0 border border-1 rounded-1 start-0 end-0 col-lg-10 col-md-11 col-sm-12 col-12 mt-2 col-xl-8  d-${consumablesindex == i ? consumables : 'none'}`} style={{ zIndex: '4' }} >
                                   <AddConsumables appointmentdata={appointmentdata[i]} Appointmentlist={Appointmentlist} existedconsumables={appointmentdata[i].medicine_used} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} appointmentid={data.id} toggleConsumables={toggleConsumables} />
                                 </td>
                               ) : (<></>)
                             }
                             {
                               saleindex == i ? (
-                                <td className={`saleentryform mx-auto position-absolute bg-seashell shadow-sm top-0 border border-1 rounded-1 start-0 end-0 col-lg-10 col-md-11 col-sm-12 col-12 mt-2 col-xl-8  d-${saleindex == i ? saleindex : 'none'}`} style={{zIndex:'4'}} >
-                                  <SaleEntryForm saleindex={saleindex} toggle_nsef={toggle_nsef}  patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} patientid={data.patient && data.patient.id != null ? data.patient.id : ""} />
+                                <td className={`saleentryform mx-auto position-absolute bg-seashell shadow-sm top-0 border border-1 rounded-1 start-0 end-0 col-lg-10 col-md-11 col-sm-12 col-12 mt-2 col-xl-8  d-${saleindex == i ? saleindex : 'none'}`} style={{ zIndex: '4' }} >
+                                  <SaleEntryForm DoctorID={props.DoctorID} DoctorName={props.DoctorName} saleindex={saleindex} toggle_nsef={toggle_nsef} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} patientid={data.patient && data.patient.id != null ? data.patient.id : ""} />
                                 </td>
                               ) : (<></>)
 

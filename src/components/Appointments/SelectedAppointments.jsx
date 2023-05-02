@@ -310,7 +310,7 @@ const SelectedAppointments = (props) => {
                 {/* <td><img src={process.env.PUBLIC_URL + "/images/vitals.png"} alt="displaying_image" style={{ width: "1.5rem" }} className='m-0 p-0' /> </td> */}
                 {/* <td>{data.follow_up_date ? data.follow_up_date : ''}</td> */}
                 {/* <td> <img src={process.env.PUBLIC_URL + "/images/cart.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1 m-0 p-0" /> </td> */}
-                <td className='text-end'><div className="dropdown text-decoration-none bg-transparent">
+                <td className='text-center'><div className="dropdown text-decoration-none d-inline-block bg-transparent">
                   <button className="button p-0 m-0 px-1 py-1 bg-transparent border-0 p-0  fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" style={{ width: "1.5rem" }} />
                   </button>

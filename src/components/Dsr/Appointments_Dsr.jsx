@@ -624,14 +624,14 @@ const Appointments_Dsr = (props) => {
                             <td className='fw-bold text-charcoal px-0 px-2'>{data.timeslot && data.timeslot.time_from && data.timeslot.time_from != null ? tConvert(data.timeslot.time_from) : ''}</td>
                             <td className='fw-bold text-charcoal px-0 px-2'>{data.payment_method_details && data.payment_method_details != null ? Object.keys(JSON.parse(data.payment_method_details)) + '' : ''}</td>
                             <td className='fw-bold text-charcoal px-0 px-2'>{data.payment_method_details && data.payment_method_details != null ? Object.values(JSON.parse(data.payment_method_details)) + '' : ''}</td>
-                            <td className='fw-bold text-charcoal px-0 px-2'>{data.doctor && data.doctor.consulationFee !== null ? data.doctor.consulationFee : ''}</td>
-                            <td className='fw-bold text-charcoal px-0 px-2'>{data.procedure_cost && data.procedure_cost != null ? data.procedure_cost : ''}</td>
-                            <td className='fw-bold text-charcoal px-0 px-2'>{SumExtraCharges(i)}</td>
+                            <td className='fw-bold text-charcoal px-0 px-2'>₹{data.doctor && data.doctor.consulationFee !== null ? data.doctor.consulationFee : ''}</td>
+                            <td className='fw-bold text-charcoal px-0 px-2'>₹{data.procedure_cost && data.procedure_cost != null ? data.procedure_cost : ''}</td>
+                            <td className='fw-bold text-charcoal px-0 px-2'>₹{SumExtraCharges(i)}</td>
                             <td className='fw-bold text-charcoal px-0 px-2'>{data.discount && data.discount != null ? data.discount : ''}</td>
-                            <td className='fw-bold text-charcoal px-0 px-2'>{data.CGST}</td>
-                            <td className='fw-bold text-charcoal px-0 px-2'>{data.SGST}</td>
-                            <td className='fw-bold text-charcoal px-0 px-2'>{SumPendingpayments(i)}</td>
-                            <td className='fw-bold text-charcoal px-0 px-2'>{data.total_amount}</td>
+                            <td className='fw-bold text-charcoal px-0 px-2'>₹{data.CGST}</td>
+                            <td className='fw-bold text-charcoal px-0 px-2'>₹{data.SGST}</td>
+                            <td className='fw-bold text-charcoal px-0 px-2'>₹{SumPendingpayments(i)}</td>
+                            <td className='fw-bold text-charcoal px-0 px-2'>₹{data.total_amount}</td>
                           </tr>
 
                         ))

@@ -79,7 +79,7 @@ const SelectedTimeAppointment = (props) => {
     // Functions
     return (
         <>
-            <h5 className="text-center m-0 p-0 mt-2">Quick Appointment  at <span className=' text-charcoal fw-bold border-0'>{tConvert(props.selectedtime)}</span></h5>
+            <h5 className="text-center m-0 p-0 mt-2">Quick Appointment  at <span className=' text-charcoal fw-bold border-0 fs-6'>{tConvert(props.selectedtime)}</span></h5>
             <button type="button" className="btn-close closebtn position-absolute" disabled={load == true ? true : false} aria-label="Close" onClick={(e) => { props.closeAddAppointmentform() }} ></button>
             <hr className='p-0 m-0 mb-1' />
             <div className=" text-start ms-3 clinics align-self-center mb-2 ">
@@ -87,7 +87,6 @@ const SelectedTimeAppointment = (props) => {
                     cliniclist.map((data, i) => (
                         <label className={`d-${clinicID == data.id ? 'block' : 'none'}`}>
                             <img src={process.env.PUBLIC_URL + '/images/location.png'} className=' align-self-center ' style={{ width: '1.3rem' }} /> {data.title} {data.address}</label>
-
                     ))
                 }
             </div>
@@ -102,13 +101,13 @@ const SelectedTimeAppointment = (props) => {
                                 searchlist !== undefined && searchlist.length == 0 ? (
                                     <option className="text-burntumber col-12 p-0 m-0 bg-pearl shadow rounded mt-1 p-2">Patient not found</option>
                                 ) : (
-                                    // <div className='mt-1 searchresult shadow rounded-1 p-1 bg-pearl border border-1 col-12 '>
-                                    // {
-                                    searchlist.map((data, i) => (
-                                        <option style={{ cursor: 'pointer' }} className={`col-12 bg-${i % 2 == 0 ? 'seashell' : 'pearl'} px-2 text-charcoal text-start ps-2 border-bottom align-self-center`} name={data.id} value={data.full_name} onClick={() => { get_value(data) }}>{data.full_name} {data.phone_number}</option>
-                                    ))
-                                    // }
-                                    // {/* </div> */}
+                                    <div className='mt-1 searchresult shadow rounded-1 p-1 bg-pearl border border-1 col-12  '>
+                                        {
+                                            searchlist.map((data, i) => (
+                                                <option style={{ cursor: 'pointer' }} className={`col-12 bg-${i % 2 == 0 ? 'seashell' : 'pearl'} p-1 text-charcoal text-start border-bottom align-self-center`} name={data.id} value={data.full_name} onClick={() => { get_value(data) }}>{data.full_name} {data.phone_number}</option>
+                                            ))
+                                        }
+                                    </div>
                                 )
 
                             )
@@ -124,9 +123,6 @@ const SelectedTimeAppointment = (props) => {
                     </div>
                 </div>
             </div>
-
-
-
 
             {
                 load ? (
