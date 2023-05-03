@@ -103,10 +103,8 @@ const AddConsumables = (props) => {
     function CalTotalAmount(qty, cst, realcst) {
         let cost = cst
         if (Number(realcst) > Number(cost)) {
-
             Notiflix.Notify.failure('Selling Cost should not less than Cost')
         }
-        console.log(typeof (realcst), typeof (cost))
         if (!qty) {
             return 0
         } else if (qty == 1) {
@@ -261,6 +259,7 @@ const AddConsumables = (props) => {
                 notes: nursenotes
             }).then((response) => {
                 Notiflix.Notify.success(response.data.message)
+                props.Appointmentlist()
             })
         } catch (e) {
             Notiflix.Notify.warning(e.data.message)
@@ -398,10 +397,10 @@ const AddConsumables = (props) => {
                                                 <div className="bg-burntumber text-light rounded-1 p-1">Oops! Not Avaliable</div>
                                             ) : (
                                                 <div className={`rounded-4 border border-1 bg-pearl p-1 d-${itemsearch && itemsearch.length > 0 ? 'block' : 'none'}`}>
-                                                    <p className={`text-start m-1 fw-bold text-charcoal75 ms-2`} style={{ fontSize: '0.8rem' }}>{itemsearch.length} Search Results</p>
+                                                    <p className={`text-start m-1 fw-bold text-charcoal75 ms-1`} style={{ fontSize: '0.8rem' }}>{itemsearch.length} Search Results</p>
                                                     {
                                                         itemsearch.map((data, i) => (
-                                                            <div style={{ cursor: 'pointer', Width: 'max-content' }} className={`bg-${((i % 2) == 0) ? 'pearl' : 'seashell'} p-0 ps-1 border-bottom text-charcoal `} onClick={(e) => { setproducts(data); setitemname(data.display_name ? data.display_name : data.name); setitemid(data.id); stockref.current.style.display = 'block' }}>{data.display_name ? data.display_name : data.name}</div>
+                                                            <div style={{ cursor: 'pointer', Width: 'max-content' }} className={`bg-${((i % 2) == 0) ? 'pearl' : 'seashell'} p-1 border-bottom text-charcoal `} onClick={(e) => { setproducts(data); setitemname(data.display_name ? data.display_name : data.name); setitemid(data.id); stockref.current.style.display = 'block' }}>{data.display_name ? data.display_name : data.name}</div>
                                                         ))
                                                     }
                                                 </div>
@@ -429,10 +428,10 @@ const AddConsumables = (props) => {
                                                             setproducts();
                                                             setitemsearch()
                                                         }}>
-                                                    <p className='text-start m-0 p-0 fw-bold'>{itemname}</p>
-                                                    <p className=''>BatchNo. - {data.batch_no && data.batch_no !== null ? data.batch_no : ''}</p>
-                                                    <p className=''>Stock - {data.current_stock && data.current_stock ? data.current_stock : ''}</p>
-                                                    <p className=''>Expiry Date - {data.expiry_date ? reversefunction(data.expiry_date) : ''}</p>
+                                                    <h6 className='text-start m-0 p-0 fw-bold'>{itemname}</h6>
+                                                    <p className='p-0 m-0 px-1'>BatchNo. - <span className='fw-bold'>{data.batch_no && data.batch_no !== null ? data.batch_no : ''}</span></p>
+                                                    <p className='p-0 m-0 px-1'>Stock - <span className='fw-bold'>{data.current_stock && data.current_stock ? data.current_stock : ''}</span></p>
+                                                    <p className='p-0 m-0 px-1'>Expiry Date - <span className='fw-bold'>{data.expiry_date ? reversefunction(data.expiry_date) : ''}</span></p>
                                                 </div>
                                             ))
 
