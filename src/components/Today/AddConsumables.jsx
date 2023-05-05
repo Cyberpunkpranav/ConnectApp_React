@@ -373,7 +373,7 @@ const AddConsumables = (props) => {
                     <div className="row my-2 justify-content-center">
 
 
-                        <div className="col-4">
+                        <div className="col-4 position-relative">
                             <input className='form-control bg-seashell' placeholder='Search Product by Name'
                                 value={itemname ? itemname : ''}
                                 onChange={(e) => {
@@ -396,11 +396,11 @@ const AddConsumables = (props) => {
                                             loadsearch == false && itemsearch.length == 0 ? (
                                                 <div className="bg-burntumber text-light rounded-1 p-1">Oops! Not Avaliable</div>
                                             ) : (
-                                                <div className={`rounded-4 border border-1 bg-pearl p-1 d-${itemsearch && itemsearch.length > 0 ? 'block' : 'none'}`}>
+                                                <div className={`rounded-1 border border-1 bg-pearl p-1 d-${itemsearch && itemsearch.length > 0 ? 'block' : 'none'}`}>
                                                     <p className={`text-start m-1 fw-bold text-charcoal75 ms-1`} style={{ fontSize: '0.8rem' }}>{itemsearch.length} Search Results</p>
                                                     {
                                                         itemsearch.map((data, i) => (
-                                                            <div style={{ cursor: 'pointer', Width: 'max-content' }} className={`bg-${((i % 2) == 0) ? 'pearl' : 'seashell'} p-1 border-bottom text-charcoal `} onClick={(e) => { setproducts(data); setitemname(data.display_name ? data.display_name : data.name); setitemid(data.id); stockref.current.style.display = 'block' }}>{data.display_name ? data.display_name : data.name}</div>
+                                                            <div style={{ cursor: 'pointer', Width: 'max-content' }} className={`bg-${((i % 2) == 0) ? 'pearl' : 'seashell'} p-1 py-2 fw-bold border-bottom text-charcoal `} onClick={(e) => { setproducts(data); setitemname(data.display_name ? data.display_name : data.name); setitemid(data.id); stockref.current.style.display = 'block' }}>{data.display_name ? data.display_name : data.name}</div>
                                                         ))
                                                     }
                                                 </div>
@@ -409,7 +409,7 @@ const AddConsumables = (props) => {
                                     ) : (<div className='bg-seashell'></div>)
                                 }
                             </div>
-                            <div ref={stockref} className={`position-absolute bg-pearl scroll scroll-y align-self-center rounded-4 border border-1 p-1 d-${products && products.stock_info && products.stock_info.length > 0 ? 'block' : 'none'}`} style={{ marginLeft: '15.7rem', marginTop: '2rem', zIndex: '2', 'width': '13rem', 'height': '10rem' }}>
+                            <div ref={stockref} className={`position-absolute bg-pearl scroll scroll-y align-self-center rounded-1 border border-1 p-1 d-${products && products.stock_info && products.stock_info.length > 0 ? 'block' : 'none'}`} style={{ marginLeft: '14vh', marginTop: '2rem', zIndex: '2', 'width': '13rem', 'height': '10rem' }}>
                                 <p className={`text-start m-1 fw-bold text-charcoal75`} style={{ fontSize: '0.8rem' }}>{products && products.stock_info !== undefined ? products.stock_info.length : ''} Batch Stocks</p>
                                 {
                                     products && products.length == 0 ? (

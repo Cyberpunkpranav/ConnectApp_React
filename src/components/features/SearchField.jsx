@@ -47,25 +47,26 @@ const SearchField = (props) => {
     console.log(searchlist)
     return (
         <>
-            <div className={`col-12 d-${displaysearchlist} searchlist bg-pearl rounded-2 p-0 m-0`} style={{ minHeight: '4rem' }}>
+            <div className={`col-12 d-${displaysearchlist} searchlist bg-pearl rounded-2 p-0 m-0`} style={{ minHeight: 'fit-content' }}>
                 {
                     searchload ? (
-                        <div className="row p-0 m-0 text-charcoal75 fs-6 rounded-1" style={{ width: '50vh' }}>Loading... </div>
+                        <h6 className="row p-0 m-0 mainsearch text-charcoal75 rounded-1 p-2" >Loading... </h6>
                     ) : (
                         searchlist && searchlist.length == 0 ? (
-                            <div className="text-danger btn fs-6 p-0 m-0" style={{ width: '50vh' }}>Patient not found. Add as new to book appointments</div>
+                            <h6 className="text-danger fw-bold mainsearch bg-lightred50 p-0 m-0 p-2" >Patient not found. Add as new to book appointments</h6>
                         ) : (
-                            <div className='rounded-2'>
+                            <div className='rounded-2 mainsearch'>
                                 {/* <p className='text-secondary p-0 m-0 text-start fw-bold ps-2' style={{ fontSize: '0.8rem' }}>{searchlist.length} searches found</p> */}
                                 {
                                     searchlist && searchlist.map((data) => (
-                                        <div className='row p-0 m-0 bg-pearl p-1 border-top rounded-bottom align-items-center ' style={{ width: '50vh' }}>
+                                        <div className='row p-0 m-0 bg-pearl w-100 p-1 border-top rounded-bottom align-items-center justify-content-between px-lg-3'>
 
-                                            <div className="col-9 col-xl-9 col-lg-9 p-0 m-0 text-start ps-2">
-                                                <button className=' p-0 m-0 border-0 text-charcoal bg-pearl text-start fw-bold ' >{data.full_name} {data.phone_number}</button>
+                                            <div className="col-9 col-xl-6 col-lg-9 col-md-6 p-0 m-0 text-start ps-lg-2">
+                                                <h6 className=' p-0 m-0 border-0 text-charcoal bg-pearl text-start text-wrap fw-bold ' >{data.full_name}</h6>
+                                                <h6 className=' p-0 m-0 border-0 text-charcoal bg-pearl text-start text-wrap fw-bold ' > {data.phone_number}</h6>
                                             </div>
-                                            <div className="col-auto col-xl-auto col-lg-auto p-0 m-0 align-self-center justify-content-center">
-                                                <button className={`button button-pearl text-burntumber fw-bold border-0 p-0 m-0 d-${permission.appointment_add == 1 ? '' : 'none'}`} name={data.id} value={data.full_name} onClick={(e) => get_value(e)} style={{ fontSize: '0.8rem' }}>+Appointment</button>
+                                            <div className="col-auto col-xl-4 col-lg-auto col-md-5 p-0 m-0 align-self-center justify-content-center">
+                                                <button className={`button-sm button-pearl text-burntumber fw-bold border-0 p-0 m-0 d-${permission.appointment_add == 1 ? '' : 'none'}`} name={data.id} value={data.full_name} onClick={(e) => get_value(e)} style={{ fontSize: '0.8rem' }}>+Appointment</button>
                                             </div>
                                         </div>
 

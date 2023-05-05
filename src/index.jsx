@@ -1,21 +1,27 @@
 //React 
-import React, { useContext } from 'react';
+import React, { Suspense, useContext } from 'react';
 import ReactDOM from 'react-dom/client';
 import { useState, useEffect } from "react";
 import { createContext } from 'react'
+import { lazy } from 'react';
 import axios from "axios";
-import { encrypt, decrypt } from 'n-krypta'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.js';
+// import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+// import 'bootstrap/dist/js/bootstrap.bundle.js';
 import './css/dashboard.css';
 import './css/appointment.css';
 import './css/pharmacy.css';
 import './css/login.css';
-import { Navbar, Doctorsection, Appointments, Patients, Doctors, Pharmacy, DailySaleReport, Exports } from './App'
+import { Appointments, Patients, Doctors, Pharmacy, DailySaleReport, Exports } from './App'
 import { WelcomeLoader } from './components/features/WelcomeLoader'
 //Notiflix
 import Notiflix from 'notiflix';
+import IdleTimer from './components/features/InactiveLogout'
+import Navbar from './components/App/Navbar'
+const Doctorsection = lazy(() => import('./components/App/Clinic'))
+
+// import Appointments from './components/App/Clinic'
+
 //Context Apis
 const TodayDate = createContext();
 const URL = createContext();
@@ -112,7 +118,6 @@ function Connectapp(props) {
     localStorage.setItem('ClinicId', clinicid)
     setisWelcomeLoading(0)
   }
-  console.log(props.permissions)
   return (
 
     isWelcomeLoading == 0 ? (
@@ -123,7 +128,7 @@ function Connectapp(props) {
       ClinicId == 'null' ? (
         <div className='position-relative'>
           <div className='bg_a'>
-            <img src={process.env.PUBLIC_URL + "/images/a.png"} alt='image' className='img-fluid bg-a'  />
+            <img src={process.env.PUBLIC_URL + "/images/a.png"} alt='image' className='img-fluid bg-a' />
           </div>
           <div className=' Clinicslist position-absolute top-0 start-0 end-0 text-charcoal'>
             {/* <img src={process.env.PUBLIC_URL + "/images/logo.png"} alt='image' className='img-fluid logo p-0 m-0 start-0 top-0' /> */}
@@ -161,16 +166,19 @@ function Connectapp(props) {
                         <TodayDocs.Provider value={todayDoc}>
                           <Vitals.Provider value={vitalslist}>
                             <Router>
-                              <Navbar path={path} permissions={props.permissions} username={props.username} designation={props.designation} id={props.id} fetchapi={fetchapi} />
-                              <Routes>
-                                <Route path='/' onChange={() => setpath('/')} element={<Doctorsection id={props.id} fetchapi={fetchapi} todayDoc={todayDoc} Loading={Loading} docapi={docapi} />} />
-                                <Route path='/Appointments' onChange={() => setpath('/Appointments')} element={<Appointments id={props.id} fetchapi={fetchapi} />} />
-                                <Route path='/Patients' onChange={() => setpath('/Patients')} element={<Patients id={props.id} />} />
-                                <Route path='/Doctors' onChange={() => setpath('/Doctors')} element={<Doctors id={props.id} docapi={docapi} />} />
-                                <Route path='/DailySaleReport' onChange={() => setpath('/DailySaleReport')} element={<DailySaleReport id={props.id} cliniclist={cliniclist} docapi={docapi} />} />
-                                <Route path='/Pharmacy' onChange={() => setpath('/Pharmacy')} element={<Pharmacy id={props.id} />} />
-                                {/* <Route path='/Files' element={<Exports id={props.id} />} /> */}
-                              </Routes>
+                              <Navbar path={path} logout={props.logout} permissions={props.permissions} username={props.username} designation={props.designation} id={props.id} fetchapi={fetchapi} />
+                              <Suspense fallback={<div>Loading...</div>}>
+                                <Routes>
+                                  <Route path='/' onChange={() => setpath('/')} element={<Doctorsection id={props.id} fetchapi={fetchapi} todayDoc={todayDoc} Loading={Loading} docapi={docapi} />} />
+                                  <Route path='/Appointments' onChange={() => setpath('/Appointments')} element={<Appointments id={props.id} fetchapi={fetchapi} />} />
+                                  <Route path='/Patients' onChange={() => setpath('/Patients')} element={<Patients id={props.id} />} />
+                                  <Route path='/Doctors' onChange={() => setpath('/Doctors')} element={<Doctors id={props.id} docapi={docapi} />} />
+                                  <Route path='/DailySaleReport' onChange={() => setpath('/DailySaleReport')} element={<DailySaleReport id={props.id} cliniclist={cliniclist} docapi={docapi} />} />
+                                  <Route path='/Pharmacy' onChange={() => setpath('/Pharmacy')} element={<Pharmacy id={props.id} />} />
+                                  {/* <Route path='/Files' element={<Exports id={props.id} />} /> */}
+
+                                </Routes>
+                              </Suspense>
                             </Router>
                           </Vitals.Provider>
                         </TodayDocs.Provider>
@@ -196,6 +204,9 @@ function Switchpage() {
   const [load, setload] = useState()
   const [permissions, setpermissions] = useState([])
   const [roleId, setroleId] = useState()
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [timer, setTimer] = useState(null);
+
 
   const topassword = () => {
     setpassword('flex');
@@ -223,7 +234,7 @@ function Switchpage() {
     setlogininput(logindata);
   }
   const localemail = localStorage.getItem("email")
-  const secretkey = 'aartasclinishare'
+
   async function Submit() {
     setroleId()
     setload(true)
@@ -275,18 +286,49 @@ function Switchpage() {
   useEffect(() => {
     Permissions()
   }, [role])
+  function logout() {
+    localStorage.removeItem('email');
+    localStorage.removeItem('name');
+    localStorage.removeItem('id');
+    localStorage.removeItem('designation');
+    localStorage.removeItem('ClinicId');
+    localStorage.removeItem('roleId');
+
+  }
+
+  const [isTimeout, setIsTimeout] = useState(false);
+  useEffect(() => {
+    const timer = new IdleTimer({
+      timeout: 1800, //expire after 30 mins
+      onTimeout: () => {
+        setIsTimeout(true);
+      },
+      onExpired: () => {
+        logout()
+        setIsTimeout(true);
+
+      }
+    });
+
+    return () => {
+      timer.cleanUp();
+    };
+  }, [isTimeout]);
+
+  let expired = localStorage.getItem('_expiredTime')
+  useEffect(() => {
+
+    Changepage()
+  }, [expired == undefined])
 
   function Changepage() {
-
-
     if (localemail !== null && localemail !== '') {
       const Username = localStorage.getItem('name')
       const Designation = localStorage.getItem('designation')
-      const Id = decrypt(localStorage.getItem('id'), secretkey)
-      return <Connectapp username={Username} designation={Designation} id={Id} permissions={permissions} />
+      const Id = localStorage.getItem('id')
+      return <Connectapp logout={logout} username={Username} designation={Designation} id={Id} permissions={permissions} />
     } else {
       return (
-
         <div className='loginform p-0 m-0'>
           <section className="signinsection">
             <div className=" p-0 m-0 formsection ">
@@ -340,7 +382,7 @@ function Switchpage() {
       )
     }
   }
-
+  console.log(isTimeout)
   return (
     Changepage()
   )

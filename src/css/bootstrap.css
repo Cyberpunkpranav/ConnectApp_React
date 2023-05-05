@@ -481,10 +481,7 @@ ul li{
 .navsection img{
     transition: all 0.5s;
 }
-.logoutbtn{
-    animation-name: animatelogout;
-    animation-duration: 0.5s;
-}
+
 .d-block ,button{
     animation-name: animateupdate;
     animation-duration: 0.3s;
@@ -503,15 +500,7 @@ ul li{
     }
  }
 
- @keyframes animatelogout {
-    from{
-        transform: translateY(-0.5rem);
 
-    }
-    to{
-        transform: translateY(0rem);
-    }
- }
  @keyframes animateupdate {
     from{
         transform: translateX(-100%);

@@ -442,8 +442,13 @@ body {
 
 /*------------------------------------------------------------------Common css--------------------------------------------------------------*/
 
-
+.mainsearch{
+    width:30vh;
+}
 @media (max-width:992px) {
+    .mainsearch{
+        width:14vh;
+    }
     .navsection .username {
         font-size: 0.8rem;
     }
@@ -473,6 +478,9 @@ body {
 }
 
 @media (max-width:790px) {
+    .mainsearch{
+        width:20vh;
+    }
     .navsection .username {
         font-size: 0.8rem;
         padding: 0;

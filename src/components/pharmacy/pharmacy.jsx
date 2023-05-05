@@ -3712,7 +3712,7 @@ function Newpurchaseentryform(props) {
                       {
                         MedicineentriesArr.map((item, _key) => (
                           <tr key={_key} className={`bg-${_key % 2 == 0 ? 'lightred50' : 'pearl'}`}>
-                            <td><input type='checkbox' checked={_key == tableindex ? true : false} onClick={() => { indexing(_key) }} className='bg-seashell' /></td>
+                            <td><input type='checkbox' checked={_key == tableindex ? true : false} onClick={() => { indexing(_key) }} className='bg-seashell form-check-input' /></td>
                             <td>{item.Itemid}</td>
                             <td>{item.Itemname}</td>
                             {/* <td>{reversefunction(item.manufacturingDate)}</td> */}
