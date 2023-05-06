@@ -4,6 +4,7 @@ import '../../css/dashboard.css'
 import { AddAppointment } from '../Today/AddAppointment'
 import { URL } from '../../index'
 import { Permissions } from '../../index'
+
 const SearchField = (props) => {
     const permission = useContext(Permissions)
     const url = useContext(URL)
@@ -66,7 +67,7 @@ const SearchField = (props) => {
                                                 <h6 className=' p-0 m-0 border-0 text-charcoal bg-pearl text-start text-wrap fw-bold ' > {data.phone_number}</h6>
                                             </div>
                                             <div className="col-auto col-xl-4 col-lg-auto col-md-5 p-0 m-0 align-self-center justify-content-center">
-                                                <button className={`button-sm button-pearl text-burntumber fw-bold border-0 p-0 m-0 d-${permission.appointment_add == 1 ? '' : 'none'}`} name={data.id} value={data.full_name} onClick={(e) => get_value(e)} style={{ fontSize: '0.8rem' }}>+Appointment</button>
+                                                <button className={`button-sm button-pearl text-burntumber fw-bold border-0 p-0 m-0 d-${permission.appointment_add == 1 ? '' : 'none'}`} name={data.id} value={data.full_name} onClick={(e) => get_value(e)} style={{ fontSize: '0.8rem' }}>+Appoint</button>
                                             </div>
                                         </div>
 

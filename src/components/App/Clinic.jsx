@@ -7,25 +7,18 @@ import {Timecard,DoctorSchedule} from '../Today/Doctor'
 import { Permissions } from '../../index'
 //Components
 import { AddDoctorSlot } from '../Today/AddDoctorSlot'
-
-
+//css
+import '../../css/dashboard.css'
 
 
 function Doctorsection(props) {
     const permission = useContext(Permissions)
-    const month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December",];
-    var weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday",];
-    const d = new Date();
-    let monthname = month[d.getMonth()];
-    var fullDate = new Date();
-    var currentDate = monthname + " " + fullDate.getDate() + "," + fullDate.getFullYear() + " ";
-  
+    const [Docval, setDocval] = useState(0)
     const [Doctor, setDoctor] = useState(0)
     const [DoctorID, setDoctorID] = useState()
     const [DoctorName, setDoctorName] = useState()
     const [DocClinic, setDocClinic] = useState()
     const [doctorindex, setdoctorindex] = useState([0])
-  
     const [doctorform, setdoctorform] = useState("none");
     const toggledoctorform = () => {
       if (doctorform === "none") {
@@ -48,18 +41,10 @@ function Doctorsection(props) {
       }
     }
     getindexes()
-    const [Docval, setDocval] = useState(0)
-    console.log(  props.todayDoc)
+   
     return (
       <>
         <div className="container-fluid doctorsection p-0 m-0 mt-1 ps-1 scroll">
-          {/* <div className="container-fluid p-0 m-0 my-2">
-            <div className="row m-0 p-0 align-items-center">
-              <span className='col-auto livetime text-charcoal fw-bold' style={{ fontSize: '1rem' }}>{currentDate}</span>
-              <div className=' col-auto vr align-self-center h-75' style={{ padding: '0.8px' }}></div>
-              <span className='col-auto livetime2' style={{ fontSize: '1rem' }}><Timer /></span>
-            </div>
-          </div> */}
           <div className=" hstack gap-3 d-flex p-0 m-0 py-1 ps-1 align-items-center">
             {
               props.isLoading ? (

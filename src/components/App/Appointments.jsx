@@ -4,7 +4,8 @@ import axios from "axios"
 import { AllAppointmentslist } from '../../components/Appointments/AllAppointmentslist'
 import { SelectedAppointments } from '../../components/Appointments/SelectedAppointments'
 import { URL, TodayDate, DoctorsList, Permissions } from '../../index'
-
+//css
+import '../../css/appointment.css'
 function Appointments(props) {
     //Global Variables
     const APIDate = useContext(TodayDate)

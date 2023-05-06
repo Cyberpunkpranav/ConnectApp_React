@@ -6,20 +6,23 @@ import { createContext } from 'react'
 import { lazy } from 'react';
 import axios from "axios";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-// import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
-// import 'bootstrap/dist/js/bootstrap.bundle.js';
+//css
 import './css/dashboard.css';
 import './css/appointment.css';
 import './css/pharmacy.css';
 import './css/login.css';
-import { Appointments, Patients, Doctors, Pharmacy, DailySaleReport, Exports } from './App'
 import { WelcomeLoader } from './components/features/WelcomeLoader'
 //Notiflix
 import Notiflix from 'notiflix';
 import IdleTimer from './components/features/InactiveLogout'
-import Navbar from './components/App/Navbar'
+// import Navbar from './components/App/Navbar'
 const Doctorsection = lazy(() => import('./components/App/Clinic'))
-
+const Navbar =lazy(()=>import('./components/App/Navbar'))
+const Appointments = lazy(()=>import('./components/App/Appointments'))
+const Patients = lazy(()=>import('./components/App/Patients'))
+const Doctors =  lazy(()=>import('./components/App/Doctors'))
+const DailySaleReport =lazy(()=>import('./components/App/DSR'))
+const Pharmacy = lazy(()=>import('./components/App/Pharmacy'))
 // import Appointments from './components/App/Clinic'
 
 //Context Apis
@@ -34,7 +37,6 @@ const Permissions = createContext()
 const Secretkey = createContext()
 
 function Connectapp(props) {
-  const secretkey = 'aartasclinishare'
   const d = new Date();
   const date = d.getDate() < 10 ? '0' + d.getDate() : d.getDate();
   const monthcount = d.getMonth() + 1 < 10 ? `0${d.getMonth() + 1}` : d.getMonth() + 1;
@@ -54,6 +56,7 @@ function Connectapp(props) {
   const [cliniclist, setcliniclist] = useState([])
   const [vitalslist, setvitalslist] = useState()
   const [path, setpath] = useState()
+
   async function Clinics() {
     await axios.get(`${url}/clinic/list`).then((response) => {
       setcliniclist(response.data.data)
@@ -167,7 +170,9 @@ function Connectapp(props) {
                           <Vitals.Provider value={vitalslist}>
                             <Router>
                               <Navbar path={path} logout={props.logout} permissions={props.permissions} username={props.username} designation={props.designation} id={props.id} fetchapi={fetchapi} />
-                              <Suspense fallback={<div>Loading...</div>}>
+                              <Suspense fallback={<div className='text-charcoal75 fs-6 fw-bold text-center'>
+                                loading..
+                              </div>}>
                                 <Routes>
                                   <Route path='/' onChange={() => setpath('/')} element={<Doctorsection id={props.id} fetchapi={fetchapi} todayDoc={todayDoc} Loading={Loading} docapi={docapi} />} />
                                   <Route path='/Appointments' onChange={() => setpath('/Appointments')} element={<Appointments id={props.id} fetchapi={fetchapi} />} />
@@ -176,7 +181,6 @@ function Connectapp(props) {
                                   <Route path='/DailySaleReport' onChange={() => setpath('/DailySaleReport')} element={<DailySaleReport id={props.id} cliniclist={cliniclist} docapi={docapi} />} />
                                   <Route path='/Pharmacy' onChange={() => setpath('/Pharmacy')} element={<Pharmacy id={props.id} />} />
                                   {/* <Route path='/Files' element={<Exports id={props.id} />} /> */}
-
                                 </Routes>
                               </Suspense>
                             </Router>
@@ -204,8 +208,6 @@ function Switchpage() {
   const [load, setload] = useState()
   const [permissions, setpermissions] = useState([])
   const [roleId, setroleId] = useState()
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [timer, setTimer] = useState(null);
 
 
   const topassword = () => {

@@ -15,7 +15,6 @@ const SelectedAppointments = (props) => {
   const permission = useContext(Permissions)
   let adminid = localStorage.getItem('id')
   const [appointmentform, setappointmentform] = useState("none");
-  const [d_form, setd_form] = useState()
   const [paymentsform, setpaymentsform] = useState('none')
   const [paymentindex, setpaymentindex] = useState()
   const [billindex, setbillindex] = useState()
@@ -32,14 +31,13 @@ const SelectedAppointments = (props) => {
   const openapppointmentform = () => {
     if (appointmentform === "none") {
       setappointmentform("block");
-      setd_form(true)
     }
   }
   const closeappointmentform = () => {
 
     if (appointmentform === "block") {
       setappointmentform("none");
-      setd_form()
+      settableindex()
     }
   }
   const toggle_payments = () => {
