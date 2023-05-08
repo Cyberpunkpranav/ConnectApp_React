@@ -5,19 +5,14 @@ import AmountPaid from './AmountPaid';
 import { URL, TodayDate, Clinic, Permissions } from '../../index'
 import Notiflix from 'notiflix';
 import { customconfirm } from "../features/notiflix/customconfirm";
-import { customloading } from "../features/notiflix/customloading"
 import { Loading } from 'notiflix/build/notiflix-loading-aio';
 import { UpdateAppointment } from './UpdateAppointment'
-
 import '../../css/dashboard.css'
 import { SelectedTimeAppointment } from '../Appointments/SelectedTimeAppointment'
 import { AddSelectedDoctorSlot } from './SelectedDoctorSlot'
 import { Vitalsoperation } from "./Vitals";
 import { Payments } from "./Payments";
 import { Bill } from "./Bill";
-import { Bootstrap_Confirm } from '../features/Bootstrap_Confirm'
-import '../../../node_modules/bootstrap/dist/js/bootstrap.bundle'
-import '../../../node_modules/bootstrap/js/dist/modal'
 import { AddConsumables } from "./AddConsumables";
 import { SaleEntryForm } from '../pharmacy/pharmacy';
 function DoctorSchedule(props) {
@@ -584,7 +579,7 @@ function DoctorSchedule(props) {
                             </td>
                             <td className="text-center">
                               <div className="dropdown d-inline-block ">
-                                <button className="button p-0 m-0 px-1 py-1 bg-transparent border-0 p-0  fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <button className="button p-0 m-0 bg-transparent border-0 fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                   <img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" style={{ width: "1rem" }} />
                                 </button>
                                 <ul className="dropdown-menu shadow-sm p-2" style={{ '-webkit-appearance': 'none', 'appearance': 'none', width: 'max-content' }}>

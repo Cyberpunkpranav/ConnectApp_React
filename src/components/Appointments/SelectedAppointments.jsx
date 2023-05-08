@@ -6,7 +6,6 @@ import { Payments } from './Payments.jsx'
 import AmountPaid from '../Today/AmountPaid'
 import Notiflix from 'notiflix';
 import { URL, Permissions } from '../../index'
-
 import '../../css/appointment.css'
 import { Bill } from './Bill'
 import { customconfirm } from '../features/notiflix/customconfirm'

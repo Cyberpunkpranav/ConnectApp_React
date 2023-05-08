@@ -466,6 +466,9 @@ background: none;
 ul li{
     font-size: 0.75rem !important; 
 }
+li:hover{
+    cursor: pointer;
+}
 .pagination .active:focus{
     border-color:transparent ;
 }

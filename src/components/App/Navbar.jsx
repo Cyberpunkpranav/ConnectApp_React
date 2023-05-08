@@ -111,7 +111,7 @@ function Navbar(props) {
         <>
             <div className="navsection p-0 m-0 py-1">
                 <div className="container-fluid p-0 m-0 ">
-                    <div className="row m-0 p-0 justify-content-md-between align-items-center">
+                    <div className="row m-0 p-0 justify-content-lg-between justify-content-md-between justify-content-sm-between justify-content-between align-items-center">
                         <div className="col-lg-auto col-xl-auto col-md-auto col-sm-auto col-auto p-0 m-0 ms-2 text-start dropdown">
                             <button className="button dropdown-toggle button-seashell shadow-none d-inline-block col-md-auto col-auto user position-relative p-0 m-0 ms-2" data-bs-toggle="dropdown" aria-expanded="false">
                                 <h1 className="m-0 username text-decoration-none  text-start fw-bold"> {props.username} </h1>
@@ -121,8 +121,8 @@ function Navbar(props) {
                                 </ul>
                             </button>
                         </div>
-                        <div className="col-lg-auto col-xl-7 align-self-center col-sm-auto col-md-auto col-auto p-0 m-0 menu order-1 order-xl-0 order-sm-0 order-md-0 mt-lg-0 mt-md-0 md-sm-0">
-                            <div className="row p-0 m-0 justify-content-center">
+                        <div className="col-lg-auto col-xl-7 align-self-center col-sm-auto col-md-auto col-12 p-0 m-0 menu order-2 order-xl-0 order-sm-0 order-md-0 mt-lg-0 mt-md-0 md-sm-0">
+                            <div className="row p-0 m-0 justify-content-sm-center justify-content-evenly">
                                 {
                                     NavbarIcons.map((data, i) => (
                                         <div className={`col-auto p-0 m-0 align-self-end d-${data.display == 1 ? '' : 'none'} `} onClick={() => sethighlighticon(data.path)}>
@@ -137,16 +137,16 @@ function Navbar(props) {
                             </div>
                         </div>
                         {/* className="col-lg-2 col-xl-2 col-md-2 col-sm-6 col-6 mt-sm-2  search text-center position-relative" */}
-                        <div className="col-lg-auto col-xl-2 col-md-auto col-10 col-sm-auto text-center align-self-center position-relative p-0 m-0 order-sm-2 order-md-1 order-2 ">
+                        <div className="col-lg-auto col-xl-2 col-md-auto col-8 col-sm-auto text-center align-self-center position-relative p-0 m-0 order-sm-2 order-md-1 order-1 ">
                             <div className="row p-0 m-0 align-items-center justify-content-md-start justify-content-center">
-                                <div className="col-sm-auto col-xl-9 me-1 col-7 p-0 m-0 " style={{ zIndex: '3' }} >
+                                <div className="col-sm-auto col-xl-8 col-lg-8 col-md-8 me-1 col-7 p-0 m-0 " style={{ zIndex: '3' }} >
                                     <input type="text" className=" rounded-1 text-charcoal w-100 bg-charcoal25 border border-1 text-start position-relative py-sm-1 ps-2 py-1 fw-bold" placeholder="search" onChange={(e) => setsearchtext(e.target.value)} />
                                     <div className="position-absolute bg-pearl start-0 shadow mt-1 rounded-1 border border-1">
                                         <SearchField searchtext={searchtext} fetchapi={props.fetchapi} />
                                     </div>
                                 </div>
                                 {/* col-xl-2 col-md-auto col-sm-auto col-6  */}
-                                <div className={`col-sm-auto col-auto col-xl-auto p-0 m-0 dropdown text-decoration-none me-sm-1 d-${props.permissions.patient_add == undefined && props.permissions.doctor_add == undefined && props.permissions.appointment_add == undefined ? 'none' : ''}`}>
+                                <div className={`col-auto p-0 m-0 dropdown text-decoration-none me-sm-1 d-${props.permissions.patient_add == undefined && props.permissions.doctor_add == undefined && props.permissions.appointment_add == undefined ? 'none' : ''}`}>
                                     <button className="button p-0 m-0 px-2 pe-2 py-1 button-burntumber dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         {/* <span className="mx-1 pe-1 ">+</span> */}
                                         + Add

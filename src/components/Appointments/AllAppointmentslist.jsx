@@ -2,12 +2,9 @@ import React from 'react'
 import { useState, useContext } from "react"
 import axios from "axios"
 import AmountPaid from '../Today/AmountPaid'
-import '../../../node_modules/bootstrap/js/dist/dropdown'
 import { UpdateAppointment } from './UpdateAppointment'
 import { Bill } from './Bill'
 import '../../css/appointment.css'
-
-import '../../../node_modules/bootstrap/js/dist/dropdown'
 import { Payments } from './Payments.jsx'
 import Notiflix from 'notiflix';
 import { customconfirm } from '../features/notiflix/customconfirm'
