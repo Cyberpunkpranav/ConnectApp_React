@@ -249,9 +249,9 @@ const UpdateAppointment = (props) => {
                     </div>
                 </div>
 
-                <p className="m-0 p-0 mb-md-2 mt-2 ps-2 fw-bold" style={{ letterSpacing: '1px' }}>Select another Time Slot</p>
+                <p className="m-0 p-0 mb-md-2 mt-2 ps-2 fw-bold" style={{ letterSpacing: '1px' }}>Select new Time Slot</p>
                 <div className="scroll align-items-center justify-content-around col-12 ms-2">
-                    {ApiDocTimefrom ? (
+                    {ApiDocTimefrom && ApiDocTimefrom.length !== 0 ? (
                         <>
                             {
                                 ApiDocTimefrom.map((data, key) => (
@@ -267,7 +267,7 @@ const UpdateAppointment = (props) => {
                             </button>
                         </>
                     ) : (
-                        <div className='p-2 rounded'>Choose Doctor and Date to get Time Slots</div>
+                        <div className='p-2 rounded fw-bold text-burntumber'>No timeslots Avaliable</div>
                     )
                     }
                 </div>

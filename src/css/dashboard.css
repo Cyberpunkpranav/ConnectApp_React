@@ -822,9 +822,9 @@ body {
      .quickappointment p{
         font-size: 0.7rem !important;
      }
-     .quickappointment .searchresult{
+     /* .quickappointment .searchresult{
         font-size: 0.7rem !important;
-     }
+     } */
      .quickappointment .selecteds .button{
         padding:0.2rem 0.4rem !important; 
         font-size: 0.6rem !important;
@@ -855,9 +855,9 @@ body {
         font-size: 0.6rem !important;
         padding:0.2rem 0.4rem !important; 
      }
-     .updateappointment .searchresult{
+     /* .updateappointment .searchresult{
         font-size: 0.7rem !important;
-     }
+     } */
      .updateappointment .button-sm{
         padding:0.2rem 0.4rem !important; 
         font-size: 0.6rem !important;

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 import { useState, useEffect, useContext } from "react";
 // import { w3cwebsocket as websocket } from 'websocket'
 
@@ -21,7 +21,7 @@ function Navbar(props) {
     const [Docval, setDocval] = useState()
     const [highlighticon, sethighlighticon] = useState()
 
-
+    const location = useLocation()
     const togglepatientform = () => {
         if (patientform === "none") {
             setpatientform("block");
@@ -126,7 +126,7 @@ function Navbar(props) {
                                 {
                                     NavbarIcons.map((data, i) => (
                                         <div className={`col-auto p-0 m-0 align-self-end d-${data.display == 1 ? '' : 'none'} `} onClick={() => sethighlighticon(data.path)}>
-                                            <Link to={data.path} className="text-decoration-none"> <div className="text-center"> <img src={process.env.PUBLIC_URL + data.image} alt="displaying_image" className={`img-fluid rounded-1 p-2 bg-${highlighticon ? highlighticon === data.path ? 'burntumber25' : 'seashell' : path === data.path ? 'burntumber25' : 'seashell'}`}
+                                            <Link to={data.path} className="text-decoration-none"> <div className="text-center"> <img src={process.env.PUBLIC_URL + data.image} alt="displaying_image" className={`img-fluid rounded-1 p-2 bg-${location.pathname === data.path ? 'burntumber25' : 'seashell'}`}
                                                 style={{ width: `1.2rem`, boxSizing: 'content-box' }} /></div>
                                                 <p className="col-12 m-0 p-0 px-2 text-center fw-bold text-charcoal">{data.title}</p></Link>
                                         </div>
@@ -139,8 +139,9 @@ function Navbar(props) {
                         {/* className="col-lg-2 col-xl-2 col-md-2 col-sm-6 col-6 mt-sm-2  search text-center position-relative" */}
                         <div className="col-lg-auto col-xl-2 col-md-auto col-8 col-sm-auto text-center align-self-center position-relative p-0 m-0 order-sm-2 order-md-1 order-1 ">
                             <div className="row p-0 m-0 align-items-center justify-content-md-start justify-content-center">
-                                <div className="col-sm-auto col-xl-8 col-lg-8 col-md-8 me-1 col-7 p-0 m-0 " style={{ zIndex: '3' }} >
-                                    <input type="text" className=" rounded-1 text-charcoal w-100 bg-charcoal25 border border-1 text-start position-relative py-sm-1 ps-2 py-1 fw-bold" placeholder="search" onChange={(e) => setsearchtext(e.target.value)} />
+                                <div className="col-sm-auto col-xl-8 col-lg-8 col-md-8 me-1 col-7 p-0 m-0 position-relative " style={{ zIndex: '3' }} >
+
+                                    <input type="text" className=" rounded-1 text-charcoal w-100 bg-charcoal25 positon-relative border border-1 text-start py-sm-1 ps-2 py-1 fw-bold" onBlur={() => { setsearchtext('') }} placeholder="search" onChange={(e) => setsearchtext(e.target.value)} />
                                     <div className="position-absolute bg-pearl start-0 shadow mt-1 rounded-1 border border-1">
                                         <SearchField searchtext={searchtext} fetchapi={props.fetchapi} />
                                     </div>

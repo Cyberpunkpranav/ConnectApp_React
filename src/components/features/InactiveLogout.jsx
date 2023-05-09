@@ -47,13 +47,13 @@ class IdleTimer {
     }
 
     cleanUp() {
-        localStorage.removeItem('email');
-        localStorage.removeItem('name');
-        localStorage.removeItem('id');
-        localStorage.removeItem('designation');
-        localStorage.removeItem('ClinicId');
-        localStorage.removeItem('roleId');
-        window.location.reload(true)
+        // localStorage.removeItem('email');
+        // localStorage.removeItem('name');
+        // localStorage.removeItem('id');
+        // localStorage.removeItem('designation');
+        // localStorage.removeItem('ClinicId');
+        // localStorage.removeItem('roleId');
+        // window.location.reload(true)
 
 
         localStorage.removeItem("_expiredTime");

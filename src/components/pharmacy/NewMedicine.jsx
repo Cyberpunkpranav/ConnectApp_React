@@ -97,7 +97,7 @@ const NewMedicine = (props) => {
     setimg()
   }
   return (
-    <div className='position-relative bg-seashell p-0 m-0'>
+    <div className='position-relative bg-seashell p-0 m-0 fw-bold'>
       <h5 className='p-0 m-0 text-center py-2 border-bottom'>Add New Medicine</h5>
       <button className='btn btn-close position-absolute end-0 top-0 mt-1 me-1' onClick={props.ToggleNewMedicine}></button>
       <div className='scroll scroll-y' style={{ height: '78vh' }}>

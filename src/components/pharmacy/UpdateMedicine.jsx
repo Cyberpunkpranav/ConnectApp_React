@@ -87,6 +87,7 @@ const UpdateMedicine = (props) => {
       await axios.post(`${url}/medicine/update`, Data).then((response) => {
         console.log(response)
         Notiflix.Notify.success(response.data.message)
+        props.medcinelist()
       })
     } catch (e) {
       Notiflix.Notify.failure(e.message)
@@ -116,7 +117,7 @@ const UpdateMedicine = (props) => {
   }
   console.log(data)
   return (
-    <div className='position-relative bg-seashell p-0 m-0'>
+    <div className='position-relative bg-seashell p-0 m-0 fw-bold'>
       <h5 className='p-0 m-0 text-center py-2 border-bottom'>Update Medicine</h5>
       <button className='btn btn-close position-absolute end-0 top-0 mt-1 me-1' onClick={props.ToggleUpdateMedicine}></button>
       <div className='scroll scroll-y' style={{ height: '78vh' }}>
@@ -226,15 +227,15 @@ const UpdateMedicine = (props) => {
             </div>
           </div>
         </div>
-        <div className="row p-0 m-0 justify-content-center mt-3">
+        {/* <div className="row p-0 m-0 justify-content-center mt-3">
           <p className='text-charcoal fw-bold p-0 m-0 py-2 text-center'>Choose Medicine Photo</p>
           <div className="col-4 ms-5">
             <input type='file' className='form-control bg-seashell p-0 m-0 px-2 py-1' onChange={(e) => { handleimage(e) }} />
           </div>
-        </div>
+        </div> */}
         <div className="row p-0 m-0 justify-content-end mt-3 mb-3">
           <p className='text-charcoal fw-bold p-0 m-0 py-2 text-center'>HSN Code and Count</p>
-          <div className="col-12">
+          <div className="col-3">
             <p className='p-0 m-0'>HSN Code</p>
             <input className='form-control bg-seashell p-0 m-0 px-2 py-1' value={hsn ? hsn : ''} onChange={(e) => { sethsn(e.target.value) }} />
           </div>

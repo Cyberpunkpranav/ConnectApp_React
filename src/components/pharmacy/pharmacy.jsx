@@ -3850,54 +3850,14 @@ function Purchaseentrysection(props) {
           <table className="table p-0 m-0">
             <thead className="p-0 m-0 align-middle position-sticky top-0 bg-pearl">
               <tr>
-                <th
-                  className="fw-bolder py-0 my-0  text-charcoal75"
-                  scope="col"
-                >
-                  PE ID
-                </th>
-                <th
-                  className="fw-bolder py-0 my-0  text-charcoal75"
-                  scope="col"
-                >
-                  PO ID
-                </th>
-                <th
-                  className="fw-bolder py-0 my-0  text-charcoal75"
-                  scope="col"
-                >
-                  Channel
-                </th>
-                <th
-                  className="fw-bolder py-0 my-0  text-charcoal75"
-                  scope="col"
-                >
-                  Invoice No.
-                </th>
-                <th
-                  className="fw-bolder py-0 my-0  text-charcoal75"
-                  scope="col"
-                >
-                  Bill Date
-                </th>
-                <th
-                  className="fw-bolder py-0 my-0  text-charcoal75"
-                  scope="col"
-                >
-                  Bill Total
-                </th>
-                <th
-                  className="fw-bolder py-0 my-0  text-charcoal75"
-                  scope="col"
-                >
-                  Vendor
-                </th>
-                <th
-                  className="fw-bolder py-0 my-0 text-center  text-charcoal75"
-                  scope="col"
-                >
-                  Actions
-                </th>
+                <th className="fw-bolder py-0 my-0  text-charcoal75" scope="col" > PE ID </th>
+                <th className="fw-bolder py-0 my-0  text-charcoal75" scope="col" > PO ID </th>
+                <th className="fw-bolder py-0 my-0  text-charcoal75" scope="col" > Channel </th>
+                <th className="fw-bolder py-0 my-0  text-charcoal75" scope="col" > Invoice No. </th>
+                <th className="fw-bolder py-0 my-0  text-charcoal75" scope="col" > Bill Date </th>
+                <th className="fw-bolder py-0 my-0  text-charcoal75" scope="col" > Bill Total </th>
+                <th className="fw-bolder py-0 my-0  text-charcoal75" scope="col" > Vendor </th>
+                <th className="fw-bolder py-0 my-0 text-center  text-charcoal75" scope="col" > Actions </th>
                 {/* <th className='fw-bolder p-0 m-0  text-charcoal75 text-center' scope='col' style={{ zIndex: '3' }}>more</th> */}
               </tr>
             </thead>
@@ -3927,19 +3887,9 @@ function Purchaseentrysection(props) {
                     <td className="py-0 my-0 text-charcoal fw-bold ps-2">
                       PE-{item.bill_id}
                     </td>
-                    <td className="py-0 my-0 text-charcoal fw-bold">
-                      {item.purchase_order_id && item.purchase_order_id !== null
-                        ? item.purchase_order_id
-                        : "N/A"}
-                    </td>
-                    <td className="py-0 my-0 text-charcoal fw-bold">
-                      {item.channel && item.channel == 1
-                        ? "Pharmacy"
-                        : "Clinic"}
-                    </td>
-                    <td className="py-0 my-0 text-charcoal fw-bold">
-                      {item.invoice_no ? item.invoice_no : "N/A"}
-                    </td>
+                    <td className="py-0 my-0 text-charcoal fw-bold"> {item.purchase_order_id && item.purchase_order_id !== null ? item.purchase_order_id : "N/A"} </td>
+                    <td className="py-0 my-0 text-charcoal fw-bold"> {item.channel && item.channel == 1 ? "Pharmacy" : "Clinic"} </td>
+                    <td className="py-0 my-0 text-charcoal fw-bold"> {item.invoice_no ? item.invoice_no : "N/A"} </td>
                     <td className="py-0 my-0 text-charcoal fw-bold">
                       {item.bill_date && item.bill_date
                         ? reversefunction(item.bill_date)
@@ -9294,15 +9244,8 @@ function MedicineList() {
                     </button>
                   </td>
                   {index == i ? (
-                    <td
-                      className={` text-start  d-${index == i ? UptMed : "none"
-                        } border position-absolute start-0 end-0 top-0 bg-seashell`}
-                      style={{ padding: 0, marginTop: "-8.15rem", zIndex: "2" }}
-                    >
-                      <UpdateMedicine
-                        ToggleUpdateMedicine={ToggleUpdateMedicine}
-                        data={medicines[i]}
-                      />
+                    <td className={` text-start  d-${index == i ? UptMed : "none"} border position-absolute start-0 end-0 top-0 bg-seashell`} style={{ padding: 0, marginTop: "-8.15rem", zIndex: "2" }} >
+                      <UpdateMedicine medcinelist={medcinelist} ToggleUpdateMedicine={ToggleUpdateMedicine} data={medicines[i]} />
                     </td>
                   ) : (
                     <></>
@@ -9313,10 +9256,7 @@ function MedicineList() {
           )}
         </table>
       </div>
-      <section
-        className={`position-absolute border-1 shadow start-0 bg-seashell rounded-1 end-0 d-${NewMed}`}
-        style={{ top: "-8.15rem", zIndex: "2" }}
-      >
+      <section className={`position-absolute border-1 shadow start-0 bg-seashell rounded-1 end-0 d-${NewMed}`} style={{ top: "-8.15rem", zIndex: "2" }} >
         <NewMedicine ToggleNewMedicine={ToggleNewMedicine} />
       </section>
       <div className="container-fluid d-flex justify-content-center mt-2">
