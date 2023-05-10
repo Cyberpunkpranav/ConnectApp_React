@@ -54,11 +54,7 @@ function Navbar(props) {
         setappointmentform("none");
         setpatientform("block");
     }
-
-    const path = localStorage.getItem('path')
-    useEffect(() => {
-        localStorage.setItem('path', highlighticon)
-    }, [highlighticon])
+   
     const NavbarIcons = [
         {
             title: 'Today',
