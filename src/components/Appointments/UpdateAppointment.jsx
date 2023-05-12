@@ -267,7 +267,7 @@ const UpdateAppointment = (props) => {
                             </button>
                         </>
                     ) : (
-                        <div className='p-2 rounded fw-bold text-burntumber'>No timeslots Avaliable</div>
+                        <div className='p-2 rounded fw-bold text-burntumber bg-lightred'>No timeslots Avaliable</div>
                     )
                     }
                 </div>

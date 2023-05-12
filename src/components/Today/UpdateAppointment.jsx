@@ -202,8 +202,8 @@ const UpdateAppointment = (props) => {
     }
     return (
         <div className='p-0 m-0 text-start'>
-            <h5 className="text-center">Update {props.patientname} Appointment Details</h5>
-            <button type="button" className="btn-close closebtn position-absolute" disabled={load == true ? true : false} aria-label="Close" onClick={props.closeappointmentform} ></button>
+            <h5 className="text-center p-2">Update {props.patientname} Appointment Details</h5>
+            <button type="button" className="btn-close closebtn position-absolute p-2 mt-1" disabled={load == true ? true : false} aria-label="Close" onClick={props.closeappointmentform} ></button>
             <hr className='p-0 m-0' />
             <div className="col-12 ps-1">
                 <div className="col-12 clinics bg-seashell border-0 p-2" >
@@ -259,7 +259,7 @@ const UpdateAppointment = (props) => {
                 </div>
                 <p className="m-0 mt-2 fw-bold ps-2 pt-2" style={{ letterSpacing: '1px' }}>Select another Time Slot</p>
                 <div className="scroll align-items-center justify-content-around col-12 ps-2">
-                    {ApiDocTimefrom ? (
+                    {ApiDocTimefrom  && ApiDocTimefrom.length !== 0  ? (
                         <>
                             {
                                 ApiDocTimefrom.map((data, key) => (
@@ -275,7 +275,7 @@ const UpdateAppointment = (props) => {
                             </button>
                         </>
                     ) : (
-                        <div className='p-2'>Choose Doctor and Date to get Time Slots</div>
+                        <div className='p-2 rounded fw-bold text-burntumber bg-lightred'>No Time Slots Available</div>
                     )
                     }
                 </div>

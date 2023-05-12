@@ -252,6 +252,7 @@ function DoctorSchedule(props) {
       setpaymentsindex()
     }
   }
+  
   function ClosePaymentsForm2() {
     if (paymentsform === 'block') {
       setpaymentsform('none')

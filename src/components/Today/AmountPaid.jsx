@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import '../../css/dashboard.css'
+import '../../css/bootstrap.css'
 import { Payments } from './Payments'
 const AmountPaid = (props) => {
   const [openpayments, setopenpayments] = useState('none')

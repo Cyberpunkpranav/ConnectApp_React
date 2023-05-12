@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useContext } from 'react'
-import { DoctorsList, URL, Doctorapi, TodayDate, Clinic } from '../../index'
+import { DoctorsList, URL, Doctorapi, TodayDate, Clinic, TodayDocs } from '../../index'
 import Notiflix from 'notiflix'
 
 import '../../css/dashboard.css'
 const SelectedTimeAppointment = (props) => {
     //Global Variable
     const url = useContext(URL)
+    const TodayDoctors = useContext(TodayDocs)
+    const Doclist = useContext(DoctorsList)
     const cliniclist = useContext(Clinic)
     const APIDate = useContext(TodayDate)
     const adminid = localStorage.getItem('id')
@@ -75,7 +77,7 @@ const SelectedTimeAppointment = (props) => {
             setload(false)
         }
     }
-    console.log(displaysearchlist)
+    console.log(displaysearchlist,props.DoctorName)
     // Functions
     return (
         <>
@@ -101,10 +103,10 @@ const SelectedTimeAppointment = (props) => {
                                 searchlist !== undefined && searchlist.length == 0 ? (
                                     <option className="text-burntumber col-12 p-0 m-0 bg-pearl shadow rounded mt-1 p-2">Patient not found</option>
                                 ) : (
-                                    <div className='mt-1 searchresult bg-seashell shadow rounded-1 p-1 bg-pearl border border-1 col-12  ' >
+                                    <div className='mt-1 searchresult bg-seashell shadow rounded-1 bg-pearl border border-1 col-12  ' >
                                         {
                                             searchlist.map((data, i) => (
-                                                <button style={{ cursor: 'pointer' }} className={`col-12 bg-${i % 2 == 0 ? 'seashell' : 'pearl'} btn d-block p-1 text-charcoal text-start border-bottom align-self-center`} name={data.id} value={data.full_name} onClick={() => { get_value(data) }}>{data.full_name} {data.phone_number}</button>
+                                                <button style={{ cursor: 'pointer' }} className={`col-12 bg-${i % 2 == 0 ? 'seashell' : 'pearl'} btn d-block p-2 fw-bold text-charcoal text-start border-bottom align-self-center`} name={data.id} value={data.full_name} onClick={() => { get_value(data) }}>{data.full_name} {data.phone_number}</button>
                                             ))
                                         }
                                     </div>
@@ -115,9 +117,24 @@ const SelectedTimeAppointment = (props) => {
                         }
                     </div>
                 </div>
-                <div className="col-auto selecteds">
+                <div className="col-auto">
                     <div className="d-flex p-0 m-0 text-start justify-content-around">
-                        <div className='button button-charcoal50-outline'>{props.DoctorID}. Dr.{props.DoctorName}</div>
+                        <select className=" form-control selectdoctor border-charcoal rounded-1 bg-seashell" >
+                            <option defaultValue="Select Doctor bg-seashell" >{props.DoctorName}</option>
+                            {
+                                TodayDoctors ? (
+                                    Doclist.map((data, i) => (
+                                        <option className={` text-charcoal75`} selected={data[0] === props.appointmentdoctorid ? true : false} value={data[0]}>Dr. {data[1]}</option>
+                                    ))
+                                ) : (
+                                    <div>Loading</div>
+                                )
+
+
+
+                            }
+                        </select>
+                        <div className='button button-charcoal50-outline align-self-center '> Dr.{props.DoctorName}</div>
                         <div className="button button-charcoal50-outline ms-3" >{APIDate}</div>
 
                     </div>
