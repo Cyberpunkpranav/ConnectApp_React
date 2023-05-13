@@ -54,7 +54,7 @@ function Navbar(props) {
         setappointmentform("none");
         setpatientform("block");
     }
-   
+
     const NavbarIcons = [
         {
             title: 'Today',
@@ -113,7 +113,7 @@ function Navbar(props) {
                                 <h1 className="m-0 username text-decoration-none  text-start fw-bold"> {props.username} </h1>
                                 <div className="m-0 userstatus text-decoration-none text-start text-burntumber fw-bold" >{props.designation} </div>
                                 <ul class="dropdown-menu p-0 m-0">
-                                    <li class="dropdown-item p-0 m-0 bg-lightred50 text-center " onClick={props.logout}><button className='btn p-0 m-0 text-burntumber fw-bold py-1'>Logout</button></li>
+                                    <li class="dropdown-item p-0 m-0 bg-lightred50 text-center " onClick={props.logout}>Logout</li>
                                 </ul>
                             </button>
                         </div>
@@ -122,9 +122,12 @@ function Navbar(props) {
                                 {
                                     NavbarIcons.map((data, i) => (
                                         <div className={`col-auto p-0 m-0 align-self-end d-${data.display == 1 ? '' : 'none'} `} onClick={() => sethighlighticon(data.path)}>
-                                            <Link to={data.path} className="text-decoration-none"> <div className="text-center"> <img src={process.env.PUBLIC_URL + data.image} alt="displaying_image" className={`img-fluid rounded-1 p-2 bg-${location.pathname === data.path ? 'burntumber25' : 'seashell'}`}
-                                                style={{ width: `1.2rem`, boxSizing: 'content-box' }} /></div>
-                                                <p className="col-12 m-0 p-0 px-2 text-center fw-bold text-charcoal">{data.title}</p></Link>
+                                            <Link to={data.path} className="text-decoration-none">
+                                                <div className="text-center">
+                                                    <img src={process.env.PUBLIC_URL + data.image} alt="displaying_image" className={`img-fluid rounded-1 p-2 bg-${location.pathname === data.path ? 'burntumber25' : 'seashell'}`} style={{ width: `1.2rem`, boxSizing: 'content-box' }} />
+                                                </div>
+                                                <small className="col-12 m-0 p-0 px-2 text-center fw-bold text-charcoal">{data.title}</small>
+                                            </Link>
                                         </div>
 
                                     ))
@@ -132,12 +135,11 @@ function Navbar(props) {
 
                             </div>
                         </div>
-                        {/* className="col-lg-2 col-xl-2 col-md-2 col-sm-6 col-6 mt-sm-2  search text-center position-relative" */}
+                        {/* className="col-lg-2 col-xl-2 col-md-2 col-sm-6 col-6 mt-sm-2 search text-center position-relative" */}
                         <div className="col-lg-auto col-xl-2 col-md-auto col-8 col-sm-auto text-center align-self-center position-relative p-0 m-0 order-sm-2 order-md-1 order-1 ">
                             <div className="row p-0 m-0 align-items-center justify-content-md-start justify-content-center">
                                 <div className="col-sm-auto col-xl-8 col-lg-8 col-md-8 me-1 col-7 p-0 m-0 position-relative " style={{ zIndex: '3' }} >
-
-                                    <input type="text" className=" rounded-1 text-charcoal w-100 bg-charcoal25 positon-relative border border-1 text-start py-sm-1 ps-2 py-1 fw-bold" onBlur={() => { setsearchtext('') }} placeholder="search" onChange={(e) => setsearchtext(e.target.value)} />
+                                    <input type="text" className="rounded-1 text-charcoal w-100 bg-charcoal25 positon-relative border border-1 text-start py-sm-1 ps-2 py-1 fw-bold" onBlur={() => { setsearchtext('') }} placeholder="search" onChange={(e) => setsearchtext(e.target.value)} />
                                     <div className="position-absolute bg-pearl start-0 shadow mt-1 rounded-1 border border-1">
                                         <SearchField searchtext={searchtext} fetchapi={props.fetchapi} />
                                     </div>
@@ -145,16 +147,14 @@ function Navbar(props) {
                                 {/* col-xl-2 col-md-auto col-sm-auto col-6  */}
                                 <div className={`col-auto p-0 m-0 dropdown text-decoration-none me-sm-1 d-${props.permissions.patient_add == undefined && props.permissions.doctor_add == undefined && props.permissions.appointment_add == undefined ? 'none' : ''}`}>
                                     <button className="button p-0 m-0 px-2 pe-2 py-1 button-burntumber dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        {/* <span className="mx-1 pe-1 ">+</span> */}
                                         + Add
                                     </button>
                                     <ul className="dropdown-menu">
-                                        <li><button className={`dropdown-item border-bottom d-${props.permissions.patient_add == 1 ? '' : 'none'}`} onClick={() => { togglepatientform() }}>+ Patient</button></li>
-                                        <li className={`d-${props.permissions.appointment_add == 1 ? '' : 'none'}`}><button className="dropdown-item border-bottom" onClick={() => { toggleappointmentform() }}>+ Appointment</button></li>
-                                        <li><button className={`dropdown-item  `} onClick={() => { toggledoctorform() }}>+ Doctor</button></li>
+                                        <li><button className={`dropdown-item border-bottom d-${props.permissions.patient_add == 1 ? '' : 'none'} fs-6`} onClick={() => { togglepatientform() }}>+ Patient</button></li>
+                                        <li className={`d-${props.permissions.appointment_add == 1 ? '' : 'none'}`}><button className="dropdown-item border-bottom fs-6" onClick={() => { toggleappointmentform() }}>+ Appointment</button></li>
+                                        <li><button className={`dropdown-item fs-6`} onClick={() => { toggledoctorform() }}>+ Doctor</button></li>
                                     </ul>
                                 </div>
-
                             </div>
                         </div>
                     </div>

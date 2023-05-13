@@ -1960,26 +1960,13 @@ function SaleEntryForm(props) {
     <div className="container-fluid p-0 m-0">
       <div className="position-relative mb-3">
         <h5 className="text-center text-charcoal pt-2 ">New Sale Entry</h5>
-        <button
-          className="btn btn-close position-absolute end-0 top-0 me-2"
-          disabled={load ? true : false}
-          onClick={props.toggle_nsef}
-        ></button>
+        <button className="btn btn-close position-absolute end-0 top-0 me-2" disabled={load ? true : false} onClick={props.toggle_nsef} ></button>
       </div>
       <hr className="p-0 m-0" />
       <div className="p-0 m-0 text-center bg-seashell">
         {cliniclist.map((data, i) => (
-          <label
-            className={` text-burntumber fw-bolder d-${clinicID == data.id ? "block" : "none"
-              }`}
-          >
-            <input
-              type="checkbox"
-              className={`radio form me-1  text-burntumber fw-bolder`}
-              key={i}
-              checked={clinicID == data.id ? true : false}
-              name={data.id}
-            />{" "}
+          <label className={` text-burntumber fw-bolder d-${clinicID == data.id ? "block" : "none"}`} >
+            <input type="checkbox" className={`radio form me-1  text-burntumber fw-bolder`} key={i} checked={clinicID == data.id ? true : false} name={data.id} />
             {data.title} {data.address}
           </label>
         ))}
@@ -1987,75 +1974,30 @@ function SaleEntryForm(props) {
       <hr className="p-0 m-0" />
       <div className="my-2 text-center align-self-center">
         <div className=" form-switch justify-content-center position-relative">
-          <label
-            className="form-check-label text-charcoal fw-bolder"
-            for="flexSwitchCheckDefault"
-          >
-            Deliver to Customer
-          </label>
-          <input
-            className="form-check-input ms-2 outline-none text-center"
-            type="checkbox"
-            role="switch"
-            id="flexSwitchCheckDefault"
-            checked={Dc == 1 ? true : false}
-            onChange={() => {
-              DC();
-            }}
-          />
-          <div
-            className={`d-${addressform} position-absolute start-0 end-0 m-5 mt-0 top-0 bg-pearl shadow rounded-1 `}
-            style={{ zIndex: 2 }}
-            ref={patientaddref}
-          >
+          <label className="form-check-label text-charcoal fw-bolder" for="flexSwitchCheckDefault" > Deliver to Customer </label>
+          <input className="form-check-input ms-2 outline-none text-center" type="checkbox" role="switch" id="flexSwitchCheckDefault" checked={Dc == 1 ? true : false} onChange={() => { DC(); }} />
+          <div className={`d-${addressform} position-absolute start-0 end-0 m-5 mt-0 top-0 bg-pearl shadow rounded-1 `} style={{ zIndex: 2 }} ref={patientaddref} >
             <div className="p-0 m-0 position-relative text-wrap">
-              <button
-                className="btn btn-close position-absolute end-0 p-1 m-1"
-                onClick={() => {
-                  addressid ? setaddressform("none") : setaddressform("none");
-                }}
-              ></button>
-              {patientdata &&
-                patientdata.address &&
-                patientdata.address.length !== 0 ? (
-                <div className="row p-0 m-0 gx-2  ">
-                  <h6 className="ms-1 text-burntumber fw-bold text-start">
-                    Choose Address for Delivery
-                  </h6>
-                  {patientdata.address.map((data) => (
-                    <div
-                      className={`col-12 px-1 m-2 text-start card bg-${addressid == data.id ? "lightgreen" : "lightyellow"
-                        } text-charcoal fw-bold`}
-                      onClick={() => {
-                        addressid ? selectaddress() : selectaddress(data);
-                      }}
-                    >
-                      <div>Patient Name:- {data.full_name}</div>
-                      <div>
-                        Address:-
-                        {data.address_line1 && data.address_line1 !== null
-                          ? data.address_line1
-                          : ""}
-                      </div>
-                      <div>
-                        {data.address_line2 && data.address_line2 !== null
-                          ? data.address_line2
-                          : ""}
-                      </div>
-                      <div>
-                        PinCode:-
-                        {data.zip_code && data.zip_code !== null
-                          ? data.zip_code
-                          : ""}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="text-danger fw-bold">
-                  Addresses not found.Update Patient Details to get Address{" "}
-                </div>
-              )}
+              <button className="btn btn-close position-absolute end-0 p-1 m-1" onClick={() => { addressid ? setaddressform("none") : setaddressform("none"); }} ></button>
+              {
+                patientdata && patientdata.address && patientdata.address.length !== 0 ? (
+                  <div className="row p-0 m-0 gx-2  ">
+                    <h6 className="ms-1 text-burntumber fw-bold text-start"> Choose Address for Delivery </h6>
+                    {
+                      patientdata.address.map((data) => (
+                        <div className={`col-12 px-1 m-2 text-start card bg-${addressid == data.id ? "lightgreen" : "lightyellow"} text-charcoal fw-bold`} onClick={() => { addressid ? selectaddress() : selectaddress(data); }} >
+                          <div>Patient Name:- {data.full_name}</div>
+                          <div> Address:- {data.address_line1 && data.address_line1 !== null ? data.address_line1 : ""} </div>
+                          <div> {data.address_line2 && data.address_line2 !== null ? data.address_line2 : ""} </div>
+                          <div> PinCode:- {data.zip_code && data.zip_code !== null ? data.zip_code : ""} </div>
+                        </div>
+                      ))}
+                  </div>
+                ) : (
+                  <div className="text-danger fw-bold p-2">
+                    Addresses not found.Update Patient Details to get Address{" "}
+                  </div>
+                )}
             </div>
           </div>
         </div>
@@ -2154,126 +2096,52 @@ function SaleEntryForm(props) {
                   stockref.current.style.display = "none";
                 }}
               />
-              <div
-                ref={medicinesref}
-                className="position-absolute rounded-1 mt-1"
-                style={{ Width: "max-content", zIndex: "1" }}
-              >
+              <div ref={medicinesref} className="position-absolute rounded-1 mt-1" style={{ Width: "max-content", zIndex: "1" }} >
                 {itemsearch ? (
                   loadsearch ? (
                     <div className="rounded-1 p-1 bg-pearl">
                       Searching Please wait....
-                      <div
-                        className="spinner-border my-auto"
-                        style={{ width: "1rem", height: "1rem" }}
-                        role="status"
-                      >
-                        <span className="sr-only"> </span>{" "}
+                      <div className="spinner-border my-auto" style={{ width: "1rem", height: "1rem" }} role="status" >
+                        <span className="sr-only"> </span>
                       </div>
                     </div>
                   ) : loadsearch == false && itemsearch.length == 0 ? (
-                    <div className="bg-burntumber text-light rounded-1 p-1">
-                      Oops! Not Avaliable
-                    </div>
+                    <div className="bg-burntumber text-light rounded-1 p-1"> Oops! Not Avaliable </div>
                   ) : (
-                    <div
-                      className={`rounded-4 border border-1 bg-pearl p-1 d-${itemsearch && itemsearch.length > 0 ? "block" : "none"
-                        }`}
-                    >
-                      <p
-                        className={`text-start p-0 m-0 m-1 fw-bold text-charcoal75 ms-2`}
-                        style={{ fontSize: "0.8rem" }}
-                      >
-                        {itemsearch.length} Search Results
-                      </p>
-                      {itemsearch.map((data, i) => (
-                        <div
-                          style={{ cursor: "pointer", Width: "max-content" }}
-                          className={`bg-${i % 2 == 0 ? "pearl" : "seashell"
-                            } p-0 ps-1 border-bottom text-charcoal `}
-                          onClick={(e) => {
-                            setproducts(data);
-                            setitemname(
-                              data.display_name ? data.display_name : data.name
-                            );
-                            setitemid(data.id);
-                            stockref.current.style.display = "block";
-                          }}
-                        >
-                          {data.display_name ? data.display_name : data.name}
-                        </div>
-                      ))}
+                    <div className={`rounded-4 scroll border border-1 bg-pearl p-1 d-${itemsearch && itemsearch.length > 0 ? "block" : "none"}`} style={{ height: '30vh' }} >
+                      <p className={`text-start p-2 position-sticky top-0 bg-pearl fw-bold text-charcoal75 ms-2`} style={{ fontSize: "0.8rem" }} > {itemsearch.length} Search Results </p>
+                      {
+                        itemsearch.map((data, i) => (
+                          <div style={{ cursor: "pointer", Width: "max-content" }} className={`bg-${i % 2 == 0 ? "pearl" : "seashell"} text-start fw-bold p-2 border-bottom text-charcoal `} onClick={(e) => { setproducts(data); setitemname(data.display_name ? data.display_name : data.name); setitemid(data.id); stockref.current.style.display = "block"; }} > {data.display_name ? data.display_name : data.name} <span className='text-burntumber border-burntumber fw-bold rounded-2 px-1'>{data && data.stock_info !== undefined ? data.stock_info.length : ""} stocks</span> </div>
+                        ))
+                      }
                     </div>
                   )
                 ) : (
                   <div className="bg-seashell"></div>
                 )}
               </div>
-              <div
-                ref={stockref}
-                className={`position-absolute bg-pearl scroll scroll-y align-self-center rounded-4 border border-1 p-1 d-${products &&
-                  products.stock_info &&
-                  products.stock_info.length > 0
-                  ? "block"
-                  : "none"
-                  }`}
-                style={{
-                  marginLeft: "15.7rem",
-                  marginTop: "2rem",
-                  zIndex: "2",
-                  width: "13rem",
-                  height: "10rem",
-                }}
-              >
-                <p
-                  className={`text-start p-0 m-0 m-1 fw-bold text-charcoal75`}
-                  style={{ fontSize: "0.8rem" }}
-                >
-                  {products && products.stock_info !== undefined
-                    ? products.stock_info.length
-                    : ""}{" "}
-                  Batch Stocks
-                </p>
-                {products && products.length == 0 ? (
-                  <div className="bg-seashell">Not Avaliable</div>
-                ) : products ? (
-                  products.stock_info.map((data, i) => (
-                    <div
-                      style={{ cursor: "pointer", Width: "max-content" }}
-                      className={`bg-${i % 2 == 0 ? "pearl" : "seashell"
-                        } border-bottom text-wrap`}
-                      onClick={() => {
-                        AddProducts(data);
-                        setitemname();
-                        setitemid();
-                        setproducts();
-                        setitemsearch();
-                      }}
-                    >
-                      <p className="text-center m-0 p-0 fw-bold">{itemname}</p>
-                      <p className="p-0 m-0 ">
-                        BatchNo. -{" "}
-                        {data.batch_no && data.batch_no !== null
-                          ? data.batch_no
-                          : ""}
-                      </p>
-                      <p className="p-0 m-0 ">
-                        Stock -{" "}
-                        {data.current_stock && data.current_stock
-                          ? data.current_stock
-                          : ""}
-                      </p>
-                      <p className="p-0 m-0 ">
-                        Expiry Date -{" "}
-                        {data.expiry_date
-                          ? reversefunction(data.expiry_date)
-                          : ""}
-                      </p>
-                    </div>
-                  ))
-                ) : (
-                  <div>Not available</div>
-                )}
+              <div ref={stockref} className={`position-absolute bg-pearl scroll scroll-y align-self-center rounded-4 border border-1 p-2 d-${products && products.stock_info && products.stock_info !== undefined ? "block" : "none"}`} style={{ marginLeft: "15.7rem", marginTop: "2rem", zIndex: "2", width: "13rem", height: "10rem", }} >
+                <p className={`text-start fw-bold text-charcoal75`} style={{ fontSize: "0.8rem" }} > {products && products.stock_info !== undefined ? products.stock_info.length : ""}{" "} Batch Stocks </p>
+                {
+                  products && products.length != 0 ? (
+                    products.stock_info.length == 0 ? (
+                      <div className="bg-burntumber text-white fw-bold p-2">Oops! Not Available</div>
+                    ) : (
+
+                      products.stock_info.map((data, i) => (
+                        <div style={{ cursor: "pointer", Width: "max-content" }} className={`bg-${i % 2 == 0 ? "pearl" : "seashell"} border-bottom text-wrap`} onClick={() => { AddProducts(data); setitemname(); setitemid(); setproducts(); setitemsearch(); }} >
+                          <p className="text-start m-0 p-0 fw-bold">{itemname}</p>
+                          <p className="text-start p-0 m-0 "> BatchNo. -{" "} {data.batch_no && data.batch_no !== null ? data.batch_no : ""} </p>
+                          <p className="text-start p-0 m-0 "> Stock -{" "} {data.current_stock && data.current_stock ? data.current_stock : ""} </p>
+                          <p className="text-start p-0 m-0 "> Expiry Date -{" "} {data.expiry_date ? reversefunction(data.expiry_date) : ""} </p>
+                        </div>
+                      ))
+                    )
+                  ) : (
+                    <div className="bg-seashell p-2">Not Avaliable</div>
+                  )
+                }
               </div>
               <div></div>
             </div>
@@ -2281,21 +2149,8 @@ function SaleEntryForm(props) {
               OR
             </div>
             <div className="col-4 ">
-              <input
-                className="form-control bg-seashell border border-1 rounded-1"
-                value={itemid ? itemid : ""}
-                placeholder="Search Product by ID"
-                onChange={(e) => {
-                  searchmedbyId(e.target.value);
-                  setitemid(e.target.value);
-                  medbyidref.current.style.display = "block";
-                }}
-              />
-              <div
-                ref={medbyidref}
-                className="position-absolute rounded-1 mt-1"
-                style={{ Width: "max-content", zIndex: "2" }}
-              >
+              <input className="form-control bg-seashell border border-1 rounded-1" value={itemid ? itemid : ""} placeholder="Search Product by ID" onChange={(e) => { searchmedbyId(e.target.value); setitemid(e.target.value); medbyidref.current.style.display = "block"; }} />
+              <div ref={medbyidref} className="position-absolute rounded-1 mt-1" style={{ Width: "max-content", zIndex: "2" }} >
                 {itembyid ? (
                   loadbyId ? (
                     <div className="rounded-1 p-1 bg-pearl">

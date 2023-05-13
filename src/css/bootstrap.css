@@ -52,6 +52,8 @@ h5{
 }
 img{
     width:1.5rem !important;
+    padding:0.45rem !important;
+    box-sizing: content-box !important;
     cursor: pointer;
 }
 .bg-a{
@@ -495,11 +497,11 @@ li:hover{
 } */
  @keyframes animatedropdown {
     from{
-        transform: translateY(15vh);
+        transform: translateY(-3vh);
 
     }
     to{
-        transform: translateY(3vh);
+        transform: translateY(4vh);
     }
  }
 

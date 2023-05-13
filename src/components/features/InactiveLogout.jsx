@@ -54,10 +54,7 @@ class IdleTimer {
         // localStorage.removeItem('ClinicId');
         // localStorage.removeItem('roleId');
         // window.location.reload(true)
-
-
         localStorage.removeItem("_expiredTime");
-
         clearInterval(this.interval);
         window.removeEventListener("mousemove", this.eventHandler);
         window.removeEventListener("scroll", this.eventHandler);

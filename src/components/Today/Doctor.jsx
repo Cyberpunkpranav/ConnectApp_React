@@ -252,7 +252,7 @@ function DoctorSchedule(props) {
       setpaymentsindex()
     }
   }
-  
+
   function ClosePaymentsForm2() {
     if (paymentsform === 'block') {
       setpaymentsform('none')
@@ -520,9 +520,9 @@ function DoctorSchedule(props) {
                                 <div className="col-12 p-0 m-0 fw-bold">
                                   {data.patient ? data.patient.full_name !== null ? data.patient.full_name : 'N/A' : 'N/A'}
                                 </div>
-                                <div className="col-auto p-0 m-0 text-burntumber fw-bold" style={{ fontSize: '0.75rem', letterSpacing: '1px' }}>
+                                <small className="col-auto p-0 m-0 text-burntumber fw-bold" style={{ letterSpacing: '1px' }}>
                                   {data.patient ? data.patient.phone_number != null ? data.patient.phone_number : 'N/A' : 'N/A'}
-                                </div>
+                                </small>
                               </div>
                             </td>
 
@@ -555,7 +555,7 @@ function DoctorSchedule(props) {
                                 ₹{data.total_amount}
                               </div>
                               <div className="col p-0 m-0 text-start">
-                                <button className="btn p-0 m-0" onClick={() => { setpaymentsi(i); OpenPaymentsForm(); }}>
+                                <button className="button-sm bg-pearl rounded-1 p-0 m-0 border-burntumber px-2" onClick={() => { setpaymentsi(i); OpenPaymentsForm(); }}>
                                   <AmountPaid appointmentData={data} index={i} Appointmentlist={Appointmentlist} />
                                 </button>
                                 {
@@ -565,14 +565,13 @@ function DoctorSchedule(props) {
                                   ) : (<></>)
                                 }
                               </div>
-
                             </td>
                             <td className={` text-center py-0 bg-${vitalindex === i ? 'lightyellow' : ''}`}><button className="btn p-0 m-0" onClick={() => { setvitalindex(i); OpenVitals(); GetAppointmentVitals(data.id) }}><img src={process.env.PUBLIC_URL + "/images/vitals.png"} alt="displaying_image" style={{ height: "1.5rem" }} /></button></td>
                             <td className={` text-center py-0 d-${permission.appointment_charges_edit ? '' : 'none'} bg-${billindex === i ? 'lightyellow' : ''}`}> <img src={process.env.PUBLIC_URL + "/images/bill.png"} onClick={() => { setbillindex(i); OpenBillForm(); }} alt="displaying_image" className="me-1" />  </td>
                             <td className={` text-center py-0  bg-${consumablesindex === i ? 'lightyellow' : ''}`}>
                               <button className={`button-sm border-0 p-0 m-0 position-relative bg-${consumablesindex === i ? 'lightyellow' : 'transparent'}`}>
                                 <img src={process.env.PUBLIC_URL + "/images/bill.png"} onClick={() => { setconsumablesindex(i); toggleConsumables(); }} alt="displaying_image" className="me-1" />
-                                <span class={` position-absolute top-0 text-charcoal fw-bold start-100 translate-middle badge fw-normal px-auto rounded-circle bg-lightyellow`} style={{ zIndex: '2' }}>
+                                <span class={` position-absolute top-0 text-charcoal fw-bold start-75 translate-middle badge fw-normal rounded-2 bg-lightyellow`} style={{ zIndex: '2' }}>
                                   {appointmentdata[i].medicine_used.length}
                                 </span>
                               </button>
