@@ -1,4 +1,4 @@
-import React from "react";
+import React, { createContext } from "react";
 import axios from "axios";
 import { useState, useEffect, useContext } from "react";
 import AmountPaid from './AmountPaid';
@@ -15,6 +15,8 @@ import { Payments } from "./Payments";
 import { Bill } from "./Bill";
 import { AddConsumables } from "./AddConsumables";
 import { SaleEntryForm } from '../pharmacy/pharmacy';
+
+
 function DoctorSchedule(props) {
   //Global Variables
   const url = useContext(URL)
@@ -70,7 +72,6 @@ function DoctorSchedule(props) {
     }
 
   }
-
   async function Appointmentlist() {
     setisLoading(true);
     Loading.dots('Getting Details', {
@@ -453,7 +454,8 @@ function DoctorSchedule(props) {
                       {
                         timeindex == i ? (
                           <div className={`d-${timeindex == i ? addappointmentform : 'none'} col-lg-8 col-md-10 col-sm-12 col-12 col-xl-6 shadow quickappointment position-absolute m-auto start-0 end-0 bg-seashell rounded-4 border border-1`} style={{ zIndex: 4, top: '-3rem' }}>
-                            <SelectedTimeAppointment fetchapi={props.fetchapi} closeAddAppointmentform={closeAddAppointmentform} DocClinic={props.DocClinic} DoctorID={props.DoctorID} DoctorName={props.DoctorName} timeindex={timeindex} selectedtime={data[0]} selectedtimeID={data[2]} />
+                            <SelectedTimeAppointment fetchapi={props.fetchapi} closeAddAppointmentform={closeAddAppointmentform} DocClinic={props.DocClinic} timeindex={timeindex} selectedtime={data[0]} selectedtimeID={data[2]} />
+
                           </div>
                         ) : (
                           <></>
@@ -555,7 +557,7 @@ function DoctorSchedule(props) {
                                 ₹{data.total_amount}
                               </div>
                               <div className="col p-0 m-0 text-start">
-                                <button className="button-sm bg-pearl rounded-1 p-0 m-0 border-burntumber px-2" onClick={() => { setpaymentsi(i); OpenPaymentsForm(); }}>
+                                <button className="button-sm p-0 m-0 bg-transparent border-0" onClick={() => { setpaymentsi(i); OpenPaymentsForm(); }}>
                                   <AmountPaid appointmentData={data} index={i} Appointmentlist={Appointmentlist} />
                                 </button>
                                 {
@@ -571,7 +573,7 @@ function DoctorSchedule(props) {
                             <td className={` text-center py-0  bg-${consumablesindex === i ? 'lightyellow' : ''}`}>
                               <button className={`button-sm border-0 p-0 m-0 position-relative bg-${consumablesindex === i ? 'lightyellow' : 'transparent'}`}>
                                 <img src={process.env.PUBLIC_URL + "/images/bill.png"} onClick={() => { setconsumablesindex(i); toggleConsumables(); }} alt="displaying_image" className="me-1" />
-                                <span class={` position-absolute top-0 text-charcoal fw-bold start-75 translate-middle badge fw-normal rounded-2 bg-lightyellow`} style={{ zIndex: '2' }}>
+                                <span class={` position-absolute text-charcoal fw-bold start-75 translate-middle badge p-0 m-0 p-1 px-2 fw-normal rounded-2 bg-lightyellow`} style={{ zIndex: '2',top:"10%" }}>
                                   {appointmentdata[i].medicine_used.length}
                                 </span>
                               </button>

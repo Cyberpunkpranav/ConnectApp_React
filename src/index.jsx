@@ -38,8 +38,7 @@ const Permissions = createContext();
 function Connectapp(props) {
   const d = new Date();
   const date = d.getDate() < 10 ? "0" + d.getDate() : d.getDate();
-  const monthcount =
-    d.getMonth() + 1 < 10 ? `0${d.getMonth() + 1}` : d.getMonth() + 1;
+  const monthcount = d.getMonth() + 1 < 10 ? `0${d.getMonth() + 1}` : d.getMonth() + 1;
   const yearcount = d.getFullYear();
   var APIDate = `${yearcount}-${monthcount}-${date}`;
   const url = "https://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/api/connect";
@@ -78,9 +77,7 @@ function Connectapp(props) {
   async function fetchapi() {
     try {
       setLoading(true);
-      await axios
-        .get(`${url}/doctor/list?clinic_id=${ClinicId}&limit=30&offset=0`)
-        .then(function (response) {
+      await axios .get(`${url}/doctor/list?clinic_id=${ClinicId}&limit=30&offset=0`) .then(function (response) {
           let tempArray = response.data.data.doctor_list;
           setConnectDoctorapi(tempArray);
           for (let i = 0; i < tempArray.length; i++) {
@@ -182,75 +179,15 @@ function Connectapp(props) {
                   <TodayDocs.Provider value={todayDoc}>
                     <Vitals.Provider value={vitalslist}>
                       <Router>
-                        <Navbar
-                          path={path}
-                          logout={props.logout}
-                          permissions={props.permissions}
-                          username={props.username}
-                          designation={props.designation}
-                          id={props.id}
-                          fetchapi={fetchapi}
-                        />
-                        <Suspense
-                          fallback={
-                            <div className="text-charcoal75 fs-6 fw-bold text-center">
-                              {" "}
-                              loading..{" "}
-                            </div>
-                          }
-                        >
+                        <Navbar path={path} logout={props.logout} permissions={props.permissions} username={props.username} designation={props.designation} id={props.id} fetchapi={fetchapi} />
+                        <Suspense fallback={ <div className="text-charcoal75 fs-6 fw-bold text-center"> {" "} loading..{" "} </div> } >
                           <Routes>
-                            <Route
-                              path="/"
-                              onChange={() => setpath("/")}
-                              element={
-                                <Doctorsection
-                                  id={props.id}
-                                  fetchapi={fetchapi}
-                                  todayDoc={todayDoc}
-                                  Loading={Loading}
-                                  docapi={docapi}
-                                />
-                              }
-                            />
-                            <Route
-                              path="/Appointments"
-                              onChange={() => setpath("/Appointments")}
-                              element={
-                                <Appointments
-                                  id={props.id}
-                                  fetchapi={fetchapi}
-                                />
-                              }
-                            />
-                            <Route
-                              path="/Patients"
-                              onChange={() => setpath("/Patients")}
-                              element={<Patients id={props.id} />}
-                            />
-                            <Route
-                              path="/Doctors"
-                              onChange={() => setpath("/Doctors")}
-                              element={
-                                <Doctors id={props.id} docapi={docapi} />
-                              }
-                            />
-                            <Route
-                              path="/DailySaleReport"
-                              onChange={() => setpath("/DailySaleReport")}
-                              element={
-                                <DailySaleReport
-                                  id={props.id}
-                                  cliniclist={cliniclist}
-                                  docapi={docapi}
-                                />
-                              }
-                            />
-                            <Route
-                              path="/Pharmacy"
-                              onChange={() => setpath("/Pharmacy")}
-                              element={<Pharmacy id={props.id} />}
-                            />
+                            <Route path="/" onChange={() => setpath("/")} element={ <Doctorsection id={props.id} fetchapi={fetchapi} todayDoc={todayDoc} Loading={Loading} docapi={docapi} /> } />
+                            <Route path="/Appointments" onChange={() => setpath("/Appointments")} element={ <Appointments id={props.id} fetchapi={fetchapi} /> } />
+                            <Route path="/Patients" onChange={() => setpath("/Patients")} element={<Patients id={props.id} />} />
+                            <Route path="/Doctors" onChange={() => setpath("/Doctors")} element={ <Doctors id={props.id} docapi={docapi} /> } />
+                            <Route path="/DailySaleReport" onChange={() => setpath("/DailySaleReport")} element={ <DailySaleReport id={props.id} cliniclist={cliniclist} docapi={docapi} /> } />
+                            <Route path="/Pharmacy" onChange={() => setpath("/Pharmacy")} element={<Pharmacy id={props.id} />} />
                             {/* <Route path='/Files' element={<Exports id={props.id} />} /> */}
                           </Routes>
                         </Suspense>
@@ -448,13 +385,7 @@ function Switchpage() {
                     <div
                       className={`col-lg-1 d-flex  col-2 align-items-center`}
                     >
-                      <a
-                        className={`next d-${next} text-decoration-none text-center text-charcoal p-2 rounded`}
-                        id="next"
-                        onClick={topassword}
-                      >
-                        Next
-                      </a>
+                      <a className={`next d-${next} text-decoration-none text-center text-charcoal p-2 rounded`} id="next" onClick={topassword} > Next </a>
                     </div>
                   </div>
                   <div
@@ -462,12 +393,7 @@ function Switchpage() {
                     id="passinput"
                   >
                     <div className="col-lg-1 col-2 col-md-1 align-items-center d-flex">
-                      <a
-                        className="back text-decoration-none text-center p-lg-2 p-md-2 p-1 rounded"
-                        onClick={toemail}
-                      >
-                        Back
-                      </a>
+                      <a className="back text-decoration-none text-center p-lg-2 p-md-2 p-1 rounded" onClick={toemail} > Back </a>
                     </div>
                     {load ? (
                       <div className="col-lg-6 col-md-8 col-sm-10 col-10 py-1 pb-1 userinput text-center">

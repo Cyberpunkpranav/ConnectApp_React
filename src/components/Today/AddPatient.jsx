@@ -161,7 +161,6 @@ const AddPatient = (props) => {
     if (place) {
         geocodeByAddress(place).then(results => getLatLng(results[0])).then(({ lat, lng }) => { setlat(lat); setlng(lng) });
     }
-    console.log(pincode)
     const confirmmessage = () => {
         customconfirm()
         Notiflix.Confirm.show(

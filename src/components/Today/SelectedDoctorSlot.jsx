@@ -6,10 +6,13 @@ import Notiflix from 'notiflix'
 import { customconfirm } from '../features/notiflix/customconfirm'
 //Context APIs
 import { URL, TodayDate, DoctorsList, Clinic } from '../../index'
+import { DOCTORNAME, DOCTORID } from '../../components/App/Clinic'
 
 const AddSelectedDoctorSlot = (props) => {
     const url = useContext(URL)
     const APIDate = useContext(TodayDate)
+    const doctorname = useContext(DOCTORNAME)
+    const doctorid = useContext(DOCTORID)
     const Doctors = useContext(DoctorsList)
     const cliniclist = useContext(Clinic)
     const admin_id = localStorage.getItem('id')
@@ -22,13 +25,13 @@ const AddSelectedDoctorSlot = (props) => {
 
     async function AddSelectedDoctorSlot() {
 
-        if (props.DoctorID && APIDate && fromtime && totime && clinicid && admin_id) {
+        if (doctorid && APIDate && fromtime && totime && clinicid && admin_id) {
             Notiflix.Loading.pulse({
                 backgroundColor: 'rgb(242, 242, 242,0.5)',
                 svgColor: '#96351E'
             })
             await axios.post(`${url}/doctor/add/timeslots`, {
-                doctor_id: props.DoctorID,
+                doctor_id: doctorid,
                 date: APIDate,
                 time_from: fromtime,
                 time_to: totime,
@@ -49,7 +52,7 @@ const AddSelectedDoctorSlot = (props) => {
         customconfirm()
         Notiflix.Confirm.show(
             `Update Doctor Slot`,
-            `Do you surely want to add the selected Doctor Time Slots`,
+            `Do you surely want to add more Time Slots of Dr. ${doctorname}`,
             'Yes',
             'No',
             () => {
@@ -85,7 +88,7 @@ const AddSelectedDoctorSlot = (props) => {
             </div>
             <div className="row mt-2 justify-content-center gx-2">
                 <div className="col-auto">
-                    <button className='button button-charcoal50-outline'>{props.DoctorName}</button>
+                    <button className='button button-charcoal50-outline'>{doctorname}</button>
                 </div>
                 <div className="col-auto">
                     <div type="date" disabled className="form-control col-10 button button-charcoal50-outline" >{reversefunction(APIDate)}</div>

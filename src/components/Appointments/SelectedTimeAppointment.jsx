@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useContext } from 'react'
+import { DOCTORNAME, DOCTORID } from '../../components/App/Clinic'
 import { DoctorsList, URL, Doctorapi, TodayDate, Clinic, TodayDocs } from '../../index'
 import Notiflix from 'notiflix'
 
@@ -8,6 +9,8 @@ import '../../css/dashboard.css'
 const SelectedTimeAppointment = (props) => {
     //Global Variable
     const url = useContext(URL)
+    const doctorname = useContext(DOCTORNAME)
+    const doctorid = useContext(DOCTORID)
     const TodayDoctors = useContext(TodayDocs)
     const Doclist = useContext(DoctorsList)
     const cliniclist = useContext(Clinic)
@@ -24,8 +27,13 @@ const SelectedTimeAppointment = (props) => {
     const [searchload, setsearchload] = useState(false)
     const [load, setload] = useState()
 
-
     // Functions
+    const reversefunction = (date) => {
+        if (date) {
+            date = date.split("-").reverse().join("-");
+            return date;
+        }
+    }
     function tConvert(time) {
         time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time]
         if (time.length > 1) {
@@ -59,10 +67,10 @@ const SelectedTimeAppointment = (props) => {
     }
     function BookAppointment() {
         setload(true)
-        if (patientid && props.DoctorID && clinicid && props.selectedtimeID[0] && adminid) {
+        if (patientid && doctorid && clinicid && props.selectedtimeID[0] && adminid) {
             axios.post(`${url}/add/appointment`, {
                 patient_id: patientid,
-                doctor_id: props.DoctorID,
+                doctor_id: doctorid,
                 clinic_id: clinicid,
                 timeslot_id: props.selectedtimeID[0],
                 admin_id: adminid
@@ -77,8 +85,9 @@ const SelectedTimeAppointment = (props) => {
             setload(false)
         }
     }
-    console.log(displaysearchlist,props.DoctorName)
+    // console.log(displaysearchlist, props.DoctorName)
     // Functions
+    console.log(doctorname, doctorid);
     return (
         <>
             <h5 className="text-center m-0 p-0 mt-2">Quick Appointment  at <span className=' text-charcoal fw-bold border-0 fs-6'>{tConvert(props.selectedtime)}</span></h5>
@@ -119,23 +128,8 @@ const SelectedTimeAppointment = (props) => {
                 </div>
                 <div className="col-auto">
                     <div className="d-flex p-0 m-0 text-start justify-content-around">
-                        <select className=" form-control selectdoctor border-charcoal rounded-1 bg-seashell" >
-                            <option defaultValue="Select Doctor bg-seashell" >{props.DoctorName}</option>
-                            {
-                                TodayDoctors ? (
-                                    Doclist.map((data, i) => (
-                                        <option className={` text-charcoal75`} selected={data[0] === props.appointmentdoctorid ? true : false} value={data[0]}>Dr. {data[1]}</option>
-                                    ))
-                                ) : (
-                                    <div>Loading</div>
-                                )
-
-
-
-                            }
-                        </select>
-                        <div className='button button-charcoal50-outline align-self-center '> Dr.{props.DoctorName}</div>
-                        <div className="button button-charcoal50-outline ms-3" >{APIDate}</div>
+                        <div className='button button-charcoal50-outline align-self-center '> Dr.{doctorname}</div>
+                        <div className="button button-charcoal50-outline ms-3" >{reversefunction(APIDate)}</div>
 
                     </div>
                 </div>

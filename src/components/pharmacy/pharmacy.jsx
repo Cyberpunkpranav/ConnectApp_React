@@ -2097,38 +2097,38 @@ function SaleEntryForm(props) {
                 }}
               />
               <div ref={medicinesref} className="position-absolute rounded-1 mt-1" style={{ Width: "max-content", zIndex: "1" }} >
-                {itemsearch ? (
-                  loadsearch ? (
-                    <div className="rounded-1 p-1 bg-pearl">
-                      Searching Please wait....
-                      <div className="spinner-border my-auto" style={{ width: "1rem", height: "1rem" }} role="status" >
-                        <span className="sr-only"> </span>
+                {
+                  itemsearch ? (
+                    loadsearch ? (
+                      <div className="rounded-1 p-1 bg-pearl">
+                        Searching Please wait....
+                        <div className="spinner-border my-auto" style={{ width: "1rem", height: "1rem" }} role="status" >
+                          <span className="sr-only"> </span>
+                        </div>
                       </div>
-                    </div>
-                  ) : loadsearch == false && itemsearch.length == 0 ? (
-                    <div className="bg-burntumber text-light rounded-1 p-1"> Oops! Not Avaliable </div>
+                    ) : loadsearch == false && itemsearch.length == 0 ? (
+                      <div className="bg-burntumber text-light rounded-1 p-1"> Oops! Not Avaliable </div>
+                    ) : (
+                      <div className={`rounded-4 scroll border border-1 bg-pearl p-1 d-${itemsearch && itemsearch.length > 0 ? "block" : "none"}`} style={{ height: '30vh' }} >
+                        <p className={`text-start p-2 position-sticky top-0 bg-pearl fw-bold text-charcoal75 ms-2`} style={{ fontSize: "0.8rem" }} > {itemsearch.length} Search Results </p>
+                        {
+                          itemsearch.map((data, i) => (
+                            <div style={{ cursor: "pointer", Width: "10rem" }} className={`bg-${i % 2 == 0 ? "pearl" : "seashell"} text-start fw-bold p-2 border-bottom text-charcoal `} onClick={(e) => { setproducts(data); setitemname(data.display_name ? data.display_name : data.name); setitemid(data.id); stockref.current.style.display = "block"; }} > {data.display_name ? data.display_name : data.name} <span className='text-burntumber fw-bold rounded-2 px-1'>{data && data.stock_info !== undefined ? data.stock_info.length : ""} stocks</span> </div>
+                          ))
+                        }
+                      </div>
+                    )
                   ) : (
-                    <div className={`rounded-4 scroll border border-1 bg-pearl p-1 d-${itemsearch && itemsearch.length > 0 ? "block" : "none"}`} style={{ height: '30vh' }} >
-                      <p className={`text-start p-2 position-sticky top-0 bg-pearl fw-bold text-charcoal75 ms-2`} style={{ fontSize: "0.8rem" }} > {itemsearch.length} Search Results </p>
-                      {
-                        itemsearch.map((data, i) => (
-                          <div style={{ cursor: "pointer", Width: "max-content" }} className={`bg-${i % 2 == 0 ? "pearl" : "seashell"} text-start fw-bold p-2 border-bottom text-charcoal `} onClick={(e) => { setproducts(data); setitemname(data.display_name ? data.display_name : data.name); setitemid(data.id); stockref.current.style.display = "block"; }} > {data.display_name ? data.display_name : data.name} <span className='text-burntumber border-burntumber fw-bold rounded-2 px-1'>{data && data.stock_info !== undefined ? data.stock_info.length : ""} stocks</span> </div>
-                        ))
-                      }
-                    </div>
-                  )
-                ) : (
-                  <div className="bg-seashell"></div>
-                )}
+                    <div className="bg-seashell"></div>
+                  )}
               </div>
-              <div ref={stockref} className={`position-absolute bg-pearl scroll scroll-y align-self-center rounded-4 border border-1 p-2 d-${products && products.stock_info && products.stock_info !== undefined ? "block" : "none"}`} style={{ marginLeft: "15.7rem", marginTop: "2rem", zIndex: "2", width: "13rem", height: "10rem", }} >
+              <div ref={stockref} className={`position-absolute start-50 mt-1 bg-pearl scroll scroll-y align-self-center rounded-2 border border-1 p-2 d-${products && products.stock_info && products.stock_info !== undefined ? "block" : "none"}`} style={{ zIndex: "2", width: "10rem", 'min-height': "30vh", }} >
                 <p className={`text-start fw-bold text-charcoal75`} style={{ fontSize: "0.8rem" }} > {products && products.stock_info !== undefined ? products.stock_info.length : ""}{" "} Batch Stocks </p>
                 {
                   products && products.length != 0 ? (
                     products.stock_info.length == 0 ? (
                       <div className="bg-burntumber text-white fw-bold p-2">Oops! Not Available</div>
                     ) : (
-
                       products.stock_info.map((data, i) => (
                         <div style={{ cursor: "pointer", Width: "max-content" }} className={`bg-${i % 2 == 0 ? "pearl" : "seashell"} border-bottom text-wrap`} onClick={() => { AddProducts(data); setitemname(); setitemid(); setproducts(); setitemsearch(); }} >
                           <p className="text-start m-0 p-0 fw-bold">{itemname}</p>
@@ -2202,124 +2202,47 @@ function SaleEntryForm(props) {
             <table className="table p-0 m-0">
               <thead className="p-0 m-0">
                 <tr className={`p-0 m-0 `}>
-                  <th className="p-0 m-0 px-2" rowSpan="2">
-                    Item ID
-                  </th>
-                  <th className="p-0 m-0 px-2" rowSpan="2">
-                    Item Name
-                  </th>
-                  <th className="p-0 m-0 px-2" rowSpan="2">
-                    BatchNo.
-                  </th>
-                  <th className="p-0 m-0 px-2" rowSpan="2">
-                    Expiry Date
-                  </th>
-                  <th className="p-0 m-0 px-2" rowSpan="2">
-                    Avl.Stock
-                  </th>
-                  <th className="p-0 m-0 px-2" rowSpan="2">
-                    Qty To Sale
-                  </th>
-                  <th className="p-0 m-0 px-2" rowSpan="2">
-                    Discount %
-                  </th>
-                  <th className="p-0 m-0 px-2" colSpan="4" scope="col-group">
-                    Costing
-                  </th>
-                  <th className="p-0 m-0 px-2" rowSpan="2">
-                    Total Amount
-                  </th>
-                  <th className="p-0 m-0 px-2" rowSpan="2">
-                    Delete
-                  </th>
+                  <th className="p-0 m-0 px-2" rowSpan="2"> Item ID </th>
+                  <th className="p-0 m-0 px-2" rowSpan="2"> Item Name </th>
+                  <th className="p-0 m-0 px-2" rowSpan="2"> BatchNo. </th>
+                  <th className="p-0 m-0 px-2" rowSpan="2"> Expiry Date </th>
+                  <th className="p-0 m-0 px-2" rowSpan="2"> Avl.Stock </th>
+                  <th className="p-0 m-0 px-2" rowSpan="2"> Qty To Sale </th>
+                  <th className="p-0 m-0 px-2" rowSpan="2"> Discount % </th>
+                  <th className="p-0 m-0 px-2" colSpan="4" scope="col-group"> Costing </th>
+                  <th className="p-0 m-0 px-2" rowSpan="2"> Total Amount </th>
+                  <th className="p-0 m-0 px-2" rowSpan="2"> Delete </th>
                 </tr>
                 <tr className="p-0 m-0">
-                  <th className="p-0 m-0 px-2" scope="col">
-                    MRP
-                  </th>
-                  <th className="p-0 m-0 px-2" scope="col">
-                    Cost
-                  </th>
-                  <th className="p-0 m-0 px-2" scope="col">
-                    GST Rate
-                  </th>
-                  <th className="p-0 m-0 px-2" scope="col">
-                    Selling Cost/Unit
-                  </th>
+                  <th className="p-0 m-0 px-2" scope="col"> MRP </th>
+                  <th className="p-0 m-0 px-2" scope="col"> Cost </th>
+                  <th className="p-0 m-0 px-2" scope="col"> GST Rate </th>
+                  <th className="p-0 m-0 px-2" scope="col"> Selling Cost/Unit </th>
                 </tr>
               </thead>
               {SelectedProducts && SelectedProducts.length !== 0 ? (
                 <tbody className="p-0 m-0">
                   {SelectedProducts.map((data) => (
-                    <tr
-                      className={`p-0 m-0 align-middle bg-${Number(data.disccost) < Number(data.cost)
-                        ? "lightred50"
-                        : ""
-                        }`}
-                    >
-                      <td>
-                        {data.type}
-                        {data.productid}
-                      </td>
+                    <tr className={`p-0 m-0 align-middle bg-${Number(data.disccost) < Number(data.cost) ? "lightred50" : ""}`} >
+                      <td>{data.type} {data.productid} </td>
                       <td>{data.product}</td>
                       <td>{data.batch}</td>
                       <td>{reversefunction(data.expiry)}</td>
                       <td>{data.quantity}</td>
                       <td>
-                        <input
-                          className="border border-1 rounded-1 w-25 text-center p-0 m-0 bg-seashell"
-                          value={data.qtytoSale ? data.qtytoSale : ""}
-                          onChange={(e) => {
-                            e.target.value <= data.quantity
-                              ? (data.qtytoSale = e.target.value)
-                              : Notiflix.Notify.failure(
-                                "Quantity Cannot be Greater then Current Stock Available"
-                              );
-                            data.totalamt = CalTotalAmount(
-                              data.qtytoSale,
-                              data.disccost
-                            );
-                            setSelectedProducts((prevState) => [...prevState]);
-                          }}
-                        />{" "}
+                        <input className="border border-1 rounded-1 w-25 text-center p-0 m-0 bg-seashell" value={data.qtytoSale ? data.qtytoSale : ""} onChange={(e) => { e.target.value <= data.quantity ? (data.qtytoSale = e.target.value) : Notiflix.Notify.failure("Quantity Cannot be Greater then Current Stock Available"); data.totalamt = CalTotalAmount(data.qtytoSale, data.disccost); setSelectedProducts((prevState) => [...prevState]); }} />{" "}
                       </td>
-                      <td
-                        className="text-center p-0 m-0"
-                        style={{ Width: "0rem" }}
-                      >
-                        <input
-                          className="border border-1 rounded-1 w-25 text-center p-0 m-0 bg-seashell"
-                          value={data.discount ? data.discount : ""}
-                          onChange={(e) => {
-                            data.discount = e.target.value;
-                            data.disccost = CalSellingCost(
-                              data.mainmrp,
-                              e.target.value
-                            );
-                            data.totalamt = CalTotalAmount(
-                              data.qtytoSale,
-                              Number(data.disccost),
-                              Number(data.cost)
-                            );
-                            setSelectedProducts((prevState) => [...prevState]);
-                          }}
-                        />{" "}
+                      <td className="text-center p-0 m-0" style={{ Width: "0rem" }} >
+                        <input className="border border-1 rounded-1 w-25 text-center p-0 m-0 bg-seashell" value={data.discount ? data.discount : ""} onChange={(e) => { data.discount = e.target.value; data.disccost = CalSellingCost(data.mainmrp, e.target.value); data.totalamt = CalTotalAmount(data.qtytoSale, Number(data.disccost), Number(data.cost)); setSelectedProducts((prevState) => [...prevState]); }} />{" "}
                       </td>
-                      <td>{data.mainmrp}</td> <td>{data.cost}</td>
+                      <td>{data.mainmrp}</td>
+                      <td>{data.cost}</td>
                       <td>{data.gst + "%"}</td>
                       <td>{data.disccost}</td>
                       <td>{data.totalamt}</td>
                       <td>
-                        <button
-                          className="btn p-0 m-0"
-                          onClick={() => {
-                            DeleteProduct(data.batch);
-                          }}
-                        >
-                          <img
-                            src={process.env.PUBLIC_URL + "images/delete.png"}
-                            style={{ width: "1.5rem" }}
-                          />
+                        <button className="btn p-0 m-0" onClick={() => { DeleteProduct(data.batch); }} >
+                          <img src={process.env.PUBLIC_URL + "images/delete.png"} style={{ width: "1.5rem" }} />
                         </button>
                       </td>
                     </tr>
@@ -2328,9 +2251,7 @@ function SaleEntryForm(props) {
               ) : (
                 <tbody className="p-0 m-0 position-relative">
                   <tr className="p-0 m-0">
-                    <td className="p-0 m-0 position-absolute text-charcoal fw-bold start-0 end-0">
-                      No Product Added
-                    </td>
+                    <td className="p-0 m-0 position-absolute text-charcoal fw-bold start-0 end-0"> No Product Added </td>
                   </tr>
                 </tbody>
               )}
@@ -2343,10 +2264,7 @@ function SaleEntryForm(props) {
           <div className="col-6">
             <div className="row">
               <div className="col-3">
-                <p className="text-charcoal75 p-0 m-0 fw-bolder card-title text-start ms-3">
-                  {" "}
-                  Order Total{" "}
-                </p>
+                <p className="text-charcoal75 p-0 m-0 fw-bolder card-title text-start ms-3"> {" "} Order Total{" "} </p>
                 <h4 className="text-charcoal  p-0 m-0 fw-bolder card-header text-start ps-3">
                   {Grandtotal}
                 </h4>
