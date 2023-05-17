@@ -384,38 +384,17 @@ const Bill = (props) => {
             <div className="container-fluid text-start px-3 py-2 position-relative">
               <h6 className="fw-bold text-charcoal">Consultation</h6>
               <label className="position-absolute end-0 top-0 mt-2 me-4 text-cahrcoal fw-bolder">
-                <input
-                  className="form-check-input me-1 "
-                  type="checkbox"
-                  checked={AddConsAmt}
-                  onClick={
-                    AddConsAmt == props.doctorfee
-                      ? () => setAddConsAmt(0)
-                      : () => setAddConsAmt(props.doctorfee)
-                  }
-                />
+                <input className="form-check-input me-1 " type="checkbox" checked={AddConsAmt} onClick={ AddConsAmt == props.doctorfee ? () => setAddConsAmt(0) : () => setAddConsAmt(props.doctorfee) } />
                 Add Consultation Amount
               </label>
               <div className="row p-0 m-0 justify-content-between">
                 <div className="col-8 ps-0 ">
-                  <label className="text-charcoal75 fw-bold">
-                    Consultation text
-                  </label>
-                  <input
-                    className="form-control bg-seashell fw-bold"
-                    value={constext ? constext : ""}
-                    onChange={(e) => setconstext(e.target.value)}
-                  />
+                  <label className="text-charcoal75 fw-bold"> Consultation text </label>
+                  <input className="form-control bg-seashell fw-bold" value={constext ? constext : ""} onChange={(e) => setconstext(e.target.value)} />
                 </div>
                 <div className="col-4 pe-0 ">
-                  <label className="text-charcoal75 fw-bold">
-                    Doctor's Consultation Charge
-                  </label>
-                  <input
-                    className="form-control bg-seashell fw-bold"
-                    disabled={true}
-                    value={AddConsAmt}
-                  />
+                  <label className="text-charcoal75 fw-bold"> Doctor's Consultation Charge </label>
+                  <input className="form-control bg-seashell fw-bold" disabled={true} value={AddConsAmt} />
                 </div>
                 {/* <div className="col-6">
                                         <label className='text-charcoal75 fw-bold'>Procedure</label>
@@ -440,19 +419,11 @@ const Bill = (props) => {
                 </div>
                 <div className="col-4">
                   <label className="text-charcoal75 fw-bold">Doctor</label>
-                  <input
-                    className="form-control bg-seashell fw-bold text-burntumber text-start"
-                    value={docdiscount ? docdiscount : ""}
-                    onChange={(e) => setdocdiscount(e.target.value)}
-                  />
+                  <input className="form-control bg-seashell fw-bold text-burntumber text-start" value={docdiscount ? docdiscount : ""} onChange={(e) => setdocdiscount(e.target.value)} />
                 </div>
                 <div className="col-4">
                   <label className="text-charcoal75 fw-bold">Aartas</label>
-                  <input
-                    className="form-control bg-seashell fw-bold text-burntumber text-start"
-                    value={aartasdiscount ? aartasdiscount : ""}
-                    onChange={(e) => setaartasdiscount(e.target.value)}
-                  />
+                  <input className="form-control bg-seashell fw-bold text-burntumber text-start" value={aartasdiscount ? aartasdiscount : ""} onChange={(e) => setaartasdiscount(e.target.value)} />
                 </div>
               </div>
             </div>
@@ -461,25 +432,11 @@ const Bill = (props) => {
               <div className="bg-seashell position-relative">
                 <div className="row p-0 m-0 align-items-center mb-2">
                   <div className="col-auto p-0 m-0 ps-2 pe-1">
-                    <h6 className=" p-0 m-0 text-charcoal fw-bolder">
-                      Extra Charges
-                    </h6>
+                    <h6 className=" p-0 m-0 text-charcoal fw-bolder"> Extra Charges </h6>
                   </div>
                   <div className="col-auto p-0 m-0">
-                    <button
-                      className="btn p-0 m-0 py-0"
-                      onClick={() =>
-                        setextrachargecount((prevState) => [
-                          ...prevState,
-                          Charges,
-                        ])
-                      }
-                    >
-                      <img
-                        src={process.env.PUBLIC_URL + "/images/add.png"}
-                        className="img-fluid"
-                        style={{ width: "2rem" }}
-                      />
+                    <button className="btn p-0 m-0 py-0" onClick={() => setextrachargecount((prevState) => [ ...prevState, Charges, ]) } >
+                      <img src={process.env.PUBLIC_URL + "/images/add.png"} className="img-fluid" style={{ width: "2rem" }} />
                     </button>
                   </div>
                 </div>
@@ -601,31 +558,13 @@ const Bill = (props) => {
                             />
                           </div>
                           <div className="row p-0 m-0">
-                            <div className="col-6 p-0 m-0 fw-bold text-charcoal75 text-end">
-                              incl. gst:
-                            </div>
-                            <input
-                              className="col-6 p-0 border-0 m-0 text-start bg-seashell ps-1 fw-bold text-burntumber"
-                              style={{ letterSpacing: "1px" }}
-                              value={data.gross_amount ? data.gross_amount : ""}
-                            />
+                            <div className="col-6 p-0 m-0 fw-bold text-charcoal75 text-end"> incl. gst: </div>
+                            <input className="col-6 p-0 border-0 m-0 text-start bg-seashell ps-1 fw-bold text-burntumber" style={{ letterSpacing: "1px" }} value={data.gross_amount ? data.gross_amount : ""} />
                           </div>
                         </div>
                         <div className="col-1 align-self-end">
-                          <button
-                            className="btn btn-sm p-0 m-0"
-                            onClick={() => {
-                              DeleteExtraCharges(i);
-                              setpaymentmethods((prevState) => [...prevState]);
-                            }}
-                          >
-                            <img
-                              src={
-                                process.env.PUBLIC_URL + "/images/delete.png"
-                              }
-                              className="img-fluid"
-                              style={{ width: "1.5rem" }}
-                            />
+                          <button className="btn btn-sm p-0 m-0" onClick={() => { DeleteExtraCharges(i); setpaymentmethods((prevState) => [...prevState]); }} >
+                            <img src={ process.env.PUBLIC_URL + "/images/delete.png" } className="img-fluid" style={{ width: "1.5rem" }} />
                           </button>
                         </div>
                       </div>
@@ -644,17 +583,10 @@ const Bill = (props) => {
                     <div className="col-auto p-0 m-0">
                       <div className="row p-0 m-0">
                         <div className="col-auto p-0 m-0 align-self-center">
-                          <label className="text-burntumber fw-bold p-0 m-0">
-                            SGST:- ₹
-                          </label>
+                          <label className="text-burntumber fw-bold p-0 m-0"> SGST:- ₹ </label>
                         </div>
                         <div className="col-auto p-0 m-0">
-                          <input
-                            className="form-control bg-seashell fw-bold border-0 p-0 m-0"
-                            disabled
-                            value={SGST ? SGST : Get_total_Seperate_gsts()}
-                            onChange={(e) => setSGST(e.target.value)}
-                          />
+                          <input className="form-control bg-seashell fw-bold border-0 p-0 m-0" disabled value={SGST ? SGST : Get_total_Seperate_gsts()} onChange={(e) => setSGST(e.target.value)} />
                         </div>
                       </div>
                     </div>
@@ -799,18 +731,8 @@ const Bill = (props) => {
                     />
                   </div>
                   <div className="col-2">
-                    <button
-                      className="btn btn-sm p-0 m-0"
-                      onClick={() => {
-                        DeletePaymentMethods(i);
-                        setpaymentmethods((prevState) => [...prevState]);
-                      }}
-                    >
-                      <img
-                        src={process.env.PUBLIC_URL + "/images/delete.png"}
-                        className="img-fluid"
-                        style={{ width: "1rem" }}
-                      />
+                    <button className="btn btn-sm p-0 m-0" onClick={() => { DeletePaymentMethods(i); setpaymentmethods((prevState) => [...prevState]); }} >
+                      <img src={process.env.PUBLIC_URL + "/images/delete.png"} className="img-fluid" style={{ width: "1rem" }} />
                     </button>
                   </div>
                 </div>
@@ -818,7 +740,7 @@ const Bill = (props) => {
             </div>
           </>
         )}
-        <div className="container-fluid pb-2 position-sticky bottom-0 bg-seashell border border-1 ">
+        <div className="container-fluid pb-2 position-sticky bottom-0 bg-seashell border border-1 " style={{marginTop:'20vh'}}>
           {load ? (
             <div className="col-6 py-2 pb-2 m-auto text-center">
               <div class="spinner-border" role="status">
@@ -832,7 +754,7 @@ const Bill = (props) => {
                   Grand Total
                 </label>
                 <input
-                  className="form-control rounded-1 text-success text-start border-0 fw-bolder p-0  bg-seashell"
+                  className="form-control rounded-1 fs-6 text-burntumber text-start border-0 fw-bolder p-0  bg-seashell"
                   value={"₹" + Get_Grand_Total()}
                 />
               </div>

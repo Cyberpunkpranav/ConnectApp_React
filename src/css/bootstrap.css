@@ -381,6 +381,9 @@ body::-webkit-scrollbar-thumb:hover {
 .text-burntumber {
     color: var(--burntumber);
 }
+.text-burntumber:disabled {
+    color: var(--burntumber);
+}
 
 .text-charcoal {
     color: var(--charcoal);

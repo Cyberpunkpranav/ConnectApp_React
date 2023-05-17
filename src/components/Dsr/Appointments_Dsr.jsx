@@ -18,6 +18,7 @@ const Appointments_Dsr = (props) => {
   //Use States
   const [Appointments, setAppointments] = useState([])
   const [pendingpaid, setpendingpaid] = useState([])
+
   const [advancepaid, setadvancepaid] = useState([])
   const [visibles, setvisibles] = useState([])
   const [pageindex, setpageindex] = useState()
@@ -484,35 +485,36 @@ const Appointments_Dsr = (props) => {
     <div className='Appointments_Dsrsection'>
       <div className='position-relative'>
 
-        <div className="col export_dropdown position-absolute top-0 ">
+        <div className="col export_dropdown position-absolute top-0">
           <div className="dropdown">
             <button className=" button p-0 m-0 px-1 py-1 button-pearl text-burntumber  fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
               Exports
             </button>
-            <ul className="dropdown-menu" >
-              <li className="text-center border-bottom" onClick={() => { setappxl('block') }}><DownloadTableExcel
-                filename={`${reversefunction(props.fromdate) + ' to ' + reversefunction(props.todate)} Appointments`}
-                sheet="Appointments"
-                currentTableRef={Appointmentref.current}
-              >
-                <button className='btn p-0 m-0'>Appointments Export</button>
+            <ul className="dropdown-menu p-2" >
+              <li className="text-start fw-bold border-bottom py-2" onClick={() => { setappxl('block') }}>
+                <DownloadTableExcel
+                  filename={`${reversefunction(props.fromdate) + ' to ' + reversefunction(props.todate)} Appointments`}
+                  sheet="Appointments"
+                  currentTableRef={Appointmentref.current}
+                >
+                  <button className='btn text-start p-0 m-0 py-2'>Appointments Export</button>
 
-              </DownloadTableExcel></li>
-              <li className="text-center  border-bottom" onClick={() => { setpprxl('block') }}><DownloadTableExcel
+                </DownloadTableExcel></li>
+              <li className="text-start fw-bold  border-bottom" onClick={() => { setpprxl('block') }}><DownloadTableExcel
                 filename={`${reversefunction(props.fromdate) + ' to ' + reversefunction(props.todate)} Pending Payments Reciecved`}
                 sheet=" Pending Payments Reciecved"
                 currentTableRef={Pendingref.current}
               >
-                <button className='btn p-0 m-0 '>Pending Payments Reciecved Export</button>
+                <button className='btn p-0 m-0 text-start py-2'>Pending Payments Reciecved Export</button>
 
               </DownloadTableExcel></li>
-              <li className="text-center" onClick={() => { setadvxl('block') }}>
+              <li className="text-start fw-bold" onClick={() => { setadvxl('block') }}>
                 <DownloadTableExcel
                   filename={`${reversefunction(props.fromdate) + ' to ' + reversefunction(props.todate)} Advance payment Recieved`}
                   sheet=" Advance payment Recieved"
                   currentTableRef={Advancedref.current}
                 >
-                  <button className=' btn p-0 m-0'>Advance payment Recieved Export</button>
+                  <button className=' btn p-0 m-0 text-start py-2'>Advance payment Recieved Export</button>
 
                 </DownloadTableExcel>
               </li>

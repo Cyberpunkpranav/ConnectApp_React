@@ -230,7 +230,7 @@ const Doctors_Dsr = (props) => {
                   sheet="Login/Logout Details"
                   currentTableRef={tableref.current}
                 >
-                  <button className='button-sm button-pearl'>All Doctors Login/Logout Details Export </button>
+                  <button className='button-sm button-pearl text-start py-2'>All Doctors Login/Logout Details Export </button>
 
                 </DownloadTableExcel></li>
               <li className="text-center  border-bottom">
@@ -239,7 +239,7 @@ const Doctors_Dsr = (props) => {
                   sheet="Summary Report"
                   currentTableRef={Doctorwisetable.current}
                 >
-                  <button className='button-sm button-pearl'>Doctors Summary Export</button>
+                  <button className='button-sm button-pearl text-start py-2'>Doctors Summary Export</button>
 
                 </DownloadTableExcel></li>
 

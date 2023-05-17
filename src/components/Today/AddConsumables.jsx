@@ -353,7 +353,7 @@ const AddConsumables = (props) => {
                         }
                     </table>
                 </div>
-                <div className="container-fluid fw-bold mt-3 ">
+                <div className="container-fluid fw-bold mt-5 ">
                     <h6 className='fw-bold'>Nursing Notes</h6>
                     <p className='d-inline-block w-100 text-wrap bg-pearl p-2 rounded-2 ' style={{ minHeight: '10vh' }}>
                         {props.appointmentdata.nursing_notes}
@@ -410,7 +410,7 @@ const AddConsumables = (props) => {
                                     ) : (<div className='bg-seashell'></div>)
                                 }
                             </div>
-                            <div ref={stockref} className={`position-absolute bg-pearl start-100 mt-1 px-3 scroll scroll-y align-self-center rounded-1 border border-1 p-1 d-${products && products.stock_info && products.stock_info !== undefined ? 'block' : 'none'}`} style={{ marginTop: '0rem', zIndex: '2', 'width': 'max-content', 'height': '30vh' }}>
+                            <div ref={stockref} className={`position-absolute bg-pearl start-100 mt-1 px-3 scroll scroll-y align-self-center rounded-1 border border-1 p-1 d-${products && products.stock_info && products.stock_info !== undefined ? 'block' : 'none'}`} style={{ marginTop: '0rem', zIndex: '2','width':'22vh', 'min-width': '22vh', 'height': '30vh' }}>
                                 <p className={`text-start m-1 fw-bold text-charcoal75`} style={{ fontSize: '0.8rem' }}>{products && products.stock_info !== undefined ? products.stock_info.length : ''} Batch Stocks</p>
                                 {
                                     products && products.length !== 0 ? (

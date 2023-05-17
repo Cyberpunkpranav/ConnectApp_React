@@ -337,7 +337,7 @@ function Saleentrysection(props) {
   return (
     <>
       <button className={`button addentrypurchase button-charcoal position-absolute d-${permission.sale_entry_add == 1 ? "" : "none"}`} onClick={toggle_nsef} >
-        <img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt="displaying_image" className="img-fluid" style={{ width: `1.5rem` }} />
+        <img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt="displaying_image" className="img-fluid p-0 m-0" style={{ width: `1.5rem` }} />
         Entry Sale
       </button>
       <div className="row p-0 m-0 justify-content-lg-between justify-content-md-evenly justify-content-center text-center mt-2">
@@ -364,10 +364,7 @@ function Saleentrysection(props) {
           <ExportSaleEntry saleentryarr={saleentryarrforExcel} fromdate={reversefunction(fromdate)} todate={reversefunction(todate)} />
         </div>
       </div>
-      <div
-        className="scroll scroll-y p-0 m-0 mt-2"
-        style={{ minHeight: "40vh", height: "58vh", maxHeight: "70vh" }}
-      >
+      <div className="scroll scroll-y p-0 m-0 mt-2" style={{ minHeight: "40vh", height: "58vh", maxHeight: "70vh" }} >
         <table className="table text-start table-responsive">
           <thead className=" p-0 m-0 position-sticky top-0 bg-pearl">
             <tr className=" ">
@@ -1358,60 +1355,24 @@ function SaleReturns() {
   console.log(salereturnarr);
   return (
     <>
-      <button
-        className="button addentrypurchase button-charcoal position-absolute"
-        onClick={toggle_nref}
-      >
-        <img
-          src={process.env.PUBLIC_URL + "/images/addiconwhite.png"}
-          alt="displaying_image"
-          className="img-fluid"
-          style={{ width: `1.5rem` }}
-        />
+      <button className="button addentrypurchase button-charcoal position-absolute" onClick={toggle_nref} >
+        <img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt="displaying_image" className="img-fluid p-0 m-0" style={{ width: `1.5rem` }} />
         Entry Return
       </button>
       <div classsName="p-0 m-0">
         <div className="row p-0 m-0 justify-content-lg-between justify-content-md-evenly justify-content-center text-center mt-2">
           <div className="col-lg-2 col-md-2 col-3 text-center p-0 m-0 ">
-            <button
-              type="button"
-              className="btn p-0 m-0 heading text-charcoal fw-bolder  "
-              style={{ width: "fit-content" }}
-            >
+            <button type="button" className="btn p-0 m-0 heading text-charcoal fw-bolder  " style={{ width: "fit-content" }} >
               {pagecount} {pagecount > 0 ? "Sale Returns" : "Sale Return"}{" "}
             </button>
           </div>
           <div className="col-lg-8 col-md-8 col-7  p-0 m-0  border-0 ">
             <div className="row p-0 m-0 border-burntumber fw-bolder rounded-1 text-center justify-content-center ">
               <div className="col-6 p-0 m-0 text-burntumber text-center fw-bolder bg-pearl  rounded-1 ">
-                <input
-                  type="date"
-                  placeholder="fromdate"
-                  className="p-0 m-0 border-0 bg-pearl text-burntumber text-center fw-bolder "
-                  value={fromdate ? fromdate : currentDate ? currentDate : ""}
-                  onChange={(e) => {
-                    setfromdate(e.target.value);
-                  }}
-                />
+                <input type="date" placeholder="fromdate" className="p-0 m-0 border-0 bg-pearl text-burntumber text-center fw-bolder " value={fromdate ? fromdate : currentDate ? currentDate : ""} onChange={(e) => { setfromdate(e.target.value); }} />
               </div>
               <div className="col-6 p-0 m-0 text-burntumber bg-pearl fw-bolder rounded-1">
-                <input
-                  type="date"
-                  className="p-0 m-0 border-0 text-burntumber fw-bolder bg-pearl"
-                  placeholder="todate"
-                  value={
-                    todate
-                      ? todate
-                      : fromdate
-                        ? fromdate
-                        : currentDate
-                          ? currentDate
-                          : ""
-                  }
-                  onChange={(e) => {
-                    settodate(e.target.value);
-                  }}
-                />
+                <input type="date" className="p-0 m-0 border-0 text-burntumber fw-bolder bg-pearl" placeholder="todate" value={todate ? todate : fromdate ? fromdate : currentDate ? currentDate : ""} onChange={(e) => { settodate(e.target.value); }} />
               </div>
             </div>
           </div>
@@ -1816,7 +1777,6 @@ function SaleEntryForm(props) {
       setSelectedProducts((prevState) => [...prevState, ProductDetails]);
     }
   }
-
   async function DeleteProduct(Batch) {
     let obj = [];
     obj.push(
@@ -2005,33 +1965,15 @@ function SaleEntryForm(props) {
       <div className="row p-0 m-0">
         <div className="col-4">
           <label className="m-0">Search Using Phone or Name</label>
-          <input
-            type="text"
-            className="form-control bg-seashell selectpatient col-10 position-relative"
-            placeholder="Search for Patients"
-            value={searchinput ? searchinput : ""}
-            onFocus={() => setsearchload(true)}
-            onChange={searchpatient}
-          />
-          <div
-            className={`col-auto d-${displaysearchlist} text-decoration-none searchinput position-absolute rounded-1 shadow bg-pearl px-2`}
-            style={{ width: "max-content", zIndex: "2" }}
-          >
+          <input type="text" className="form-control bg-seashell selectpatient col-10 position-relative" placeholder="Search for Patients" value={searchinput ? searchinput : ""} onFocus={() => setsearchload(true)} onChange={searchpatient} />
+          <div className={`col-auto d-${displaysearchlist} text-decoration-none searchinput position-absolute rounded-1 shadow bg-pearl px-2`} style={{ width: "max-content", zIndex: "2" }} >
             {searchload == true || searchinput == undefined ? (
-              <p className="btn text-charcoal75 fs-6 p-0 m-0 ps-1">
-                Loading...{" "}
-              </p>
+              <p className="btn text-charcoal75 fs-6 p-0 m-0 ps-1"> Loading...{" "} </p>
             ) : searchlist.length == 0 ? (
               <p className="text-danger btn fs-6 p-0 m-0">Patient not found</p>
             ) : (
               searchlist.map((data) => (
-                <div
-                  className="col-auto p-0 m-0 ms-1 bg-pearl text-decoration-none list-style-none text-charcoal text-start px-1 border-bottom"
-                  style={{ width: "max-content" }}
-                  onClick={() => {
-                    get_value(data.id, data.full_name, data);
-                  }}
-                >
+                <div className="col-auto p-0 m-0 ms-1 bg-pearl text-decoration-none list-style-none text-charcoal text-start px-1 border-bottom" style={{ width: "max-content" }} onClick={() => { get_value(data.id, data.full_name, data); }} >
                   {data.full_name} {data.phone_number}
                 </div>
               ))
@@ -2041,19 +1983,10 @@ function SaleEntryForm(props) {
         <div className="col-4">
           <label>Select Doctor</label>
           <div className="col-12">
-            <select
-              className="col-10 form-control selectdoctor bg-seashell"
-              placeholder="Select Doctor"
-              value={doctorid ? doctorid : ""}
-              onChange={(e) => {
-                setdoctorid(e.target.value);
-              }}
-            >
+            <select className="col-10 form-control selectdoctor bg-seashell" placeholder="Select Doctor" value={doctorid ? doctorid : ""} onChange={(e) => { setdoctorid(e.target.value); }} >
               <option className="text-charcoal50">Select Doctor</option>
               {Doclist.map((data, i) => (
-                <option className={`text-charcoal`} key={i} value={data[0]}>
-                  {data[0]}. {"Dr."} {data[1]}
-                </option>
+                <option className={`text-charcoal`} key={i} value={data[0]}> {"Dr."} {data[1]} </option>
               ))}
             </select>
           </div>
@@ -3538,7 +3471,7 @@ function Purchaseentrysection(props) {
         <img
           src={process.env.PUBLIC_URL + "/images/addiconwhite.png"}
           alt="displaying_image"
-          className="img-fluid"
+          className="img-fluid p-0 m-0"
           style={{ width: `1.5rem` }}
         />
         Entry Purchase
@@ -6207,16 +6140,8 @@ function PurchaseReturns() {
   };
   return (
     <>
-      <button
-        className="button addpurchase button-charcoal position-absolute"
-        onClick={toggle_nref}
-      >
-        <img
-          src={process.env.PUBLIC_URL + "/images/addiconwhite.png"}
-          alt="displaying_image"
-          className="img-fluid"
-          style={{ width: `1.5rem` }}
-        />
+      <button className="button addpurchase button-charcoal position-absolute" onClick={toggle_nref} >
+        <img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt="displaying_image" className="img-fluid p-0 m-0" style={{ width: `1.5rem` }} />
         Entry Return
       </button>
       <div className="row p-0 m-0 justify-content-lg-between justify-content-md-evenly justify-content-between text-center">
@@ -6226,25 +6151,9 @@ function PurchaseReturns() {
         <div className="col-lg-8 col-md-7 col-sm-12 col-12 px-sm-5  align-self-center p-0 m-0 mt-lg-0 mt-md-0 mt-1  ">
           <div className="row p-0 m-0 border-burntumber fw-bolder rounded-1 text-center justify-content-center ">
             <div className="col-4">
-              <select
-                className="p-0 m-0 border-0 text-burntumber bg-pearl fw-bolder"
-                value={channel ? channel : ""}
-                onChange={(e) => {
-                  setchannel(e.target.value);
-                }}
-              >
-                <option
-                  className="border-0 text-burntumber fw-bolder"
-                  value="1"
-                >
-                  Pharmacy
-                </option>
-                <option
-                  className="border-0 text-burntumber fw-bolder"
-                  value="2"
-                >
-                  Consumables
-                </option>
+              <select className="p-0 m-0 border-0 text-burntumber bg-pearl fw-bolder" value={channel ? channel : ""} onChange={(e) => { setchannel(e.target.value); }} >
+                <option className="border-0 text-burntumber fw-bolder" value="1" > Pharmacy </option>
+                <option className="border-0 text-burntumber fw-bolder" value="2" > Consumables </option>
               </select>
             </div>
             <div className="col-4 text-burntumber fw-bolder bg-pearl ">
@@ -8849,24 +8758,11 @@ function MedicineList() {
   };
   return (
     <div className="position-relative">
-      <div className="heading text-start ms-lg-5 ms-md-3 ms-sm-3 ms-1 text-charcoal fw-bold p-2">
-        Medicines List
-      </div>
-      <div
-        className={` p-0 m-0 align-self-center ms-1 position-absolute top-0 end-0 d-${permission.medicine_add == 1 ? "" : "none"
-          } `}
-      >
-        <button
-          className="button button-charcoal m-0 p-0 py-1 px-4"
-          onClick={ToggleNewMedicine}
-        >
-          {" "}
-          <img
-            src={process.env.PUBLIC_URL + "/images/addiconwhite.png"}
-            alt="displaying_image"
-            style={{ width: "1.5rem" }}
-          />{" "}
-          Medicine{" "}
+      <div className="heading text-start ms-lg-5 ms-md-3 ms-sm-3 ms-1 text-charcoal fw-bold p-2"> Medicines List </div>
+      <div className={` p-0 m-0 align-self-center ms-1 position-absolute top-0 end-0 d-${permission.medicine_add == 1 ? "" : "none"} `} >
+        <button className="button button-charcoal m-0 p-0 py-1 px-4" onClick={ToggleNewMedicine} >
+          <img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} className="p-0 m-0" alt="displaying_image" style={{ width: "1.5rem" }} />{" "}
+          Medicine
         </button>
       </div>
       <div
@@ -8876,69 +8772,34 @@ function MedicineList() {
         <table className="table datatable text-start">
           <thead className="position-sticky top-0 bg-pearl">
             <tr>
-              <th
-                rowSpan="2"
-                className={`p-0 m-0 px-1 text-charcoal75 fw-bold d-${permission.medicine_edit == 1 ? "" : "none"
-                  }`}
-              >
-                Update
-              </th>
-              <th rowSpan="2" className="p-0 m-0 px-1 text-charcoal75 fw-bold">
-                Display Name
-              </th>
-              <th rowSpan="2" className="p-0 m-0 px-1 text-charcoal75 fw-bold">
-                {" "}
-                Name
-              </th>
-              <th rowSpan="2" className="p-0 m-0 px-1 text-charcoal75 fw-bold">
-                Salt Name
-              </th>
-              <th rowSpan="2" className="p-0 m-0 px-1 text-charcoal75 fw-bold">
-                HSN Code
-              </th>
-              <th rowSpan="2" className="p-0 m-0 px-1 text-charcoal75 fw-bold">
-                Manufacturer
-              </th>
-              <th
-                rowSpan="2"
-                className={`p-0 m-0 px-1 text-charcoal75 fw-bold d-${permission.medicine_delete == 1 ? "" : "none"
-                  }`}
-              >
-                Delete
-              </th>
+              <th rowSpan="2" className={`p-0 m-0 px-1 text-charcoal75 fw-bold d-${permission.medicine_edit == 1 ? "" : "none"}`} > Update </th>
+              <th rowSpan="2" className="p-0 m-0 px-1 text-charcoal75 fw-bold"> Display Name </th>
+              <th rowSpan="2" className="p-0 m-0 px-1 text-charcoal75 fw-bold"> Name </th>
+              <th rowSpan="2" className="p-0 m-0 px-1 text-charcoal75 fw-bold"> Salt Name </th>
+              <th rowSpan="2" className="p-0 m-0 px-1 text-charcoal75 fw-bold"> HSN Code </th>
+              <th rowSpan="2" className="p-0 m-0 px-1 text-charcoal75 fw-bold"> Manufacturer </th>
+              <th rowSpan="2" className={`p-0 m-0 px-1 text-charcoal75 fw-bold d-${permission.medicine_delete == 1 ? "" : "none"}`} > Delete </th>
             </tr>
           </thead>
           {load ? (
             <tr className="p-0 m-0">
               <td className="placeholder-glow">
-                <div className="placeholder col-12 p-0 m-0 w-100 px-1">
-                  Loading..
-                </div>
+                <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div>
               </td>
               <td className="placeholder-glow">
-                <div className="placeholder col-12 p-0 m-0 w-100 px-1">
-                  Loading..
-                </div>
+                <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div>
               </td>
               <td className="placeholder-glow">
-                <div className="placeholder col-12 p-0 m-0 w-100 px-1">
-                  Loading..
-                </div>
+                <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div>
               </td>
               <td className="placeholder-glow">
-                <div className="placeholder col-12 p-0 m-0 w-100 px-1">
-                  Loading..
-                </div>
+                <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div>
               </td>
               <td className="placeholder-glow">
-                <div className="placeholder col-12 p-0 m-0 w-100 px-1">
-                  Loading..
-                </div>
+                <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div>
               </td>
               <td className="placeholder-glow">
-                <div className="placeholder col-12 p-0 m-0 w-100 px-1">
-                  Loading..
-                </div>
+                <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div>
               </td>
             </tr>
           ) : medicines == undefined || medicines.length == 0 ? (
@@ -8952,68 +8813,20 @@ function MedicineList() {
           ) : (
             <tbody className="">
               {medicines.map((data, i) => (
-                <tr
-                  className={` bg-${i % 2 == 0 ? "seashell" : "pearl"
-                    } align-middle text-start`}
-                >
-                  <td
-                    className={`py-0 bg-${index === i ? "lightyellow" : ""} d-${permission.medicine_edit == 1 ? "" : "none"
-                      }`}
-                  >
-                    <button
-                      className="btn m-0 p-0"
-                      key={i}
-                      onClick={(e) => {
-                        ToggleUpdateMedicine();
-                        setindex(i);
-                      }}
-                    >
-                      <img
-                        src={process.env.PUBLIC_URL + "/images/confirmed.png"}
-                        alt="displaying_image"
-                        className="img-fluid"
-                        style={{ width: "1.5rem" }}
-                        key={i}
-                      />
+                <tr className={` bg-${i % 2 == 0 ? "seashell" : "pearl"} align-middle text-start`} >
+                  <td className={`py-0 bg-${index === i ? "lightyellow" : ""} d-${permission.medicine_edit == 1 ? "" : "none"}`} >
+                    <button className="btn m-0 p-0" key={i} onClick={(e) => { ToggleUpdateMedicine(); setindex(i); }} >
+                      <img src={process.env.PUBLIC_URL + "/images/confirmed.png"} alt="displaying_image" className="img-fluid" style={{ width: "1.5rem" }} key={i} />
                     </button>
                   </td>
-                  <td className=" text-charcoal fw-bold">
-                    {data.display_name && data.display_name !== null
-                      ? data.display_name
-                      : ""}
-                  </td>
-                  <td className=" text-charcoal fw-bold">
-                    {data.name && data.name !== null ? data.name : ""}
-                  </td>
-                  <td className=" text-charcoal fw-bold">
-                    {data.salt_name && data.salt_name !== null
-                      ? data.salt_name
-                      : ""}
-                  </td>
-                  <td className=" text-charcoal fw-bold">
-                    {data.hsn_code && data.hsn_code !== null
-                      ? data.hsn_code
-                      : ""}
-                  </td>
-                  <td className=" text-charcoal fw-bold">
-                    {data.manufacturer && data.manufacturer !== null
-                      ? data.manufacturer
-                      : ""}
-                  </td>
-                  <td
-                    className={`d-${permission.medicine_delete == 1 ? "" : "none"
-                      }`}
-                  >
-                    <button
-                      className="btn p-0 m-0"
-                      onClick={() => {
-                        confirmmessage(data.name, data.id);
-                      }}
-                    >
-                      <img
-                        src={process.env.PUBLIC_URL + "/images/delete.png"}
-                        style={{ width: "1.5rem" }}
-                      />
+                  <td className=" text-charcoal fw-bold"> {data.display_name && data.display_name !== null ? data.display_name : ""} </td>
+                  <td className=" text-charcoal fw-bold"> {data.name && data.name !== null ? data.name : ""} </td>
+                  <td className=" text-charcoal fw-bold"> {data.salt_name && data.salt_name !== null ? data.salt_name : ""} </td>
+                  <td className=" text-charcoal fw-bold"> {data.hsn_code && data.hsn_code !== null ? data.hsn_code : ""} </td>
+                  <td className=" text-charcoal fw-bold"> {data.manufacturer && data.manufacturer !== null ? data.manufacturer : ""} </td>
+                  <td className={`d-${permission.medicine_delete == 1 ? "" : "none"}`} >
+                    <button className="btn p-0 m-0" onClick={() => { confirmmessage(data.name, data.id); }} >
+                      <img src={process.env.PUBLIC_URL + "/images/delete.png"} style={{ width: "1.5rem" }} />
                     </button>
                   </td>
                   {index == i ? (

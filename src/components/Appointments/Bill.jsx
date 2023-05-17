@@ -463,10 +463,7 @@ const Bill = (props) => {
                             </div>
                             <div className="container-fluid p-2 mt-2">
                                 <div className="row text-center p-0 m-0 align-items-center">
-                                    <div className='col-4 align-self-end text-start'>
-                                        <label className=' fw-bolder text-charcoal text-wrap text-start'>Grand Total</label>
-                                        <input className='form-control rounded-1 text-lightgreen text-start border-0 fw-bolder p-0  bg-seashell' disabled={true} value={Get_Grand_Total()} />
-                                    </div>
+
                                     <div className="col-4 align-self-end text-start">
                                         <label className=' fw-bolder text-charcoal text-wrap text-start'>Advance Amount Balance</label>
                                         {
@@ -505,20 +502,16 @@ const Bill = (props) => {
                                 </div>
 
 
-                                <div className="row justify-content-center p-0 m-0 mt-2">
-                                    <div className="col-5 text-end p-0 m-0 me-3 ">
-                                        <span className=" text-end p-0 m-0 text-charcoal fw-bold"> Total Amount: </span>
+                                <div className="row justify-content-start p-0 m-0 mt-2">
+                                    <div className="col-5 text-start p-0 m-0 me-3 ">
+                                        <span className=" text-start p-0 m-0 text-charcoal fw-bold"> Total Amount: </span>
                                         <span className='text-lightgreen fw-bold'> {paymentmethods && paymentmethods.length > 0 ? Total_Amount() : 0}</span>
-                                    </div>
-                                    <div className='col-5 text-start m-0 p-0'>
-                                        <span className="text-wrap text-center p-0 m-0 fw-bold"> Return Amount: </span>
-                                        <span className="text-start align-self-end p-0 m-0 text-burntumber fw-bold"> {Return_Amount()} </span>
                                     </div>
                                 </div>
 
                                 {
                                     paymentmethods.map((data, i) => (
-                                        <div className="row p-0 m-0 justify-content-end m-2 ps-2">
+                                        <div className="row p-0 m-0 justify-content-start m-2 ps-2">
                                             <div className="col-4 p-0 mx-2">
                                                 <select className='form-control bg-seashell py-1 fw-bold border-0 text-end' disabled={true} value={data.paymentmethod} onChange={(e) => { data.paymentmethod = e.target.value; setpaymentmethods(prevState => [...prevState]) }}>
                                                     <option className='text-charcoal75 fw-bolder'>Payment Method</option>
@@ -548,7 +541,7 @@ const Bill = (props) => {
                 }
 
                 <hr />
-                <div className="container-fluid pb-2">
+                <div className="container-fluid p-0 m-0 bg-seashell position-sticky bottom-0  pb-2" style={{ marginTop: '2vh' }}>
                     {
                         load ? (
                             <div className="col-6 py-2 pb-2 m-auto text-center">
@@ -558,10 +551,14 @@ const Bill = (props) => {
                             </div>
                         ) : (
                             <div className="row p-0 m-0 text-center">
-                                <div className="col-6 justify-content-center">
+                                <div className='col-4 align-self-end text-start'>
+                                    <label className=' fw-bolder text-charcoal text-wrap text-start'>Grand Total</label>
+                                    <div className='form-control rounded-1 text-burntumber fs-6 text-start border-0 fw-bolder p-0 bg-seashell'  >{Get_Grand_Total()}</div>
+                                </div>
+                                <div className="col-4 justify-content-center">
                                     <button className='button button-charcoal' onClick={confirmmessage}>Save</button>
                                 </div>
-                                <div className="col-6 justify-content-center">
+                                <div className="col-4 justify-content-center">
                                     <button className='button button-pearl' onClick={AddtoCart}>Add to Cart</button>
                                 </div>
                             </div>

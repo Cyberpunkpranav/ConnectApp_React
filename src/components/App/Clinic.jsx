@@ -106,7 +106,7 @@ function Doctorsection(props) {
 
                       <DOCTORNAME.Provider value={DoctorName}>
                         <DOCTORID.Provider value={DoctorID}>
-                          <DoctorSchedule todayDoc={props.todayDoc} _selected={Doctor} fetchapi={props.fetchapi} DocClinic={DocClinic}  />
+                          <DoctorSchedule todayDoc={props.todayDoc} DoctorID={DoctorID} DoctorName={DoctorName}  _selected={Doctor} fetchapi={props.fetchapi} DocClinic={DocClinic}  />
                         </DOCTORID.Provider>    
                       </DOCTORNAME.Provider>
                     </div>

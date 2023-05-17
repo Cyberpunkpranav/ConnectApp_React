@@ -577,7 +577,6 @@ function DoctorSchedule(props) {
                                   {appointmentdata[i].medicine_used.length}
                                 </span>
                               </button>
-
                             </td>
                             <td className="text-center">
                               <div className="dropdown d-inline-block ">
@@ -805,7 +804,7 @@ function Timecard(props) {
         ) : (
           doctime.map((data, i) => (
             <div id="cardslot text-start" key={i} className="d-inline-flex m-1">
-              <div className="card p-0 m-0 py-2 text-start border-0" id="card1">
+              <div className="card p-0 m-0 py-1 text-start border-0" id="card1">
                 <div className="card-body p-0 m-0">
                   <div className="d-flex text-start align-items-center p-0 m-0 ">
                     <p className=" p-0 m-0  ms-2 text-charcoal75 fw-bold me-1 ps-2 " style={{ fontSize: '0.75rem' }}>Room</p>
