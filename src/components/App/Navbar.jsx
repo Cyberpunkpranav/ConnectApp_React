@@ -50,10 +50,6 @@ function Navbar(props) {
         }
     };
 
-    function formshift() {
-        setappointmentform("none");
-        setpatientform("block");
-    }
 
     const NavbarIcons = [
         {
@@ -112,8 +108,8 @@ function Navbar(props) {
                             <button className="button dropdown-toggle button-seashell shadow-none d-inline-block col-md-auto col-auto user position-relative p-0 m-0 ms-2" data-bs-toggle="dropdown" aria-expanded="false">
                                 <h1 className="m-0 username text-decoration-none  text-start fw-bold"> {props.username} </h1>
                                 <div className="m-0 userstatus text-decoration-none text-start text-burntumber fw-bold" >{props.designation} </div>
-                                <ul class="dropdown-menu p-0 m-0">
-                                    <li class="dropdown-item p-0 m-0 bg-lightred50 text-center " onClick={props.logout}>Logout</li>
+                                <ul class="dropdown-menu p-0 m-0 border-0">
+                                    <li class="dropdown-item p-0 m-0 bg-lightred50 text-center rounded-2 p-1 fw-bold border-0 text-burntumber " onClick={props.logout}>Logout</li>
                                 </ul>
                             </button>
                         </div>
@@ -165,7 +161,7 @@ function Navbar(props) {
                 <AddPatient togglepatientform={togglepatientform} />
             </div>
             <div className={`col-lg-5 col-md-6 col-sm-12 rounded-4 p-2 me-lg-2 me-md-2 mt-2 col-12 bg-seashell appointmentinfosection d-${appointmentform} border-start border-top border-2 position-absolute`} style={{ zIndex: '4', right: '0' }} >
-                <AddAppointment toggleappointmentform={toggleappointmentform} formshift={formshift} fetchapi={props.fetchapi} />
+                <AddAppointment toggleappointmentform={toggleappointmentform} fetchapi={props.fetchapi} />
             </div>
             {
                 Docval == 1 ? (

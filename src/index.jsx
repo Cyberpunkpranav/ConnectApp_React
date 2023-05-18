@@ -337,13 +337,7 @@ function Switchpage() {
       const Designation = localStorage.getItem("designation");
       const Id = localStorage.getItem("id");
       return (
-        <Connectapp
-          logout={logout}
-          username={Username}
-          designation={Designation}
-          id={Id}
-          permissions={permissions}
-        />
+        <Connectapp logout={logout} username={Username} designation={Designation} id={Id} permissions={permissions} />
       );
     } else {
       return (

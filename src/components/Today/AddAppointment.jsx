@@ -20,6 +20,7 @@ const AddAppointment = (props) => {
     const [doctorid, setdoctorid] = useState()
     const [clinicid, setclinicid] = useState(clinicID)
     const [time, settime] = useState()
+    const [date, setdate] = useState()
     const [ischecked, setischecked] = useState()
     const [load, setload] = useState()
     const [searchload, setsearchload] = useState(false)
@@ -41,7 +42,7 @@ const AddAppointment = (props) => {
     useEffect(() => {
         setfromsearch()
     }, [props.patientidfromsearch])
-    console.log(patientid, searchinput)
+
     function tConvert(time) {
 
         time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
@@ -61,15 +62,16 @@ const AddAppointment = (props) => {
             setsearchlist(response.data.data.patients_list)
             setsearchload(false)
         })
-        if (searchinput && searchinput.length > 1) {
+        if (searchinput && searchinput.length > 0) {
             setdisplaysearchlist('block');
         } else {
             setdisplaysearchlist('none');
         }
     }
-    const get_value = (e) => {
-        setsearchinput(e.target.value)
-        setpatientid(e.target.name)
+    const get_value = async (value, name) => {
+        console.log(value, name)
+        setsearchinput(value)
+        setpatientid(name)
         setdisplaysearchlist('none');
     }
     const gettime_value = (e) => {
@@ -81,6 +83,7 @@ const AddAppointment = (props) => {
 
     function getTimeslots(e) {
         setdoctorid(e.target.value)
+        setdate()
         let Timeslots = [];
         setApikeyDocTimeslots([])
         for (let i = 0; i < DocApi.length; i++) {
@@ -92,6 +95,7 @@ const AddAppointment = (props) => {
     }
 
     function getTimefrom(e) {
+        setdate(e.target.value)
         let timefrom = []
         if (ApikeyDocTimeslots && ApikeyDocTimeslots.length != 0) {
             for (let j = 0; j < ApikeyDocTimeslots[0].length; j++) {
@@ -111,6 +115,7 @@ const AddAppointment = (props) => {
         setdoctorid()
         setclinicid()
         setischecked()
+        setdate()
     }
 
     function BookAppointment(e) {
@@ -130,6 +135,7 @@ const AddAppointment = (props) => {
                 props.fetchapi()
                 getTimeslots()
                 getTimefrom()
+                setdate()
 
             })
         } else {
@@ -167,9 +173,10 @@ const AddAppointment = (props) => {
         }
 
     }
+    // console.log(searchinput, patientid, displaysearchlist);
     return (
-        <>
-            <h5 className="text-center mt-2">New Appointment</h5>
+        <div className='fw-bold'>
+            <h5 className="text-center fw-bold mt-2">New Appointment</h5>
             {
                 props.closeAddAppointmentform ? (
                     <button type="button" disabled={load == true ? true : false} className="btn-close closebtn position-absolute" aria-label="Close" onClick={(e) => { props.closeAddAppointmentform() }} ></button>
@@ -180,33 +187,34 @@ const AddAppointment = (props) => {
             <hr />
             <div className="col-12">
                 <label className="m-0 mb-2">Search Using Phone or Name</label>
-                <input type="text" className="form-control selectpatient col-10 position-relative" value={searchinput ? searchinput : ''} onFocus={() => setsearchload(true)} onChange={searchpatient} onBlur={searchpatient} />
+                <input type="text" className="form-control selectpatient col-10 position-relative" value={searchinput ? searchinput : ''} onChange={searchpatient} />
                 <div className={`col-8 d-${displaysearchlist} searchinput`}>
                     {
-                        searchload == true || searchinput == undefined ? (
-                            <p className="btn text-charcoal75 fs-6 p-0 m-0 ps-1">Loading... </p>
+                        searchload ? (
+                            <p className="btn text-charcoal75 fw-bold bg-pearl rounded-2  p-0 m-0 ps-1">Loading... </p>
                         ) : (
-                            searchlist.length == 0 ? (
-                                <p className="text-danger btn fs-6 p-0 m-0">Patient not found add as new user to book appointements</p>
+                            searchinput && searchlist.length == 0 ? (
+                                <p className="text-danger btn bg-lightred p-0 m-0">Patient not found add as new user to book appointements</p>
                             ) : (
-                                searchlist.map((data) => (
-                                    <button className='col-12 d-block p-0 m-0 ms-1 border-0 bg-pearl text-charcoal text-start border border-1' name={data.id} value={data.full_name} onClick={get_value}>{data.full_name}  {data.phone_number}</button>
-                                )))
+                                <div className="p-2 bg-pearl">
+                                    {
+                                        searchlist.map((data) => (
+                                            <div style={{ cursor: 'pointer' }} className='col-12 d-block p-0 m-0 ms-1 border-0 bg-pearl py-1 border-bottom text-charcoal text-start border border-1' onClick={(e) => get_value(data.full_name, data.id)}>{data.full_name}  {data.phone_number}</div>
+                                        ))
+                                    }
+                                </div>
 
+                            )
                         )
 
                     }
-                </div>
-
-                <div className="col-12 p-0">
-                    <a href="/#" className="btn text-decoration-none btn-sm button-burntumber p-0 m-0 px-1 m-1" onClick={props.formshift}> Add User </a>
                 </div>
                 <hr />
                 <label>Select Location</label>
                 <div className="col-12 bg-seashell  border-0" >
                     {
                         cliniclist.map((data, i) => (
-                            <label className={`d-${clinicID == data.id ? 'block' : 'none'}`}><input type="checkbox" className={`radio form me-1 `} key={i} checked={clinicID == data.id ? true : false} name={data.id} /> {data.title} {data.address}</label>
+                            <label className={`d-${clinicID == data.id ? 'block' : 'none'} text-burntumber`}><input type="checkbox" className={`radio me-1 form-check-input `} key={i} checked={clinicID == data.id ? true : false} name={data.id} /> {data.title} {data.address}</label>
 
                         ))
                     }
@@ -228,7 +236,7 @@ const AddAppointment = (props) => {
                     </div>
                     <div className="col-md-6">
                         <label className="">Select Date</label>
-                        <div className="col-12"><input type="date" className="form-control selectdate" onChange={getTimefrom} />
+                        <div className="col-12"><input type="date" value={date ? date : ''} className="form-control selectdate" onChange={getTimefrom} />
                         </div>
                     </div>
                 </div>
@@ -237,14 +245,14 @@ const AddAppointment = (props) => {
 
                 <p className="m-0 mb-2">Select Time Slot</p>
                 <div className="scroll align-items-center justify-content-around col-12">
-                    {ApiDocTimefrom && doctorid ? (
+                    {ApiDocTimefrom && doctorid && date ? (
                         <>
                             {
                                 ApiDocTimefrom.map((data, i) => (
                                     data[2] == 0 ? (
-                                        <button className={`button button-${props.timeindex == i ? 'pearl' : timeindex == i ? 'pearl' : 'lightgreen'} m-1`} value={data[0]} key={i} onClick={(e) => { gettime_value(e); settimeindex(i); }}>{tConvert(data[1])}</button>
+                                        <button className={`button button-${props.timeindex == i ? 'pearl' : timeindex == i ? 'charcoal' : 'charcoal-outline'} m-1`} value={data[0]} key={i} onClick={(e) => { gettime_value(e); settimeindex(i); }}>{tConvert(data[1])}</button>
                                     ) : (
-                                        <button disabled className='btn button-burntumber m-1' key={i} value={data[0]}>{tConvert(data[1])}</button>
+                                        <button disabled className='btn button-charcoal75 m-1' key={i} value={data[0]}>{tConvert(data[1])}</button>
                                     )
 
                                 ))
@@ -280,7 +288,7 @@ const AddAppointment = (props) => {
                     )
                 }
             </div>
-        </>
+        </div>
 
     )
 }

@@ -573,7 +573,7 @@ function DoctorSchedule(props) {
                             <td className={` text-center py-0  bg-${consumablesindex === i ? 'lightyellow' : ''}`}>
                               <button className={`button-sm border-0 p-0 m-0 position-relative bg-${consumablesindex === i ? 'lightyellow' : 'transparent'}`}>
                                 <img src={process.env.PUBLIC_URL + "/images/bill.png"} onClick={() => { setconsumablesindex(i); toggleConsumables(); }} alt="displaying_image" className="me-1" />
-                                <span class={` position-absolute text-charcoal fw-bold start-75 translate-middle badge p-0 m-0 p-1 px-2 fw-normal rounded-2 bg-lightyellow`} style={{ zIndex: '2',top:"10%" }}>
+                                <span class={` position-absolute text-charcoal fw-bold start-75 translate-middle badge p-0 m-0 p-1 px-2 fw-normal rounded-2 bg-lightyellow`} style={{ zIndex: '2', top: "10%" }}>
                                   {appointmentdata[i].medicine_used.length}
                                 </span>
                               </button>
@@ -795,7 +795,7 @@ function Timecard(props) {
         isLoading ? (
 
           <div className="card bg-pearl text-center ms-3 bg-seashell" aria-hidden="true" style={{ width: '18rem', paddingTop: '0.76rem', paddingBottom: '0.76rem' }}>
-            <div className=" text-start   placeholder-glow gx-2">
+            <div className=" text-start placeholder-glow gx-2">
               <span className="placeholder col-4 ms-2 text-start"></span>
               <span className="placeholder col-4 ms-2 text-start"></span>
               <span className="placeholder col-2 ms-2 text-start"></span>
