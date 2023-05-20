@@ -83,11 +83,11 @@ const AddPatient = (props) => {
         setphonenumber(e.target.value)
         await axios.get(`${url}/patient/list?search=${e.target.value ? e.target.value : ''}&limit=10&offset=0`).then((response) => {
             // console.log(response.data.data.patients_list)
-            for (let i=0;i<response.data.data.patients_list.length;i++){
-                console.log((countrycode + e.target.value),response.data.data.patients_list[i].phone_number)
-                if( ('+'+countrycode + e.target.value) == response.data.data.patients_list[i].phone_number){
+            for (let i = 0; i < response.data.data.patients_list.length; i++) {
+                console.log((countrycode + e.target.value), response.data.data.patients_list[i].phone_number)
+                if (('+' + countrycode + e.target.value) == response.data.data.patients_list[i].phone_number) {
                     setwarning('block')
-                }else{
+                } else {
                     setwarning('none')
                 }
             }
@@ -424,12 +424,12 @@ const AddPatient = (props) => {
                             </select>
                         </div>
                         <div className="col-8 pe-0">
-                            <input type="number" disabled={countrycode?false:true} className="form-control patientnumber m-auto" id="inputEmail4" value={phonenumber ? phonenumber : ''} onChange={(e) => { CheckAvailability(e); }} placeholder="Phone Number" required />
+                            <input type="number" disabled={countrycode ? false : true} className="form-control patientnumber m-auto" id="inputEmail4" value={phonenumber ? phonenumber : ''} onChange={(e) => { CheckAvailability(e); }} placeholder="Phone Number" required />
                         </div>
                     </div>
                     <p className={`text-burntumber fw-bold p-0 m-0 d-${warning}`}>Number already exists</p>
                     <label htmlFor="inputEmail4" className="pt-3 mb-2"> Enter Name </label>
-                    <input type="text" maxLength="50" className="form-control m-auto patientname" disabled={warning=='block'?true:false} value={fullname ? fullname : ''} onChange={(e) => { setfullname(e.target.value) }} placeholder="Enter FirstName and LastName" required />
+                    <input type="text" maxLength="50" className="form-control m-auto patientname" value={fullname ? fullname : ''} onChange={(e) => { setfullname(e.target.value) }} placeholder="Enter FirstName and LastName" required />
                 </div>
                 <hr />
                 <div className="col-10 m-auto">

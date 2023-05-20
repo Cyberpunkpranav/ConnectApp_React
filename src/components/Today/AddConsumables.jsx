@@ -214,11 +214,11 @@ const AddConsumables = (props) => {
                     NurseNotes()
                     Notiflix.Notify.success(response.data.message)
                     props.Appointmentlist()
+                    setSelectedProducts([])
                 } else {
                     Notiflix.Notify.warning(response.data.message)
                 }
             }).catch(function error(e) {
-                console.log(e)
                 Notiflix.Notify.failure(e.message)
                 setload(false)
             })
@@ -260,6 +260,7 @@ const AddConsumables = (props) => {
             }).then((response) => {
                 Notiflix.Notify.success(response.data.message)
                 props.Appointmentlist()
+                setnursenotes("")
             })
         } catch (e) {
             Notiflix.Notify.warning(e.data.message)
@@ -290,9 +291,7 @@ const AddConsumables = (props) => {
             <button className='button-sm border-0 mx-1 bg-transparent text-charcoal position-relative float-end p-0 mt-2 me-5' onClick={toggle_consumables_existed} >
                 <span className=' fw-bold'>Consumables</span>
                 <img src={process.env.PUBLIC_URL + 'images/cart.png'} />
-                <span class={` position-absolute text-pearl start-100 translate-middle badge fw-normal p-0 m-0 p-1 px-2 rounded-2 bg-burntumber border-burntumber`} style={{ zIndex: '2', top: "10%" }}>
-                    {props.existedconsumables.length}
-                </span>
+                <span class={` position-absolute text-pearl start-100 translate-middle badge fw-normal p-0 m-0 p-1 px-2 rounded-2 bg-burntumber border-burntumber`} style={{ zIndex: '2', top: "10%" }}> {props.existedconsumables.length} </span>
             </button>
             <div className={`d-${ce} position-absolute start-0 end-0 top-0 bg-seashell`} style={{ zIndex: '6', height: '60vh' }}>
                 <h5 className='text-start text-charcoal fw-bold p-2'>{props.patientname} Consumables</h5>
@@ -410,7 +409,7 @@ const AddConsumables = (props) => {
                                     ) : (<div className='bg-seashell'></div>)
                                 }
                             </div>
-                            <div ref={stockref} className={`position-absolute bg-pearl start-100 mt-1 px-3 scroll scroll-y align-self-center rounded-1 border border-1 p-1 d-${products && products.stock_info && products.stock_info !== undefined ? 'block' : 'none'}`} style={{ marginTop: '0rem', zIndex: '2','width':'22vh', 'min-width': '22vh', 'height': '30vh' }}>
+                            <div ref={stockref} className={`position-absolute bg-pearl start-100 mt-1 px-3 scroll scroll-y align-self-center rounded-1 border border-1 p-1 d-${products && products.stock_info && products.stock_info !== undefined ? 'block' : 'none'}`} style={{ marginTop: '0rem', zIndex: '2', 'width': '22vh', 'min-width': '22vh', 'height': '30vh' }}>
                                 <p className={`text-start m-1 fw-bold text-charcoal75`} style={{ fontSize: '0.8rem' }}>{products && products.stock_info !== undefined ? products.stock_info.length : ''} Batch Stocks</p>
                                 {
                                     products && products.length !== 0 ? (
