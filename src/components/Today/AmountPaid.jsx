@@ -47,7 +47,7 @@ const AmountPaid = (props) => {
         <div className='text-white bg-lightgreen px-2 fw-normal rounded-2' style={{ letterSpacing: '1px' }}>Paid ₹{Number(totalAmount) + Number(paidpendingtotal)}</div>
         // <div className="ms-1 btn button-sm rounded-1 button-lightgreen fw-bold" style={{ fontSize: '0.75rem', letterSpacing: '0.5px', padding: '0.12rem' }}>{Number(totalAmount) + Number(paidpendingtotal)} Done</div>
       ) : (
-        <div className="text-burntumber bg-lightred px-2 fw-normal rounded-2" style={{ letterSpacing: '1px' }}>Pending ₹{(Number(props.appointmentData.total_amount) - (Number(totalAmount) + Number(paidpendingtotal))).toFixed(1)} </div>
+        <div className="text-burntumber bg-lightred d-inline-block px-2 fw-normal rounded-2" style={{ letterSpacing: '1px' }}>Pending ₹{(Number(props.appointmentData.total_amount) - (Number(totalAmount) + Number(paidpendingtotal))).toFixed(1)} </div>
 
       )
 

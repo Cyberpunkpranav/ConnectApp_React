@@ -77,43 +77,43 @@ function Connectapp(props) {
   async function fetchapi() {
     try {
       setLoading(true);
-      await axios .get(`${url}/doctor/list?clinic_id=${ClinicId}&limit=30&offset=0`) .then(function (response) {
-          let tempArray = response.data.data.doctor_list;
-          setConnectDoctorapi(tempArray);
-          for (let i = 0; i < tempArray.length; i++) {
-            Doctorarray.push([
-              tempArray[i].id,
-              tempArray[i].doctor_name,
-              tempArray[i].clinic_id,
-              [],
-            ]);
-            for (var j = 0; j < tempArray[i].month_timeslots.length; j++) {
-              if (tempArray[i].month_timeslots[j].date === APIDate) {
-                Doctorarray[i][3].push([
-                  [tempArray[i].month_timeslots[j].time_from],
-                  [tempArray[i].month_timeslots[j].booking_status],
-                  [tempArray[i].month_timeslots[j].id],
-                ]);
-              }
+      await axios.get(`${url}/doctor/list?clinic_id=${ClinicId}&limit=30&offset=0`).then(function (response) {
+        let tempArray = response.data.data.doctor_list;
+        setConnectDoctorapi(tempArray);
+        for (let i = 0; i < tempArray.length; i++) {
+          Doctorarray.push([
+            tempArray[i].id,
+            tempArray[i].doctor_name,
+            tempArray[i].clinic_id,
+            [],
+          ]);
+          for (var j = 0; j < tempArray[i].month_timeslots.length; j++) {
+            if (tempArray[i].month_timeslots[j].date === APIDate) {
+              Doctorarray[i][3].push([
+                [tempArray[i].month_timeslots[j].time_from],
+                [tempArray[i].month_timeslots[j].booking_status],
+                [tempArray[i].month_timeslots[j].id],
+              ]);
             }
           }
-          for (var q = 0; q < Doctorarray.length; q++) {
-            if (Doctorarray[q][3].length !== 0) {
-              TodayDoctors.push(Doctorarray[q]);
-              settodaydoc(TodayDoctors);
-            }
-          }
-          if (TodayDoctors.length === 0) {
-            TodayDoctors.push([
-              "0",
-              "No Doctors Found",
-              ["No Time Slots Found"],
-              ["null"],
-            ]);
+        }
+        for (var q = 0; q < Doctorarray.length; q++) {
+          if (Doctorarray[q][3].length !== 0) {
+            TodayDoctors.push(Doctorarray[q]);
             settodaydoc(TodayDoctors);
           }
-          setdocapi(Doctorarray);
-        });
+        }
+        if (TodayDoctors.length === 0) {
+          TodayDoctors.push([
+            "0",
+            "No Doctors Found",
+            ["No Time Slots Found"],
+            ["null"],
+          ]);
+          settodaydoc(TodayDoctors);
+        }
+        setdocapi(Doctorarray);
+      });
       setLoading(false);
       setisWelcomeLoading(1);
     } catch (e) {
@@ -180,13 +180,13 @@ function Connectapp(props) {
                     <Vitals.Provider value={vitalslist}>
                       <Router>
                         <Navbar path={path} logout={props.logout} permissions={props.permissions} username={props.username} designation={props.designation} id={props.id} fetchapi={fetchapi} />
-                        <Suspense fallback={ <div className="text-charcoal75 fs-6 fw-bold text-center"> {" "} loading..{" "} </div> } >
+                        <Suspense fallback={<div className="text-charcoal75 fs-6 fw-bold text-center"> {" "} loading..{" "} </div>} >
                           <Routes>
-                            <Route path="/" onChange={() => setpath("/")} element={ <Doctorsection id={props.id} fetchapi={fetchapi} todayDoc={todayDoc} Loading={Loading} docapi={docapi} /> } />
-                            <Route path="/Appointments" onChange={() => setpath("/Appointments")} element={ <Appointments id={props.id} fetchapi={fetchapi} /> } />
+                            <Route path="/" onChange={() => setpath("/")} element={<Doctorsection id={props.id} fetchapi={fetchapi} todayDoc={todayDoc} Loading={Loading} docapi={docapi} />} />
+                            <Route path="/Appointments" onChange={() => setpath("/Appointments")} element={<Appointments id={props.id} fetchapi={fetchapi} />} />
                             <Route path="/Patients" onChange={() => setpath("/Patients")} element={<Patients id={props.id} />} />
-                            <Route path="/Doctors" onChange={() => setpath("/Doctors")} element={ <Doctors id={props.id} docapi={docapi} /> } />
-                            <Route path="/DailySaleReport" onChange={() => setpath("/DailySaleReport")} element={ <DailySaleReport id={props.id} cliniclist={cliniclist} docapi={docapi} /> } />
+                            <Route path="/Doctors" onChange={() => setpath("/Doctors")} element={<Doctors id={props.id} docapi={docapi} />} />
+                            <Route path="/DailySaleReport" onChange={() => setpath("/DailySaleReport")} element={<DailySaleReport id={props.id} cliniclist={cliniclist} docapi={docapi} />} />
                             <Route path="/Pharmacy" onChange={() => setpath("/Pharmacy")} element={<Pharmacy id={props.id} />} />
                             {/* <Route path='/Files' element={<Exports id={props.id} />} /> */}
                           </Routes>
@@ -274,13 +274,7 @@ function Switchpage() {
   }
   let role = localStorage.getItem("roleId");
   async function Permissions() {
-    await axios
-      .post(
-        `https://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/api/connect/role/permissions/list`,
-        {
-          role_id: role ? role : 1,
-        }
-      )
+    await axios.post(`https://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/api/connect/role/permissions/list`, { role_id: role ? role : 1, })
       .then((response) => {
         console.log(response);
         if (response.data.status === true) {
@@ -306,6 +300,7 @@ function Switchpage() {
     localStorage.removeItem("designation");
     localStorage.removeItem("ClinicId");
     localStorage.removeItem("roleId");
+    window.location.reload()
   }
 
   const [isTimeout, setIsTimeout] = useState(false);
@@ -355,30 +350,10 @@ function Switchpage() {
                   >
                     <div className="col-1"></div>
                     <div className="col-lg-6 col-md-8 col-sm-10 col-10 align-items-center d-flex userinput">
-                      <p className="m-0 ms-1" id="inputheading">
-                        Enter your Aartas Email ID
-                      </p>
-                      <input
-                        type="email"
-                        className="form-control bg-seashell"
-                        id="email"
-                        placeholder="example@aartas.com"
-                        value={logininput.email}
-                        autoComplete="false"
-                        onChange={(e) => {
-                          handleinput(e);
-                          if (e.target.value != "") {
-                            setnext("block");
-                          }
-                          if (e.target.value == "") {
-                            setnext("none");
-                          }
-                        }}
-                      />
+                      <p className="m-0 ms-1" id="inputheading"> Enter your Aartas Email ID </p>
+                      <input type="email" className="form-control bg-seashell" id="email" placeholder="example@aartas.com" value={logininput.email} autoComplete="false" onChange={(e) => { handleinput(e); if (e.target.value != "") { setnext("block"); } if (e.target.value == "") { setnext("none"); } }} />
                     </div>
-                    <div
-                      className={`col-lg-1 d-flex  col-2 align-items-center`}
-                    >
+                    <div className={`col-lg-1 d-flex  col-2 align-items-center`} >
                       <a className={`next d-${next} text-decoration-none text-center text-charcoal p-2 rounded`} id="next" onClick={topassword} > Next </a>
                     </div>
                   </div>

@@ -200,6 +200,44 @@ const UpdateAppointment = (props) => {
         }
 
     }
+
+    const confirmmessageforCancel = () => {
+        customconfirm()
+        Notiflix.Confirm.show(
+            `Cancel Appointment`,
+            `Do you surely want to Cancel ${props.patientname}'s Appointment`,
+            'Yes',
+            'No',
+            () => {
+                CancelAppointment()
+
+            },
+            () => {
+                return 0
+            },
+            {
+            },
+        );
+    }
+    const CancelAppointment = async () => {
+        try {
+            await axios.post('http://aartas-qaapp-as.azurewebsites.net/aartas_redev/public/api/cancel/appointment', {
+                appointment_id: props.appointmentid
+            }).then((response) => {
+                console.log(response)
+                if (response.status == true) {
+                    props.fetchallAppointmentslist()
+                    props.fetchapi()
+                } else {
+                    Notiflix.Notify.failure("Cannot Cancel Appointment.Please try again.")
+                }
+
+            })
+        } catch (e) {
+            Notiflix.Notify.failure(e.message)
+        }
+
+    }
     return (
         <div className='p-0 m-0 text-start'>
             <h5 className="text-center p-2">Update {props.patientname} Appointment Details</h5>
@@ -259,7 +297,7 @@ const UpdateAppointment = (props) => {
                 </div>
                 <p className="m-0 mt-2 fw-bold ps-2 pt-2" style={{ letterSpacing: '1px' }}>Select another Time Slot</p>
                 <div className="scroll align-items-center justify-content-around col-12 ps-2">
-                    {ApiDocTimefrom  && ApiDocTimefrom.length !== 0  ? (
+                    {ApiDocTimefrom && ApiDocTimefrom.length !== 0 ? (
                         <>
                             {
                                 ApiDocTimefrom.map((data, key) => (
@@ -291,10 +329,10 @@ const UpdateAppointment = (props) => {
                         ) : (
                             <>
                                 <div className="col-6 m-auto text-center">
-                                    <button className='btn button-charcoal' onClick={confirmmessage}>Done</button>
+                                    <button className='btn button-charcoal' onClick={confirmmessage}>Update Appointment</button>
                                 </div>
                                 <div className="col-6 m-auto text-center">
-                                    <button className="btn btn-light border " onClick={getCurrentTimeslots}>Set Previous</button>
+                                    <button className="btn button-lightred text-burntumber border " onClick={confirmmessageforCancel}>Cancel Appointment</button>
                                 </div>
 
                             </>

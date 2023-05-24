@@ -296,7 +296,7 @@ const AllAppointmentslist = (props) => {
                                 <div className="col-auto text-burntumber">
                                     {data.follow_up_date ? 'F/U- ' + reversefunction(data.follow_up_date ? data.follow_up_date : '') : ''}
                                 </div>
-
+                        
                             </td>
                             <td className='text-charcoal fw-bold'>{data.timeslot && data.timeslot.time_from !== null ? props.tConvert(data.timeslot.time_from) : ''}</td>
                             <td className='text-charcoal fw-bold text-start' style={{ width: 'min-content' }}>

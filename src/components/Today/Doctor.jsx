@@ -455,7 +455,6 @@ function DoctorSchedule(props) {
                         timeindex == i ? (
                           <div className={`d-${timeindex == i ? addappointmentform : 'none'} col-lg-8 col-md-10 col-sm-12 col-12 col-xl-6 shadow quickappointment position-absolute m-auto start-0 end-0 bg-seashell rounded-4 border border-1`} style={{ zIndex: 4, top: '-3rem' }}>
                             <SelectedTimeAppointment fetchapi={props.fetchapi} closeAddAppointmentform={closeAddAppointmentform} DocClinic={props.DocClinic} timeindex={timeindex} selectedtime={data[0]} selectedtimeID={data[2]} />
-
                           </div>
                         ) : (
                           <></>
@@ -464,6 +463,7 @@ function DoctorSchedule(props) {
 
                     </>
                   ) : (
+
                     <button disabled className=" button-sm button-charcoal50-outline m-1 px-3 py-2 rounded-1 fw-bold" key={i} style={{ letterSpacing: '1px' }}>{tConvert(data[0])}</button>
                   )
 
@@ -478,7 +478,7 @@ function DoctorSchedule(props) {
           <div className="col-auto m-0 p-0 align-items-center">
             <h6 className="p-0 ms-1 text-charcoal fw-bolder mt-3 mb-2">Appointments</h6>
           </div>
-          <div className=" scroll scroll-y align-content-center align-items-center" style={{ minHeight: '55vh', maxHeight: '55vh', Height: '55h' }}>
+          <div className=" scroll scroll-y align-content-center align-items-center" style={{ minHeight: '50vh', maxHeight: '50vh', Height: '50h' }}>
             <table className="table text-start">
               <thead className="p-0 m-0 px-2 bg-pearl" style={{ 'zIndex': '4' }}>
                 <tr className="p-0 m-0 position-sticky text-charcoal75 top-0" style={{ fontSize: '0.75rem' }}>
@@ -583,7 +583,7 @@ function DoctorSchedule(props) {
                                 <button className="button p-0 m-0 bg-transparent border-0 fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                   <img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" style={{ width: "1rem" }} />
                                 </button>
-                                <ul className="dropdown-menu shadow-sm p-2" style={{ '-webkit-appearance': 'none', 'appearance': 'none', width: 'max-content' }}>
+                                <ul className="dropdown-menu shadow-sm p-2 scroll" style={{ '-webkit-appearance': 'none', 'appearance': 'none', width: 'max-content', height: '40vh' }}>
                                   <li className="dropdown-item d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => confirmmessage(data.patient.full_name, data.id)}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/speaker.png"} alt="displaying_image" style={{ width: "1.8rem" }} /> Call Patient</li>
                                   <li className="dropdown-item d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { Generate_Bill(data.id) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" style={{ width: "2rem" }} /> Generate Bill</li>
                                   <li className="dropdown-item d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { Generate_Prescription(data.id) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" style={{ width: "2rem" }} /> Generate Prescription</li>
@@ -620,7 +620,7 @@ function DoctorSchedule(props) {
                             {
                               consumablesindex == i ? (
                                 <td className={`consumables mx-auto position-absolute bg-seashell shadow-sm top-0 border border-1 rounded-1 start-0 end-0 col-lg-10 col-md-11 col-sm-12 col-12 mt-2 col-xl-8  d-${consumablesindex == i ? consumables : 'none'}`} style={{ zIndex: '4' }} >
-                                  <AddConsumables appointmentdata={appointmentdata[i]} Appointmentlist={Appointmentlist} existedconsumables={appointmentdata[i].medicine_used} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} appointmentid={data.id} toggleConsumables={toggleConsumables} />
+                                  <AddConsumables appointmentdata={appointmentdata[i]} Appointmentlist={Appointmentlist} existedconsumables={appointmentdata[i].medicine_used.reverse()} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} appointmentid={data.id} toggleConsumables={toggleConsumables} />
                                 </td>
                               ) : (<></>)
                             }

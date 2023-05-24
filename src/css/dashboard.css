@@ -436,7 +436,10 @@ body {
 .quickappointment{
     backdrop-filter: blur(2px);
 }
-
+.consumables{
+    margin-top:-5vh !important;
+    backdrop-filter: blur(10px) !important;
+}
 /*------------------------------------------------------------------Common css--------------------------------------------------------------*/
 
 

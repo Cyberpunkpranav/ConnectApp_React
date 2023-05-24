@@ -108,8 +108,8 @@ function Navbar(props) {
                             <button className="button dropdown-toggle button-seashell shadow-none d-inline-block col-md-auto col-auto user position-relative p-0 m-0 ms-2" data-bs-toggle="dropdown" aria-expanded="false">
                                 <h1 className="m-0 username text-decoration-none  text-start fw-bold"> {props.username} </h1>
                                 <div className="m-0 userstatus text-decoration-none text-start text-burntumber fw-bold" >{props.designation} </div>
-                                <ul class="dropdown-menu p-0 m-0 border-0">
-                                    <li class="dropdown-item p-0 m-0 bg-lightred50 text-center rounded-2 p-1 fw-bold border-0 text-burntumber " onClick={props.logout}>Logout</li>
+                                <ul class="dropdown-menu p-0 m-0 border-0" onClick={props.logout}>
+                                    <li class="dropdown-item p-0 m-0 bg-lightred50 text-center rounded-2 p-1 fw-bold border-0 text-burntumber " >Logout</li>
                                 </ul>
                             </button>
                         </div>
@@ -135,8 +135,8 @@ function Navbar(props) {
                         <div className="col-lg-auto col-xl-2 col-md-auto col-8 col-sm-auto text-center align-self-center position-relative p-0 m-0 order-sm-2 order-md-1 order-1 ">
                             <div className="row p-0 m-0 align-items-center justify-content-md-start justify-content-center">
                                 <div className="col-sm-auto col-xl-8 col-lg-8 col-md-8 me-1 col-7 p-0 m-0 position-relative " style={{ zIndex: '3' }} >
-                                    <input type="text" className="rounded-1 text-charcoal w-100 bg-charcoal25 positon-relative border border-1 text-start py-sm-1 ps-2 py-1 fw-bold" onBlur={() => { setsearchtext('') }} placeholder="search" onChange={(e) => setsearchtext(e.target.value)} />
-                                    <div className="position-absolute bg-pearl start-0 shadow mt-1 rounded-1 border border-1">
+                                    <input type="text" className="rounded-1 text-charcoal w-100 bg-charcoal25 positon-relative border border-1 text-start py-sm-1 ps-2 py-1 fw-bold" placeholder="search" onChange={(e) => setsearchtext(e.target.value)} />
+                                    <div className="position-absolute bg-pearl rounded-2 end-0 shadow mt-1" style={{ width: '50vh' }}>
                                         <SearchField searchtext={searchtext} fetchapi={props.fetchapi} />
                                     </div>
                                 </div>

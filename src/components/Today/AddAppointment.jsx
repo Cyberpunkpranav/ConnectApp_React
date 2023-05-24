@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useContext } from 'react'
-import { DoctorsList, URL, Doctorapi, TodayDocs } from '../../index'
+import { DoctorsList, URL, Doctorapi, TodayDocs, TodayDate } from '../../index'
 import Notiflix from 'notiflix';
 
 import { customconfirm } from '../features/notiflix/customconfirm'
@@ -24,6 +24,10 @@ const AddAppointment = (props) => {
     const [ischecked, setischecked] = useState()
     const [load, setload] = useState()
     const [searchload, setsearchload] = useState(false)
+    const [timeindex, settimeindex] = useState()
+    const [ApikeyDocTimeslots, setApikeyDocTimeslots] = useState()
+    const [ApiDocTimefrom, setApiDocTimefrom] = useState();
+
     let adminid = localStorage.getItem('id')
 
     function ClinicList() {
@@ -78,8 +82,43 @@ const AddAppointment = (props) => {
         settime(e.target.value)
     }
 
-    const [ApikeyDocTimeslots, setApikeyDocTimeslots] = useState()
-    const [ApiDocTimefrom, setApiDocTimefrom] = useState();
+    function GetTimeslotsBypropId() {
+        if (props.doctorid) {
+            setdoctorid(props.doctorid)
+            setdate()
+            let Timeslots = [];
+            setApikeyDocTimeslots([])
+            for (let i = 0; i < DocApi.length; i++) {
+                if (DocApi[i].id === Number(doctorid)) {
+                    Timeslots.push(DocApi[i].month_timeslots)
+                }
+            }
+            setApikeyDocTimeslots(Timeslots)
+            return Timeslots
+
+        }
+    }
+    function getTimefromByPropId(data) {
+        setdate(props.todaydate)
+        let timefrom = []
+        if (data && data.length != 0) {
+            console.log(data)
+            for (let j = 0; j < data[0].length; j++) {
+                if (data[0][j].date === props.todaydate) {
+                    timefrom.push([data[0][j].id, data[0][j].time_from, data[0][j].booking_status])
+                }
+            }
+            setApiDocTimefrom(timefrom)
+        }
+    }
+
+
+    useEffect(() => {
+        GetTimeslotsBypropId()
+        getTimefromByPropId(GetTimeslotsBypropId())
+    }, [props.doctorid, doctorid, date])
+
+
 
     function getTimeslots(e) {
         setdoctorid(e.target.value)
@@ -93,7 +132,6 @@ const AddAppointment = (props) => {
         }
         setApikeyDocTimeslots(Timeslots)
     }
-
     function getTimefrom(e) {
         setdate(e.target.value)
         let timefrom = []
@@ -144,7 +182,7 @@ const AddAppointment = (props) => {
         }
 
     }
-    const [timeindex, settimeindex] = useState()
+
 
     const confirmmessage = (e) => {
         customconfirm()
@@ -163,6 +201,7 @@ const AddAppointment = (props) => {
             },
         );
     }
+
     const Avaliablemessage = (response) => {
         for (let k = 0; k < TodayDoctors.length; k++) {
             if (TodayDoctors[k][0] !== undefined) {
@@ -174,8 +213,9 @@ const AddAppointment = (props) => {
 
     }
     // console.log(searchinput, patientid, displaysearchlist);
+    console.log(props.doctorid, doctorid)
     return (
-        <div className='fw-bold'>
+        <div className='fw-bold text-start'>
             <h5 className="text-center fw-bold mt-2">New Appointment</h5>
             {
                 props.closeAddAppointmentform ? (
@@ -236,7 +276,8 @@ const AddAppointment = (props) => {
                     </div>
                     <div className="col-md-6">
                         <label className="">Select Date</label>
-                        <div className="col-12"><input type="date" value={date ? date : ''} className="form-control selectdate" onChange={getTimefrom} />
+                        <div className="col-12">
+                            <input type="date" value={date ? date : ''} className="form-control selectdate" onChange={getTimefrom} />
                         </div>
                     </div>
                 </div>

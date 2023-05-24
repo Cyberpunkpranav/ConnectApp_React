@@ -33,11 +33,13 @@ const AddConsumables = (props) => {
     const [itemid, setitemid] = useState()
     const [SelectedProducts, setSelectedProducts] = useState([])
     const [Grandtotal, setGrandtotal] = useState()
+    const [Grandtotal2, setGrandtotal2] = useState()
     const [loadsearch, setloadsearch] = useState()
     const [ce, setce] = useState('none')
-    const [nursenotes, setnursenotes] = useState('')
+    const [nursenotes, setnursenotes] = useState(props.appointmentdata.nursing_notes ? props.appointmentdata.nursing_notes : '')
     const [deleteload, setdeleteload] = useState(false)
-
+    const [loadnotes, setloadnotes] = useState(false)
+    const [i, seti] = useState()
 
     const reversefunction = (date) => {
         if (date) {
@@ -122,7 +124,14 @@ const AddConsumables = (props) => {
         SelectedProducts.map((data) => (
             ttl += Number(data.totalamt)
         ))
-        setGrandtotal(ttl)
+        setGrandtotal(ttl.toFixed(2))
+    }
+    function CalGrandttl2() {
+        let ttl = 0
+        props.existedconsumables.map((data) => (
+            ttl += Number(data.total_amount)
+        ))
+        setGrandtotal2(ttl.toFixed(2))
     }
     function CaltotalDiscount(data) {
         let total = 0
@@ -139,6 +148,12 @@ const AddConsumables = (props) => {
     useEffect(() => {
         CalGrandttl()
     }, [SelectedProducts])
+    useEffect(() => {
+        CalGrandttl2()
+    }, [props.existedconsumables])
+    // useEffect(() => {
+    //     setnursenotes()
+    // }, [])
     function AddProducts(data) {
         let T = ''
         if (data.vaccine_brand_id) {
@@ -244,6 +259,23 @@ const AddConsumables = (props) => {
             },
         );
     }
+    function confirmmessage2() {
+        customconfirm()
+        Notiflix.Confirm.show(
+            `Save Sale Entry`,
+            `Do you surely want to save the following Note  `,
+            'Yes',
+            'No',
+            () => {
+                NurseNotes()
+            },
+            () => {
+                return 0
+            },
+            {
+            },
+        );
+    }
     const toggle_consumables_existed = () => {
         if (ce === 'none') {
             setce('block')
@@ -254,15 +286,17 @@ const AddConsumables = (props) => {
     }
     const NurseNotes = async () => {
         try {
+            setloadnotes(true)
             await axios.post(`${url}/save/nursing/notes`, {
                 appointment_id: props.appointmentid,
                 notes: nursenotes
             }).then((response) => {
                 Notiflix.Notify.success(response.data.message)
                 props.Appointmentlist()
-                setnursenotes("")
+                setloadnotes(false)
             })
         } catch (e) {
+            setloadnotes(false)
             Notiflix.Notify.warning(e.data.message)
         }
     }
@@ -281,106 +315,26 @@ const AddConsumables = (props) => {
             Notiflix.Notify.warning(e.data.message)
         }
     }
-
+    console.log(i)
     return (
         <div className="container-fluid p-0 m-0">
-            <div className='position-relative mb-3'>
+            <div className='position-relative mb-3 pt-2'>
                 <h5 className='text-start text-charcoal fw-bold '>{props.patientname} Consumables</h5>
-                <button className='btn btn-close position-absolute p-1 m-0 end-0 top-0 me-2' disabled={load ? true : false} onClick={props.toggleConsumables}></button>
-            </div>
-            <button className='button-sm border-0 mx-1 bg-transparent text-charcoal position-relative float-end p-0 mt-2 me-5' onClick={toggle_consumables_existed} >
-                <span className=' fw-bold'>Consumables</span>
-                <img src={process.env.PUBLIC_URL + 'images/cart.png'} />
-                <span class={` position-absolute text-pearl start-100 translate-middle badge fw-normal p-0 m-0 p-1 px-2 rounded-2 bg-burntumber border-burntumber`} style={{ zIndex: '2', top: "10%" }}> {props.existedconsumables.length} </span>
-            </button>
-            <div className={`d-${ce} position-absolute start-0 end-0 top-0 bg-seashell`} style={{ zIndex: '6', height: '60vh' }}>
-                <h5 className='text-start text-charcoal fw-bold p-2'>{props.patientname} Consumables</h5>
-                <img src={process.env.PUBLIC_URL + 'images/leftarrow.png'} className='ms-2 mb-2' onClick={toggle_consumables_existed} />
-                <h6 className='text-start text-charcoal fw-bold p-1 ps-2 pb-0 '>Consumables Added </h6>
-                <div className="scroll">
-                    <table className='table fw-bold p-0 m-0'>
-                        <thead className='p-0 m-0 top-0 bg-seashell'>
-                            <tr>
-                                <th>Item ID</th>
-                                <th>Item Name</th>
-                                <th>MRP</th>
-                                <th>Disc %</th>
-                                <th>Cost</th>
-                                <th>Total Amount</th>
-                                <th>Delete</th>
-                            </tr>
-                        </thead>
-                        {
-                            props.existedconsumables && props.existedconsumables.length !== 0 ? (
-                                <tbody className='p-0 m-0 bg-pearl'>
-                                    {
-                                        props.existedconsumables.length !== 0 ? (
-                                            props.existedconsumables.map((data) => (
-                                                <tr className={`align-middle bg-${Number(data.disccost) < Number(data.cost) ? 'lightred50' : ''}`}>
-                                                    <td>m{data.medicies_stocks_id}</td>
-                                                    <td>{data.medicine.display_name}</td>
-                                                    <td>₹{data.main_mrp}</td>
-                                                    <td className='text-center p-0 m-0'>{data.discount} </td>
-                                                    <td>₹{data.disc_mrp}</td>
-                                                    <td>₹{data.total_amount}</td>
-                                                    <td>
-                                                        {
-                                                            deleteload ? (
-                                                                <div className="text-charcoal spinner-border spinner-border-sm me-2 " role="status" aria-hidden="true" ></div>
-                                                            ) : (
-                                                                <img src={process.env.PUBLIC_URL + 'images/delete.png'} onClick={() => { RemoveConsumable(data.id) }} />
-                                                            )
-                                                        }
-                                                    </td>
-                                                </tr>
-                                            ))
-                                        ) : (<tbody>
-                                            <tr>
-                                                No consumables Found
-                                            </tr>
-                                        </tbody>)
-
-                                    }
-                                </tbody>
-                            ) : (
-                                <tbody className='position-relative'>
-                                    <tr className='p-0 m-0 text-center'>
-                                        <td className='position-absolute text-charcoal75 fw-bold start-0 end-0'>No Consumabels Added</td>
-                                    </tr>
-                                </tbody>
-                            )
-                        }
-                    </table>
-                </div>
-                <div className="container-fluid fw-bold mt-5 ">
-                    <h6 className='fw-bold'>Nursing Notes</h6>
-                    <p className='d-inline-block w-100 text-wrap bg-pearl p-2 rounded-2 ' style={{ minHeight: '10vh' }}>
-                        {props.appointmentdata.nursing_notes}
-                    </p>
-                </div>
-
+                <button className='btn btn-close position-absolute p-1 m-0 end-0 top-0 me-2 pt-3' disabled={load ? true : false} onClick={props.toggleConsumables}></button>
             </div>
 
-            <div className={`container-fluid text-start p-0 m-0 mt-3 d-${ce === 'block' ? 'none' : 'block'}`}>
+            <div className={`container-fluid text-start p-0 m-0 mt-3`}>
                 <div className="col-12 justify-content-center">
-                    <h6 className='text-charcoal fw-bolder text-start ms-1'>Search Consumables</h6>
-                    <hr className='p-0 m-0' />
-                    {/* <div className="col-12">
-                <button className='button button-seashell text-burntumber border-burntumber '>Scan to Add Product</button>
-              </div>
-              <h4 className='my-2'>OR</h4> */}
-                    <div className="row my-2 justify-content-center">
-
-
+                    <div className="row p-0 m-0 my-2 justify-content-start">
                         <div className="col-4 position-relative">
-                            <input className='form-control bg-seashell' placeholder='Search Product by Name'
+                            <input className='form-control bg-seashell p-2 border-charcoal' placeholder='Search by Name'
                                 value={itemname ? itemname : ''}
                                 onChange={(e) => {
                                     searchmeds(e.target.value);
                                     setitemname(e.target.value);
                                     setitemid();
                                     setproducts();
-                                    stockref.current.style.display = 'none'
+                                    stockref.current.style.dispzzzlay = 'none'
                                 }} />
                             <div ref={medicinesref} className='position-absolute scroll scroll-y rounded-1 mt-1' style={{ Width: 'max-content', zIndex: '1', maxHeight: '40vh' }} >
                                 {
@@ -399,7 +353,7 @@ const AddConsumables = (props) => {
                                                     <p className={`text-start m-1 fw-bold text-charcoal75 ms-1`} style={{ fontSize: '0.8rem' }}>{itemsearch.length} Search Results</p>
                                                     {
                                                         itemsearch.map((data, i) => (
-                                                            <div style={{ cursor: 'pointer', Width: '10rem' }} className={`bg-${((i % 2) == 0) ? 'pearl' : 'seashell'} p-1 py-2 fw-bold border-bottom text-charcoal `}
+                                                            <div style={{ cursor: 'pointer', Width: '10rem' }} className={`bg-${((i % 2) == 0) ? 'pearl' : 'seashell'} p-1 py-3 fw-bold border-bottom text-charcoal `}
                                                                 onClick={(e) => { setproducts(data); setitemname(data.display_name ? data.display_name : data.name); setitemid(data.id); stockref.current.style.display = 'block' }}>{data.display_name ? data.display_name : data.name}<span className='text-burntumber fw-bold rounded-2 px-1'>{data && data.stock_info !== undefined ? data.stock_info.length : ""} stocks</span></div>
                                                         ))
                                                     }
@@ -409,7 +363,7 @@ const AddConsumables = (props) => {
                                     ) : (<div className='bg-seashell'></div>)
                                 }
                             </div>
-                            <div ref={stockref} className={`position-absolute bg-pearl start-100 mt-1 px-3 scroll scroll-y align-self-center rounded-1 border border-1 p-1 d-${products && products.stock_info && products.stock_info !== undefined ? 'block' : 'none'}`} style={{ marginTop: '0rem', zIndex: '2', 'width': '22vh', 'min-width': '22vh', 'height': '30vh' }}>
+                            <div ref={stockref} className={`position-absolute bg-pearl start-100 mt-1 px-3 scroll scroll-y align-self-center rounded-1 border border-1 p-1 d-${products && products.stock_info && products.stock_info !== undefined ? 'block' : 'none'}`} style={{ marginTop: '0rem', zIndex: '2', 'width': '22vh', 'min-width': '30vh', 'height': '40vh' }}>
                                 <p className={`text-start m-1 fw-bold text-charcoal75`} style={{ fontSize: '0.8rem' }}>{products && products.stock_info !== undefined ? products.stock_info.length : ''} Batch Stocks</p>
                                 {
                                     products && products.length !== 0 ? (
@@ -417,7 +371,7 @@ const AddConsumables = (props) => {
                                             <div className='text-white bg-burntumber p-2'>Oops ! Not Available</div>
                                         ) : (
                                             products.stock_info.map((data, i) => (
-                                                <div style={{ cursor: 'pointer', minWidth: '6rem', marginTop: '2%' }} className={`bg-${((i % 2) == 0) ? 'pearl' : 'seashell'} border-bottom p-2`}
+                                                <div style={{ cursor: 'pointer', marginTop: '2%' }} className={`bg-${((i % 2) == 0) ? 'pearl' : 'seashell'} border-bottom p-2`}
                                                     onClick={
                                                         () => {
                                                             AddProducts(data);
@@ -426,7 +380,7 @@ const AddConsumables = (props) => {
                                                             setproducts();
                                                             setitemsearch()
                                                         }}>
-                                                    <h6 className='text-start m-0 p-0 fw-bold'>{itemname}</h6>
+                                                    <h6 className='text-start m-0 p-0 fw-bold text-wrap'>{itemname}</h6>
                                                     <p className='p-0 m-0 px-1'>BatchNo. - <span className='fw-bold'>{data.batch_no && data.batch_no !== null ? data.batch_no : ''}</span></p>
                                                     <p className='p-0 m-0 px-1'>Stock - <span className='fw-bold'>{data.current_stock && data.current_stock ? data.current_stock : ''}</span></p>
                                                     <p className='p-0 m-0 px-1'>Expiry Date - <span className='fw-bold'>{data.expiry_date ? reversefunction(data.expiry_date) : ''}</span></p>
@@ -442,9 +396,9 @@ const AddConsumables = (props) => {
                             </div>
                             <div></div>
                         </div>
-                        <div className='col-1 text-burntumber text-center fw-bold align-self-center'> OR </div>
+                        <div className='col-auto text-burntumber text-center fw-bold align-self-center'> OR </div>
                         <div className="col-4 ">
-                            <input className='form-control bg-seashell border border-1 rounded-1' value={itemid ? itemid : ''} placeholder='Search Product by ID' onChange={(e) => { searchmedbyId(e.target.value); setitemid(e.target.value); medbyidref.current.style.display = 'block' }} />
+                            <input className='form-control bg-seashell border border-1 rounded-2 text-charcoal p-2 border-charcoal' value={itemid ? itemid : ''} placeholder='Search by ID' onChange={(e) => { searchmedbyId(e.target.value); setitemid(e.target.value); medbyidref.current.style.display = 'block' }} />
                             <div ref={medbyidref} className='position-absolute rounded-1 mt-1' style={{ Width: 'max-content', zIndex: '2' }} >
                                 {
                                     itembyid ? (
@@ -477,12 +431,10 @@ const AddConsumables = (props) => {
                 </div>
                 <div className="col-12 m-0 p-0">
                     <div className="d-flex justify-content-between">
-                        <h6 className='text-charcoal fw-bolder text-start ms-1'>Add Consumables</h6>
-
                     </div>
                     <div className='scroll scroll-y' style={{ height: '35vh' }}>
                         <table className='table'>
-                            <thead className=' bg-seashell'>
+                            <thead className=' bg-seashell position-sticky top-0'>
                                 <tr className={``}>
                                     <th className=''>Item ID</th>
                                     <th className=''>Item Name</th>
@@ -498,7 +450,6 @@ const AddConsumables = (props) => {
                                     <th className=''>Total Amount</th>
                                     <th className=''>Delete</th>
                                 </tr>
-
                             </thead>
                             {
                                 SelectedProducts && SelectedProducts.length !== 0 ? (
@@ -513,7 +464,7 @@ const AddConsumables = (props) => {
                                                     <td>{data.quantity}</td>
 
                                                     <td className=''>
-                                                        <input className='border border-1 rounded-1 w-25 p-0 text-center bg-seashell'
+                                                        <input className='border border-1 rounded-1 w-50 py-1 p-0 text-center bg-seashell'
                                                             value={data.qtytoSale ? data.qtytoSale : ''}
                                                             onChange={(e) => {
                                                                 e.target.value <= data.quantity ? data.qtytoSale = e.target.value : Notiflix.Notify.failure("Quantity Cannot be Greater then Current Stock Available");
@@ -522,7 +473,7 @@ const AddConsumables = (props) => {
                                                             }} /> </td>
 
                                                     <td className='' style={{ Width: '0rem' }}>
-                                                        <input className='border border-1 rounded-1 w-25 p-0 text-center bg-seashell'
+                                                        <input className='border border-1 rounded-1 w-50 py-1 p-0 text-center bg-seashell'
                                                             value={data.discount ? data.discount : ''}
                                                             onChange={(e) => {
                                                                 data.discount = e.target.value;
@@ -530,14 +481,57 @@ const AddConsumables = (props) => {
                                                                 data.totalamt = CalTotalAmount(data.qtytoSale, Number(data.disccost), Number(data.cost))
                                                                 setSelectedProducts(prevState => [...prevState]);
                                                             }} /> </td>
-                                                    <td>{data.mainmrp}</td>
-                                                    <td>{data.cost}</td>
+                                                    <td>₹{data.mainmrp}</td>
+                                                    <td>₹{data.cost}</td>
                                                     <td>{data.gst + '%'}</td>
-                                                    <td>{data.disccost}</td>
-                                                    <td>{data.totalamt}</td>
+                                                    <td>₹{data.disccost}</td>
+                                                    <td>₹{data.totalamt}</td>
                                                     <td><img src={process.env.PUBLIC_URL + 'images/delete.png'} onClick={() => { DeleteProduct(data.batch) }} /></td>
                                                 </tr>
                                             ))
+                                        }
+                                    </tbody>
+                                ) : (
+                                    <></>
+                                )
+                            }
+
+                            {
+                                props.existedconsumables && props.existedconsumables.length !== 0 ? (
+                                    <tbody className='p-0 m-0'>
+                                        {
+                                            props.existedconsumables.length !== 0 ? (
+                                                props.existedconsumables.map((data, key) => (
+                                                    <tr className={`align-middle bg-${Number(data.disccost) < Number(data.cost) ? 'lightred50' : ''}`}>
+                                                        <td>m{data.medicies_stocks_id}</td>
+                                                        <td>{data.medicine.display_name}</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td className='text-start p-0 m-0 ps-4'>{data.discount} </td>
+                                                        <td>₹{data.main_mrp}</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td>₹{data.disc_mrp}</td>
+                                                        <td>₹{data.total_amount}</td>
+                                                        <td>
+                                                            {
+                                                                deleteload && i == key ? (
+                                                                    <div className="text-charcoal spinner-border spinner-border-sm me-2 " role="status" aria-hidden="true" ></div>
+                                                                ) : (
+                                                                    <img src={process.env.PUBLIC_URL + 'images/delete.png'} onClick={() => { seti(key); RemoveConsumable(data.id) }} />
+                                                                )
+                                                            }
+                                                        </td>
+                                                    </tr>
+                                                ))
+                                            ) : (<tbody>
+                                                <tr>
+                                                    No consumables Found
+                                                </tr>
+                                            </tbody>)
+
                                         }
                                     </tbody>
                                 ) : (
@@ -548,46 +542,99 @@ const AddConsumables = (props) => {
                                     </tbody>
                                 )
                             }
+
+
                         </table>
                     </div>
                 </div>
                 <div className="container p-0 m-0 mb-5 pb-5">
                     <h6 className='fw-bold p-0 m-0 ps-0 ms-0 my-2'>Nurse notes</h6>
-                    <textarea className='col-12 form-control w-100' value={nursenotes ? nursenotes : ''} onChange={(e) => setnursenotes(e.target.value)} style={{ width: '95vh', height: '10vh' }}></textarea>
+                    {
+                        loadnotes ? (
+                            <div className="col-6 py-2 pb-2 me-3 m-auto text-start">
+                                <div class="spinner-border" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+                        ) : (
+                            <textarea className='col-12 form-control w-100' value={nursenotes ? nursenotes : ''} onChange={(e) => setnursenotes(e.target.value)} style={{ width: '95vh', height: '10vh' }}></textarea>
+
+                        )
+                    }
                 </div>
 
             </div>
             <div className='col-12 position-absolute start-0 end-0 bottom-0 py-3 border border-1 text-start bg-pearl align-items-center rounded-bottom'>
-                <div className="row p-0 m-0">
+                <div className="row p-0 m-0 justify-content-between">
                     <div className="col-6">
-                        <div className="row">
-                            <div className="col-3">
-                                <p className='text-charcoal75 fw-bolder card-title text-start ms-3'> Order Total </p>
-                                <h4 className='text-charcoal  fw-bolder card-header text-start ps-3'>{Grandtotal}</h4>
+                        <div className="row ">
+                            <div className="col-3 ms-3">
+                                <p className='text-charcoal75 fw-bolder card-title text-start'> Order Total </p>
+                                {
+                                    SelectedProducts && SelectedProducts.length != 0 ? (
+                                        <>
+                                            <p className='text-charcoal fw-bolder card-header text-start ms-2'>₹{Grandtotal2}</p>
+                                            <p className='text-success fw-bolder card-header text-start'>+₹{Grandtotal}</p>
+                                        </>
+
+                                    ) : (<></>)
+                                }
+                                <hr className='p-0 m-0 py-1 mt-1 ps-3' />
+                                <h6 className='text-charcoal fw-bolder card-header text-start ms-2'>₹{(Number(Grandtotal) + Number(Grandtotal2)).toFixed(2)}</h6>
                             </div>
-                            <div className="col-3">
+                            {/* <div className="col-3">
                                 <p className='text-charcoal75 fw-bolder card-title text-start ms-3'> Discount %</p>
                                 <h4 className='text-charcoal  fw-bolder card-header text-start ps-3'>{CaltotalDiscount(SelectedProducts)}</h4>
-                            </div>
-                            <div className="col-3">
-                                <p className='text-charcoal75 fw-bolder card-title text-start ms-3'> Total Items</p>
-                                <h4 className='text-charcoal  fw-bolder card-header text-start ps-3'>{SelectedProducts.length}</h4>
+                            </div> */}
+                            <div className="col-3 ms-3">
+                                <p className='text-charcoal75 fw-bolder card-title text-start'> Total Items</p>
+
+                                {
+                                    SelectedProducts && SelectedProducts.length != 0 ? (
+                                        <>
+                                            <p className='text-charcoal fw-bolder card-header text-start ms-2'>{props.existedconsumables && props.existedconsumables.length ? props.existedconsumables.length : 0}</p>
+                                            <p className='text-success fw-bolder card-header text-start'>+{SelectedProducts && SelectedProducts.length ? SelectedProducts.length : 0}</p>
+                                        </>
+                                    ) : (<></>)
+                                }
+                                <hr className='p-0 m-0 py-1 mt-1' />
+                                <h6 className='text-charcoal  fw-bolder card-header text-start ms-2'>{props.existedconsumables && props.existedconsumables.length || SelectedProducts && SelectedProducts.length ? SelectedProducts.length + props.existedconsumables.length : 0}</h6>
                             </div>
                         </div>
                     </div>
-                    <div className="col-6 align-self-center text-center">
-                        {
-                            load ? (
-                                <div className="col-6 py-2 pb-2 m-auto text-start">
-                                    <div class="spinner-border" role="status">
-                                        <span class="visually-hidden">Loading...</span>
-                                    </div>
-                                </div>
-                            ) : (
-                                <button className='button button-charcoal px-5' onClick={() => { confirmmessage() }}>Save</button>
-                            )
-                        }
+                    <div className="col-6">
+                        <div className="row p-0 m-0 justify-content-end ">
+                            <div className="col-auto p-0 m-0 align-self-center">
+                                {
+                                    loadnotes ? (
+                                        <div className="col-6 py-2 pb-2 me-3 m-auto text-start">
+                                            <div class="spinner-border" role="status">
+                                                <span class="visually-hidden">Loading...</span>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <button className='button button-seashell px-5 me-2' onClick={() => { confirmmessage2() }}>Save Notes</button>
+                                    )
+                                }
+                            </div>
+                            <div className="col-auto p-0 m-0 align-self-center">
+                                {
+                                    load ? (
+                                        <div className="col-6 py-2 pb-2 me-3 m-auto text-start">
+                                            <div class="spinner-border" role="status">
+                                                <span class="visually-hidden">Loading...</span>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <button className='button button-charcoal px-5 me-2' onClick={() => { confirmmessage() }}>Save All</button>
+                                    )
+                                }
+                            </div>
+                        </div>
                     </div>
+
+
+
 
                 </div>
             </div>

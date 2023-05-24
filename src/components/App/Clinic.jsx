@@ -80,7 +80,7 @@ function Doctorsection(props) {
         {
           props.Loading ? (
             <div className=" position-absolute start-0 ms-2 end-0 m-auto loader ">
-              <button class="button button-pearl shadow-none fs-3 fw-bolder text-charcoal75" type="button" disabled>
+              <button class="button button-pearl shadow-none fw-bolder text-charcoal75" type="button" disabled>
                 Please Be Patient While We are Fetching Data
                 <span class="spinner-grow spinner-grow ms-1 bg-brandy " role="status" aria-hidden="true"></span>
               </button>

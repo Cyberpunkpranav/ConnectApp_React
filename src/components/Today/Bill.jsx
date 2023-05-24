@@ -38,7 +38,7 @@ const Bill = (props) => {
   const [CGST, setCGST] = useState();
   const [paymentmethods, setpaymentmethods] = useState([]);
   const [load, setload] = useState();
-  const [Addcons, setAddcons] = useState(false)
+
 
   async function AddExtraCharges() {
     let extracharges = [];
@@ -182,11 +182,11 @@ const Bill = (props) => {
     extrachargecount.map((data) => (total += Number(data.gross_amount)));
     total = total + Number(AddConsAmt) - discounts;
     total = total.toFixed(2);
-    if (Addcons == true) {
-      total = Number(total) + Number(ConsumableAmount())
-    } else {
-      total = total
-    }
+    // if (Addcons == true) {
+    //   total = Number(total) + Number(ConsumableAmount())
+    // } else {
+    //   total = total
+    // }
     return total;
   }
   function Total_Amount() {
@@ -369,7 +369,7 @@ const Bill = (props) => {
     Total = Total.toFixed(2)
     return Total
   }
-  console.log(Addcons)
+
   useEffect(() => {
     AdvancePayments();
     ConsumableAmount();
@@ -559,15 +559,7 @@ const Bill = (props) => {
                   {/* defaultValue=" not available" */}
                   <input className="form-control bg-seashell text-success text-start rounded-1  border-0 fw-bolder p-0 text-charcoal50" value={"₹" + ConsumableAmount()} />
                 </div>
-                <div className="col-4 ">
-                  <div className="col-12 text-start">
-                    <input type="checkbox" className="form-check-input me-1 p-2 ms-1" checked={Addcons ? Addcons : ''} onChange={() => { Addcons == false ? setAddcons(true) : setAddcons(false) }} />
-                  </div>
-                  <div className="col-12 p-0 m-0 text-start ">
-                    <p className="text-burntumber fw-bold text-wrap text-start">Include Amt in Grand Total </p>
-                  </div>
 
-                </div>
               </div>
             </div>
             <div className="container-fluid text-start position-relative mt-2">
