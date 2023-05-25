@@ -573,7 +573,7 @@ function DoctorSchedule(props) {
                             <td className={` text-center py-0  bg-${consumablesindex === i ? 'lightyellow' : ''}`}>
                               <button className={`button-sm border-0 p-0 m-0 position-relative bg-${consumablesindex === i ? 'lightyellow' : 'transparent'}`}>
                                 <img src={process.env.PUBLIC_URL + "/images/bill.png"} onClick={() => { setconsumablesindex(i); toggleConsumables(); }} alt="displaying_image" className="me-1" />
-                                <span class={` position-absolute text-charcoal fw-bold start-75 translate-middle badge p-0 m-0 p-1 px-2 fw-normal rounded-2 bg-lightyellow`} style={{ zIndex: '2', top: "10%" }}>
+                                <span class={` position-absolute start-75 translate-middle badge p-0 m-0 text-burntumber fw-bold rounded-2 `} style={{ zIndex: '2', top: "10%" }}>
                                   {appointmentdata[i].medicine_used.length}
                                 </span>
                               </button>
@@ -619,7 +619,7 @@ function DoctorSchedule(props) {
                             }
                             {
                               consumablesindex == i ? (
-                                <td className={`consumables mx-auto position-absolute bg-seashell shadow-sm top-0 border border-1 rounded-1 start-0 end-0 col-lg-10 col-md-11 col-sm-12 col-12 mt-2 col-xl-8  d-${consumablesindex == i ? consumables : 'none'}`} style={{ zIndex: '4' }} >
+                                <td className={`consumables mx-auto position-absolute bg-seashell shadow-sm top-0 border border-1 rounded-1 start-0 end-0 col-lg-8 col-md-11 col-sm-12 col-12 mt-2 col-xl-6  d-${consumablesindex == i ? consumables : 'none'}`} style={{ zIndex: '4' }} >
                                   <AddConsumables appointmentdata={appointmentdata[i]} Appointmentlist={Appointmentlist} existedconsumables={appointmentdata[i].medicine_used.reverse()} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} appointmentid={data.id} toggleConsumables={toggleConsumables} />
                                 </td>
                               ) : (<></>)

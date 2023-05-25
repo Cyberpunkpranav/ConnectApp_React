@@ -432,7 +432,7 @@ const AddConsumables = (props) => {
                 <div className="col-12 m-0 p-0">
                     <div className="d-flex justify-content-between">
                     </div>
-                    <div className='scroll scroll-y' style={{ height: '35vh' }}>
+                    <div className='scroll scroll-y' style={{ height: '30vh' }}>
                         <table className='table'>
                             <thead className=' bg-seashell position-sticky top-0'>
                                 <tr className={``}>
@@ -547,7 +547,7 @@ const AddConsumables = (props) => {
                         </table>
                     </div>
                 </div>
-                <div className="container p-0 m-0 mb-5 pb-5">
+                <div className="container" style={{paddingBottom:'18%'}}>
                     <h6 className='fw-bold p-0 m-0 ps-0 ms-0 my-2'>Nurse notes</h6>
                     {
                         loadnotes ? (
@@ -565,8 +565,8 @@ const AddConsumables = (props) => {
 
             </div>
             <div className='col-12 position-absolute start-0 end-0 bottom-0 py-3 border border-1 text-start bg-pearl align-items-center rounded-bottom'>
-                <div className="row p-0 m-0 justify-content-between">
-                    <div className="col-6">
+                <div className="row p-0 m-0 align-items-center justify-content-between">
+                    <div className="col-6 col-md-4">
                         <div className="row ">
                             <div className="col-3 ms-3">
                                 <p className='text-charcoal75 fw-bolder card-title text-start'> Order Total </p>
@@ -602,7 +602,7 @@ const AddConsumables = (props) => {
                             </div>
                         </div>
                     </div>
-                    <div className="col-6">
+                    <div className="col-6 col-md-8">
                         <div className="row p-0 m-0 justify-content-end ">
                             <div className="col-auto p-0 m-0 align-self-center">
                                 {

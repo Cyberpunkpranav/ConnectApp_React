@@ -435,13 +435,4 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(<Switchpage />);
 // ReactDOM.render(<Switchpage />, document.getElementById("root"));
 
-export {
-  TodayDate,
-  URL,
-  DoctorsList,
-  Doctorapi,
-  TodayDocs,
-  Vitals,
-  Clinic,
-  Permissions,
-};
+export { TodayDate, URL, DoctorsList, Doctorapi, TodayDocs, Vitals, Clinic, Permissions, };
