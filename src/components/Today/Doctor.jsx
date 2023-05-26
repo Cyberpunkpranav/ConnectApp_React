@@ -453,9 +453,14 @@ function DoctorSchedule(props) {
                       <button className={`button-sm button-${timeindex == i ? 'charcoal' : 'charcoal-outline'} m-1 px-3 py-2 fw-bold rounded-1`} style={{ letterSpacing: '1px' }} onClick={(e) => { openAddApppointmentform(); settimeindex(i) }} key={i}>{tConvert(data[0])}</button>
                       {
                         timeindex == i ? (
-                          <div className={`d-${timeindex == i ? addappointmentform : 'none'} col-lg-8 col-md-10 col-sm-12 col-12 col-xl-6 shadow quickappointment position-absolute m-auto start-0 end-0 bg-seashell rounded-4 border border-1`} style={{ zIndex: 4, top: '-3rem' }}>
-                            <SelectedTimeAppointment fetchapi={props.fetchapi} closeAddAppointmentform={closeAddAppointmentform} DocClinic={props.DocClinic} timeindex={timeindex} selectedtime={data[0]} selectedtimeID={data[2]} />
-                          </div>
+                          <>
+
+                            <div className='backdrop'>
+                            </div>
+                            <div className={`d-${timeindex == i ? addappointmentform : 'none'} col-lg-8 col-md-10 col-sm-12 col-12 col-xl-6 shadow quickappointment position-absolute m-auto start-0 end-0 bg-seashell rounded-4 border border-1`} style={{ top: '-3rem' }}>
+                              <SelectedTimeAppointment fetchapi={props.fetchapi} closeAddAppointmentform={closeAddAppointmentform} DocClinic={props.DocClinic} timeindex={timeindex} selectedtime={data[0]} selectedtimeID={data[2]} />
+                            </div>
+                          </>
                         ) : (
                           <></>
                         )
@@ -480,7 +485,7 @@ function DoctorSchedule(props) {
           </div>
           <div className=" scroll scroll-y align-content-center align-items-center" style={{ minHeight: '50vh', maxHeight: '50vh', Height: '50h' }}>
             <table className="table text-start">
-              <thead className="p-0 m-0 px-2 bg-pearl" style={{ 'zIndex': '4' }}>
+              <thead className="p-0 m-0 px-2 bg-pearl">
                 <tr className="p-0 m-0 position-sticky text-charcoal75 top-0" style={{ fontSize: '0.75rem' }}>
                   <th className="border-0 bg-pearl text-center" key={0}>Update</th>
                   <th className="border-0 bg-pearl text-start" key={3}>Time</th>
@@ -595,40 +600,59 @@ function DoctorSchedule(props) {
                               </div></td>
                             {
                               tableindex === i ? (
-                                <td className={`updateappointment shadow-sm border border-1 rounded-1 bg-seashell mt-2 start-0 end-0 top-0 col-lg-8 col-md-8 col-sm-11 col-11 col-xl-5 d-${tableindex == i ? appointmentform : 'none'} position-absolute`}>
-                                  <UpdateAppointment fetchapi={props.fetchapi} fetchallAppointmentslist={props.fetchallAppointmentslist} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} patientid={data.patient != null && data.patient.id != null ? data.patient.id : ""} appointmentid={data.id} addappointmentform={addappointmentform} closeappointmentform={closeappointmentform} doctorid={props.doctorid} appointmentdoctorid={data.doctor.id} appointmentdate={data.appointment_date} appointmenttime={tConvert(data.timeslot.time_from)} /></td>
+                                <>
+                                  <div className="backdrop"></div>
+                                  <td className={`updateappointment shadow-sm border-0 rounded-1 bg-seashell mt-2 start-0 end-0 top-0 col-lg-8 col-md-8 col-sm-11 col-11 col-xl-5 d-${tableindex == i ? appointmentform : 'none'} position-absolute`}>
+                                    <UpdateAppointment fetchapi={props.fetchapi} fetchallAppointmentslist={props.fetchallAppointmentslist} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} patientid={data.patient != null && data.patient.id != null ? data.patient.id : ""} appointmentid={data.id} addappointmentform={addappointmentform} closeappointmentform={closeappointmentform} doctorid={props.doctorid} appointmentdoctorid={data.doctor.id} appointmentdate={data.appointment_date} appointmenttime={tConvert(data.timeslot.time_from)} /></td>
+                                </>
                               ) : (<></>)
                             }
                             {
                               vitalindex === i ? (
-                                <td className={`vitals bg-${vitalindex === i ? 'lightred' : ''} col-lg-7 col-md-8 col-sm-12 col-12 col-xl-5 position-absolute border border-1 shadow-sm rounded-1 d-${vitalindex == i ? vitalsform : 'none'}`} style={{ zIndex: '3' }}>
-                                  <Vitalsoperation GetAppointmentVitals={GetAppointmentVitals} CloseVitals={CloseVitals} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} appointmentid={data.id} appointmentvitalslist={appointmentvitalslist} loadvitals={loadvitals} patientid={data.patient && data.patient.id != null ? data.patient.id : ""} /></td>
+                                <>
+                                  <div className="backdrop"></div>
+                                  <td className={`vitals position-absolute border-0 d-${vitalindex == i ? vitalsform : 'none'}`} style={{ zIndex: '4' }}>
+                                    <Vitalsoperation GetAppointmentVitals={GetAppointmentVitals} CloseVitals={CloseVitals} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} appointmentid={data.id} appointmentvitalslist={appointmentvitalslist} loadvitals={loadvitals} patientid={data.patient && data.patient.id != null ? data.patient.id : ""} /></td>
+                                </>
                               ) : (<></>)
                             }
                             {
                               billindex == i ? (
-                                <td className={`bill d-${billindex == i ? billform : 'none'} col-lg-8 p-0 m-0 col-md-10 start-0 mx-auto mt-2 end-0 top-0 col-sm-12 col-12 col-xl-6 border border-1 rounded-1 shadow-sm position-absolute`}>
-                                  <Bill fetchapi={props.fetchapi} CloseBillForm={CloseBillForm} patientid={data.patient && data.patient.id != null ? data.patient.id : ""} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} Appointmentlist={Appointmentlist} setsingleload={setsingleload} isLoading={isLoading} appointmentdata={appointmentdata} appointmentid={data.id} doctorfee={data.doctor.consulationFee} billform={billform} /></td>
+                                <>
+                                  <div className='backdrop'>
+                                  </div>
+                                  <td className={`bill d-${billindex == i ? billform : 'none'} start-0 end-0 top-0 border-0 position-absolute`} style={{ zIndex: '4' }}>
+                                    <Bill fetchapi={props.fetchapi} CloseBillForm={CloseBillForm} patientid={data.patient && data.patient.id != null ? data.patient.id : ""} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} Appointmentlist={Appointmentlist} setsingleload={setsingleload} isLoading={isLoading} appointmentdata={appointmentdata} appointmentid={data.id} doctorfee={data.doctor.consulationFee} billform={billform} /></td>
+                                </>
                               ) : (<></>)
                             }
                             {
                               paymentsindex === i ? (
-                                <td className={`payments start-0 bg-seashell end-0 shadow-sm top-0 border border-1 rounded-1 col-lg-6 col-md-8 col-sm-12 col-12 mt-2 col-xl-8 ps-3 px-5 py-2 position-absolute d-${paymentsindex == i ? paymentsform : 'none'}`}>
-                                  <Payments ClosePaymentsForm={ClosePaymentsForm} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} appointmentid={data.id} patientid={data.patient && data.patient.id != null ? data.patient.id : ""} Appointmentlist={Appointmentlist} setsingleload={setsingleload} isLoading={isLoading} appointmentdata={appointmentdata} /></td>
+                                <>
+                                  <div className="backdrop"></div>
+                                  <td className={`payments start-0 end-0 top-0 position-absolute bg-seashell mx-auto rounded-2 pt-2 px-2 p-0 m-0 col-lg-8 col-md-10 col-sm-11 col-11 mt-2 col-xl-6 d-${paymentsindex == i ? paymentsform : 'none'}`} style={{ zIndex: '4' }}>
+                                    <Payments ClosePaymentsForm={ClosePaymentsForm} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} appointmentid={data.id} patientid={data.patient && data.patient.id != null ? data.patient.id : ""} Appointmentlist={Appointmentlist} setsingleload={setsingleload} isLoading={isLoading} appointmentdata={appointmentdata} /></td>
+                                </>
                               ) : (<></>)
                             }
                             {
                               consumablesindex == i ? (
-                                <td className={`consumables mx-auto position-absolute bg-seashell shadow-sm top-0 border border-1 rounded-1 start-0 end-0 col-lg-8 col-md-11 col-sm-12 col-12 mt-2 col-xl-6  d-${consumablesindex == i ? consumables : 'none'}`} style={{ zIndex: '4' }} >
-                                  <AddConsumables appointmentdata={appointmentdata[i]} Appointmentlist={Appointmentlist} existedconsumables={appointmentdata[i].medicine_used.reverse()} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} appointmentid={data.id} toggleConsumables={toggleConsumables} />
-                                </td>
+                                <>
+                                  <div className="backdrop"></div>
+                                  <td className={`consumables mx-auto position-absolute top-0 start-0 end-0   d-${consumablesindex == i ? consumables : 'none'} `} style={{ zIndex: '4' }} >
+                                    <AddConsumables appointmentdata={appointmentdata[i]} Appointmentlist={Appointmentlist} existedconsumables={appointmentdata[i].medicine_used.reverse()} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} appointmentid={data.id} toggleConsumables={toggleConsumables} />
+                                  </td>
+                                </>
                               ) : (<></>)
                             }
                             {
                               saleindex == i ? (
-                                <td className={`saleentryform mx-auto position-absolute bg-seashell shadow-sm top-0 border border-1 rounded-1 start-0 end-0 col-lg-10 col-md-11 col-sm-12 col-12 mt-2 col-xl-8  d-${saleindex == i ? saleindex : 'none'}`} style={{ zIndex: '4' }} >
-                                  <SaleEntryForm DoctorID={props.DoctorID} DoctorName={props.DoctorName} saleindex={saleindex} toggle_nsef={toggle_nsef} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} patientid={data.patient && data.patient.id != null ? data.patient.id : ""} />
-                                </td>
+                                <>
+                                  <div className="backdrop"></div>
+                                  <td className={`saleentryform mx-auto position-absolute bg-seashell shadow-sm top-0 border border-1 rounded-1 start-0 end-0 col-lg-10 col-md-11 col-sm-12 col-12 mt-2 col-xl-8  d-${saleindex == i ? saleindex : 'none'}`} style={{ zIndex: '4' }} >
+                                    <SaleEntryForm DoctorID={props.DoctorID} DoctorName={props.DoctorName} saleindex={saleindex} toggle_nsef={toggle_nsef} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} patientid={data.patient && data.patient.id != null ? data.patient.id : ""} />
+                                  </td>
+                                </>
                               ) : (<></>)
 
                             }
@@ -824,7 +848,7 @@ function Timecard(props) {
 
                           </div>
 
-                          <div className="d-flex mx-2 ">
+                          <div className="d-flex mx-2 py-2">
                             {
                               data.logout_time ? (
                                 <div id="totalhrs" className=" p-0 m-0 timediff text-burntumber fw-bold text-center pe-2" defaultValue="" style={{ fontSize: '0.75rem' }}>{data.logout_time ? diff(data.login_time, data.logout_time) : ''}</div>

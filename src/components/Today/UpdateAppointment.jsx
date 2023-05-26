@@ -329,10 +329,11 @@ const UpdateAppointment = (props) => {
                         ) : (
                             <>
                                 <div className="col-6 m-auto text-center">
-                                    <button className='btn button-charcoal' onClick={confirmmessage}>Update Appointment</button>
+                                    <button className='btn button-charcoal' onClick={confirmmessage}>Update</button>
                                 </div>
+
                                 <div className="col-6 m-auto text-center">
-                                    <button className="btn button-lightred text-burntumber border " onClick={confirmmessageforCancel}>Cancel Appointment</button>
+                                    <button type="button" className="button button-pearl" disabled={load == true ? true : false} aria-label="Close" onClick={props.closeappointmentform} >Cancel</button>
                                 </div>
 
                             </>

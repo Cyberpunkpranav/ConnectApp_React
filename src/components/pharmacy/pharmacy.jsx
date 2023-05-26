@@ -1917,21 +1917,23 @@ function SaleEntryForm(props) {
   // console.log(itembyid)
   // console.log(itemsearch)
   return (
+ 
+
     <div className="container-fluid p-0 m-0">
       <div className="position-relative mb-3">
         <h5 className="text-center text-charcoal pt-2 ">New Sale Entry</h5>
         <button className="btn btn-close position-absolute end-0 top-0 me-2" disabled={load ? true : false} onClick={props.toggle_nsef} ></button>
       </div>
-      <hr className="p-0 m-0" />
-      <div className="p-0 m-0 text-center bg-seashell">
+      {/* <hr className="p-0 m-0" /> */}
+      {/* <div className="p-0 m-0 text-center bg-seashell">
         {cliniclist.map((data, i) => (
           <label className={` text-burntumber fw-bolder d-${clinicID == data.id ? "block" : "none"}`} >
             <input type="checkbox" className={`radio form me-1  text-burntumber fw-bolder`} key={i} checked={clinicID == data.id ? true : false} name={data.id} />
             {data.title} {data.address}
           </label>
         ))}
-      </div>
-      <hr className="p-0 m-0" />
+      </div> */}
+      {/* <hr className="p-0 m-0" /> */}
       <div className="my-2 text-center align-self-center">
         <div className=" form-switch justify-content-center position-relative">
           <label className="form-check-label text-charcoal fw-bolder" for="flexSwitchCheckDefault" > Deliver to Customer </label>
@@ -1964,8 +1966,8 @@ function SaleEntryForm(props) {
       </div>
       <div className="row p-0 m-0">
         <div className="col-4">
-          <label className="m-0">Search Using Phone or Name</label>
-          <input type="text" className="form-control bg-seashell selectpatient col-10 position-relative" placeholder="Search for Patients" value={searchinput ? searchinput : ""} onFocus={() => setsearchload(true)} onChange={searchpatient} />
+          {/* <label className="m-0">Search Using Phone or Name</label> */}
+          <input type="text" className="form-control bg-seashell fw-bold border-charcoal selectpatient col-10 position-relative" placeholder="Search for Patients" value={searchinput ? searchinput : ""} onFocus={() => setsearchload(true)} onChange={searchpatient} />
           <div className={`col-auto d-${displaysearchlist} text-decoration-none searchinput position-absolute rounded-1 shadow bg-pearl px-2`} style={{ width: "max-content", zIndex: "2" }} >
             {searchload == true || searchinput == undefined ? (
               <p className="btn text-charcoal75 fs-6 p-0 m-0 ps-1"> Loading...{" "} </p>
@@ -1981,9 +1983,9 @@ function SaleEntryForm(props) {
           </div>
         </div>
         <div className="col-4">
-          <label>Select Doctor</label>
+          {/* <label>Select Doctor</label> */}
           <div className="col-12">
-            <select className="col-10 form-control selectdoctor bg-seashell" placeholder="Select Doctor" value={doctorid ? doctorid : ""} onChange={(e) => { setdoctorid(e.target.value); }} >
+            <select className="col-10 form-control selectdoctor bg-seashell fw-bold border-charcoal" placeholder="Select Doctor" value={doctorid ? doctorid : ""} onChange={(e) => { setdoctorid(e.target.value); }} >
               <option className="text-charcoal50">Select Doctor</option>
               {Doclist.map((data, i) => (
                 <option className={`text-charcoal`} key={i} value={data[0]}> {"Dr."} {data[1]} </option>
@@ -1992,24 +1994,15 @@ function SaleEntryForm(props) {
           </div>
         </div>
         <div className="col-4">
-          <label>Other Doctor</label>
+          {/* <label>Other Doctor</label> */}
           <div className="col-12">
-            <input
-              className="col-10 form-control bg-seashell"
-              placeholder="Other Doctors"
-              value={otherdoctor ? otherdoctor : ""}
-              onChange={(e) => {
-                setotherdoctor(e.target.value);
-              }}
-            />
+            <input className="col-10 form-control bg-seashell fw-bold border-charcoal" placeholder="Other Doctors" value={otherdoctor ? otherdoctor : ""} onChange={(e) => { setotherdoctor(e.target.value); }} />
           </div>
         </div>
       </div>
       <div className="container-fluid mt-4 text-center p-0 m-0">
         <div className="col-12 p-0 m-0 justify-content-center">
-          <h6 className="text-charcoal p-0 m-0 fw-bolder text-start ms-1">
-            Add Products
-          </h6>
+          <h6 className="text-charcoal p-0 m-0 fw-bolder text-start ms-1"> Add Products </h6>
           <hr className="p-0 m-0" />
           {/* <div className="col-12">
               <button className='button button-seashell text-burntumber border-burntumber '>Scan to Add Product</button>
@@ -2018,7 +2011,7 @@ function SaleEntryForm(props) {
           <div className="row p-0 m-0 my-2 justify-content-center">
             <div className="col-4">
               <input
-                className="form-control bg-seashell"
+                className="form-control  fw-bold border-charcoal bg-seashell"
                 placeholder="Search Product by Name"
                 value={itemname ? itemname : ""}
                 onChange={(e) => {
@@ -2076,13 +2069,14 @@ function SaleEntryForm(props) {
                   )
                 }
               </div>
-              <div></div>
+              <div>
+              </div>
             </div>
             <div className="col-1 text-burntumber fw-bold align-self-center">
               OR
             </div>
             <div className="col-4 ">
-              <input className="form-control bg-seashell border border-1 rounded-1" value={itemid ? itemid : ""} placeholder="Search Product by ID" onChange={(e) => { searchmedbyId(e.target.value); setitemid(e.target.value); medbyidref.current.style.display = "block"; }} />
+              <input className="form-control bg-seashell  fw-bold border-charcoal rounded-1" value={itemid ? itemid : ""} placeholder="Search Product by ID" onChange={(e) => { searchmedbyId(e.target.value); setitemid(e.target.value); medbyidref.current.style.display = "block"; }} />
               <div ref={medbyidref} className="position-absolute rounded-1 mt-1" style={{ Width: "max-content", zIndex: "2" }} >
                 {itembyid ? (
                   loadbyId ? (
@@ -2254,6 +2248,7 @@ function SaleEntryForm(props) {
         </div>
       </div>
     </div>
+    
   );
 }
 function NewSaleReturnentryform(props) {
@@ -4585,103 +4580,22 @@ function Newpurchaseentryform(props) {
       sgst.push(
         MedicineentriesArr[i].sgst ? Number(MedicineentriesArr[i].sgst) : ""
       );
-      sgstpercent.push(
-        MedicineentriesArr[i].sgstper
-          ? Number(MedicineentriesArr[i].sgstper)
-          : 0
-      );
-      cgst.push(
-        MedicineentriesArr[i].cgst ? Number(MedicineentriesArr[i].cgst) : ""
-      );
-      cgstpercent.push(
-        MedicineentriesArr[i].cgstper
-          ? Number(MedicineentriesArr[i].cgstper)
-          : 0
-      );
-      igst.push(
-        MedicineentriesArr[i].igst ? Number(MedicineentriesArr[i].igst) : ""
-      );
-      igstpercent.push(
-        MedicineentriesArr[i].igstper
-          ? Number(MedicineentriesArr[i].igstper)
-          : 0
-      );
-      costperunit.push(
-        MedicineentriesArr[i].costperunit
-          ? Number(MedicineentriesArr[i].costperunit)
-          : ""
-      );
-      totalamount.push(
-        MedicineentriesArr[i].totalamount
-          ? Number(MedicineentriesArr[i].totalamount)
-          : ""
-      );
-      quantity.push(
-        MedicineentriesArr[i].Qty ? Number(MedicineentriesArr[i].Qty) : ""
-      );
-      freequantity.push(
-        MedicineentriesArr[i].freeQty
-          ? Number(MedicineentriesArr[i].freeQty)
-          : 0
-      );
+      sgstpercent.push( MedicineentriesArr[i].sgstper ? Number(MedicineentriesArr[i].sgstper) : 0 );
+      cgst.push( MedicineentriesArr[i].cgst ? Number(MedicineentriesArr[i].cgst) : "" );
+      cgstpercent.push( MedicineentriesArr[i].cgstper ? Number(MedicineentriesArr[i].cgstper) : 0 );
+      igst.push( MedicineentriesArr[i].igst ? Number(MedicineentriesArr[i].igst) : "" );
+      igstpercent.push( MedicineentriesArr[i].igstper ? Number(MedicineentriesArr[i].igstper) : 0 );
+      costperunit.push( MedicineentriesArr[i].costperunit ? Number(MedicineentriesArr[i].costperunit) : "" );
+      totalamount.push( MedicineentriesArr[i].totalamount ? Number(MedicineentriesArr[i].totalamount) : "" );
+      quantity.push( MedicineentriesArr[i].Qty ? Number(MedicineentriesArr[i].Qty) : "" );
+      freequantity.push( MedicineentriesArr[i].freeQty ? Number(MedicineentriesArr[i].freeQty) : 0 );
     }
 
     totalamount.forEach((item) => {
       grosstotal += Number(item);
     });
-    console.log(
-      Is_consumable,
-      grosstotal,
-      Type,
-      MedId,
-      medname,
-      batches,
-      expirydate,
-      manufacturingDate,
-      MRP,
-      Rate,
-      Discount,
-      tradeDiscount,
-      sgst,
-      sgstpercent,
-      cgst,
-      cgstpercent,
-      igst,
-      igstpercent,
-      costperunit,
-      totalamount,
-      quantity,
-      freequantity
-    );
-    var Data = {
-      distributor_id: vendorid,
-      purchase_order_id: po,
-      invoice_no: invoice,
-      bill_date: invoicedate,
-      clinic_id: ClinicId,
-      channel: channel,
-      is_consumable: Is_consumable,
-      bill_total: grosstotal,
-      id: MedId,
-      type: Type,
-      qty: quantity,
-      free_qty: freequantity,
-      mrp: MRP,
-      rate: Rate,
-      trade_discount: tradeDiscount,
-      discount: Discount,
-      SGST_rate: sgstpercent,
-      SGST: sgst,
-      CGST_rate: cgstpercent,
-      CGST: cgst,
-      IGST_rate: igstpercent,
-      IGST: igst,
-      cost: costperunit,
-      total_amount: totalamount,
-      expiry_date: expirydate,
-      mfd_date: manufacturingDate,
-      batch_no: batches,
-    };
+    console.log( Is_consumable, grosstotal, Type, MedId, medname, batches, expirydate, manufacturingDate, MRP, Rate, Discount, tradeDiscount, sgst, sgstpercent, cgst, cgstpercent, igst, igstpercent, costperunit, totalamount, quantity, freequantity );
+    var Data = { distributor_id: vendorid, purchase_order_id: po, invoice_no: invoice, bill_date: invoicedate, clinic_id: ClinicId, channel: channel, is_consumable: Is_consumable, bill_total: grosstotal, id: MedId, type: Type, qty: quantity, free_qty: freequantity, mrp: MRP, rate: Rate, trade_discount: tradeDiscount, discount: Discount, SGST_rate: sgstpercent, SGST: sgst, CGST_rate: cgstpercent, CGST: cgst, IGST_rate: igstpercent, IGST: igst, cost: costperunit, total_amount: totalamount, expiry_date: expirydate, mfd_date: manufacturingDate, batch_no: batches, };
     setload(true);
     try {
       await axios.post(`${url}/purchase/entry/save`, Data).then((response) => {
@@ -5095,12 +5009,7 @@ function Newpurchaseentryform(props) {
       <div className="container-fluid bg-seashell border border-2 border-top-0 border-start-0 border-end-0 ">
         <div className="row p-0 m-0 p-2">
           <div className="col-1">
-            <button
-              type="button"
-              className="btn-close closebtn m-auto mt-2"
-              onClick={props.toggle_npef}
-              aria-label="Close"
-            ></button>
+            <button type="button" className="btn-close closebtn m-auto mt-2" onClick={props.toggle_npef} aria-label="Close" ></button>
           </div>
           <div className="col-8 col-md-7 col-lg-8 col-xl-8">
             <h5 className="text-center mt-2"> New Purchase Entry </h5>

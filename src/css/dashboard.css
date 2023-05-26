@@ -406,20 +406,10 @@ body {
     margin-bottom: 30rem;
 }
 
-.allappointmentsection .payments {
-    max-width: 40rem;
-    min-width: auto;
-    margin: 0 auto;
-    z-index: 3;
-}
+
 
 .allappointmentsection .payments .scroll-y {
     max-width: 40rem;
-}
-
-.allappointmentsection .bill {
-    z-index: 3;
-    background: var(--seashell);
 }
 
 .allappointmentsection .bill .scroll {
@@ -433,15 +423,13 @@ body {
     border: 1px solid var(--burntumber);
     color: var(--burntumber);
 }
-.quickappointment{
+/* .quickappointment{
     backdrop-filter: blur(2px);
-}
+} */
 .consumables{
     margin-top:-5vh !important;
-    backdrop-filter: blur(10px) !important;
 }
 /*------------------------------------------------------------------Common css--------------------------------------------------------------*/
-
 
 /*------------------------------------------------------------------Common css--------------------------------------------------------------*/
 
