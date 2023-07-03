@@ -23,6 +23,7 @@ const Patients = lazy(() => import("./components/App/Patients"));
 const Doctors = lazy(() => import("./components/App/Doctors"));
 const DailySaleReport = lazy(() => import("./components/App/DSR"));
 const Pharmacy = lazy(() => import("./components/App/Pharmacy"));
+const Reports = lazy(() => import("./components/App/Report"));
 // import Appointments from './components/App/Clinic'
 
 //Context Apis
@@ -188,6 +189,7 @@ function Connectapp(props) {
                             <Route path="/Doctors" onChange={() => setpath("/Doctors")} element={<Doctors id={props.id} docapi={docapi} />} />
                             <Route path="/DailySaleReport" onChange={() => setpath("/DailySaleReport")} element={<DailySaleReport id={props.id} cliniclist={cliniclist} docapi={docapi} />} />
                             <Route path="/Pharmacy" onChange={() => setpath("/Pharmacy")} element={<Pharmacy id={props.id} />} />
+                            <Route path="/Reports" onChange={() => setpath("/Reports")} element={<Reports id={props.id} />} />
                             {/* <Route path='/Files' element={<Exports id={props.id} />} /> */}
                           </Routes>
                         </Suspense>
@@ -427,7 +429,7 @@ function Switchpage() {
       );
     }
   }
-  console.log(isTimeout);
+  // console.log(isTimeout);
   return Changepage();
 }
 

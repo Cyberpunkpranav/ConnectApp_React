@@ -567,7 +567,7 @@ function DoctorSchedule(props) {
                                 </button>
                                 {
                                   paymentsi == i ? (
-                                    <td className={`payments start-0 bg-seashell end-0 shadow-sm top-0 border border-1 rounded-1 col-lg-6 col-md-8 col-sm-12 col-12 mt-2 col-xl-8 position-absolute px-5 py-2 d-${paymentsi == i ? paymentsform : 'none'}`} >
+                                    <td className={`payments bg-seashell start-0 end-0 shadow-sm top-0 border border-1 rounded-1 col-lg-6 col-md-8 col-sm-12 col-12 mt-2 col-xl-8 position-absolute px-5 py-2 d-${paymentsi == i ? paymentsform : 'none'}`} >
                                       <Payments ClosePaymentsForm={ClosePaymentsForm2} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} appointmentid={data.id} patientid={data.patient && data.patient.id != null ? data.patient.id : ""} Appointmentlist={Appointmentlist} setsingleload={setsingleload} isLoading={isLoading} appointmentdata={appointmentdata} paymentsi={paymentsi} /></td>
                                   ) : (<></>)
                                 }

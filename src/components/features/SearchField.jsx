@@ -39,7 +39,7 @@ const SearchField = (props) => {
             setpatientid()
             setpatientname()
 
-            await axios.get(`http://192.168.3.186:8080/Patient/Doctors/Appointments?search=${props.searchtext}`).then((response) => {
+            await axios.get(`http://localhost:8080/Patient/Doctors/Appointments?search=${props.searchtext}`).then((response) => {
                 console.log(response)
                 setsearchlist(response.data.data.patient)
                 setsearchload(false)

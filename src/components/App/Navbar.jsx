@@ -91,7 +91,12 @@ function Navbar(props) {
             image: '/images/Pharmacy.png',
             display: props.permissions.purchase_entry_view == undefined && props.permissions.purchase_orders_view == undefined && props.permissions.purchase_return_view == undefined && props.permissions.sale_entry_view == undefined && props.permissions.sale_return_view == undefined ? 0 : 1
         },
-
+        {
+            title: 'Reports',
+            path: '/Reports',
+            image: '/images/report.png',
+            display: props.permissions.purchase_entry_view == undefined && props.permissions.purchase_orders_view == undefined && props.permissions.purchase_return_view == undefined && props.permissions.sale_entry_view == undefined && props.permissions.sale_return_view == undefined ? 0 : 1
+        },
 
     ]
 

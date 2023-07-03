@@ -62,11 +62,7 @@ function Salesection(props) {
                       className={`col-auto salebuttons d-${e.display == 1 ? "" : "none"
                         }`}
                     >
-                      <button
-                        className={`btn btn-sm rounded-pill text-${i === second ? "light" : "dark"
-                          } bg-${i === second ? "charcoal" : "seashell"}`}
-                        onClick={(a) => setSecond(i)}
-                      >
+                      <button className={`btn btn-sm rounded-pill text-${i === second ? "light" : "dark" } bg-${i === second ? "charcoal" : "seashell"}`} onClick={(a) => setSecond(i)} >
                         {e.option}
                       </button>
                     </div>
