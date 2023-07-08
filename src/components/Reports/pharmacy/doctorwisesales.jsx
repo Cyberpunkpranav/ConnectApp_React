@@ -56,7 +56,7 @@ const DoctorWiseSales = () => {
                 axios.get(`${url}/sale/entry?clinic_id=${ClinicID}&limit=25&offset=0&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`)
                     .then((response) => {
                         console.log(response);
-                        setdoctorwisesales(response.data.data.sale_entry);
+                        setdoctorwisesales(response.data.data.medicines);
                         setLoading(false);
                     })
                     .catch((e) => {

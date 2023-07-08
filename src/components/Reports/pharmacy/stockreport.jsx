@@ -11,14 +11,16 @@ import "../../../css/dashboard.css";
 import "../../../css/pharmacy.css";
 
 const StockReport = () => {
+    const clinic = useContext(Clinic)
+    console.log(clinic)
     const permission = useContext(Permissions);
     const currentDate = useContext(TodayDate);
-    const ClinicID = localStorage.getItem("ClinicId");
     const adminid = localStorage.getItem("id");
     const url = useContext(URL);
     const StockReportref = useRef();
     // const [seidw, setseidw] = useState("none");
     // const [channel, setchannel] = useState(1);
+    const [Location_Id, setLocation_Id] = useState()
     const [fromdate, setfromdate] = useState();
     const [todate, settodate] = useState();
     const [Loading, setLoading] = useState(false);
@@ -39,18 +41,14 @@ const StockReport = () => {
 
     function GetPages() {
         try {
-            axios
-                .get(
-                    `${url}/sale/entry?clinic_id=${ClinicID}&from_date=${fromdate ? fromdate : currentDate
-                    }&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`
-                )
+            axios.get(`${url}/reports/stock/report/?location_id=${Location_Id}}&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`)
                 .then((response) => {
                     setpagecount(response.data.data.total_count);
                     setpages(Math.round(response.data.data.total_count / 25) + 1);
                     setLoading(false);
                 })
                 .catch((e) => {
-                    Notiflix.Notify.warning(e);
+                    Notiflix.Notify.warning(e.message);
                     setLoading(false);
                 });
         } catch (e) {
@@ -62,14 +60,14 @@ const StockReport = () => {
         if (Data == undefined || Data.selected == undefined) {
             setLoading(true);
             try {
-                axios.get(`${url}/sale/entry?clinic_id=${ClinicID}&limit=25&offset=0&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`)
+                axios.get(`${url}/reports/stock/report/?location_id=${Location_Id}&limit=25&offset=0&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`)
                     .then((response) => {
                         console.log(response);
                         setstockreportarr(response.data.data.sale_entry);
                         setLoading(false);
                     })
                     .catch((e) => {
-                        Notiflix.Notify.warning(e);
+                        Notiflix.Notify.warning(e.message);
                         setLoading(false);
                     });
             } catch (e) {
@@ -80,11 +78,7 @@ const StockReport = () => {
             setLoading(true);
             try {
                 axios
-                    .get(
-                        `${url}/sale/entry?clinic_id=${ClinicID}&limit=25&offset=${Data.selected * 25
-                        }&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate
-                        }`
-                    )
+                    .get(`${url}/reports/stock/report/?location_id=${Location_Id}&limit=25&offset=${Data.selected * 25}&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`)
                     .then((response) => {
                         console.log(response);
                         setstockreportarr(response.data.data.sale_entry);
@@ -109,6 +103,7 @@ const StockReport = () => {
     useEffect(() => {
         GETStockReport();
     }, [pagecount]);
+    console.log(Location_Id)
     return (
         <>
             <div className="row p-0 m-0 justify-content-lg-between justify-content-md-evenly justify-content-center text-center mt-2">
@@ -117,10 +112,20 @@ const StockReport = () => {
                 </div>
                 <div className="col-lg-8 col-md-8 col-7  p-0 m-0  border-0">
                     <div className="row p-0 m-0 border-burntumber fw-bolder rounded-1">
-                        <div className="col-6 p-0 m-0 text-burntumber text-center fw-bolder bg-pearl  rounded-1 ">
+                        <div className="col-4 p-0 m-0 text-burntumber text-center fw-bolder bg-pearl  rounded-1 ">
+                            <select className="fw-bold text-burntumber border-0" onChange={(e) => { setLocation_Id(e.target.value) }}>
+                                <option value="Choose Location">Choose Location</option>
+                                {
+                                    clinic.map((data) => (
+                                        <option value={data.id}>{data.title}</option>
+                                    ))
+                                }
+                            </select>
+                        </div>
+                        <div className="col-4 p-0 m-0 text-burntumber text-center fw-bolder bg-pearl  rounded-1 ">
                             <input type="date" placeholder="fromdate" className="p-0 m-0 border-0 bg-pearl text-burntumber text-center fw-bolder " value={fromdate ? fromdate : currentDate ? currentDate : ""} onChange={(e) => { setfromdate(e.target.value); }} />
                         </div>
-                        <div className="col-6 p-0 m-0  text-burntumber text-center fw-bolder bg-pearl rounded-1">
+                        <div className="col-4 p-0 m-0  text-burntumber text-center fw-bolder bg-pearl rounded-1">
                             <input type="date" className=" p-0 m-0 border-0 bg-pearl text-burntumber text-center fw-bolder" value={todate ? todate : fromdate ? fromdate : currentDate ? currentDate : ""} onChange={(e) => { settodate(e.target.value); }} />
                         </div>
                     </div>
@@ -206,13 +211,9 @@ const StockReport = () => {
                     marginPagesDisplayed={3}
                     pageRangeDisplayed={2}
                     onPageChange={GETStockReport}
-                    containerClassName={
-                        "pagination scroll align-self-center align-items-center"
-                    }
+                    containerClassName={"pagination scroll align-self-center align-items-center"}
                     pageClassName={"page-item text-charcoal"}
-                    pageLinkClassName={
-                        "page-link text-decoration-none text-charcoal border-charcoal rounded-1 mx-1"
-                    }
+                    pageLinkClassName={"page-link text-decoration-none text-charcoal border-charcoal rounded-1 mx-1"}
                     previousClassName={"btn button-charcoal-outline me-2"}
                     previousLinkClassName={"text-decoration-none text-charcoal"}
                     nextClassName={"btn button-charcoal-outline ms-2"}

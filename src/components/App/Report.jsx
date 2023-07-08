@@ -4,6 +4,9 @@ import { URL, TodayDate, DoctorsList, Clinic, Permissions } from "../../index";
 import axios from "axios";
 import { lazy } from "react";
 // const StockReport =  lazy(() => import("./components/App/Report"));
+import { TransferIn } from '../Reports/pharmacy/TransferIn'
+import { TransferOut } from '../Reports/pharmacy/TransferOut'
+import { StockConfirmation } from '../Reports/pharmacy/stockconfirmation'
 import { DoctorWiseSales } from '../Reports/pharmacy/doctorwisesales'
 import { VendorDetails } from '../Reports/pharmacy/vendordetails'
 import { BatchDetails } from '../Reports/pharmacy/batchdetails'
@@ -17,7 +20,6 @@ import { StockReport } from '../Reports/pharmacy/stockreport'
 import { OpeningStock } from '../Reports/pharmacy/openingstock'
 import { StockValuation } from '../Reports/pharmacy/stockvaluation'
 import { StockReport_By_Name } from '../Reports/pharmacy/stockreport_by_name'
-
 //css
 import "../../css/bootstrap.css";
 import "../../css/dashboard.css";
@@ -80,8 +82,17 @@ const Reports = () => {
     if (select == 11) {
       return <BatchDetails />
     }
+    if (select == 12) {
+      return <StockConfirmation />
+    }
     if (select == 13) {
       return <DoctorWiseSales />
+    }
+    if (select == 14) {
+      return <TransferIn />
+    }
+    if (select == 15) {
+      return <TransferOut />
     }
   }
   const _selectedScreen = (_selected) => {
@@ -101,7 +112,10 @@ const Reports = () => {
             <option className="bg-seashell text-charcoal" value="9">Schedule Wise Sales</option>
             <option className="bg-seashell text-charcoal" value="10">Vendor Details</option>
             <option className="bg-seashell text-charcoal" value="11">Batch Details</option>
+            <option className="bg-seashell text-charcoal" value="12">Stock Value Confirmation</option>
             <option className="bg-seashell text-charcoal" value="13">Doctor Wise Sales</option>
+            <option className="bg-seashell text-charcoal" value="14">Transfer Stock In</option>
+            <option className="bg-seashell text-charcoal" value="15">Transfer Stock Out</option>
           </select>
           <div>{selectfunc(select)}</div>
         </>

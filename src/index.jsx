@@ -143,7 +143,7 @@ function Connectapp(props) {
   ) : ClinicId == "null" ? (
     <div className="position-relative">
       <div className="bg_a">
-        <img src={process.env.PUBLIC_URL + "/images/a.png"} alt="image" className="img-fluid bg-a" />
+        <img src={process.env.PUBLIC_URL + "/images/a.png"} alt="image" className="img-fluid bg_a" />
       </div>
       <div className=" Clinicslist position-absolute top-0 start-0 end-0 text-charcoal">
         {/* <img src={process.env.PUBLIC_URL + "/images/logo.png"} alt='image' className='img-fluid logo p-0 m-0 start-0 top-0' /> */}
@@ -255,6 +255,7 @@ function Switchpage() {
       )
       .then((response) => {
         setload(false);
+        console.log(response)
         if (response.data.status === true) {
           localStorage.setItem("email", logininput.email);
           localStorage.setItem("name", response.data.data.name);
@@ -346,10 +347,7 @@ function Switchpage() {
               </h4>
               <form autoComplete="off" onSubmit={(e) => Submit(e)}>
                 <div className="">
-                  <div
-                    className={`row d-${email} justify-content-center p-0 m-0`}
-                    id="userinput"
-                  >
+                  <div className={`row d-${email} justify-content-center p-0 m-0`} id="userinput" >
                     <div className="col-1"></div>
                     <div className="col-lg-6 col-md-8 col-sm-10 col-10 align-items-center d-flex userinput">
                       <p className="m-0 ms-1" id="inputheading"> Enter your Aartas Email ID </p>
@@ -437,4 +435,4 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(<Switchpage />);
 // ReactDOM.render(<Switchpage />, document.getElementById("root"));
 
-export { TodayDate, URL, DoctorsList, Doctorapi, TodayDocs, Vitals, Clinic, Permissions, };
+export { TodayDate, URL, DoctorsList, Doctorapi, TodayDocs, Vitals, Clinic, Permissions };

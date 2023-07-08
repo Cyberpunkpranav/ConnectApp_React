@@ -454,10 +454,10 @@ function DoctorSchedule(props) {
                       {
                         timeindex == i ? (
                           <>
-
+{/* 
                             <div className='backdrop'>
-                            </div>
-                            <div className={`d-${timeindex == i ? addappointmentform : 'none'} col-lg-8 col-md-10 col-sm-12 col-12 col-xl-6 shadow quickappointment position-absolute m-auto start-0 end-0 bg-seashell rounded-4 border border-1`} style={{ top: '-3rem' }}>
+                            </div> */}
+                            <div className={`d-${timeindex == i ? addappointmentform : 'none'} col-lg-6 col-md-10 col-sm-12 col-12 col-xl-6 shadow quickappointment position-absolute m-auto start-0 end-0 bg-seashell rounded-4 border border-1`} style={{ top: '-3rem' }}>
                               <SelectedTimeAppointment fetchapi={props.fetchapi} closeAddAppointmentform={closeAddAppointmentform} DocClinic={props.DocClinic} timeindex={timeindex} selectedtime={data[0]} selectedtimeID={data[2]} />
                             </div>
                           </>
@@ -468,7 +468,6 @@ function DoctorSchedule(props) {
 
                     </>
                   ) : (
-
                     <button disabled className=" button-sm button-charcoal50-outline m-1 px-3 py-2 rounded-1 fw-bold" key={i} style={{ letterSpacing: '1px' }}>{tConvert(data[0])}</button>
                   )
 
@@ -492,7 +491,6 @@ function DoctorSchedule(props) {
                   <th className="border-0 bg-pearl" key={2}>Patient</th>
                   <th className="border-0 bg-pearl text-start" key={1}>Status</th>
                   <th className="border-0 bg-pearl" key={4}> Amount</th>
-                  {/* <th className="border-0 bg-pearl" key={5}>Amount Status</th> */}
                   <th className="text-center border-0 bg-pearl" key={6}>Vitals</th>
                   <th className={`text-center border-0 bg-pearl d-${permission.appointment_charges_edit ? '' : 'none'}`} key={7}>Bill</th>
                   <th className="border-0 bg-pearl text-center" key={9}>Consumables</th>
@@ -567,8 +565,12 @@ function DoctorSchedule(props) {
                                 </button>
                                 {
                                   paymentsi == i ? (
-                                    <td className={`payments bg-seashell start-0 end-0 shadow-sm top-0 border border-1 rounded-1 col-lg-6 col-md-8 col-sm-12 col-12 mt-2 col-xl-8 position-absolute px-5 py-2 d-${paymentsi == i ? paymentsform : 'none'}`} >
+                                    <>
+                                         <div className="backdrop"></div>
+                                         <td className={`payments bg-seashell shadow-sm start-0 end-0 top-0 mx-auto border border-1 rounded-1 col-lg-6 col-md-8 col-sm-12 col-12 mt-2 col-xl-6 position-absolute px-5 py-2 d-${paymentsi == i ? paymentsform : 'none'}`} >
                                       <Payments ClosePaymentsForm={ClosePaymentsForm2} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} appointmentid={data.id} patientid={data.patient && data.patient.id != null ? data.patient.id : ""} Appointmentlist={Appointmentlist} setsingleload={setsingleload} isLoading={isLoading} appointmentdata={appointmentdata} paymentsi={paymentsi} /></td>
+                                    </>
+
                                   ) : (<></>)
                                 }
                               </div>
@@ -848,7 +850,7 @@ function Timecard(props) {
 
                           </div>
 
-                          <div className="d-flex mx-2 py-2">
+                          <div className="d-flex mx-2">
                             {
                               data.logout_time ? (
                                 <div id="totalhrs" className=" p-0 m-0 timediff text-burntumber fw-bold text-center pe-2" defaultValue="" style={{ fontSize: '0.75rem' }}>{data.logout_time ? diff(data.login_time, data.logout_time) : ''}</div>

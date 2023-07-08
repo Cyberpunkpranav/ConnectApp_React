@@ -5,18 +5,18 @@ import Notiflix from "notiflix";
 import ReactPaginate from "react-paginate";
 import { DownloadTableExcel } from 'react-export-table-to-excel';
 
-const BatchDetails = () => {
+const TransferOut = () => {
   const permission = useContext(Permissions);
   const currentDate = useContext(TodayDate);
   const ClinicID = localStorage.getItem("ClinicId");
   const adminid = localStorage.getItem("id");
   const url = useContext(URL);
-  const BatchDetailsref = useRef();
+  const TransferInref = useRef();
   const [searchname, setsearchname] = useState('')
   const [fromdate, setfromdate] = useState();
   const [todate, settodate] = useState();
   const [Loading, setLoading] = useState(false);
-  const [batchdetailsarr, setbatchdetailsarr] = useState([]);
+  const [transferoutarr, settransferoutarr] = useState([]);
   const [pages, setpages] = useState([]);
   const [pagecount, setpagecount] = useState();
 
@@ -44,7 +44,7 @@ const BatchDetails = () => {
       setLoading(false);
     }
   }
-  function GETBatchDetails(Data) {
+  function GETTransferOut(Data) {
     if (Data == undefined || Data.selected == undefined) {
       setLoading(true);
       try {
@@ -52,7 +52,7 @@ const BatchDetails = () => {
           .then((response) => {
             console.log(response);
             let arr = response.data.data.vaccines.concat(response.data.data.medicines)
-            setbatchdetailsarr(arr);
+            settransferoutarr(arr);
             setLoading(false);
           })
           .catch((e) => {
@@ -70,7 +70,7 @@ const BatchDetails = () => {
           .then((response) => {
             console.log(response);
             let arr = response.data.data.vaccines.concat(response.data.data.medicines)
-            setbatchdetailsarr(arr);
+            settransferoutarr(arr);
             setLoading(false);
           })
           .catch((e) => {
@@ -90,9 +90,9 @@ const BatchDetails = () => {
   }, [searchname]);
 
   useEffect(() => {
-    GETBatchDetails();
+    GETTransferOut();
   }, [pagecount]);
-  console.log(batchdetailsarr)
+  console.log(transferoutarr)
   return (
     <>
       <div className="row p-0 m-0 justify-content-lg-between justify-content-md-evenly justify-content-center text-center mt-2">
@@ -113,54 +113,43 @@ const BatchDetails = () => {
           </div>
         </div>
         <div className="col-2 p-0 m-0 export col-md-2 col-lg-2 align-self-center text-center ">
-          <DownloadTableExcel
-            filename={`${reversefunction(fromdate) + ' to ' + reversefunction(todate)} Batch Details`}
-            sheet="BatchDetails"
-            currentTableRef={BatchDetailsref.current}
-          >
+          <DownloadTableExcel filename={`${reversefunction(fromdate) + ' to ' + reversefunction(todate)} Stock transfer In`} sheet="StockTransferIn" currentTableRef={TransferInref.current} >
             <button className='btn button-lightyellow text-start p-0 m-0 px-2 fw-bold'> Export</button>
-
           </DownloadTableExcel>
         </div>
       </div>
       <div className="scroll scroll-y p-0 m-0 mt-2" style={{ minHeight: "40vh", height: "58vh", maxHeight: "70vh" }} >
-        <table className="table text-start table-responsive" ref={BatchDetailsref}>
+        <table className="table text-start table-responsive" ref={TransferInref}>
           <thead className=" p-0 m-0 position-sticky top-0 bg-pearl">
             <tr className=" ">
-              <th className="text-charcoal75 fw-bolder p-0 m-0 px-1">Item ID </th>
-              <th className="text-charcoal75 fw-bolder p-0 m-0 px-1">Item Name</th>
-              <th className="text-charcoal75 fw-bolder p-0 m-0 px-1">Batch No. </th>
-              <th className="text-charcoal75 fw-bolder p-0 m-0 px-1">Purchase Date </th>
-              <th className="text-charcoal75 fw-bolder p-0 m-0 px-1">Expiry Date </th>
+              <th className="text-charcoal75 fw-bolder p-0 m-0 px-1">Reciept Note No. </th>
+              <th className="text-charcoal75 fw-bolder p-0 m-0 px-1">Date</th>
+              <th className="text-charcoal75 fw-bolder p-0 m-0 px-1">Location Name</th>
+              <th className="text-charcoal75 fw-bolder p-0 m-0 px-1">Item name </th>
               <th className="text-charcoal75 fw-bolder p-0 m-0 px-1">Qty </th>
-              <th className="text-charcoal75 fw-bolder p-0 m-0 px-1">MRP </th>
-              <th className="text-charcoal75 fw-bolder p-0 m-0 px-1">Cost </th>
+              <th className="text-charcoal75 fw-bolder p-0 m-0 px-1">Batch</th>
+              <th className="text-charcoal75 fw-bolder p-0 m-0 px-1">Expiry </th>
+              <th className="text-charcoal75 fw-bolder p-0 m-0 px-1">Taxable </th>
+              <th className="text-charcoal75 fw-bolder p-0 m-0 px-1">Tax Rate</th>
+              <th className="text-charcoal75 fw-bolder p-0 m-0 px-1">Total </th>
             </tr>
           </thead>
           {Loading ? (
-            <tbody
-              className="text-center"
-              style={{ minHeight: "55vh", height: "55vh" }}
-            >
+            <tbody className="text-center" style={{ minHeight: "55vh", height: "55vh" }} >
               <tr className="position-absolute border-0 start-0 end-0 px-5">
                 <div class="d-flex align-items-center spinner">
-                  <strong className="" style={{ fontSize: "1rem" }}>
-                    Getting Details please be Patient ...
-                  </strong>
-                  <div
-                    className="spinner-border ms-auto"
-                    role="status"
-                    aria-hidden="true"
-                  ></div>
+                  <strong className="" style={{ fontSize: "1rem" }}> Getting Details please be Patient ... </strong>
+                  <div className="spinner-border ms-auto" role="status" aria-hidden="true" ></div>
                 </div>
               </tr>
             </tbody>
-          ) : batchdetailsarr && batchdetailsarr.length != 0 ? (
+          ) : transferoutarr && transferoutarr.length != 0 ? (
             <tbody>
-              {batchdetailsarr.map((item, i) => (
+              {transferoutarr.map((item, i) => (
                 <tr className={` bg-${i % 2 == 0 ? "seashell" : "pearl"} align-middle`} key={i} >
-                  <td className="text-charcoal fw-bold">{item.id?item.id:''} </td>
-                  <td className="text-charcoal fw-bold">{item.name?item.name:''}</td>
+                  <td className="text-charcoal fw-bold"> </td>
+                  <td className="text-charcoal fw-bold"></td>
+                  <td className="text-charcoal fw-bold"> </td>
                   <td className="text-charcoal fw-bold"> </td>
                   <td className="text-charcoal fw-bold"> </td>
                   <td className="text-charcoal fw-bold"> </td>
@@ -174,7 +163,7 @@ const BatchDetails = () => {
           ) : (
             <tbody className="text-center p-0 m-0" style={{ minHeight: "55vh", maxHeight: "55vh" }} >
               <div className="position-absolute border-0 start-0 end-0 mx-3 p-2">
-                <strong className="text-charcoal fw-bolder text-center"> No Batch Details </strong>
+                <strong className="text-charcoal fw-bolder text-center"> No Stocks Transfers Out </strong>
               </div>
             </tbody>
           )}
@@ -188,7 +177,7 @@ const BatchDetails = () => {
           pageCount={pages}
           marginPagesDisplayed={3}
           pageRangeDisplayed={2}
-          onPageChange={GETBatchDetails}
+          onPageChange={GETTransferOut}
           containerClassName={
             "pagination scroll align-self-center align-items-center"
           }
@@ -209,4 +198,4 @@ const BatchDetails = () => {
   )
 }
 
-export { BatchDetails }
+export { TransferOut }

@@ -62,7 +62,7 @@ function Salesection(props) {
                       className={`col-auto salebuttons d-${e.display == 1 ? "" : "none"
                         }`}
                     >
-                      <button className={`btn btn-sm rounded-pill text-${i === second ? "light" : "dark" } bg-${i === second ? "charcoal" : "seashell"}`} onClick={(a) => setSecond(i)} >
+                      <button className={`btn btn-sm rounded-pill text-${i === second ? "light" : "dark"} bg-${i === second ? "charcoal" : "seashell"}`} onClick={(a) => setSecond(i)} >
                         {e.option}
                       </button>
                     </div>
@@ -1913,7 +1913,7 @@ function SaleEntryForm(props) {
   // console.log(itembyid)
   // console.log(itemsearch)
   return (
- 
+
 
     <div className="container-fluid p-0 m-0">
       <div className="position-relative mb-3">
@@ -2244,7 +2244,7 @@ function SaleEntryForm(props) {
         </div>
       </div>
     </div>
-    
+
   );
 }
 function NewSaleReturnentryform(props) {
@@ -4446,10 +4446,7 @@ function Newpurchaseentryform(props) {
       if (MedicineentriesArr == undefined || MedicineentriesArr.length == 0) {
         setMedicineentriesArr([MedicineentriesObj]);
       } else {
-        setMedicineentriesArr((prevState) => [
-          ...prevState,
-          MedicineentriesObj,
-        ]);
+        setMedicineentriesArr((prevState) => [ ...prevState, MedicineentriesObj, ]);
       }
     } else {
       Notiflix.Notify.warning("please choose quantity");
@@ -4576,21 +4573,21 @@ function Newpurchaseentryform(props) {
       sgst.push(
         MedicineentriesArr[i].sgst ? Number(MedicineentriesArr[i].sgst) : ""
       );
-      sgstpercent.push( MedicineentriesArr[i].sgstper ? Number(MedicineentriesArr[i].sgstper) : 0 );
-      cgst.push( MedicineentriesArr[i].cgst ? Number(MedicineentriesArr[i].cgst) : "" );
-      cgstpercent.push( MedicineentriesArr[i].cgstper ? Number(MedicineentriesArr[i].cgstper) : 0 );
-      igst.push( MedicineentriesArr[i].igst ? Number(MedicineentriesArr[i].igst) : "" );
-      igstpercent.push( MedicineentriesArr[i].igstper ? Number(MedicineentriesArr[i].igstper) : 0 );
-      costperunit.push( MedicineentriesArr[i].costperunit ? Number(MedicineentriesArr[i].costperunit) : "" );
-      totalamount.push( MedicineentriesArr[i].totalamount ? Number(MedicineentriesArr[i].totalamount) : "" );
-      quantity.push( MedicineentriesArr[i].Qty ? Number(MedicineentriesArr[i].Qty) : "" );
-      freequantity.push( MedicineentriesArr[i].freeQty ? Number(MedicineentriesArr[i].freeQty) : 0 );
+      sgstpercent.push(MedicineentriesArr[i].sgstper ? Number(MedicineentriesArr[i].sgstper) : 0);
+      cgst.push(MedicineentriesArr[i].cgst ? Number(MedicineentriesArr[i].cgst) : "");
+      cgstpercent.push(MedicineentriesArr[i].cgstper ? Number(MedicineentriesArr[i].cgstper) : 0);
+      igst.push(MedicineentriesArr[i].igst ? Number(MedicineentriesArr[i].igst) : "");
+      igstpercent.push(MedicineentriesArr[i].igstper ? Number(MedicineentriesArr[i].igstper) : 0);
+      costperunit.push(MedicineentriesArr[i].costperunit ? Number(MedicineentriesArr[i].costperunit) : "");
+      totalamount.push(MedicineentriesArr[i].totalamount ? Number(MedicineentriesArr[i].totalamount) : "");
+      quantity.push(MedicineentriesArr[i].Qty ? Number(MedicineentriesArr[i].Qty) : "");
+      freequantity.push(MedicineentriesArr[i].freeQty ? Number(MedicineentriesArr[i].freeQty) : 0);
     }
 
     totalamount.forEach((item) => {
       grosstotal += Number(item);
     });
-    console.log( Is_consumable, grosstotal, Type, MedId, medname, batches, expirydate, manufacturingDate, MRP, Rate, Discount, tradeDiscount, sgst, sgstpercent, cgst, cgstpercent, igst, igstpercent, costperunit, totalamount, quantity, freequantity );
+    console.log(Is_consumable, grosstotal, Type, MedId, medname, batches, expirydate, manufacturingDate, MRP, Rate, Discount, tradeDiscount, sgst, sgstpercent, cgst, cgstpercent, igst, igstpercent, costperunit, totalamount, quantity, freequantity);
     var Data = { distributor_id: vendorid, purchase_order_id: po, invoice_no: invoice, bill_date: invoicedate, clinic_id: ClinicId, channel: channel, is_consumable: Is_consumable, bill_total: grosstotal, id: MedId, type: Type, qty: quantity, free_qty: freequantity, mrp: MRP, rate: Rate, trade_discount: tradeDiscount, discount: Discount, SGST_rate: sgstpercent, SGST: sgst, CGST_rate: cgstpercent, CGST: cgst, IGST_rate: igstpercent, IGST: igst, cost: costperunit, total_amount: totalamount, expiry_date: expirydate, mfd_date: manufacturingDate, batch_no: batches, };
     setload(true);
     try {
@@ -5018,26 +5015,11 @@ function Newpurchaseentryform(props) {
                 </div>
               </div>
             ) : (
-              <button
-                disabled={
-                  MedicineentriesArr == undefined ||
-                    (MedicineentriesArr && MedicineentriesArr.length == 0)
-                    ? true
-                    : false
-                }
-                className="button button-charcoal"
-                onClick={() => {
-                  confirmmessage(MedicineentriesArr, vendorname);
-                }}
-              >
-                Save All
-              </button>
+              <button disabled={ MedicineentriesArr == undefined || (MedicineentriesArr && MedicineentriesArr.length == 0) ? true : false } className="button button-charcoal" onClick={() => { confirmmessage(MedicineentriesArr, vendorname); }} > Save All </button>
             )}
           </div>
           <div className="col-auto">
-            <button className="button button-burntumber" onClick={ClearFields}>
-              Clear All
-            </button>
+            <button className="button button-burntumber" onClick={ClearFields}> Clear All </button>
           </div>
         </div>
       </div>
@@ -5237,10 +5219,7 @@ function Newpurchaseentryform(props) {
               style={{ maxHeight: "50vh", Height: "50vh" }}
             >
               <table className="table m-0 datatable bg-pearl text-start position-relative">
-                <thead
-                  className=" bg-pearl position-sticky top-0"
-                  style={{ color: "gray", fontWeight: "600" }}
-                >
+                <thead className=" bg-pearl position-sticky top-0" style={{ color: "gray", fontWeight: "600" }} >
                   <tr>
                     <th>Edit</th>
                     <th>Item ID</th>
@@ -5258,30 +5237,10 @@ function Newpurchaseentryform(props) {
                   </tr>
                 </thead>
                 {MedicineentriesArr ? (
-                  <tbody
-                    style={{
-                      Height: "48vh",
-                      maxHeight: "48vh",
-                      color: "var(--charcoal)",
-                      fontWeight: "600",
-                    }}
-                  >
+                  <tbody style={{ Height: "48vh", maxHeight: "48vh", color: "var(--charcoal)", fontWeight: "600", }} >
                     {MedicineentriesArr.map((item, _key) => (
-                      <tr
-                        key={_key}
-                        className={`bg-${_key % 2 == 0 ? "lightred50" : "pearl"
-                          }`}
-                      >
-                        <td>
-                          <input
-                            type="checkbox"
-                            checked={_key == tableindex ? true : false}
-                            onClick={() => {
-                              indexing(_key);
-                            }}
-                            className="bg-seashell form-check-input"
-                          />
-                        </td>
+                      <tr key={_key} className={`bg-${_key % 2 == 0 ? "lightred50" : "pearl" }`} >
+                        <td><input type="checkbox" checked={_key == tableindex ? true : false} onClick={() => { indexing(_key); }} className="bg-seashell form-check-input" /> </td>
                         <td>{item.Itemid}</td>
                         <td>{item.Itemname}</td>
                         {/* <td>{reversefunction(item.manufacturingDate)}</td> */}
@@ -5309,35 +5268,15 @@ function Newpurchaseentryform(props) {
                     ))}
                   </tbody>
                 ) : MedicineentriesArr && MedicineentriesArr.length == 0 ? (
-                  <tbody
-                    className="position-relative bg-pearl text-center"
-                    style={{
-                      height: "48vh",
-                      maxHeight: "48vh",
-                      color: "var(--charcoal)",
-                      fontWeight: "600",
-                    }}
-                  >
+                  <tbody className="position-relative bg-pearl text-center" style={{ height: "48vh", maxHeight: "48vh", color: "var(--charcoal)", fontWeight: "600", }} >
                     <tr>
-                      <td className="position-absolute start-0 end-0 top-0">
-                        No items Added
-                      </td>
+                      <td className="position-absolute start-0 end-0 top-0"> No items Added </td>
                     </tr>
                   </tbody>
                 ) : (
-                  <tbody
-                    className="position-relative bg-pearl text-center"
-                    style={{
-                      height: "48vh",
-                      maxHeight: "48vh",
-                      color: "var(--charcoal)",
-                      fontWeight: "600",
-                    }}
-                  >
+                  <tbody className="position-relative bg-pearl text-center" style={{ height: "48vh", maxHeight: "48vh", color: "var(--charcoal)", fontWeight: "600", }} >
                     <tr className="">
-                      <td className="position-absolute start-0 end-0 top-0">
-                        No items Added
-                      </td>
+                      <td className="position-absolute start-0 end-0 top-0"> No items Added </td>
                     </tr>
                   </tbody>
                 )}
@@ -5345,11 +5284,7 @@ function Newpurchaseentryform(props) {
             </div>
           </div>
           <div
-            className={`col-4 m-0 p-0 scroll scroll-y border border-1 medicineinfosection d-${vendorid ? "block" : "none"
-              } bg-seashell ps-2`}
-            id="medicineinfosection"
-            style={{ maxHeight: "81vh", Height: "81vh" }}
-          >
+            className={`col-4 m-0 p-0 scroll scroll-y border border-1 medicineinfosection d-${vendorid ? "block" : "none" } bg-seashell ps-2`} id="medicineinfosection" style={{ maxHeight: "81vh", Height: "81vh" }} >
             <h5 className="mt-2">Add Items</h5>
             <div className="col-12">
               <input
@@ -5364,22 +5299,10 @@ function Newpurchaseentryform(props) {
               <div className=" col-10 col-md-11">
                 <div className="position-relative">
                   <label>Search Items </label>
-                  <input
-                    className="form-control bg-seashell"
-                    placeholder="Items"
-                    value={itemname ? itemname : ""}
-                    onChange={(e) => {
-                      searchmeds(e.target.value);
-                      setitemname(e.target.value);
-                      setitemtype();
-                    }}
-                  />
-                  <div
-                    ref={medicinesref}
-                    className="position-absolute rounded-4 col-12"
-                    style={{ zIndex: "2" }}
-                  >
-                    {itemsearch ? (
+                  <input className="form-control bg-seashell" placeholder="Items" value={itemname ? itemname : ""} onChange={(e) => { searchmeds(e.target.value); setitemname(e.target.value); setitemtype(); }} />
+                  <div ref={medicinesref} className="position-absolute rounded-4 col-12" style={{ zIndex: "2" }} >
+                    {
+                    itemsearch ? (
                       loadsearch ? (
                         <div className="rounded-1 p-1 bg-pearl">
                           Searching Please wait....
@@ -5396,38 +5319,11 @@ function Newpurchaseentryform(props) {
                           Oops! Not Avaliable
                         </div>
                       ) : (
-                        <div
-                          className={`mt-1 rounded-4 bg-pearl shadow px-1 pb-2 d-${itemsearch && itemsearch.length > 1
-                            ? "block"
-                            : "none"
-                            }`}
-                        >
-                          <p
-                            className={`p-0 m-0 bg-pearl fw-bold text-charcoal75 rounded-4 ps-2 `}
-                            style={{ fontSize: "0.8rem" }}
-                          >
-                            {itemsearch.length} Search Results
-                          </p>
+                        <div className={`mt-1 rounded-4 bg-pearl shadow px-1 pb-2 d-${itemsearch && itemsearch.length > 1 ? "block" : "none" }`} >
+                          <p className={`p-0 m-0 bg-pearl fw-bold text-charcoal75 rounded-4 ps-2 `} style={{ fontSize: "0.8rem" }} > {itemsearch.length} Search Results </p>
                           {itemsearch.map((data, i) => (
-                            <div
-                              style={{ cursor: "pointer" }}
-                              className={`p-0 ps-1 text-wrap  bg-${i % 2 == 0 ? "" : "lightyellow"
-                                }`}
-                              name={data.id}
-                              onClick={(e) => {
-                                setitemname(
-                                  data.display_name
-                                    ? data.display_name
-                                    : data.name
-                                );
-                                setitemid(data.id);
-                                setitemtype(data.vaccines_id ? "v" : "m");
-                                medicinesref.current.style.display = "none";
-                              }}
-                            >
-                              {data.display_name
-                                ? data.display_name
-                                : data.name}
+                            <div style={{ cursor: "pointer" }} className={`p-0 ps-1 text-wrap  bg-${i % 2 == 0 ? "" : "lightyellow" }`} name={data.id} onClick={(e) => { setitemname( data.display_name ? data.display_name : data.name ); setitemid(data.id); setitemtype(data.vaccines_id ? "v" : "m"); medicinesref.current.style.display = "none"; }} >
+                              {data.display_name ? data.display_name : data.name}
                             </div>
                           ))}
                         </div>
@@ -7376,24 +7272,7 @@ function Stockvaccinesection() {
       }
     }
   };
-  // const GetVaccines = async () => {
-  //   setload(true)
-  //   try {
-  //     axios.get(`${url}/stock/list?search=${searchname}&limit=${pagecount}&offset=0`).then((response) => {
-  //       console.log(response.data.data)
-  //       setvaccineslist(response.data.data.vaccines)
 
-  //       setload(false)
-  //     }).catch(function error(e) {
-  //       Notiflix.Notify.failure(e.message)
-  //       setload(false)
-  //     })
-  //   } catch (e) {
-  //     Notiflix.Notify.failure(e.message)
-  //     setload(false)
-  //   }
-
-  // }
   const reversefunction = (date) => {
     if (date) {
       date = date.split("-").reverse().join("-");
@@ -7465,27 +7344,7 @@ function Stockvaccinesection() {
       }
     }
   };
-  // const Do_Pagination = (Data) => {
-  //   let limit = 10;
-  //   let arr = []
-  //   let previous = 0
-  //   let next = limit
-  //   if (Data == undefined || Data.selected == undefined) {
-  //     for (var i = 0; i < limit; i++) {
-  //       arr.push(vaccinearr[i]);
-  //     }
-  //   } else {
-  //     console.log(Data.selected)
-  //     Data.selected = Number(Data.selected)
-  //     previous = ((Data.selected + 1) * limit)
-  //     next = (Data.selected + 2 * limit)
-  //     for (var i = previous; i < next; i++) {
-  //       arr.push(vaccinearr[i]);
-  //     }
-  //     console.log(arr)
-  //   }
 
-  // }
 
   const CalculateTStock = (totalarr) => {
     if (totalarr !== undefined) {
@@ -7828,11 +7687,7 @@ function Stockmedicinesection() {
     } else {
       setload(true);
       try {
-        axios
-          .get(
-            `${url}/stock/list?search=${searchname}&limit=10&offset=${Data.selected * 10
-            }`
-          )
+        axios.get(`${url}/stock/list?search=${searchname}&limit=10&offset=${Data.selected * 10}`)
           .then((response) => {
             setmedicineslist(response.data.data.medicines);
             setload(false);
@@ -7855,18 +7710,10 @@ function Stockmedicinesection() {
         let medicineobj = {
           id: medicineslist[i].id ? medicineslist[i].id : "",
           name: medicineslist[i].name ? medicineslist[i].name : "",
-          manufacturer: medicineslist[i].manufacturer
-            ? medicineslist[i].manufacturer
-            : "",
-          max_stock_count: medicineslist[i].max_stock_count
-            ? medicineslist[i].max_stock_count
-            : "",
-          alert_stock_count: medicineslist[i].alert_stock_count
-            ? medicineslist[i].alert_stock_count
-            : "",
-          min_stock_count: medicineslist[i].min_stock_count
-            ? medicineslist[i].min_stock_count
-            : "",
+          manufacturer: medicineslist[i].manufacturer ? medicineslist[i].manufacturer : "",
+          max_stock_count: medicineslist[i].max_stock_count ? medicineslist[i].max_stock_count : "",
+          alert_stock_count: medicineslist[i].alert_stock_count ? medicineslist[i].alert_stock_count : "",
+          min_stock_count: medicineslist[i].min_stock_count ? medicineslist[i].min_stock_count : "",
         };
         console.log(medicineobj);
         if (medicinearr == undefined && medicinearr.length == 0) {
@@ -7889,81 +7736,31 @@ function Stockmedicinesection() {
           let medicineobj = {
             id: medicineslist[i].id ? medicineslist[i].id : "",
             name: medicineslist[i].name ? medicineslist[i].name : "",
-            manufacturer: medicineslist[i].manufacturer
-              ? medicineslist[i].manufacturer
-              : "",
-            max_stock_count: medicineslist[i].max_stock_count
-              ? medicineslist[i].max_stock_count
-              : "",
-            alert_stock_count: medicineslist[i].alert_stock_count
-              ? medicineslist[i].alert_stock_count
-              : "",
-            min_stock_count: medicineslist[i].min_stock_count
-              ? medicineslist[i].min_stock_count
-              : "",
-            CGST: medicineslist[i].stock_info[j].CGST
-              ? medicineslist[i].stock_info[j].CGST
-              : "",
-            CGST_rate: medicineslist[i].stock_info[j].CGST_rate
-              ? medicineslist[i].stock_info[j].CGST_rate
-              : "",
-            IGST: medicineslist[i].stock_info[j].IGST
-              ? medicineslist[i].stock_info[j].IGST
-              : "",
-            IGST_rate: medicineslist[i].stock_info[j].IGST_rate
-              ? medicineslist[i].stock_info[j].IGST_rate
-              : "",
-            SGST: medicineslist[i].stock_info[j].SGST
-              ? medicineslist[i].stock_info[j].SGST
-              : "",
-            SGST_rate: medicineslist[i].stock_info[j].SGST_rate
-              ? medicineslist[i].stock_info[j].SGST_rate
-              : "",
-            batch_no: medicineslist[i].stock_info[j].batch_no
-              ? medicineslist[i].stock_info[j].batch_no
-              : "",
-            channel: medicineslist[i].stock_info[j].channel
-              ? medicineslist[i].stock_info[j].channel
-              : "",
-            cost: medicineslist[i].stock_info[j].cost
-              ? medicineslist[i].stock_info[j].cost
-              : "",
-            current_stock: medicineslist[i].stock_info[j].current_stock
-              ? medicineslist[i].stock_info[j].current_stock
-              : "",
-            discount: medicineslist[i].stock_info[j].discount
-              ? medicineslist[i].stock_info[j].discount
-              : "",
-            expiry_date: medicineslist[i].stock_info[j].expiry_date
-              ? medicineslist[i].stock_info[j].expiry_date
-              : "",
-            free_qty: medicineslist[i].stock_info[j].free_qty
-              ? medicineslist[i].stock_info[j].free_qty
-              : "",
-            Batch_stock_id: medicineslist[i].stock_info[j].id
-              ? medicineslist[i].stock_info[j].id
-              : "",
-            mfd_date: medicineslist[i].stock_info[j].mfd_date
-              ? medicineslist[i].stock_info[j].mfd_date
-              : "",
-            mrp: medicineslist[i].stock_info[j].mrp
-              ? medicineslist[i].stock_info[j].mrp
-              : "",
-            purchase_entry_id: medicineslist[i].stock_info[j].purchase_entry_id
-              ? medicineslist[i].stock_info[j].purchase_entry_id
-              : "",
-            qty: medicineslist[i].stock_info[j].qty
-              ? medicineslist[i].stock_info[j].qty
-              : "",
-            rate: medicineslist[i].stock_info[j].rate
-              ? medicineslist[i].stock_info[j].rate
-              : "",
-            trade_discount: medicineslist[i].stock_info[j].trade_discount
-              ? medicineslist[i].stock_info[j].trade_discount
-              : "",
-            total_amount: medicineslist[i].stock_info[j].total_amount
-              ? medicineslist[i].stock_info[j].total_amount
-              : "",
+            manufacturer: medicineslist[i].manufacturer ? medicineslist[i].manufacturer : "",
+            max_stock_count: medicineslist[i].max_stock_count ? medicineslist[i].max_stock_count : "",
+            alert_stock_count: medicineslist[i].alert_stock_count ? medicineslist[i].alert_stock_count : "",
+            min_stock_count: medicineslist[i].min_stock_count ? medicineslist[i].min_stock_count : "",
+            CGST: medicineslist[i].stock_info[j].CGST ? medicineslist[i].stock_info[j].CGST : "",
+            CGST_rate: medicineslist[i].stock_info[j].CGST_rate ? medicineslist[i].stock_info[j].CGST_rate : "",
+            IGST: medicineslist[i].stock_info[j].IGST ? medicineslist[i].stock_info[j].IGST : "",
+            IGST_rate: medicineslist[i].stock_info[j].IGST_rate ? medicineslist[i].stock_info[j].IGST_rate : "",
+            SGST: medicineslist[i].stock_info[j].SGST ? medicineslist[i].stock_info[j].SGST : "",
+            SGST_rate: medicineslist[i].stock_info[j].SGST_rate ? medicineslist[i].stock_info[j].SGST_rate : "",
+            batch_no: medicineslist[i].stock_info[j].batch_no ? medicineslist[i].stock_info[j].batch_no : "",
+            channel: medicineslist[i].stock_info[j].channel ? medicineslist[i].stock_info[j].channel : "",
+            cost: medicineslist[i].stock_info[j].cost ? medicineslist[i].stock_info[j].cost : "",
+            current_stock: medicineslist[i].stock_info[j].current_stock ? medicineslist[i].stock_info[j].current_stock : "",
+            discount: medicineslist[i].stock_info[j].discount ? medicineslist[i].stock_info[j].discount : "",
+            expiry_date: medicineslist[i].stock_info[j].expiry_date ? medicineslist[i].stock_info[j].expiry_date : "",
+            free_qty: medicineslist[i].stock_info[j].free_qty ? medicineslist[i].stock_info[j].free_qty : "",
+            Batch_stock_id: medicineslist[i].stock_info[j].id ? medicineslist[i].stock_info[j].id : "",
+            mfd_date: medicineslist[i].stock_info[j].mfd_date ? medicineslist[i].stock_info[j].mfd_date : "",
+            mrp: medicineslist[i].stock_info[j].mrp ? medicineslist[i].stock_info[j].mrp : "",
+            purchase_entry_id: medicineslist[i].stock_info[j].purchase_entry_id ? medicineslist[i].stock_info[j].purchase_entry_id : "",
+            qty: medicineslist[i].stock_info[j].qty ? medicineslist[i].stock_info[j].qty : "",
+            rate: medicineslist[i].stock_info[j].rate ? medicineslist[i].stock_info[j].rate : "",
+            trade_discount: medicineslist[i].stock_info[j].trade_discount ? medicineslist[i].stock_info[j].trade_discount : "",
+            total_amount: medicineslist[i].stock_info[j].total_amount ? medicineslist[i].stock_info[j].total_amount : "",
             totalstock: totalcurrentstockarr ? totalcurrentstockarr : "",
             Days_to_expire: ExpireDays ? ExpireDays : "",
           };
