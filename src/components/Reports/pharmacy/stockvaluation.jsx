@@ -13,13 +13,14 @@ import "../../../css/pharmacy.css";
 const StockValuation = () => {
     const permission = useContext(Permissions);
     const currentDate = useContext(TodayDate);
-    const ClinicID = localStorage.getItem("ClinicId");
+    const clinic = useContext(Clinic)
     const adminid = localStorage.getItem("id");
     const url = useContext(URL);
     const StockValuationref = useRef();
     // const [seidw, setseidw] = useState("none");
     // const [channel, setchannel] = useState(1);
     const [itemname, setitemname] = useState()
+    const [Location_Id, setLocation_Id] = useState()
     const [fromdate, setfromdate] = useState();
     const [todate, settodate] = useState();
     const [Loading, setLoading] = useState(false);
@@ -40,18 +41,14 @@ const StockValuation = () => {
 
     function GetPages() {
         try {
-            axios
-                .get(
-                    `${url}/sale/entry?clinic_id=${ClinicID}&from_date=${fromdate ? fromdate : currentDate
-                    }&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`
-                )
+            axios.get(`${url}/reports/stock/report?location_id=${Location_Id}&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`)
                 .then((response) => {
-                    setpagecount(response.data.data.total_count);
-                    setpages(Math.round(response.data.data.total_count / 25) + 1);
+                    setpagecount(response.data.data.count);
+                    setpages(Math.round(response.data.data.count / 25) + 1);
                     setLoading(false);
                 })
                 .catch((e) => {
-                    Notiflix.Notify.warning(e);
+                    Notiflix.Notify.warning(e.message);
                     setLoading(false);
                 });
         } catch (e) {
@@ -63,14 +60,13 @@ const StockValuation = () => {
         if (Data == undefined || Data.selected == undefined) {
             setLoading(true);
             try {
-                axios.get(`${url}/sale/entry?clinic_id=${ClinicID}&limit=25&offset=0&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`)
+                axios.get(`${url}/reports/stock/report?location_id=${Location_Id}&limit=25&offset=0&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`)
                     .then((response) => {
                         console.log(response);
-                        setstockvaluationarr(response.data.data.sale_entry);
+                        setstockvaluationarr(response.data.data.medicine);
                         setLoading(false);
-                    })
-                    .catch((e) => {
-                        Notiflix.Notify.warning(e);
+                    }).catch((e) => {
+                        Notiflix.Notify.warning(e.message);
                         setLoading(false);
                     });
             } catch (e) {
@@ -80,17 +76,11 @@ const StockValuation = () => {
         } else {
             setLoading(true);
             try {
-                axios
-                    .get(
-                        `${url}/sale/entry?clinic_id=${ClinicID}&limit=25&offset=${Data.selected * 25
-                        }&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate
-                        }`
-                    )
-                    .then((response) => {
-                        console.log(response);
-                        setstockvaluationarr(response.data.data.sale_entry);
-                        setLoading(false);
-                    })
+                axios.get(`${url}/reports/stock/report?location_id=${Location_Id}&limit=25&offset=${Data.selected * 25}&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`).then((response) => {
+                    console.log(response);
+                    setstockvaluationarr(response.data.data.medicine);
+                    setLoading(false);
+                })
                     .catch((e) => {
                         Notiflix.Notify.warning(e);
                         setLoading(false);
@@ -110,6 +100,11 @@ const StockValuation = () => {
     useEffect(() => {
         GETStockValuation();
     }, [pagecount]);
+    const parentArray = Object.keys(stockvaluationarr).map(key => ({
+        id: key,
+        ...stockvaluationarr[key]
+    }));
+    console.log(parentArray);
     return (
         <>
             <div className="row p-0 m-0 justify-content-lg-between justify-content-md-evenly justify-content-center text-center mt-2">
@@ -118,10 +113,20 @@ const StockValuation = () => {
                 </div>
                 <div className="col-lg-8 col-md-8 col-7  p-0 m-0  border-0">
                     <div className="row p-0 m-0 border-burntumber fw-bolder rounded-1">
-                        <div className="col-6 p-0 m-0 text-burntumber text-center fw-bolder bg-pearl  rounded-1 ">
+                        <div className="col-4 p-0 m-0 text-burntumber text-center fw-bolder bg-pearl  rounded-1 ">
+                            <select className="fw-bold text-burntumber border-0" onChange={(e) => { setLocation_Id(e.target.value) }}>
+                                <option value="Choose Location">Choose Location</option>
+                                {
+                                    clinic.map((data) => (
+                                        <option value={data.id}>{data.title}</option>
+                                    ))
+                                }
+                            </select>
+                        </div>
+                        <div className="col-4 p-0 m-0 text-burntumber text-center fw-bolder bg-pearl  rounded-1 ">
                             <input type="date" placeholder="fromdate" className="p-0 m-0 border-0 bg-pearl text-burntumber text-center fw-bolder " value={fromdate ? fromdate : currentDate ? currentDate : ""} onChange={(e) => { setfromdate(e.target.value); }} />
                         </div>
-                        <div className="col-6 p-0 m-0  text-burntumber text-center fw-bolder bg-pearl rounded-1">
+                        <div className="col-4 p-0 m-0  text-burntumber text-center fw-bolder bg-pearl rounded-1">
                             <input type="date" className=" p-0 m-0 border-0 bg-pearl text-burntumber text-center fw-bolder" value={todate ? todate : fromdate ? fromdate : currentDate ? currentDate : ""} onChange={(e) => { settodate(e.target.value); }} />
                         </div>
                     </div>
@@ -170,17 +175,18 @@ const StockValuation = () => {
                         </tbody>
                     ) : stockvaluationarr && stockvaluationarr.length != 0 ? (
                         <tbody>
-                            {stockvaluationarr.map((item, i) => (
-                                <tr className={` bg-${i % 2 == 0 ? "seashell" : "pearl"} align-middle`} key={i} >
-                                    <td className="text-charcoal fw-bold">  </td>
-                                    <td className="text-charcoal fw-bold"> </td>
-                                    <td className="text-charcoal fw-bold"> </td>
-                                    <td className="text-charcoal fw-bold"> </td>
-                                    <td className="text-charcoal fw-bold"> </td>
-                                    <td className="text-charcoal fw-bold"> </td>
-                                    <td className="text-charcoal fw-bold"> </td>
-                                </tr>
-                            ))}
+                            {
+                                parentArray.map((item, i) => (
+                                    <tr className={` bg-${i % 2 == 0 ? "seashell" : "pearl"} align-middle`} key={i} >
+                                        <td className="text-charcoal fw-bold">{item.id != undefined ? item.id : ''} </td>
+                                        <td className="text-charcoal fw-bold">{item.item_name != undefined ? item.item_name : ''}</td>
+                                        <td className="text-charcoal fw-bold"> </td>
+                                        <td className="text-charcoal fw-bold">{item.batch != undefined ? item.batch : ''} </td>
+                                        <td className="text-charcoal fw-bold">{item.closing_qty != undefined ? item.closing_qty : ""} </td>
+                                        <td className="text-charcoal fw-bold">{item.rate != undefined ? item.rate : ""} </td>
+                                        <td className="text-charcoal fw-bold">{item.rate != undefined && item.closing_qty != undefined ? Number(item.rate) * Number(item.closing_qty) : ''} </td>
+                                    </tr>
+                                ))}
                         </tbody>
                     ) : (
                         <tbody className="text-center p-0 m-0" style={{ minHeight: "55vh", maxHeight: "55vh" }} >

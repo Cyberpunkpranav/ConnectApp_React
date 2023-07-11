@@ -28,8 +28,8 @@ const StockReport_By_Name = () => {
     //search meds
     const [itemsearch, setitemsearch] = useState([""]);
     const [itemname, setitemname] = useState();
-    const [itemid, setitemid] = useState();
-    const [itemtype, setitemtype] = useState();
+    const [itemid, setitemid] = useState('');
+    const [itemtype, setitemtype] = useState('');
     const [loadsearch, setloadsearch] = useState();
 
     const reversefunction = (date) => {
@@ -39,39 +39,39 @@ const StockReport_By_Name = () => {
         }
     }
 
-    function GetPages() {
-        try {
-            axios
-                .get(
-                    `${url}/sale/entry?clinic_id=${ClinicID}&from_date=${fromdate ? fromdate : currentDate
-                    }&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`
-                )
-                .then((response) => {
-                    setpagecount(response.data.data.total_count);
-                    setpages(Math.round(response.data.data.total_count / 25) + 1);
-                    setLoading(false);
-                })
-                .catch((e) => {
-                    Notiflix.Notify.warning(e);
-                    setLoading(false);
-                });
-        } catch (e) {
-            Notiflix.Notify.warning(e.message);
-            setLoading(false);
-        }
-    }
+    // function GetPages() {
+    //     if (itemid && itemtype && itemid !== undefined && itemtype !== undefined) {
+    //     try {
+    //         axios.get(`${url}/reports/stock/report/by/item?item_id=${itemid}&item_type=${itemtype}&from=${fromdate ? fromdate : currentDate}&to=${todate ? todate : fromdate ? fromdate : currentDate}`)
+    //             .then((response) => {
+    //                 setpagecount(response.data.data.count);
+    //                 setpages(Math.round(response.data.data.count / 25) + 1);
+    //                 setLoading(false);
+    //             })
+    //             .catch((e) => {
+    //                 Notiflix.Notify.warning(e.message);
+    //                 setLoading(false);
+    //             });
+    //     } catch (e) {
+    //         Notiflix.Notify.warning(e.message);
+    //         setLoading(false);
+    //     }
+    //     }
+    // }
     function GETStockReport(Data) {
+        // if (itemid && itemtype && itemid !== undefined && itemtype !== undefined) {
+
         if (Data == undefined || Data.selected == undefined) {
             setLoading(true);
             try {
-                axios.get(`${url}/reports/stock/report/by/item?item_id=${itemid}&item_type=${itemtype}&from=${fromdate ? fromdate : currentDate}&to=${todate ? todate : fromdate ? fromdate : currentDate}`)
+                axios.get(`${url}/reports/stock/report/by/item?item_id=${itemid ? itemid : ''}&item_type=${itemtype ? itemtype : ''}&from=${fromdate ? fromdate : currentDate}&to=${todate ? todate : fromdate ? fromdate : currentDate}`)
                     .then((response) => {
                         console.log(response);
-                        setstockreportarr(response.data.data.sale_entry);
+                        setstockreportarr(response.data.data.medicine);
                         setLoading(false);
                     })
                     .catch((e) => {
-                        Notiflix.Notify.warning(e);
+                        Notiflix.Notify.warning(e.message);
                         setLoading(false);
                     });
             } catch (e) {
@@ -81,14 +81,14 @@ const StockReport_By_Name = () => {
         } else {
             setLoading(true);
             try {
-                axios.get(`${url}/sale/entry?clinic_id=${ClinicID}&limit=25&offset=${Data.selected * 25}&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`)
+                axios.get(`${url}/reports/stock/report/by/item?item_id=${itemid}&item_type=${itemtype}&from=${fromdate ? fromdate : currentDate}&to=${todate ? todate : fromdate ? fromdate : currentDate}`)
                     .then((response) => {
                         console.log(response);
                         setstockreportarr(response.data.data.sale_entry);
                         setLoading(false);
                     })
                     .catch((e) => {
-                        Notiflix.Notify.warning(e);
+                        Notiflix.Notify.warning(e.message);
                         setLoading(false);
                     });
             } catch (e) {
@@ -96,26 +96,23 @@ const StockReport_By_Name = () => {
                 setLoading(false);
             }
         }
+        // } else {
+        //     Notiflix.Notify.info('Please Select Item to get the stock report')
+        // }
     }
 
     const searchmeds = async (search) => {
         setloadsearch(true);
         try {
-            await axios
-                .get(`${url}/item/search?search=${search}`)
+            await axios.get(`${url}/item/search?search=${search}`)
                 .then((response) => {
                     let medicines = [];
                     let vaccines = [];
                     let items = [];
-                    medicines.push(
-                        response.data.data.medicines ? response.data.data.medicines : []
-                    );
-                    vaccines.push(
-                        response.data.data.vaccines ? response.data.data.vaccines : []
-                    );
+                    medicines.push(response.data.data.medicines ? response.data.data.medicines : []);
+                    vaccines.push(response.data.data.vaccines ? response.data.data.vaccines : []);
                     items = medicines.concat(vaccines);
                     items = items.flat();
-                    console.log(items);
                     setitemsearch(items);
                     setloadsearch(false);
                     if (search.length > 1) {
@@ -128,13 +125,18 @@ const StockReport_By_Name = () => {
             Notiflix.Notify.warning(e.data.message);
         }
     };
-    useEffect(() => {
-        GetPages();
-    }, [itemid, fromdate, todate]);
+    // useEffect(() => {
+    //     GetPages();
+    // }, [itemid, fromdate, todate]);
 
     useEffect(() => {
         GETStockReport();
-    }, [pagecount]);
+    }, [itemid, fromdate, todate]);
+    console.log(itemid, itemtype, currentDate, stockreportarr)
+    const parentArray = Object.keys(stockreportarr).map(key => ({
+        id: key,
+        ...stockreportarr[key]
+    }));
     return (
         <>
             <div className="row p-0 m-0 justify-content-lg-between justify-content-md-evenly justify-content-center text-center mt-2">
@@ -209,10 +211,7 @@ const StockReport_By_Name = () => {
                         </tr>
                     </thead>
                     {Loading ? (
-                        <tbody
-                            className="text-center"
-                            style={{ minHeight: "55vh", height: "55vh" }}
-                        >
+                        <tbody className="text-center" style={{ minHeight: "55vh", height: "55vh" }} >
                             <tr className="position-absolute border-0 start-0 end-0 px-5">
                                 <div class="d-flex align-items-center spinner">
                                     <strong className="" style={{ fontSize: "1rem" }}>
@@ -228,10 +227,10 @@ const StockReport_By_Name = () => {
                         </tbody>
                     ) : stockreportarr && stockreportarr.length != 0 ? (
                         <tbody>
-                            {stockreportarr.map((item, i) => (
+                            {parentArray.map((item, i) => (
                                 <tr className={` bg-${i % 2 == 0 ? "seashell" : "pearl"} align-middle`} key={i} >
-                                    <td className="text-charcoal fw-bold">  </td>
                                     <td className="text-charcoal fw-bold"> </td>
+                                    <td className="text-charcoal fw-bold">{itemtype} </td>
                                     <td className="text-charcoal fw-bold"> </td>
                                     <td className="text-charcoal fw-bold"> </td>
                                     <td className="text-charcoal fw-bold"> </td>
@@ -260,13 +259,9 @@ const StockReport_By_Name = () => {
                     marginPagesDisplayed={3}
                     pageRangeDisplayed={2}
                     onPageChange={GETStockReport}
-                    containerClassName={
-                        "pagination scroll align-self-center align-items-center"
-                    }
+                    containerClassName={"pagination scroll align-self-center align-items-center"}
                     pageClassName={"page-item text-charcoal"}
-                    pageLinkClassName={
-                        "page-link text-decoration-none text-charcoal border-charcoal rounded-1 mx-1"
-                    }
+                    pageLinkClassName={"page-link text-decoration-none text-charcoal border-charcoal rounded-1 mx-1"}
                     previousClassName={"btn button-charcoal-outline me-2"}
                     previousLinkClassName={"text-decoration-none text-charcoal"}
                     nextClassName={"btn button-charcoal-outline ms-2"}

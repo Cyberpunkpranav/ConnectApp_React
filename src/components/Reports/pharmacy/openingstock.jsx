@@ -8,11 +8,11 @@ import { DownloadTableExcel } from 'react-export-table-to-excel';
 const OpeningStock = () => {
     const permission = useContext(Permissions);
     const currentDate = useContext(TodayDate);
-    const ClinicID = localStorage.getItem("ClinicId");
+    const clinic = useContext(Clinic)
     const adminid = localStorage.getItem("id");
     const url = useContext(URL);
     const OpeningStockref = useRef();
-
+    const [Location_Id, setLocation_Id] = useState()
     const [fromdate, setfromdate] = useState();
     const [todate, settodate] = useState();
     const [Loading, setLoading] = useState(false);
@@ -29,18 +29,14 @@ const OpeningStock = () => {
 
     function GetPages() {
         try {
-            axios
-                .get(
-                    `${url}/sale/entry?clinic_id=${ClinicID}&from_date=${fromdate ? fromdate : currentDate
-                    }&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`
-                )
+            axios.get(`${url}/reports/stock/report?location_id=${Location_Id}&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`)
                 .then((response) => {
-                    setpagecount(response.data.data.total_count);
-                    setpages(Math.round(response.data.data.total_count / 25) + 1);
+                    setpagecount(response.data.data.count);
+                    setpages(Math.round(response.data.data.count / 25) + 1);
                     setLoading(false);
                 })
                 .catch((e) => {
-                    Notiflix.Notify.warning(e);
+                    Notiflix.Notify.warning(e.message);
                     setLoading(false);
                 });
         } catch (e) {
@@ -52,14 +48,13 @@ const OpeningStock = () => {
         if (Data == undefined || Data.selected == undefined) {
             setLoading(true);
             try {
-                axios.get(`${url}/sale/entry?clinic_id=${ClinicID}&limit=25&offset=0&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`)
+                axios.get(`${url}/reports/stock/report?location_id=${Location_Id}&limit=25&offset=0&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`)
                     .then((response) => {
                         console.log(response);
-                        setopeningstockarr(response.data.data.sale_entry);
+                        setopeningstockarr(response.data.data.medicine);
                         setLoading(false);
-                    })
-                    .catch((e) => {
-                        Notiflix.Notify.warning(e);
+                    }).catch((e) => {
+                        Notiflix.Notify.warning(e.message);
                         setLoading(false);
                     });
             } catch (e) {
@@ -69,17 +64,11 @@ const OpeningStock = () => {
         } else {
             setLoading(true);
             try {
-                axios
-                    .get(
-                        `${url}/sale/entry?clinic_id=${ClinicID}&limit=25&offset=${Data.selected * 25
-                        }&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate
-                        }`
-                    )
-                    .then((response) => {
-                        console.log(response);
-                        setopeningstockarr(response.data.data.sale_entry);
-                        setLoading(false);
-                    })
+                axios.get(`${url}/reports/stock/report?location_id=${Location_Id}&limit=25&offset=${Data.selected * 25}&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`).then((response) => {
+                    console.log(response);
+                    setopeningstockarr(response.data.data.medicine);
+                    setLoading(false);
+                })
                     .catch((e) => {
                         Notiflix.Notify.warning(e);
                         setLoading(false);
@@ -94,11 +83,16 @@ const OpeningStock = () => {
 
     useEffect(() => {
         GetPages();
-    }, [fromdate, todate]);
+    }, [Location_Id, fromdate, todate]);
 
     useEffect(() => {
         GETOpeningStock();
     }, [pagecount]);
+
+    const parentArray = Object.keys(openingstockarr).map(key => ({
+        id: key,
+        ...openingstockarr[key]
+    }));
     return (
         <>
             <div className="row p-0 m-0 justify-content-lg-between justify-content-md-evenly justify-content-center text-center mt-2">
@@ -107,10 +101,20 @@ const OpeningStock = () => {
                 </div>
                 <div className="col-lg-8 col-md-8 col-7  p-0 m-0  border-0">
                     <div className="row p-0 m-0 border-burntumber fw-bolder rounded-1">
-                        <div className="col-6 p-0 m-0 text-burntumber text-center fw-bolder bg-pearl  rounded-1 ">
+                        <div className="col-4 p-0 m-0 text-burntumber text-center fw-bolder bg-pearl  rounded-1 ">
+                            <select className="fw-bold text-burntumber border-0" onChange={(e) => { setLocation_Id(e.target.value) }}>
+                                <option value="Choose Location">Choose Location</option>
+                                {
+                                    clinic.map((data) => (
+                                        <option value={data.id}>{data.title}</option>
+                                    ))
+                                }
+                            </select>
+                        </div>
+                        <div className="col-4 p-0 m-0 text-burntumber text-center fw-bolder bg-pearl  rounded-1 ">
                             <input type="date" placeholder="fromdate" className="p-0 m-0 border-0 bg-pearl text-burntumber text-center fw-bolder " value={fromdate ? fromdate : currentDate ? currentDate : ""} onChange={(e) => { setfromdate(e.target.value); }} />
                         </div>
-                        <div className="col-6 p-0 m-0  text-burntumber text-center fw-bolder bg-pearl rounded-1">
+                        <div className="col-4 p-0 m-0  text-burntumber text-center fw-bolder bg-pearl rounded-1">
                             <input type="date" className=" p-0 m-0 border-0 bg-pearl text-burntumber text-center fw-bolder" value={todate ? todate : fromdate ? fromdate : currentDate ? currentDate : ""} onChange={(e) => { settodate(e.target.value); }} />
                         </div>
                     </div>
@@ -160,10 +164,10 @@ const OpeningStock = () => {
                         </tbody>
                     ) : openingstockarr && openingstockarr.length != 0 ? (
                         <tbody>
-                            {openingstockarr.map((item, i) => (
+                            {parentArray.map((item, i) => (
                                 <tr className={` bg-${i % 2 == 0 ? "seashell" : "pearl"} align-middle`} key={i} >
-                                    <td className="text-charcoal fw-bold">  </td>
-                                    <td className="text-charcoal fw-bold"> </td>
+                                    <td className="text-charcoal fw-bold">{item.id != undefined ? item.id : ''} </td>
+                                    <td className="text-charcoal fw-bold">{item.item_name != undefined ? item.item_name : ''}</td>
                                     <td className="text-charcoal fw-bold"> </td>
                                     <td className="text-charcoal fw-bold"> </td>
                                     <td className="text-charcoal fw-bold"> </td>

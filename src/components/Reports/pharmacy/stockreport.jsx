@@ -41,10 +41,10 @@ const StockReport = () => {
 
     function GetPages() {
         try {
-            axios.get(`${url}/reports/stock/report/?location_id=${Location_Id}}&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`)
+            axios.get(`${url}/reports/stock/report?location_id=${Location_Id}&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`)
                 .then((response) => {
-                    setpagecount(response.data.data.total_count);
-                    setpages(Math.round(response.data.data.total_count / 25) + 1);
+                    setpagecount(response.data.data.count);
+                    setpages(Math.round(response.data.data.count / 25) + 1);
                     setLoading(false);
                 })
                 .catch((e) => {
@@ -60,13 +60,12 @@ const StockReport = () => {
         if (Data == undefined || Data.selected == undefined) {
             setLoading(true);
             try {
-                axios.get(`${url}/reports/stock/report/?location_id=${Location_Id}&limit=25&offset=0&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`)
+                axios.get(`${url}/reports/stock/report?location_id=${Location_Id}&limit=25&offset=0&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`)
                     .then((response) => {
                         console.log(response);
-                        setstockreportarr(response.data.data.sale_entry);
+                        setstockreportarr(response.data.data.medicine);
                         setLoading(false);
-                    })
-                    .catch((e) => {
+                    }).catch((e) => {
                         Notiflix.Notify.warning(e.message);
                         setLoading(false);
                     });
@@ -77,13 +76,11 @@ const StockReport = () => {
         } else {
             setLoading(true);
             try {
-                axios
-                    .get(`${url}/reports/stock/report/?location_id=${Location_Id}&limit=25&offset=${Data.selected * 25}&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`)
-                    .then((response) => {
-                        console.log(response);
-                        setstockreportarr(response.data.data.sale_entry);
-                        setLoading(false);
-                    })
+                axios.get(`${url}/reports/stock/report?location_id=${Location_Id}&limit=25&offset=${Data.selected * 25}&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`).then((response) => {
+                    console.log(response);
+                    setstockreportarr(response.data.data.medicine);
+                    setLoading(false);
+                })
                     .catch((e) => {
                         Notiflix.Notify.warning(e);
                         setLoading(false);
@@ -98,12 +95,17 @@ const StockReport = () => {
 
     useEffect(() => {
         GetPages();
-    }, [fromdate, todate]);
+    }, [Location_Id, fromdate, todate]);
 
     useEffect(() => {
         GETStockReport();
     }, [pagecount]);
-    console.log(Location_Id)
+    const parentArray = Object.keys(stockreportarr).map(key => ({
+        id: key,
+        ...stockreportarr[key]
+    }));
+    console.log(parentArray);
+
     return (
         <>
             <div className="row p-0 m-0 justify-content-lg-between justify-content-md-evenly justify-content-center text-center mt-2">
@@ -178,20 +180,21 @@ const StockReport = () => {
                         </tbody>
                     ) : stockreportarr && stockreportarr.length != 0 ? (
                         <tbody>
-                            {stockreportarr.map((item, i) => (
-                                <tr className={` bg-${i % 2 == 0 ? "seashell" : "pearl"} align-middle`} key={i} >
-                                    <td className="text-charcoal fw-bold">  </td>
-                                    <td className="text-charcoal fw-bold"> </td>
-                                    <td className="text-charcoal fw-bold"> </td>
-                                    <td className="text-charcoal fw-bold"> </td>
-                                    <td className="text-charcoal fw-bold"> </td>
-                                    <td className="text-charcoal fw-bold"> </td>
-                                    <td className="text-charcoal fw-bold"> </td>
-                                    <td className="text-charcoal fw-bold"> </td>
-                                    <td className="text-charcoal fw-bold"> </td>
-                                    <td className="text-charcoal fw-bold"> </td>
-                                </tr>
-                            ))}
+                            {
+                                parentArray.map((key, i) => (
+                                    <tr className={` bg-${i % 2 == 0 ? "seashell" : "pearl"} align-middle`} key={i} >
+                                        <td className="text-charcoal fw-bold">{key.id != undefined ? key.id : ''} </td>
+                                        <td className="text-charcoal fw-bold">{key.item_name != undefined ? key.item_name : ''} </td>
+                                        <td className="text-charcoal fw-bold">{key.opening_qty != undefined ? key.opening_qty : ''} </td>
+                                        <td className="text-charcoal fw-bold">{key.opening_value != undefined ? key.opening_value : ''}</td>
+                                        <td className="text-charcoal fw-bold">{key.purchase_qty != undefined ? key.purchase_qty : ''} </td>
+                                        <td className="text-charcoal fw-bold">{key.purchase_value != undefined ? key.purchase_value : ''} </td>
+                                        <td className="text-charcoal fw-bold">{key.sale_qty != undefined ? key.sale_qty : ''} </td>
+                                        <td className="text-charcoal fw-bold">{key.sale_value != undefined ? key.sale_value : ''}</td>
+                                        <td className="text-charcoal fw-bold">{key.closing_qty != undefined ? key.closing_qty : ''} </td>
+                                        <td className="text-charcoal fw-bold">{key.closing_value != undefined ? key.closing_value : ''}</td>
+                                    </tr>
+                                ))}
                         </tbody>
                     ) : (
                         <tbody className="text-center p-0 m-0" style={{ minHeight: "55vh", maxHeight: "55vh" }} >
