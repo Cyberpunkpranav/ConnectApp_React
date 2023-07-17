@@ -70,7 +70,7 @@ const OpeningStock = () => {
                     setLoading(false);
                 })
                     .catch((e) => {
-                        Notiflix.Notify.warning(e);
+                        Notiflix.Notify.warning(e.message);
                         setLoading(false);
                     });
             } catch (e) {

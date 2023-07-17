@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { Link, useLocation } from "react-router-dom"
 import { useState, useEffect, useContext } from "react";
-// import { w3cwebsocket as websocket } from 'websocket'
+import { w3cwebsocket as websocket } from 'websocket'
 
 //Context APIs
 import { Permissions } from '../../index'
@@ -14,6 +14,7 @@ import { AddAppointment } from '../Today/AddAppointment'
 
 
 function Navbar(props) {
+    const chatinputref = useRef()
     //Use States
     const [patientform, setpatientform] = useState("none");
     const [appointmentform, setappointmentform] = useState("none");
@@ -29,7 +30,8 @@ function Navbar(props) {
             setpatientform("none");
         }
     };
-
+    const [openchat, setopenchat] = useState()
+    const [chatarr, setchat] = useState([])
 
     const toggleappointmentform = () => {
         if (appointmentform === "none") {
@@ -102,8 +104,34 @@ function Navbar(props) {
 
     //Searchfield input
     const [searchtext, setsearchtext] = useState()
-    // onClick={togglelogoutbtn}
-    // d-${props.logoutbtn} 
+
+    var socket = new WebSocket('ws://localhost:8080/Chat')
+
+    const sendmessage = () => {
+        let JsonData = {
+            action: '',
+            username: props.username
+        }
+        socket.onopen = () => {
+            console.log("Connection Successfully")
+            socket.send(JsonData)
+        }
+        socket.onclose = () => {
+            console.log("Connection Closed")
+        }
+        socket.onerror = (error) => {
+            console.log(error)
+        }
+        socket.onmessage = (msg) => {
+            console.log(JSON.parse(msg.data))
+        }
+
+
+
+    }
+
+    console.log(chatarr)
+
     return (
         <>
             <div className="navsection p-0 m-0 py-1">
@@ -178,20 +206,20 @@ function Navbar(props) {
                 )
             }
 
-            {/* <div className="position-absolute bottom-0 end-0 me-5 mb-3 d-block" style={{ zIndex: 1000 }}>
-          <button className={`btn p-0 m-0 d-${openchat == 'block' ? 'none' : 'block'}`} onClick={() => { openchat == 'none' ? setopenchat('block') : setopenchat('none') }}><img src={process.env.PUBLIC_URL + 'images/chat.png'} style={{ width: '2.5rem' }} /></button>
-          <div className={`container d-${openchat == 'none' ? 'none' : 'block'}`}>
-            <div className="bg-lightgreen border border-1 rounded-1 overflow-scroll" style={{ maxHeight: '15rem' }}>
-              {
-                chatarr.flat().map((data) => (
-                  <div className="text-end me-2">{data}</div>
-                ))}</div>
-            <button className="btn btn-close" onClick={() => { openchat == 'none' ? setopenchat('block') : setopenchat('none') }}></button>
-            <input className="bg-seashell rounded-1 border border-1" ref={chatinputref} onBlur={(e) => { setchat(e.target.value) }} />
-            <button className="btn p-0 m-0" onClick={sendmessage}><img src={process.env.PUBLIC_URL + 'images/completed.png'} style={{ width: '1.8rem' }} /></button>
-          </div>
-  
-        </div> */}
+            <div className="position-absolute bottom-0 end-0 me-5 mb-3 d-block" style={{ zIndex: 1000 }}>
+                <button className={`btn p-0 m-0 d-${openchat == 'block' ? 'none' : 'block'}`} onClick={() => { openchat == 'none' ? setopenchat('block') : setopenchat('none') }}><img src={process.env.PUBLIC_URL + 'images/chat.png'} style={{ width: '2.5rem' }} /></button>
+                <div className={`container d-${openchat == 'none' ? 'none' : 'block'}`}>
+                    {/* <div className="bg-lightgreen border border-1 rounded-1 overflow-scroll" style={{ maxHeight: '15rem' }}>
+                        {
+                            chatarr.map((data) => (
+                                <div className="text-end me-2">{data}</div>
+                            ))}</div> */}
+                    <button className="btn btn-close" onClick={() => { openchat == 'none' ? setopenchat('block') : setopenchat('none') }}></button>
+                    <input className="bg-seashell rounded-1 border border-1" ref={chatinputref} onBlur={(e) => { setchat(e.target.value) }} />
+                    <button className="btn p-0 m-0" onClick={() => { sendmessage() }}><img src={process.env.PUBLIC_URL + 'images/completed.png'} style={{ width: '1.8rem' }} /></button>
+                </div>
+
+            </div>
         </>
     );
 }
