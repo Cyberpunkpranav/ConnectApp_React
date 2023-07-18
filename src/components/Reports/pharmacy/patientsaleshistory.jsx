@@ -20,65 +20,53 @@ const PatientSalesHistory = () => {
     const [patientsalehistoryarr, setpatientsalehistoryarr] = useState([]);
     const [pages, setpages] = useState([]);
     const [pagecount, setpagecount] = useState();
-
+    const [patientid, setpatientid] = useState()
+    const [searchinput, setsearchinput] = useState()
+    const [searchlist, setsearchlist] = useState([])
+    const [displaysearchlist, setdisplaysearchlist] = useState('none')
+    const [searchload, setsearchload] = useState(false)
     const reversefunction = (date) => {
         if (date) {
             date = date.split("-").reverse().join("-");
             return date;
         }
     };
+    // https://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/api/connect/reports/sales/patient?from_date=2023-01-01&to_date=2023-06-01&patient_id=3647
 
-    function GetPages() {
-        try {
-            axios
-                .get(
-                    `${url}/sale/entry?clinic_id=${ClinicID}&from_date=${fromdate ? fromdate : currentDate
-                    }&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`
-                )
-                .then((response) => {
-                    setpagecount(response.data.data.total_count);
-                    setpages(Math.round(response.data.data.total_count / 25) + 1);
-                    setLoading(false);
-                })
-                .catch((e) => {
-                    Notiflix.Notify.warning(e);
-                    setLoading(false);
-                });
-        } catch (e) {
-            Notiflix.Notify.warning(e.message);
-            setLoading(false);
-        }
-    }
-    function GETPatientSalesHistory(Data) {
-        if (Data == undefined || Data.selected == undefined) {
-            setLoading(true);
-            try {
-                axios.get(`${url}/sale/entry?clinic_id=${ClinicID}&limit=25&offset=0&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`)
-                    .then((response) => {
-                        console.log(response);
-                        setpatientsalehistoryarr(response.data.data.sale_entry);
-                        setLoading(false);
-                    })
-                    .catch((e) => {
-                        Notiflix.Notify.warning(e);
-                        setLoading(false);
-                    });
-            } catch (e) {
-                Notiflix.Notify.warning(e.message);
-                setLoading(false);
-            }
+    const searchpatient = (e) => {
+        setsearchload(true)
+        if (searchinput && searchinput.length >= 0) {
+            setdisplaysearchlist('block');
         } else {
+            setdisplaysearchlist('none');
+        }
+        setsearchinput(e.target.value)
+        axios.get(`${url}/patient/list?search=${searchinput}&limit=5&offset=0`).then((response) => {
+            setsearchlist(response.data.data.patients_list)
+            setsearchload(false)
+        })
+
+    }
+    const get_value = async (value, name) => {
+        console.log(value, name)
+        setsearchinput(value);
+        setpatientid(name);
+        setdisplaysearchlist('none');
+
+    }
+    function GETPatientSalesHistory() {
+        if (patientid) {
+
             setLoading(true);
             try {
-                axios
-                    .get(
-                        `${url}/sale/entry?clinic_id=${ClinicID}&limit=25&offset=${Data.selected * 25
-                        }&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate
-                        }`
-                    )
+                axios.get(`${url}/reports/sales/patient?&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}&patient_id=${patientid}`)
                     .then((response) => {
                         console.log(response);
-                        setpatientsalehistoryarr(response.data.data.sale_entry);
+                        const parentArray = Object.keys(response.data.data.sales).map(key => ({
+                            patient_id: key,
+                            ...patientsalehistoryarr[key]
+                        }));
+                        setpatientsalehistoryarr(parentArray);
                         setLoading(false);
                     })
                     .catch((e) => {
@@ -89,17 +77,18 @@ const PatientSalesHistory = () => {
                 Notiflix.Notify.warning(e.message);
                 setLoading(false);
             }
+
+        } else {
+            Notiflix.Notify.info("Type patient name to search")
         }
     }
 
-
-    useEffect(() => {
-        GetPages();
-    }, [patientname, fromdate, todate]);
-
+    console.log(displaysearchlist, searchinput, searchlist)
     useEffect(() => {
         GETPatientSalesHistory();
-    }, [pagecount]);
+
+    }, [patientid, fromdate, todate]);
+
     return (
         <>
             <div className="row p-0 m-0 justify-content-lg-between justify-content-md-evenly justify-content-center text-center mt-2">
@@ -108,8 +97,29 @@ const PatientSalesHistory = () => {
                 </div>
                 <div className="col-lg-8 col-md-8 col-7  p-0 m-0  border-0">
                     <div className="row p-0 m-0 border-burntumber fw-bolder rounded-1">
-                        <div className="col-4 p-0 m-0 text-burntumber text-center fw-bolder bg-pearl  rounded-1 ">
-                            <input type="text" placeholder="patient name" className="p-0 m-0 border-0 bg-pearl text-burntumber text-center fw-bolder " value={patientname ? patientname : ""} onChange={(e) => { setpatientname(e.target.value); }} />
+                        <div className="col-4 p-0 m-0 text-burntumber text-center fw-bolder bg-pearl  rounded-1 position-relative ">
+                            <input type="text" className="form-control p-0 m-0 selectpatient border-0 position-relative text-center text-burntumber fw-bold" value={searchinput ? searchinput : ''} onChange={searchpatient} />
+                            <div className={`w-100 d-${displaysearchlist} position-absolute top-10 mt-2 border shadow-sm`} style={{ zIndex: '10' }}>
+                                {
+                                    searchload ? (
+                                        <p className="btn text-charcoal75 fw-bold bg-pearl rounded-2  p-0 m-0 ps-1">Loading... </p>
+                                    ) : (
+                                        searchinput && searchlist.length == 0 ? (
+                                            <p className="text-danger btn bg-lightred p-0 m-0">Patient not found add as new user to book appointements</p>
+                                        ) : (
+                                            <div className="p-2 bg-pearl">
+                                                {
+                                                    searchlist.map((data) => (
+                                                        <div style={{ cursor: 'pointer' }} className='col-12 d-block p-0 m-0 ms-1 border-0 bg-pearl py-1 border-bottom text-charcoal text-start border border-1' onClick={(e) => get_value(data.full_name, data.id)}>{data.full_name}  {data.phone_number}</div>
+                                                    ))
+                                                }
+                                            </div>
+
+                                        )
+                                    )
+
+                                }
+                            </div>
                         </div>
                         <div className="col-4 p-0 m-0 text-burntumber text-center fw-bolder bg-pearl  rounded-1 ">
                             <input type="date" placeholder="fromdate" className="p-0 m-0 border-0 bg-pearl text-burntumber text-center fw-bolder " value={fromdate ? fromdate : currentDate ? currentDate : ""} onChange={(e) => { setfromdate(e.target.value); }} />
@@ -188,31 +198,7 @@ const PatientSalesHistory = () => {
                     )}
                 </table>
             </div>
-            <div className="container-fluid mt-2 d-flex justify-content-center">
-                <ReactPaginate
-                    previousLabel={"Previous"}
-                    nextLabel={"Next"}
-                    breakLabel={"."}
-                    pageCount={pages}
-                    marginPagesDisplayed={3}
-                    pageRangeDisplayed={2}
-                    onPageChange={GETPatientSalesHistory}
-                    containerClassName={
-                        "pagination scroll align-self-center align-items-center"
-                    }
-                    pageClassName={"page-item text-charcoal"}
-                    pageLinkClassName={
-                        "page-link text-decoration-none text-charcoal border-charcoal rounded-1 mx-1"
-                    }
-                    previousClassName={"btn button-charcoal-outline me-2"}
-                    previousLinkClassName={"text-decoration-none text-charcoal"}
-                    nextClassName={"btn button-charcoal-outline ms-2"}
-                    nextLinkClassName={"text-decoration-none text-charcoal"}
-                    breakClassName={"d-flex mx-2 text-charcoal fw-bold fs-4"}
-                    breakLinkClassName={"text-decoration-none text-charcoal"}
-                    activeClassName={"active"}
-                />
-            </div>
+
         </>
     )
 }

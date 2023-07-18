@@ -40,11 +40,12 @@ const StockReport = () => {
     };
 
     function GetPages() {
+        setLoading(true);
         try {
             axios.get(`${url}/reports/stock/report?location_id=${Location_Id}&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`)
                 .then((response) => {
                     setpagecount(response.data.data.count);
-                    setpages(Math.round(response.data.data.count / 25) + 1);
+                    setpages(Math.round(response.data.data.count / 10) + 1);
                     setLoading(false);
                 })
                 .catch((e) => {
@@ -60,7 +61,7 @@ const StockReport = () => {
         if (Data == undefined || Data.selected == undefined) {
             setLoading(true);
             try {
-                axios.get(`${url}/reports/stock/report?location_id=${Location_Id}&limit=25&offset=0&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`)
+                axios.get(`${url}/reports/stock/report?location_id=${Location_Id}&limit=10&offset=0&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`)
                     .then((response) => {
                         console.log(response);
                         setstockreportarr(response.data.data.medicine);
@@ -76,7 +77,7 @@ const StockReport = () => {
         } else {
             setLoading(true);
             try {
-                axios.get(`${url}/reports/stock/report?location_id=${Location_Id}&limit=25&offset=${Data.selected * 25}&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`).then((response) => {
+                axios.get(`${url}/reports/stock/report?location_id=${Location_Id}&limit=10&offset=${Data.selected * 25}&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`).then((response) => {
                     console.log(response);
                     setstockreportarr(response.data.data.medicine);
                     setLoading(false);
