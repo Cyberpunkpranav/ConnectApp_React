@@ -28,11 +28,12 @@ const OpeningStock = () => {
     };
 
     function GetPages() {
+        setLoading(true);
         try {
             axios.get(`${url}/reports/stock/report?location_id=${Location_Id}&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`)
                 .then((response) => {
                     setpagecount(response.data.data.count);
-                    setpages(Math.round(response.data.data.count / 25) + 1);
+                    setpages(Math.round(response.data.data.count / 10) + 1);
                     setLoading(false);
                 })
                 .catch((e) => {
@@ -48,10 +49,26 @@ const OpeningStock = () => {
         if (Data == undefined || Data.selected == undefined) {
             setLoading(true);
             try {
-                axios.get(`${url}/reports/stock/report?location_id=${Location_Id}&limit=25&offset=0&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`)
+                axios.get(`${url}/reports/stock/report?location_id=${Location_Id}&limit=10&offset=0&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`)
                     .then((response) => {
                         console.log(response);
-                        setopeningstockarr(response.data.data.medicine);
+                        let medicines = []
+                        let vaccines = []
+                        let dataarr = []
+                        const medicinearr = Object.keys(response.data.data.medicine).map(key => ({
+                            medicine_id: key,
+                            ...response.data.data.medicine[key]
+                        }));
+                        medicines.push(medicinearr)
+                        const vaccinearr = Object.keys(response.data.data.vaccine).map(key => ({
+                            vaccine_id: key,
+                            ...response.data.data.vaccine[key]
+                        }));
+                        vaccines.push(vaccinearr)
+                        dataarr.push(medicines)
+                        dataarr.push(vaccines)
+                        dataarr = dataarr.flat()
+                        setopeningstockarr(dataarr.flat());
                         setLoading(false);
                     }).catch((e) => {
                         Notiflix.Notify.warning(e.message);
@@ -64,7 +81,7 @@ const OpeningStock = () => {
         } else {
             setLoading(true);
             try {
-                axios.get(`${url}/reports/stock/report?location_id=${Location_Id}&limit=25&offset=${Data.selected * 25}&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`).then((response) => {
+                axios.get(`${url}/reports/stock/report?location_id=${Location_Id}&limit=25&offset=${Data.selected * 10}&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`).then((response) => {
                     console.log(response);
                     setopeningstockarr(response.data.data.medicine);
                     setLoading(false);
@@ -93,6 +110,7 @@ const OpeningStock = () => {
         id: key,
         ...openingstockarr[key]
     }));
+    console.log(pagecount, pages, openingstockarr)
     return (
         <>
             <div className="row p-0 m-0 justify-content-lg-between justify-content-md-evenly justify-content-center text-center mt-2">
@@ -169,11 +187,11 @@ const OpeningStock = () => {
                                     <td className="text-charcoal fw-bold">{item.id != undefined ? item.id : ''} </td>
                                     <td className="text-charcoal fw-bold">{item.item_name != undefined ? item.item_name : ''}</td>
                                     <td className="text-charcoal fw-bold"> </td>
-                                    <td className="text-charcoal fw-bold"> </td>
-                                    <td className="text-charcoal fw-bold"> </td>
-                                    <td className="text-charcoal fw-bold"> </td>
-                                    <td className="text-charcoal fw-bold"> </td>
-                                    <td className="text-charcoal fw-bold"> </td>
+                                    <td className="text-charcoal fw-bold">{item.distributor != undefined ? item.distributor : ''} </td>
+                                    <td className="text-charcoal fw-bold">{item.batch != undefined ? item.batch : ''} </td>
+                                    <td className="text-charcoal fw-bold">{item.opening_qty != undefined ? item.opening_qty : ''}</td>
+                                    <td className="text-charcoal fw-bold">{item.rate != undefined ? Number(item.rate).toFixed(2) : ''} </td>
+                                    <td className="text-charcoal fw-bold"> {item.rate != undefined && item.opening_qty != undefined ? (Number(item.opening_qty) * Number(item.rate)).toFixed(2) : ''}</td>
                                 </tr>
                             ))}
                         </tbody>

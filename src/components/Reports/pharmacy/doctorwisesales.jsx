@@ -20,6 +20,8 @@ const DoctorWiseSales = () => {
     const [doctorwisesales, setdoctorwisesales] = useState([]);
     const [pages, setpages] = useState([]);
     const [pagecount, setpagecount] = useState();
+    const [doctorid, setdoctorid] = useState()
+    const docnames = useContext(DoctorsList)
 
     const reversefunction = (date) => {
         if (date) {
@@ -27,58 +29,32 @@ const DoctorWiseSales = () => {
             return date;
         }
     };
+    // https://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/api/connect/reports/sales/doctor?from_date=2023-01-01&to_date=2023-06-01&doctor_id=1
 
-    function GetPages() {
-        try {
-            axios
-                .get(
-                    `${url}/sale/entry?clinic_id=${ClinicID}&from_date=${fromdate ? fromdate : currentDate
-                    }&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`
-                )
-                .then((response) => {
-                    setpagecount(response.data.data.total_count);
-                    setpages(Math.round(response.data.data.total_count / 25) + 1);
-                    setLoading(false);
-                })
-                .catch((e) => {
-                    Notiflix.Notify.warning(e);
-                    setLoading(false);
-                });
-        } catch (e) {
-            Notiflix.Notify.warning(e.message);
-            setLoading(false);
-        }
-    }
-    function GETDoctorWiseSales(Data) {
-        if (Data == undefined || Data.selected == undefined) {
+    function GETDoctorWiseSales() {
+        if (doctorid && doctorid !== undefined) {
             setLoading(true);
             try {
-                axios.get(`${url}/sale/entry?clinic_id=${ClinicID}&limit=25&offset=0&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`)
+                axios.get(`${url}/reports/sales/doctor?from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}&doctor_id=${doctorid}`)
                     .then((response) => {
                         console.log(response);
-                        setdoctorwisesales(response.data.data.medicines);
-                        setLoading(false);
-                    })
-                    .catch((e) => {
-                        Notiflix.Notify.warning(e);
-                        setLoading(false);
-                    });
-            } catch (e) {
-                Notiflix.Notify.warning(e.message);
-                setLoading(false);
-            }
-        } else {
-            setLoading(true);
-            try {
-                axios
-                    .get(
-                        `${url}/sale/entry?clinic_id=${ClinicID}&limit=25&offset=${Data.selected * 25
-                        }&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate
-                        }`
-                    )
-                    .then((response) => {
-                        console.log(response);
-                        setdoctorwisesales(response.data.data.sale_entry);
+                        let medicines = []
+                        let vaccines = []
+                        let dataarr = []
+                        const medicinearr = Object.keys(response.data.data.medicine).map(key => ({
+                            medicine_id: key,
+                            ...response.data.data.medicine[key]
+                        }));
+                        medicines.push(medicinearr)
+                        const vaccinearr = Object.keys(response.data.data.vaccine).map(key => ({
+                            vaccine_id: key,
+                            ...response.data.data.vaccine[key]
+                        }));
+                        vaccines.push(vaccinearr)
+                        dataarr.push(medicines)
+                        dataarr.push(vaccines)
+                        dataarr = dataarr.flat()
+                        setdoctorwisesales(dataarr.flat());
                         setLoading(false);
                     })
                     .catch((e) => {
@@ -92,26 +68,36 @@ const DoctorWiseSales = () => {
         }
     }
 
-
-    useEffect(() => {
-        GetPages();
-    }, [fromdate, todate]);
 
     useEffect(() => {
         GETDoctorWiseSales();
-    }, [pagecount]);
+    }, [doctorid, fromdate, todate]);
+    console.log(doctorid, doctorwisesales)
     return (
         <>
             <div className="row p-0 m-0 justify-content-lg-between justify-content-md-evenly justify-content-center text-center mt-2">
                 <div className="col-lg-2 col-md-2 col-3 text-center p-0 m-0 ">
-                    <button type="button" className="btn p-0 m-0 heading text-charcoal fw-bolder  " style={{ width: "fit-content" }} > {pagecount} {pagecount > 0 ? "Sales" : "Sale"}{" "} </button>
+                    <button type="button" className="btn p-0 m-0 heading text-charcoal fw-bolder" style={{ width: "fit-content" }} > {pagecount} {pagecount > 0 ? "Sales" : "Sale"}{" "} </button>
                 </div>
                 <div className="col-lg-8 col-md-8 col-7  p-0 m-0  border-0">
                     <div className="row p-0 m-0 border-burntumber fw-bolder rounded-1">
-                        <div className="col-6 p-0 m-0 text-burntumber text-center fw-bolder bg-pearl  rounded-1 ">
+                        <div className="col-4 p-0 m-0 text-burntumber text-center fw-bolder bg-pearl  rounded-1 ">
+                            <select className="form-control p-0 border-0 text-burntumber fw-bold text-center" value={doctorid ? doctorid : ''} onChange={(e) => { setdoctorid(e.target.value) }}>
+                                <option selected value="Select Doctor">Select Doctor</option>
+                                {
+                                    docnames ? (
+                                        docnames.map((response, i) => (
+                                            <option className={`form-control text-charcoal`} key={i} value={response[0]} >Dr. {response[1]}</option>
+                                        ))
+
+                                    ) : (<option>Loading..</option>)
+                                }
+                            </select>
+                        </div>
+                        <div className="col-4 p-0 m-0 text-burntumber text-center fw-bolder bg-pearl  rounded-1 ">
                             <input type="date" placeholder="fromdate" className="p-0 m-0 border-0 bg-pearl text-burntumber text-center fw-bolder " value={fromdate ? fromdate : currentDate ? currentDate : ""} onChange={(e) => { setfromdate(e.target.value); }} />
                         </div>
-                        <div className="col-6 p-0 m-0  text-burntumber text-center fw-bolder bg-pearl rounded-1">
+                        <div className="col-4 p-0 m-0  text-burntumber text-center fw-bolder bg-pearl rounded-1">
                             <input type="date" className=" p-0 m-0 border-0 bg-pearl text-burntumber text-center fw-bolder" value={todate ? todate : fromdate ? fromdate : currentDate ? currentDate : ""} onChange={(e) => { settodate(e.target.value); }} />
                         </div>
                     </div>
@@ -133,6 +119,7 @@ const DoctorWiseSales = () => {
                         <tr className=" ">
                             <th className="text-charcoal75 fw-bolder p-0 m-0 px-1">Item ID </th>
                             <th className="text-charcoal75 fw-bolder p-0 m-0 px-1">Item Name</th>
+                            <th className="text-charcoal75 fw-bolder p-0 m-0 px-1">Type</th>
                             <th className="text-charcoal75 fw-bolder p-0 m-0 px-1">Batch No. </th>
                             <th className="text-charcoal75 fw-bolder p-0 m-0 px-1">Purchase Date </th>
                             <th className="text-charcoal75 fw-bolder p-0 m-0 px-1">Expiry Date </th>
@@ -163,12 +150,13 @@ const DoctorWiseSales = () => {
                         <tbody>
                             {doctorwisesales.map((item, i) => (
                                 <tr className={` bg-${i % 2 == 0 ? "seashell" : "pearl"} align-middle`} key={i} >
+                                    <td className="text-charcoal fw-bold">{item.medicine_id ? item.medicine_id : item.vaccine_id ? item.vaccine_id : ''} </td>
+                                    <td className="text-charcoal fw-bold">{item.item ? item.item : ''} </td>
+                                    <td className="text-charcoal fw-bold">{item.medicine_id ? 'medicine' : item.vaccine_id ? 'vaccine': ''} </td>
+                                    <td className="text-charcoal fw-bold">{item.batch_no ? item.batch_no : ''} </td>
                                     <td className="text-charcoal fw-bold"> </td>
                                     <td className="text-charcoal fw-bold"> </td>
-                                    <td className="text-charcoal fw-bold"> </td>
-                                    <td className="text-charcoal fw-bold"> </td>
-                                    <td className="text-charcoal fw-bold"> </td>
-                                    <td className="text-charcoal fw-bold"> </td>
+                                    <td className="text-charcoal fw-bold">{item.qty ? item.qty : ''} </td>
                                     <td className="text-charcoal fw-bold"> </td>
                                     <td className="text-charcoal fw-bold"> </td>
                                     <td className="text-charcoal fw-bold"> </td>
@@ -183,31 +171,6 @@ const DoctorWiseSales = () => {
                         </tbody>
                     )}
                 </table>
-            </div>
-            <div className="container-fluid mt-2 d-flex justify-content-center">
-                <ReactPaginate
-                    previousLabel={"Previous"}
-                    nextLabel={"Next"}
-                    breakLabel={"."}
-                    pageCount={pages}
-                    marginPagesDisplayed={3}
-                    pageRangeDisplayed={2}
-                    onPageChange={GETDoctorWiseSales}
-                    containerClassName={
-                        "pagination scroll align-self-center align-items-center"
-                    }
-                    pageClassName={"page-item text-charcoal"}
-                    pageLinkClassName={
-                        "page-link text-decoration-none text-charcoal border-charcoal rounded-1 mx-1"
-                    }
-                    previousClassName={"btn button-charcoal-outline me-2"}
-                    previousLinkClassName={"text-decoration-none text-charcoal"}
-                    nextClassName={"btn button-charcoal-outline ms-2"}
-                    nextLinkClassName={"text-decoration-none text-charcoal"}
-                    breakClassName={"d-flex mx-2 text-charcoal fw-bold fs-4"}
-                    breakLinkClassName={"text-decoration-none text-charcoal"}
-                    activeClassName={"active"}
-                />
             </div>
         </>
     )

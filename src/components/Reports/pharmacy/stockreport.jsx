@@ -12,7 +12,6 @@ import "../../../css/pharmacy.css";
 
 const StockReport = () => {
     const clinic = useContext(Clinic)
-    console.log(clinic)
     const permission = useContext(Permissions);
     const currentDate = useContext(TodayDate);
     const adminid = localStorage.getItem("id");
@@ -45,6 +44,8 @@ const StockReport = () => {
             axios.get(`${url}/reports/stock/report?location_id=${Location_Id}&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`)
                 .then((response) => {
                     setpagecount(response.data.data.count);
+                    console.log(response.data.data.count);
+                    console.log(Math.round(response.data.data.count / 10) + 1)
                     setpages(Math.round(response.data.data.count / 10) + 1);
                     setLoading(false);
                 })
@@ -105,13 +106,13 @@ const StockReport = () => {
         id: key,
         ...stockreportarr[key]
     }));
-    console.log(parentArray);
+    // console.log(parentArray, pages);
 
     return (
         <>
             <div className="row p-0 m-0 justify-content-lg-between justify-content-md-evenly justify-content-center text-center mt-2">
                 <div className="col-lg-2 col-md-2 col-3 text-center p-0 m-0 ">
-                    <button type="button" className="btn p-0 m-0 heading text-charcoal fw-bolder  " style={{ width: "fit-content" }} > {pagecount} {pagecount > 0 ? "Stock Reports" : "Stock Report"}{" "} </button>
+                    <button type="button" className="btn p-0 m-0 heading text-charcoal fw-bolder" style={{ width: "fit-content" }} > {pagecount} {pagecount > 0 ? "Stock Reports" : "Stock Report"}{" "} </button>
                 </div>
                 <div className="col-lg-8 col-md-8 col-7  p-0 m-0  border-0">
                     <div className="row p-0 m-0 border-burntumber fw-bolder rounded-1">

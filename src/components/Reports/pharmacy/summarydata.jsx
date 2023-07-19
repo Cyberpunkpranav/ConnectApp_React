@@ -26,21 +26,23 @@ const SummaryData = () => {
             return date;
         }
     };
+    // https://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/api/connect/reports/summary/wise/data
 
-    function GetPages() {
+    function GETSummaryData() {
+        setLoading(true);
         try {
-            axios
-                .get(
-                    `${url}/sale/entry?clinic_id=${ClinicID}&from_date=${fromdate ? fromdate : currentDate
-                    }&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`
-                )
+            axios.get(`${url}/reports/summary/wise/data`)
                 .then((response) => {
-                    setpagecount(response.data.data.total_count);
-                    setpages(Math.round(response.data.data.total_count / 25) + 1);
+                    console.log(response);
+                    const parentArray = Object.keys(response.data.data).map(key => ({
+                        particular: key,
+                        ...response.data.data[key]
+                    }));
+                    setsummarydataarr(parentArray);
                     setLoading(false);
                 })
                 .catch((e) => {
-                    Notiflix.Notify.warning(e);
+                    Notiflix.Notify.warning(e.message);
                     setLoading(false);
                 });
         } catch (e) {
@@ -48,57 +50,12 @@ const SummaryData = () => {
             setLoading(false);
         }
     }
-    function GETSummaryData(Data) {
-        if (Data == undefined || Data.selected == undefined) {
-            setLoading(true);
-            try {
-                axios.get(`${url}/sale/entry?clinic_id=${ClinicID}&limit=25&offset=0&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`)
-                    .then((response) => {
-                        console.log(response);
-                        setsummarydataarr(response.data.data.sale_entry);
-                        setLoading(false);
-                    })
-                    .catch((e) => {
-                        Notiflix.Notify.warning(e);
-                        setLoading(false);
-                    });
-            } catch (e) {
-                Notiflix.Notify.warning(e.message);
-                setLoading(false);
-            }
-        } else {
-            setLoading(true);
-            try {
-                axios
-                    .get(
-                        `${url}/sale/entry?clinic_id=${ClinicID}&limit=25&offset=${Data.selected * 25
-                        }&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate
-                        }`
-                    )
-                    .then((response) => {
-                        console.log(response);
-                        setsummarydataarr(response.data.data.sale_entry);
-                        setLoading(false);
-                    })
-                    .catch((e) => {
-                        Notiflix.Notify.warning(e);
-                        setLoading(false);
-                    });
-            } catch (e) {
-                Notiflix.Notify.warning(e.message);
-                setLoading(false);
-            }
-        }
-    }
-
-
-    useEffect(() => {
-        GetPages();
-    }, [fromdate, todate]);
 
     useEffect(() => {
         GETSummaryData();
-    }, [pagecount]);
+    }, [fromdate, todate]);
+    console.log(summarydataarr)
+
     return (
         <>
             <div className="row p-0 m-0 justify-content-lg-between justify-content-md-evenly justify-content-center text-center mt-2">
@@ -106,14 +63,14 @@ const SummaryData = () => {
                     <button type="button" className="btn p-0 m-0 heading text-charcoal fw-bolder  " style={{ width: "fit-content" }} > {pagecount} {pagecount > 0 ? "Summary Data" : "Summary Data"}{" "} </button>
                 </div>
                 <div className="col-lg-8 col-md-8 col-7  p-0 m-0  border-0">
-                    <div className="row p-0 m-0 border-burntumber fw-bolder rounded-1">
+                    {/* <div className="row p-0 m-0 border-burntumber fw-bolder rounded-1">
                         <div className="col-6 p-0 m-0 text-burntumber text-center fw-bolder bg-pearl  rounded-1 ">
                             <input type="date" placeholder="fromdate" className="p-0 m-0 border-0 bg-pearl text-burntumber text-center fw-bolder " value={fromdate ? fromdate : currentDate ? currentDate : ""} onChange={(e) => { setfromdate(e.target.value); }} />
                         </div>
                         <div className="col-6 p-0 m-0  text-burntumber text-center fw-bolder bg-pearl rounded-1">
                             <input type="date" className=" p-0 m-0 border-0 bg-pearl text-burntumber text-center fw-bolder" value={todate ? todate : fromdate ? fromdate : currentDate ? currentDate : ""} onChange={(e) => { settodate(e.target.value); }} />
                         </div>
-                    </div>
+                    </div> */}
                 </div>
                 <div className="col-2 p-0 m-0 export col-md-2 col-lg-2 align-self-center text-center ">
                     <DownloadTableExcel
@@ -158,10 +115,10 @@ const SummaryData = () => {
                         <tbody>
                             {summarydataarr.map((item, i) => (
                                 <tr className={` bg-${i % 2 == 0 ? "seashell" : "pearl"} align-middle`} key={i} >
-                                    <td className="text-charcoal fw-bold"> </td>
-                                    <td className="text-charcoal fw-bold"> </td>
-                                    <td className="text-charcoal fw-bold"> </td>
-                                    <td className="text-charcoal fw-bold"> </td>
+                                    <td className="text-charcoal fw-bold">{item.particular} </td>
+                                    <td className="text-charcoal fw-bold">{item.taxable} </td>
+                                    <td className="text-charcoal fw-bold">{item.tax} </td>
+                                    <td className="text-charcoal fw-bold">{Number(item.taxable) + Number(item.tax)} </td>
                                 </tr>
                             ))}
                         </tbody>
@@ -174,31 +131,7 @@ const SummaryData = () => {
                     )}
                 </table>
             </div>
-            <div className="container-fluid mt-2 d-flex justify-content-center">
-                <ReactPaginate
-                    previousLabel={"Previous"}
-                    nextLabel={"Next"}
-                    breakLabel={"."}
-                    pageCount={pages}
-                    marginPagesDisplayed={3}
-                    pageRangeDisplayed={2}
-                    onPageChange={GETSummaryData}
-                    containerClassName={
-                        "pagination scroll align-self-center align-items-center"
-                    }
-                    pageClassName={"page-item text-charcoal"}
-                    pageLinkClassName={
-                        "page-link text-decoration-none text-charcoal border-charcoal rounded-1 mx-1"
-                    }
-                    previousClassName={"btn button-charcoal-outline me-2"}
-                    previousLinkClassName={"text-decoration-none text-charcoal"}
-                    nextClassName={"btn button-charcoal-outline ms-2"}
-                    nextLinkClassName={"text-decoration-none text-charcoal"}
-                    breakClassName={"d-flex mx-2 text-charcoal fw-bold fs-4"}
-                    breakLinkClassName={"text-decoration-none text-charcoal"}
-                    activeClassName={"active "}
-                />
-            </div>
+
         </>
     )
 }

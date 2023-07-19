@@ -19,6 +19,7 @@ function Doctors() {
     const [form, setform] = useState()
     const [pageloading, setpageloading] = useState(false)
     const [updatedoctor, setupdatedoctor] = useState('none')
+
     function GetPages() {
       try {
         axios.get(`${url}/doctor/list?clinic_id=${clinicID}&search=${Doctorssearch ? Doctorssearch : ''}&limit=10&offset=0`).then((response) => {
@@ -34,6 +35,7 @@ function Doctors() {
         setpageloading(false)
       }
     }
+    
     async function getAllDoctors(Data) {
       if (Data == undefined || Data.selected == undefined) {
         setpageloading(true)

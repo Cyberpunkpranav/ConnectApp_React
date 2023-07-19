@@ -63,8 +63,8 @@ const PatientSalesHistory = () => {
                     .then((response) => {
                         console.log(response);
                         const parentArray = Object.keys(response.data.data.sales).map(key => ({
-                            patient_id: key,
-                            ...patientsalehistoryarr[key]
+                            invoice_no: key,
+                            ...response.data.data.sales[key]
                         }));
                         setpatientsalehistoryarr(parentArray);
                         setLoading(false);
@@ -78,15 +78,38 @@ const PatientSalesHistory = () => {
                 setLoading(false);
             }
 
-        } else {
-            Notiflix.Notify.info("Type patient name to search")
         }
     }
+    // function GETPatientSalesReturnHistory() {
+    //     if (patientid) {
 
-    console.log(displaysearchlist, searchinput, searchlist)
+    //         setLoading(true);
+    //         try {
+    //             axios.get(`${url}/reports/sales/return/patient?&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}&patient_id=${patientid}`)
+    //                 .then((response) => {
+    //                     console.log(response);
+    //                     const parentArray = Object.keys(response.data.data.sales).map(key => ({
+    //                         invoice_no: key,
+    //                         ...response.data.data.sales[key]
+    //                     }));
+    //                     setpatientsalehistoryarr(parentArray);
+    //                     setLoading(false);
+    //                 })
+    //                 .catch((e) => {
+    //                     Notiflix.Notify.warning(e.message);
+    //                     setLoading(false);
+    //                 });
+    //         } catch (e) {
+    //             Notiflix.Notify.warning(e.message);
+    //             setLoading(false);
+    //         }
+
+    //     }
+    // }
+    console.log(displaysearchlist, searchinput, searchlist, patientsalehistoryarr)
     useEffect(() => {
         GETPatientSalesHistory();
-
+        // GETPatientSalesReturnHistory();
     }, [patientid, fromdate, todate]);
 
     return (
@@ -98,7 +121,7 @@ const PatientSalesHistory = () => {
                 <div className="col-lg-8 col-md-8 col-7  p-0 m-0  border-0">
                     <div className="row p-0 m-0 border-burntumber fw-bolder rounded-1">
                         <div className="col-4 p-0 m-0 text-burntumber text-center fw-bolder bg-pearl  rounded-1 position-relative ">
-                            <input type="text" className="form-control p-0 m-0 selectpatient border-0 position-relative text-center text-burntumber fw-bold" value={searchinput ? searchinput : ''} onChange={searchpatient} />
+                            <input type="text" placeholder="patient name" className="form-control p-0 m-0 selectpatient border-0 position-relative text-center text-burntumber fw-bold" value={searchinput ? searchinput : ''} onChange={searchpatient} />
                             <div className={`w-100 d-${displaysearchlist} position-absolute top-10 mt-2 border shadow-sm`} style={{ zIndex: '10' }}>
                                 {
                                     searchload ? (
@@ -150,14 +173,11 @@ const PatientSalesHistory = () => {
                             <th className="text-charcoal75 fw-bolder p-0 m-0 px-1"> Amount </th>
                             <th className="text-charcoal75 fw-bolder p-0 m-0 px-1"> Tax </th>
                             <th className="text-charcoal75 fw-bolder p-0 m-0 px-1"> Total </th>
-                            <th className="text-charcoal75 fw-bolder p-0 m-0 px-1"> more info </th>
+                            {/* <th className="text-charcoal75 fw-bolder p-0 m-0 px-1"> more info </th> */}
                         </tr>
                     </thead>
                     {Loading ? (
-                        <tbody
-                            className="text-center"
-                            style={{ minHeight: "55vh", height: "55vh" }}
-                        >
+                        <tbody className="text-center" style={{ minHeight: "55vh", height: "55vh" }} >
                             <tr className="position-absolute border-0 start-0 end-0 px-5">
                                 <div class="d-flex align-items-center spinner">
                                     <strong className="" style={{ fontSize: "1rem" }}>
@@ -175,17 +195,13 @@ const PatientSalesHistory = () => {
                         <tbody>
                             {patientsalehistoryarr.map((item, i) => (
                                 <tr className={` bg-${i % 2 == 0 ? "seashell" : "pearl"} align-middle`} key={i} >
-                                    <td className="text-charcoal fw-bold"> </td>
-                                    <td className="text-charcoal fw-bold"> </td>
-                                    <td className="text-charcoal fw-bold"> </td>
-                                    <td className="text-charcoal fw-bold"> </td>
-                                    <td className="text-charcoal fw-bold"> </td>
-                                    <td className="text-charcoal fw-bold"> </td>
-                                    <td className="text-charcoal fw-bold"> </td>
-                                    <td className="text-charcoal fw-bold"> </td>
-                                    <td className="text-charcoal fw-bold"> </td>
-                                    <td className="text-charcoal fw-bold"> </td>
-                                    <td className="text-charcoal fw-bold"> </td>
+                                    <td className="text-charcoal fw-bold">{reversefunction(item.date)}</td>
+                                    <td className="text-charcoal fw-bold">{item.invoice}</td>
+                                    <td className="text-charcoal fw-bold">{item.type} </td>
+                                    <td className="text-charcoal fw-bold">{item.amount}</td>
+                                    <td className="text-charcoal fw-bold">{item.tax} </td>
+                                    <td className="text-charcoal fw-bold">{item.total} </td>
+                                    {/* <td className="text-charcoal fw-bold"> </td> */}
                                 </tr>
                             ))}
                         </tbody>
