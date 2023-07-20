@@ -78,9 +78,25 @@ const StockReport = () => {
         } else {
             setLoading(true);
             try {
-                axios.get(`${url}/reports/stock/report?location_id=${Location_Id}&limit=10&offset=${Data.selected * 25}&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`).then((response) => {
+                axios.get(`${url}/reports/stock/report?location_id=${Location_Id}&limit=10&offset=${Data.selected * 10}&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`).then((response) => {
                     console.log(response);
-                    setstockreportarr(response.data.data.medicine);
+                    let medicines = []
+                    let vaccines = []
+                    let dataarr = []
+                    const medicinearr = Object.keys(response.data.data.medicine).map(key => ({
+                        medicine_id: key,
+                        ...response.data.data.medicine[key]
+                    }));
+                    medicines.push(medicinearr)
+                    const vaccinearr = Object.keys(response.data.data.vaccine).map(key => ({
+                        vaccine_id: key,
+                        ...response.data.data.vaccine[key]
+                    }));
+                    vaccines.push(vaccinearr)
+                    dataarr.push(medicines)
+                    dataarr.push(vaccines)
+                    dataarr = dataarr.flat()
+                    setstockreportarr(dataarr.flat());
                     setLoading(false);
                 })
                     .catch((e) => {
@@ -188,13 +204,13 @@ const StockReport = () => {
                                         <td className="text-charcoal fw-bold">{key.id != undefined ? key.id : ''} </td>
                                         <td className="text-charcoal fw-bold">{key.item_name != undefined ? key.item_name : ''} </td>
                                         <td className="text-charcoal fw-bold">{key.opening_qty != undefined ? key.opening_qty : ''} </td>
-                                        <td className="text-charcoal fw-bold">{key.opening_value != undefined ? key.opening_value : ''}</td>
+                                        <td className="text-charcoal fw-bold">₹{key.opening_value != undefined ? key.opening_value : ''}</td>
                                         <td className="text-charcoal fw-bold">{key.purchase_qty != undefined ? key.purchase_qty : ''} </td>
-                                        <td className="text-charcoal fw-bold">{key.purchase_value != undefined ? key.purchase_value : ''} </td>
+                                        <td className="text-charcoal fw-bold">₹{key.purchase_value != undefined ? key.purchase_value : ''} </td>
                                         <td className="text-charcoal fw-bold">{key.sale_qty != undefined ? key.sale_qty : ''} </td>
-                                        <td className="text-charcoal fw-bold">{key.sale_value != undefined ? key.sale_value : ''}</td>
+                                        <td className="text-charcoal fw-bold">₹{key.sale_value != undefined ? key.sale_value : ''}</td>
                                         <td className="text-charcoal fw-bold">{key.closing_qty != undefined ? key.closing_qty : ''} </td>
-                                        <td className="text-charcoal fw-bold">{key.closing_value != undefined ? key.closing_value : ''}</td>
+                                        <td className="text-charcoal fw-bold">₹{key.closing_value != undefined ? key.closing_value : ''}</td>
                                     </tr>
                                 ))}
                         </tbody>

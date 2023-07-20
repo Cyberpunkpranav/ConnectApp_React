@@ -121,28 +121,23 @@ const DoctorWiseSales = () => {
                             <th className="text-charcoal75 fw-bolder p-0 m-0 px-1">Item Name</th>
                             <th className="text-charcoal75 fw-bolder p-0 m-0 px-1">Type</th>
                             <th className="text-charcoal75 fw-bolder p-0 m-0 px-1">Batch No. </th>
-                            <th className="text-charcoal75 fw-bolder p-0 m-0 px-1">Purchase Date </th>
-                            <th className="text-charcoal75 fw-bolder p-0 m-0 px-1">Expiry Date </th>
+                            <th className="text-charcoal75 fw-bolder p-0 m-0 px-1">Invoice </th>
+                            <th className="text-charcoal75 fw-bolder p-0 m-0 px-1">Date </th>
                             <th className="text-charcoal75 fw-bolder p-0 m-0 px-1">Qty </th>
-                            <th className="text-charcoal75 fw-bolder p-0 m-0 px-1">MRP </th>
-                            <th className="text-charcoal75 fw-bolder p-0 m-0 px-1">Cost </th>
+                            <th className="text-charcoal75 fw-bolder p-0 m-0 px-1">Taxable Amt </th>
+                            <th className="text-charcoal75 fw-bolder p-0 m-0 px-1">Tax </th>
+                            <th className="text-charcoal75 fw-bolder p-0 m-0 px-1">Total </th>
+                            <th className="text-charcoal75 fw-bolder p-0 m-0 px-1">Total Profit </th>
                         </tr>
                     </thead>
                     {Loading ? (
-                        <tbody
-                            className="text-center"
-                            style={{ minHeight: "55vh", height: "55vh" }}
-                        >
+                        <tbody className="text-center" style={{ minHeight: "55vh", height: "55vh" }} >
                             <tr className="position-absolute border-0 start-0 end-0 px-5">
                                 <div class="d-flex align-items-center spinner">
                                     <strong className="" style={{ fontSize: "1rem" }}>
                                         Getting Details please be Patient ...
                                     </strong>
-                                    <div
-                                        className="spinner-border ms-auto"
-                                        role="status"
-                                        aria-hidden="true"
-                                    ></div>
+                                    <div className="spinner-border ms-auto" role="status" aria-hidden="true" ></div>
                                 </div>
                             </tr>
                         </tbody>
@@ -152,14 +147,15 @@ const DoctorWiseSales = () => {
                                 <tr className={` bg-${i % 2 == 0 ? "seashell" : "pearl"} align-middle`} key={i} >
                                     <td className="text-charcoal fw-bold">{item.medicine_id ? item.medicine_id : item.vaccine_id ? item.vaccine_id : ''} </td>
                                     <td className="text-charcoal fw-bold">{item.item ? item.item : ''} </td>
-                                    <td className="text-charcoal fw-bold">{item.medicine_id ? 'medicine' : item.vaccine_id ? 'vaccine': ''} </td>
+                                    <td className="text-charcoal fw-bold">{item.medicine_id ? 'medicine' : item.vaccine_id ? 'vaccine' : ''} </td>
                                     <td className="text-charcoal fw-bold">{item.batch_no ? item.batch_no : ''} </td>
-                                    <td className="text-charcoal fw-bold"> </td>
-                                    <td className="text-charcoal fw-bold"> </td>
+                                    <td className="text-charcoal fw-bold">{item.invoice ? item.invoice : ''} </td>
+                                    <td className="text-charcoal fw-bold">{item.date ? reversefunction(item.date) : ''} </td>
                                     <td className="text-charcoal fw-bold">{item.qty ? item.qty : ''} </td>
-                                    <td className="text-charcoal fw-bold"> </td>
-                                    <td className="text-charcoal fw-bold"> </td>
-                                    <td className="text-charcoal fw-bold"> </td>
+                                    <td className="text-charcoal fw-bold">{item.taxable_amount ? Number(item.taxable_amount).toFixed(2) : ''}  </td>
+                                    <td className="text-charcoal fw-bold">{item.tax ? Number(item.tax).toFixed(2) : ''} </td>
+                                    <td className="text-charcoal fw-bold">{item.total ? item.total : ''} </td>
+                                    <td className="text-charcoal fw-bold">{item.total_profit ? Number(item.total_profit).toFixed(2) : ''} </td>
                                 </tr>
                             ))}
                         </tbody>

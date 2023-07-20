@@ -13,13 +13,12 @@ const TaxWiseData = () => {
     const url = useContext(URL);
     const TaxWiseDataref = useRef();
 
-    const [fromdate, setfromdate] = useState();
-    const [todate, settodate] = useState();
+    // const [fromdate, setfromdate] = useState();
+    // const [todate, settodate] = useState();
     const [Loading, setLoading] = useState(false);
-    const [taxrate, settaxrate] = useState()
     const [taxwisearr, settaxwisearr] = useState([]);
-    const [pages, setpages] = useState([]);
     const [pagecount, setpagecount] = useState();
+    const [fromdate, setfromdate] = useState()
 
     const reversefunction = (date) => {
         if (date) {
@@ -28,106 +27,69 @@ const TaxWiseData = () => {
         }
     };
 
-    function GetPages() {
+    function GETTaxWiseData() {
+        setLoading(true);
         try {
-            axios
-                .get(
-                    `${url}/sale/entry?clinic_id=${ClinicID}&from_date=${fromdate ? fromdate : currentDate
-                    }&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`
-                )
+            axios.get(`${url}/reports/summary/wise/data?from_date=${fromdate ? fromdate : ''}`)
                 .then((response) => {
-                    setpagecount(response.data.data.total_count);
-                    setpages(Math.round(response.data.data.total_count / 25) + 1);
+                    console.log(response);
+                    const parentArray = Object.keys(response.data.data).map(key => ({
+                        particular: key,
+                        ...response.data.data[key]
+                    }));
+                    settaxwisearr(parentArray);
                     setLoading(false);
                 })
                 .catch((e) => {
-                    Notiflix.Notify.warning(e);
+                    Notiflix.Notify.warning(e.message);
                     setLoading(false);
                 });
         } catch (e) {
             Notiflix.Notify.warning(e.message);
             setLoading(false);
         }
-    }
-    function GETTaxWiseData(Data) {
-        if (Data == undefined || Data.selected == undefined) {
-            setLoading(true);
-            try {
-                axios.get(`${url}/sale/entry?clinic_id=${ClinicID}&limit=25&offset=0&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`)
-                    .then((response) => {
-                        console.log(response);
-                        settaxwisearr(response.data.data.sale_entry);
-                        setLoading(false);
-                    })
-                    .catch((e) => {
-                        Notiflix.Notify.warning(e);
-                        setLoading(false);
-                    });
-            } catch (e) {
-                Notiflix.Notify.warning(e.message);
-                setLoading(false);
-            }
-        } else {
-            setLoading(true);
-            try {
-                axios
-                    .get(
-                        `${url}/sale/entry?clinic_id=${ClinicID}&limit=25&offset=${Data.selected * 25
-                        }&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate
-                        }`
-                    )
-                    .then((response) => {
-                        console.log(response);
-                        settaxwisearr(response.data.data.sale_entry);
-                        setLoading(false);
-                    })
-                    .catch((e) => {
-                        Notiflix.Notify.warning(e);
-                        setLoading(false);
-                    });
-            } catch (e) {
-                Notiflix.Notify.warning(e.message);
-                setLoading(false);
-            }
-        }
+
     }
 
-
-    useEffect(() => {
-        GetPages();
-    }, [taxrate, fromdate, todate]);
 
     useEffect(() => {
         GETTaxWiseData();
-    }, [pagecount]);
+    }, [fromdate]);
+    let months = [["Jan", '01'], ["Feb", "02"], ["Mar", "03"], ["Apr", "04"], ["May", "05"], ["Jun", "06"], ["Jul", "07"], ["Aug", "08"], ["Sep", "09"], ["Oct", "10"], ["Nov", "11"], ["Dec", "12"]]
+    function month_explorer(date) {
+        date = date.split(" to ")
+        let fromdate = date[0];
+        let todate = date[1]
+        fromdate = fromdate.split('-')
+
+        for (let i = 0; i < months.length; i++) {
+            if (fromdate[1] == months[i][1]) {
+                fromdate[1] = months[i][0]
+            }
+        }
+        console.log(fromdate)
+        let newdate = fromdate[1] + " " + fromdate[0]
+        return newdate
+    }
     return (
         <>
             <div className="row p-0 m-0 justify-content-lg-between justify-content-md-evenly justify-content-center text-center mt-2">
                 <div className="col-lg-2 col-md-2 col-3 text-center p-0 m-0 ">
-                    <button type="button" className="btn p-0 m-0 heading text-charcoal fw-bolder  " style={{ width: "fit-content" }} > {pagecount} {pagecount > 0 ? "Rate Lists" : "Rate List"}{" "} </button>
+                    <button type="button" className="btn p-0 m-0 heading text-charcoal fw-bolder  " style={{ width: "fit-content" }} > {taxwisearr.length} Tax-Wise Data</button>
                 </div>
                 <div className="col-lg-8 col-md-8 col-7  p-0 m-0  border-0">
                     <div className="row p-0 m-0 border-burntumber fw-bolder rounded-1">
-                        <div className="col-4 p-0 m-0 text-burntumber text-center fw-bolder bg-pearl  rounded-1 ">
-                            <select className="p-0 m-0 border-0 bg-pearl text-burntumber text-center fw-bolder " value={taxrate ? taxrate : ""} onChange={(e) => { settaxrate(e.target.value); }} >
-                                <option value="0">0%</option>
-                                <option value="5">5%</option>
-                                <option value="12">12%</option>
-                                <option value="18">18%</option>
-                                <option value="28">28%</option>
-                            </select>
+                        <div className="col-12 p-0 m-0 text-burntumber text-center fw-bolder bg-pearl  rounded-1 ">
+                            <input type="month" placeholder="month" className="p-0 m-0 border-0 bg-pearl text-burntumber text-center fw-bolder " value={fromdate ? fromdate : currentDate ? currentDate.trim(4) : ""} onChange={(e) => { setfromdate(e.target.value); }} />
                         </div>
-                        <div className="col-4 p-0 m-0 text-burntumber text-center fw-bolder bg-pearl  rounded-1 ">
-                            <input type="date" placeholder="fromdate" className="p-0 m-0 border-0 bg-pearl text-burntumber text-center fw-bolder " value={fromdate ? fromdate : currentDate ? currentDate : ""} onChange={(e) => { setfromdate(e.target.value); }} />
-                        </div>
-                        <div className="col-4 p-0 m-0  text-burntumber text-center fw-bolder bg-pearl rounded-1">
+                        {/* <div className="col-6 p-0 m-0  text-burntumber text-center fw-bolder bg-pearl rounded-1">
                             <input type="date" className=" p-0 m-0 border-0 bg-pearl text-burntumber text-center fw-bolder" value={todate ? todate : fromdate ? fromdate : currentDate ? currentDate : ""} onChange={(e) => { settodate(e.target.value); }} />
-                        </div>
+                        </div> */}
                     </div>
                 </div>
                 <div className="col-2 p-0 m-0 export col-md-2 col-lg-2 align-self-center text-center ">
                     <DownloadTableExcel
-                        filename={`${reversefunction(fromdate) + ' to ' + reversefunction(todate)} TaxWiseData`}
+                        filename={`TaxWiseData`}
                         sheet="StockReports"
                         currentTableRef={TaxWiseDataref.current}
                     >
@@ -140,10 +102,29 @@ const TaxWiseData = () => {
                 <table className="table text-start table-responsive" ref={TaxWiseDataref}>
                     <thead className=" p-0 m-0 position-sticky top-0 bg-pearl">
                         <tr className=" ">
-                            <th className="text-charcoal75 fw-bolder p-0 m-0 px-1"> Particular </th>
-                            <th className="text-charcoal75 fw-bolder p-0 m-0 px-1"> Taxable </th>
-                            <th className="text-charcoal75 fw-bolder p-0 m-0 px-1"> Tax </th>
-                            <th className="text-charcoal75 fw-bolder p-0 m-0 px-1"> Total </th>
+                            <th rowSpan='2' className="text-charcoal75 fw-bolder p-0 m-0 px-1"> Particular </th>
+                            <th colSpan='3' scope="colgroup" className="text-charcoal75 fw-bolder p-0 m-0 px-1"> 0% </th>
+                            <th colSpan='3' scope="colgroup" className="text-charcoal75 fw-bolder p-0 m-0 px-1"> 5% </th>
+                            <th colSpan='3' scope="colgroup" className="text-charcoal75 fw-bolder p-0 m-0 px-1"> 12% </th>
+                            <th colSpan='3' scope="colgroup" className="text-charcoal75 fw-bolder p-0 m-0 px-1"> 18% </th>
+                            <th colSpan='3' scope="colgroup" className="text-charcoal75 fw-bolder p-0 m-0 px-1"> 28% </th>
+                        </tr>
+                        <tr>
+                            <th scope='col' className="text-charcoal75 fw-bolder p-0 m-0 px-1"> Taxable </th>
+                            <th scope='col' className="text-charcoal75 fw-bolder p-0 m-0 px-1"> Tax </th>
+                            <th scope='col' className="text-charcoal75 fw-bolder p-0 m-0 px-1"> Total </th>
+                            <th scope='col' className="text-charcoal75 fw-bolder p-0 m-0 px-1"> Taxable </th>
+                            <th scope='col' className="text-charcoal75 fw-bolder p-0 m-0 px-1"> Tax </th>
+                            <th scope='col' className="text-charcoal75 fw-bolder p-0 m-0 px-1"> Total </th>
+                            <th scope='col' className="text-charcoal75 fw-bolder p-0 m-0 px-1"> Taxable </th>
+                            <th scope='col' className="text-charcoal75 fw-bolder p-0 m-0 px-1"> Tax </th>
+                            <th scope='col' className="text-charcoal75 fw-bolder p-0 m-0 px-1"> Total </th>
+                            <th scope='col' className="text-charcoal75 fw-bolder p-0 m-0 px-1"> Taxable </th>
+                            <th scope='col' className="text-charcoal75 fw-bolder p-0 m-0 px-1"> Tax </th>
+                            <th scope='col' className="text-charcoal75 fw-bolder p-0 m-0 px-1"> Total </th>
+                            <th scope='col' className="text-charcoal75 fw-bolder p-0 m-0 px-1"> Taxable </th>
+                            <th scope='col' className="text-charcoal75 fw-bolder p-0 m-0 px-1"> Tax </th>
+                            <th scope='col' className="text-charcoal75 fw-bolder p-0 m-0 px-1"> Total </th>
                         </tr>
                     </thead>
                     {Loading ? (
@@ -168,10 +149,22 @@ const TaxWiseData = () => {
                         <tbody>
                             {taxwisearr.map((item, i) => (
                                 <tr className={` bg-${i % 2 == 0 ? "seashell" : "pearl"} align-middle`} key={i} >
-                                    <td className="text-charcoal fw-bold"> </td>
-                                    <td className="text-charcoal fw-bold"> </td>
-                                    <td className="text-charcoal fw-bold"> </td>
-                                    <td className="text-charcoal fw-bold"> </td>
+                                    <td className="text-charcoal fw-bold">{month_explorer(item.particular)} </td>
+                                    <td className="text-charcoal fw-bold">₹{item['taxable 0%'] !== undefined ? Number(item['taxable 0%']).toFixed(2) : ''} </td>
+                                    <td className="text-charcoal fw-bold">₹{item['tax 0%'] !== undefined ? Number(item['tax 0%']).toFixed(2) : ''} </td>
+                                    <td className="text-charcoal fw-bold">₹{item['taxable 0%'] !== undefined && item['tax 0%'] !== undefined ? Number(Number(item['taxable 0%']) + Number(item['tax 0%'])).toFixed(2) : ''} </td>
+                                    <td className="text-charcoal fw-bold">₹{item['taxable 5%'] !== undefined ? Number(item['taxable 5%']).toFixed(2) : ''} </td>
+                                    <td className="text-charcoal fw-bold">₹{item['tax 5%'] !== undefined ? Number(item['tax 5%']).toFixed(2) : ''} </td>
+                                    <td className="text-charcoal fw-bold">₹{item['taxable 5%'] !== undefined && Number(item['tax 5%']).toFixed(2) !== undefined ? Number(Number(item['taxable 5%']) + Number(item['tax 5%'])).toFixed(2) : ''} </td>
+                                    <td className="text-charcoal fw-bold">₹{item['taxable 12%'] !== undefined ? Number(item['taxable 12%']).toFixed(2) : ''} </td>
+                                    <td className="text-charcoal fw-bold">₹{item['tax 12%'] !== undefined ? Number(item['tax 12%']).toFixed(2) : ''} </td>
+                                    <td className="text-charcoal fw-bold">₹{item['taxable 12%'] !== undefined && Number(item['tax 12%']).toFixed(2) !== undefined ? Number(Number(item['taxable 12%']) + Number(item['tax 12%'])).toFixed(2) : ''} </td>
+                                    <td className="text-charcoal fw-bold">₹{item['taxable 18%'] !== undefined ? Number(item['taxable 18%']).toFixed(2) : ''} </td>
+                                    <td className="text-charcoal fw-bold">₹{item['tax 18%'] !== undefined ? Number(item['tax 18%']).toFixed(2) : ''} </td>
+                                    <td className="text-charcoal fw-bold">₹{item['taxable 18%'] !== undefined && Number(item['tax 18%']).toFixed(2) !== undefined ? Number(Number(item['taxable 18%']) + Number(item['tax 18%'])).toFixed(2) : ''} </td>
+                                    <td className="text-charcoal fw-bold">₹{item['taxable 28%'] !== undefined ? Number(item['taxable 28%']).toFixed(2) : ''} </td>
+                                    <td className="text-charcoal fw-bold">₹{item['tax 28%'] !== undefined ? Number(item['tax 28%']).toFixed(2) : ''} </td>
+                                    <td className="text-charcoal fw-bold">₹{item['taxable 28%'] !== undefined && item['tax 28%'] !== undefined ? Number(Number(item['taxable 28%']) + Number(item['tax 28%'])).toFixed(2) : ''} </td>
                                 </tr>
                             ))}
                         </tbody>
@@ -184,31 +177,7 @@ const TaxWiseData = () => {
                     )}
                 </table>
             </div>
-            <div className="container-fluid mt-2 d-flex justify-content-center">
-                <ReactPaginate
-                    previousLabel={"Previous"}
-                    nextLabel={"Next"}
-                    breakLabel={"."}
-                    pageCount={pages}
-                    marginPagesDisplayed={3}
-                    pageRangeDisplayed={2}
-                    onPageChange={GETTaxWiseData}
-                    containerClassName={
-                        "pagination scroll align-self-center align-items-center"
-                    }
-                    pageClassName={"page-item text-charcoal"}
-                    pageLinkClassName={
-                        "page-link text-decoration-none text-charcoal border-charcoal rounded-1 mx-1"
-                    }
-                    previousClassName={"btn button-charcoal-outline me-2"}
-                    previousLinkClassName={"text-decoration-none text-charcoal"}
-                    nextClassName={"btn button-charcoal-outline ms-2"}
-                    nextLinkClassName={"text-decoration-none text-charcoal"}
-                    breakClassName={"d-flex mx-2 text-charcoal fw-bold fs-4"}
-                    breakLinkClassName={"text-decoration-none text-charcoal"}
-                    activeClassName={"active "}
-                />
-            </div>
+
         </>
     )
 }

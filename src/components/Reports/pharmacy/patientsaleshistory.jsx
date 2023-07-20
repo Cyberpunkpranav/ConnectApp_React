@@ -198,9 +198,9 @@ const PatientSalesHistory = () => {
                                     <td className="text-charcoal fw-bold">{reversefunction(item.date)}</td>
                                     <td className="text-charcoal fw-bold">{item.invoice}</td>
                                     <td className="text-charcoal fw-bold">{item.type} </td>
-                                    <td className="text-charcoal fw-bold">{item.amount}</td>
-                                    <td className="text-charcoal fw-bold">{item.tax} </td>
-                                    <td className="text-charcoal fw-bold">{item.total} </td>
+                                    <td className="text-charcoal fw-bold">₹{item.amount}</td>
+                                    <td className="text-charcoal fw-bold">₹{item.tax} </td>
+                                    <td className="text-charcoal fw-bold">₹{item.total} </td>
                                     {/* <td className="text-charcoal fw-bold"> </td> */}
                                 </tr>
                             ))}

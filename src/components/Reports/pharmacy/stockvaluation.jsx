@@ -40,6 +40,7 @@ const StockValuation = () => {
     };
 
     function GetPages() {
+        setLoading(true);
         try {
             axios.get(`${url}/reports/stock/report?location_id=${Location_Id}&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`)
                 .then((response) => {
@@ -95,7 +96,7 @@ const StockValuation = () => {
 
     useEffect(() => {
         GetPages();
-    }, [fromdate, todate]);
+    }, [Location_Id, fromdate, todate]);
 
     useEffect(() => {
         GETStockValuation();
