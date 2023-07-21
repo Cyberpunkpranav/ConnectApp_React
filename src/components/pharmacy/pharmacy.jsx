@@ -1403,7 +1403,7 @@ function SaleReturns() {
                   Return Amount
                 </th>
                 <th className="fw-bolder text-charcoal75" scope="col">
-                  Actions
+                  Inventory
                 </th>
                 <th className="fw-bolder text-charcoal75" scope="col">
                   more
@@ -1791,7 +1791,7 @@ function SaleEntryForm(props) {
     let mrp = [];
     let GST = [];
     let Totalamount = [];
-    if (doctorname !== undefined || otherdoctor !== undefined) {
+    if (doctorname!=undefined && doctorname.length > 0 || otherdoctor !=undefined && otherdoctor.length > 0) {
       for (let i = 0; i < SelectedProducts.length; i++) {
         productids.push(
           SelectedProducts[i].type + SelectedProducts[i].productid
@@ -1848,9 +1848,8 @@ function SaleEntryForm(props) {
         setload(false);
       }
     } else {
-      Notiflix.Notify.failure(
-        "Please Choose A Doctor to further proceed the sale entry"
-      );
+      alert("Please Choose A Doctor to further proceed the sale entry");
+      Notiflix.Notify.failure("Please Choose A Doctor to further proceed the sale entry");
     }
   }
   function confirmmessage() {
@@ -2762,7 +2761,7 @@ function SRitemdetailssection(props) {
         <div className="col-3">
           <input
             type="checkbox"
-            className=""
+            className="form-check-input"
             value={Taxon ? Taxon : ""}
             onChange={() => {
               Taxon == true ? setTaxon(false) : setTaxon(true);
@@ -2778,88 +2777,26 @@ function SRitemdetailssection(props) {
         <table className="table datatable table-responsive text-center bg-seashell">
           <thead>
             <tr>
-              <th rowspan="2" className="border p-0 m-0 px-1">
-                Item Name
-              </th>
-              <th rowspan="2" className="border p-0 m-0 px-1">
-                Batch No.
-              </th>
-              <th rowspan="2" className="border p-0 m-0 px-1">
-                Expiry Date
-              </th>
-              <th rowspan="2" className="border p-0 m-0 px-1">
-                MRP in Rs.
-              </th>
-              <th rowspan="2" className="border p-0 m-0 px-1">
-                Selling Cost
-              </th>
-              <th rowspan="2" className="border p-0 m-0 px-1">
-                Discount%
-              </th>
-              <th rowspan="2" className="border p-0 m-0 px-1">
-                Qty
-              </th>
-              <th
-                colspan={Taxon == true ? "8" : "2"}
-                scope="col-group"
-                className="border p-0 m-0 px-1"
-              >
-                Total Tax
-              </th>
-              <th rowspan="2" className="border p-0 m-0 px-1">
-                Total in Rs.
-              </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Item Name </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Batch No. </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Expiry Date </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> MRP in Rs. </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Selling Cost </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Discount% </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Qty </th>
+              <th colspan={Taxon == true ? "8" : "2"} scope="col-group" className="border p-0 m-0 px-1" > Total Tax </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Total in Rs. </th>
               {/* <th rowspan='2' className='border p-0 m-0 px-1'>Print QR</th> */}
             </tr>
             <tr>
-              <th
-                scope="col"
-                className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none"
-                  }`}
-              >
-                CGST%
-              </th>
-              <th
-                scope="col"
-                className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none"
-                  }`}
-              >
-                CGST in Rs.
-              </th>
-              <th
-                scope="col"
-                className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none"
-                  }`}
-              >
-                SGST%
-              </th>
-              <th
-                scope="col"
-                className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none"
-                  }`}
-              >
-                SGST in Rs.
-              </th>
-              <th
-                scope="col"
-                className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none"
-                  }`}
-              >
-                IGST%
-              </th>
-              <th
-                scope="col"
-                className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none"
-                  }`}
-              >
-                IGST in Rs.
-              </th>
-              <th scope="col" className={`border p-0 m-0 px-1`}>
-                Total%
-              </th>
-              <th scope="col" className={`border p-0 m-0 px-1`}>
-                Total in Rs.
-              </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none"}`} > CGST% </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none"}`} > CGST in Rs. </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none"}`} > SGST% </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none"}`} > SGST in Rs. </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none"}`} > IGST% </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none"}`} > IGST in Rs. </th>
+              <th scope="col" className={`border p-0 m-0 px-1`}> Total% </th>
+              <th scope="col" className={`border p-0 m-0 px-1`}> Total in Rs. </th>
             </tr>
           </thead>
           {props.salereturnarr.sale_medicines &&
@@ -4446,7 +4383,7 @@ function Newpurchaseentryform(props) {
       if (MedicineentriesArr == undefined || MedicineentriesArr.length == 0) {
         setMedicineentriesArr([MedicineentriesObj]);
       } else {
-        setMedicineentriesArr((prevState) => [ ...prevState, MedicineentriesObj, ]);
+        setMedicineentriesArr((prevState) => [...prevState, MedicineentriesObj,]);
       }
     } else {
       Notiflix.Notify.warning("please choose quantity");
@@ -5015,7 +4952,7 @@ function Newpurchaseentryform(props) {
                 </div>
               </div>
             ) : (
-              <button disabled={ MedicineentriesArr == undefined || (MedicineentriesArr && MedicineentriesArr.length == 0) ? true : false } className="button button-charcoal" onClick={() => { confirmmessage(MedicineentriesArr, vendorname); }} > Save All </button>
+              <button disabled={MedicineentriesArr == undefined || (MedicineentriesArr && MedicineentriesArr.length == 0) ? true : false} className="button button-charcoal" onClick={() => { confirmmessage(MedicineentriesArr, vendorname); }} > Save All </button>
             )}
           </div>
           <div className="col-auto">
@@ -5239,7 +5176,7 @@ function Newpurchaseentryform(props) {
                 {MedicineentriesArr ? (
                   <tbody style={{ Height: "48vh", maxHeight: "48vh", color: "var(--charcoal)", fontWeight: "600", }} >
                     {MedicineentriesArr.map((item, _key) => (
-                      <tr key={_key} className={`bg-${_key % 2 == 0 ? "lightred50" : "pearl" }`} >
+                      <tr key={_key} className={`bg-${_key % 2 == 0 ? "lightred50" : "pearl"}`} >
                         <td><input type="checkbox" checked={_key == tableindex ? true : false} onClick={() => { indexing(_key); }} className="bg-seashell form-check-input" /> </td>
                         <td>{item.Itemid}</td>
                         <td>{item.Itemname}</td>
@@ -5284,7 +5221,7 @@ function Newpurchaseentryform(props) {
             </div>
           </div>
           <div
-            className={`col-4 m-0 p-0 scroll scroll-y border border-1 medicineinfosection d-${vendorid ? "block" : "none" } bg-seashell ps-2`} id="medicineinfosection" style={{ maxHeight: "81vh", Height: "81vh" }} >
+            className={`col-4 m-0 p-0 scroll scroll-y border border-1 medicineinfosection d-${vendorid ? "block" : "none"} bg-seashell ps-2`} id="medicineinfosection" style={{ maxHeight: "81vh", Height: "81vh" }} >
             <h5 className="mt-2">Add Items</h5>
             <div className="col-12">
               <input
@@ -5302,35 +5239,35 @@ function Newpurchaseentryform(props) {
                   <input className="form-control bg-seashell" placeholder="Items" value={itemname ? itemname : ""} onChange={(e) => { searchmeds(e.target.value); setitemname(e.target.value); setitemtype(); }} />
                   <div ref={medicinesref} className="position-absolute rounded-4 col-12" style={{ zIndex: "2" }} >
                     {
-                    itemsearch ? (
-                      loadsearch ? (
-                        <div className="rounded-1 p-1 bg-pearl">
-                          Searching Please wait....
-                          <div
-                            className="spinner-border my-auto"
-                            style={{ width: "1rem", height: "1rem" }}
-                            role="status"
-                          >
-                            <span className="sr-only"> </span>{" "}
-                          </div>
-                        </div>
-                      ) : itemsearch.length == 0 ? (
-                        <div className="bg-burntumber text-light rounded-1 p-1 text-wrap">
-                          Oops! Not Avaliable
-                        </div>
-                      ) : (
-                        <div className={`mt-1 rounded-4 bg-pearl shadow px-1 pb-2 d-${itemsearch && itemsearch.length > 1 ? "block" : "none" }`} >
-                          <p className={`p-0 m-0 bg-pearl fw-bold text-charcoal75 rounded-4 ps-2 `} style={{ fontSize: "0.8rem" }} > {itemsearch.length} Search Results </p>
-                          {itemsearch.map((data, i) => (
-                            <div style={{ cursor: "pointer" }} className={`p-0 ps-1 text-wrap  bg-${i % 2 == 0 ? "" : "lightyellow" }`} name={data.id} onClick={(e) => { setitemname( data.display_name ? data.display_name : data.name ); setitemid(data.id); setitemtype(data.vaccines_id ? "v" : "m"); medicinesref.current.style.display = "none"; }} >
-                              {data.display_name ? data.display_name : data.name}
+                      itemsearch ? (
+                        loadsearch ? (
+                          <div className="rounded-1 p-1 bg-pearl">
+                            Searching Please wait....
+                            <div
+                              className="spinner-border my-auto"
+                              style={{ width: "1rem", height: "1rem" }}
+                              role="status"
+                            >
+                              <span className="sr-only"> </span>{" "}
                             </div>
-                          ))}
-                        </div>
-                      )
-                    ) : (
-                      <></>
-                    )}
+                          </div>
+                        ) : itemsearch.length == 0 ? (
+                          <div className="bg-burntumber text-light rounded-1 p-1 text-wrap">
+                            Oops! Not Avaliable
+                          </div>
+                        ) : (
+                          <div className={`mt-1 rounded-4 bg-pearl shadow px-1 pb-2 d-${itemsearch && itemsearch.length > 1 ? "block" : "none"}`} >
+                            <p className={`p-0 m-0 bg-pearl fw-bold text-charcoal75 rounded-4 ps-2 `} style={{ fontSize: "0.8rem" }} > {itemsearch.length} Search Results </p>
+                            {itemsearch.map((data, i) => (
+                              <div style={{ cursor: "pointer" }} className={`p-0 ps-1 text-wrap  bg-${i % 2 == 0 ? "" : "lightyellow"}`} name={data.id} onClick={(e) => { setitemname(data.display_name ? data.display_name : data.name); setitemid(data.id); setitemtype(data.vaccines_id ? "v" : "m"); medicinesref.current.style.display = "none"; }} >
+                                {data.display_name ? data.display_name : data.name}
+                              </div>
+                            ))}
+                          </div>
+                        )
+                      ) : (
+                        <></>
+                      )}
                   </div>
                 </div>
 

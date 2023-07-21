@@ -18,6 +18,7 @@ const PatientSalesHistory = () => {
     const [Loading, setLoading] = useState(false);
     const [patientname, setpatientname] = useState()
     const [patientsalehistoryarr, setpatientsalehistoryarr] = useState([]);
+    const [patientsalereturnhistoryarr, setpatientsalereturnhistoryarr] = useState([]);
     const [pages, setpages] = useState([]);
     const [pagecount, setpagecount] = useState();
     const [patientid, setpatientid] = useState()
@@ -80,36 +81,36 @@ const PatientSalesHistory = () => {
 
         }
     }
-    // function GETPatientSalesReturnHistory() {
-    //     if (patientid) {
+    function GETPatientSalesReturnHistory() {
+        if (patientid) {
 
-    //         setLoading(true);
-    //         try {
-    //             axios.get(`${url}/reports/sales/return/patient?&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}&patient_id=${patientid}`)
-    //                 .then((response) => {
-    //                     console.log(response);
-    //                     const parentArray = Object.keys(response.data.data.sales).map(key => ({
-    //                         invoice_no: key,
-    //                         ...response.data.data.sales[key]
-    //                     }));
-    //                     setpatientsalehistoryarr(parentArray);
-    //                     setLoading(false);
-    //                 })
-    //                 .catch((e) => {
-    //                     Notiflix.Notify.warning(e.message);
-    //                     setLoading(false);
-    //                 });
-    //         } catch (e) {
-    //             Notiflix.Notify.warning(e.message);
-    //             setLoading(false);
-    //         }
+            setLoading(true);
+            try {
+                axios.get(`${url}/reports/sales/return/patient?&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}&patient_id=${patientid}`)
+                    .then((response) => {
+                        console.log(response);
+                        const parentArray = Object.keys(response.data.data.sales_return).map(key => ({
+                            invoice_no: key,
+                            ...response.data.data.sales_return[key]
+                        }));
+                        setpatientsalereturnhistoryarr(parentArray);
+                        setLoading(false);
+                    })
+                    .catch((e) => {
+                        Notiflix.Notify.warning(e.message);
+                        setLoading(false);
+                    });
+            } catch (e) {
+                Notiflix.Notify.warning(e.message);
+                setLoading(false);
+            }
 
-    //     }
-    // }
-    console.log(displaysearchlist, searchinput, searchlist, patientsalehistoryarr)
+        }
+    }
+    console.log(patientsalehistoryarr, patientsalereturnhistoryarr)
     useEffect(() => {
         GETPatientSalesHistory();
-        // GETPatientSalesReturnHistory();
+        GETPatientSalesReturnHistory();
     }, [patientid, fromdate, todate]);
 
     return (
@@ -194,6 +195,17 @@ const PatientSalesHistory = () => {
                     ) : patientsalehistoryarr && patientsalehistoryarr.length != 0 ? (
                         <tbody>
                             {patientsalehistoryarr.map((item, i) => (
+                                <tr className={` bg-${i % 2 == 0 ? "seashell" : "pearl"} align-middle`} key={i} >
+                                    <td className="text-charcoal fw-bold">{reversefunction(item.date)}</td>
+                                    <td className="text-charcoal fw-bold">{item.invoice}</td>
+                                    <td className="text-charcoal fw-bold">{item.type} </td>
+                                    <td className="text-charcoal fw-bold">₹{item.amount}</td>
+                                    <td className="text-charcoal fw-bold">₹{item.tax} </td>
+                                    <td className="text-charcoal fw-bold">₹{item.total} </td>
+                                    {/* <td className="text-charcoal fw-bold"> </td> */}
+                                </tr>
+                            ))}
+                            {patientsalereturnhistoryarr.map((item, i) => (
                                 <tr className={` bg-${i % 2 == 0 ? "seashell" : "pearl"} align-middle`} key={i} >
                                     <td className="text-charcoal fw-bold">{reversefunction(item.date)}</td>
                                     <td className="text-charcoal fw-bold">{item.invoice}</td>
