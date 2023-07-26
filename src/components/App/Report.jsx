@@ -99,23 +99,23 @@ const Reports = () => {
     if (_selected === 0) {
       return (
         <>
-          <select className="ms-2 mt-2 px-4 py-1 text-pearl rounded-pill bg-charcoal text-center " onChange={(e) => { setselect(e.target.value) }} >
-            <option className="bg-seashell text-charcoal" value="0">Stock Report</option>
-            <option className="bg-seashell text-charcoal" value="1">StockReport By ItemName</option>
-            <option className="bg-seashell text-charcoal" value="2">Stock Valuation</option>
-            <option className="bg-seashell text-charcoal" value="3">Opening Stock</option>
-            <option className="bg-seashell text-charcoal" value="4">Rate List</option>
-            <option className="bg-seashell text-charcoal" value="5">Summary Wise Data (for All)</option>
-            <option className="bg-seashell text-charcoal" value="6">Tax Rate Wise Data</option>
-            <option className="bg-seashell text-charcoal" value="7">Gross Profit Margin</option>
-            <option className="bg-seashell text-charcoal" value="8">Patient Sales History</option>
-            <option className="bg-seashell text-charcoal" value="9">Schedule Wise Sales</option>
-            <option className="bg-seashell text-charcoal" value="10">Vendor Details</option>
-            <option className="bg-seashell text-charcoal" value="11">Batch Details</option>
-            <option className="bg-seashell text-charcoal" value="12">Stock Value Confirmation</option>
-            <option className="bg-seashell text-charcoal" value="13">Doctor Wise Sales</option>
-            <option className="bg-seashell text-charcoal" value="14">Transfer Stock In</option>
-            <option className="bg-seashell text-charcoal" value="15">Transfer Stock Out</option>
+          <select className="ms-2 mt-2 px-4 py-1 text-pearl rounded-pill bg-charcoal text-center " onChange={(e) => { setselect(e.target.value) }} style={{ cursor: 'pointer' }} >
+            <option className="bg-seashell text-charcoal" value="0" style={{ cursor: 'pointer' }} >Stock Report</option>
+            <option className="bg-seashell text-charcoal" value="1" style={{ cursor: 'pointer' }} >StockReport By ItemName</option>
+            <option className="bg-seashell text-charcoal" value="2" style={{ cursor: 'pointer' }} >Stock Valuation</option>
+            <option className="bg-seashell text-charcoal" value="3" style={{ cursor: 'pointer' }} >Opening Stock</option>
+            <option className="bg-seashell text-charcoal" value="4" style={{ cursor: 'pointer' }} >Rate List</option>
+            <option className="bg-seashell text-charcoal" value="5" style={{ cursor: 'pointer' }} >Summary Wise Data (for All)</option>
+            <option className="bg-seashell text-charcoal" value="6" style={{ cursor: 'pointer' }} >Tax Rate Wise Data</option>
+            <option className="bg-seashell text-charcoal" value="7" style={{ cursor: 'pointer' }} >Gross Profit Margin</option>
+            <option className="bg-seashell text-charcoal" value="8" style={{ cursor: 'pointer' }} >Patient Sales History</option>
+            <option className="bg-seashell text-charcoal" value="9" style={{ cursor: 'pointer' }} >Schedule Wise Sales</option>
+            <option className="bg-seashell text-charcoal" value="10" style={{ cursor: 'pointer' }} >Vendor Details</option>
+            <option className="bg-seashell text-charcoal" value="11" style={{ cursor: 'pointer' }} >Batch Details</option>
+            <option className="bg-seashell text-charcoal" value="12" style={{ cursor: 'pointer' }} >Stock Value Confirmation</option>
+            <option className="bg-seashell text-charcoal" value="13" style={{ cursor: 'pointer' }} >Doctor Wise Sales</option>
+            <option className="bg-seashell text-charcoal" value="14" style={{ cursor: 'pointer' }} >Transfer Stock In</option>
+            <option className="bg-seashell text-charcoal" value="15" style={{ cursor: 'pointer' }} >Transfer Stock Out</option>
           </select>
           <div>{selectfunc(select)}</div>
         </>

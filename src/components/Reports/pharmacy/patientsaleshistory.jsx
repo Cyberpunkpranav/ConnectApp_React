@@ -83,12 +83,11 @@ const PatientSalesHistory = () => {
     }
     function GETPatientSalesReturnHistory() {
         if (patientid) {
-
             setLoading(true);
             try {
                 axios.get(`${url}/reports/sales/return/patient?&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}&patient_id=${patientid}`)
                     .then((response) => {
-                        console.log(response);
+                        console.log(response)
                         const parentArray = Object.keys(response.data.data.sales_return).map(key => ({
                             invoice_no: key,
                             ...response.data.data.sales_return[key]
@@ -184,11 +183,7 @@ const PatientSalesHistory = () => {
                                     <strong className="" style={{ fontSize: "1rem" }}>
                                         Getting Details please be Patient ...
                                     </strong>
-                                    <div
-                                        className="spinner-border ms-auto"
-                                        role="status"
-                                        aria-hidden="true"
-                                    ></div>
+                                    <div className="spinner-border ms-auto" role="status" aria-hidden="true" ></div>
                                 </div>
                             </tr>
                         </tbody>
@@ -199,7 +194,7 @@ const PatientSalesHistory = () => {
                                     <td className="text-charcoal fw-bold">{reversefunction(item.date)}</td>
                                     <td className="text-charcoal fw-bold">{item.invoice}</td>
                                     <td className="text-charcoal fw-bold">{item.type} </td>
-                                    <td className="text-charcoal fw-bold">₹{item.amount}</td>
+                                    <td className="text-charcoal fw-bold">₹{Number(item.amount).toFixed(2)}</td>
                                     <td className="text-charcoal fw-bold">₹{item.tax} </td>
                                     <td className="text-charcoal fw-bold">₹{item.total} </td>
                                     {/* <td className="text-charcoal fw-bold"> </td> */}
@@ -210,7 +205,7 @@ const PatientSalesHistory = () => {
                                     <td className="text-charcoal fw-bold">{reversefunction(item.date)}</td>
                                     <td className="text-charcoal fw-bold">{item.invoice}</td>
                                     <td className="text-charcoal fw-bold">{item.type} </td>
-                                    <td className="text-charcoal fw-bold">₹{item.amount}</td>
+                                    <td className="text-charcoal fw-bold">₹{Number(item.amount).toFixed(2)}</td>
                                     <td className="text-charcoal fw-bold">₹{item.tax} </td>
                                     <td className="text-charcoal fw-bold">₹{item.total} </td>
                                     {/* <td className="text-charcoal fw-bold"> </td> */}

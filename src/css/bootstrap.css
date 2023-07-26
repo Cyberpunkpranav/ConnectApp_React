@@ -37,6 +37,45 @@ body {
     font-family: 'Urbanist', sans-serif !important;
 }
 
+.btn-back {
+    --bs-btn-close-color: #000;
+    --bs-btn-close-bg: url('../../public/images/btn-back.png') !important;
+    --bs-btn-close-opacity: 0.5;
+    --bs-btn-close-hover-opacity: 0.75;
+    --bs-btn-close-focus-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    --bs-btn-close-focus-opacity: 1;
+    --bs-btn-close-disabled-opacity: 0.25;
+    --bs-btn-close-white-filter: invert(1) grayscale(100%) brightness(200%);
+    box-sizing: content-box;
+    padding: 0 !important;
+    width: 3em !important;
+    height: 3em !important;
+    color: var(--bs-btn-close-color);
+    background: transparent var(--bs-btn-close-bg) center/1em auto no-repeat;
+    border: 0;
+    border-radius: 0.375rem;
+    opacity: var(--bs-btn-close-opacity);
+    scale: 2.5;
+}
+
+.btn-close {
+    --bs-btn-close-bg: url('../../public/images/btn-close.png') !important;
+    scale: 2.5;
+    padding: 0 !important;
+    width: 3em !important;
+    height: 3em !important;
+    --bs-btn-close-focus-shadow: none !important;
+}
+
+.form-control:focus {
+    box-shadow: none !important;
+}
+
+.form-control::placeholder {
+    color: var(--charcoal50) !important;
+    font-weight: 700 !important;
+}
+
 table {
     font-family: 'Urbanist', sans-serif;
     font-size: 0.85rem !important;
@@ -109,6 +148,7 @@ input[type='text'] {
 input[type='checkbox'] {
     -webkit-appearance: none;
     font-size: 0.85rem !important;
+    cursor: pointer;
 }
 
 /*---------------------------------------------------bodyscrollbar css-------------------------------------------------------------------- */

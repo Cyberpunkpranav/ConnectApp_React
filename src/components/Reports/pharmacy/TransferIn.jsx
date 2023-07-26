@@ -6,6 +6,7 @@ import ReactPaginate from "react-paginate";
 import { DownloadTableExcel } from 'react-export-table-to-excel';
 
 const TransferIn = () => {
+    const clinic = useContext(Clinic)
     const permission = useContext(Permissions);
     const currentDate = useContext(TodayDate);
     const ClinicID = localStorage.getItem("ClinicId");
@@ -19,6 +20,7 @@ const TransferIn = () => {
     const [transferinarr, settransferinarr] = useState([]);
     const [pages, setpages] = useState([]);
     const [pagecount, setpagecount] = useState();
+    const [Location_Id, setLocation_Id] = useState()
 
     const reversefunction = (date) => {
         if (date) {
@@ -26,13 +28,16 @@ const TransferIn = () => {
             return date;
         }
     };
+    // https://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/api/transfer/stocks/list?location_id=1&limit=10&offset=0
 
-    function GetPages() {
+    function GETTransferIn(Data) {
+
+        setLoading(true);
         try {
-            axios.get(`${url}/stock/list?search=${searchname}&limit=10&offset=0`)
+            axios.get(`https://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/api/transfer/stocks/list?location_id=${Location_Id} `)
                 .then((response) => {
-                    setpagecount(response.data.data.total_count);
-                    setpages(Math.round(response.data.data.total_count / 25) + 1);
+                    console.log(response);
+                    settransferinarr(response.data.data.transfer_stocks_recevied);
                     setLoading(false);
                 })
                 .catch((e) => {
@@ -44,54 +49,15 @@ const TransferIn = () => {
             setLoading(false);
         }
     }
-    function GETTransferIn(Data) {
-        if (Data == undefined || Data.selected == undefined) {
-            setLoading(true);
-            try {
-                axios.get(`${url}/stock/list?search=${searchname}&limit=10&offset=0`)
-                    .then((response) => {
-                        console.log(response);
-                        let arr = response.data.data.vaccines.concat(response.data.data.medicines)
-                        settransferinarr(arr);
-                        setLoading(false);
-                    })
-                    .catch((e) => {
-                        Notiflix.Notify.warning(e);
-                        setLoading(false);
-                    });
-            } catch (e) {
-                Notiflix.Notify.warning(e.message);
-                setLoading(false);
-            }
-        } else {
-            setLoading(true);
-            try {
-                axios.get(`${url}/stock/list?search=${searchname}&limit=10&offset=${Data.selected * 25}`)
-                    .then((response) => {
-                        console.log(response);
-                        let arr = response.data.data.vaccines.concat(response.data.data.medicines)
-                        settransferinarr(arr);
-                        setLoading(false);
-                    })
-                    .catch((e) => {
-                        Notiflix.Notify.warning(e);
-                        setLoading(false);
-                    });
-            } catch (e) {
-                Notiflix.Notify.warning(e.message);
-                setLoading(false);
-            }
-        }
-    }
 
 
-    useEffect(() => {
-        GetPages();
-    }, [searchname]);
+    // useEffect(() => {
+    //     GetPages();
+    // }, [Location_Id]);
 
     useEffect(() => {
         GETTransferIn();
-    }, [pagecount]);
+    }, [Location_Id]);
     console.log(transferinarr)
     return (
         <>
@@ -102,7 +68,14 @@ const TransferIn = () => {
                 <div className="col-lg-8 col-md-8 col-7  p-0 m-0  border-0">
                     <div className="row p-0 m-0 border-burntumber fw-bolder rounded-1">
                         <div className="col-4 p-0 m-0 text-burntumber text-center fw-bolder bg-pearl  rounded-1 ">
-                            <input type="text" placeholder="itemname" className="p-0 m-0 border-0 bg-pearl text-burntumber text-center fw-bolder " value={searchname ? searchname : ""} onChange={(e) => { setsearchname(e.target.value); }} />
+                            <select className="fw-bold text-burntumber border-0" onChange={(e) => { setLocation_Id(e.target.value) }}>
+                                <option value="Choose Location">Choose Location</option>
+                                {
+                                    clinic.map((data) => (
+                                        <option value={data.id}>{data.title}</option>
+                                    ))
+                                }
+                            </select>
                         </div>
                         <div className="col-4 p-0 m-0 text-burntumber text-center fw-bolder bg-pearl  rounded-1 ">
                             <input type="date" placeholder="fromdate" className="p-0 m-0 border-0 bg-pearl text-burntumber text-center fw-bolder " value={fromdate ? fromdate : currentDate ? currentDate : ""} onChange={(e) => { setfromdate(e.target.value); }} />

@@ -6,19 +6,21 @@ import ReactPaginate from "react-paginate";
 import { DownloadTableExcel } from 'react-export-table-to-excel';
 
 const TransferOut = () => {
+  const clinic = useContext(Clinic)
   const permission = useContext(Permissions);
   const currentDate = useContext(TodayDate);
   const ClinicID = localStorage.getItem("ClinicId");
   const adminid = localStorage.getItem("id");
   const url = useContext(URL);
   const TransferInref = useRef();
-  const [searchname, setsearchname] = useState('')
+  const [transferout, settransferout] = useState('')
   const [fromdate, setfromdate] = useState();
   const [todate, settodate] = useState();
   const [Loading, setLoading] = useState(false);
   const [transferoutarr, settransferoutarr] = useState([]);
   const [pages, setpages] = useState([]);
   const [pagecount, setpagecount] = useState();
+  const [Location_Id, setLocation_Id] = useState()
 
   const reversefunction = (date) => {
     if (date) {
@@ -27,12 +29,30 @@ const TransferOut = () => {
     }
   };
 
-  function GetPages() {
+  // function GetPages() {
+  //   try {
+  //     axios.get(`${url}/stock/list?search=${searchname}&limit=10&offset=0`)
+  //       .then((response) => {
+  //         setpagecount(response.data.data.total_count);
+  //         setpages(Math.round(response.data.data.total_count / 25) + 1);
+  //         setLoading(false);
+  //       })
+  //       .catch((e) => {
+  //         Notiflix.Notify.warning(e);
+  //         setLoading(false);
+  //       });
+  //   } catch (e) {
+  //     Notiflix.Notify.warning(e.message);
+  //     setLoading(false);
+  //   }
+  // }
+  function GETTransferOut(Data) {
+    setLoading(true);
     try {
-      axios.get(`${url}/stock/list?search=${searchname}&limit=10&offset=0`)
+      axios.get(`https://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/api/transfer/stocks/list?location_id=${Location_Id} `)
         .then((response) => {
-          setpagecount(response.data.data.total_count);
-          setpages(Math.round(response.data.data.total_count / 25) + 1);
+          console.log(response);
+          settransferoutarr(response.data.data.transfer_stocks_sent);
           setLoading(false);
         })
         .catch((e) => {
@@ -44,55 +64,51 @@ const TransferOut = () => {
       setLoading(false);
     }
   }
-  function GETTransferOut(Data) {
-    if (Data == undefined || Data.selected == undefined) {
-      setLoading(true);
-      try {
-        axios.get(`${url}/stock/list?search=${searchname}&limit=10&offset=0`)
-          .then((response) => {
-            console.log(response);
-            let arr = response.data.data.vaccines.concat(response.data.data.medicines)
-            settransferoutarr(arr);
-            setLoading(false);
-          })
-          .catch((e) => {
-            Notiflix.Notify.warning(e);
-            setLoading(false);
-          });
-      } catch (e) {
-        Notiflix.Notify.warning(e.message);
-        setLoading(false);
-      }
-    } else {
-      setLoading(true);
-      try {
-        axios.get(`${url}/stock/list?search=${searchname}&limit=10&offset=${Data.selected * 25}`)
-          .then((response) => {
-            console.log(response);
-            let arr = response.data.data.vaccines.concat(response.data.data.medicines)
-            settransferoutarr(arr);
-            setLoading(false);
-          })
-          .catch((e) => {
-            Notiflix.Notify.warning(e);
-            setLoading(false);
-          });
-      } catch (e) {
-        Notiflix.Notify.warning(e.message);
-        setLoading(false);
+  let TransferOut = {
+    receipt_no: '',
+    date: '',
+    location: '',
+    item_name: '',
+    qty: '',
+    batch: '',
+    expiry: '',
+    taxable: '',
+    tax_rate: '',
+    total: ''
+  }
+  const Detailed_Data = async () => {
+    settransferout();
+    let Transferout = []
+    for (let i = 0; i < transferoutarr.length; i++) {
+      for (let j = 0; j < transferoutarr[i].medicines.length; j++) {
+        TransferOut = {
+          receipt_no: '',
+          date: transferoutarr[i].transfer_date ? transferoutarr[i].transfer_date : '',
+          location: transferoutarr[i].to_location.title != undefined ? transferoutarr[i].to_location.title : '',
+          item_name: transferoutarr[i].medicines[j].medicine_stock_details.medicine.display_name ? transferoutarr[i].medicines[j].medicine_stock_details.medicine.display_name : "",
+          qty: transferoutarr[i].medicines[j].qty,
+          batch: transferoutarr[i].medicines[j].medicine_stock_details.batch_no ? transferoutarr[i].medicines[j].medicine_stock_details.batch_no : '',
+          expiry: transferoutarr[i].medicines[j].medicine_stock_details.expiry_date ? transferoutarr[i].medicines[j].medicine_stock_details.expiry_date : '',
+          taxable: transferoutarr[i].medicines[j].medicine_stock_details.rate ? transferoutarr[i].medicines[j].medicine_stock_details.rate : '',
+          tax_rate: '',
+          total: transferoutarr[i].total_amount
+        }
+        Transferout.push(TransferOut)
       }
     }
+    console.log(Transferout)
+    settransferout(Transferout)
   }
 
-
   useEffect(() => {
-    GetPages();
-  }, [searchname]);
+    Detailed_Data()
+  }, [transferoutarr]);
 
   useEffect(() => {
     GETTransferOut();
-  }, [pagecount]);
-  console.log(transferoutarr)
+    Detailed_Data()
+  }, [Location_Id]);
+  console.log(transferoutarr, transferout)
   return (
     <>
       <div className="row p-0 m-0 justify-content-lg-between justify-content-md-evenly justify-content-center text-center mt-2">
@@ -102,7 +118,14 @@ const TransferOut = () => {
         <div className="col-lg-8 col-md-8 col-7  p-0 m-0  border-0">
           <div className="row p-0 m-0 border-burntumber fw-bolder rounded-1">
             <div className="col-4 p-0 m-0 text-burntumber text-center fw-bolder bg-pearl  rounded-1 ">
-              <input type="text" placeholder="itemname" className="p-0 m-0 border-0 bg-pearl text-burntumber text-center fw-bolder " value={searchname ? searchname : ""} onChange={(e) => { setsearchname(e.target.value); }} />
+              <select className="fw-bold text-burntumber border-0" onChange={(e) => { setLocation_Id(e.target.value) }}>
+                <option value="Choose Location">Choose Location</option>
+                {
+                  clinic.map((data) => (
+                    <option value={data.id}>{data.title}</option>
+                  ))
+                }
+              </select>
             </div>
             <div className="col-4 p-0 m-0 text-burntumber text-center fw-bolder bg-pearl  rounded-1 ">
               <input type="date" placeholder="fromdate" className="p-0 m-0 border-0 bg-pearl text-burntumber text-center fw-bolder " value={fromdate ? fromdate : currentDate ? currentDate : ""} onChange={(e) => { setfromdate(e.target.value); }} />
@@ -124,7 +147,7 @@ const TransferOut = () => {
             <tr className=" ">
               <th className="text-charcoal75 fw-bolder p-0 m-0 px-1">Reciept Note No. </th>
               <th className="text-charcoal75 fw-bolder p-0 m-0 px-1">Date</th>
-              <th className="text-charcoal75 fw-bolder p-0 m-0 px-1">Location Name</th>
+              <th className="text-charcoal75 fw-bolder p-0 m-0 px-1">To Location </th>
               <th className="text-charcoal75 fw-bolder p-0 m-0 px-1">Item name </th>
               <th className="text-charcoal75 fw-bolder p-0 m-0 px-1">Qty </th>
               <th className="text-charcoal75 fw-bolder p-0 m-0 px-1">Batch</th>
@@ -145,18 +168,18 @@ const TransferOut = () => {
             </tbody>
           ) : transferoutarr && transferoutarr.length != 0 ? (
             <tbody>
-              {transferoutarr.map((item, i) => (
+              {transferout.map((item, i) => (
                 <tr className={` bg-${i % 2 == 0 ? "seashell" : "pearl"} align-middle`} key={i} >
-                  <td className="text-charcoal fw-bold"> </td>
-                  <td className="text-charcoal fw-bold"></td>
-                  <td className="text-charcoal fw-bold"> </td>
-                  <td className="text-charcoal fw-bold"> </td>
-                  <td className="text-charcoal fw-bold"> </td>
-                  <td className="text-charcoal fw-bold"> </td>
-                  <td className="text-charcoal fw-bold"> </td>
-                  <td className="text-charcoal fw-bold"> </td>
-                  <td className="text-charcoal fw-bold"> </td>
-                  <td className="text-charcoal fw-bold"> </td>
+                  <td className="text-charcoal fw-bold">{item.receipt_no != undefined ? item.receipt_no : ''} </td>
+                  <td className="text-charcoal fw-bold">{item.date != undefined ? reversefunction(item.date) : ''}</td>
+                  <td className="text-charcoal fw-bold">{item.location != undefined ? item.location : ''} </td>
+                  <td className="text-charcoal fw-bold">{item.item_name != undefined ? item.item_name : ''} </td>
+                  <td className="text-charcoal fw-bold">{item.qty != undefined ? item.qty : ''}  </td>
+                  <td className="text-charcoal fw-bold">{item.batch != undefined ? item.batch : ''}</td>
+                  <td className="text-charcoal fw-bold">{item.expiry != undefined ? item.expiry : ''} </td>
+                  <td className="text-charcoal fw-bold">{item.taxable != undefined ? item.taxable : ''} </td>
+                  <td className="text-charcoal fw-bold">{item.tax_rate != undefined ? item.tax_rate : ''} </td>
+                  <td className="text-charcoal fw-bold">{item.total != undefined ? item.total : ''} </td>
                 </tr>
               ))}
             </tbody>

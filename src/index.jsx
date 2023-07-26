@@ -152,13 +152,14 @@ function Connectapp(props) {
         <div className="container-fluid clinics">
           <div className="row p-0 m-0 ">
             <div className="col-lg-10 col-12">
-              {cliniclist.map((data, i) => (
-                <div div className="text-start mx-auto">
-                  <label className="">
-                    <input type="checkbox" className="radio form-check-input me-1" checked={ischecked === i ? true : false} name={data.id} onClick={(e) => { setclinicid(e.target.name); setischecked(i); }} />{" "} {data.title} {data.address} </label>
-                  <br />
-                </div>
-              ))}
+              {
+                cliniclist.map((data, i) => (
+                  <div div className="text-start mx-auto">
+                    <label className="">
+                      <input type="checkbox" className="radio form-check-input me-1" checked={ischecked === i ? true : false} name={data.id} onClick={(e) => { setclinicid(e.target.name); setischecked(i); }} />{" "} {data.title} {data.address} </label>
+                    <br />
+                  </div>
+                ))}
             </div>
             <div className="col-lg-2 col-12 mt-lg-0 mt-md-3 mt-sm-0 mt-2 ">
               <button className="btn button-seashell" disabled={clinicid == undefined ? true : false} onClick={Gomain} >
@@ -342,9 +343,7 @@ function Switchpage() {
         <div className="loginform p-0 m-0">
           <section className="signinsection">
             <div className=" p-0 m-0 formsection ">
-              <h4 className="text-center text-charcoal fw-semibold mb-4">
-                Login to Aartas
-              </h4>
+              <h4 className="text-center text-charcoal fw-semibold mb-4"> Login to Aartas </h4>
               <form autoComplete="off" onSubmit={(e) => Submit(e)}>
                 <div className="">
                   <div className={`row d-${email} justify-content-center p-0 m-0`} id="userinput" >
@@ -357,66 +356,34 @@ function Switchpage() {
                       <a className={`next d-${next} text-decoration-none text-center text-charcoal p-2 rounded`} id="next" onClick={topassword} > Next </a>
                     </div>
                   </div>
-                  <div
-                    className={`row d-${password} justify-content-center`}
-                    id="passinput"
-                  >
+                  <div className={`row d-${password} justify-content-center`} id="passinput" >
                     <div className="col-lg-1 col-2 col-md-1 align-items-center d-flex">
                       <a className="back text-decoration-none text-center p-lg-2 p-md-2 p-1 rounded" onClick={toemail} > Back </a>
                     </div>
-                    {load ? (
-                      <div className="col-lg-6 col-md-8 col-sm-10 col-10 py-1 pb-1 userinput text-center">
-                        <div class="spinner-border" role="status">
-                          <span class="visually-hidden">Loading...</span>
+                    {
+                      load ? (
+                        <div className="col-lg-6 col-md-8 col-sm-10 col-10 py-1 pb-1 userinput text-center">
+                          <div class="spinner-border" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                          </div>
                         </div>
-                      </div>
-                    ) : (
-                      <div className="col-lg-6 col-md-8 col-sm-10 col-10 align-items-center d-flex userinput">
-                        <p className="m-0" id="inputheading">
-                          Enter your Password
-                        </p>
-                        <input
-                          type={passvisibility}
-                          className="form-control bg-seashell"
-                          id="password"
-                          placeholder="examplepassword123"
-                          autoComplete="new-password"
-                          onChange={(e) => handleinput(e)}
-                          value={logininput.password}
-                        />
-                      </div>
-                    )}
+                      ) : (
+                        <div className="col-lg-6 col-md-8 col-sm-10 col-10 align-items-center d-flex userinput">
+                          <p className="m-0" id="inputheading"> Enter your Password </p>
+                          <input type={passvisibility} className="form-control bg-seashell" id="password" placeholder="examplepassword123" autoComplete="new-password" onChange={(e) => handleinput(e)} value={logininput.password} />
+                        </div>
+                      )}
                     <div className="col-1 align-items-center justify-content-center d-flex">
-                      <button
-                        type="button"
-                        className=" p-lg-2 p-md-2 p-1 rounded submit text-center"
-                        disabled={load == true ? true : false}
-                        onClick={Submit}
-                      >
-                        Submit
-                      </button>
+                      <button type="button" className=" p-lg-2 p-md-2 p-1 rounded submit text-center" disabled={load == true ? true : false} onClick={Submit} > Submit </button>
                     </div>
                     <div className="col-12 p-0 m-0">
                       <div className="col text-center">
-                        <input
-                          className="form-check-input"
-                          onClick={passwordvisibility}
-                          type="checkbox"
-                          value=""
-                          id="flexCheckDefault"
-                        />
-                        <label
-                          className="form-check-label ms-2 text-charcoal"
-                          htmlFor="flexCheckDefault"
-                        >
-                          Check Password
-                        </label>
+                        <input className="form-check-input" onClick={passwordvisibility} type="checkbox" value="" id="flexCheckDefault" />
+                        <label className="form-check-label ms-2 text-charcoal" htmlFor="flexCheckDefault" > Check Password </label>
                       </div>
                     </div>
                     <div className="col-5 text-center d-none">
-                      <a href="#" className="text-decoration-none">
-                        forgot password
-                      </a>
+                      <a href="#" className="text-decoration-none"> forgot password </a>
                     </div>
                   </div>
                 </div>

@@ -388,6 +388,14 @@ body {
     font-weight: 800;
 }
 
+.allappointmentsection {
+    z-index: 1;
+}
+
+.message_box {
+    z-index: 10;
+}
+
 .allappointmentsection .datatable tr:nth-child(even) {
     background-color: var(--seashell);
 }

@@ -18,6 +18,7 @@ const DoctorWiseSales = () => {
     const [todate, settodate] = useState();
     const [Loading, setLoading] = useState(false);
     const [doctorwisesales, setdoctorwisesales] = useState([]);
+    const [doctorwisesalesreturn, setdoctorwisesalesreturn] = useState([]);
     const [pages, setpages] = useState([]);
     const [pagecount, setpagecount] = useState();
     const [doctorid, setdoctorid] = useState()
@@ -67,19 +68,55 @@ const DoctorWiseSales = () => {
             }
         }
     }
-
+    function GETDoctorWiseSalesReturn() {
+        if (doctorid && doctorid !== undefined) {
+            setLoading(true);
+            try {
+                axios.get(`${url}/reports/sales/return/doctor?from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}&doctor_id=${doctorid}`)
+                    .then((response) => {
+                        console.log(response);
+                        let medicines = []
+                        let vaccines = []
+                        let dataarr = []
+                        const medicinearr = Object.keys(response.data.data.medicine).map(key => ({
+                            medicine_id: key,
+                            ...response.data.data.medicine[key]
+                        }));
+                        medicines.push(medicinearr)
+                        const vaccinearr = Object.keys(response.data.data.vaccine).map(key => ({
+                            vaccine_id: key,
+                            ...response.data.data.vaccine[key]
+                        }));
+                        vaccines.push(vaccinearr)
+                        dataarr.push(medicines)
+                        dataarr.push(vaccines)
+                        dataarr = dataarr.flat()
+                        setdoctorwisesalesreturn(dataarr.flat());
+                        setLoading(false);
+                    })
+                    .catch((e) => {
+                        Notiflix.Notify.warning(e);
+                        setLoading(false);
+                    });
+            } catch (e) {
+                Notiflix.Notify.warning(e.message);
+                setLoading(false);
+            }
+        }
+    }
 
     useEffect(() => {
         GETDoctorWiseSales();
+        GETDoctorWiseSalesReturn()
     }, [doctorid, fromdate, todate]);
-    console.log(doctorid, doctorwisesales)
+    console.log(doctorid, doctorwisesales, doctorwisesalesreturn)
     return (
         <>
             <div className="row p-0 m-0 justify-content-lg-between justify-content-md-evenly justify-content-center text-center mt-2">
                 <div className="col-lg-2 col-md-2 col-3 text-center p-0 m-0 ">
                     <button type="button" className="btn p-0 m-0 heading text-charcoal fw-bolder" style={{ width: "fit-content" }} > {pagecount} {pagecount > 0 ? "Sales" : "Sale"}{" "} </button>
                 </div>
-                <div className="col-lg-8 col-md-8 col-7  p-0 m-0  border-0">
+                <div className="col-lg-8 col-md-8 col-7 p-0 m-0 border-0">
                     <div className="row p-0 m-0 border-burntumber fw-bolder rounded-1">
                         <div className="col-4 p-0 m-0 text-burntumber text-center fw-bolder bg-pearl  rounded-1 ">
                             <select className="form-control p-0 border-0 text-burntumber fw-bold text-center" value={doctorid ? doctorid : ''} onChange={(e) => { setdoctorid(e.target.value) }}>
@@ -120,6 +157,7 @@ const DoctorWiseSales = () => {
                             <th className="text-charcoal75 fw-bolder p-0 m-0 px-1">Item ID </th>
                             <th className="text-charcoal75 fw-bolder p-0 m-0 px-1">Item Name</th>
                             <th className="text-charcoal75 fw-bolder p-0 m-0 px-1">Type</th>
+                            <th className="text-charcoal75 fw-bolder p-0 m-0 px-1">SaleType</th>
                             <th className="text-charcoal75 fw-bolder p-0 m-0 px-1">Batch No. </th>
                             <th className="text-charcoal75 fw-bolder p-0 m-0 px-1">Invoice </th>
                             <th className="text-charcoal75 fw-bolder p-0 m-0 px-1">Date </th>
@@ -148,6 +186,7 @@ const DoctorWiseSales = () => {
                                     <td className="text-charcoal fw-bold">{item.medicine_id ? item.medicine_id : item.vaccine_id ? item.vaccine_id : ''} </td>
                                     <td className="text-charcoal fw-bold">{item.item ? item.item : ''} </td>
                                     <td className="text-charcoal fw-bold">{item.medicine_id ? 'medicine' : item.vaccine_id ? 'vaccine' : ''} </td>
+                                    <td className="text-charcoal fw-bold">Sales</td>
                                     <td className="text-charcoal fw-bold">{item.batch_no ? item.batch_no : ''} </td>
                                     <td className="text-charcoal fw-bold">{item.invoice ? item.invoice : ''} </td>
                                     <td className="text-charcoal fw-bold">{item.date ? reversefunction(item.date) : ''} </td>
@@ -158,6 +197,22 @@ const DoctorWiseSales = () => {
                                     <td className="text-charcoal fw-bold">{item.total_profit ? Number(item.total_profit).toFixed(2) : ''} </td>
                                 </tr>
                             ))}
+                            {doctorwisesalesreturn.length !== undefined ? doctorwisesalesreturn.map((item, i) => (
+                                <tr className={` bg-${i % 2 == 0 ? "seashell" : "pearl"} align-middle`} key={i} >
+                                    <td className="text-charcoal fw-bold">{item.medicine_id ? item.medicine_id : item.vaccine_id ? item.vaccine_id : ''} </td>
+                                    <td className="text-charcoal fw-bold">{item.item ? item.item : ''} </td>
+                                    <td className="text-charcoal fw-bold">{item.medicine_id ? 'medicine' : item.vaccine_id ? 'vaccine' : ''} </td>
+                                    <td className="text-charcoal fw-bold">Sales Return</td>
+                                    <td className="text-charcoal fw-bold">{item.batch_no ? item.batch_no : ''} </td>
+                                    <td className="text-charcoal fw-bold">{item.invoice ? item.invoice : ''} </td>
+                                    <td className="text-charcoal fw-bold">{item.date ? reversefunction(item.date) : ''} </td>
+                                    <td className="text-charcoal fw-bold">{item.qty ? item.qty : ''} </td>
+                                    <td className="text-charcoal fw-bold">{item.taxable_amount ? Number(item.taxable_amount).toFixed(2) : ''}  </td>
+                                    <td className="text-charcoal fw-bold">{item.tax ? Number(item.tax).toFixed(2) : ''} </td>
+                                    <td className="text-charcoal fw-bold">{item.total ? item.total : ''} </td>
+                                    <td className="text-charcoal fw-bold">{item.total_profit ? Number(item.total_profit).toFixed(2) : ''} </td>
+                                </tr>
+                            )) : ''}
                         </tbody>
                     ) : (
                         <tbody className="text-center p-0 m-0" style={{ minHeight: "55vh", maxHeight: "55vh" }} >

@@ -14,7 +14,7 @@ import { AddAppointment } from '../Today/AddAppointment'
 
 
 function Navbar(props) {
-    const chatinputref = useRef()
+    const message_Box = useRef()
     //Use States
     const [patientform, setpatientform] = useState("none");
     const [appointmentform, setappointmentform] = useState("none");
@@ -30,8 +30,8 @@ function Navbar(props) {
             setpatientform("none");
         }
     };
-    const [openchat, setopenchat] = useState()
-    const [chatarr, setchat] = useState([])
+    const [openchat, setopenchat] = useState('none')
+    const [message, setmessage] = useState('')
 
     const toggleappointmentform = () => {
         if (appointmentform === "none") {
@@ -104,34 +104,36 @@ function Navbar(props) {
 
     //Searchfield input
     const [searchtext, setsearchtext] = useState()
-
-    var socket = new WebSocket('ws://localhost:8080/Chat')
-
+    let socket = null;
+    let JsonData = {
+        action: '',
+        username: props.username,
+        message: message
+    }
     const sendmessage = () => {
-        let JsonData = {
-            action: '',
-            username: props.username
-        }
+
+        socket = new WebSocket('ws://localhost:8080/Chat')
         socket.onopen = () => {
+            socket.onmessage = (msg) => {
+                console.log(msg)
+            }
             console.log("Connection Successfully")
-            socket.send(JsonData)
+            socket.send(JSON.stringify(JsonData))
         }
-        socket.onclose = () => {
-            console.log("Connection Closed")
-        }
-        socket.onerror = (error) => {
-            console.log(error)
-        }
-        socket.onmessage = (msg) => {
-            console.log(JSON.parse(msg.data))
-        }
-
-
 
     }
+    useEffect(() => {
+        sendmessage()
+    }, [])
 
-    console.log(chatarr)
-
+    function Toggle_Chat() {
+        if (openchat == 'none') {
+            setopenchat('block')
+        }
+        if (openchat == 'block') {
+            setopenchat('none')
+        }
+    }
     return (
         <>
             <div className="navsection p-0 m-0 py-1">
@@ -206,20 +208,32 @@ function Navbar(props) {
                 )
             }
 
-            <div className="position-absolute bottom-0 end-0 me-5 mb-3 d-block" style={{ zIndex: 1000 }}>
-                <button className={`btn p-0 m-0 d-${openchat == 'block' ? 'none' : 'block'}`} onClick={() => { openchat == 'none' ? setopenchat('block') : setopenchat('none') }}><img src={process.env.PUBLIC_URL + 'images/chat.png'} style={{ width: '2.5rem' }} /></button>
-                <div className={`container d-${openchat == 'none' ? 'none' : 'block'}`}>
-                    {/* <div className="bg-lightgreen border border-1 rounded-1 overflow-scroll" style={{ maxHeight: '15rem' }}>
-                        {
-                            chatarr.map((data) => (
-                                <div className="text-end me-2">{data}</div>
-                            ))}</div> */}
-                    <button className="btn btn-close" onClick={() => { openchat == 'none' ? setopenchat('block') : setopenchat('none') }}></button>
-                    <input className="bg-seashell rounded-1 border border-1" ref={chatinputref} onBlur={(e) => { setchat(e.target.value) }} />
-                    <button className="btn p-0 m-0" onClick={() => { sendmessage() }}><img src={process.env.PUBLIC_URL + 'images/completed.png'} style={{ width: '1.8rem' }} /></button>
+            <div className="position-absolute bottom-0 end-0 me-5 mb-3 d-block">
+                <button className={`btn p-0 m-0 text-pearl fw-bold bg-charcoal p-2`} onClick={() => Toggle_Chat()}>Chat</button>
+            </div>
+            <div className={`message_box d-${openchat}`} ref={message_Box} >
+                {/* <div className='backdrop'></div> */}
+                <div div className='message_box bg-lightyellow position-absolute end-0 top-0' style={{ height: '100vh', width: '50vh' }}>
+                    <div className="chatbox position-relative" style={{ height: '100vh', width: '50vh' }}>
+                        <button className="btn-close position-absolute end-0 me-3 mt-2" onClick={() => Toggle_Chat()} ></button>
+                        <div className="messagebox bg-brandy pt-5 scroll border border-1" style={{ height: '90vh', width: '50vh' }}>
+                        </div>
+                        <div className="row position-absolute bottom-0 mb-4 end-0 me-5">
+                            <div className="col-10">
+                                <input type='text' className='form-control ms-2 w-100' onChange={(e) => { setmessage(e.target.value) }} />
+                            </div>
+                            <div className="col-2">
+                                <button className='btn btn-sm button-burntumber' onClick={() => sendmessage()}>Send</button>
+                            </div>
+                        </div>
+
+                    </div>
+
                 </div>
 
-            </div>
+
+            </div >
+
         </>
     );
 }

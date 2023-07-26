@@ -101,6 +101,7 @@ function Saleentrysection(props) {
   const [tabindex, settabindex] = useState();
   const [pagecount, setpagecount] = useState();
 
+
   const toggle_nsef = () => {
     if (nsef === "none") {
       setnsef("block");
@@ -480,10 +481,7 @@ function Saleentrysection(props) {
           activeClassName={"active "}
         />
       </div>
-      <section
-        className={`newsaleentryform p-0 m-0 position-absolute d-${nsef} border border-1 mx-auto start-0 end-0 bg-seashell`}
-        style={{ height: "90vh" }}
-      >
+      <section className={`newsaleentryform col-xl-6 col-lg-8 col-md-10 p-0 m-0 position-absolute d-${nsef} border border-1 mx-auto top-0 bottom-0 m-auto start-0 end-0 bg-seashell`} style={{ height: "60vh" }} >
         <SaleEntryForm toggle_nsef={toggle_nsef} GETSalesList={GETSalesList} />
       </section>
     </>
@@ -494,7 +492,6 @@ function SaleEntrypayments(props) {
   const permission = useContext(Permissions);
   const adminid = localStorage.getItem("id");
   const [paymentmethods, setpaymentmethods] = useState();
-  const [previouspayments, setpreviouspayments] = useState([]);
   const [previoustotal, setprevioustotal] = useState(0);
   const [loading, setloading] = useState();
   const paymentmethoddetails = {
@@ -502,34 +499,27 @@ function SaleEntrypayments(props) {
     amount: 0,
   };
   async function AddPaymentMethods() {
-    let Payments = [];
-    let amounts = [];
-    let allamounts = [];
-    Payments.push(
-      Object.keys(JSON.parse(props.saleentryarr.payment_method_details))
-    );
-    amounts.push(
-      Object.values(JSON.parse(props.saleentryarr.payment_method_details))
-    );
-    let paymentobj = [];
+    let Payments = []
+    let amounts = []
+    let allamounts = []
+    Payments.push(Object.keys(JSON.parse(props.saleentryarr.payment_method_details)))
+    amounts.push(Object.values(JSON.parse(props.saleentryarr.payment_method_details)))
+    let paymentobj = []
     let p = {
       paymentmethod: "",
       amount: 0,
-    };
+    }
     if (Payments[0]) {
       for (let j = 0; j < Payments[0].length; j++) {
-        allamounts.push(
-          (p = { paymentmethod: Payments[0][j], amount: amounts[0][j] })
-        );
+        allamounts.push((p = { paymentmethod: Payments[0][j], amount: amounts[0][j] }))
       }
-      setpaymentmethods(allamounts);
+      setpaymentmethods(allamounts)
     }
-
-    paymentmethods.push(paymentobj);
+    paymentmethods.push(paymentobj)
   }
   useEffect(() => {
     AddPaymentMethods();
-  }, []);
+  }, [])
   function DeletePaymentMethods(i) {
     paymentmethods.splice(i, i);
   }
@@ -548,7 +538,7 @@ function SaleEntrypayments(props) {
       },
       {}
     );
-  };
+  }
   async function SaveSaleEntryCharges() {
     let PaymentMethod = [];
     let PaymentMethodDetails = [];
@@ -583,7 +573,7 @@ function SaleEntrypayments(props) {
     paymentmethods && paymentmethods.map((data) => (total += Number(data.amount)));
     console.log(total);
     setprevioustotal(total);
-  };
+  }
   useEffect(() => {
     CalPrevTotal();
   }, [props.saleentryarr]);
@@ -623,94 +613,79 @@ function SaleEntrypayments(props) {
     <div className="p-0 m-0 text-center">
       <h6 className="text-center mt-2 fw-bold">{props.itembillid} Payments</h6>
       <hr className="p-0 m-0 mt-1" />
-      <button
-        className="btn-close position-absolute top-0 end-0 p-2 m-2 "
-        onClick={() => props.toggle_payments()}
-      ></button>
+      <button className="btn-close position-absolute top-0 end-0 p-2 m-2 " onClick={() => props.toggle_payments()} ></button>
 
-      <p className="text-charcoal p-0 m-auto fw-bolder">
-        Grand Total :{" "}
-        <span className="text-burntumber">
-          Rs {props.saleentryarr.grand_total}
-        </span>
-      </p>
+      <p className="text-charcoal p-0 m-auto fw-bolder"> Grand Total :{" "} <span className="text-burntumber"> Rs {props.saleentryarr.grand_total} </span> </p>
       <hr className="p-0 m-0 mb-1" />
       <div className="container-fluid text-start position-relative">
-        <div
-          className={`d-${previoustotal == props.saleentryarr.grand_total ? "" : "none"
-            } bg-lightgreen fw-bold text-center p-2 my-2`}
-        >
-          Payment Done
-        </div>
+        <div className={`d-${previoustotal == props.saleentryarr.grand_total ? "" : "none"} bg-lightgreen fw-bold text-center p-2 my-2`} > Payment Done </div>
         <h6 className="text-charcoal fw-bolder text-center">Payments</h6>
         <h6 className="text-burntumber fw-bolder text-center">{Return_Amount() > 0 ? `Amount Exceeded by ${Return_Amount()}` : ""}</h6>
-        {/* d-${previoustotal < props.saleentryarr.grand_total ? '  ' : 'none'} */}
-        {paymentmethods ? (
-          paymentmethods.map((data, i) =>
-            // permission.sale_entry_charges_edit == 1
-
-            permission.sale_entry_charges_edit == 1 ? (
-              <div className={`row p-0 m-0 justify-content-end g-2`}>
-                <div className="col-4 ">
-                  <select className="form-control border-success py-1 text-center" value={data.paymentmethod} onChange={(e) => { data.paymentmethod = e.target.value; setpaymentmethods((prevState) => [...prevState]); }} >
-                    <option className="text-charcoal75 fw-bolder"> Payment Method </option>
-                    <option value="Cash">Cash</option>
-                    <option value="Card">Card</option>
-                    <option value="Paytm">Paytm</option>
-                    <option value="Phonepe">Phone Pe</option>
-                    <option value="Wire-Transfer">Wire Transfer</option>
-                    <option value="Razorpay">Razorpay</option>
-                    <option value="Points">Points</option>
-                    <option value="Adjust-Advance">Adjust-Advance</option>
-                  </select>
+        {
+          paymentmethods ? (
+            paymentmethods.map((data, i) =>
+              permission.sale_entry_charges_edit == 1 ? (
+                <div className={`row p-0 m-0 justify-content-end g-2`}>
+                  <div className="col-4 ">
+                    <select className="form-control border-success py-1 text-center" value={data.paymentmethod} onChange={(e) => { data.paymentmethod = e.target.value; setpaymentmethods((prevState) => [...prevState]); }} >
+                      <option className="text-charcoal75 fw-bolder"> Payment Method </option>
+                      <option value="Cash">Cash</option>
+                      <option value="Card">Card</option>
+                      <option value="Paytm">Paytm</option>
+                      <option value="Phonepe">Phone Pe</option>
+                      <option value="Wire-Transfer">Wire Transfer</option>
+                      <option value="Razorpay">Razorpay</option>
+                      <option value="Points">Points</option>
+                      <option value="Adjust-Advance">Adjust-Advance</option>
+                    </select>
+                  </div>
+                  <div className="col-4 text-center ">
+                    <input className="form-control border-success py-1 text-center" value={data.amount} onChange={(e) => { data.amount = e.target.value; setpaymentmethods((prevState) => [...prevState]); }} />
+                  </div>
+                  <div className="col-2 text-center">
+                    <button className="btn btn-sm p-0 m-0" onClick={() => { DeletePaymentMethods(i); setpaymentmethods((prevState) => [...prevState]); }} >
+                      <img src={process.env.PUBLIC_URL + "/images/delete.png"} className="img-fluid" style={{ width: "1.5rem" }} />
+                    </button>
+                  </div>
                 </div>
-                <div className="col-4 text-center ">
-                  <input className="form-control border-success py-1 text-center" value={data.amount} onChange={(e) => { data.amount = e.target.value; setpaymentmethods((prevState) => [...prevState]); }} />
+              ) : props.saleentryarr.payment_method_details == null ? (
+                <div className={`row p-0 m-0 justify-content-end g-2`}>
+                  <div className="col-4 ">
+                    <select className="form-control border-success py-1 text-center" value={data.paymentmethod} onChange={(e) => { data.paymentmethod = e.target.value; setpaymentmethods((prevState) => [...prevState]); }} >
+                      <option className="text-charcoal75 fw-bolder"> Payment Method </option>
+                      <option value="Cash">Cash</option>
+                      <option value="Card">Card</option>
+                      <option value="Paytm">Paytm</option>
+                      <option value="Phonepe">Phone Pe</option>
+                      <option value="Wire-Transfer">Wire Transfer</option>
+                      <option value="Razorpay">Razorpay</option>
+                      <option value="Points">Points</option>
+                      <option value="Adjust-Advance">Adjust-Advance</option>
+                    </select>
+                  </div>
+                  <div className="col-4 text-center ">
+                    <input className="form-control border-success py-1 text-center" value={data.amount} onChange={(e) => { data.amount = e.target.value; setpaymentmethods((prevState) => [...prevState]); }} />
+                  </div>
+                  <div className="col-2 text-center">
+                    <button className="btn btn-sm p-0 m-0" onClick={() => { DeletePaymentMethods(i); setpaymentmethods((prevState) => [...prevState]); }} >
+                      <img src={process.env.PUBLIC_URL + "/images/delete.png"} className="img-fluid" style={{ width: "1.5rem" }} />
+                    </button>
+                  </div>
                 </div>
-                <div className="col-2 text-center">
-                  <button className="btn btn-sm p-0 m-0" onClick={() => { DeletePaymentMethods(i); setpaymentmethods((prevState) => [...prevState]); }} >
-                    <img src={process.env.PUBLIC_URL + "/images/delete.png"} className="img-fluid" style={{ width: "1.5rem" }} />
-                  </button>
+              ) : (
+                <div className={`row p-0 m-0 justify-content-center g-2`}>
+                  <div className="col-4 text-center ">
+                    <input className="form-control py-1" disabled={true} value={data.paymentmethod} />
+                  </div>
+                  <div className="col-4 text-center ">
+                    <input className="form-control py-1 text-center" disabled={true} value={data.amount} onChange={(e) => { data.amount = e.target.value; setpaymentmethods((prevState) => [...prevState]); }} />
+                  </div>
                 </div>
-              </div>
-            ) : props.saleentryarr.payment_method_details == null ? (
-              <div className={`row p-0 m-0 justify-content-end g-2`}>
-                <div className="col-4 ">
-                  <select className="form-control border-success py-1 text-center" value={data.paymentmethod} onChange={(e) => { data.paymentmethod = e.target.value; setpaymentmethods((prevState) => [...prevState]); }} >
-                    <option className="text-charcoal75 fw-bolder"> Payment Method </option>
-                    <option value="Cash">Cash</option>
-                    <option value="Card">Card</option>
-                    <option value="Paytm">Paytm</option>
-                    <option value="Phonepe">Phone Pe</option>
-                    <option value="Wire-Transfer">Wire Transfer</option>
-                    <option value="Razorpay">Razorpay</option>
-                    <option value="Points">Points</option>
-                    <option value="Adjust-Advance">Adjust-Advance</option>
-                  </select>
-                </div>
-                <div className="col-4 text-center ">
-                  <input className="form-control border-success py-1 text-center" value={data.amount} onChange={(e) => { data.amount = e.target.value; setpaymentmethods((prevState) => [...prevState]); }} />
-                </div>
-                <div className="col-2 text-center">
-                  <button className="btn btn-sm p-0 m-0" onClick={() => { DeletePaymentMethods(i); setpaymentmethods((prevState) => [...prevState]); }} >
-                    <img src={process.env.PUBLIC_URL + "/images/delete.png"} className="img-fluid" style={{ width: "1.5rem" }} />
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <div className={`row p-0 m-0 justify-content-center g-2`}>
-                <div className="col-4 text-center ">
-                  <input className="form-control py-1" disabled={true} value={data.paymentmethod} />
-                </div>
-                <div className="col-4 text-center ">
-                  <input className="form-control py-1 text-center" disabled={true} value={data.amount} onChange={(e) => { data.amount = e.target.value; setpaymentmethods((prevState) => [...prevState]); }} />
-                </div>
-              </div>
+              )
             )
-          )
-        ) : (
-          <></>
-        )}
+          ) : (
+            <></>
+          )}
         <div className={`container-fluid text-center mt-2 `}>
           {permission.sale_entry_charges_edit == 1 ? (
             <button className="btn py-0" onClick={AddMethods}>
@@ -1352,15 +1327,11 @@ function SaleReturns() {
   return (
     <>
       <button className="button addentrypurchase button-charcoal position-absolute" onClick={toggle_nref} >
-        <img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt="displaying_image" className="img-fluid p-0 m-0" style={{ width: `1.5rem` }} />
-        Entry Return
-      </button>
+        <img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt="displaying_image" className="img-fluid p-0 m-0" style={{ width: `1.5rem` }} /> Entry Return </button>
       <div classsName="p-0 m-0">
         <div className="row p-0 m-0 justify-content-lg-between justify-content-md-evenly justify-content-center text-center mt-2">
           <div className="col-lg-2 col-md-2 col-3 text-center p-0 m-0 ">
-            <button type="button" className="btn p-0 m-0 heading text-charcoal fw-bolder  " style={{ width: "fit-content" }} >
-              {pagecount} {pagecount > 0 ? "Sale Returns" : "Sale Return"}{" "}
-            </button>
+            <button type="button" className="btn p-0 m-0 heading text-charcoal fw-bolder  " style={{ width: "fit-content" }} > {pagecount} {pagecount > 0 ? "Sale Returns" : "Sale Return"}{" "} </button>
           </div>
           <div className="col-lg-8 col-md-8 col-7  p-0 m-0  border-0 ">
             <div className="row p-0 m-0 border-burntumber fw-bolder rounded-1 text-center justify-content-center ">
@@ -1373,145 +1344,71 @@ function SaleReturns() {
             </div>
           </div>
           <div className="col-md-2 col-lg-2 col-2 p-0 m-0 export align-self-center text-center ">
-            <ExportSaleReturn
-              salereturnarr={salereturnarrExcel}
-              fromdate={reversefunction(fromdate)}
-              todate={reversefunction(todate)}
-            />
+            <ExportSaleReturn salereturnarr={salereturnarrExcel} fromdate={reversefunction(fromdate)} todate={reversefunction(todate)} />
           </div>
         </div>
-        <div
-          className="scroll scroll-y overflow-scroll p-0 m-0"
-          style={{ minHeight: "40vh", height: "59vh", maxHeight: "70vh" }}
-        >
+        <div className="scroll scroll-y overflow-scroll p-0 m-0" style={{ minHeight: "40vh", height: "59vh", maxHeight: "70vh" }} >
           <table className="table text-center p-0 m-0">
             <thead className="p-0 m-0 align-middle">
               <tr>
-                <th className="fw-bolder text-charcoal75" scope="col">
-                  Return No.
-                </th>
-                <th className="fw-bolder text-charcoal75" scope="col">
-                  Name
-                </th>
-                <th className="fw-bolder text-charcoal75" scope="col">
-                  Sale Entry ID
-                </th>
-                <th className="fw-bolder text-charcoal75" scope="col">
-                  Return Date
-                </th>
-                <th className="fw-bolder text-charcoal75" scope="col">
-                  Return Amount
-                </th>
-                <th className="fw-bolder text-charcoal75" scope="col">
-                  Inventory
-                </th>
-                <th className="fw-bolder text-charcoal75" scope="col">
-                  more
-                </th>
+                <th className="fw-bolder text-charcoal75" scope="col"> Return No. </th>
+                <th className="fw-bolder text-charcoal75" scope="col"> Name </th>
+                <th className="fw-bolder text-charcoal75" scope="col"> Sale Entry ID </th>
+                <th className="fw-bolder text-charcoal75" scope="col"> Return Date </th>
+                <th className="fw-bolder text-charcoal75" scope="col"> Return Amount </th>
+                <th className="fw-bolder text-charcoal75" scope="col"> Inventory </th>
+                <th className="fw-bolder text-charcoal75" scope="col"> more </th>
               </tr>
             </thead>
             {Loading ? (
               <body className=" text-center" style={{ minHeight: "55vh" }}>
                 <tr className="position-absolute border-0 start-0 end-0 px-5">
                   <div class="d-flex align-items-center">
-                    <strong className="fs-5">
-                      Getting Details please be Patient ...
-                    </strong>
-                    <div
-                      class="spinner-border ms-auto"
-                      role="status"
-                      aria-hidden="true"
-                    ></div>
+                    <strong className="fs-5"> Getting Details please be Patient ... </strong>
+                    <div class="spinner-border ms-auto" role="status" aria-hidden="true" ></div>
                   </div>
                 </tr>
               </body>
             ) : salereturnarr && salereturnarr.length != 0 ? (
               <tbody>
-                {salereturnarr.map((item, i) => (
-                  <tr
-                    key={i}
-                    className={`bg-${i % 2 == 0 ? "seashell" : "pearl"
-                      } align-middle`}
-                  >
-                    <td className="p-0 m-0 text-charcoal fw-bold">
-                      SR-{item.return_no}
-                    </td>
-                    <td className="p-0 m-0 text-charcoal fw-bold">
-                      {item.sale_entry &&
-                        item.sale_entry.patient &&
-                        item.sale_entry.patient.full_name != null
-                        ? item.sale_entry.patient.full_name
-                        : "N/A"}
-                    </td>
-                    <td className="p-0 m-0 text-charcoal fw-bold">
-                      {item.sale_entry &&
-                        item.sale_entry &&
-                        item.sale_entry.id != null
-                        ? "P-" + item.sale_entry.id
-                        : "N/A"}
-                    </td>
-                    <td className="p-0 m-0 text-charcoal fw-bold">
-                      {item.return_date
-                        ? reversefunction(item.return_date)
-                        : ""}
-                    </td>
-                    <td className="p-0 m-0 text-charcoal fw-bold">
-                      {item.grand_total ? item.grand_total : "N/A"}
-                    </td>
-                    <td className="p-0 m-0 text-charcoal fw-bold">
-                      {/* <button className='btn'><img src={process.env.PUBLIC_URL + "/images/cart.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1" /></button> */}
-                      <button
-                        className="btn"
-                        onClick={() => {
-                          setindex(i);
-                          toggle_sridw();
-                        }}
-                      >
-                        <img
-                          src={
-                            process.env.PUBLIC_URL + "/images/archivebox.png"
-                          }
-                          alt="displaying_image"
-                          className="ms-1"
-                          style={{ width: "1.5rem" }}
-                        />
-                      </button>
-                    </td>
-                    <td className="p-0 m-0 text-charcoal fw-bold">
-                      <button className="btn position-relative cursor-pointer more p-0 m-0">
-                        <img
-                          src={process.env.PUBLIC_URL + "/images/more.png"}
-                          alt="displaying_image"
-                          style={{ width: "1.5rem" }}
-                        />
-                      </button>
-                    </td>
-                    <td
-                      className={` position-absolute d-${i == index ? sridw : "none"
-                        } bg-seashell border border-1 start-0 end-0 p-0 m-0`}
-                      style={{ top: "-7.5rem", zIndex: "2" }}
-                    >
-                      {i == index ? (
-                        <SRitemdetailssection
-                          salereturnarr={salereturnarr[i]}
-                          toggle_sridw={toggle_sridw}
-                        />
-                      ) : (
-                        <></>
-                      )}
-                    </td>
-                  </tr>
-                ))}
+                {
+                  salereturnarr.map((item, i) => (
+                    <tr key={i} className={`bg-${i % 2 == 0 ? "seashell" : "pearl"} align-middle`} >
+                      <td className="p-0 m-0 text-charcoal fw-bold"> SR-{item.return_no} </td>
+                      <td className="p-0 m-0 text-charcoal fw-bold"> {item.sale_entry && item.sale_entry.patient && item.sale_entry.patient.full_name != null ? item.sale_entry.patient.full_name : "N/A"} </td>
+                      <td className="p-0 m-0 text-charcoal fw-bold"> {item.sale_entry && item.sale_entry && item.sale_entry.id != null ? "P-" + item.sale_entry.id : "N/A"} </td>
+                      <td className="p-0 m-0 text-charcoal fw-bold"> {item.return_date ? reversefunction(item.return_date) : ""} </td>
+                      <td className="p-0 m-0 text-charcoal fw-bold"> {item.grand_total ? item.grand_total : "N/A"} </td>
+                      <td className="p-0 m-0 text-charcoal fw-bold">
+                        {/* <button className='btn'><img src={process.env.PUBLIC_URL + "/images/cart.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1" /></button> */}
+                        <button className="btn" onClick={() => { setindex(i); toggle_sridw(); }} >
+                          <img src={process.env.PUBLIC_URL + "/images/archivebox.png"} alt="displaying_image" className="ms-1" style={{ width: "1.5rem" }} />
+                        </button>
+                      </td>
+                      <td className="p-0 m-0 text-charcoal fw-bold">
+                        <button className="btn position-relative cursor-pointer more p-0 m-0">
+                          <img
+                            src={process.env.PUBLIC_URL + "/images/more.png"}
+                            alt="displaying_image"
+                            style={{ width: "1.5rem" }}
+                          />
+                        </button>
+                      </td>
+                      <td className={` position-absolute d-${i == index ? sridw : "none"} bg-seashell border border-1 start-0 end-0 p-0 m-0`} style={{ top: "-7.5rem", zIndex: "2" }} >
+                        {
+                          i == index ? (
+                            <SRitemdetailssection salereturnarr={salereturnarr[i]} toggle_sridw={toggle_sridw} />
+                          ) : (
+                            <></>
+                          )}
+                      </td>
+                    </tr>
+                  ))}
               </tbody>
             ) : (
-              <tbody
-                className="text-center position-relative p-0 m-0 "
-                style={{ minHeight: "55vh" }}
-              >
+              <tbody className="text-center position-relative p-0 m-0 " style={{ minHeight: "55vh" }} >
                 <tr className="">
-                  <td className="fw-bolder text-charcoal text-center position-absolute border-0 start-0 end-0 mx-3 p-2 border-0">
-                    No Sale Returns
-                  </td>
+                  <td className="fw-bolder text-charcoal text-center position-absolute border-0 start-0 end-0 mx-3 p-2 border-0"> No Sale Returns </td>
                 </tr>
               </tbody>
             )}
@@ -1541,22 +1438,14 @@ function SaleReturns() {
           />
         </div>
       </div>
-      <section
-        className={`newsalereturnform position-absolute start-0 end-0 border border-1 bg-seashell d-${nref}`}
-      >
-        {
-          <NewSaleReturnentryform
-            toggle_nref={toggle_nref}
-            GETSaleReturns={GETSaleReturns}
-          />
-        }
-      </section>
+      <section className={`newsalereturnform position-absolute start-0 end-0 border border-1 bg-seashell d-${nref}`} > {<NewSaleReturnentryform toggle_nref={toggle_nref} GETSaleReturns={GETSaleReturns} />} </section>
     </>
   );
 }
 function SaleEntryForm(props) {
   const tableref = useRef(null);
   const cliniclist = useContext(Clinic);
+  const permission = useContext(Permissions);
   const url = useContext(URL);
   const Doclist = useContext(DoctorsList);
   const clinicID = localStorage.getItem("ClinicId");
@@ -1564,24 +1453,17 @@ function SaleEntryForm(props) {
   const medbyidref = useRef(null);
   const patientaddref = useRef(null);
   const stockref = useRef(null);
-  const [searchinput, setsearchinput] = useState(
-    props.patientname ? props.patientname : ""
-  );
+  const [searchinput, setsearchinput] = useState(props.patientname ? props.patientname : "");
   const [searchlist, setsearchlist] = useState([]);
   const [displaysearchlist, setdisplaysearchlist] = useState("none");
-  const [patientid, setpatientid] = useState(
-    props.patientid ? props.patientid : ""
-  );
+  const [patientid, setpatientid] = useState(props.patientid ? props.patientid : "");
   const [patientdata, setpatientdata] = useState([]);
-  const [doctorid, setdoctorid] = useState(
-    props.DoctorID ? props.DoctorID : ""
-  );
-  const [doctorname, setdoctorname] = useState(
-    props.DoctorName ? props.DoctorName : ""
-  );
+  const [doctorid, setdoctorid] = useState(props.DoctorID ? props.DoctorID : "");
+  const [doctorname, setdoctorname] = useState(props.DoctorName ? props.DoctorName : "");
   const [otherdoctor, setotherdoctor] = useState();
   const [clinicid, setclinicid] = useState(clinicID);
   const [ischecked, setischecked] = useState();
+  const [ischecked2, setischecked2] = useState();
   const [Dc, setDc] = useState(0);
   const [AtC, setAtC] = useState(0);
   const [load, setload] = useState();
@@ -1597,6 +1479,7 @@ function SaleEntryForm(props) {
   const [loadsearch, setloadsearch] = useState();
   const [addressid, setaddressid] = useState();
   const [addressform, setaddressform] = useState("none");
+  const [number, setnumber] = useState()
 
   const searchpatient = (e) => {
     setsearchload(true);
@@ -1623,6 +1506,7 @@ function SaleEntryForm(props) {
     setsearchinput(name);
     setpatientid(id);
     setpatientdata(data);
+    setnumber(data.phone_number)
     setdisplaysearchlist("none");
   };
   const selectaddress = (data) => {
@@ -1791,7 +1675,7 @@ function SaleEntryForm(props) {
     let mrp = [];
     let GST = [];
     let Totalamount = [];
-    if (doctorname!=undefined && doctorname.length > 0 || otherdoctor !=undefined && otherdoctor.length > 0) {
+    if (doctorname != undefined && doctorname.length > 0 || otherdoctor != undefined && otherdoctor.length > 0) {
       for (let i = 0; i < SelectedProducts.length; i++) {
         productids.push(
           SelectedProducts[i].type + SelectedProducts[i].productid
@@ -1820,7 +1704,7 @@ function SaleEntryForm(props) {
         add_to_cart: AtC,
         deliver: Dc,
         address_id: addressid,
-      };
+      }
       setload(true);
       try {
         await axios
@@ -1848,7 +1732,7 @@ function SaleEntryForm(props) {
         setload(false);
       }
     } else {
-      alert("Please Choose A Doctor to further proceed the sale entry");
+
       Notiflix.Notify.failure("Please Choose A Doctor to further proceed the sale entry");
     }
   }
@@ -1861,6 +1745,7 @@ function SaleEntryForm(props) {
       "Yes",
       "No",
       () => {
+        // SaveSaleEntryCharges()
         SubmitSaleEntry();
       },
       () => {
@@ -1869,22 +1754,22 @@ function SaleEntryForm(props) {
       {}
     );
   }
-  function confirmmessage2() {
-    customconfirm();
-    Notiflix.Confirm.show(
-      `Add to Cart`,
-      `Do you surely want to add the following Sale entries to the Cart  `,
-      "Yes",
-      "No",
-      () => {
-        setAtC(1);
-      },
-      () => {
-        setAtC(0);
-      },
-      {}
-    );
-  }
+  // function confirmmessage2() {
+  //   customconfirm();
+  //   Notiflix.Confirm.show(
+  //     `Add to Cart`,
+  //     `Do you surely want to add the following Sale entries to the Cart  `,
+  //     "Yes",
+  //     "No",
+  //     () => {
+  //       setAtC(1);
+  //     },
+  //     () => {
+  //       setAtC(0);
+  //     },
+  //     {}
+  //   );
+  // }
   useEffect(() => {
     if (AtC == 1) {
       SubmitSaleEntry();
@@ -1904,348 +1789,1398 @@ function SaleEntryForm(props) {
     setpatientdata();
   };
 
-  console.log(patientid, doctorid, doctorname, Dc, itemname, itemid);
+  const [stage1, setstage1] = useState('block')
+  const toggleStage1 = () => {
+    if (stage1 == 'block') {
+      setstage1('none')
+    }
+    if (stage1 == 'none') {
+      setstage1('block')
+    }
+  }
+  const [stage2, setstage2] = useState('none')
+  const toggleStage2 = () => {
+    if (stage2 == 'block') {
+      setstage2('none')
+    }
+    if (stage2 == 'none') {
+      setstage2('block')
+    }
+  }
+  const [stage3, setstage3] = useState('none')
+
+  const toggleStage3 = () => {
+    if (stage3 == 'none') {
+      setstage3('block')
+    }
+    if (stage3 == 'block') {
+      setstage3('none')
+    }
+  }
+
+  const [stage4, setstage4] = useState('none')
+  const toggleStage4 = () => {
+    if (stage4 == 'none') {
+      setstage4('block')
+    }
+    if (stage4 == 'block') {
+      setstage4('none')
+    }
+  }
+
+  const Go_Back = () => {
+    if (stage2 === 'block') {
+      toggleStage2()
+      toggleStage1()
+    }
+    if (stage3 === 'block') {
+      toggleStage3()
+      toggleStage2()
+    }
+    if (stage4 === 'block') {
+      toggleStage4()
+      toggleStage3()
+    }
+  }
+  // Payments
+  const adminid = localStorage.getItem("id");
+  const [paymentmethods, setpaymentmethods] = useState([{
+    paymentmethod: "",
+    amount: 0,
+  }]);
+  const [previoustotal, setprevioustotal] = useState(0);
+  const [loading, setloading] = useState();
+  const paymentmethoddetails = {
+    paymentmethod: "",
+    amount: 0,
+  };
+  async function AddPaymentMethods() {
+    let Payments = []
+    let amounts = []
+    let allamounts = []
+    Payments.push(Object.keys(JSON.parse(props.saleentryarr.payment_method_details)))
+    amounts.push(Object.values(JSON.parse(props.saleentryarr.payment_method_details)))
+    let paymentobj = []
+    let p = {
+      paymentmethod: "",
+      amount: 0,
+    }
+    if (Payments[0]) {
+      for (let j = 0; j < Payments[0].length; j++) {
+        allamounts.push((p = { paymentmethod: Payments[0][j], amount: amounts[0][j] }))
+      }
+      setpaymentmethods(allamounts)
+    }
+    paymentmethods.push(paymentobj)
+  }
+  useEffect(() => {
+    AddPaymentMethods();
+  }, [])
+  function DeletePaymentMethods(i) {
+    paymentmethods.splice(i, i);
+  }
+  // const confirmmessage = (e) => {
+  //   customconfirm();
+  //   Notiflix.Confirm.show(
+  //     `Add Charges and Payments`,
+  //     `Do you surely want to add the following Charges and Payments of  ${props.itembillid}`,
+  //     "Yes",
+  //     "No",
+  //     () => {
+  //       SaveSaleEntryCharges();
+  //     },
+  //     () => {
+  //       return 0;
+  //     },
+  //     {}
+  //   );
+  // };
+  async function SaveSaleEntryCharges() {
+    let PaymentMethod = [];
+    let PaymentMethodDetails = [];
+    for (let i = 0; i < paymentmethods.length; i++) {
+      PaymentMethod.push(paymentmethods[i].amount);
+      PaymentMethodDetails.push(paymentmethods[i].paymentmethod);
+    }
+    let Data = {
+      sale_entry_id: props.saleentryarr.id,
+      g_total_main: props.saleentryarr.grand_total,
+      payment_method: PaymentMethodDetails,
+      payment_method_main: PaymentMethodDetails,
+      payment_method_details: PaymentMethod,
+      admin_id: adminid,
+    };
+    try {
+      setloading(true);
+      await axios
+        .post(`${url}/sale/entry/save/charges`, Data)
+        .then((response) => {
+          props.GETSalesList();
+          setloading(false);
+          Notiflix.Notify.success(response.data.message);
+        });
+    } catch (e) {
+      setloading(false);
+      Notiflix.Notify.failure(e.message);
+    }
+  }
+  useEffect(() => {
+    SaveSaleEntryCharges()
+  }, [props.saleentryarr != undefined && props.saleentryarr.id != undefined])
+  const CalPrevTotal = async () => {
+    let total = 0;
+    paymentmethods && paymentmethods.map((data) => (total += Number(data.amount)));
+    console.log(total);
+    setprevioustotal(total);
+  };
+  useEffect(() => {
+    CalPrevTotal();
+  }, [props.saleentryarr]);
+  console.log(props.saleentryarr, paymentmethods, previoustotal);
+
+  function AddMethods() {
+    if (paymentmethods && paymentmethods.length > 0) {
+      setpaymentmethods((prevState) => [...prevState, paymentmethoddetails]);
+    } else {
+      setpaymentmethods([paymentmethoddetails]);
+    }
+  }
+  // function Return_Amount() {
+  //   let totalarr = [];
+  //   let total = 0;
+  //   let Advance = 0;
+  //   if (paymentmethods && paymentmethods !== undefined) {
+  //     for (let i = 0; i < paymentmethods.length; i++) {
+  //       totalarr.push(Number(paymentmethods[i].amount));
+  //     }
+  //     console.log(totalarr);
+  //     totalarr.forEach((item) => {
+  //       total += item;
+  //     });
+  //     if (total > props.saleentryarr.grand_total) {
+  //       Advance = total - props.saleentryarr.grand_total;
+  //       return Advance;
+  //     } else {
+  //       return Advance;
+  //     }
+  //   }
+
+  // }
+
+  // console.log(patientid, doctorid, doctorname, Dc, itemname, itemid);
   // console.log(SelectedProducts, Grandtotal)
   // console.log(patientdata)
-  let c = 0;
   // console.log(products, addressid, Dc, SelectedProducts)
   // console.log(itembyid)
   // console.log(itemsearch)
+  const Payments = ['Cash', 'Card', 'Paytm', 'Wire-Transfer', 'Phonepe', 'Razorpay', 'Points', 'Adjust-Advance']
+  console.log(searchlist, number)
   return (
+    <>
+      <div className="saleentry rounded-2">
+        <div className="shadow-sm">
+          <h5 className="text-center fw-bold py-2">New Sale Entry</h5>
+          <button className={`btn btn-back position-absolute start-0 top-0 ms-2 d-${stage1 == 'block' ? 'none' : 'block'}`} onClick={() => { Go_Back() }}   ></button>
+          <button className="btn btn-close position-absolute end-0 top-0 me-2" onClick={props.toggle_nsef}  ></button>
+        </div>
+        <div className={`stage1 d-${stage1}`}>
+          <div className="container-fluid ps-5 mt-2">
+            <div className="order mt-4">
+              <div className="patient mt-4">
+                <h6 className="m-0 p-0 pb-1 fw-bold text-charcoal75">Patient</h6>
+                <input type="text" placeholder="Search Name or Number" className="form-control rounded-1 border-2 border-charcoal75 fw-bold w-auto bg-seashell" value={searchinput ? searchinput : ""} onFocus={() => setsearchload(true)} onChange={searchpatient} />
+                <div className={`col-auto d-${displaysearchlist} text-decoration-none searchinput position-absolute rounded-1 shadow bg-pearl px-2`} style={{ width: "max-content", zIndex: "2" }} >
+                  {searchload == true || searchinput == undefined ? (
+                    <p className="btn text-charcoal75 fs-6 p-0 m-0 ps-1"> Loading...{" "} </p>
+                  ) : searchlist.length == 0 ? (
+                    <p className="text-danger btn fs-6 p-0 m-0">Patient not found</p>
+                  ) : (
+                    searchlist.map((data) => (
+                      <div className="col-auto ms-1 py-2 bg-pearl text-decoration-none text-charcoal text-start px-1" onClick={() => { get_value(data.id, data.full_name, data); }} style={{ width: "max-content", cursor: 'pointer' }}>
+                        <div className=" fw-bold text-charcoal"> {data.full_name} <span className="fw-bold text-charcoal75">{data.phone_number}</span> </div>
+                      </div>
 
-
-    <div className="container-fluid p-0 m-0">
-      <div className="position-relative mb-3">
-        <h5 className="text-center text-charcoal pt-2 ">New Sale Entry</h5>
-        <button className="btn btn-close position-absolute end-0 top-0 me-2" disabled={load ? true : false} onClick={props.toggle_nsef} ></button>
-      </div>
-      {/* <hr className="p-0 m-0" /> */}
-      {/* <div className="p-0 m-0 text-center bg-seashell">
-        {cliniclist.map((data, i) => (
-          <label className={` text-burntumber fw-bolder d-${clinicID == data.id ? "block" : "none"}`} >
-            <input type="checkbox" className={`radio form me-1  text-burntumber fw-bolder`} key={i} checked={clinicID == data.id ? true : false} name={data.id} />
-            {data.title} {data.address}
-          </label>
-        ))}
-      </div> */}
-      {/* <hr className="p-0 m-0" /> */}
-      <div className="my-2 text-center align-self-center">
-        <div className=" form-switch justify-content-center position-relative">
-          <label className="form-check-label text-charcoal fw-bolder" for="flexSwitchCheckDefault" > Deliver to Customer </label>
-          <input className="form-check-input ms-2 outline-none text-center" type="checkbox" role="switch" id="flexSwitchCheckDefault" checked={Dc == 1 ? true : false} onChange={() => { DC(); }} />
-          <div className={`d-${addressform} position-absolute start-0 end-0 m-5 mt-0 top-0 bg-pearl shadow rounded-1 `} style={{ zIndex: 2 }} ref={patientaddref} >
-            <div className="p-0 m-0 position-relative text-wrap">
-              <button className="btn btn-close position-absolute end-0 p-1 m-1" onClick={() => { addressid ? setaddressform("none") : setaddressform("none"); }} ></button>
-              {
-                patientdata && patientdata.address && patientdata.address.length !== 0 ? (
-                  <div className="row p-0 m-0 gx-2  ">
-                    <h6 className="ms-1 text-burntumber fw-bold text-start"> Choose Address for Delivery </h6>
-                    {
-                      patientdata.address.map((data) => (
-                        <div className={`col-12 px-1 m-2 text-start card bg-${addressid == data.id ? "lightgreen" : "lightyellow"} text-charcoal fw-bold`} onClick={() => { addressid ? selectaddress() : selectaddress(data); }} >
-                          <div>Patient Name:- {data.full_name}</div>
-                          <div> Address:- {data.address_line1 && data.address_line1 !== null ? data.address_line1 : ""} </div>
-                          <div> {data.address_line2 && data.address_line2 !== null ? data.address_line2 : ""} </div>
-                          <div> PinCode:- {data.zip_code && data.zip_code !== null ? data.zip_code : ""} </div>
-                        </div>
-                      ))}
-                  </div>
-                ) : (
-                  <div className="text-danger fw-bold p-2">
-                    Addresses not found.Update Patient Details to get Address{" "}
-                  </div>
-                )}
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="row p-0 m-0">
-        <div className="col-4">
-          {/* <label className="m-0">Search Using Phone or Name</label> */}
-          <input type="text" className="form-control bg-seashell fw-bold border-charcoal selectpatient col-10 position-relative" placeholder="Search for Patients" value={searchinput ? searchinput : ""} onFocus={() => setsearchload(true)} onChange={searchpatient} />
-          <div className={`col-auto d-${displaysearchlist} text-decoration-none searchinput position-absolute rounded-1 shadow bg-pearl px-2`} style={{ width: "max-content", zIndex: "2" }} >
-            {searchload == true || searchinput == undefined ? (
-              <p className="btn text-charcoal75 fs-6 p-0 m-0 ps-1"> Loading...{" "} </p>
-            ) : searchlist.length == 0 ? (
-              <p className="text-danger btn fs-6 p-0 m-0">Patient not found</p>
-            ) : (
-              searchlist.map((data) => (
-                <div className="col-auto p-0 m-0 ms-1 bg-pearl text-decoration-none list-style-none text-charcoal text-start px-1 border-bottom" style={{ width: "max-content" }} onClick={() => { get_value(data.id, data.full_name, data); }} >
-                  {data.full_name} {data.phone_number}
-                </div>
-              ))
-            )}
-          </div>
-        </div>
-        <div className="col-4">
-          {/* <label>Select Doctor</label> */}
-          <div className="col-12">
-            <select className="col-10 form-control selectdoctor bg-seashell fw-bold border-charcoal" placeholder="Select Doctor" value={doctorid ? doctorid : ""} onChange={(e) => { setdoctorid(e.target.value); }} >
-              <option className="text-charcoal50">Select Doctor</option>
-              {Doclist.map((data, i) => (
-                <option className={`text-charcoal`} key={i} value={data[0]}> {"Dr."} {data[1]} </option>
-              ))}
-            </select>
-          </div>
-        </div>
-        <div className="col-4">
-          {/* <label>Other Doctor</label> */}
-          <div className="col-12">
-            <input className="col-10 form-control bg-seashell fw-bold border-charcoal" placeholder="Other Doctors" value={otherdoctor ? otherdoctor : ""} onChange={(e) => { setotherdoctor(e.target.value); }} />
-          </div>
-        </div>
-      </div>
-      <div className="container-fluid mt-4 text-center p-0 m-0">
-        <div className="col-12 p-0 m-0 justify-content-center">
-          <h6 className="text-charcoal p-0 m-0 fw-bolder text-start ms-1"> Add Products </h6>
-          <hr className="p-0 m-0" />
-          {/* <div className="col-12">
-              <button className='button button-seashell text-burntumber border-burntumber '>Scan to Add Product</button>
-            </div>
-            <h4 className='my-2'>OR</h4> */}
-          <div className="row p-0 m-0 my-2 justify-content-center">
-            <div className="col-4">
-              <input
-                className="form-control  fw-bold border-charcoal bg-seashell"
-                placeholder="Search Product by Name"
-                value={itemname ? itemname : ""}
-                onChange={(e) => {
-                  searchmeds(e.target.value);
-                  setitemname(e.target.value);
-                  setitemid();
-                  setproducts();
-                  stockref.current.style.display = "none";
-                }}
-              />
-              <div ref={medicinesref} className="position-absolute rounded-1 mt-1" style={{ Width: "max-content", zIndex: "1" }} >
-                {
-                  itemsearch ? (
-                    loadsearch ? (
-                      <div className="rounded-1 p-1 bg-pearl">
-                        Searching Please wait....
-                        <div className="spinner-border my-auto" style={{ width: "1rem", height: "1rem" }} role="status" >
-                          <span className="sr-only"> </span>
-                        </div>
-                      </div>
-                    ) : loadsearch == false && itemsearch.length == 0 ? (
-                      <div className="bg-burntumber text-light rounded-1 p-1"> Oops! Not Avaliable </div>
-                    ) : (
-                      <div className={`rounded-4 scroll border border-1 bg-pearl p-1 d-${itemsearch && itemsearch.length > 0 ? "block" : "none"}`} style={{ height: '30vh' }} >
-                        <p className={`text-start p-2 position-sticky top-0 bg-pearl fw-bold text-charcoal75 ms-2`} style={{ fontSize: "0.8rem" }} > {itemsearch.length} Search Results </p>
-                        {
-                          itemsearch.map((data, i) => (
-                            <div style={{ cursor: "pointer", Width: "10rem" }} className={`bg-${i % 2 == 0 ? "pearl" : "seashell"} text-start fw-bold p-2 border-bottom text-charcoal `} onClick={(e) => { setproducts(data); setitemname(data.display_name ? data.display_name : data.name); setitemid(data.id); stockref.current.style.display = "block"; }} > {data.display_name ? data.display_name : data.name} <span className='text-burntumber fw-bold rounded-2 px-1'>{data && data.stock_info !== undefined ? data.stock_info.length : ""} stocks</span> </div>
-                          ))
-                        }
-                      </div>
-                    )
-                  ) : (
-                    <div className="bg-seashell"></div>
-                  )}
-              </div>
-              <div ref={stockref} className={`position-absolute start-50 mt-1 bg-pearl scroll scroll-y align-self-center rounded-2 border border-1 p-2 d-${products && products.stock_info && products.stock_info !== undefined ? "block" : "none"}`} style={{ zIndex: "2", width: "10rem", 'min-height': "30vh", }} >
-                <p className={`text-start fw-bold text-charcoal75`} style={{ fontSize: "0.8rem" }} > {products && products.stock_info !== undefined ? products.stock_info.length : ""}{" "} Batch Stocks </p>
-                {
-                  products && products.length != 0 ? (
-                    products.stock_info.length == 0 ? (
-                      <div className="bg-burntumber text-white fw-bold p-2">Oops! Not Available</div>
-                    ) : (
-                      products.stock_info.map((data, i) => (
-                        <div style={{ cursor: "pointer", Width: "max-content" }} className={`bg-${i % 2 == 0 ? "pearl" : "seashell"} border-bottom text-wrap`} onClick={() => { AddProducts(data); setitemname(); setitemid(); setproducts(); setitemsearch(); }} >
-                          <p className="text-start m-0 p-0 fw-bold">{itemname}</p>
-                          <p className="text-start p-0 m-0 "> BatchNo. -{" "} {data.batch_no && data.batch_no !== null ? data.batch_no : ""} </p>
-                          <p className="text-start p-0 m-0 "> Stock -{" "} {data.current_stock && data.current_stock ? data.current_stock : ""} </p>
-                          <p className="text-start p-0 m-0 "> Expiry Date -{" "} {data.expiry_date ? reversefunction(data.expiry_date) : ""} </p>
-                        </div>
-                      ))
-                    )
-                  ) : (
-                    <div className="bg-seashell p-2">Not Avaliable</div>
-                  )
-                }
-              </div>
-              <div>
-              </div>
-            </div>
-            <div className="col-1 text-burntumber fw-bold align-self-center">
-              OR
-            </div>
-            <div className="col-4 ">
-              <input className="form-control bg-seashell  fw-bold border-charcoal rounded-1" value={itemid ? itemid : ""} placeholder="Search Product by ID" onChange={(e) => { searchmedbyId(e.target.value); setitemid(e.target.value); medbyidref.current.style.display = "block"; }} />
-              <div ref={medbyidref} className="position-absolute rounded-1 mt-1" style={{ Width: "max-content", zIndex: "2" }} >
-                {itembyid ? (
-                  loadbyId ? (
-                    <div className="rounded-1 p-1 bg-pearl">
-                      Searching Please wait....
-                      <div
-                        className="spinner-border my-auto"
-                        style={{ width: "1rem", height: "1rem" }}
-                        role="status"
-                      >
-                        <span className="sr-only"> </span>{" "}
-                      </div>
-                    </div>
-                  ) : loadbyId == false && itembyid.length == 0 ? (
-                    <div className="bg-burntumber text-light rounded-1 p-1">
-                      Oops! Not Avaliable
-                    </div>
-                  ) : (
-                    itembyid.map((data, i) => (
-                      <div
-                        style={{ cursor: "pointer", Width: "max-content" }}
-                        className={`p-0 p-1 rounded-pill shadow bg-${i % 2 == 0 ? "pearl" : "seashell"
-                          } fs-6 `}
-                        onClick={(e) => {
-                          setitemid(data.type + data.id);
-                          AddProducts(data);
-                          medbyidref.current.style.display = "none";
-                        }}
-                      >
-                        {data.item_name ? data.item_name : ""}
-                      </div>
                     ))
-                  )
-                ) : (
-                  <div className="bg-seashell"></div>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="col-12 m-0 p-0">
-          <div className="d-flex p-0 m-0 justify-content-between">
-            <h6 className="text-charcoal p-0 m-0 fw-bolder text-start ms-1">
-              Product Added
-            </h6>
-          </div>
-
-          <hr className="p-0 m-0" />
-          <div className="p-0 m-0 scroll scroll-y" style={{ height: "35vh" }}>
-            <table className="table p-0 m-0">
-              <thead className="p-0 m-0">
-                <tr className={`p-0 m-0 `}>
-                  <th className="p-0 m-0 px-2" rowSpan="2"> Item ID </th>
-                  <th className="p-0 m-0 px-2" rowSpan="2"> Item Name </th>
-                  <th className="p-0 m-0 px-2" rowSpan="2"> BatchNo. </th>
-                  <th className="p-0 m-0 px-2" rowSpan="2"> Expiry Date </th>
-                  <th className="p-0 m-0 px-2" rowSpan="2"> Avl.Stock </th>
-                  <th className="p-0 m-0 px-2" rowSpan="2"> Qty To Sale </th>
-                  <th className="p-0 m-0 px-2" rowSpan="2"> Discount % </th>
-                  <th className="p-0 m-0 px-2" colSpan="4" scope="col-group"> Costing </th>
-                  <th className="p-0 m-0 px-2" rowSpan="2"> Total Amount </th>
-                  <th className="p-0 m-0 px-2" rowSpan="2"> Delete </th>
-                </tr>
-                <tr className="p-0 m-0">
-                  <th className="p-0 m-0 px-2" scope="col"> MRP </th>
-                  <th className="p-0 m-0 px-2" scope="col"> Cost </th>
-                  <th className="p-0 m-0 px-2" scope="col"> GST Rate </th>
-                  <th className="p-0 m-0 px-2" scope="col"> Selling Cost/Unit </th>
-                </tr>
-              </thead>
-              {SelectedProducts && SelectedProducts.length !== 0 ? (
-                <tbody className="p-0 m-0">
-                  {SelectedProducts.map((data) => (
-                    <tr className={`p-0 m-0 align-middle bg-${Number(data.disccost) < Number(data.cost) ? "lightred50" : ""}`} >
-                      <td>{data.type} {data.productid} </td>
-                      <td>{data.product}</td>
-                      <td>{data.batch}</td>
-                      <td>{reversefunction(data.expiry)}</td>
-                      <td>{data.quantity}</td>
-                      <td>
-                        <input className="border border-1 rounded-1 w-25 text-center p-0 m-0 bg-seashell" value={data.qtytoSale ? data.qtytoSale : ""} onChange={(e) => { e.target.value <= data.quantity ? (data.qtytoSale = e.target.value) : Notiflix.Notify.failure("Quantity Cannot be Greater then Current Stock Available"); data.totalamt = CalTotalAmount(data.qtytoSale, data.disccost); setSelectedProducts((prevState) => [...prevState]); }} />{" "}
-                      </td>
-                      <td className="text-center p-0 m-0" style={{ Width: "0rem" }} >
-                        <input className="border border-1 rounded-1 w-25 text-center p-0 m-0 bg-seashell" value={data.discount ? data.discount : ""} onChange={(e) => { data.discount = e.target.value; data.disccost = CalSellingCost(data.mainmrp, e.target.value); data.totalamt = CalTotalAmount(data.qtytoSale, Number(data.disccost), Number(data.cost)); setSelectedProducts((prevState) => [...prevState]); }} />{" "}
-                      </td>
-                      <td>{data.mainmrp}</td>
-                      <td>{data.cost}</td>
-                      <td>{data.gst + "%"}</td>
-                      <td>{data.disccost}</td>
-                      <td>{data.totalamt}</td>
-                      <td>
-                        <button className="btn p-0 m-0" onClick={() => { DeleteProduct(data.batch); }} >
-                          <img src={process.env.PUBLIC_URL + "images/delete.png"} style={{ width: "1.5rem" }} />
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              ) : (
-                <tbody className="p-0 m-0 position-relative">
-                  <tr className="p-0 m-0">
-                    <td className="p-0 m-0 position-absolute text-charcoal fw-bold start-0 end-0"> No Product Added </td>
-                  </tr>
-                </tbody>
-              )}
-            </table>
-          </div>
-        </div>
-      </div>
-      <div className="col-12 position-absolute start-0 end-0 bottom-0 py-3 border border-1 text-center bg-pearl align-items-center rounded-bottom">
-        <div className="row p-0 m-0">
-          <div className="col-6">
-            <div className="row">
-              <div className="col-3">
-                <p className="text-charcoal75 p-0 m-0 fw-bolder card-title text-start ms-3"> {" "} Order Total{" "} </p>
-                <h4 className="text-charcoal  p-0 m-0 fw-bolder card-header text-start ps-3">
-                  {Grandtotal}
-                </h4>
-              </div>
-              <div className="col-3">
-                <p className="text-charcoal75 p-0 m-0 fw-bolder card-title text-start ms-3">
-                  {" "}
-                  Discount %
-                </p>
-                <h4 className="text-charcoal  p-0 m-0 fw-bolder card-header text-start ps-3">
-                  {CaltotalDiscount(SelectedProducts)}
-                </h4>
-              </div>
-              <div className="col-3">
-                <p className="text-charcoal75 p-0 m-0 fw-bolder card-title text-start ms-3">
-                  {" "}
-                  Total Items
-                </p>
-                <h4 className="text-charcoal  p-0 m-0 fw-bolder card-header text-start ps-3">
-                  {SelectedProducts.length}
-                </h4>
-              </div>
-            </div>
-          </div>
-          <div className="col-3 align-self-center">
-            {load ? (
-              <div className="col-6 py-2 pb-2 m-auto text-center">
-                <div class="spinner-border" role="status">
-                  <span class="visually-hidden">Loading...</span>
+                  )}
                 </div>
               </div>
-            ) : (
-              <button
-                className="button button-charcoal px-5"
-                onClick={() => {
-                  confirmmessage();
-                }}
-              >
-                Save Entry
-              </button>
-            )}
+              <button className="button-sm button-charcoal rounded-1 my-2">Add User</button>
+              <div className="row mt-4">
+                <div className="doctor col-6">
+                  <h6 className="m-0 p-0 pb-1 fw-bold text-charcoal75">Doctor</h6>
+                  <select className="col-10 form-control selectdoctor text-charcoal fw-bold rounded-1 border-2 border-charcoal75 w-auto bg-seashell" placeholder="Select Doctor" value={doctorid ? doctorid : ""} onChange={(e) => { setdoctorid(e.target.value); }} >
+                    <option className="text-charcoal">Select Doctor</option>
+                    {
+                      Doclist.map((data, i) => (
+                        <option className={`text-charcoal`} key={i} value={data[0]}> {"Dr."} {data[1]} </option>
+                      ))
+                    }
+                  </select>
+                </div>
+                <div className="anotherdoctor col-6">
+                  <h6 className="m-0 p-0 pb-1 fw-bold text-charcoal75"> Another Doctor</h6>
+                  <input type="text" placeholder="Type Name" className="form-control rounded-1 fw-bold text-charcoal border-2 border-charcoal75 w-auto bg-seashell" value={otherdoctor ? otherdoctor : ""} onChange={(e) => { setotherdoctor(e.target.value); }} />
+                </div>
+              </div>
+
+              <button className="button-sm button-charcoal rounded-1 my-2">Add Doctor</button>
+            </div>
           </div>
-          <div className="col-3 align-self-center">
-            <button
-              className="button button-pearl border-charcoal text-charcoal px-4"
-              disabled={load ? true : false}
-              onClick={() => {
-                confirmmessage2();
-              }}
-            >
-              Add To Cart
-            </button>
+          <div className="w-100 position-absolute bottom-0 bg-pearl py-2">
+            <div className="row p-0 m-0">
+              <div className="col-8">
+                <div className="row">
+                  <div className="col-4">
+                    <p className="text-charcoal75 p-0 m-0 fw-bolder card-title text-start ms-3"> {" "} Order Total{" "} </p>
+                    <h4 className="text-charcoal  p-0 m-0 fw-bolder card-header text-start ps-3"> {Grandtotal} </h4>
+                  </div>
+                  <div className="col-4">
+                    <p className="text-charcoal75 p-0 m-0 fw-bolder card-title text-start ms-3">
+                      {" "}
+                      Discount %
+                    </p>
+                    <h4 className="text-charcoal  p-0 m-0 fw-bolder card-header text-start ps-3">
+                      {CaltotalDiscount(SelectedProducts)}
+                    </h4>
+                  </div>
+                  <div className="col-4">
+                    <p className="text-charcoal75 p-0 m-0 fw-bolder card-title text-start ms-3">
+                      {" "}
+                      Total Items
+                    </p>
+                    <h4 className="text-charcoal  p-0 m-0 fw-bolder card-header text-start ps-3">
+                      {SelectedProducts.length}
+                    </h4>
+                  </div>
+                </div>
+              </div>
+              <div className="col-4 align-self-center d-flex justify-content-end">
+
+                <button className="button button-charcoal px-5" onMouseDown={() => { toggleStage2(); }} onMouseUp={() => { toggleStage1() }} > Next </button>
+
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+        <div className={`stage2 d-${stage2}`}>
+          <div className="container-fluid mt-4 text-center p-0 m-0">
+            <div className="col-12 p-0 m-0 justify-content-center">
+              <h6 className="text-charcoal75 p-0 m-0 fw-bolder text-start ms-3"> Add Products </h6>
+              <div className="row p-0 m-0 my-2 justify-content-start">
+                <div className="col-4">
+                  <input className="form-control fw-bold border-charcoal75 border-2 rounded-1 bg-seashell" placeholder="Search Product by Name" value={itemname ? itemname : ""} onChange={(e) => { searchmeds(e.target.value); setitemname(e.target.value); setitemid(); setproducts(); stockref.current.style.display = "none"; }} />
+                  <div ref={medicinesref} className="position-absolute rounded-1 mt-1" style={{ Width: "max-content", zIndex: "1" }} >
+                    {
+                      itemsearch ? (
+                        loadsearch ? (
+                          <div className="rounded-1 p-1 bg-pearl">
+                            Searching Please wait....
+                            <div className="spinner-border my-auto" style={{ width: "1rem", height: "1rem" }} role="status" >
+                              <span className="sr-only"> </span>
+                            </div>
+                          </div>
+                        ) : loadsearch == false && itemsearch.length == 0 ? (
+                          <div className="bg-burntumber text-light rounded-1 p-1"> Oops! Not Avaliable </div>
+                        ) : (
+                          <div className={`rounded-4 scroll border border-1 bg-pearl p-1 d-${itemsearch && itemsearch.length > 0 ? "block" : "none"}`} style={{ height: '30vh' }} >
+                            <p className={`text-start p-2 position-sticky top-0 bg-pearl fw-bold text-charcoal75 ms-2`} style={{ fontSize: "0.8rem" }} > {itemsearch.length} Search Results </p>
+                            {
+                              itemsearch.map((data, i) => (
+                                <div style={{ cursor: "pointer", Width: "10rem" }} className={`bg-${i % 2 == 0 ? "pearl" : "seashell"} text-start fw-bold p-2 border-bottom text-charcoal `} onClick={(e) => { setproducts(data); setitemname(data.display_name ? data.display_name : data.name); setitemid(data.id); stockref.current.style.display = "block"; }} > {data.display_name ? data.display_name : data.name} <span className='text-burntumber fw-bold rounded-2 px-1'>{data && data.stock_info !== undefined ? data.stock_info.length : ""} stocks</span> </div>
+                              ))
+                            }
+                          </div>
+                        )
+                      ) : (
+                        <div className="bg-seashell"></div>
+                      )}
+                  </div>
+                  <div ref={stockref} className={`position-absolute start-50 mt-1 bg-pearl scroll scroll-y align-self-center rounded-2 border border-1 p-2 d-${products && products.stock_info && products.stock_info !== undefined ? "block" : "none"}`} style={{ zIndex: "2", width: "10rem", 'min-height': "30vh", }} >
+                    <p className={`text-start fw-bold text-charcoal75`} style={{ fontSize: "0.8rem" }} > {products && products.stock_info !== undefined ? products.stock_info.length : ""}{" "} Batch Stocks </p>
+                    {
+                      products && products.length != 0 ? (
+                        products.stock_info.length == 0 ? (
+                          <div className="bg-burntumber text-white fw-bold p-2">Oops! Not Available</div>
+                        ) : (
+                          products.stock_info.map((data, i) => (
+                            <div style={{ cursor: "pointer", Width: "max-content" }} className={`bg-${i % 2 == 0 ? "pearl" : "seashell"} border-bottom text-wrap`} onClick={() => { AddProducts(data); setitemname(); setitemid(); setproducts(); setitemsearch(); }} >
+                              <p className="text-start m-0 p-0 fw-bold">{itemname}</p>
+                              <p className="text-start p-0 m-0 "> BatchNo. -{" "} {data.batch_no && data.batch_no !== null ? data.batch_no : ""} </p>
+                              <p className="text-start p-0 m-0 "> Stock -{" "} {data.current_stock && data.current_stock ? data.current_stock : ""} </p>
+                              <p className="text-start p-0 m-0 "> Expiry Date -{" "} {data.expiry_date ? reversefunction(data.expiry_date) : ""} </p>
+                            </div>
+                          ))
+                        )
+                      ) : (
+                        <div className="bg-seashell p-2">Not Avaliable</div>
+                      )
+                    }
+                  </div>
+                  <div>
+                  </div>
+                </div>
+                <div className="col-1 text-burntumber fw-bold align-self-center">
+                  OR
+                </div>
+                <div className="col-4 ">
+                  <input className="form-control bg-seashell border-charcoal75 border-2 rounded-1 fw-bold" value={itemid ? itemid : ""} placeholder="Search Product by ID" onChange={(e) => { searchmedbyId(e.target.value); setitemid(e.target.value); medbyidref.current.style.display = "block"; }} />
+                  <div ref={medbyidref} className="position-absolute rounded-1 mt-1" style={{ Width: "max-content", zIndex: "2" }} >
+                    {itembyid ? (
+                      loadbyId ? (
+                        <div className="rounded-1 p-1 bg-pearl"> Searching Please wait.... <div className="spinner-border my-auto" style={{ width: "1rem", height: "1rem" }} role="status" > <span className="sr-only"> </span>{" "} </div> </div>
+                      ) : loadbyId == false && itembyid.length == 0 ? (
+                        <div className="bg-burntumber text-light rounded-1 p-1"> Oops! Not Avaliable </div>
+                      ) : (
+                        itembyid.map((data, i) => (
+                          <div style={{ cursor: "pointer", Width: "max-content" }} className={`p-0 p-1 rounded-pill shadow bg-${i % 2 == 0 ? "pearl" : "seashell"} fs-6 `} onClick={(e) => { setitemid(data.type + data.id); AddProducts(data); medbyidref.current.style.display = "none"; }} > {data.item_name ? data.item_name : ""} </div>
+                        ))
+                      )
+                    ) : (
+                      <div className="bg-seashell"></div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="col-12 m-0 p-0 mt-5">
+              <div className="d-flex p-0 m-0 justify-content-between">
+                <h6 className="text-charcoal75 p-0 m-0 fw-bolder text-start ms-3">
+                  Product Added
+                </h6>
+              </div>
 
-  );
+              <div className="p-0 m-0 scroll scroll-y" style={{ height: "35vh" }}>
+                <table className="table p-0 m-0">
+                  <thead className="p-0 m-0">
+                    <tr className={`p-0 m-0 `}>
+                      <th className="p-0 m-0 px-2 text-charcoal75" rowSpan="2"> Item ID </th>
+                      <th className="p-0 m-0 px-2 text-charcoal75" rowSpan="2"> Item Name </th>
+                      <th className="p-0 m-0 px-2 text-charcoal75" rowSpan="2"> BatchNo. </th>
+                      <th className="p-0 m-0 px-2 text-charcoal75" rowSpan="2"> Expiry Date </th>
+                      <th className="p-0 m-0 px-2 text-charcoal75" rowSpan="2"> Avl.Stock </th>
+                      <th className="p-0 m-0 px-2 text-charcoal75" rowSpan="2"> Qty To Sale </th>
+                      <th className="p-0 m-0 px-2 text-charcoal75" rowSpan="2"> Discount % </th>
+                      <th className="p-0 m-0 px-2 text-charcoal75" colSpan="4" scope="col-group"> Costing </th>
+                      <th className="p-0 m-0 px-2 text-charcoal75" rowSpan="2"> Total Amount </th>
+                      <th className="p-0 m-0 px-2 text-charcoal75" rowSpan="2"> Delete </th>
+                    </tr>
+                    <tr className="p-0 m-0">
+                      <th className="p-0 m-0 px-2 text-charcoal75" scope="col"> MRP </th>
+                      <th className="p-0 m-0 px-2 text-charcoal75" scope="col"> Cost </th>
+                      <th className="p-0 m-0 px-2 text-charcoal75" scope="col"> GST Rate </th>
+                      <th className="p-0 m-0 px-2 text-charcoal75" scope="col"> Selling Cost/Unit </th>
+                    </tr>
+                  </thead>
+                  {SelectedProducts && SelectedProducts.length !== 0 ? (
+                    <tbody className="p-0 m-0">
+                      {SelectedProducts.map((data) => (
+                        <tr className={`p-0 m-0 align-middle text-charcoal fw-bold bg-${Number(data.disccost) < Number(data.cost) ? "lightred50" : ""}`} >
+                          <td>{data.type} {data.productid} </td>
+                          <td>{data.product}</td>
+                          <td>{data.batch}</td>
+                          <td>{reversefunction(data.expiry)}</td>
+                          <td>{data.quantity}</td>
+                          <td>
+                            <input className="border border-1 rounded-1 w-25 text-center p-0 m-0 bg-seashell" value={data.qtytoSale ? data.qtytoSale : ""} onChange={(e) => { e.target.value <= data.quantity ? (data.qtytoSale = e.target.value) : Notiflix.Notify.failure("Quantity Cannot be Greater then Current Stock Available"); data.totalamt = CalTotalAmount(data.qtytoSale, data.disccost); setSelectedProducts((prevState) => [...prevState]); }} />{" "}
+                          </td>
+                          <td className="text-center p-0 m-0" style={{ Width: "0rem" }} >
+                            <input className="border border-1 rounded-1 w-25 text-center p-0 m-0 bg-seashell" value={data.discount ? data.discount : ""} onChange={(e) => { data.discount = e.target.value; data.disccost = CalSellingCost(data.mainmrp, e.target.value); data.totalamt = CalTotalAmount(data.qtytoSale, Number(data.disccost), Number(data.cost)); setSelectedProducts((prevState) => [...prevState]); }} />{" "}
+                          </td>
+                          <td>{data.mainmrp}</td>
+                          <td>{data.cost}</td>
+                          <td>{data.gst + "%"}</td>
+                          <td>{data.disccost}</td>
+                          <td>{data.totalamt}</td>
+                          <td>
+                            <button className="btn p-0 m-0" onClick={() => { DeleteProduct(data.batch); }} >
+                              <img src={process.env.PUBLIC_URL + "images/delete.png"} style={{ width: "1.5rem" }} />
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  ) : (
+                    <tbody className="p-0 m-0 position-relative">
+                      <tr className="p-0 m-0">
+                        <td className="p-0 m-0 position-absolute text-charcoal75 fw-bold start-0 end-0"> No Product Added </td>
+                      </tr>
+                    </tbody>
+                  )}
+                </table>
+              </div>
+            </div>
+          </div>
+          <div className="w-100 position-absolute bottom-0 bg-pearl py-2">
+            <div className="row p-0 m-0">
+              <div className="col-8">
+                <div className="row">
+                  <div className="col-4">
+                    <p className="text-charcoal75 p-0 m-0 fw-bolder card-title text-start ms-3"> {" "} Order Total{" "} </p>
+                    <h4 className="text-charcoal  p-0 m-0 fw-bolder card-header text-start ps-3"> {Grandtotal} </h4>
+                  </div>
+                  <div className="col-4">
+                    <p className="text-charcoal75 p-0 m-0 fw-bolder card-title text-start ms-3">
+                      {" "}
+                      Discount %
+                    </p>
+                    <h4 className="text-charcoal  p-0 m-0 fw-bolder card-header text-start ps-3">
+                      {CaltotalDiscount(SelectedProducts)}
+                    </h4>
+                  </div>
+                  <div className="col-4">
+                    <p className="text-charcoal75 p-0 m-0 fw-bolder card-title text-start ms-3">
+                      {" "}
+                      Total Items
+                    </p>
+                    <h4 className="text-charcoal p-0 m-0 fw-bolder card-header text-start ps-3">
+                      {SelectedProducts.length}
+                    </h4>
+                  </div>
+                </div>
+              </div>
+              <div className="col-4 align-self-center d-flex justify-content-end">
+                <button className="button button-charcoal px-5" onMouseDown={() => { toggleStage3(); }} onMouseUp={() => { toggleStage2() }} > Choose Address </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className={`stage3 d-${stage3} `}>
+          <div className="row align-items-center p-0 m-0 pt-2">
+            <div className="col-auto">
+            </div>
+            <div className="col-auto">
+              <h6 className="fw-bold text-charcoal75">Patient Details</h6>
+            </div>
+            <div className="col-auto">
+              <h6 className="fw-bold text-charcoal">Name:{searchinput}</h6>
+            </div>
+            <div className="col-auto">
+              <h6 className="fw-bold text-charcoal">Phone:{number != undefined ? number : ''}</h6>
+            </div>
+          </div>
+          <hr className="my-1" />
+          <div className="container mt-4">
+            <h6 className="fw-bold text-charcoal75">Select Shipping Address</h6>
+            {
+              patientdata && patientdata.address && patientdata.address.length !== 0 ? (
+                <div className=" ">
+                  {
+                    patientdata.address.map((data, i) => (
+                      <>
+                        <input type="checkbox" className="form-check-input" checked={ischecked2 === i ? true : false} name={data.id} onClick={(e) => { setischecked2(i); addressid ? selectaddress() : selectaddress(data); }} /> <h6 className="fw-bold text-charcoal d-inline-block">{data.address_line1 && data.address_line1 !== null ? data.address_line1 : ""} {data.address_line2 && data.address_line2 !== null ? data.address_line2 : ""} {data.zip_code && data.zip_code !== null ? data.zip_code : ""}</h6>
+                      </>
+                    ))}
+                </div>
+              ) : (
+                <div className="text-danger fw-bold p-2"> Addresses not found.Update Patient Details to get Address{" "} </div>
+              )}
+          </div>
+
+          <div className="w-100 position-absolute bottom-0 bg-pearl py-2">
+            <div className="row p-0 m-0">
+              <div className="col-8">
+                <div className="row">
+                  <div className="col-4">
+                    <p className="text-charcoal75 p-0 m-0 fw-bolder card-title text-start ms-3"> {" "} Order Total{" "} </p>
+                    <h4 className="text-charcoal  p-0 m-0 fw-bolder card-header text-start ps-3"> {Grandtotal} </h4>
+                  </div>
+                  <div className="col-4">
+                    <p className="text-charcoal75 p-0 m-0 fw-bolder card-title text-start ms-3">
+                      {" "}
+                      Discount %
+                    </p>
+                    <h4 className="text-charcoal  p-0 m-0 fw-bolder card-header text-start ps-3">
+                      {CaltotalDiscount(SelectedProducts)}
+                    </h4>
+                  </div>
+                  <div className="col-4">
+                    <p className="text-charcoal75 p-0 m-0 fw-bolder card-title text-start ms-3">
+                      {" "}
+                      Total Items
+                    </p>
+                    <h4 className="text-charcoal  p-0 m-0 fw-bolder card-header text-start ps-3">
+                      {SelectedProducts.length}
+                    </h4>
+                  </div>
+                </div>
+              </div>
+              <div className="col-4 align-self-center d-flex justify-content-end">
+                <button className="button button-charcoal px-5" onMouseDown={() => { toggleStage4(); }} onMouseUp={() => { toggleStage3() }}  > Proceed to Payment </button>
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className={`stage4 d-${stage4}`}>
+          <div className="row align-items-center p-0 m-0 pt-2">
+            <div className="col-auto">
+            </div>
+            <div className="col-auto">
+              <h6 className="fw-bold text-charcoal75">Patient Details</h6>
+            </div>
+            <div className="col-auto">
+              <h6 className="fw-bold text-charcoal">Name:{searchinput}</h6>
+            </div>
+            <div className="col-auto">
+              <h6 className="fw-bold text-charcoal">Phone:{number != undefined ? number : ''}</h6>
+            </div>
+          </div>
+          <hr className="my-1" />
+          <div className="container">
+            <h6 className="text-charcoal75 fw-bold">Total Amount Due</h6>
+            <h1 className="fw-bold text-charcoal">₹{Grandtotal}</h1>
+          </div>
+          <div className="container-fluid text-start position-relative scroll">
+            {/* <div className={`d-${previoustotal == props.saleentryarr.grand_total ? "" : "none"} bg-lightgreen fw-bold text-center p-2 my-2`} > Payment Done </div> */}
+            {/* <h6 className="text-charcoal fw-bolder text-center">Payments</h6> */}
+            {/* <h6 className="text-burntumber fw-bolder text-center">{Return_Amount() > 0 ? `Amount Exceeded by ${Return_Amount()}` : ""}</h6> */}
+            {/* {
+              paymentmethods && paymentmethods !== undefined ? (
+                paymentmethods.map((data, i) =>
+                  permission.sale_entry_charges_edit == 1 ? (
+                    <div className={`row p-0 m-0 justify-content-end g-2`}> */}
+                      {/* <div className="col-4 ">
+                        <select className="form-control border-success py-1 text-center" value={data.paymentmethod} onChange={(e) => { data.paymentmethod = e.target.value; setpaymentmethods((prevState) => [...prevState]); }} >
+                        </select>
+                      </div>
+                      <div className="col-4 text-center ">
+                        <input className="form-control border-success py-1 text-center" value={data.amount} onChange={(e) => { data.amount = e.target.value; setpaymentmethods((prevState) => [...prevState]); }} />
+                      </div>
+                      <div className="col-2 text-center">
+                        <button className="btn btn-sm p-0 m-0" onClick={() => { DeletePaymentMethods(i); setpaymentmethods((prevState) => [...prevState]); }} >
+                          <img src={process.env.PUBLIC_URL + "/images/delete.png"} className="img-fluid" style={{ width: "1.5rem" }} />
+                        </button>
+                      </div> */}
+                    {/* </div>
+                  ) : props.saleentryarr.payment_method_details == null ? (
+                    <div className={`row p-0 m-0 justify-content-end g-2`}>
+                      <div className="col-4 ">
+                        <select className="form-control border-success py-1 text-center" value={data.paymentmethod} onChange={(e) => { data.paymentmethod = e.target.value; setpaymentmethods((prevState) => [...prevState]); }} >
+                          <option className="text-charcoal75 fw-bolder"> Payment Method </option>
+                          <option value="Cash">Cash</option>
+                          <option value="Card">Card</option>
+                          <option value="Paytm">Paytm</option>
+                          <option value="Phonepe">Phone Pe</option>
+                          <option value="Wire-Transfer">Wire Transfer</option>
+                          <option value="Razorpay">Razorpay</option>
+                          <option value="Points">Points</option>
+                          <option value="Adjust-Advance">Adjust-Advance</option>
+                        </select>
+                      </div>
+                      <div className="col-4 text-center ">
+                        <input className="form-control border-success py-1 text-center" value={data.amount} onChange={(e) => { data.amount = e.target.value; setpaymentmethods((prevState) => [...prevState]); }} />
+                      </div>
+                      <div className="col-2 text-center">
+                        <button className="btn btn-sm p-0 m-0" onClick={() => { DeletePaymentMethods(i); setpaymentmethods((prevState) => [...prevState]); }} >
+                          <img src={process.env.PUBLIC_URL + "/images/delete.png"} className="img-fluid" style={{ width: "1.5rem" }} />
+                        </button>
+                      </div>
+                    </div> */}
+                  {/* ) : (
+                    <div className={`row p-0 m-0 justify-content-center g-2`}>
+                      <div className="col-4 text-center ">
+                        <input className="form-control py-1" disabled={true} value={data.paymentmethod} />
+                      </div>
+                      <div className="col-4 text-center ">
+                        <input className="form-control py-1 text-center" disabled={true} value={data.amount} onChange={(e) => { data.amount = e.target.value; setpaymentmethods((prevState) => [...prevState]); }} />
+                      </div>
+                    </div>
+                  )
+                )
+              ) : (
+                <></>
+              )} */}
+            {/* <div className={`container-fluid text-center mt-2 `}>
+              {
+              permission.sale_entry_charges_edit == 1 ? (
+                <button className="btn py-0" onClick={AddMethods}>
+                  <img src={process.env.PUBLIC_URL + "/images/add.png"} className="img-fluid" style={{ width: "2rem" }} />
+                </button>
+              ) : props.saleentryarr.payment_method_details == null ? (
+                <button className="btn py-0" onClick={AddMethods}>
+                  <img src={process.env.PUBLIC_URL + "/images/add.png"} className="img-fluid" style={{ width: "2rem" }} />
+                </button>
+              ) : (
+                <></>
+              )}
+            </div> */}
+          </div>
+
+          {/* <div className="container scroll scroll-y" style={{ height: '30vh' }}>
+            {
+              paymentmethods ? (
+                paymentmethods.map((data, i) => (
+                  <>
+                    <div className="container mt-4">
+                      <div className="row align-items-center">
+                        <div className="col-10">
+                          <h6 className="text-charcoal75 fw-bold">Enter Amount</h6>
+                          <input type="number" placeholder="₹00" value={data.amount} onChange={(e) => { data.amount = e.target.value; setpaymentmethods((prevState) => [...prevState]); }} className="form-control rounded-1 fw-bold text-charocoal75 bg-seashell w-25 border-2" />
+                        </div>
+                        <div className="col-2">
+                          <button className={`btn btn-sm p-0 m-0 d-${i == 0 ? 'none' : 'block'}`} onClick={() => { DeletePaymentMethods(i); setpaymentmethods((prevState) => [...prevState]); }} >
+                            <img src={process.env.PUBLIC_URL + "/images/minus.png"} className="img-fluid" style={{ width: "2.5rem" }} />
+                          </button>
+                        </div>
+                      </div>
+                    </div >
+                    <h6 className="text-charcoal75 fw-bold mt-2 ms-2">Select Payment Method</h6>
+                    <div className="d-flex flex-horizontal ms-2 mt-2 scroll scroll-y">
+                      <input type="checkbox" className="form-check-input border-charcoal p-2 mt-1" onChange={() => { data.paymentmethod = 'Cash'; setpaymentmethods((prevState) => [...prevState]); }} checked={'Cash' == data.paymentmethod ? true : false} onClick={(e) => { ischecked != undefined ? setischecked() : setischecked(e.target.value); }} value='Cash' /><span><h6 className="d-block text-charcoal fw-bold pt-1 ms-2 me-5">Cash</h6></span>
+                      <input type="checkbox" className="form-check-input border-charcoal p-2 mt-1" onChange={() => { data.paymentmethod = 'Card'; setpaymentmethods((prevState) => [...prevState]); }} checked={'Card' == data.paymentmethod ? true : false} onClick={(e) => { ischecked != undefined ? setischecked() : setischecked(e.target.value); }} value='Card' /><span><h6 className="d-block text-charcoal fw-bold pt-1 ms-2 me-5">Card</h6></span>
+                      <input type="checkbox" className="form-check-input border-charcoal p-2 mt-1" onChange={() => { data.paymentmethod = 'Paytm'; setpaymentmethods((prevState) => [...prevState]); }} checked={'Paytm' == data.paymentmethod ? true : false} onClick={(e) => { ischecked != undefined ? setischecked() : setischecked(e.target.value); }} value='Paytm' /><span><h6 className="d-block text-charcoal fw-bold pt-1 ms-2 me-5">Paytm</h6></span>
+                      <input type="checkbox" className="form-check-input border-charcoal p-2 mt-1" onChange={() => { data.paymentmethod = 'Phonepe'; setpaymentmethods((prevState) => [...prevState]); }} checked={'Phonepe' == data.paymentmethod ? true : false} onClick={(e) => { ischecked != undefined ? setischecked() : setischecked(e.target.value); }} value='Phonepe' /><span><h6 className="d-block text-charcoal fw-bold pt-1 ms-2 me-5">Phonepe</h6></span>
+                      <input type="checkbox" className="form-check-input border-charcoal p-2 mt-1" onChange={() => { data.paymentmethod = 'Razorpay'; setpaymentmethods((prevState) => [...prevState]); }} checked={'Razorpay' == data.paymentmethod ? true : false} onClick={(e) => { ischecked != undefined ? setischecked() : setischecked(e.target.value); }} value='Razorpay' /><span><h6 className="d-block text-charcoal fw-bold pt-1 ms-2 me-5">Razorpay</h6></span>
+                      <input type="checkbox" className="form-check-input border-charcoal p-2 mt-1" onChange={() => { data.paymentmethod = 'Wire-Transfer'; setpaymentmethods((prevState) => [...prevState]); }} checked={'Wire-Transfer' == data.paymentmethod ? true : false} onClick={(e) => { ischecked != undefined ? setischecked() : setischecked(e.target.value); }} value='Wire-Transfer' /><span><h6 className="d-block text-charcoal fw-bold pt-1 ms-2 me-5">Wire-Transfer</h6></span>
+                      <input type="checkbox" className="form-check-input border-charcoal p-2 mt-1" onChange={() => { data.paymentmethod = 'Points'; setpaymentmethods((prevState) => [...prevState]); }} checked={'Points' == data.paymentmethod ? true : false} onClick={(e) => { ischecked != undefined ? setischecked() : setischecked(e.target.value); }} value='Points' /><span><h6 className="d-block text-charcoal fw-bold pt-1 ms-2 me-5">Points</h6></span>
+                      <input type="checkbox" className="form-check-input border-charcoal p-2 mt-1" onChange={() => { data.paymentmethod = 'Adjust-Advance'; setpaymentmethods((prevState) => [...prevState]); }} checked={'Adjust-Advance' == data.paymentmethod ? true : false} onClick={(e) => { ischecked != undefined ? setischecked() : setischecked(e.target.value); }} value='Adjust-Advance' /><span><h6 className="d-block text-charcoal fw-bold pt-1 ms-2 me-5">Adjust-Advance</h6></span>
+
+                    </div>
+                  </>
+                ))
+              ) : (<></>)
+            }
+            <div className={`container-fluid text-center mt-2 `}>
+              {
+                permission.sale_entry_charges_edit == 1 ? (
+                  <button className="btn py-0 p-0 m-0 fw-bold text-burntumber" onClick={AddMethods}>
+                    <img src={process.env.PUBLIC_URL + "/images/add.png"} className="img-fluid" style={{ width: "4rem" }} />Add
+                  </button>
+                ) : props.saleentryarr.payment_method_details == null ? (
+                  <button className="btn py-0 p-0 m-0 fw-bold text-burntumber" onClick={AddMethods}>
+                    <img src={process.env.PUBLIC_URL + "/images/add.png"} className="img-fluid" style={{ width: "4rem" }} />Add
+                  </button>
+                ) : (
+                  <></>
+                )}
+            </div>
+          </div> */}
+          {/* <div className=" mt-4 ms-2">
+            <button className="button button-seashell border border-1 text-burntumber fw-bold rounded-1 ">Generate Invoice</button>
+          </div> */}
+          <div className="w-100 position-absolute bottom-0 bg-pearl py-2">
+            <div className="row p-0 m-0">
+              <div className="col-8">
+                <div className="row">
+                  <div className="col-4">
+                    <p className="text-charcoal75 p-0 m-0 fw-bolder card-title text-start ms-3"> {" "} Order Total{" "} </p>
+                    <h4 className="text-charcoal  p-0 m-0 fw-bolder card-header text-start ps-3"> {Grandtotal} </h4>
+                  </div>
+                  <div className="col-4">
+                    <p className="text-charcoal75 p-0 m-0 fw-bolder card-title text-start ms-3">
+                      {" "}
+                      Discount %
+                    </p>
+                    <h4 className="text-charcoal  p-0 m-0 fw-bolder card-header text-start ps-3">
+                      {CaltotalDiscount(SelectedProducts)}
+                    </h4>
+                  </div>
+                  <div className="col-4">
+                    <p className="text-charcoal75 p-0 m-0 fw-bolder card-title text-start ms-3">
+                      {" "}
+                      Total Items
+                    </p>
+                    <h4 className="text-charcoal  p-0 m-0 fw-bolder card-header text-start ps-3">
+                      {SelectedProducts.length}
+                    </h4>
+                  </div>
+                </div>
+              </div>
+              <div className="col-4 align-self-center d-flex justify-content-end">
+                <button className="button button-charcoal px-5" onClick={() => confirmmessage()} > Complete Order </button>
+              </div>
+            </div>
+          </div>
+          {/* stage4 */}
+
+        </div>
+      </div >
+    </>
+  )
 }
+
+// function SaleEntryForms(props) {
+//   const tableref = useRef(null);
+//   const cliniclist = useContext(Clinic);
+//   const url = useContext(URL);
+//   const Doclist = useContext(DoctorsList);
+//   const clinicID = localStorage.getItem("ClinicId");
+//   const medicinesref = useRef(null);
+//   const medbyidref = useRef(null);
+//   const patientaddref = useRef(null);
+//   const stockref = useRef(null);
+//   const [searchinput, setsearchinput] = useState(
+//     props.patientname ? props.patientname : ""
+//   );
+//   const [searchlist, setsearchlist] = useState([]);
+//   const [displaysearchlist, setdisplaysearchlist] = useState("none");
+//   const [patientid, setpatientid] = useState(
+//     props.patientid ? props.patientid : ""
+//   );
+//   const [patientdata, setpatientdata] = useState([]);
+//   const [doctorid, setdoctorid] = useState(
+//     props.DoctorID ? props.DoctorID : ""
+//   );
+//   const [doctorname, setdoctorname] = useState(
+//     props.DoctorName ? props.DoctorName : ""
+//   );
+//   const [otherdoctor, setotherdoctor] = useState();
+//   const [clinicid, setclinicid] = useState(clinicID);
+//   const [ischecked, setischecked] = useState();
+//   const [Dc, setDc] = useState(0);
+//   const [AtC, setAtC] = useState(0);
+//   const [load, setload] = useState();
+//   const [searchload, setsearchload] = useState(false);
+//   const [products, setproducts] = useState([]);
+//   const [itemsearch, setitemsearch] = useState([]);
+//   const [itembyid, setitembyid] = useState([]);
+//   const [loadbyId, setloadbyId] = useState();
+//   const [itemname, setitemname] = useState();
+//   const [itemid, setitemid] = useState();
+//   const [SelectedProducts, setSelectedProducts] = useState([]);
+//   const [Grandtotal, setGrandtotal] = useState();
+//   const [loadsearch, setloadsearch] = useState();
+//   const [addressid, setaddressid] = useState();
+//   const [addressform, setaddressform] = useState("none");
+
+//   const searchpatient = (e) => {
+//     setsearchload(true);
+//     setsearchinput(e.target.value);
+//     axios
+//       .get(`${url}/patient/list?search=${searchinput}&limit=5&offset=0`)
+//       .then((response) => {
+//         setsearchlist(response.data.data.patients_list);
+//         setsearchload(false);
+//       });
+//     if (searchinput && searchinput.length > 1) {
+//       setdisplaysearchlist("block");
+//     } else {
+//       setdisplaysearchlist("none");
+//     }
+//   };
+//   const reversefunction = (date) => {
+//     if (date) {
+//       date = date.split("-").reverse().join("-");
+//       return date;
+//     }
+//   };
+//   const get_value = (id, name, data) => {
+//     setsearchinput(name);
+//     setpatientid(id);
+//     setpatientdata(data);
+//     setdisplaysearchlist("none");
+//   };
+//   const selectaddress = (data) => {
+//     if (data) {
+//       setaddressid(data.id);
+//       setDc(1);
+//     } else {
+//       setaddressid();
+//       setDc(0);
+//     }
+//   };
+//   const DC = () => {
+//     if (Dc == 0) {
+//       setaddressform("block");
+//     }
+//     if (Dc == 1) {
+//       if (addressid) {
+//         setDc(0);
+//         setaddressform("none");
+//       } else {
+//         setaddressform("block");
+//       }
+//     }
+//   };
+//   const searchmeds = async (search) => {
+//     setloadsearch(true);
+//     try {
+//       await axios.get(`${url}/stock/list?search=${search}`).then((response) => {
+//         let medicines = [];
+//         let vaccines = [];
+//         let items = [];
+//         medicines.push(
+//           response.data.data.medicines ? response.data.data.medicines : []
+//         );
+//         vaccines.push(
+//           response.data.data.vaccines ? response.data.data.vaccines : []
+//         );
+//         items = medicines.concat(vaccines);
+//         items = items.flat();
+//         console.log(items);
+//         setitemsearch(items);
+//         setloadsearch(false);
+//         if (search.length > 1) {
+//           medicinesref.current.style.display = "block";
+//         } else {
+//           medicinesref.current.style.display = "none";
+//         }
+//       });
+//     } catch (e) {
+//       Notiflix.Notify.warning(e.data.message);
+//     }
+//   };
+//   const searchmedbyId = async (search) => {
+//     if (search.length > 0) {
+//       setloadbyId(true);
+//       try {
+//         await axios
+//           .get(`${url}/sale/item/search/by/id?item=${search}`)
+//           .then((response) => {
+//             setloadbyId(false);
+//             setitembyid([response.data.data]);
+//           });
+//       } catch (e) {
+//         setloadbyId(false);
+//         Notiflix.Notify.failure(e.message);
+//       }
+//     }
+//   };
+//   useEffect(() => {
+//     Doclist.map((data) => (data[0] == doctorid ? setdoctorname(data[1]) : ""));
+//   }, [doctorid]);
+//   function CalSellingCost(mrp, disc) {
+//     let cost = mrp;
+//     if (!disc) {
+//       cost = Number(mrp);
+//       return cost;
+//     } else {
+//       cost = Number(mrp) - (Number(mrp) * Number(disc)) / 100;
+//       cost = cost.toFixed(2);
+//       return cost;
+//     }
+//   }
+//   function CalTotalAmount(qty, cst, realcst) {
+//     let cost = cst;
+//     if (Number(realcst) > Number(cost)) {
+//       Notiflix.Notify.failure("Selling Cost should not less than Cost");
+//     }
+//     console.log(typeof realcst, typeof cost);
+//     if (!qty) {
+//       return 0;
+//     } else if (qty == 1) {
+//       cst = Number(cst);
+//       return cst;
+//     } else {
+//       cost = Number(cst) * Number(qty);
+//       cost = cost.toFixed(2);
+//       return cost;
+//     }
+//   }
+//   function CalGrandttl() {
+//     let ttl = 0;
+//     SelectedProducts.map((data) => (ttl += Number(data.totalamt)));
+//     setGrandtotal(ttl);
+//   }
+//   function CaltotalDiscount(data) {
+//     let total = 0;
+//     if (data) {
+//       data.forEach((item) => {
+//         total += Number(item.discount);
+//       });
+//       return total;
+//     } else {
+//       return total;
+//     }
+//   }
+//   useEffect(() => {
+//     CalGrandttl();
+//   }, [SelectedProducts]);
+//   function AddProducts(data) {
+//     let T = "";
+//     if (data.vaccine_brand_id) {
+//       T = "v";
+//     } else {
+//       T = "m";
+//     }
+//     let ProductDetails = {
+//       productid: data.id,
+//       type: data.type ? data.type : T,
+//       product: data.item_name ? data.item_name : itemname,
+//       batch: data.batch_no,
+//       expiry: data.expiry_date,
+//       quantity: data.current_stock,
+//       qtytoSale: 1,
+//       discount: 0,
+//       cost: data.cost,
+//       mainmrp: data.mrp,
+//       disccost: data.mrp,
+//       gst:
+//         Number(data.CGST_rate) +
+//         Number(data.SGST_rate) +
+//         Number(data.IGST_rate),
+//       totalamt: data.mrp,
+//     };
+
+//     if (SelectedProducts && SelectedProducts.length == 0) {
+//       setSelectedProducts([ProductDetails]);
+//     } else {
+//       setSelectedProducts((prevState) => [...prevState, ProductDetails]);
+//     }
+//   }
+//   async function DeleteProduct(Batch) {
+//     let obj = [];
+//     obj.push(
+//       SelectedProducts.filter(function (e) {
+//         return e.batch !== Batch;
+//       })
+//     );
+//     obj = obj.flat();
+//     setSelectedProducts(obj);
+//   }
+//   async function SubmitSaleEntry() {
+//     let productids = [];
+//     let proquantity = [];
+//     let Discount = [];
+//     let discountonmrp = [];
+//     let mrp = [];
+//     let GST = [];
+//     let Totalamount = [];
+//     if (doctorname != undefined && doctorname.length > 0 || otherdoctor != undefined && otherdoctor.length > 0) {
+//       for (let i = 0; i < SelectedProducts.length; i++) {
+//         productids.push(
+//           SelectedProducts[i].type + SelectedProducts[i].productid
+//         );
+//         proquantity.push(SelectedProducts[i].qtytoSale);
+//         Discount.push(SelectedProducts[i].discount);
+//         discountonmrp.push(SelectedProducts[i].disccost);
+//         mrp.push(SelectedProducts[i].mainmrp);
+//         GST.push(SelectedProducts[i].gst);
+//         Totalamount.push(SelectedProducts[i].totalamt);
+//       }
+//       let Data = {
+//         clinic_id: clinicid,
+//         doctor_id: doctorid,
+//         doctor_name: doctorid ? doctorname : otherdoctor,
+//         patient_id: patientid,
+//         pro_id: productids,
+//         qty: proquantity,
+//         discount: Discount,
+//         disc_mrp: discountonmrp,
+//         main_mrp: mrp,
+//         gst: GST,
+//         total_amount: Totalamount,
+//         grand_total: Grandtotal,
+//         appointment_id: "",
+//         add_to_cart: AtC,
+//         deliver: Dc,
+//         address_id: addressid,
+//       };
+//       setload(true);
+//       try {
+//         await axios
+//           .post(`${url}/sale/entry/save`, Data)
+//           .then((response) => {
+//             setload(false);
+//             if (props.saleindex == undefined) {
+//               props.GETSalesList();
+//               props.toggle_nsef();
+//             }
+//             if (response.data.status == true) {
+//               Notiflix.Notify.success(response.data.message);
+//             } else {
+//               Notiflix.Notify.warning(response.data.message);
+//             }
+//             ClearForm();
+//           })
+//           .catch(function error(e) {
+//             console.log(e);
+//             Notiflix.Notify.failure(e.message);
+//             setload(false);
+//           });
+//       } catch (e) {
+//         Notiflix.Notify.failure(e.message);
+//         setload(false);
+//       }
+//     } else {
+
+//       Notiflix.Notify.failure("Please Choose A Doctor to further proceed the sale entry");
+//     }
+//   }
+//   function confirmmessage() {
+//     customconfirm();
+//     Notiflix.Confirm.show(
+//       `Save Sale Entry`,
+//       `Do you surely want to add total ${SelectedProducts.length} Sale ${SelectedProducts.length <= 1 ? "entry" : "entries"
+//       }  `,
+//       "Yes",
+//       "No",
+//       () => {
+//         SubmitSaleEntry();
+//       },
+//       () => {
+//         return 0;
+//       },
+//       {}
+//     );
+//   }
+//   function confirmmessage2() {
+//     customconfirm();
+//     Notiflix.Confirm.show(
+//       `Add to Cart`,
+//       `Do you surely want to add the following Sale entries to the Cart  `,
+//       "Yes",
+//       "No",
+//       () => {
+//         setAtC(1);
+//       },
+//       () => {
+//         setAtC(0);
+//       },
+//       {}
+//     );
+//   }
+//   useEffect(() => {
+//     if (AtC == 1) {
+//       SubmitSaleEntry();
+//     }
+//   }, [AtC]);
+//   const ClearForm = async () => {
+//     setSelectedProducts([]);
+//     setaddressid();
+//     setitemname();
+//     setdoctorname();
+//     setdoctorid();
+//     setpatientid();
+//     setGrandtotal();
+//     setAtC();
+//     setDc(0);
+//     setsearchinput();
+//     setpatientdata();
+//   };
+
+//   console.log(patientid, doctorid, doctorname, Dc, itemname, itemid);
+//   // console.log(SelectedProducts, Grandtotal)
+//   // console.log(patientdata)
+//   let c = 0;
+//   // console.log(products, addressid, Dc, SelectedProducts)
+//   // console.log(itembyid)
+//   // console.log(itemsearch)
+//   return (
+
+
+//     <div className="container-fluid p-0 m-0">
+//       <div className="position-relative mb-3">
+//         <h5 className="text-center text-charcoal pt-2 ">New Sale Entry</h5>
+//         <button className="btn btn-close position-absolute end-0 top-0 me-2" disabled={load ? true : false} onClick={props.toggle_nsef} ></button>
+//       </div>
+//       {/* <hr className="p-0 m-0" /> */}
+//       {/* <div className="p-0 m-0 text-center bg-seashell">
+//         {cliniclist.map((data, i) => (
+//           <label className={` text-burntumber fw-bolder d-${clinicID == data.id ? "block" : "none"}`} >
+//             <input type="checkbox" className={`radio form me-1  text-burntumber fw-bolder`} key={i} checked={clinicID == data.id ? true : false} name={data.id} />
+//             {data.title} {data.address}
+//           </label>
+//         ))}
+//       </div> */}
+//       {/* <hr className="p-0 m-0" /> */}
+//       <div className="my-2 text-center align-self-center">
+//         <div className=" form-switch justify-content-center position-relative">
+//           <label className="form-check-label text-charcoal fw-bolder" for="flexSwitchCheckDefault" > Deliver to Customer </label>
+//           <input className="form-check-input ms-2 outline-none text-center" type="checkbox" role="switch" id="flexSwitchCheckDefault" checked={Dc == 1 ? true : false} onChange={() => { DC(); }} />
+//           <div className={`d-${addressform} position-absolute start-0 end-0 m-5 mt-0 top-0 bg-pearl shadow rounded-1 `} style={{ zIndex: 2 }} ref={patientaddref} >
+//             <div className="p-0 m-0 position-relative text-wrap">
+//               <button className="btn btn-close position-absolute end-0 p-1 m-1" onClick={() => { addressid ? setaddressform("none") : setaddressform("none"); }} ></button>
+//               {
+//                 patientdata && patientdata.address && patientdata.address.length !== 0 ? (
+//                   <div className="row p-0 m-0 gx-2  ">
+//                     <h6 className="ms-1 text-burntumber fw-bold text-start"> Choose Address for Delivery </h6>
+//                     {
+//                       patientdata.address.map((data) => (
+//                         <div className={`col-12 px-1 m-2 text-start card bg-${addressid == data.id ? "lightgreen" : "lightyellow"} text-charcoal fw-bold`} onClick={() => { addressid ? selectaddress() : selectaddress(data); }} >
+//                           <div>Patient Name:- {data.full_name}</div>
+//                           <div> Address:- {data.address_line1 && data.address_line1 !== null ? data.address_line1 : ""} </div>
+//                           <div> {data.address_line2 && data.address_line2 !== null ? data.address_line2 : ""} </div>
+//                           <div> PinCode:- {data.zip_code && data.zip_code !== null ? data.zip_code : ""} </div>
+//                         </div>
+//                       ))}
+//                   </div>
+//                 ) : (
+//                   <div className="text-danger fw-bold p-2"> Addresses not found.Update Patient Details to get Address{" "} </div>
+//                 )}
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//       <div className="row p-0 m-0">
+//         <div className="col-4">
+//           {/* <label className="m-0">Search Using Phone or Name</label> */}
+//           <input type="text" className="form-control bg-seashell fw-bold border-charcoal selectpatient col-10 position-relative" placeholder="Search for Patients" value={searchinput ? searchinput : ""} onFocus={() => setsearchload(true)} onChange={searchpatient} />
+//           <div className={`col-auto d-${displaysearchlist} text-decoration-none searchinput position-absolute rounded-1 shadow bg-pearl px-2`} style={{ width: "max-content", zIndex: "2" }} >
+//             {
+//               searchload == true || searchinput == undefined ? (
+//                 <p className="btn text-charcoal75 fs-6 p-0 m-0 ps-1"> Loading...{" "} </p>
+//               ) : searchlist.length == 0 ? (
+//                 <p className="text-danger btn fs-6 p-0 m-0">Patient not found</p>
+//               ) : (
+//                 searchlist.map((data) => (
+//                   <div className="col-auto p-0 m-0 ms-1 bg-pearl text-decoration-none text-charcoal text-start px-1 border-bottom" style={{ width: "max-content" }} onClick={() => { get_value(data.id, data.full_name, data); }} >
+//                     {data.full_name} {data.phone_number}
+//                   </div>
+//                 ))
+//               )}
+//           </div>
+//         </div>
+//         <div className="col-4">
+//           {/* <label>Select Doctor</label> */}
+//           <div className="col-12">
+//             <select className="col-10 form-control selectdoctor bg-seashell fw-bold border-charcoal" placeholder="Select Doctor" value={doctorid ? doctorid : ""} onChange={(e) => { setdoctorid(e.target.value); }} >
+//               <option className="text-charcoal50">Select Doctor</option>
+//               {
+//                 Doclist.map((data, i) => (
+//                   <option className={`text-charcoal`} key={i} value={data[0]}> {"Dr."} {data[1]} </option>
+//                 ))
+//               }
+//             </select>
+//           </div>
+//         </div>
+//         <div className="col-4">
+//           {/* <label>Other Doctor</label> */}
+//           <div className="col-12">
+//             <input className="col-10 form-control bg-seashell fw-bold border-charcoal" placeholder="Other Doctors" value={otherdoctor ? otherdoctor : ""} onChange={(e) => { setotherdoctor(e.target.value); }} />
+//           </div>
+//         </div>
+//       </div>
+//       <div className="container-fluid mt-4 text-center p-0 m-0">
+//         <div className="col-12 p-0 m-0 justify-content-center">
+//           <h6 className="text-charcoal p-0 m-0 fw-bolder text-start ms-1"> Add Products </h6>
+//           <hr className="p-0 m-0" />
+//           {/* <div className="col-12">
+//               <button className='button button-seashell text-burntumber border-burntumber '>Scan to Add Product</button>
+//             </div>
+//             <h4 className='my-2'>OR</h4> */}
+//           <div className="row p-0 m-0 my-2 justify-content-center">
+//             <div className="col-4">
+//               <input className="form-control  fw-bold border-charcoal bg-seashell" placeholder="Search Product by Name" value={itemname ? itemname : ""} onChange={(e) => { searchmeds(e.target.value); setitemname(e.target.value); setitemid(); setproducts(); stockref.current.style.display = "none"; }} />
+//               <div ref={medicinesref} className="position-absolute rounded-1 mt-1" style={{ Width: "max-content", zIndex: "1" }} >
+//                 {
+//                   itemsearch ? (
+//                     loadsearch ? (
+//                       <div className="rounded-1 p-1 bg-pearl">
+//                         Searching Please wait....
+//                         <div className="spinner-border my-auto" style={{ width: "1rem", height: "1rem" }} role="status" >
+//                           <span className="sr-only"> </span>
+//                         </div>
+//                       </div>
+//                     ) : loadsearch == false && itemsearch.length == 0 ? (
+//                       <div className="bg-burntumber text-light rounded-1 p-1"> Oops! Not Avaliable </div>
+//                     ) : (
+//                       <div className={`rounded-4 scroll border border-1 bg-pearl p-1 d-${itemsearch && itemsearch.length > 0 ? "block" : "none"}`} style={{ height: '30vh' }} >
+//                         <p className={`text-start p-2 position-sticky top-0 bg-pearl fw-bold text-charcoal75 ms-2`} style={{ fontSize: "0.8rem" }} > {itemsearch.length} Search Results </p>
+//                         {
+//                           itemsearch.map((data, i) => (
+//                             <div style={{ cursor: "pointer", Width: "10rem" }} className={`bg-${i % 2 == 0 ? "pearl" : "seashell"} text-start fw-bold p-2 border-bottom text-charcoal `} onClick={(e) => { setproducts(data); setitemname(data.display_name ? data.display_name : data.name); setitemid(data.id); stockref.current.style.display = "block"; }} > {data.display_name ? data.display_name : data.name} <span className='text-burntumber fw-bold rounded-2 px-1'>{data && data.stock_info !== undefined ? data.stock_info.length : ""} stocks</span> </div>
+//                           ))
+//                         }
+//                       </div>
+//                     )
+//                   ) : (
+//                     <div className="bg-seashell"></div>
+//                   )}
+//               </div>
+//               <div ref={stockref} className={`position-absolute start-50 mt-1 bg-pearl scroll scroll-y align-self-center rounded-2 border border-1 p-2 d-${products && products.stock_info && products.stock_info !== undefined ? "block" : "none"}`} style={{ zIndex: "2", width: "10rem", 'min-height': "30vh", }} >
+//                 <p className={`text-start fw-bold text-charcoal75`} style={{ fontSize: "0.8rem" }} > {products && products.stock_info !== undefined ? products.stock_info.length : ""}{" "} Batch Stocks </p>
+//                 {
+//                   products && products.length != 0 ? (
+//                     products.stock_info.length == 0 ? (
+//                       <div className="bg-burntumber text-white fw-bold p-2">Oops! Not Available</div>
+//                     ) : (
+//                       products.stock_info.map((data, i) => (
+//                         <div style={{ cursor: "pointer", Width: "max-content" }} className={`bg-${i % 2 == 0 ? "pearl" : "seashell"} border-bottom text-wrap`} onClick={() => { AddProducts(data); setitemname(); setitemid(); setproducts(); setitemsearch(); }} >
+//                           <p className="text-start m-0 p-0 fw-bold">{itemname}</p>
+//                           <p className="text-start p-0 m-0 "> BatchNo. -{" "} {data.batch_no && data.batch_no !== null ? data.batch_no : ""} </p>
+//                           <p className="text-start p-0 m-0 "> Stock -{" "} {data.current_stock && data.current_stock ? data.current_stock : ""} </p>
+//                           <p className="text-start p-0 m-0 "> Expiry Date -{" "} {data.expiry_date ? reversefunction(data.expiry_date) : ""} </p>
+//                         </div>
+//                       ))
+//                     )
+//                   ) : (
+//                     <div className="bg-seashell p-2">Not Avaliable</div>
+//                   )
+//                 }
+//               </div>
+//               <div>
+//               </div>
+//             </div>
+//             <div className="col-1 text-burntumber fw-bold align-self-center">
+//               OR
+//             </div>
+//             <div className="col-4 ">
+//               <input className="form-control bg-seashell  fw-bold border-charcoal rounded-1" value={itemid ? itemid : ""} placeholder="Search Product by ID" onChange={(e) => { searchmedbyId(e.target.value); setitemid(e.target.value); medbyidref.current.style.display = "block"; }} />
+//               <div ref={medbyidref} className="position-absolute rounded-1 mt-1" style={{ Width: "max-content", zIndex: "2" }} >
+//                 {itembyid ? (
+//                   loadbyId ? (
+//                     <div className="rounded-1 p-1 bg-pearl">
+//                       Searching Please wait....
+//                       <div
+//                         className="spinner-border my-auto"
+//                         style={{ width: "1rem", height: "1rem" }}
+//                         role="status"
+//                       >
+//                         <span className="sr-only"> </span>{" "}
+//                       </div>
+//                     </div>
+//                   ) : loadbyId == false && itembyid.length == 0 ? (
+//                     <div className="bg-burntumber text-light rounded-1 p-1">
+//                       Oops! Not Avaliable
+//                     </div>
+//                   ) : (
+//                     itembyid.map((data, i) => (
+//                       <div
+//                         style={{ cursor: "pointer", Width: "max-content" }}
+//                         className={`p-0 p-1 rounded-pill shadow bg-${i % 2 == 0 ? "pearl" : "seashell"
+//                           } fs-6 `}
+//                         onClick={(e) => {
+//                           setitemid(data.type + data.id);
+//                           AddProducts(data);
+//                           medbyidref.current.style.display = "none";
+//                         }}
+//                       >
+//                         {data.item_name ? data.item_name : ""}
+//                       </div>
+//                     ))
+//                   )
+//                 ) : (
+//                   <div className="bg-seashell"></div>
+//                 )}
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+//         <div className="col-12 m-0 p-0">
+//           <div className="d-flex p-0 m-0 justify-content-between">
+//             <h6 className="text-charcoal p-0 m-0 fw-bolder text-start ms-1">
+//               Product Added
+//             </h6>
+//           </div>
+
+//           <hr className="p-0 m-0" />
+//           <div className="p-0 m-0 scroll scroll-y" style={{ height: "35vh" }}>
+//             <table className="table p-0 m-0">
+//               <thead className="p-0 m-0">
+//                 <tr className={`p-0 m-0 `}>
+//                   <th className="p-0 m-0 px-2" rowSpan="2"> Item ID </th>
+//                   <th className="p-0 m-0 px-2" rowSpan="2"> Item Name </th>
+//                   <th className="p-0 m-0 px-2" rowSpan="2"> BatchNo. </th>
+//                   <th className="p-0 m-0 px-2" rowSpan="2"> Expiry Date </th>
+//                   <th className="p-0 m-0 px-2" rowSpan="2"> Avl.Stock </th>
+//                   <th className="p-0 m-0 px-2" rowSpan="2"> Qty To Sale </th>
+//                   <th className="p-0 m-0 px-2" rowSpan="2"> Discount % </th>
+//                   <th className="p-0 m-0 px-2" colSpan="4" scope="col-group"> Costing </th>
+//                   <th className="p-0 m-0 px-2" rowSpan="2"> Total Amount </th>
+//                   <th className="p-0 m-0 px-2" rowSpan="2"> Delete </th>
+//                 </tr>
+//                 <tr className="p-0 m-0">
+//                   <th className="p-0 m-0 px-2" scope="col"> MRP </th>
+//                   <th className="p-0 m-0 px-2" scope="col"> Cost </th>
+//                   <th className="p-0 m-0 px-2" scope="col"> GST Rate </th>
+//                   <th className="p-0 m-0 px-2" scope="col"> Selling Cost/Unit </th>
+//                 </tr>
+//               </thead>
+//               {SelectedProducts && SelectedProducts.length !== 0 ? (
+//                 <tbody className="p-0 m-0">
+//                   {SelectedProducts.map((data) => (
+//                     <tr className={`p-0 m-0 align-middle bg-${Number(data.disccost) < Number(data.cost) ? "lightred50" : ""}`} >
+//                       <td>{data.type} {data.productid} </td>
+//                       <td>{data.product}</td>
+//                       <td>{data.batch}</td>
+//                       <td>{reversefunction(data.expiry)}</td>
+//                       <td>{data.quantity}</td>
+//                       <td>
+//                         <input className="border border-1 rounded-1 w-25 text-center p-0 m-0 bg-seashell" value={data.qtytoSale ? data.qtytoSale : ""} onChange={(e) => { e.target.value <= data.quantity ? (data.qtytoSale = e.target.value) : Notiflix.Notify.failure("Quantity Cannot be Greater then Current Stock Available"); data.totalamt = CalTotalAmount(data.qtytoSale, data.disccost); setSelectedProducts((prevState) => [...prevState]); }} />{" "}
+//                       </td>
+//                       <td className="text-center p-0 m-0" style={{ Width: "0rem" }} >
+//                         <input className="border border-1 rounded-1 w-25 text-center p-0 m-0 bg-seashell" value={data.discount ? data.discount : ""} onChange={(e) => { data.discount = e.target.value; data.disccost = CalSellingCost(data.mainmrp, e.target.value); data.totalamt = CalTotalAmount(data.qtytoSale, Number(data.disccost), Number(data.cost)); setSelectedProducts((prevState) => [...prevState]); }} />{" "}
+//                       </td>
+//                       <td>{data.mainmrp}</td>
+//                       <td>{data.cost}</td>
+//                       <td>{data.gst + "%"}</td>
+//                       <td>{data.disccost}</td>
+//                       <td>{data.totalamt}</td>
+//                       <td>
+//                         <button className="btn p-0 m-0" onClick={() => { DeleteProduct(data.batch); }} >
+//                           <img src={process.env.PUBLIC_URL + "images/delete.png"} style={{ width: "1.5rem" }} />
+//                         </button>
+//                       </td>
+//                     </tr>
+//                   ))}
+//                 </tbody>
+//               ) : (
+//                 <tbody className="p-0 m-0 position-relative">
+//                   <tr className="p-0 m-0">
+//                     <td className="p-0 m-0 position-absolute text-charcoal fw-bold start-0 end-0"> No Product Added </td>
+//                   </tr>
+//                 </tbody>
+//               )}
+//             </table>
+//           </div>
+//         </div>
+//       </div>
+//       <div className="col-12 position-absolute start-0 end-0 bottom-0 py-3 border border-1 text-center bg-pearl align-items-center rounded-bottom">
+//         <div className="row p-0 m-0">
+//           <div className="col-6">
+//             <div className="row">
+//               <div className="col-3">
+//                 <p className="text-charcoal75 p-0 m-0 fw-bolder card-title text-start ms-3"> {" "} Order Total{" "} </p>
+//                 <h4 className="text-charcoal  p-0 m-0 fw-bolder card-header text-start ps-3">
+//                   {Grandtotal}
+//                 </h4>
+//               </div>
+//               <div className="col-3">
+//                 <p className="text-charcoal75 p-0 m-0 fw-bolder card-title text-start ms-3">
+//                   {" "}
+//                   Discount %
+//                 </p>
+//                 <h4 className="text-charcoal  p-0 m-0 fw-bolder card-header text-start ps-3">
+//                   {CaltotalDiscount(SelectedProducts)}
+//                 </h4>
+//               </div>
+//               <div className="col-3">
+//                 <p className="text-charcoal75 p-0 m-0 fw-bolder card-title text-start ms-3">
+//                   {" "}
+//                   Total Items
+//                 </p>
+//                 <h4 className="text-charcoal  p-0 m-0 fw-bolder card-header text-start ps-3">
+//                   {SelectedProducts.length}
+//                 </h4>
+//               </div>
+//             </div>
+//           </div>
+//           <div className="col-3 align-self-center">
+//             {load ? (
+//               <div className="col-6 py-2 pb-2 m-auto text-center">
+//                 <div class="spinner-border" role="status">
+//                   <span class="visually-hidden">Loading...</span>
+//                 </div>
+//               </div>
+//             ) : (
+//               <button
+//                 className="button button-charcoal px-5"
+//                 onClick={() => {
+//                   confirmmessage();
+//                 }}
+//               >
+//                 Save Entry
+//               </button>
+//             )}
+//           </div>
+//           <div className="col-3 align-self-center">
+//             <button
+//               className="button button-pearl border-charcoal text-charcoal px-4"
+//               disabled={load ? true : false}
+//               onClick={() => {
+//                 confirmmessage2();
+//               }}
+//             >
+//               Add To Cart
+//             </button>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+
+//   );
+// }
 function NewSaleReturnentryform(props) {
   const url = useContext(URL);
   const medicinesref = useRef(null);
@@ -7228,7 +8163,7 @@ function Stockvaccinesection() {
           max_stock_count: vaccineslist[i].max_stock_count,
           alert_stock_count: vaccineslist[i].alert_stock_count,
           min_stock_count: vaccineslist[i].min_stock_count,
-        };
+        }
         console.log(vaccineobj);
         if (vaccinearr == undefined && vaccinearr.length == 0) {
           setvaccinearr(vaccineobj);
@@ -7280,7 +8215,7 @@ function Stockvaccinesection() {
         }
       }
     }
-  };
+  }
 
 
   const CalculateTStock = (totalarr) => {
