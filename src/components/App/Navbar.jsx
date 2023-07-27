@@ -1,7 +1,6 @@
 import React, { useRef } from 'react'
 import { Link, useLocation } from "react-router-dom"
 import { useState, useEffect, useContext } from "react";
-import { w3cwebsocket as websocket } from 'websocket'
 
 //Context APIs
 import { Permissions } from '../../index'
@@ -16,6 +15,7 @@ import { AddAppointment } from '../Today/AddAppointment'
 function Navbar(props) {
     const message_Box = useRef()
     //Use States
+    const [searchtext, setsearchtext] = useState()
     const [patientform, setpatientform] = useState("none");
     const [appointmentform, setappointmentform] = useState("none");
     const [doctorform, setdoctorform] = useState("none");
@@ -101,39 +101,58 @@ function Navbar(props) {
         },
 
     ]
-
-    //Searchfield input
-    const [searchtext, setsearchtext] = useState()
+    //websocket
+    const [Users, setUsers] = useState([])
+    const [messages, setmessages] = useState()
+    const [sendmessage, setsendmessage] = useState(false)
+    const [action, setaction] = useState()
     let socket = null;
     let JsonData = {
-        action: '',
+        action: action,
         username: props.username,
         message: message
     }
-    const sendmessage = () => {
-
-        socket = new WebSocket('ws://localhost:8080/Chat')
-        socket.onopen = () => {
-            socket.onmessage = (msg) => {
-                console.log(msg)
-            }
-            console.log("Connection Successfully")
-            socket.send(JSON.stringify(JsonData))
-        }
-
-    }
     useEffect(() => {
-        sendmessage()
-    }, [])
+        if (!socket) {
+            socket = new WebSocket('ws://localhost:8080/Chat')
+            socket.onopen = () => {
+                console.log("Connection Successfully")
+                socket.onmessage = (msg) => {
+                    let data = JSON.parse(msg.data)
+                    console.log(data)
+                    switch (data.action) {
+                        case "UserLists":
+                            if (data.connected_users.length > 0) {
+                                setUsers(data.connected_users)
+                            }
+                            setmessages(data.message)
+                            break;
+
+                    }
+                }
+                socket.send(JSON.stringify(JsonData))
+            }
+
+            socket.onclose = () => {
+                console.log('Connection Closed')
+                socket.close()
+            }
+        }
+    }, [sendmessage, openchat, action])
+
 
     function Toggle_Chat() {
         if (openchat == 'none') {
             setopenchat('block')
+            setaction('username')
         }
         if (openchat == 'block') {
             setopenchat('none')
+            setaction('left')
         }
     }
+
+    console.log(sendmessage)
     return (
         <>
             <div className="navsection p-0 m-0 py-1">
@@ -217,13 +236,24 @@ function Navbar(props) {
                     <div className="chatbox position-relative" style={{ height: '100vh', width: '50vh' }}>
                         <button className="btn-close position-absolute end-0 me-3 mt-2" onClick={() => Toggle_Chat()} ></button>
                         <div className="messagebox bg-brandy pt-5 scroll border border-1" style={{ height: '90vh', width: '50vh' }}>
+                            <ul className='p-2 bg-raffia'>
+                                {
+                                    Users.map((data) => (
+
+                                        <button className=' button bg-lightgreen'>{data}</button>
+
+
+                                    ))
+                                }
+                            </ul>
+                            <div className="messages">{messages}</div>
                         </div>
                         <div className="row position-absolute bottom-0 mb-4 end-0 me-5">
                             <div className="col-10">
                                 <input type='text' className='form-control ms-2 w-100' onChange={(e) => { setmessage(e.target.value) }} />
                             </div>
                             <div className="col-2">
-                                <button className='btn btn-sm button-burntumber' onClick={() => sendmessage()}>Send</button>
+                                <button className='btn btn-sm button-burntumber' onMouseDown={()=>sendmessage == true ? setsendmessage(false) : setsendmessage(true)} onMouseUp={() => { setaction('broadcast') }}>Send</button>
                             </div>
                         </div>
 

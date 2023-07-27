@@ -1854,28 +1854,28 @@ function SaleEntryForm(props) {
     paymentmethod: "",
     amount: 0,
   };
-  async function AddPaymentMethods() {
-    let Payments = []
-    let amounts = []
-    let allamounts = []
-    Payments.push(Object.keys(JSON.parse(props.saleentryarr.payment_method_details)))
-    amounts.push(Object.values(JSON.parse(props.saleentryarr.payment_method_details)))
-    let paymentobj = []
-    let p = {
-      paymentmethod: "",
-      amount: 0,
-    }
-    if (Payments[0]) {
-      for (let j = 0; j < Payments[0].length; j++) {
-        allamounts.push((p = { paymentmethod: Payments[0][j], amount: amounts[0][j] }))
-      }
-      setpaymentmethods(allamounts)
-    }
-    paymentmethods.push(paymentobj)
-  }
-  useEffect(() => {
-    AddPaymentMethods();
-  }, [])
+  // async function AddPaymentMethods() {
+  //   let Payments = []
+  //   let amounts = []
+  //   let allamounts = []
+  //   Payments.push(Object.keys(JSON.parse(props.saleentryarr.payment_method_details)))
+  //   amounts.push(Object.values(JSON.parse(props.saleentryarr.payment_method_details)))
+  //   let paymentobj = []
+  //   let p = {
+  //     paymentmethod: "",
+  //     amount: 0,
+  //   }
+  //   if (Payments[0]) {
+  //     for (let j = 0; j < Payments[0].length; j++) {
+  //       allamounts.push((p = { paymentmethod: Payments[0][j], amount: amounts[0][j] }))
+  //     }
+  //     setpaymentmethods(allamounts)
+  //   }
+  //   paymentmethods.push(paymentobj)
+  // }
+  // useEffect(() => {
+  //   AddPaymentMethods();
+  // }, [])
   function DeletePaymentMethods(i) {
     paymentmethods.splice(i, i);
   }
@@ -1903,8 +1903,8 @@ function SaleEntryForm(props) {
       PaymentMethodDetails.push(paymentmethods[i].paymentmethod);
     }
     let Data = {
-      sale_entry_id: props.saleentryarr.id,
-      g_total_main: props.saleentryarr.grand_total,
+      // sale_entry_id: props.saleentryarr.id,
+      // g_total_main: props.saleentryarr.grand_total,
       payment_method: PaymentMethodDetails,
       payment_method_main: PaymentMethodDetails,
       payment_method_details: PaymentMethod,
@@ -2330,134 +2330,87 @@ function SaleEntryForm(props) {
             <h6 className="text-charcoal75 fw-bold">Total Amount Due</h6>
             <h1 className="fw-bold text-charcoal">₹{Grandtotal}</h1>
           </div>
-          <div className="container-fluid text-start position-relative scroll">
+          <div className="container-fluid text-start position-relative scroll scroll-y" style={{ height: '35vh' }}>
             {/* <div className={`d-${previoustotal == props.saleentryarr.grand_total ? "" : "none"} bg-lightgreen fw-bold text-center p-2 my-2`} > Payment Done </div> */}
             {/* <h6 className="text-charcoal fw-bolder text-center">Payments</h6> */}
             {/* <h6 className="text-burntumber fw-bolder text-center">{Return_Amount() > 0 ? `Amount Exceeded by ${Return_Amount()}` : ""}</h6> */}
-            {/* {
+            {
               paymentmethods && paymentmethods !== undefined ? (
                 paymentmethods.map((data, i) =>
                   permission.sale_entry_charges_edit == 1 ? (
-                    <div className={`row p-0 m-0 justify-content-end g-2`}> */}
-                      {/* <div className="col-4 ">
-                        <select className="form-control border-success py-1 text-center" value={data.paymentmethod} onChange={(e) => { data.paymentmethod = e.target.value; setpaymentmethods((prevState) => [...prevState]); }} >
-                        </select>
+                    <>
+                      <div className="container mt-4">
+                        <div className="row align-items-center">
+                          <div className="col-10">
+                            <h6 className="text-charcoal75 fw-bold">Enter Amount</h6>
+                            <input type="number" placeholder="₹00" value={data.amount} onChange={(e) => { data.amount = e.target.value; setpaymentmethods((prevState) => [...prevState]); }} className="form-control rounded-1 fw-bold text-charocoal75 bg-seashell w-25 border-2" />
+                          </div>
+                          <div className="col-2">
+                            <button className={`btn btn-sm p-0 m-0 d-${i == 0 ? 'none' : 'block'}`} onClick={() => { DeletePaymentMethods(i); setpaymentmethods((prevState) => [...prevState]); }} >
+                              <img src={process.env.PUBLIC_URL + "/images/minus.png"} className="img-fluid" style={{ width: "2.5rem" }} />
+                            </button>
+                          </div>
+                        </div>
+                      </div >
+                      <h6 className="text-charcoal75 fw-bold mt-2 ms-2">Select Payment Method</h6>
+                      <div className="d-flex flex-horizontal ms-2 mt-2 scroll scroll-y">
+                        <input type="checkbox" className="form-check-input border-charcoal p-2 mt-1" onChange={() => { data.paymentmethod = 'Cash'; setpaymentmethods((prevState) => [...prevState]); }} checked={'Cash' == data.paymentmethod ? true : false} onClick={(e) => { ischecked != undefined ? setischecked() : setischecked(e.target.value); }} value='Cash' /><span><h6 className="d-block text-charcoal fw-bold pt-1 ms-2 me-5">Cash</h6></span>
+                        <input type="checkbox" className="form-check-input border-charcoal p-2 mt-1" onChange={() => { data.paymentmethod = 'Card'; setpaymentmethods((prevState) => [...prevState]); }} checked={'Card' == data.paymentmethod ? true : false} onClick={(e) => { ischecked != undefined ? setischecked() : setischecked(e.target.value); }} value='Card' /><span><h6 className="d-block text-charcoal fw-bold pt-1 ms-2 me-5">Card</h6></span>
+                        <input type="checkbox" className="form-check-input border-charcoal p-2 mt-1" onChange={() => { data.paymentmethod = 'Paytm'; setpaymentmethods((prevState) => [...prevState]); }} checked={'Paytm' == data.paymentmethod ? true : false} onClick={(e) => { ischecked != undefined ? setischecked() : setischecked(e.target.value); }} value='Paytm' /><span><h6 className="d-block text-charcoal fw-bold pt-1 ms-2 me-5">Paytm</h6></span>
+                        <input type="checkbox" className="form-check-input border-charcoal p-2 mt-1" onChange={() => { data.paymentmethod = 'Phonepe'; setpaymentmethods((prevState) => [...prevState]); }} checked={'Phonepe' == data.paymentmethod ? true : false} onClick={(e) => { ischecked != undefined ? setischecked() : setischecked(e.target.value); }} value='Phonepe' /><span><h6 className="d-block text-charcoal fw-bold pt-1 ms-2 me-5">Phonepe</h6></span>
+                        <input type="checkbox" className="form-check-input border-charcoal p-2 mt-1" onChange={() => { data.paymentmethod = 'Razorpay'; setpaymentmethods((prevState) => [...prevState]); }} checked={'Razorpay' == data.paymentmethod ? true : false} onClick={(e) => { ischecked != undefined ? setischecked() : setischecked(e.target.value); }} value='Razorpay' /><span><h6 className="d-block text-charcoal fw-bold pt-1 ms-2 me-5">Razorpay</h6></span>
+                        <input type="checkbox" className="form-check-input border-charcoal p-2 mt-1" onChange={() => { data.paymentmethod = 'Wire-Transfer'; setpaymentmethods((prevState) => [...prevState]); }} checked={'Wire-Transfer' == data.paymentmethod ? true : false} onClick={(e) => { ischecked != undefined ? setischecked() : setischecked(e.target.value); }} value='Wire-Transfer' /><span><h6 className="d-block text-charcoal fw-bold pt-1 ms-2 me-5">Wire-Transfer</h6></span>
+                        <input type="checkbox" className="form-check-input border-charcoal p-2 mt-1" onChange={() => { data.paymentmethod = 'Points'; setpaymentmethods((prevState) => [...prevState]); }} checked={'Points' == data.paymentmethod ? true : false} onClick={(e) => { ischecked != undefined ? setischecked() : setischecked(e.target.value); }} value='Points' /><span><h6 className="d-block text-charcoal fw-bold pt-1 ms-2 me-5">Points</h6></span>
+                        <input type="checkbox" className="form-check-input border-charcoal p-2 mt-1" onChange={() => { data.paymentmethod = 'Adjust-Advance'; setpaymentmethods((prevState) => [...prevState]); }} checked={'Adjust-Advance' == data.paymentmethod ? true : false} onClick={(e) => { ischecked != undefined ? setischecked() : setischecked(e.target.value); }} value='Adjust-Advance' /><span><h6 className="d-block text-charcoal fw-bold pt-1 ms-2 me-5">Adjust-Advance</h6></span>
+
                       </div>
-                      <div className="col-4 text-center ">
-                        <input className="form-control border-success py-1 text-center" value={data.amount} onChange={(e) => { data.amount = e.target.value; setpaymentmethods((prevState) => [...prevState]); }} />
-                      </div>
-                      <div className="col-2 text-center">
-                        <button className="btn btn-sm p-0 m-0" onClick={() => { DeletePaymentMethods(i); setpaymentmethods((prevState) => [...prevState]); }} >
-                          <img src={process.env.PUBLIC_URL + "/images/delete.png"} className="img-fluid" style={{ width: "1.5rem" }} />
-                        </button>
-                      </div> */}
-                    {/* </div>
-                  ) : props.saleentryarr.payment_method_details == null ? (
-                    <div className={`row p-0 m-0 justify-content-end g-2`}>
-                      <div className="col-4 ">
-                        <select className="form-control border-success py-1 text-center" value={data.paymentmethod} onChange={(e) => { data.paymentmethod = e.target.value; setpaymentmethods((prevState) => [...prevState]); }} >
-                          <option className="text-charcoal75 fw-bolder"> Payment Method </option>
-                          <option value="Cash">Cash</option>
-                          <option value="Card">Card</option>
-                          <option value="Paytm">Paytm</option>
-                          <option value="Phonepe">Phone Pe</option>
-                          <option value="Wire-Transfer">Wire Transfer</option>
-                          <option value="Razorpay">Razorpay</option>
-                          <option value="Points">Points</option>
-                          <option value="Adjust-Advance">Adjust-Advance</option>
-                        </select>
-                      </div>
-                      <div className="col-4 text-center ">
-                        <input className="form-control border-success py-1 text-center" value={data.amount} onChange={(e) => { data.amount = e.target.value; setpaymentmethods((prevState) => [...prevState]); }} />
-                      </div>
-                      <div className="col-2 text-center">
-                        <button className="btn btn-sm p-0 m-0" onClick={() => { DeletePaymentMethods(i); setpaymentmethods((prevState) => [...prevState]); }} >
-                          <img src={process.env.PUBLIC_URL + "/images/delete.png"} className="img-fluid" style={{ width: "1.5rem" }} />
-                        </button>
-                      </div>
-                    </div> */}
-                  {/* ) : (
-                    <div className={`row p-0 m-0 justify-content-center g-2`}>
-                      <div className="col-4 text-center ">
-                        <input className="form-control py-1" disabled={true} value={data.paymentmethod} />
-                      </div>
-                      <div className="col-4 text-center ">
-                        <input className="form-control py-1 text-center" disabled={true} value={data.amount} onChange={(e) => { data.amount = e.target.value; setpaymentmethods((prevState) => [...prevState]); }} />
-                      </div>
-                    </div>
-                  )
+                    </>
+                  ) :
+                    (
+                      <>
+                        <div className="container mt-4">
+                          <div className="row align-items-center">
+                            <div className="col-10">
+                              <h6 className="text-charcoal75 fw-bold">Enter Amount</h6>
+                              <input type="number" placeholder="₹00" value={data.amount} onChange={(e) => { data.amount = e.target.value; setpaymentmethods((prevState) => [...prevState]); }} className="form-control rounded-1 fw-bold text-charocoal75 bg-seashell w-25 border-2" />
+                            </div>
+                            <div className="col-2">
+                              <button className={`btn btn-sm p-0 m-0 d-${i == 0 ? 'none' : 'block'}`} onClick={() => { DeletePaymentMethods(i); setpaymentmethods((prevState) => [...prevState]); }} >
+                                <img src={process.env.PUBLIC_URL + "/images/minus.png"} className="img-fluid" style={{ width: "2.5rem" }} />
+                              </button>
+                            </div>
+                          </div>
+                        </div >
+                        <h6 className="text-charcoal75 fw-bold mt-2 ms-2">Select Payment Method</h6>
+                        <div className="d-flex flex-horizontal ms-2 mt-2 scroll scroll-y">
+                          <input type="checkbox" disabled className="form-check-input bg-seashell border-charcoal p-2 mt-1" onChange={() => { data.paymentmethod = 'Cash'; setpaymentmethods((prevState) => [...prevState]); }} checked={'Cash' == data.paymentmethod ? true : false} onClick={(e) => { ischecked != undefined ? setischecked() : setischecked(e.target.value); }} value='Cash' /><span><h6 className="d-block text-charcoal fw-bold pt-1 ms-2 me-5">Cash</h6></span>
+                          <input type="checkbox" disabled className="form-check-input bg-seashell border-charcoal p-2 mt-1" onChange={() => { data.paymentmethod = 'Card'; setpaymentmethods((prevState) => [...prevState]); }} checked={'Card' == data.paymentmethod ? true : false} onClick={(e) => { ischecked != undefined ? setischecked() : setischecked(e.target.value); }} value='Card' /><span><h6 className="d-block text-charcoal fw-bold pt-1 ms-2 me-5">Card</h6></span>
+                          <input type="checkbox" disabled className="form-check-input bg-seashell border-charcoal p-2 mt-1" onChange={() => { data.paymentmethod = 'Paytm'; setpaymentmethods((prevState) => [...prevState]); }} checked={'Paytm' == data.paymentmethod ? true : false} onClick={(e) => { ischecked != undefined ? setischecked() : setischecked(e.target.value); }} value='Paytm' /><span><h6 className="d-block text-charcoal fw-bold pt-1 ms-2 me-5">Paytm</h6></span>
+                          <input type="checkbox" disabled className="form-check-input bg-seashell border-charcoal p-2 mt-1" onChange={() => { data.paymentmethod = 'Phonepe'; setpaymentmethods((prevState) => [...prevState]); }} checked={'Phonepe' == data.paymentmethod ? true : false} onClick={(e) => { ischecked != undefined ? setischecked() : setischecked(e.target.value); }} value='Phonepe' /><span><h6 className="d-block text-charcoal fw-bold pt-1 ms-2 me-5">Phonepe</h6></span>
+                          <input type="checkbox" disabled className="form-check-input bg-seashell border-charcoal p-2 mt-1" onChange={() => { data.paymentmethod = 'Razorpay'; setpaymentmethods((prevState) => [...prevState]); }} checked={'Razorpay' == data.paymentmethod ? true : false} onClick={(e) => { ischecked != undefined ? setischecked() : setischecked(e.target.value); }} value='Razorpay' /><span><h6 className="d-block text-charcoal fw-bold pt-1 ms-2 me-5">Razorpay</h6></span>
+                          <input type="checkbox" disabled className="form-check-input bg-seashell border-charcoal p-2 mt-1" onChange={() => { data.paymentmethod = 'Wire-Transfer'; setpaymentmethods((prevState) => [...prevState]); }} checked={'Wire-Transfer' == data.paymentmethod ? true : false} onClick={(e) => { ischecked != undefined ? setischecked() : setischecked(e.target.value); }} value='Wire-Transfer' /><span><h6 className="d-block text-charcoal fw-bold pt-1 ms-2 me-5">Wire-Transfer</h6></span>
+                          <input type="checkbox" disabled className="form-check-input bg-seashell border-charcoal p-2 mt-1" onChange={() => { data.paymentmethod = 'Points'; setpaymentmethods((prevState) => [...prevState]); }} checked={'Points' == data.paymentmethod ? true : false} onClick={(e) => { ischecked != undefined ? setischecked() : setischecked(e.target.value); }} value='Points' /><span><h6 className="d-block text-charcoal fw-bold pt-1 ms-2 me-5">Points</h6></span>
+                          <input type="checkbox" disabled className="form-check-input bg-seashell border-charcoal p-2 mt-1" onChange={() => { data.paymentmethod = 'Adjust-Advance'; setpaymentmethods((prevState) => [...prevState]); }} checked={'Adjust-Advance' == data.paymentmethod ? true : false} onClick={(e) => { ischecked != undefined ? setischecked() : setischecked(e.target.value); }} value='Adjust-Advance' /><span><h6 className="d-block text-charcoal fw-bold pt-1 ms-2 me-5">Adjust-Advance</h6></span>
+
+                        </div>
+                      </>
+                    )
                 )
               ) : (
                 <></>
-              )} */}
-            {/* <div className={`container-fluid text-center mt-2 `}>
-              {
-              permission.sale_entry_charges_edit == 1 ? (
-                <button className="btn py-0" onClick={AddMethods}>
-                  <img src={process.env.PUBLIC_URL + "/images/add.png"} className="img-fluid" style={{ width: "2rem" }} />
-                </button>
-              ) : props.saleentryarr.payment_method_details == null ? (
-                <button className="btn py-0" onClick={AddMethods}>
-                  <img src={process.env.PUBLIC_URL + "/images/add.png"} className="img-fluid" style={{ width: "2rem" }} />
-                </button>
-              ) : (
-                <></>
-              )}
-            </div> */}
-          </div>
-
-          {/* <div className="container scroll scroll-y" style={{ height: '30vh' }}>
-            {
-              paymentmethods ? (
-                paymentmethods.map((data, i) => (
-                  <>
-                    <div className="container mt-4">
-                      <div className="row align-items-center">
-                        <div className="col-10">
-                          <h6 className="text-charcoal75 fw-bold">Enter Amount</h6>
-                          <input type="number" placeholder="₹00" value={data.amount} onChange={(e) => { data.amount = e.target.value; setpaymentmethods((prevState) => [...prevState]); }} className="form-control rounded-1 fw-bold text-charocoal75 bg-seashell w-25 border-2" />
-                        </div>
-                        <div className="col-2">
-                          <button className={`btn btn-sm p-0 m-0 d-${i == 0 ? 'none' : 'block'}`} onClick={() => { DeletePaymentMethods(i); setpaymentmethods((prevState) => [...prevState]); }} >
-                            <img src={process.env.PUBLIC_URL + "/images/minus.png"} className="img-fluid" style={{ width: "2.5rem" }} />
-                          </button>
-                        </div>
-                      </div>
-                    </div >
-                    <h6 className="text-charcoal75 fw-bold mt-2 ms-2">Select Payment Method</h6>
-                    <div className="d-flex flex-horizontal ms-2 mt-2 scroll scroll-y">
-                      <input type="checkbox" className="form-check-input border-charcoal p-2 mt-1" onChange={() => { data.paymentmethod = 'Cash'; setpaymentmethods((prevState) => [...prevState]); }} checked={'Cash' == data.paymentmethod ? true : false} onClick={(e) => { ischecked != undefined ? setischecked() : setischecked(e.target.value); }} value='Cash' /><span><h6 className="d-block text-charcoal fw-bold pt-1 ms-2 me-5">Cash</h6></span>
-                      <input type="checkbox" className="form-check-input border-charcoal p-2 mt-1" onChange={() => { data.paymentmethod = 'Card'; setpaymentmethods((prevState) => [...prevState]); }} checked={'Card' == data.paymentmethod ? true : false} onClick={(e) => { ischecked != undefined ? setischecked() : setischecked(e.target.value); }} value='Card' /><span><h6 className="d-block text-charcoal fw-bold pt-1 ms-2 me-5">Card</h6></span>
-                      <input type="checkbox" className="form-check-input border-charcoal p-2 mt-1" onChange={() => { data.paymentmethod = 'Paytm'; setpaymentmethods((prevState) => [...prevState]); }} checked={'Paytm' == data.paymentmethod ? true : false} onClick={(e) => { ischecked != undefined ? setischecked() : setischecked(e.target.value); }} value='Paytm' /><span><h6 className="d-block text-charcoal fw-bold pt-1 ms-2 me-5">Paytm</h6></span>
-                      <input type="checkbox" className="form-check-input border-charcoal p-2 mt-1" onChange={() => { data.paymentmethod = 'Phonepe'; setpaymentmethods((prevState) => [...prevState]); }} checked={'Phonepe' == data.paymentmethod ? true : false} onClick={(e) => { ischecked != undefined ? setischecked() : setischecked(e.target.value); }} value='Phonepe' /><span><h6 className="d-block text-charcoal fw-bold pt-1 ms-2 me-5">Phonepe</h6></span>
-                      <input type="checkbox" className="form-check-input border-charcoal p-2 mt-1" onChange={() => { data.paymentmethod = 'Razorpay'; setpaymentmethods((prevState) => [...prevState]); }} checked={'Razorpay' == data.paymentmethod ? true : false} onClick={(e) => { ischecked != undefined ? setischecked() : setischecked(e.target.value); }} value='Razorpay' /><span><h6 className="d-block text-charcoal fw-bold pt-1 ms-2 me-5">Razorpay</h6></span>
-                      <input type="checkbox" className="form-check-input border-charcoal p-2 mt-1" onChange={() => { data.paymentmethod = 'Wire-Transfer'; setpaymentmethods((prevState) => [...prevState]); }} checked={'Wire-Transfer' == data.paymentmethod ? true : false} onClick={(e) => { ischecked != undefined ? setischecked() : setischecked(e.target.value); }} value='Wire-Transfer' /><span><h6 className="d-block text-charcoal fw-bold pt-1 ms-2 me-5">Wire-Transfer</h6></span>
-                      <input type="checkbox" className="form-check-input border-charcoal p-2 mt-1" onChange={() => { data.paymentmethod = 'Points'; setpaymentmethods((prevState) => [...prevState]); }} checked={'Points' == data.paymentmethod ? true : false} onClick={(e) => { ischecked != undefined ? setischecked() : setischecked(e.target.value); }} value='Points' /><span><h6 className="d-block text-charcoal fw-bold pt-1 ms-2 me-5">Points</h6></span>
-                      <input type="checkbox" className="form-check-input border-charcoal p-2 mt-1" onChange={() => { data.paymentmethod = 'Adjust-Advance'; setpaymentmethods((prevState) => [...prevState]); }} checked={'Adjust-Advance' == data.paymentmethod ? true : false} onClick={(e) => { ischecked != undefined ? setischecked() : setischecked(e.target.value); }} value='Adjust-Advance' /><span><h6 className="d-block text-charcoal fw-bold pt-1 ms-2 me-5">Adjust-Advance</h6></span>
-
-                    </div>
-                  </>
-                ))
-              ) : (<></>)
+              )
             }
             <div className={`container-fluid text-center mt-2 `}>
               {
                 permission.sale_entry_charges_edit == 1 ? (
-                  <button className="btn py-0 p-0 m-0 fw-bold text-burntumber" onClick={AddMethods}>
-                    <img src={process.env.PUBLIC_URL + "/images/add.png"} className="img-fluid" style={{ width: "4rem" }} />Add
-                  </button>
-                ) : props.saleentryarr.payment_method_details == null ? (
-                  <button className="btn py-0 p-0 m-0 fw-bold text-burntumber" onClick={AddMethods}>
-                    <img src={process.env.PUBLIC_URL + "/images/add.png"} className="img-fluid" style={{ width: "4rem" }} />Add
+                  <button className="btn py-0" onClick={AddMethods}>
+                    <img src={process.env.PUBLIC_URL + "/images/add.png"} className="img-fluid" style={{ width: "2rem" }} />
                   </button>
                 ) : (
                   <></>
                 )}
             </div>
-          </div> */}
-          {/* <div className=" mt-4 ms-2">
-            <button className="button button-seashell border border-1 text-burntumber fw-bold rounded-1 ">Generate Invoice</button>
-          </div> */}
+          </div>
           <div className="w-100 position-absolute bottom-0 bg-pearl py-2">
             <div className="row p-0 m-0">
               <div className="col-8">
@@ -2491,8 +2444,6 @@ function SaleEntryForm(props) {
               </div>
             </div>
           </div>
-          {/* stage4 */}
-
         </div>
       </div >
     </>

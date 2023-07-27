@@ -454,7 +454,7 @@ function DoctorSchedule(props) {
                       {
                         timeindex == i ? (
                           <>
-{/* 
+                            {/* 
                             <div className='backdrop'>
                             </div> */}
                             <div className={`d-${timeindex == i ? addappointmentform : 'none'} col-lg-6 col-md-10 col-sm-12 col-12 col-xl-6 shadow quickappointment position-absolute m-auto start-0 end-0 bg-seashell rounded-4 border border-1`} style={{ top: '-3rem' }}>
@@ -566,9 +566,9 @@ function DoctorSchedule(props) {
                                 {
                                   paymentsi == i ? (
                                     <>
-                                         <div className="backdrop"></div>
-                                         <td className={`payments bg-seashell shadow-sm start-0 end-0 top-0 mx-auto border border-1 rounded-1 col-lg-6 col-md-8 col-sm-12 col-12 mt-2 col-xl-6 position-absolute px-5 py-2 d-${paymentsi == i ? paymentsform : 'none'}`} >
-                                      <Payments ClosePaymentsForm={ClosePaymentsForm2} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} appointmentid={data.id} patientid={data.patient && data.patient.id != null ? data.patient.id : ""} Appointmentlist={Appointmentlist} setsingleload={setsingleload} isLoading={isLoading} appointmentdata={appointmentdata} paymentsi={paymentsi} /></td>
+                                      <div className="backdrop"></div>
+                                      <td className={`payments bg-seashell shadow-sm start-0 end-0 top-0 mx-auto border border-1 rounded-1 col-lg-6 col-md-8 col-sm-12 col-12 mt-2 col-xl-6 position-absolute px-5 py-2 d-${paymentsi == i ? paymentsform : 'none'}`} >
+                                        <Payments ClosePaymentsForm={ClosePaymentsForm2} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} appointmentid={data.id} patientid={data.patient && data.patient.id != null ? data.patient.id : ""} Appointmentlist={Appointmentlist} setsingleload={setsingleload} isLoading={isLoading} appointmentdata={appointmentdata} paymentsi={paymentsi} /></td>
                                     </>
 
                                   ) : (<></>)
@@ -651,7 +651,7 @@ function DoctorSchedule(props) {
                               saleindex == i ? (
                                 <>
                                   <div className="backdrop"></div>
-                                  <td className={`saleentryform mx-auto position-absolute bg-seashell shadow-sm top-0 border border-1 rounded-1 start-0 end-0 col-lg-10 col-md-11 col-sm-12 col-12 mt-2 col-xl-8  d-${saleindex == i ? saleindex : 'none'}`} style={{ zIndex: '4' }} >
+                                  <td className={`saleentryform mx-auto col-xl-6 col-lg-8 col-md-10 p-0 m-0 position-absolute bg-seashell shadow-sm top-0 border border-1 rounded-1 start-0 end-0  d-${saleindex == i ? saleindex : 'none'}`} style={{ zIndex: '4', height: "60vh" }} >
                                     <SaleEntryForm DoctorID={props.DoctorID} DoctorName={props.DoctorName} saleindex={saleindex} toggle_nsef={toggle_nsef} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} patientid={data.patient && data.patient.id != null ? data.patient.id : ""} />
                                   </td>
                                 </>

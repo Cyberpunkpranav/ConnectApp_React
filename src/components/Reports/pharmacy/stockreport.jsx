@@ -204,13 +204,13 @@ const StockReport = () => {
                                         <td className="text-charcoal fw-bold">{key.id != undefined ? key.id : ''} </td>
                                         <td className="text-charcoal fw-bold">{key.item_name != undefined ? key.item_name : ''} </td>
                                         <td className="text-charcoal fw-bold">{key.opening_qty != undefined ? key.opening_qty : ''} </td>
-                                        <td className="text-charcoal fw-bold">₹{key.opening_value != undefined ? key.opening_value : ''}</td>
+                                        <td className="text-charcoal fw-bold">₹{key.opening_value != undefined ? Number(key.opening_value).toFixed(2) : ''}</td>
                                         <td className="text-charcoal fw-bold">{key.purchase_qty != undefined ? key.purchase_qty : ''} </td>
-                                        <td className="text-charcoal fw-bold">₹{key.purchase_value != undefined ? key.purchase_value : ''} </td>
+                                        <td className="text-charcoal fw-bold">₹{key.purchase_value != undefined ? Number(key.purchase_value).toFixed(2) : ''} </td>
                                         <td className="text-charcoal fw-bold">{key.sale_qty != undefined ? key.sale_qty : ''} </td>
-                                        <td className="text-charcoal fw-bold">₹{key.sale_value != undefined ? key.sale_value : ''}</td>
+                                        <td className="text-charcoal fw-bold">₹{key.sale_value != undefined ? Number(key.sale_value).toFixed(2) : ''}</td>
                                         <td className="text-charcoal fw-bold">{key.closing_qty != undefined ? key.closing_qty : ''} </td>
-                                        <td className="text-charcoal fw-bold">₹{key.closing_value != undefined ? key.closing_value : ''}</td>
+                                        <td className="text-charcoal fw-bold">₹{key.closing_value != undefined ? Number(key.closing_value).toFixed(2) : ''}</td>
                                     </tr>
                                 ))}
                         </tbody>
