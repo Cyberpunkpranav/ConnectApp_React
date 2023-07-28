@@ -30,8 +30,7 @@ function Navbar(props) {
             setpatientform("none");
         }
     };
-    const [openchat, setopenchat] = useState('none')
-    const [message, setmessage] = useState('')
+
 
     const toggleappointmentform = () => {
         if (appointmentform === "none") {
@@ -104,51 +103,55 @@ function Navbar(props) {
     //websocket
     const [Users, setUsers] = useState([])
     const [messages, setmessages] = useState()
+    const [openchat, setopenchat] = useState('none')
     const [sendmessage, setsendmessage] = useState(false)
-    const [action, setaction] = useState()
-    let socket = null;
+
+    let socket = null
     let JsonData = {
-        action: action,
+        action: '',
         username: props.username,
-        message: message
+        message: ''
     }
     useEffect(() => {
-        if (!socket) {
-            socket = new WebSocket('ws://localhost:8080/Chat')
-            socket.onopen = () => {
-                console.log("Connection Successfully")
-                socket.onmessage = (msg) => {
-                    let data = JSON.parse(msg.data)
-                    console.log(data)
-                    switch (data.action) {
-                        case "UserLists":
-                            if (data.connected_users.length > 0) {
-                                setUsers(data.connected_users)
-                            }
-                            setmessages(data.message)
-                            break;
+        socket = new WebSocket('ws://localhost:8080/Chat')
+    }, [!socket])
 
-                    }
-                }
-                socket.send(JSON.stringify(JsonData))
-            }
+    // window.onbeforeunload = function () {
+    //     console.log('leaving')
+    //     let JsonData = {}
+    //     JsonData["action"] = "left"
+    // }
 
-            socket.onclose = () => {
-                console.log('Connection Closed')
-                socket.close()
-            }
+    if (socket) {
+        socket.onopen = () => {
+            console.log("Connection Successfully")
         }
-    }, [sendmessage, openchat, action])
-
+        socket.onclose = () => {
+            console.log('Connection Closed')
+        }
+        socket.onmessage = (msg) => {
+            let data = JSON.parse(msg.data)
+            console.log(data)
+            switch (data.action) {
+                case "UserLists":
+                    if (data.connected_users.length > 0) {
+                        setUsers(data.connected_users)
+                    }
+                    setmessages(data.message)
+                    break;
+            }
+            socket.send(JSON.stringify(JsonData))
+        }
+    }
 
     function Toggle_Chat() {
         if (openchat == 'none') {
             setopenchat('block')
-            setaction('username')
+
         }
         if (openchat == 'block') {
             setopenchat('none')
-            setaction('left')
+
         }
     }
 
@@ -182,7 +185,6 @@ function Navbar(props) {
 
                                     ))
                                 }
-
                             </div>
                         </div>
                         {/* className="col-lg-2 col-xl-2 col-md-2 col-sm-6 col-6 mt-sm-2 search text-center position-relative" */}
@@ -211,8 +213,8 @@ function Navbar(props) {
                 </div>
             </div>
 
-            <div className={`col-lg-5 col-md-6 col-sm-12 col-12 rounded-4 p-2 me-lg-2 me-md-2 mt-2 scroll patientinfosection d-${patientform} border position-absolute`} >
-                <AddPatient togglepatientform={togglepatientform} />
+            <div className={`col-lg-5 col-md-6 col-sm-12 col-12 rounded-4 p-2 me-lg-2 me-md-2 mt-2 bg-seashell scroll patientinfosection d-${patientform} border position-absolute`} >
+                <AddPatient togglepatientform={togglepatientform} patientform={patientform} />
             </div>
             <div className={`col-lg-5 col-md-6 col-sm-12 rounded-4 p-2 me-lg-2 me-md-2 mt-2 col-12 bg-seashell appointmentinfosection d-${appointmentform} border-start border-top border-2 position-absolute`} style={{ zIndex: '4', right: '0' }} >
                 <AddAppointment toggleappointmentform={toggleappointmentform} fetchapi={props.fetchapi} />
@@ -250,10 +252,10 @@ function Navbar(props) {
                         </div>
                         <div className="row position-absolute bottom-0 mb-4 end-0 me-5">
                             <div className="col-10">
-                                <input type='text' className='form-control ms-2 w-100' onChange={(e) => { setmessage(e.target.value) }} />
+                                <input type='text' className='form-control ms-2 w-100' />
                             </div>
                             <div className="col-2">
-                                <button className='btn btn-sm button-burntumber' onMouseDown={()=>sendmessage == true ? setsendmessage(false) : setsendmessage(true)} onMouseUp={() => { setaction('broadcast') }}>Send</button>
+                                <button className='btn btn-sm button-burntumber' >Send</button>
                             </div>
                         </div>
 

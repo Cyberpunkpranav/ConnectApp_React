@@ -317,328 +317,332 @@ const AddConsumables = (props) => {
     }
     console.log(i)
     return (
-            <div className="container-fluid bg-seashell rounded-2 position-relative mx-auto col-lg-11 col-md-11 col-sm-11 col-11 col-xl-9 ">
-                <div className='position-relative mb-3 pt-2'>
-                    <h5 className='text-start text-charcoal fw-bold '>{props.patientname} Consumables</h5>
-                    <button className='btn btn-close position-absolute p-1 m-0 end-0 top-0 me-2 pt-4' disabled={load ? true : false} onClick={props.toggleConsumables}></button>
-                </div>
+        <div className="container-fluid bg-seashell rounded-2 position-relative mx-auto col-lg-11 col-md-11 col-sm-11 col-11 col-xl-9 ">
+            <div className='position-relative mb-3 pt-2'>
+                <h5 className='text-start text-charcoal fw-bold '>{props.patientname} Consumables</h5>
+                <button className='btn btn-close position-absolute p-1 m-0 end-0 top-0 me-2 pt-4' disabled={load ? true : false} onClick={props.toggleConsumables}></button>
+            </div>
 
-                <div className={`container-fluid text-start p-0 m-0 mt-3`}>
-                    <div className="col-12 justify-content-center">
-                        <div className="row p-0 m-0 my-2 justify-content-start">
-                            <div className="col-4 position-relative">
-                                <input className='form-control bg-seashell fw-bold p-2 border-charcoal' placeholder='Search by Name'
-                                    value={itemname ? itemname : ''}
-                                    onChange={(e) => {
-                                        searchmeds(e.target.value);
-                                        setitemname(e.target.value);
-                                        setitemid();
-                                        setproducts();
-                                        stockref.current.style.dispzzzlay = 'none'
-                                    }} />
-                                <div ref={medicinesref} className='position-absolute scroll scroll-y rounded-1 mt-1' style={{ Width: 'max-content', zIndex: '1', maxHeight: '40vh' }} >
-                                    {
-                                        itemsearch ? (
-                                            loadsearch ? (
-                                                <div className='rounded-1 p-1 bg-pearl'>
-                                                    Searching Please wait....
-                                                    <div className="spinner-border my-auto" style={{ width: "1rem", height: "1rem" }} role="status" >
-                                                        <span className="sr-only"> </span> </div>
-                                                </div>
-                                            ) : (
-                                                loadsearch == false && itemsearch.length == 0 ? (
-                                                    <div className="bg-burntumber text-light rounded-1 p-1">Oops! Not Avaliable</div>
-                                                ) : (
-                                                    <div className={`rounded-1 border border-1 bg-pearl p-1 d-${itemsearch && itemsearch.length > 0 ? 'block' : 'none'}`}>
-                                                        <p className={`text-start m-1 fw-bold text-charcoal75 ms-1`} style={{ fontSize: '0.8rem' }}>{itemsearch.length} Search Results</p>
-                                                        {
-                                                            itemsearch.map((data, i) => (
-                                                                <div style={{ cursor: 'pointer', Width: '10rem' }} className={`bg-${((i % 2) == 0) ? 'pearl' : 'seashell'} p-1 py-3 fw-bold border-bottom text-charcoal `}
-                                                                    onClick={(e) => { setproducts(data); setitemname(data.display_name ? data.display_name : data.name); setitemid(data.id); stockref.current.style.display = 'block' }}>{data.display_name ? data.display_name : data.name}<span className='text-burntumber fw-bold rounded-2 px-1'>{data && data.stock_info !== undefined ? data.stock_info.length : ""} stocks</span></div>
-                                                            ))
-                                                        }
+            <div className={`container-fluid text-start p-0 m-0 mt-3`}>
+                <div className="col-12 justify-content-center">
+                    <div className="row p-0 m-0 my-2 justify-content-start">
+                        <div className="col-4 position-relative">
+                            <input className='form-control bg-seashell fw-bold p-2 border-charcoal' placeholder='Search by Name'
+                                value={itemname ? itemname : ''}
+                                onChange={(e) => {
+                                    searchmeds(e.target.value);
+                                    setitemname(e.target.value);
+                                    setitemid();
+                                    setproducts();
+                                    stockref.current.style.dispzzzlay = 'none'
+                                }} />
+                            <div className="position-absolute mt-1 bg-raffia">
+                                <div className="position-relative " style={{ width: '30vh' }}>
+                                    <div ref={medicinesref} className='position-absolute scroll scroll-y rounded-1 ' style={{ Width: 'max-content', zIndex: '1', maxHeight: '40vh' }} >
+                                        {
+                                            itemsearch ? (
+                                                loadsearch ? (
+                                                    <div className='rounded-1 p-1 bg-pearl'>
+                                                        Searching Please wait....
+                                                        <div className="spinner-border my-auto" style={{ width: "1rem", height: "1rem" }} role="status" >
+                                                            <span className="sr-only"> </span> </div>
                                                     </div>
+                                                ) : (
+                                                    loadsearch == false && itemsearch.length == 0 ? (
+                                                        <div className="bg-burntumber text-light rounded-1 p-1">Oops! Not Avaliable</div>
+                                                    ) : (
+                                                        <div className={`rounded-1 border border-1 bg-pearl p-1 d-${itemsearch && itemsearch.length > 0 ? 'block' : 'none'}`}>
+                                                            <p className={`text-start m-1 fw-bold text-charcoal75 ms-1`} style={{ fontSize: '0.8rem' }}>{itemsearch.length} Search Results</p>
+                                                            {
+                                                                itemsearch.map((data, i) => (
+                                                                    <div style={{ cursor: 'pointer', Width: '10rem' }} className={`bg-${((i % 2) == 0) ? 'pearl' : 'seashell'} p-1 py-3 fw-bold border-bottom text-charcoal `}
+                                                                        onClick={(e) => { setproducts(data); setitemname(data.display_name ? data.display_name : data.name); setitemid(data.id); stockref.current.style.display = 'block' }}>{data.display_name ? data.display_name : data.name}<span className='text-burntumber fw-bold rounded-2 px-1'>{data && data.stock_info !== undefined ? data.stock_info.length : ""} stocks</span></div>
+                                                                ))
+                                                            }
+                                                        </div>
+                                                    )
                                                 )
-                                            )
-                                        ) : (<div className='bg-seashell'></div>)
-                                    }
-                                </div>
-                                <div ref={stockref} className={`position-absolute bg-pearl start-100 mt-1 px-3 scroll scroll-y align-self-center rounded-1 border border-1 p-1 d-${products && products.stock_info && products.stock_info !== undefined ? 'block' : 'none'}`} style={{ marginTop: '0rem', zIndex: '2', 'width': '22vh', 'min-width': '30vh', 'height': '40vh' }}>
-                                    <p className={`text-start m-1 fw-bold text-charcoal75`} style={{ fontSize: '0.8rem' }}>{products && products.stock_info !== undefined ? products.stock_info.length : ''} Batch Stocks</p>
-                                    {
-                                        products && products.length !== 0 ? (
-                                            products && products.stock_info.length == 0 ? (
-                                                <div className='text-white bg-burntumber p-2'>Oops ! Not Available</div>
-                                            ) : (
-                                                products.stock_info.map((data, i) => (
-                                                    <div style={{ cursor: 'pointer', marginTop: '2%' }} className={`bg-${((i % 2) == 0) ? 'pearl' : 'seashell'} border-bottom p-2`}
-                                                        onClick={
-                                                            () => {
-                                                                AddProducts(data);
-                                                                setitemname();
-                                                                setitemid();
-                                                                setproducts();
-                                                                setitemsearch()
-                                                            }}>
-                                                        <h6 className='text-start m-0 p-0 fw-bold text-wrap'>{itemname}</h6>
-                                                        <p className='p-0 m-0 px-1'>BatchNo. - <span className='fw-bold'>{data.batch_no && data.batch_no !== null ? data.batch_no : ''}</span></p>
-                                                        <p className='p-0 m-0 px-1'>Stock - <span className='fw-bold'>{data.current_stock && data.current_stock ? data.current_stock : ''}</span></p>
-                                                        <p className='p-0 m-0 px-1'>Expiry Date - <span className='fw-bold'>{data.expiry_date ? reversefunction(data.expiry_date) : ''}</span></p>
-                                                    </div>
-                                                ))
-                                            )
-
-
-                                        ) : (
-                                            <div className="bg-seashell p-2">Not Avaliable</div>
-                                        )
-                                    }
-                                </div>
-                                <div></div>
-                            </div>
-                            <div className='col-auto text-burntumber text-center fw-bold align-self-center'> OR </div>
-                            <div className="col-4 ">
-                                <input className='form-control bg-seashell border border-1 rounded-2 text-charcoal p-2 fw-bold border-charcoal' value={itemid ? itemid : ''} placeholder='Search by ID' onChange={(e) => { searchmedbyId(e.target.value); setitemid(e.target.value); medbyidref.current.style.display = 'block' }} />
-                                <div ref={medbyidref} className='position-absolute rounded-1 mt-1' style={{ Width: 'max-content', zIndex: '2' }} >
-                                    {
-                                        itembyid ? (
-                                            loadbyId ? (
-                                                <div className='rounded-1 p-1 bg-pearl'>
-                                                    Searching Please wait....
-                                                    <div className="spinner-border my-auto" style={{ width: "1rem", height: "1rem" }} role="status" >
-                                                        <span className="sr-only"> </span> </div>
-                                                </div>
-                                            ) : (
-                                                loadbyId == false && itembyid.length == 0 ? (
-                                                    <div className="bg-burntumber text-light rounded-1 p-1">Oops! Not Avaliable</div>
+                                            ) : (<div className='bg-seashell'></div>)
+                                        }
+                                    </div>
+                                    <div ref={stockref} className={`position-absolute start-100 bg-pearl px-3 scroll scroll-y align-self-center rounded-1 border border-1 p-1 d-${products && products.stock_info && products.stock_info !== undefined ? 'block' : 'none'}`} style={{ marginTop: '0rem', zIndex: '2', 'width': '22vh', 'min-width': '30vh', 'height': '40vh' }}>
+                                        <p className={`text-start m-1 fw-bold text-charcoal75`} style={{ fontSize: '0.8rem' }}>{products && products.stock_info !== undefined ? products.stock_info.length : ''} Batch Stocks</p>
+                                        {
+                                            products && products.length !== 0 ? (
+                                                products && products.stock_info.length == 0 ? (
+                                                    <div className='text-white bg-burntumber p-2'>Oops ! Not Available</div>
                                                 ) : (
-                                                    itembyid.map((data, i) => (
-                                                        <div style={{ cursor: 'pointer', Width: 'max-content' }} className={`p-0 p-1 rounded-pill shadow bg-${((i % 2) == 0) ? 'pearl' : 'seashell'}`}
-                                                            onClick={(e) => {
-                                                                setitemid(data.type + data.id);
-                                                                AddProducts(data)
-                                                                medbyidref.current.style.display = 'none';
-                                                            }}>{data.item_name ? data.item_name : ''}</div>
+                                                    products.stock_info.map((data, i) => (
+                                                        <div style={{ cursor: 'pointer', marginTop: '2%' }} className={`bg-${((i % 2) == 0) ? 'pearl' : 'seashell'} border-bottom p-2`}
+                                                            onClick={
+                                                                () => {
+                                                                    AddProducts(data);
+                                                                    setitemname();
+                                                                    setitemid();
+                                                                    setproducts();
+                                                                    setitemsearch()
+                                                                }}>
+                                                            <h6 className='text-start m-0 p-0 fw-bold text-wrap'>{itemname}</h6>
+                                                            <p className='p-0 m-0 px-1'>BatchNo. - <span className='fw-bold'>{data.batch_no && data.batch_no !== null ? data.batch_no : ''}</span></p>
+                                                            <p className='p-0 m-0 px-1'>Stock - <span className='fw-bold'>{data.current_stock && data.current_stock ? data.current_stock : ''}</span></p>
+                                                            <p className='p-0 m-0 px-1'>Expiry Date - <span className='fw-bold'>{data.expiry_date ? reversefunction(data.expiry_date) : ''}</span></p>
+                                                        </div>
                                                     ))
                                                 )
+
+
+                                            ) : (
+                                                <div className="bg-seashell p-2">Not Avaliable</div>
                                             )
-                                        ) : (<div className='bg-seashell'></div>)
-                                    }
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-12 m-0 p-0">
-                        <div className="d-flex justify-content-between">
-                        </div>
-                        <div className='scroll scroll-y' style={{ height: '30vh' }}>
-                            <table className='table'>
-                                <thead className=' bg-seashell position-sticky top-0'>
-                                    <tr className={``}>
-                                        <th className=''>Item ID</th>
-                                        <th className=''>Item Name</th>
-                                        <th className=''>BatchNo.</th>
-                                        <th className=''>Expiry Date</th>
-                                        <th className=''>Avl.Stock</th>
-                                        <th className=''>Qty To Sale</th>
-                                        <th className=''>Discount %</th>
-                                        <th className=''>MRP</th>
-                                        <th className=''>Cost</th>
-                                        <th className=''>GST Rate</th>
-                                        <th className=''>Selling Cost/Unit</th>
-                                        <th className=''>Total Amount</th>
-                                        <th className=''>Delete</th>
-                                    </tr>
-                                </thead>
-                                {
-                                    SelectedProducts && SelectedProducts.length !== 0 ? (
-                                        <tbody className='p-0 m-0 bg-pearl'>
-                                            {
-                                                SelectedProducts.map((data) => (
-                                                    <tr className={`align-middle bg-${Number(data.disccost) < Number(data.cost) ? 'lightred50' : ''}`}>
-                                                        <td>{data.type}{data.productid}</td>
-                                                        <td>{data.product}</td>
-                                                        <td>{data.batch}</td>
-                                                        <td>{reversefunction(data.expiry)}</td>
-                                                        <td>{data.quantity}</td>
-
-                                                        <td className=''>
-                                                            <input className='border border-1 rounded-1 w-50 py-1 p-0 text-center bg-seashell'
-                                                                value={data.qtytoSale ? data.qtytoSale : ''}
-                                                                onChange={(e) => {
-                                                                    e.target.value <= data.quantity ? data.qtytoSale = e.target.value : Notiflix.Notify.failure("Quantity Cannot be Greater then Current Stock Available");
-                                                                    data.totalamt = CalTotalAmount(data.qtytoSale, data.disccost);
-                                                                    setSelectedProducts(prevState => [...prevState])
-                                                                }} /> </td>
-
-                                                        <td className='' style={{ Width: '0rem' }}>
-                                                            <input className='border border-1 rounded-1 w-50 py-1 p-0 text-center bg-seashell'
-                                                                value={data.discount ? data.discount : ''}
-                                                                onChange={(e) => {
-                                                                    data.discount = e.target.value;
-                                                                    data.disccost = CalSellingCost(data.mainmrp, e.target.value);
-                                                                    data.totalamt = CalTotalAmount(data.qtytoSale, Number(data.disccost), Number(data.cost))
-                                                                    setSelectedProducts(prevState => [...prevState]);
-                                                                }} /> </td>
-                                                        <td>₹{data.mainmrp}</td>
-                                                        <td>₹{data.cost}</td>
-                                                        <td>{data.gst + '%'}</td>
-                                                        <td>₹{data.disccost}</td>
-                                                        <td>₹{data.totalamt}</td>
-                                                        <td><img src={process.env.PUBLIC_URL + 'images/delete.png'} onClick={() => { DeleteProduct(data.batch) }} /></td>
-                                                    </tr>
-                                                ))
-                                            }
-                                        </tbody>
-                                    ) : (
-                                        <></>
-                                    )
-                                }
-
-                                {
-                                    props.existedconsumables && props.existedconsumables.length !== 0 ? (
-                                        <tbody className='p-0 m-0'>
-                                            {
-                                                props.existedconsumables.length !== 0 ? (
-                                                    props.existedconsumables.map((data, key) => (
-                                                        <tr className={`align-middle bg-${Number(data.disccost) < Number(data.cost) ? 'lightred50' : ''}`}>
-                                                            <td>m{data.medicies_stocks_id}</td>
-                                                            <td>{data.medicine.display_name}</td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td className='text-start p-0 m-0 ps-4'>{data.discount} </td>
-                                                            <td>₹{data.main_mrp}</td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td>₹{data.disc_mrp}</td>
-                                                            <td>₹{data.total_amount}</td>
-                                                            <td>
-                                                                {
-                                                                    deleteload && i == key ? (
-                                                                        <div className="text-charcoal spinner-border spinner-border-sm me-2 " role="status" aria-hidden="true" ></div>
-                                                                    ) : (
-                                                                        <img src={process.env.PUBLIC_URL + 'images/delete.png'} onClick={() => { seti(key); RemoveConsumable(data.id) }} />
-                                                                    )
-                                                                }
-                                                            </td>
-                                                        </tr>
-                                                    ))
-                                                ) : (<tbody>
-                                                    <tr>
-                                                        No consumables Found
-                                                    </tr>
-                                                </tbody>)
-
-                                            }
-                                        </tbody>
-                                    ) : (
-                                        <tbody className='position-relative'>
-                                            <tr className='p-0 m-0 text-center'>
-                                                <td className='position-absolute text-charcoal75 fw-bold start-0 end-0'>No Consumabels Added</td>
-                                            </tr>
-                                        </tbody>
-                                    )
-                                }
-
-
-                            </table>
-                        </div>
-                    </div>
-                    <div className="container" style={{ paddingBottom: '10%' }}>
-                        <h6 className='fw-bold p-0 m-0 ps-0 ms-0 my-2'>Nurse notes</h6>
-                        {
-                            loadnotes ? (
-                                <div className="col-6 py-2 pb-2 me-3 m-auto text-start">
-                                    <div class="spinner-border" role="status">
-                                        <span class="visually-hidden">Loading...</span>
+                                        }
                                     </div>
                                 </div>
-                            ) : (
-                                <textarea className='col-12 form-control w-100' value={nursenotes ? nursenotes : ''} onChange={(e) => setnursenotes(e.target.value)} style={{ width: '95vh', height: '10vh' }}></textarea>
+                            </div>
 
-                            )
-                        }
+                        </div>
+                        <div className='col-auto text-burntumber text-center fw-bold align-self-center'> OR </div>
+                        <div className="col-4 ">
+                            <input className='form-control bg-seashell border border-1 rounded-2 text-charcoal p-2 fw-bold border-charcoal' value={itemid ? itemid : ''} placeholder='Search by ID' onChange={(e) => { searchmedbyId(e.target.value); setitemid(e.target.value); medbyidref.current.style.display = 'block' }} />
+                            <div ref={medbyidref} className='position-absolute rounded-1 mt-1' style={{ Width: 'max-content', zIndex: '2' }} >
+                                {
+                                    itembyid ? (
+                                        loadbyId ? (
+                                            <div className='rounded-1 p-1 bg-pearl'>
+                                                Searching Please wait....
+                                                <div className="spinner-border my-auto" style={{ width: "1rem", height: "1rem" }} role="status" >
+                                                    <span className="sr-only"> </span> </div>
+                                            </div>
+                                        ) : (
+                                            loadbyId == false && itembyid.length == 0 ? (
+                                                <div className="bg-burntumber text-light rounded-1 p-1">Oops! Not Avaliable</div>
+                                            ) : (
+                                                itembyid.map((data, i) => (
+                                                    <div style={{ cursor: 'pointer', Width: 'max-content' }} className={`p-0 p-1 rounded-pill shadow bg-${((i % 2) == 0) ? 'pearl' : 'seashell'}`}
+                                                        onClick={(e) => {
+                                                            setitemid(data.type + data.id);
+                                                            AddProducts(data)
+                                                            medbyidref.current.style.display = 'none';
+                                                        }}>{data.item_name ? data.item_name : ''}</div>
+                                                ))
+                                            )
+                                        )
+                                    ) : (<div className='bg-seashell'></div>)
+                                }
+                            </div>
+
+                        </div>
                     </div>
-
                 </div>
-                <div className='col-12 position-absolute start-0 end-0 bottom-0 py-3 border border-1 text-start bg-pearl align-items-center rounded-bottom'>
-                    <div className="row p-0 m-0 align-items-center justify-content-between">
-                        <div className="col-6 col-md-4">
-                            <div className="row ">
-                                <div className="col-5 ms-3">
-                                    <p className='text-charcoal75 fw-bolder card-title text-start'> Order Total </p>
-                                    {
-                                        SelectedProducts && SelectedProducts.length != 0 ? (
-                                            <>
-                                                <p className='text-charcoal fw-bolder card-header text-start ms-2'>₹{Grandtotal2}</p>
-                                                <p className='text-success fw-bolder card-header text-start'>+₹{Grandtotal}</p>
-                                            </>
+                <div className="col-12 m-0 p-0">
+                    <div className="d-flex justify-content-between">
+                    </div>
+                    <div className='scroll scroll-y' style={{ height: '30vh' }}>
+                        <table className='table'>
+                            <thead className=' bg-seashell position-sticky top-0'>
+                                <tr className={``}>
+                                    <th className=''>Item ID</th>
+                                    <th className=''>Item Name</th>
+                                    <th className=''>BatchNo.</th>
+                                    <th className=''>Expiry Date</th>
+                                    <th className=''>Avl.Stock</th>
+                                    <th className=''>Qty To Sale</th>
+                                    <th className=''>Discount %</th>
+                                    <th className=''>MRP</th>
+                                    <th className=''>Cost</th>
+                                    <th className=''>GST Rate</th>
+                                    <th className=''>Selling Cost/Unit</th>
+                                    <th className=''>Total Amount</th>
+                                    <th className=''>Delete</th>
+                                </tr>
+                            </thead>
+                            {
+                                SelectedProducts && SelectedProducts.length !== 0 ? (
+                                    <tbody className='p-0 m-0 bg-pearl'>
+                                        {
+                                            SelectedProducts.map((data) => (
+                                                <tr className={`align-middle bg-${Number(data.disccost) < Number(data.cost) ? 'lightred50' : ''}`}>
+                                                    <td>{data.type}{data.productid}</td>
+                                                    <td>{data.product}</td>
+                                                    <td>{data.batch}</td>
+                                                    <td>{reversefunction(data.expiry)}</td>
+                                                    <td>{data.quantity}</td>
 
-                                        ) : (<></>)
-                                    }
-                                    <hr className='p-0 m-0 py-1 mt-1 ps-3' />
-                                    <h6 className='text-charcoal fw-bolder card-header text-start ms-2'>₹{(Number(Grandtotal) + Number(Grandtotal2)).toFixed(2)}</h6>
+                                                    <td className=''>
+                                                        <input className='border border-1 rounded-1 w-50 py-1 p-0 text-center bg-seashell'
+                                                            value={data.qtytoSale ? data.qtytoSale : ''}
+                                                            onChange={(e) => {
+                                                                e.target.value <= data.quantity ? data.qtytoSale = e.target.value : Notiflix.Notify.failure("Quantity Cannot be Greater then Current Stock Available");
+                                                                data.totalamt = CalTotalAmount(data.qtytoSale, data.disccost);
+                                                                setSelectedProducts(prevState => [...prevState])
+                                                            }} /> </td>
+
+                                                    <td className='' style={{ Width: '0rem' }}>
+                                                        <input className='border border-1 rounded-1 w-50 py-1 p-0 text-center bg-seashell'
+                                                            value={data.discount ? data.discount : ''}
+                                                            onChange={(e) => {
+                                                                data.discount = e.target.value;
+                                                                data.disccost = CalSellingCost(data.mainmrp, e.target.value);
+                                                                data.totalamt = CalTotalAmount(data.qtytoSale, Number(data.disccost), Number(data.cost))
+                                                                setSelectedProducts(prevState => [...prevState]);
+                                                            }} /> </td>
+                                                    <td>₹{data.mainmrp}</td>
+                                                    <td>₹{data.cost}</td>
+                                                    <td>{data.gst + '%'}</td>
+                                                    <td>₹{data.disccost}</td>
+                                                    <td>₹{data.totalamt}</td>
+                                                    <td><img src={process.env.PUBLIC_URL + 'images/delete.png'} onClick={() => { DeleteProduct(data.batch) }} /></td>
+                                                </tr>
+                                            ))
+                                        }
+                                    </tbody>
+                                ) : (
+                                    <></>
+                                )
+                            }
+
+                            {
+                                props.existedconsumables && props.existedconsumables.length !== 0 ? (
+                                    <tbody className='p-0 m-0'>
+                                        {
+                                            props.existedconsumables.length !== 0 ? (
+                                                props.existedconsumables.map((data, key) => (
+                                                    <tr className={`align-middle bg-${Number(data.disccost) < Number(data.cost) ? 'lightred50' : ''}`}>
+                                                        <td>m{data.medicies_stocks_id}</td>
+                                                        <td>{data.medicine.display_name}</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td className='text-start p-0 m-0 ps-4'>{data.discount} </td>
+                                                        <td>₹{data.main_mrp}</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td>₹{data.disc_mrp}</td>
+                                                        <td>₹{data.total_amount}</td>
+                                                        <td>
+                                                            {
+                                                                deleteload && i == key ? (
+                                                                    <div className="text-charcoal spinner-border spinner-border-sm me-2 " role="status" aria-hidden="true" ></div>
+                                                                ) : (
+                                                                    <img src={process.env.PUBLIC_URL + 'images/delete.png'} onClick={() => { seti(key); RemoveConsumable(data.id) }} />
+                                                                )
+                                                            }
+                                                        </td>
+                                                    </tr>
+                                                ))
+                                            ) : (<tbody>
+                                                <tr>
+                                                    No consumables Found
+                                                </tr>
+                                            </tbody>)
+
+                                        }
+                                    </tbody>
+                                ) : (
+                                    <tbody className='position-relative'>
+                                        <tr className='p-0 m-0 text-center'>
+                                            <td className='position-absolute text-charcoal75 fw-bold start-0 end-0'>No Consumabels Added</td>
+                                        </tr>
+                                    </tbody>
+                                )
+                            }
+
+
+                        </table>
+                    </div>
+                </div>
+                <div className="container" style={{ paddingBottom: '10%' }}>
+                    <h6 className='fw-bold p-0 m-0 ps-0 ms-0 my-2'>Nurse notes</h6>
+                    {
+                        loadnotes ? (
+                            <div className="col-6 py-2 pb-2 me-3 m-auto text-start">
+                                <div class="spinner-border" role="status">
+                                    <span class="visually-hidden">Loading...</span>
                                 </div>
-                                {/* <div className="col-3">
+                            </div>
+                        ) : (
+                            <textarea className='col-12 form-control w-100' value={nursenotes ? nursenotes : ''} onChange={(e) => setnursenotes(e.target.value)} style={{ width: '95vh', height: '10vh' }}></textarea>
+
+                        )
+                    }
+                </div>
+
+            </div>
+            <div className='col-12 position-absolute start-0 end-0 bottom-0 py-3 border border-1 text-start bg-pearl align-items-center rounded-bottom'>
+                <div className="row p-0 m-0 align-items-center justify-content-between">
+                    <div className="col-6 col-md-4">
+                        <div className="row ">
+                            <div className="col-5 ms-3">
+                                <p className='text-charcoal75 fw-bolder card-title text-start'> Order Total </p>
+                                {
+                                    SelectedProducts && SelectedProducts.length != 0 ? (
+                                        <>
+                                            <p className='text-charcoal fw-bolder card-header text-start ms-2'>₹{Grandtotal2}</p>
+                                            <p className='text-success fw-bolder card-header text-start'>+₹{Grandtotal}</p>
+                                        </>
+
+                                    ) : (<></>)
+                                }
+                                <hr className='p-0 m-0 py-1 mt-1 ps-3' />
+                                <h6 className='text-charcoal fw-bolder card-header text-start ms-2'>₹{(Number(Grandtotal) + Number(Grandtotal2)).toFixed(2)}</h6>
+                            </div>
+                            {/* <div className="col-3">
                                 <p className='text-charcoal75 fw-bolder card-title text-start ms-3'> Discount %</p>
                                 <h4 className='text-charcoal  fw-bolder card-header text-start ps-3'>{CaltotalDiscount(SelectedProducts)}</h4>
                             </div> */}
-                                <div className="col-5 ms-3">
-                                    <p className='text-charcoal75 fw-bolder card-title text-start'> Total Items</p>
+                            <div className="col-5 ms-3">
+                                <p className='text-charcoal75 fw-bolder card-title text-start'> Total Items</p>
 
-                                    {
-                                        SelectedProducts && SelectedProducts.length != 0 ? (
-                                            <>
-                                                <p className='text-charcoal fw-bolder card-header text-start ms-2'>{props.existedconsumables && props.existedconsumables.length ? props.existedconsumables.length : 0}</p>
-                                                <p className='text-success fw-bolder card-header text-start'>+{SelectedProducts && SelectedProducts.length ? SelectedProducts.length : 0}</p>
-                                            </>
-                                        ) : (<></>)
-                                    }
-                                    <hr className='p-0 m-0 py-1 mt-1' />
-                                    <h6 className='text-charcoal  fw-bolder card-header text-start ms-2'>{props.existedconsumables && props.existedconsumables.length || SelectedProducts && SelectedProducts.length ? SelectedProducts.length + props.existedconsumables.length : 0}</h6>
-                                </div>
+                                {
+                                    SelectedProducts && SelectedProducts.length != 0 ? (
+                                        <>
+                                            <p className='text-charcoal fw-bolder card-header text-start ms-2'>{props.existedconsumables && props.existedconsumables.length ? props.existedconsumables.length : 0}</p>
+                                            <p className='text-success fw-bolder card-header text-start'>+{SelectedProducts && SelectedProducts.length ? SelectedProducts.length : 0}</p>
+                                        </>
+                                    ) : (<></>)
+                                }
+                                <hr className='p-0 m-0 py-1 mt-1' />
+                                <h6 className='text-charcoal  fw-bolder card-header text-start ms-2'>{props.existedconsumables && props.existedconsumables.length || SelectedProducts && SelectedProducts.length ? SelectedProducts.length + props.existedconsumables.length : 0}</h6>
                             </div>
                         </div>
-                        <div className="col-6 col-md-8">
-                            <div className="row p-0 m-0 justify-content-end ">
-                                <div className="col-auto p-0 m-0 align-self-center">
-                                    {
-                                        loadnotes ? (
-                                            <div className="col-6 py-2 pb-2 me-3 m-auto text-start">
-                                                <div class="spinner-border" role="status">
-                                                    <span class="visually-hidden">Loading...</span>
-                                                </div>
-                                            </div>
-                                        ) : (
-                                            <button className='button button-seashell px-5 me-2' onClick={() => { confirmmessage2() }}>Save Notes</button>
-                                        )
-                                    }
-                                </div>
-                                <div className="col-auto p-0 m-0 align-self-center">
-                                    {
-                                        load ? (
-                                            <div className="col-6 py-2 pb-2 me-3 m-auto text-start">
-                                                <div class="spinner-border" role="status">
-                                                    <span class="visually-hidden">Loading...</span>
-                                                </div>
-                                            </div>
-                                        ) : (
-                                            <button className='button button-charcoal px-5 me-2' onClick={() => { confirmmessage() }}>Save All</button>
-                                        )
-                                    }
-                                </div>
-                            </div>
-                        </div>
-
-
-
-
                     </div>
+                    <div className="col-6 col-md-8">
+                        <div className="row p-0 m-0 justify-content-end ">
+                            <div className="col-auto p-0 m-0 align-self-center">
+                                {
+                                    loadnotes ? (
+                                        <div className="col-6 py-2 pb-2 me-3 m-auto text-start">
+                                            <div class="spinner-border" role="status">
+                                                <span class="visually-hidden">Loading...</span>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <button className='button button-seashell px-5 me-2' onClick={() => { confirmmessage2() }}>Save Notes</button>
+                                    )
+                                }
+                            </div>
+                            <div className="col-auto p-0 m-0 align-self-center">
+                                {
+                                    load ? (
+                                        <div className="col-6 py-2 pb-2 me-3 m-auto text-start">
+                                            <div class="spinner-border" role="status">
+                                                <span class="visually-hidden">Loading...</span>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <button className='button button-charcoal px-5 me-2' onClick={() => { confirmmessage() }}>Save All</button>
+                                    )
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
                 </div>
-            </div >
+            </div>
+        </div >
     )
 }
 export { AddConsumables }

@@ -8,6 +8,7 @@ import { geocodeByAddress, getLatLng } from 'react-google-places-autocomplete'
 import GooglePlacesAutocomplete from "react-google-places-autocomplete"
 import Notiflix from 'notiflix';
 import '../../css/patient.css';
+
 const UpdatePatient = (props) => {
     const url = useContext(URL);
     let adminid = localStorage.getItem('id')
@@ -207,10 +208,10 @@ const UpdatePatient = (props) => {
     if (place) {
         geocodeByAddress(place).then(results => getLatLng(results[0])).then(({ lat, lng }) => { setlat(lat); setlng(lng) });
     }
-    console.log(props.data)
+    // console.log(props.data)
     return (
         <>
-            <h5 className="text-center mt-2 position-relative">Update Patient Details </h5>
+            <h5 className="text-center mt-3 position-relative">Update Patient Details </h5>
             <button type="button" className="btn-close closebtn position-absolute" aria-label="Close" onClick={props.CloseUpdatePatient} ></button>
             <hr className='p-0 m-0' />
             <div className="col-12">

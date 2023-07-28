@@ -127,7 +127,7 @@ function Saleentrysection(props) {
       setpaymentsapage("none");
       settabindex();
     }
-  };
+  }
   function GetPages() {
     try {
       axios
@@ -339,7 +339,7 @@ function Saleentrysection(props) {
       </button>
       <div className="row p-0 m-0 justify-content-lg-between justify-content-md-evenly justify-content-center text-center mt-2">
         <div className="col-lg-2 col-md-2 col-3 text-center p-0 m-0 ">
-          <button type="button" className="btn p-0 m-0 heading text-charcoal fw-bolder  " style={{ width: "fit-content" }} > {pagecount} {pagecount > 0 ? "Sale Entries" : "Sale Entry"}{" "} </button>
+          <button type="button" className="btn p-0 m-0 heading text-charcoal fw-bolder" style={{ width: "fit-content" }} > {pagecount} {pagecount > 0 ? "Sale Entries" : "Sale Entry"}{" "} </button>
         </div>
         <div className="col-lg-8 col-md-8 col-7  p-0 m-0  border-0">
           <div className="row p-0 m-0 border-burntumber fw-bolder rounded-1">
@@ -387,11 +387,7 @@ function Saleentrysection(props) {
                   <strong className="" style={{ fontSize: "1rem" }}>
                     Getting Details please be Patient ...
                   </strong>
-                  <div
-                    className="spinner-border ms-auto"
-                    role="status"
-                    aria-hidden="true"
-                  ></div>
+                  <div className="spinner-border ms-auto" role="status" aria-hidden="true" ></div>
                 </div>
               </tr>
             </tbody>
@@ -600,9 +596,9 @@ function SaleEntrypayments(props) {
       });
       if (total > props.saleentryarr.grand_total) {
         Advance = total - props.saleentryarr.grand_total;
-        return Advance;
+        return Number(Advance).toFixed(2);
       } else {
-        return Advance;
+        return Number(Advance).toFixed(2);
       }
     }
 
@@ -1480,6 +1476,7 @@ function SaleEntryForm(props) {
   const [addressid, setaddressid] = useState();
   const [addressform, setaddressform] = useState("none");
   const [number, setnumber] = useState()
+  const [Response, setResponse] = useState()
 
   const searchpatient = (e) => {
     setsearchload(true);
@@ -1708,19 +1705,19 @@ function SaleEntryForm(props) {
       setload(true);
       try {
         await axios
-          .post(`${url}/sale/entry/save`, Data)
-          .then((response) => {
+          .post(`${url}/sale/entry/save`, Data).then((response) => {
             setload(false);
+            setResponse(response)
             if (props.saleindex == undefined) {
               props.GETSalesList();
-              props.toggle_nsef();
+              // props.toggle_nsef();
             }
             if (response.data.status == true) {
               Notiflix.Notify.success(response.data.message);
             } else {
               Notiflix.Notify.warning(response.data.message);
             }
-            ClearForm();
+
           })
           .catch(function error(e) {
             console.log(e);
@@ -1747,6 +1744,8 @@ function SaleEntryForm(props) {
       () => {
         // SaveSaleEntryCharges()
         SubmitSaleEntry();
+        toggleStage4();
+        toggleStage3();
       },
       () => {
         return 0;
@@ -1754,22 +1753,24 @@ function SaleEntryForm(props) {
       {}
     );
   }
-  // function confirmmessage2() {
-  //   customconfirm();
-  //   Notiflix.Confirm.show(
-  //     `Add to Cart`,
-  //     `Do you surely want to add the following Sale entries to the Cart  `,
-  //     "Yes",
-  //     "No",
-  //     () => {
-  //       setAtC(1);
-  //     },
-  //     () => {
-  //       setAtC(0);
-  //     },
-  //     {}
-  //   );
-  // }
+  const UpdateStatus = async (e, id) => {
+    // console.log(e.target.value, id);
+    try {
+      await axios
+        .post(`${url}/sale/entry/change/status`, {
+          sale_entry_id: Response.data.data.id,
+          status: 2,
+          admin_id: adminid,
+        })
+        .then((response) => {
+          console.log(response);
+          Notiflix.Notify.success(response.data.message);
+          props.GETSalesList();
+        });
+    } catch (e) {
+      Notiflix.Notify.failure(e.message);
+    }
+  };
   useEffect(() => {
     if (AtC == 1) {
       SubmitSaleEntry();
@@ -1879,22 +1880,23 @@ function SaleEntryForm(props) {
   function DeletePaymentMethods(i) {
     paymentmethods.splice(i, i);
   }
-  // const confirmmessage = (e) => {
-  //   customconfirm();
-  //   Notiflix.Confirm.show(
-  //     `Add Charges and Payments`,
-  //     `Do you surely want to add the following Charges and Payments of  ${props.itembillid}`,
-  //     "Yes",
-  //     "No",
-  //     () => {
-  //       SaveSaleEntryCharges();
-  //     },
-  //     () => {
-  //       return 0;
-  //     },
-  //     {}
-  //   );
-  // };
+  const confirmmessage2 = (e) => {
+    customconfirm();
+    Notiflix.Confirm.show(
+      `Add Charges and Payments`,
+      `Do you surely want to add the following Charges and Payments of  ${Response.data.data.id}`,
+      "Yes",
+      "No",
+      () => {
+        SaveSaleEntryCharges();
+        UpdateStatus()
+      },
+      () => {
+        return 0;
+      },
+      {}
+    );
+  };
   async function SaveSaleEntryCharges() {
     let PaymentMethod = [];
     let PaymentMethodDetails = [];
@@ -1903,8 +1905,8 @@ function SaleEntryForm(props) {
       PaymentMethodDetails.push(paymentmethods[i].paymentmethod);
     }
     let Data = {
-      // sale_entry_id: props.saleentryarr.id,
-      // g_total_main: props.saleentryarr.grand_total,
+      sale_entry_id: Response.data.data.id,
+      g_total_main: Response.data.data.grand_total,
       payment_method: PaymentMethodDetails,
       payment_method_main: PaymentMethodDetails,
       payment_method_details: PaymentMethod,
@@ -1916,7 +1918,14 @@ function SaleEntryForm(props) {
         .post(`${url}/sale/entry/save/charges`, Data)
         .then((response) => {
           props.GETSalesList();
+          setpaymentmethods([{
+            paymentmethod: "",
+            amount: 0,
+          }])
+          setResponse()
+          ClearForm();
           setloading(false);
+          props.toggle_nsef()
           Notiflix.Notify.success(response.data.message);
         });
     } catch (e) {
@@ -1936,7 +1945,8 @@ function SaleEntryForm(props) {
   useEffect(() => {
     CalPrevTotal();
   }, [props.saleentryarr]);
-  console.log(props.saleentryarr, paymentmethods, previoustotal);
+  // console.log(props.saleentryarr, paymentmethods, previoustotal);
+  console.log(Response)
 
   function AddMethods() {
     if (paymentmethods && paymentmethods.length > 0) {
@@ -2305,7 +2315,7 @@ function SaleEntryForm(props) {
                 </div>
               </div>
               <div className="col-4 align-self-center d-flex justify-content-end">
-                <button className="button button-charcoal px-5" onMouseDown={() => { toggleStage4(); }} onMouseUp={() => { toggleStage3() }}  > Proceed to Payment </button>
+                <button className="button button-charcoal px-5" onClick={() => { confirmmessage(); }}  > Proceed to Payment </button>
 
               </div>
             </div>
@@ -2319,7 +2329,7 @@ function SaleEntryForm(props) {
               <h6 className="fw-bold text-charcoal75">Patient Details</h6>
             </div>
             <div className="col-auto">
-              <h6 className="fw-bold text-charcoal">Name:{searchinput}</h6>
+              <h6 className="fw-bold text-charcoal">Order Id:{Response != undefined ? Response.data.data.id : ''}</h6>
             </div>
             <div className="col-auto">
               <h6 className="fw-bold text-charcoal">Phone:{number != undefined ? number : ''}</h6>
@@ -2328,7 +2338,7 @@ function SaleEntryForm(props) {
           <hr className="my-1" />
           <div className="container">
             <h6 className="text-charcoal75 fw-bold">Total Amount Due</h6>
-            <h1 className="fw-bold text-charcoal">₹{Grandtotal}</h1>
+            <h1 className="fw-bold text-charcoal">₹{Response != undefined ? Math.round(Response.data.data.grand_total) : 0}</h1>
           </div>
           <div className="container-fluid text-start position-relative scroll scroll-y" style={{ height: '35vh' }}>
             {/* <div className={`d-${previoustotal == props.saleentryarr.grand_total ? "" : "none"} bg-lightgreen fw-bold text-center p-2 my-2`} > Payment Done </div> */}
@@ -2417,30 +2427,30 @@ function SaleEntryForm(props) {
                 <div className="row">
                   <div className="col-4">
                     <p className="text-charcoal75 p-0 m-0 fw-bolder card-title text-start ms-3"> {" "} Order Total{" "} </p>
-                    <h4 className="text-charcoal  p-0 m-0 fw-bolder card-header text-start ps-3"> {Grandtotal} </h4>
+                    <h4 className="text-charcoal  p-0 m-0 fw-bolder card-header text-start ps-3">₹{Response != undefined ? Math.round(Response.data.data.grand_total) : 0} </h4>
                   </div>
                   <div className="col-4">
-                    <p className="text-charcoal75 p-0 m-0 fw-bolder card-title text-start ms-3">
+                    {/* <p className="text-charcoal75 p-0 m-0 fw-bolder card-title text-start ms-3">
                       {" "}
                       Discount %
                     </p>
                     <h4 className="text-charcoal  p-0 m-0 fw-bolder card-header text-start ps-3">
                       {CaltotalDiscount(SelectedProducts)}
-                    </h4>
+                    </h4> */}
                   </div>
                   <div className="col-4">
-                    <p className="text-charcoal75 p-0 m-0 fw-bolder card-title text-start ms-3">
+                    {/* <p className="text-charcoal75 p-0 m-0 fw-bolder card-title text-start ms-3">
                       {" "}
                       Total Items
                     </p>
                     <h4 className="text-charcoal  p-0 m-0 fw-bolder card-header text-start ps-3">
                       {SelectedProducts.length}
-                    </h4>
+                    </h4> */}
                   </div>
                 </div>
               </div>
               <div className="col-4 align-self-center d-flex justify-content-end">
-                <button className="button button-charcoal px-5" onClick={() => confirmmessage()} > Complete Order </button>
+                <button className="button button-charcoal px-5" onClick={() => confirmmessage2()} > Complete Order </button>
               </div>
             </div>
           </div>

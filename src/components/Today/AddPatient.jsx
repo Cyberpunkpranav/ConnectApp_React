@@ -82,9 +82,9 @@ const AddPatient = (props) => {
     const CheckAvailability = async (e) => {
         setphonenumber(e.target.value)
         await axios.get(`${url}/patient/list?search=${e.target.value ? e.target.value : ''}&limit=10&offset=0`).then((response) => {
-            // console.log(response.data.data.patients_list)
+            console.log(response.data.data.patients_list)
             for (let i = 0; i < response.data.data.patients_list.length; i++) {
-                console.log((countrycode + e.target.value), response.data.data.patients_list[i].phone_number)
+                console.log(('+'+ countrycode + e.target.value), response.data.data.patients_list[i].phone_number)
                 if (('+' + countrycode + e.target.value) == response.data.data.patients_list[i].phone_number) {
                     setwarning('block')
                 } else {
@@ -172,7 +172,6 @@ const AddPatient = (props) => {
         setplace(data.label)
     }, [data]);
 
-
     if (place) {
         geocodeByAddress(place).then(results => getLatLng(results[0])).then(({ lat, lng }) => { setlat(lat); setlng(lng) });
     }
@@ -194,10 +193,9 @@ const AddPatient = (props) => {
             },
         );
     }
-    console.log(phonenumber);
     return (
         <>
-            <h5 className="text-center position-relative fw-bold position-stic"> Patient Details </h5>
+            <h5 className="text-center position-relative fw-bold pt-2 "> Patient Details </h5>
             <button type="button" className="btn-close closebtn position-absolute pt-2" aria-label="Close" onClick={props.togglepatientform} ></button>
             <hr />
             <div className="col-12 fw-bold">
@@ -432,16 +430,16 @@ const AddPatient = (props) => {
                     <input type="text" maxLength="50" className="form-control m-auto patientname" value={fullname ? fullname : ''} onChange={(e) => { setfullname(e.target.value) }} placeholder="Enter FirstName and LastName" required />
                 </div>
                 <hr />
-                <div className="col-10 m-auto">
+                <div className={`col-10 m-auto`}>
                     <p className="m-0 mb-2">Gender</p>
-                    <div class="btn-group " role="group" aria-label="Basic radio toggle button group">
-                        <input type="radio" onClick={(e) => { setgender(e.target.value) }} className={`btn-check border-${gender == 'Male' || gender == 'male' ? 'burntumber' : ''} bg-${gender == 'Male' || gender == 'male' ? 'burntumber' : 'seashell'} text-${gender == 'Male' || gender == 'male' ? 'light' : 'charcoal'}`} value='Male' name="btnradio" id="btnradio1" autocomplete="off" />
+                    <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                        <input type="radio" onClick={(e) => { setgender(e.target.value) }} className={`btn-check border-${gender == 'Male' || gender == 'male' ? 'burntumber' : ''} bg-${gender == 'Male' || gender == 'male' ? 'burntumber' : 'seashell'} text-${gender == 'Male' || gender == 'male' ? 'light' : 'charcoal'}`} value='Male' name="btnradio" id={`${props.patientform == 'block' ? 'btnradio1' : ''}`} autocomplete="off" />
                         <label className={`button rounded-0 shadow-0 border-${gender == 'Male' || gender == 'male' ? 'burntumber' : ''} bg-${gender == 'Male' || gender == 'male' ? 'burntumber' : 'seashell'} text-${gender == 'Male' || gender == 'male' ? 'light' : 'charcoal'}`} for="btnradio1">Male</label>
 
-                        <input type="radio" onClick={(e) => { setgender(e.target.value) }} className={`btn-check border-${gender == 'Female' || gender == 'female' ? 'burntumber' : ''} bg-${gender == 'Female' || gender == 'female' ? 'burntumber' : 'seashell'} text-${gender == 'Female' || gender == 'female' ? 'light' : 'charcoal'}`} value='Female' name="btnradio" id="btnradio2" autocomplete="off" />
+                        <input type="radio" onClick={(e) => { setgender(e.target.value) }} className={`btn-check border-${gender == 'Female' || gender == 'female' ? 'burntumber' : ''} bg-${gender == 'Female' || gender == 'female' ? 'burntumber' : 'seashell'} text-${gender == 'Female' || gender == 'female' ? 'light' : 'charcoal'}`} value='Female' name="btnradio" id={`${props.patientform == 'block' ? 'btnradio2' : ''}`} autocomplete="off" />
                         <label className={`button rounded-0 shadow-0 border-${gender == 'Female' || gender == 'female' ? 'burntumber' : ''} bg-${gender == 'Female' || gender == 'female' ? 'burntumber' : 'seashell'} text-${gender == 'Female' || gender == 'female' ? 'light' : 'charcoal'}`} for="btnradio2">Female</label>
 
-                        <input type="radio" onClick={(e) => { setgender(e.target.value) }} className={`btn-check border-${gender == 'Others' || gender == 'others' ? '' : 'burntumber'} bg-${gender == 'Others' || gender == 'others' ? '' : 'burntumber'} text-${gender == 'Others' || gender == 'others' ? 'light' : 'charcoal'}`} value='Others' name="btnradio" id="btnradio3" autocomplete="off" />
+                        <input type="radio" onClick={(e) => { setgender(e.target.value) }} className={`btn-check border-${gender == 'Others' || gender == 'others' ? '' : 'burntumber'} bg-${gender == 'Others' || gender == 'others' ? '' : 'burntumber'} text-${gender == 'Others' || gender == 'others' ? 'light' : 'charcoal'}`} value='Others' name="btnradio" id={`${props.patientform == 'block' ? 'btnradio3' : ''}`} autocomplete="off" />
                         <label className={`button rounded-0 shadow-0 border-${gender == 'Others' || gender == 'others' ? 'burntumber' : ''} bg-${gender == 'Others' || gender == 'others' ? 'burntumber' : 'seashell'} text-${gender == 'Others' || gender == 'others' ? 'light' : 'charcoal'}`} for="btnradio3">Others</label>
                     </div>
                 </div>

@@ -99,9 +99,9 @@ const AddAppointment = (props) => {
         }
     }
     function getTimefromByPropId(data) {
-        setdate(props.todaydate)
         let timefrom = []
         if (data && data.length != 0) {
+            setdate(props.todaydate)
             console.log(data)
             for (let j = 0; j < data[0].length; j++) {
                 if (data[0][j].date === props.todaydate) {
@@ -213,7 +213,7 @@ const AddAppointment = (props) => {
 
     }
     // console.log(searchinput, patientid, displaysearchlist);
-    console.log(props.doctorid, doctorid)
+    console.log(props.doctorid, doctorid, date)
     return (
         <div className='fw-bold text-start'>
             <h5 className="text-center fw-bold mt-2">New Appointment</h5>
