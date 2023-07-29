@@ -84,7 +84,7 @@ const AddPatient = (props) => {
         await axios.get(`${url}/patient/list?search=${e.target.value ? e.target.value : ''}&limit=10&offset=0`).then((response) => {
             console.log(response.data.data.patients_list)
             for (let i = 0; i < response.data.data.patients_list.length; i++) {
-                console.log(('+'+ countrycode + e.target.value), response.data.data.patients_list[i].phone_number)
+                console.log(('+' + countrycode + e.target.value), response.data.data.patients_list[i].phone_number)
                 if (('+' + countrycode + e.target.value) == response.data.data.patients_list[i].phone_number) {
                     setwarning('block')
                 } else {
@@ -478,7 +478,6 @@ const AddPatient = (props) => {
                         <label htmlFor="inputpincode" className="">Pin Code</label>
                         <input type="number" className="form-control" id="inputpincode" value={pincode ? pincode : ''} placeholder="pincode" onChange={(e) => { setpincode(e.target.value) }} required />
                     </div>
-
                 </div>
                 <hr />
                 <div className="row p-0 m-0">
@@ -510,7 +509,7 @@ const AddPatient = (props) => {
                         <div className="col-md-5 py-2 m-auto">
                             <label htmlFor="inputAddress" className=""> Select Main Account </label>
                             <input type="text" className="form-control position-relative" id="inputAddress" placeholder="Email ID" value={accountinput ? accountinput : ''} onChange={searchmainaccount} />
-                            <div className={` d-${displaymainaccount} end-0 m-0 p-0 position-absolute searchinput`}>
+                            <div className={`d-${displaymainaccount} end-0 m-0 p-0 position-absolute searchinput`}>
                                 {
                                     mainaccount.map((data) => (
                                         <button className='col-12 fs-6 m-0 p-0 text-end border-0 bg-pearl text-charcoal border border-1 shadow' name={data.id} value={data.full_name} onClick={get_value}>{data.full_name} | {data.id} | ({data.email ? data.email : 'email not found'})</button>

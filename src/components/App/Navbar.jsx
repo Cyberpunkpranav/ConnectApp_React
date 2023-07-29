@@ -110,38 +110,41 @@ function Navbar(props) {
     socket = new WebSocket('ws://localhost:8080/Chat')
     let JsonData = {
         action: 'username',
-        username: props.username,
+        username: '',
         message: sendmessage
     }
 
-
     socket.onopen = () => {
         console.log("Connection Successfully")
-
     }
+
     socket.onmessage = (msg) => {
         let data = JSON.parse(msg.data)
-        console.log(data, JsonData)
+        switch (data.action) {
+            case "UserLists":
+                if (data.connected_users.length > 0) {
+                    setUsers(data.connected_users)
+                }
+                setmessages(data.message)
+                break;
+        }
+        console.log(data)
     }
+    useEffect(() => {
+        JsonData = {
+            action: 'username',
+            username: props.username,
+            message: sendmessage
+        }
+        socket.onopen = () => {
+            socket.send(JSON.stringify(JsonData))
+        }
+    }, [props.username])
     useEffect(() => {
         socket.onopen = () => {
             socket.send(JSON.stringify(JsonData))
         }
     }, [sendmessage])
-    // window.onbeforeunload = function () {
-    //     console.log('leaving')
-    //     let JsonData = {}
-    //     JsonData["action"] = "left"
-    // }
-
-    // switch (data.action) {
-    //     case "UserLists":
-    //         if (data.connected_users.length > 0) {
-    //             setUsers(data.connected_users)
-    //         }
-    //         setmessages(data.message)
-    //         break;
-    // }
 
     function Toggle_Chat() {
         if (openchat == 'none') {

@@ -95,9 +95,9 @@ const AddAppointment = (props) => {
             }
             setApikeyDocTimeslots(Timeslots)
             return Timeslots
-
         }
     }
+
     function getTimefromByPropId(data) {
         let timefrom = []
         if (data && data.length != 0) {
