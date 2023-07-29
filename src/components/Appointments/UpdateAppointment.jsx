@@ -197,15 +197,15 @@ const UpdateAppointment = (props) => {
     }
     return (
         <div className='fw-light text-start position-relative p-0 m-0'>
-            <h5 className="text-center">Update {props.patientname} Appointment Details</h5>
-            <button type="button" className="btn-close closebtn position-absolute top-0" aria-label="Close" disabled={load == true ? true : false} onClick={props.closeappointmentform} ></button>
+            <h5 className="text-center pt-2">Update {props.patientname} Appointment Details</h5>
+            <button type="button" className="btn-close closebtn position-absolute top-0 mb-3" aria-label="Close" disabled={load == true ? true : false} onClick={props.closeappointmentform} ></button>
             <hr className='p-0 m-0' />
             <div className="col-12 ps-1">
                 <div className="col-12 clinics bg-seashell align-self-center border-0 ps-2" >
                     {
                         cliniclist.map((data, i) => (
                             <div key={i} className={`d-${clinicID == data.id ? 'block' : 'none'} `}>
-                                <div className="row p-0 m-0 align-items-end">
+                                <div className="row p-0 m-0 align-items-center">
                                     <div className="col-auto p-0 m-0 me-1">
                                         <img src={process.env.PUBLIC_URL + '/images/location.png'} style={{ width: '1.5rem' }} />
                                     </div>
@@ -285,7 +285,7 @@ const UpdateAppointment = (props) => {
                                 <button className='btn button-charcoal' onClick={confirmmessage}>Done</button>
                             </div>
                             <div className="col-auto py-2 pb-2 m-auto text-center">
-                                <button className="btn btn-light" onClick={getCurrentTimeslots}>Set Previous</button>
+                                <button className="btn button-pearl" onClick={getCurrentTimeslots}>Set Previous</button>
                             </div>
                         </>
                     )

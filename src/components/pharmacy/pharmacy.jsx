@@ -365,6 +365,7 @@ function Saleentrysection(props) {
         <table className="table text-start table-responsive">
           <thead className=" p-0 m-0 position-sticky top-0 bg-pearl">
             <tr className=" ">
+              <th className="text-charcoal75 fw-bolder p-0 m-0 px-1"> ID </th>
               <th className="text-charcoal75 fw-bolder p-0 m-0 px-1"> Bill ID </th>
               <th className="text-charcoal75 fw-bolder p-0 m-0 px-1"> Patient Name </th>
               <th className="text-charcoal75 fw-bolder p-0 m-0 px-1"> Bill Date </th>
@@ -395,6 +396,7 @@ function Saleentrysection(props) {
             <tbody>
               {saleentryarr.map((item, i) => (
                 <tr className={` bg-${i % 2 == 0 ? "seashell" : "pearl"} align-middle`} key={i} >
+                  <td className="text-charcoal fw-bold"> {item.id && item.id !== null ? item.id : ""} </td>
                   <td className="text-charcoal fw-bold"> {item.bill_id && item.bill_id !== null ? "P-" + item.bill_id : ""} </td>
                   <td className="text-charcoal fw-bold"> {item.patient && item.patient && item.patient.full_name != null ? item.patient.full_name : ""} </td>
                   <td className="text-charcoal fw-bold"> {item.bill_date && item.bill_date ? reversefunction(item.bill_date) : ""} </td>
@@ -1372,7 +1374,7 @@ function SaleReturns() {
                     <tr key={i} className={`bg-${i % 2 == 0 ? "seashell" : "pearl"} align-middle`} >
                       <td className="p-0 m-0 text-charcoal fw-bold"> SR-{item.return_no} </td>
                       <td className="p-0 m-0 text-charcoal fw-bold"> {item.sale_entry && item.sale_entry.patient && item.sale_entry.patient.full_name != null ? item.sale_entry.patient.full_name : "N/A"} </td>
-                      <td className="p-0 m-0 text-charcoal fw-bold"> {item.sale_entry && item.sale_entry && item.sale_entry.id != null ? "P-" + item.sale_entry.id : "N/A"} </td>
+                      <td className="p-0 m-0 text-charcoal fw-bold"> {item.sale_entry && item.sale_entry && item.sale_entry.id != null ? item.sale_entry.id : ""}</td>
                       <td className="p-0 m-0 text-charcoal fw-bold"> {item.return_date ? reversefunction(item.return_date) : ""} </td>
                       <td className="p-0 m-0 text-charcoal fw-bold"> {item.grand_total ? item.grand_total : "N/A"} </td>
                       <td className="p-0 m-0 text-charcoal fw-bold">

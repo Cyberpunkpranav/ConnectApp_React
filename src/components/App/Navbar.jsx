@@ -104,45 +104,44 @@ function Navbar(props) {
     const [Users, setUsers] = useState([])
     const [messages, setmessages] = useState()
     const [openchat, setopenchat] = useState('none')
-    const [sendmessage, setsendmessage] = useState(false)
+    const [sendmessage, setsendmessage] = useState()
 
     let socket = null
+    socket = new WebSocket('ws://localhost:8080/Chat')
     let JsonData = {
-        action: '',
+        action: 'username',
         username: props.username,
-        message: ''
+        message: sendmessage
+    }
+
+
+    socket.onopen = () => {
+        console.log("Connection Successfully")
+
+    }
+    socket.onmessage = (msg) => {
+        let data = JSON.parse(msg.data)
+        console.log(data, JsonData)
     }
     useEffect(() => {
-        socket = new WebSocket('ws://localhost:8080/Chat')
-    }, [!socket])
-
+        socket.onopen = () => {
+            socket.send(JSON.stringify(JsonData))
+        }
+    }, [sendmessage])
     // window.onbeforeunload = function () {
     //     console.log('leaving')
     //     let JsonData = {}
     //     JsonData["action"] = "left"
     // }
 
-    if (socket) {
-        socket.onopen = () => {
-            console.log("Connection Successfully")
-        }
-        socket.onclose = () => {
-            console.log('Connection Closed')
-        }
-        socket.onmessage = (msg) => {
-            let data = JSON.parse(msg.data)
-            console.log(data)
-            switch (data.action) {
-                case "UserLists":
-                    if (data.connected_users.length > 0) {
-                        setUsers(data.connected_users)
-                    }
-                    setmessages(data.message)
-                    break;
-            }
-            socket.send(JSON.stringify(JsonData))
-        }
-    }
+    // switch (data.action) {
+    //     case "UserLists":
+    //         if (data.connected_users.length > 0) {
+    //             setUsers(data.connected_users)
+    //         }
+    //         setmessages(data.message)
+    //         break;
+    // }
 
     function Toggle_Chat() {
         if (openchat == 'none') {
@@ -155,7 +154,6 @@ function Navbar(props) {
         }
     }
 
-    console.log(sendmessage)
     return (
         <>
             <div className="navsection p-0 m-0 py-1">
@@ -241,21 +239,18 @@ function Navbar(props) {
                             <ul className='p-2 bg-raffia'>
                                 {
                                     Users.map((data) => (
-
                                         <button className=' button bg-lightgreen'>{data}</button>
-
-
                                     ))
                                 }
                             </ul>
                             <div className="messages">{messages}</div>
                         </div>
                         <div className="row position-absolute bottom-0 mb-4 end-0 me-5">
-                            <div className="col-10">
-                                <input type='text' className='form-control ms-2 w-100' />
+                            <div className="col-8">
+                                <input type='text' className='form-control ms-2 p-0 py-1 ps-1 w-100' onBlur={(e) => setsendmessage(e.target.value)} />
                             </div>
-                            <div className="col-2">
-                                <button className='btn btn-sm button-burntumber' >Send</button>
+                            <div className="col-4">
+                                <button className='button-sm button-burntumber' >Send</button>
                             </div>
                         </div>
 

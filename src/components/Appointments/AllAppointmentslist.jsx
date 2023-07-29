@@ -296,7 +296,7 @@ const AllAppointmentslist = (props) => {
                                 <div className="col-auto text-burntumber">
                                     {data.follow_up_date ? 'F/U- ' + reversefunction(data.follow_up_date ? data.follow_up_date : '') : ''}
                                 </div>
-                        
+
                             </td>
                             <td className='text-charcoal fw-bold'>{data.timeslot && data.timeslot.time_from !== null ? props.tConvert(data.timeslot.time_from) : ''}</td>
                             <td className='text-charcoal fw-bold text-start' style={{ width: 'min-content' }}>
@@ -329,7 +329,7 @@ const AllAppointmentslist = (props) => {
                                 </div></td>
                             {
                                 tableindex == key ? (
-                                    <td className={` d-${tableindex == key ? appointmentform : 'none'} updateappointment bg-seashell col-lg-8 col-xl-5 col-md-8 col-sm-10 col-12 start-0 end-0 fw-none  mx-auto top-0 border border-1 rounded-1 position-absolute`} style={{ zIndex: '3', marginTop: '10rem' }}>
+                                    <td className={` d-${tableindex == key ? appointmentform : 'none'} updateappointment bg-seashell p-0 col-lg-8 col-xl-5 col-md-8 col-sm-10 col-12 start-0 end-0 fw-none  mx-auto top-0 border border-1 rounded-2 shadow-sm position-absolute`} style={{ zIndex: '3', marginTop: '10rem' }}>
                                         <UpdateAppointment fetchallAppointmentslist={props.fetchallAppointmentslist} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} patientid={data.patient != null && data.patient.id != null ? data.patient.id : ""} appointmentid={data.id} closeappointmentform={closeappointmentform} doctorid={props.doctorid} fetchapi={props.fetchapi} appointmentdoctorid={data.doctor.id} appointmentdate={data.appointment_date} appointmenttime={tConvert(data.timeslot.time_from)} />
                                     </td>
                                 ) : (<></>)

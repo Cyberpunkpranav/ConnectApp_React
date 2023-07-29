@@ -241,7 +241,7 @@ const UpdateAppointment = (props) => {
     return (
         <div className='p-0 m-0 text-start'>
             <h5 className="text-center p-2">Update {props.patientname} Appointment Details</h5>
-            <button type="button" className="btn-close closebtn position-absolute p-2 mt-1" disabled={load == true ? true : false} aria-label="Close" onClick={props.closeappointmentform} ></button>
+            <button type="button" className="btn-close closebtn position-absolute" disabled={load == true ? true : false} aria-label="Close" onClick={props.closeappointmentform} ></button>
             <hr className='p-0 m-0' />
             <div className="col-12 ps-1">
                 <div className="col-12 clinics bg-seashell border-0 p-2" >

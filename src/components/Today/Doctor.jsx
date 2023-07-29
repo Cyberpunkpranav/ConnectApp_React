@@ -457,7 +457,7 @@ function DoctorSchedule(props) {
                             {/* 
                             <div className='backdrop'>
                             </div> */}
-                            <div className={`d-${timeindex == i ? addappointmentform : 'none'} col-lg-6 col-md-10 col-sm-12 col-12 col-xl-6 shadow quickappointment position-absolute m-auto start-0 end-0 bg-seashell rounded-4 border border-1`} style={{ top: '-3rem' }}>
+                            <div className={`d-${timeindex == i ? addappointmentform : 'none'} col-lg-6 col-md-10 col-sm-12 col-12 col-xl-6 shadow quickappointment position-absolute m-auto start-0 end-0 bg-seashell rounded-4 border border-1`} style={{ top: '-4.3rem' }}>
                               <SelectedTimeAppointment fetchapi={props.fetchapi} closeAddAppointmentform={closeAddAppointmentform} DocClinic={props.DocClinic} timeindex={timeindex} selectedtime={data[0]} selectedtimeID={data[2]} />
                             </div>
                           </>
