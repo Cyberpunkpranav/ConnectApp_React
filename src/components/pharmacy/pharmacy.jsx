@@ -1569,6 +1569,7 @@ function SaleEntryForm(props) {
   useEffect(() => {
     Doclist.map((data) => (data[0] == doctorid ? setdoctorname(data[1]) : ""));
   }, [doctorid]);
+
   function CalSellingCost(mrp, disc) {
     let cost = mrp;
     if (!disc) {
@@ -1899,8 +1900,8 @@ function SaleEntryForm(props) {
       PaymentMethodDetails.push(paymentmethods[i].paymentmethod);
     }
     let Data = {
-      sale_entry_id: Response.data.data.id,
-      g_total_main: Response.data.data.grand_total,
+      sale_entry_id: Response ? Response.data.data.id : '',
+      g_total_main: Response ? Response.data.data.grand_total : '',
       payment_method: PaymentMethodDetails,
       payment_method_main: PaymentMethodDetails,
       payment_method_details: PaymentMethod,
@@ -1971,12 +1972,6 @@ function SaleEntryForm(props) {
 
   // }
 
-  // console.log(patientid, doctorid, doctorname, Dc, itemname, itemid);
-  // console.log(SelectedProducts, Grandtotal)
-  // console.log(patientdata)
-  // console.log(products, addressid, Dc, SelectedProducts)
-  // console.log(itembyid)
-  // console.log(itemsearch)
   const [addresspage, setaddresspage] = useState('none')
   const Toggle_Address = () => {
     if (addresspage == 'block') {
@@ -1986,7 +1981,10 @@ function SaleEntryForm(props) {
       setaddresspage('block')
     }
   }
-  console.log(searchlist, number)
+  useEffect(() => {
+    Toggle_Address()
+  }, [patientdata])
+  console.log(patientid, patientdata)
   return (
     <>
       <div className="saleentry rounded-2">
@@ -2290,7 +2288,7 @@ function SaleEntryForm(props) {
               )}
             <div className="button button-charcoal" onClick={() => Toggle_Address()}>Add Address</div>
             <div className={`container position-absolute bg-seashell w-75 border border-1 shadow-sm rounded-2 start-0 end-0 d-${addresspage}`} style={{ top: '-3rem' }}>
-              <AddAddress Toggle_Address={Toggle_Address} patientid={patientid} searchinput={searchinput} />
+              <AddAddress Toggle_Address={Toggle_Address} patientid={patientid} searchinput={searchinput} setpatientdata={setpatientdata} />
             </div>
           </div>
           <div className="w-100 position-absolute bottom-0 bg-pearl py-2">

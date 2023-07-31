@@ -20,7 +20,7 @@ const AddAddress = (props) => {
 
     useEffect(() => {
 
-        if (data.value !== undefined && data.value.place_id !== undefined) {
+        if (data !== undefined && data.value != undefined && data.value.place_id !== undefined) {
             setpincode()
             setplaceid()
             // initialize the map
@@ -56,7 +56,7 @@ const AddAddress = (props) => {
         }
 
         data === "" ? setData("") : setData(data);
-        setplace(data.label)
+        setplace(data && data.label != undefined ? data.label : '')
     }, [data]);
 
     const Add_Address = async () => {
@@ -72,6 +72,7 @@ const AddAddress = (props) => {
         }).then((response) => {
             if (response.data.status == true) {
                 Notiflix.Notify.success(response.data.message)
+                props.setpatientdata(response.data.data)
                 clear()
             }
             console.log(response)
@@ -82,7 +83,7 @@ const AddAddress = (props) => {
         customconfirm();
         Notiflix.Confirm.show(
             `Add New Address`,
-            `Do you surely want to a new address of `,
+            `Do you surely want to add a new address of ${props.searchinput}`,
             "Yes",
             "No",
             () => {

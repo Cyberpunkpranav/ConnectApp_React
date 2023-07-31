@@ -102,7 +102,7 @@ function Navbar(props) {
     ]
     //websocket
     const [Users, setUsers] = useState([])
-    const [messages, setmessages] = useState()
+    const [messages, setmessages] = useState([])
     const [openchat, setopenchat] = useState('none')
     const [sendmessage, setsendmessage] = useState()
 
@@ -118,6 +118,10 @@ function Navbar(props) {
         console.log("Connection Successfully")
     }
 
+
+
+
+
     socket.onmessage = (msg) => {
         let data = JSON.parse(msg.data)
         switch (data.action) {
@@ -125,36 +129,80 @@ function Navbar(props) {
                 if (data.connected_users.length > 0) {
                     setUsers(data.connected_users)
                 }
-                setmessages(data.message)
+
+                break;
+            case "Broadcast":
+                if (data.message) {
+                    console.log(data)
+                    setmessages(data.message)
+                }
                 break;
         }
-        console.log(data)
+
     }
+
     useEffect(() => {
         JsonData = {
-            action: 'username',
+            action: sendmessage ? 'broadcast' : 'username',
             username: props.username,
             message: sendmessage
         }
+
         socket.onopen = () => {
             socket.send(JSON.stringify(JsonData))
+            JsonData = {
+                action: 'broadcast',
+                username: props.username,
+                message: sendmessage
+            }
+            socket.send(JSON.stringify(JsonData))
         }
+
     }, [props.username])
-    useEffect(() => {
+
+    window.addEventListener('beforeunload', function (event) {
+        event.preventDefault()
+
+        LeftChat()
+    })
+    window.onbeforeunload = function () {
+
+        LeftChat()
+    }
+    window.addEventListener('unload', function (event) {
+        event.preventDefault()
+        LeftChat()
+    })
+
+    function Braodcast() {
+        JsonData = {
+            action: 'broadcast',
+            username: props.username,
+            message: sendmessage
+        }
+        socket.send(JSON.stringify(JsonData))
+    }
+
+    function LeftChat() {
+        let JsonData = {
+            action: 'left',
+            username: props.username,
+            message: ''
+        }
         socket.onopen = () => {
             socket.send(JSON.stringify(JsonData))
         }
-    }, [sendmessage])
+    }
+
 
     function Toggle_Chat() {
         if (openchat == 'none') {
             setopenchat('block')
-
         }
         if (openchat == 'block') {
             setopenchat('none')
-
         }
+
     }
 
     return (
@@ -235,25 +283,30 @@ function Navbar(props) {
             </div>
             <div className={`message_box d-${openchat}`} ref={message_Box} >
                 {/* <div className='backdrop'></div> */}
-                <div div className='message_box bg-lightyellow position-absolute end-0 top-0' style={{ height: '100vh', width: '50vh' }}>
+                <div div className='message_box bg-seashell border border-1 shadow-sm position-absolute end-0 top-0' style={{ height: '100vh', width: '50vh' }}>
                     <div className="chatbox position-relative" style={{ height: '100vh', width: '50vh' }}>
-                        <button className="btn-close position-absolute end-0 me-3 mt-2" onClick={() => Toggle_Chat()} ></button>
-                        <div className="messagebox bg-brandy pt-5 scroll border border-1" style={{ height: '90vh', width: '50vh' }}>
-                            <ul className='p-2 bg-raffia'>
+                        <button className="btn-close position-absolute end-0 me-3 mt-2" onClick={() => { Toggle_Chat(); LeftChat() }} ></button>
+                        <div className="messagebox bg-seashell pt-5 scroll border border-1" style={{ height: '90vh', width: '50vh' }}>
+                            <ul className='p-2 bg-seashell'>
                                 {
                                     Users.map((data) => (
-                                        <button className=' button bg-lightgreen'>{data}</button>
+                                        <button className=' button bg-pearl border-0 mx-2'>{data}</button>
                                     ))
                                 }
                             </ul>
-                            <div className="messages">{messages}</div>
+                            <div className="messages">
+
+
+                                <div className='d-block my-2 bg-lightgreen py-2 shadow-sm rounded-4 ps-2 text-white fw-bold'>{messages}</div>
+
+                            </div>
                         </div>
                         <div className="row position-absolute bottom-0 mb-4 end-0 me-5">
                             <div className="col-8">
                                 <input type='text' className='form-control ms-2 p-0 py-1 ps-1 w-100' onBlur={(e) => setsendmessage(e.target.value)} />
                             </div>
                             <div className="col-4">
-                                <button className='button-sm button-burntumber' >Send</button>
+                                <button className='button-sm button-burntumber' onClick={() => Braodcast()} >Send</button>
                             </div>
                         </div>
 
