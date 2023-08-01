@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useMemo, useRef } from 'react'
 import { Link, useLocation } from "react-router-dom"
 import { useState, useEffect, useContext } from "react";
 
@@ -105,41 +105,56 @@ function Navbar(props) {
     const [messages, setmessages] = useState([])
     const [openchat, setopenchat] = useState('none')
     const [sendmessage, setsendmessage] = useState()
+    const [user, setuser] = useState()
+    const [online, setonline] = useState(0)
 
-    let socket = null
-    socket = new WebSocket('ws://localhost:8080/Chat')
     let JsonData = {
         action: 'username',
         username: '',
         message: sendmessage
     }
+    let socket = null
 
-    socket.onopen = () => {
-        console.log("Connection Successfully")
-    }
+    socket = new WebSocket('ws://localhost:8080/Chat')
 
-
-
-
-
-    socket.onmessage = (msg) => {
-        let data = JSON.parse(msg.data)
-        switch (data.action) {
-            case "UserLists":
-                if (data.connected_users.length > 0) {
-                    setUsers(data.connected_users)
-                }
-
-                break;
-            case "Broadcast":
-                if (data.message) {
-                    console.log(data)
-                    setmessages(data.message)
-                }
-                break;
+    useEffect(() => {
+        socket.onopen = () => {
+            setonline(1)
         }
+        socket.onmessage = (msg) => {
+            let data = JSON.parse(msg.data)
+            switch (data.action) {
+                case "UserLists":
+                    if (data.connected_users.length > 0) {
+                        setUsers(data.connected_users)
+                    }
 
-    }
+
+                    break;
+                case "Broadcast":
+                    if (data.message) {
+                        console.log(data)
+                        if (data.message.length > 0) {
+                            setmessages(data.message)
+                            setuser(data.user)
+                        }
+
+                    }
+                    break;
+            }
+
+        }
+    }, [socket.data])
+    useEffect(() => {
+        socket.onclose = (event) => {
+            if (event.code === 1001) {
+                console.log('WebSocket connection closed (going away).');
+                socket.close()
+            } else {
+                console.log('WebSocket connection closed with code:', event.code);
+            }
+        }
+    }, [])
 
     useEffect(() => {
         JsonData = {
@@ -162,13 +177,9 @@ function Navbar(props) {
 
     window.addEventListener('beforeunload', function (event) {
         event.preventDefault()
-
         LeftChat()
     })
-    window.onbeforeunload = function () {
 
-        LeftChat()
-    }
     window.addEventListener('unload', function (event) {
         event.preventDefault()
         LeftChat()
@@ -210,7 +221,7 @@ function Navbar(props) {
             <div className="navsection p-0 m-0 py-1">
                 <div className="container-fluid p-0 m-0 ">
                     <div className="row m-0 p-0 justify-content-lg-between justify-content-md-between justify-content-sm-between justify-content-between align-items-center">
-                        <div className="col-lg-auto col-xl-auto col-md-auto col-sm-auto col-auto p-0 m-0 ms-2 text-start dropdown">
+                        <div className="col-lg-auto col-xl-auto col-md-2 col-sm-auto col-auto p-0 m-0 ms-2 text-start dropdown">
                             <button className="button dropdown-toggle button-seashell shadow-none d-inline-block col-md-auto col-auto user position-relative p-0 m-0 ms-2" data-bs-toggle="dropdown" aria-expanded="false">
                                 <h1 className="m-0 username text-decoration-none  text-start fw-bold"> {props.username} </h1>
                                 <div className="m-0 userstatus text-decoration-none text-start text-burntumber fw-bold" >{props.designation} </div>
@@ -237,17 +248,17 @@ function Navbar(props) {
                             </div>
                         </div>
                         {/* className="col-lg-2 col-xl-2 col-md-2 col-sm-6 col-6 mt-sm-2 search text-center position-relative" */}
-                        <div className="col-lg-auto col-xl-2 col-md-auto col-8 col-sm-auto text-center align-self-center position-relative p-0 m-0 order-sm-2 order-md-1 order-1 ">
+                        <div className="col-lg-auto col-xl-2 col-md-2 col-8 col-sm-auto text-center align-self-center position-relative p-0 m-0 order-sm-2 order-md-1 order-1 ">
                             <div className="row p-0 m-0 align-items-center justify-content-md-start justify-content-center">
                                 <div className="col-sm-auto col-xl-8 col-lg-8 col-md-8 me-1 col-7 p-0 m-0 position-relative " style={{ zIndex: '3' }} >
-                                    <input type="text" className="rounded-1 text-charcoal w-100 bg-charcoal25 positon-relative border border-0 text-start py-sm-1 ps-2 py-1 fw-bold" placeholder="search" onChange={(e) => setsearchtext(e.target.value)} />
-                                    <div className="position-absolute bg-pearl rounded-2 end-0 shadow mt-1" style={{ width: '50vh' }}>
+                                    <input type="text" className="rounded-1 text-charcoal search bg-charcoal25 positon-relative border border-0 text-start py-sm-1 ps-2 py-1 fw-bold" placeholder="search" onChange={(e) => setsearchtext(e.target.value)} />
+                                    <div className="position-absolute bg-pearl rounded-2 end-0 shadow mt-1 ">
                                         <SearchField searchtext={searchtext} fetchapi={props.fetchapi} />
                                     </div>
                                 </div>
                                 {/* col-xl-2 col-md-auto col-sm-auto col-6  */}
                                 <div className={`col-auto p-0 m-0 dropdown text-decoration-none me-sm-1 d-${props.permissions.patient_add == undefined && props.permissions.doctor_add == undefined && props.permissions.appointment_add == undefined ? 'none' : ''}`}>
-                                    <button className="button p-0 m-0 px-2 pe-2 py-1 button-burntumber dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <button className="button p-0 m-0 px-2 pe-2 py-1 mt-md-1 button-burntumber dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         + Add
                                     </button>
                                     <ul className="dropdown-menu">
@@ -281,41 +292,48 @@ function Navbar(props) {
             <div className="position-absolute bottom-0 end-0 me-5 mb-3 d-block">
                 <button className={`btn p-0 m-0 text-pearl fw-bold bg-charcoal p-2`} onClick={() => Toggle_Chat()}>Chat</button>
             </div>
-            <div className={`message_box d-${openchat}`} ref={message_Box} >
-                {/* <div className='backdrop'></div> */}
-                <div div className='message_box bg-seashell border border-1 shadow-sm position-absolute end-0 top-0' style={{ height: '100vh', width: '50vh' }}>
-                    <div className="chatbox position-relative" style={{ height: '100vh', width: '50vh' }}>
-                        <button className="btn-close position-absolute end-0 me-3 mt-2" onClick={() => { Toggle_Chat(); LeftChat() }} ></button>
-                        <div className="messagebox bg-seashell pt-5 scroll border border-1" style={{ height: '90vh', width: '50vh' }}>
-                            <ul className='p-2 bg-seashell'>
-                                {
-                                    Users.map((data) => (
-                                        <button className=' button bg-pearl border-0 mx-2'>{data}</button>
-                                    ))
-                                }
-                            </ul>
-                            <div className="messages">
+            <div className={`d-${openchat}`} ref={message_Box} style={{ zIndex: '4' }}>
+                <div className={`message_box`}  >
+                    <div div className='message_box bg-seashell border border-1 shadow-sm position-absolute end-0 top-0' style={{ height: '100vh', width: '50vh' }}>
+                        <div className="chatbox position-relative" style={{ height: '100vh', width: '50vh' }}>
+                            <button className="btn-close position-absolute end-0 me-3 mt-2" onClick={() => { Toggle_Chat(); LeftChat() }} ></button>
+                            <div className="messagebox bg-seashell pt-5 border border-1" style={{ height: '90vh', width: '50vh' }}>
+                                <ul className='p-2 bg-seashell scroll'>
+                                    {
+                                        Users.map((data) => (
+                                            <button className=' button bg-pearl border-0 mx-2'>{data}</button>
+                                        ))
+                                    }
+                                </ul>
+                                <div className="messages d-block">
 
+                                    {
+                                        messages.length > 0 ? (
+                                            <div className=' my-2 bg-lightgreen py-2 shadow-sm rounded-4 ps-2 text-lightyellow fw-bold'>{user}:<span className='text-white'>{messages}</span></div>
+                                        ) : (
+                                            <></>
+                                        )
+                                    }
 
-                                <div className='d-block my-2 bg-lightgreen py-2 shadow-sm rounded-4 ps-2 text-white fw-bold'>{messages}</div>
+                                </div>
+                            </div>
+                            <div className="row position-absolute bottom-0 mb-4 end-0 me-5">
+                                <div className="col-8">
+                                    <input type='text' className='form-control ms-2 p-0 py-1 ps-1 w-100' onBlur={(e) => setsendmessage(e.target.value)} />
+                                </div>
+                                <div className="col-4">
+                                    <button className='button-sm button-burntumber' onClick={() => Braodcast()} >Send</button>
+                                </div>
+                            </div>
 
-                            </div>
-                        </div>
-                        <div className="row position-absolute bottom-0 mb-4 end-0 me-5">
-                            <div className="col-8">
-                                <input type='text' className='form-control ms-2 p-0 py-1 ps-1 w-100' onBlur={(e) => setsendmessage(e.target.value)} />
-                            </div>
-                            <div className="col-4">
-                                <button className='button-sm button-burntumber' onClick={() => Braodcast()} >Send</button>
-                            </div>
                         </div>
 
                     </div>
 
-                </div>
 
-
+                </div >
             </div >
+
 
         </>
     );

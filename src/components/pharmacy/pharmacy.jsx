@@ -1447,7 +1447,7 @@ function SaleEntryForm(props) {
   const [searchlist, setsearchlist] = useState([]);
   const [displaysearchlist, setdisplaysearchlist] = useState("none");
   const [patientid, setpatientid] = useState(props.patientid ? props.patientid : "");
-  const [patientdata, setpatientdata] = useState([]);
+  const [patientdata, setpatientdata] = useState(props.data ? props.data.patient.address ? props.data.patient.address : [] : []);
   const [doctorid, setdoctorid] = useState(props.DoctorID ? props.DoctorID : "");
   const [doctorname, setdoctorname] = useState(props.DoctorName ? props.DoctorName : "");
   const [otherdoctor, setotherdoctor] = useState();
@@ -1469,7 +1469,7 @@ function SaleEntryForm(props) {
   const [loadsearch, setloadsearch] = useState();
   const [addressid, setaddressid] = useState();
   const [addressform, setaddressform] = useState("none");
-  const [number, setnumber] = useState()
+  const [number, setnumber] = useState(props.data ? props.data.patient.phone_number ? props.data.patient.phone_number : '' : "")
   const [Response, setResponse] = useState()
 
   const searchpatient = (e) => {
@@ -1907,6 +1907,7 @@ function SaleEntryForm(props) {
       payment_method_details: PaymentMethod,
       admin_id: adminid,
     };
+
     try {
       setloading(true);
       await axios
@@ -1927,10 +1928,11 @@ function SaleEntryForm(props) {
       setloading(false);
       Notiflix.Notify.failure(e.message);
     }
+
   }
-  useEffect(() => {
-    SaveSaleEntryCharges()
-  }, [props.saleentryarr != undefined && props.saleentryarr.id != undefined])
+  // useEffect(() => {
+  //   SaveSaleEntryCharges()
+  // }, [props.saleentryarr])
   const CalPrevTotal = async () => {
     let total = 0;
     paymentmethods && paymentmethods.map((data) => (total += Number(data.amount)));
@@ -1981,10 +1983,8 @@ function SaleEntryForm(props) {
       setaddresspage('block')
     }
   }
-  useEffect(() => {
-    Toggle_Address()
-  }, [patientdata])
-  console.log(patientid, patientdata)
+
+  console.log(patientid, patientdata, props.data)
   return (
     <>
       <div className="saleentry rounded-2">
@@ -2269,23 +2269,47 @@ function SaleEntryForm(props) {
             </div>
           </div>
           <hr className="my-1" />
-          <div className="container mt-4 position-relative">
+          <div className="container mt-4 position-relative " >
             <h6 className="fw-bold text-charcoal75">Select Shipping Address</h6>
             {
-              patientdata && patientdata.address && patientdata.address.length !== 0 ? (
-                <div className=" ">
-                  {
-                    patientdata.address.map((data, i) => (
-                      <>
-                        <input type="checkbox" className="form-check-input" checked={ischecked2 === i ? true : false} name={data.id} onClick={(e) => { setischecked2(i); addressid ? selectaddress() : selectaddress(data); }} /> <h6 className="fw-bold text-charcoal d-inline-block">{data.address_line1 && data.address_line1 !== null ? data.address_line1 : ""} {data.address_line2 && data.address_line2 !== null ? data.address_line2 : ""} {data.zip_code && data.zip_code !== null ? data.zip_code : ""}</h6>
-                        <br />
-                      </>
-                    ))
-                  }
-                </div>
-              ) : (
-                <div className="text-danger fw-bold p-2"> Addresses not found.Please add a new address{" "} </div>
-              )}
+              props.data != undefined ? (
+                props.data && props.data.patient && props.data.patient.address && props.data.patient.address.length !== 0 ? (
+                  <div className="overflow-scroll " style={{ height: '30vh' }}>
+                    {
+                      props.data.patient.address.map((data, i) => (
+                        <>
+                          <input type="checkbox" className="form-check-input" checked={ischecked2 === i ? true : false} name={data.id} onClick={(e) => { setischecked2(i); addressid ? selectaddress() : selectaddress(data); }} /> <h6 className="fw-bold text-charcoal d-inline-block">{data.address_line1 && data.address_line1 !== null ? data.address_line1 : ""} {data.address_line2 && data.address_line2 !== null ? data.address_line2 : ""} {data.zip_code && data.zip_code !== null ? data.zip_code : ""}</h6>
+                          <br />
+                        </>
+                      ))
+                    }
+                  </div>
+                ) : (
+                  <div className="text-danger fw-bold p-2"> Addresses not found.Please add a new address{" "} </div>
+                )
+              ) : (<></>)
+            }
+            {
+              patientdata ? (
+                patientdata && patientdata.address && patientdata.address.length !== 0 ? (
+                  <div className="overflow-scroll" style={{ height: '30vh' }}>
+                    {
+                      patientdata.address.map((data, i) => (
+                        <>
+                          <input type="checkbox" className="form-check-input" checked={ischecked2 === i ? true : false} name={data.id} onClick={(e) => { setischecked2(i); addressid ? selectaddress() : selectaddress(data); }} /> <h6 className="fw-bold text-charcoal d-inline-block">{data.address_line1 && data.address_line1 !== null ? data.address_line1 : ""} {data.address_line2 && data.address_line2 !== null ? data.address_line2 : ""} {data.zip_code && data.zip_code !== null ? data.zip_code : ""}</h6>
+                          <br />
+                        </>
+                      ))
+                    }
+                  </div>
+                ) : (
+                  <div className="text-danger fw-bold p-2"> Addresses not found.Please add a new address{" "} </div>
+                )
+              ) : (<></>)
+            }
+
+
+
             <div className="button button-charcoal" onClick={() => Toggle_Address()}>Add Address</div>
             <div className={`container position-absolute bg-seashell w-75 border border-1 shadow-sm rounded-2 start-0 end-0 d-${addresspage}`} style={{ top: '-3rem' }}>
               <AddAddress Toggle_Address={Toggle_Address} patientid={patientid} searchinput={searchinput} setpatientdata={setpatientdata} />

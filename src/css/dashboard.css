@@ -443,6 +443,10 @@ body {
     margin-top: -5vh !important;
 }
 
+.search {
+    width: 15vh;
+}
+
 /*------------------------------------------------------------------Common css--------------------------------------------------------------*/
 
 /*------------------------------------------------------------------Common css--------------------------------------------------------------*/
@@ -451,6 +455,9 @@ body {
     width:30vh;
 } */
 @media (max-width:992px) {
+    .search {
+        width: 12vh;
+    }
 
     /* .mainsearch{
         width:14vh;
@@ -484,6 +491,9 @@ body {
 }
 
 @media (max-width:790px) {
+    .search {
+        width: 12vh;
+    }
 
     /* .mainsearch{
         width:20vh;
@@ -550,6 +560,8 @@ body {
 }
 
 @media(max-width:767px)and (min-width:577px) {
+
+
     .navsection .username {
         font-size: 0.6rem;
     }

@@ -257,13 +257,13 @@ const AllAppointmentslist = (props) => {
                             <td className={`d-${permission.appointment_edit == 1 ? '' : 'none'} bg-${tableindex == key ? 'lightyellow' : ''} text-center ps-3`}>
                                 <img src={process.env.PUBLIC_URL + "/images/confirmed.png"} style={{ width: "1.5rem" }} onClick={(e) => { openapppointmentform(); settableindex(key) }} className="btn p-0 m-0" />
                             </td>
-                            <td className='text-start'>
-                                <div className="row p-0 m-0 align-items-center">
+                            <td className='text-start pe-5 pe-lg-0 '>
+                                <div className="row p-0 m-0 align-items-center text-wrap">
                                     <div className="col-1 p-0 m-0 me-2">
                                         <div className={`rounded-circle border-1 button-${props.status_color(data.appointment_status)}`} style={{ height: '12px', width: '12px' }}></div>
                                     </div>
-                                    <div className="col-5 p-0 m-0 ">
-                                        <select disabled={permission.appointment_edit == 1 ? false : true} className={`bg-transparent fw-bold border-0 `} name={data.id} onChange={(e) => { UpadteStatus(e) }}>
+                                    <div className="col-5 p-0 m-0 text-wrap ">
+                                        <select disabled={permission.appointment_edit == 1 ? false : true} className={`bg-transparent fw-bold border-0 text-wrap `} name={data.id} onChange={(e) => { UpadteStatus(e) }}>
                                             <option className="button text-start" selected disabled>{props.status(data.appointment_status)}</option>
                                             <option className="button-lightred" value='1'>Pending</option>
                                             <option className="button-lightblue" value='2'>Booked</option>
