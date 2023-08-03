@@ -11,9 +11,9 @@ import { AddDoctorSlot } from '../Today/AddDoctorSlot'
 import { AddAppointment } from '../Today/AddAppointment'
 
 
-
 function Navbar(props) {
     const message_Box = useRef()
+    const adminid = localStorage.getItem("id");
     //Use States
     const [searchtext, setsearchtext] = useState()
     const [patientform, setpatientform] = useState("none");
@@ -111,11 +111,12 @@ function Navbar(props) {
     let JsonData = {
         action: 'username',
         username: '',
-        message: sendmessage
+        message: sendmessage,
+        id: adminid
     }
-    let socket = null
 
-    socket = new WebSocket('ws://localhost:8080/Chat')
+
+    let socket = new WebSocket('ws://localhost:8080/Chat')
 
     useEffect(() => {
         socket.onopen = () => {
@@ -128,8 +129,6 @@ function Navbar(props) {
                     if (data.connected_users.length > 0) {
                         setUsers(data.connected_users)
                     }
-
-
                     break;
                 case "Broadcast":
                     if (data.message) {
@@ -138,74 +137,75 @@ function Navbar(props) {
                             setmessages(data.message)
                             setuser(data.user)
                         }
-
                     }
                     break;
             }
 
         }
     }, [socket.data])
-    useEffect(() => {
-        socket.onclose = (event) => {
-            if (event.code === 1001) {
-                console.log('WebSocket connection closed (going away).');
-                socket.close()
-            } else {
-                console.log('WebSocket connection closed with code:', event.code);
-            }
+    socket.onclose = (event) => {
+        if (event.code === 1001) {
+            socket.close()
+            setonline(0)
         }
-    }, [])
+    }
+    let JsonDataOut = {
+        action: 'left',
+        username: props.username,
+        message: '',
+        id: adminid
+    }
+    window.addEventListener('beforeunload', function () {
+        JsonDataOut = {
+            action: 'left',
+            username: props.username,
+            message: '',
+            id: adminid
+        }
+    })
+    window.addEventListener('unload', function () {
+        if (JsonDataOut) {
+            // socket.onopen = () => {
+            socket.send(JSON.stringify(JsonData))
+            // }
+        }
 
+    })
     useEffect(() => {
         JsonData = {
-            action: sendmessage ? 'broadcast' : 'username',
+            action: 'username',
             username: props.username,
-            message: sendmessage
+            message: sendmessage,
+            id: adminid
         }
 
         socket.onopen = () => {
-            socket.send(JSON.stringify(JsonData))
-            JsonData = {
-                action: 'broadcast',
-                username: props.username,
-                message: sendmessage
-            }
             socket.send(JSON.stringify(JsonData))
         }
 
     }, [props.username])
 
-    window.addEventListener('beforeunload', function (event) {
-        event.preventDefault()
-        LeftChat()
-    })
 
-    window.addEventListener('unload', function (event) {
-        event.preventDefault()
-        LeftChat()
-    })
-
+    // function LeftChat() {
+    //     JsonData = {
+    //         action: 'left',
+    //         username: props.username,
+    //         message: '',
+    //         id: adminid
+    //     }
+    //     socket.onopen = () => {
+    //         socket.send(JSON.stringify(JsonData))
+    //     }
+    // }
     function Braodcast() {
         JsonData = {
             action: 'broadcast',
             username: props.username,
-            message: sendmessage
+            message: sendmessage,
+            Id: adminid
         }
         socket.send(JSON.stringify(JsonData))
     }
-
-    function LeftChat() {
-        let JsonData = {
-            action: 'left',
-            username: props.username,
-            message: ''
-        }
-        socket.onopen = () => {
-            socket.send(JSON.stringify(JsonData))
-        }
-    }
-
-
     function Toggle_Chat() {
         if (openchat == 'none') {
             setopenchat('block')
@@ -215,7 +215,6 @@ function Navbar(props) {
         }
 
     }
-
     return (
         <>
             <div className="navsection p-0 m-0 py-1">
@@ -258,7 +257,7 @@ function Navbar(props) {
                                 </div>
                                 {/* col-xl-2 col-md-auto col-sm-auto col-6  */}
                                 <div className={`col-auto p-0 m-0 dropdown text-decoration-none me-sm-1 d-${props.permissions.patient_add == undefined && props.permissions.doctor_add == undefined && props.permissions.appointment_add == undefined ? 'none' : ''}`}>
-                                    <button className="button p-0 m-0 px-2 pe-2 py-1 mt-md-1 button-burntumber dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <button className="button p-0 m-0 px-2 pe-2 py-1 mt-md-1 mt-lg-0 button-burntumber dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         + Add
                                     </button>
                                     <ul className="dropdown-menu">
@@ -296,7 +295,7 @@ function Navbar(props) {
                 <div className={`message_box`}  >
                     <div div className='message_box bg-seashell border border-1 shadow-sm position-absolute end-0 top-0' style={{ height: '100vh', width: '50vh' }}>
                         <div className="chatbox position-relative" style={{ height: '100vh', width: '50vh' }}>
-                            <button className="btn-close position-absolute end-0 me-3 mt-2" onClick={() => { Toggle_Chat(); LeftChat() }} ></button>
+                            <button className="btn-close position-absolute end-0 me-3 mt-2" onClick={() => { Toggle_Chat(); }} ></button>
                             <div className="messagebox bg-seashell pt-5 border border-1" style={{ height: '90vh', width: '50vh' }}>
                                 <ul className='p-2 bg-seashell scroll'>
                                     {
@@ -305,11 +304,11 @@ function Navbar(props) {
                                         ))
                                     }
                                 </ul>
-                                <div className="messages d-block">
+                                <div className="messages d-block ms-3">
 
                                     {
                                         messages.length > 0 ? (
-                                            <div className=' my-2 bg-lightgreen py-2 shadow-sm rounded-4 ps-2 text-lightyellow fw-bold'>{user}:<span className='text-white'>{messages}</span></div>
+                                            <button className='button my-2 button-lightgreen py-2 shadow-sm rounded-4 ps-2 text-lightyellow fw-bold'>{user}:<span className='text-white'>{messages}</span></button>
                                         ) : (
                                             <></>
                                         )

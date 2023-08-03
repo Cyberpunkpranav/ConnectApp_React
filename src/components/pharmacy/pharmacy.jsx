@@ -471,7 +471,7 @@ function Saleentrysection(props) {
           activeClassName={"active "}
         />
       </div>
-      <section className={`newsaleentryform col-xl-6 col-lg-8 col-md-10 p-0 m-0 position-absolute d-${nsef} border border-1 mx-auto top-0 bottom-0 m-auto start-0 end-0 bg-seashell`} style={{ height: "60vh" }} >
+      <section className={`newsaleentryform col-xl-6 col-lg-8 col-md-10 p-0 m-0 position-absolute d-${nsef} border border-1 mx-auto top-0 bottom-0 m-auto start-0 end-0 bg-seashell`} style={{ height: "70vh" }} >
         <SaleEntryForm toggle_nsef={toggle_nsef} GETSalesList={GETSalesList} />
       </section>
     </>
@@ -1447,7 +1447,7 @@ function SaleEntryForm(props) {
   const [searchlist, setsearchlist] = useState([]);
   const [displaysearchlist, setdisplaysearchlist] = useState("none");
   const [patientid, setpatientid] = useState(props.patientid ? props.patientid : "");
-  const [patientdata, setpatientdata] = useState(props.data ? props.data.patient.address ? props.data.patient.address : [] : []);
+  const [patientdata, setpatientdata] = useState([]);
   const [doctorid, setdoctorid] = useState(props.DoctorID ? props.DoctorID : "");
   const [doctorname, setdoctorname] = useState(props.DoctorName ? props.DoctorName : "");
   const [otherdoctor, setotherdoctor] = useState();
@@ -1884,7 +1884,7 @@ function SaleEntryForm(props) {
       "No",
       () => {
         SaveSaleEntryCharges();
-        UpdateStatus()
+
       },
       () => {
         return 0;
@@ -1895,6 +1895,7 @@ function SaleEntryForm(props) {
   async function SaveSaleEntryCharges() {
     let PaymentMethod = [];
     let PaymentMethodDetails = [];
+    let total_money = 0
     for (let i = 0; i < paymentmethods.length; i++) {
       PaymentMethod.push(paymentmethods[i].amount);
       PaymentMethodDetails.push(paymentmethods[i].paymentmethod);
@@ -1907,28 +1908,40 @@ function SaleEntryForm(props) {
       payment_method_details: PaymentMethod,
       admin_id: adminid,
     };
-
-    try {
-      setloading(true);
-      await axios
-        .post(`${url}/sale/entry/save/charges`, Data)
-        .then((response) => {
-          props.GETSalesList();
-          setpaymentmethods([{
-            paymentmethod: "",
-            amount: 0,
-          }])
-          setResponse()
-          ClearForm();
-          setloading(false);
-          props.toggle_nsef()
-          Notiflix.Notify.success(response.data.message);
-        });
-    } catch (e) {
-      setloading(false);
-      Notiflix.Notify.failure(e.message);
+    for (let i = 0; i < paymentmethods.length; i++) {
+      total_money += Number(paymentmethods[i].amount)
     }
+    console.log(total_money,  Math.round(Data.g_total_main))
+    if (total_money == Math.round(Data.g_total_main)) {
 
+      Notiflix.Notify.success('Payment Successfull')
+      try {
+        setloading(true);
+        await axios
+          .post(`${url}/sale/entry/save/charges`, Data)
+          .then((response) => {
+            if (props.saleindex == undefined) {
+              props.GETSalesList()
+              props.toggle_nsef()
+            }
+            setpaymentmethods([{
+              paymentmethod: "",
+              amount: 0,
+            }])
+            setResponse()
+            UpdateStatus()
+            ClearForm();
+            setloading(false);
+
+            Notiflix.Notify.success(response.data.message);
+          });
+      } catch (e) {
+        setloading(false);
+        Notiflix.Notify.failure(e.message);
+      }
+    } else {
+      Notiflix.Notify.warning('Unsufficent Amount to proceed Payment successfully')
+    }
   }
   // useEffect(() => {
   //   SaveSaleEntryCharges()
@@ -2290,8 +2303,10 @@ function SaleEntryForm(props) {
               ) : (<></>)
             }
             {
-              patientdata ? (
-                patientdata && patientdata.address && patientdata.address.length !== 0 ? (
+              patientdata && patientdata.address != undefined ? (
+                patientdata != undefined && patientdata.address.length == 0 ? (
+                  <div className="text-danger fw-bold p-2"> Addresses not found.Please add a new address2{" "} </div>
+                ) : (
                   <div className="overflow-scroll" style={{ height: '30vh' }}>
                     {
                       patientdata.address.map((data, i) => (
@@ -2302,8 +2317,6 @@ function SaleEntryForm(props) {
                       ))
                     }
                   </div>
-                ) : (
-                  <div className="text-danger fw-bold p-2"> Addresses not found.Please add a new address{" "} </div>
                 )
               ) : (<></>)
             }

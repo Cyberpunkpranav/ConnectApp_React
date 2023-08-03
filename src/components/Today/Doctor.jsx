@@ -651,7 +651,7 @@ function DoctorSchedule(props) {
                               saleindex == i ? (
                                 <>
                                   <div className="backdrop"></div>
-                                  <td className={`saleentryform mx-auto col-xl-6 col-lg-8 col-md-10 p-0 m-0 position-absolute bg-seashell shadow-sm top-0 border border-1 rounded-1 start-0 end-0  d-${saleindex == i ? saleindex : 'none'}`} style={{ zIndex: '4', height: "60vh" }}  >
+                                  <td className={`saleentryform mx-auto col-xl-6 col-lg-8 col-md-10 p-0 m-0 position-absolute bg-seashell shadow-sm top-0 border border-1 rounded-1 start-0 end-0  d-${saleindex == i ? saleindex : 'none'}`} style={{ zIndex: '4', height: "70vh" }}  >
                                     <SaleEntryForm data={data} DoctorID={props.DoctorID} DoctorName={props.DoctorName} saleindex={saleindex} toggle_nsef={toggle_nsef} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} patientid={data.patient && data.patient.id != null ? data.patient.id : ""} />
                                   </td>
                                 </>

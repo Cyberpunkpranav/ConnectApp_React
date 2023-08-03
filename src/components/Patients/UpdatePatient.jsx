@@ -124,7 +124,7 @@ const UpdatePatient = (props) => {
                     email: email,
                     address: address,
                     pin_code: pincode,
-                    location: props.location ? props.location : place,
+                    location: place ? place : props.location,
                     is_main: main,
                     latitude: props.latitude ? props.latitude : lat,
                     longitude: props.longitude ? props.longitude : lat,
@@ -167,7 +167,6 @@ const UpdatePatient = (props) => {
 
         if (data.value !== undefined && data.value.place_id !== undefined) {
             setpincode()
-            console.log(data.value.place_id)
             // initialize the map
             const map = new window.google.maps.Map({
                 center: { lat: lat, lng: lng },
@@ -208,7 +207,7 @@ const UpdatePatient = (props) => {
     if (place) {
         geocodeByAddress(place).then(results => getLatLng(results[0])).then(({ lat, lng }) => { setlat(lat); setlng(lng) });
     }
-    // console.log(props.data)
+    console.log(props.location, place)
     return (
         <>
             <h5 className="text-center mt-3 position-relative">Update Patient Details </h5>
@@ -473,10 +472,13 @@ const UpdatePatient = (props) => {
                 <hr />
                 <div className="col-10 pb-2 m-auto">
                     <label htmlFor="inputAddress" className="mb-2">Add Address</label>
+
                     <input type="text" className="form-control" id="inputAddress" value={address ? address : ''} placeholder="Location" onChange={(e) => { setaddress(e.target.value) }} required />
                 </div>
-                <div className="row p-0 m-0 py-2">
+                <div className="row p-0 m-0 py-2 align-items-end">
                     <div className="col-5 m-auto">
+                        <label htmlFor="" className='text-wrap mb-2'>Current Location:<span className='text-charcoal75'>{props.location}</span></label>
+                        <br />
                         <label htmlFor="inputAddress" className="">Select Location</label>
                         <GooglePlacesAutocomplete
                             apiKey='AIzaSyC4wk5k8E6jKkpJClZlXZ8oavuPyi0AMVE'
@@ -490,7 +492,7 @@ const UpdatePatient = (props) => {
                             }}
                         />
                     </div>
-                    <div className="col-5 m-auto">
+                    <div className="col-5 align-self-end">
                         <label htmlFor="inputpincode" className="">Pin Code</label>
                         <input type="number" className="form-control" id="inputpincode" value={pincode ? pincode : ''} placeholder="pincode" onChange={(e) => { setpincode(e.target.value) }} required />
                     </div>
@@ -505,7 +507,7 @@ const UpdatePatient = (props) => {
                             <option value='2'>No</option>
                         </select>
                     </div>
-                    <div className={`conatiner m-0 p-0 d-${display}`}>
+                    <div className={`container m-0 p-0 d-${display}`}>
                         <div className='col-md-5 m-auto'>
                             <label htmlFor="inputrelation" className="">Select Relation</label>
                             <select className='form-control' value={relation ? relation : ''} onChange={(e) => { setrelation(e.target.value) }}>
@@ -537,12 +539,15 @@ const UpdatePatient = (props) => {
                     </div>
 
                 </div>
-                <div className="col-6 py-2 pb-2 m-auto text-center">
-                    <button className="btn button-charcoal" onClick={confirmmessage} > Save Changes </button>
+                <div className="row p-0 m-0 py-5">
+                    <div className="col-6 text-center">
+                        <button className="btn button-charcoal" onClick={confirmmessage} > Save Changes </button>
+                    </div>
+                    <div className="col-6 text-center">
+                        <button className="btn button-pearl " onClick={currentvalue}>Set Previous</button>
+                    </div>
                 </div>
-                <div className="col-6 pb-2 m-auto text-center">
-                    <button className="btn button-pearl " onClick={currentvalue}>Set Previous</button>
-                </div>
+
             </div>
 
         </>

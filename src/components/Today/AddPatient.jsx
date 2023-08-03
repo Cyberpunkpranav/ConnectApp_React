@@ -193,6 +193,7 @@ const AddPatient = (props) => {
             },
         );
     }
+    console.log(place);
     return (
         <>
             <h5 className="text-center position-relative fw-bold pt-2 "> Patient Details </h5>
