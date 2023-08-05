@@ -13,6 +13,7 @@ const AddAddress = (props) => {
     const [address, setaddress] = useState()
     const [pincode, setpincode] = useState()
     const [place, setplace] = useState()
+    const [location, setlocation] = useState()
     const [placeid, setplaceid] = useState()
     const [data, setData] = useState("")
     const [state, setstate] = useState()
@@ -95,6 +96,22 @@ const AddAddress = (props) => {
             {}
         );
     };
+    const confirmmessage2 = (e) => {
+        customconfirm();
+        Notiflix.Confirm.show(
+            `Update Address`,
+            `Do you surely want to Update the following Address?`,
+            "Yes",
+            "No",
+            () => {
+                Update_Address()
+            },
+            () => {
+                return 0;
+            },
+            {}
+        );
+    };
     const clear = () => {
         setcountry()
         setstate()
@@ -104,22 +121,62 @@ const AddAddress = (props) => {
         setpincode()
         setaddress()
     }
+    const fill_data = () => {
+        if (props.data != undefined) {
+            setaddress(props.data.address_line1 != undefined ? props.data.address_line1 : '')
+            setpincode(props.data.zip_code != undefined ? props.data.zip_code : '')
+            setlocation(props.data.city != undefined ? props.data.city : '')
+            setstate(props.data.state != undefined ? props.data.state : '')
+            setcountry(props.data.country != undefined ? props.data.country : '')
+        }
+    }
+
+    const Update_Address = async () => {
+        await axios.post(`${url}/update/patient/address`, {
+            address_id: props.data.id,
+            patient_id: props.data.patient_id,
+            full_name: props.searchinput,
+            address_line_1: address,
+            address_line_2: '',
+            zip_code: pincode,
+            country: country,
+            state: state,
+            city: place,
+        }).then((response) => {
+            if (response.data.status == true) {
+                Notiflix.Notify.success(response.data.message)
+                props.Toggle_Address()
+                clear()
+            }
+            console.log(response)
+        })
+    }
+
+
+
+    useEffect(() => {
+        fill_data()
+    }, [])
+    console.log(props.data, place)
     return (
         <div className='text-center'>
             <div className="text-start">
-                <h5 className='fw-bold text-charcoal py-2'>Add New Address</h5>
+                <h5 className='fw-bold text-charcoal py-2 ms-2'>{props.data != undefined ? 'Update Address' : 'Add New Address'}</h5>
                 <div className="btn-close position-absolute end-0 top-0" onClick={props.Toggle_Address}></div>
-                <div className="col-12 pb-2 m-auto">
+                <div className="col-auto mx-2 pb-2 m-auto">
                     <label htmlFor="inputAddress" className=" fw-bold text-charcoal75 ">Add Address</label>
                     <input type="text" className="form-control " id="inputAddress" value={address ? address : ''} placeholder="Address" onChange={(e) => { setaddress(e.target.value) }} required />
                 </div>
                 <div className="row p-0 m-0 py-2">
+                    <div className={`col-12 d-${props.data != undefined ? 'block' : 'none'} my-2`}>
+                        <label className=" fw-bold text-charcoal75">Selected Location:<span className='text-charcoal ps-1'>{location ? location : <i>Not selected</i>}</span></label>
+                    </div>
                     <div className="col-6 m-auto">
-                        <label htmlFor="inputAddress" className=" fw-bold text-charcoal75">Select Location</label>
+                        <label htmlFor="inputAddress" className=" fw-bold text-charcoal75">{props.data != undefined ? 'Select another Location' : 'Select Location'}</label>
                         <GooglePlacesAutocomplete
                             apiKey='AIzaSyC4wk5k8E6jKkpJClZlXZ8oavuPyi0AMVE'
                             selectProps={{
-                                defaultInputValue: data,
+                                defaultInputValue: location ? location : data,
                                 onChange: setData,
                                 placeholder: "Select Location",
                             }}
@@ -143,7 +200,7 @@ const AddAddress = (props) => {
 
                 </div>
             </div>
-            <div className="button button-charcoal my-2 " onClick={() => { confirmmessage() }}>Save</div>
+            <div className="button button-charcoal my-2 " onClick={() => { props.data ? confirmmessage2() : confirmmessage() }}>Save</div>
         </div>
     )
 }

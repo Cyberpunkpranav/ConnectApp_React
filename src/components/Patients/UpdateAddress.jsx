@@ -3,6 +3,7 @@ import axios from 'axios'
 import { useContext } from 'react'
 import { URL } from '../../index'
 import { customconfirm } from '../features/notiflix/customconfirm'
+import { AddAddress } from './AddAddress'
 // import {useJsApiLoader, Autocomplete } from '@react-google-maps/api'
 import { geocodeByAddress, getLatLng } from 'react-google-places-autocomplete'
 import GooglePlacesAutocomplete from "react-google-places-autocomplete"
@@ -106,17 +107,28 @@ const UpdateAddress = (props) => {
         setpincode()
         setaddress()
     }
-    console.log(props.data)
+    const [addresspage, setaddresspage] = useState('none')
+    const Toggle_Address = () => {
+        if (addresspage == 'block') {
+            setaddresspage('none')
+            setindex()
+        }
+        if (addresspage == 'none') {
+            setaddresspage('block')
+        }
+    }
+
     return (
-        <>
-            <h5 className='fw-bold text-charcoal py-2'>Update Address of {props.data.full_name}</h5>
+        <div className=''>
+            <h5 className='fw-bold text-charcoal py-2 ms-3'>Update Address of {props.data.full_name}</h5>
+            <div className="btn-close position-absolute top-0 end-0 mt-2 me-2" onClick={props.CloseUpdateAddress}></div>
             <div className="container text-start p-0 m-0">
                 {
                     props.data.address.map((data, i) => (
                         <div className="container-fluid position-relative">
                             <div className="row">
                                 <div className="col-auto">
-                                    <div className="button p-0 m-0" onClick={() => { setindex(i) }}><img src={process.env.PUBLIC_URL + "/images/confirmed.png"} alt="" /></div>
+                                    <div className="button p-0 m-0" onClick={() => { setindex(i); Toggle_Address() }}><img src={process.env.PUBLIC_URL + "/images/confirmed.png"} alt="" /></div>
                                 </div>
                                 <div className="col-8">
                                     <button className='button button-pearl d-block my-2'>
@@ -127,58 +139,19 @@ const UpdateAddress = (props) => {
                                     <div className="button p-0 m-0"><img src={process.env.PUBLIC_URL + "/images/minus.png"} alt="" /></div>
                                 </div>
                             </div>
-                            <section className={`d-${index == i ? 'block' : 'none'} position-absolute top-0 start-0 end-0`}>
+                            <section className={`d-${index == i ? addresspage : 'none'} position-absolute top-0 mx-auto bg-seashell shadow-sm border border-1`} style={{ zIndex: '4' }}>
                                 {
                                     index == i ? (
-                                        <div className='text-center'>
-                                            <div className="text-start">
-                                                <h5 className='fw-bold text-charcoal py-2'>Update Address</h5>
-                                                <div className="btn-close position-absolute end-0 top-0" onClick={props.CloseUpdateAddress}></div>
-                                                <div className="col-12 pb-2 m-auto">
-                                                    <label htmlFor="inputAddress" className=" fw-bold text-charcoal75 ">Add Address</label>
-                                                    <input type="text" className="form-control " id="inputAddress" value={address ? address : ''} placeholder="Address" onChange={(e) => { setaddress(e.target.value) }} required />
-                                                </div>
-                                                <div className="row p-0 m-0 py-2">
-                                                    <div className="col-6 m-auto">
-                                                        <label htmlFor="inputAddress" className=" fw-bold text-charcoal75">Select Location</label>
-                                                        <GooglePlacesAutocomplete
-                                                            apiKey='AIzaSyC4wk5k8E6jKkpJClZlXZ8oavuPyi0AMVE'
-                                                            selectProps={{
-                                                                defaultInputValue: data,
-                                                                onChange: setData,
-                                                                placeholder: "Select Location",
-                                                            }}
-                                                            onLoadFailed={(error) => {
-                                                                console.log(error);
-                                                            }}
-                                                        />
-                                                    </div>
-                                                    <div className="col-6 m-auto">
-                                                        <label htmlFor="inputpincode" className=" fw-bold text-charcoal75">Pin Code</label>
-                                                        <input type="text" className="form-control " id="inputpincode" value={pincode ? pincode : ''} placeholder="pincode" onChange={(e) => { setpincode(e.target.value) }} required />
-                                                    </div>
-                                                    <div className="col-6 m-auto">
-                                                        <label htmlFor="inputpincode" className=" fw-bold text-charcoal75">State</label>
-                                                        <input type="text" className="form-control" id="inputpincode" value={state ? state : ''} placeholder="state" onChange={(e) => { setstate(e.target.value) }} required />
-                                                    </div>
-                                                    <div className="col-6 m-auto">
-                                                        <label htmlFor="inputpincode" className=" fw-bold text-charcoal75">Country</label>
-                                                        <input type="text" className="form-control" id="inputpincode" value={country ? country : ''} placeholder="country" onChange={(e) => { setcountry(e.target.value) }} required />
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                            <div className="button button-charcoal my-2 " onClick={() => { confirmmessage() }}>Save</div>
-                                        </div>
+                                        <AddAddress data={data} setindex={setindex} Toggle_Address={Toggle_Address} />
                                     ) : (<></>)
                                 }
                             </section>
                         </div>
                     ))
                 }
-            </div>
+            </div >
 
-        </>
+        </div>
     )
 }
 

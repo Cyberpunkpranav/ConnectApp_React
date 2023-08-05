@@ -182,7 +182,6 @@ function Patients() {
                           <ul className="dropdown-menu shadow-sm p-2 scroll" style={{ '-webkit-appearance': 'none', 'appearance': 'none', width: 'max-content', height: '40vh' }}>
                             <li className="dropdown-item d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { settabindex(i); OpenUpdatePatient(i) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/confirmed.png"} alt="displaying_image" style={{ width: "1.8rem" }} /> Update Patient</li>
                             <li className="dropdown-item d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { OpenUpdateAddress(i) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/confirmed.png"} alt="displaying_image" style={{ width: "1.8rem" }} />Update Address</li>
-
                           </ul>
                           {
                             form == i ? (
@@ -193,7 +192,7 @@ function Patients() {
                           }
                           {
                             form2 == i ? (
-                              <section className={`updatepatientform text-start position-absolute d-${form2 == i ? updateaddress : 'none'} bg-seashell top-0 rounded-1 shadow-sm border`}>
+                              <section className={`updatepatientform col-12 text-start position-absolute d-${form2 == i ? updateaddress : 'none'} bg-seashell top-0 rounded-1 shadow-sm border`} style={{ width: '100vh' }}>
                                 <UpdateAddress i={i} data={data} CloseUpdateAddress={CloseUpdateAddress} />
                               </section>
                             ) : (<></>)
