@@ -16,9 +16,10 @@ const VendorDetails = () => {
     const [fromdate, setfromdate] = useState();
     const [todate, settodate] = useState();
     const [Loading, setLoading] = useState(false);
-    const [vendordetailsarr, setvendordetailsarr] = useState([]);
     const [pages, setpages] = useState([]);
     const [pagecount, setpagecount] = useState();
+    const [vendorsearch, setvendorsearch] = useState([])
+    const [loadvendors, setloadvendors] = useState(false)
 
     const reversefunction = (date) => {
         if (date) {
@@ -26,79 +27,98 @@ const VendorDetails = () => {
             return date;
         }
     };
-
-    function GetPages() {
+    const GETVendorDetails = async (search) => {
+        setloadvendors(true);
         try {
-            axios
-                .get(
-                    `${url}/sale/entry?clinic_id=${ClinicID}&from_date=${fromdate ? fromdate : currentDate
-                    }&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`
-                )
+            await axios
+                .get(`${url}/kyc/list?limit=100&offset=0`)
                 .then((response) => {
-                    setpagecount(response.data.data.total_count);
-                    setpages(Math.round(response.data.data.total_count / 25) + 1);
-                    setLoading(false);
+                    setvendorsearch(response.data.data);
+                    setloadvendors(false);
                 })
-                .catch((e) => {
-                    Notiflix.Notify.warning(e);
-                    setLoading(false);
+                .catch(function error(e) {
+                    Notiflix.Notify.warning(e.data.message);
+                    setloadvendors(false);
                 });
         } catch (e) {
-            Notiflix.Notify.warning(e.message);
-            setLoading(false);
+            setloadvendors(false);
+            Notiflix.Notify.warning(e.data.message);
         }
-    }
-    function GETVendorDetails(Data) {
-        if (Data == undefined || Data.selected == undefined) {
-            setLoading(true);
-            try {
-                axios.get(`${url}/sale/entry?clinic_id=${ClinicID}&limit=25&offset=0&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`)
-                    .then((response) => {
-                        console.log(response);
-                        setvendordetailsarr(response.data.data.sale_entry);
-                        setLoading(false);
-                    })
-                    .catch((e) => {
-                        Notiflix.Notify.warning(e);
-                        setLoading(false);
-                    });
-            } catch (e) {
-                Notiflix.Notify.warning(e.message);
-                setLoading(false);
-            }
-        } else {
-            setLoading(true);
-            try {
-                axios
-                    .get(
-                        `${url}/sale/entry?clinic_id=${ClinicID}&limit=25&offset=${Data.selected * 25
-                        }&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate
-                        }`
-                    )
-                    .then((response) => {
-                        console.log(response);
-                        setvendordetailsarr(response.data.data.sale_entry);
-                        setLoading(false);
-                    })
-                    .catch((e) => {
-                        Notiflix.Notify.warning(e);
-                        setLoading(false);
-                    });
-            } catch (e) {
-                Notiflix.Notify.warning(e.message);
-                setLoading(false);
-            }
-        }
-    }
+    };
+
+    // function GetPages() {
+    //     try {
+    //         axios
+    //             .get(
+    //                 `${url}/sale/entry?clinic_id=${ClinicID}&from_date=${fromdate ? fromdate : currentDate
+    //                 }&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`
+    //             )
+    //             .then((response) => {
+    //                 setpagecount(response.data.data.total_count);
+    //                 setpages(Math.round(response.data.data.total_count / 25) + 1);
+    //                 setLoading(false);
+    //             })
+    //             .catch((e) => {
+    //                 Notiflix.Notify.warning(e);
+    //                 setLoading(false);
+    //             });
+    //     } catch (e) {
+    //         Notiflix.Notify.warning(e.message);
+    //         setLoading(false);
+    //     }
+    // }
+    // function GETVendorDetails(Data) {
+    //     if (Data == undefined || Data.selected == undefined) {
+    //         setLoading(true);
+    //         try {
+    //             axios.get(`${url}/sale/entry?clinic_id=${ClinicID}&limit=25&offset=0&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`)
+    //                 .then((response) => {
+    //                     console.log(response);
+    //                     setvendordetailsarr(response.data.data.sale_entry);
+    //                     setLoading(false);
+    //                 })
+    //                 .catch((e) => {
+    //                     Notiflix.Notify.warning(e);
+    //                     setLoading(false);
+    //                 });
+    //         } catch (e) {
+    //             Notiflix.Notify.warning(e.message);
+    //             setLoading(false);
+    //         }
+    //     } else {
+    //         setLoading(true);
+    //         try {
+    //             axios
+    //                 .get(
+    //                     `${url}/sale/entry?clinic_id=${ClinicID}&limit=25&offset=${Data.selected * 25
+    //                     }&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate
+    //                     }`
+    //                 )
+    //                 .then((response) => {
+    //                     console.log(response);
+    //                     setvendordetailsarr(response.data.data.sale_entry);
+    //                     setLoading(false);
+    //                 })
+    //                 .catch((e) => {
+    //                     Notiflix.Notify.warning(e);
+    //                     setLoading(false);
+    //                 });
+    //         } catch (e) {
+    //             Notiflix.Notify.warning(e.message);
+    //             setLoading(false);
+    //         }
+    //     }
+    // }
 
 
-    useEffect(() => {
-        GetPages();
-    }, [fromdate, todate]);
+    // useEffect(() => {
+    //     GetPages();
+    // }, [fromdate, todate]);
 
     useEffect(() => {
         GETVendorDetails();
-    }, [pagecount]);
+    }, []);
+    console.log(vendorsearch)
     return (
         <>
             <div className="row p-0 m-0 justify-content-lg-between justify-content-md-evenly justify-content-center text-center mt-2">
@@ -143,10 +163,7 @@ const VendorDetails = () => {
                         </tr>
                     </thead>
                     {Loading ? (
-                        <tbody
-                            className="text-center"
-                            style={{ minHeight: "55vh", height: "55vh" }}
-                        >
+                        <tbody className="text-center" style={{ minHeight: "55vh", height: "60vh" }} >
                             <tr className="position-absolute border-0 start-0 end-0 px-5">
                                 <div class="d-flex align-items-center spinner">
                                     <strong className="" style={{ fontSize: "1rem" }}>
@@ -160,19 +177,21 @@ const VendorDetails = () => {
                                 </div>
                             </tr>
                         </tbody>
-                    ) : vendordetailsarr && vendordetailsarr.length != 0 ? (
+                    ) : vendorsearch && vendorsearch.length != 0 ? (
                         <tbody>
-                            {vendordetailsarr.map((item, i) => (
+                            {vendorsearch.map((item, i) => (
                                 <tr className={` bg-${i % 2 == 0 ? "seashell" : "pearl"} align-middle`} key={i} >
-                                    <td className="text-charcoal fw-bold"> </td>
-                                    <td className="text-charcoal fw-bold"> </td>
-                                    <td className="text-charcoal fw-bold"> </td>
-                                    <td className="text-charcoal fw-bold"> </td>
-                                    <td className="text-charcoal fw-bold"> </td>
-                                    <td className="text-charcoal fw-bold"> </td>
-                                    <td className="text-charcoal fw-bold"> </td>
-                                    <td className="text-charcoal fw-bold"> </td>
-                                    <td className="text-charcoal fw-bold"> </td>
+                                    <td className="text-charcoal fw-bold">{item.entity_name != undefined ? item.entity_name : ''} </td>
+                                    <td className="text-charcoal fw-bold">{item.GSTIN_no != undefined ? item.GSTIN_no : ''} </td>
+                                    <td className="text-charcoal fw-bold">{item.PAN_no != undefined ? item.PAN_no : ''} </td>
+                                    <td className="text-charcoal fw-bold">{item.MSME_no != undefined ? item.MSME_no : ''} </td>
+                                    <td className="text-charcoal fw-bold">{item.account_number != undefined ? item.account_number : ''} </td>
+                                    <td className="text-charcoal fw-bold">{item.ifsc_code != undefined ? item.ifsc_code : ''} </td>
+                                    <td className="text-charcoal fw-bold">{item.bank_name != undefined ? item.bank_name : ''} </td>
+                                    <td className="text-charcoal fw-bold">{item.mobile_no != undefined ? item.mobile_no : ''}</td>
+                                    <td className="text-charcoal fw-bold">{item.email_for_communication != undefined ? item.email_for_communication : ''} </td>
+                                    <td className="text-charcoal fw-bold">{item.state != undefined ? item.state : ''} </td>
+
                                 </tr>
                             ))}
                         </tbody>
@@ -185,31 +204,7 @@ const VendorDetails = () => {
                     )}
                 </table>
             </div>
-            <div className="container-fluid mt-2 d-flex justify-content-center">
-                <ReactPaginate
-                    previousLabel={"Previous"}
-                    nextLabel={"Next"}
-                    breakLabel={"."}
-                    pageCount={pages}
-                    marginPagesDisplayed={3}
-                    pageRangeDisplayed={2}
-                    onPageChange={GETVendorDetails}
-                    containerClassName={
-                        "pagination scroll align-self-center align-items-center"
-                    }
-                    pageClassName={"page-item text-charcoal"}
-                    pageLinkClassName={
-                        "page-link text-decoration-none text-charcoal border-charcoal rounded-1 mx-1"
-                    }
-                    previousClassName={"btn button-charcoal-outline me-2"}
-                    previousLinkClassName={"text-decoration-none text-charcoal"}
-                    nextClassName={"btn button-charcoal-outline ms-2"}
-                    nextLinkClassName={"text-decoration-none text-charcoal"}
-                    breakClassName={"d-flex mx-2 text-charcoal fw-bold fs-4"}
-                    breakLinkClassName={"text-decoration-none text-charcoal"}
-                    activeClassName={"active"}
-                />
-            </div>
+
         </>
     )
 }

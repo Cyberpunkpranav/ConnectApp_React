@@ -99,7 +99,7 @@ const Reports = () => {
     if (_selected === 0) {
       return (
         <>
-          <select className="ms-2 mt-2 px-4 py-1 text-pearl rounded-pill bg-charcoal text-center " onChange={(e) => { setselect(e.target.value) }} style={{ cursor: 'pointer' }} >
+          <select className="ms-2 mt-2 px-4 py-1 text-white rounded-pill bg-charcoal text-center " onChange={(e) => { setselect(e.target.value) }} style={{ cursor: 'pointer' }} >
             <option className="bg-seashell text-charcoal" value="0" style={{ cursor: 'pointer' }} >Stock Report</option>
             <option className="bg-seashell text-charcoal" value="1" style={{ cursor: 'pointer' }} >StockReport By ItemName</option>
             <option className="bg-seashell text-charcoal" value="2" style={{ cursor: 'pointer' }} >Stock Valuation</option>

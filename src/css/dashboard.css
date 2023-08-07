@@ -440,11 +440,11 @@ body {
 }
 
 .consumables {
-    margin-top: -5vh !important;
+    margin-top: -10vh !important;
 }
 
 .search {
-    width: 15vh;
+    width: 100%;
 }
 
 /*------------------------------------------------------------------Common css--------------------------------------------------------------*/

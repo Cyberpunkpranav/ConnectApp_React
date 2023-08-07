@@ -83,6 +83,7 @@ const AddConsumables = (props) => {
             } catch (e) {
                 setloadbyId(false)
                 Notiflix.Notify.failure(e.message)
+                console.log(e.message)
             }
         }
     }
@@ -281,7 +282,6 @@ const AddConsumables = (props) => {
             setce('block')
         }
         if (ce === 'block') {
-            setce('none')
         }
     }
     const NurseNotes = async () => {
@@ -315,9 +315,9 @@ const AddConsumables = (props) => {
             Notiflix.Notify.warning(e.data.message)
         }
     }
-    console.log(i)
+    console.log(props.existedconsumables)
     return (
-        <div className="container-fluid bg-seashell rounded-2 position-relative mx-auto col-lg-11 col-md-11 col-sm-11 col-11 col-xl-9 ">
+        <div className="container-fluid bg-seashell rounded-2 position-relative mx-auto col-lg-11 col-md-11 col-sm-11 col-11 col-xl-9" style-={{ height: '70vh' }}>
             <div className='position-relative mb-3 pt-2'>
                 <h5 className='text-start text-charcoal fw-bold '>{props.patientname} Consumables</h5>
                 <button className='btn btn-close position-absolute p-1 m-0 end-0 top-0 me-2 pt-4' disabled={load ? true : false} onClick={props.toggleConsumables}></button>
@@ -436,7 +436,7 @@ const AddConsumables = (props) => {
                 <div className="col-12 m-0 p-0">
                     <div className="d-flex justify-content-between">
                     </div>
-                    <div className='scroll scroll-y' style={{ height: '30vh' }}>
+                    <div className='scroll scroll-y' style={{ height: '40vh' }}>
                         <table className='table'>
                             <thead className=' bg-seashell position-sticky top-0'>
                                 <tr className={``}>
@@ -496,62 +496,55 @@ const AddConsumables = (props) => {
                                         }
                                     </tbody>
                                 ) : (
-                                    <></>
+                                    <tbody className='p-0 m-0'>
+                                        <tr className='p-0 m-0 text-center'>
+                                            <td className='position-absolute text-charcoal75 fw-bold start-0 end-0'>No Consumabels Added</td>
+                                        </tr>
+
+
+                                    </tbody>
                                 )
                             }
 
                             {
-                                props.existedconsumables && props.existedconsumables.length !== 0 ? (
-                                    <tbody className='p-0 m-0'>
-                                        {
-                                            props.existedconsumables.length !== 0 ? (
-                                                props.existedconsumables.map((data, key) => (
-                                                    <tr className={`align-middle bg-${Number(data.disccost) < Number(data.cost) ? 'lightred50' : ''}`}>
-                                                        <td>m{data.medicies_stocks_id}</td>
-                                                        <td>{data.medicine.display_name}</td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td className='text-start p-0 m-0 ps-4'>{data.discount} </td>
-                                                        <td>₹{data.main_mrp}</td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td>₹{data.disc_mrp}</td>
-                                                        <td>₹{data.total_amount}</td>
-                                                        <td>
-                                                            {
-                                                                deleteload && i == key ? (
-                                                                    <div className="text-charcoal spinner-border spinner-border-sm me-2 " role="status" aria-hidden="true" ></div>
-                                                                ) : (
-                                                                    <img src={process.env.PUBLIC_URL + 'images/delete.png'} onClick={() => { seti(key); RemoveConsumable(data.id) }} />
-                                                                )
-                                                            }
-                                                        </td>
-                                                    </tr>
-                                                ))
-                                            ) : (<tbody>
-                                                <tr>
-                                                    No consumables Found
-                                                </tr>
-                                            </tbody>)
-
-                                        }
-                                    </tbody>
+                                props.existedconsumables && props.existedconsumables.length == 0 ? (
+                                    <></>
                                 ) : (
-                                    <tbody className='position-relative'>
-                                        <tr className='p-0 m-0 text-center'>
-                                            <td className='position-absolute text-charcoal75 fw-bold start-0 end-0'>No Consumabels Added</td>
-                                        </tr>
+                                    <tbody className='position-relative bg-seashell'>
+                                        {
+                                            props.existedconsumables.map((data, key) => (
+                                                <tr className={`align-middle bg-${Number(data.disccost) < Number(data.cost) ? 'lightred50' : ''}`}>
+                                                    <td>m{data.medicies_stocks_id}</td>
+                                                    <td>{data.medicine.display_name}</td>
+                                                    <td>{data.medicine_stocks.batch_no}</td>
+                                                    <td>{reversefunction(data.medicine_stocks.expiry_date)}</td>
+                                                    <td></td>
+                                                    <td>{data.qty}</td>
+                                                    <td className='text-start p-0 m-0 ps-4'>{data.discount} </td>
+                                                    <td>₹{data.main_mrp}</td>
+                                                    <td>₹{data.medicine_stocks.cost}</td>
+                                                    <td>{Number(data.CGST_rate) + Number(data.SGST_rate) + Number(data.IGST_rate) + "%"}</td>
+                                                    <td>₹{data.disc_mrp}</td>
+                                                    <td>₹{data.total_amount}</td>
+                                                    <td>
+                                                        {
+                                                            deleteload && i == key ? (
+                                                                <div className="text-charcoal spinner-border spinner-border-sm me-2 " role="status" aria-hidden="true" ></div>
+                                                            ) : (
+                                                                <img src={process.env.PUBLIC_URL + 'images/delete.png'} onClick={() => { seti(key); RemoveConsumable(data.id) }} />
+                                                            )
+                                                        }
+                                                    </td>
+                                                </tr>
+                                            ))
+                                        }
                                     </tbody>
                                 )
                             }
-
-
                         </table>
                     </div>
                 </div>
-                <div className="container" style={{ paddingBottom: '10%' }}>
+                <div className="container" style={{ height: '30vh', paddingBottom: '10vh' }}>
                     <h6 className='fw-bold p-0 m-0 ps-0 ms-0 my-2'>Nurse notes</h6>
                     {
                         loadnotes ? (

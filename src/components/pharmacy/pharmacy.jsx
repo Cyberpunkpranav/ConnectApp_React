@@ -1911,7 +1911,7 @@ function SaleEntryForm(props) {
     for (let i = 0; i < paymentmethods.length; i++) {
       total_money += Number(paymentmethods[i].amount)
     }
-    console.log(total_money,  Math.round(Data.g_total_main))
+    console.log(total_money, Math.round(Data.g_total_main))
     if (total_money == Math.round(Data.g_total_main)) {
 
       Notiflix.Notify.success('Payment Successfull')
@@ -1920,10 +1920,13 @@ function SaleEntryForm(props) {
         await axios
           .post(`${url}/sale/entry/save/charges`, Data)
           .then((response) => {
-            if (props.saleindex == undefined) {
+            if (props.saleindex != undefined) {
+              console.log('Run')
+            } else {
               props.GETSalesList()
-              props.toggle_nsef()
             }
+            props.toggle_nsef()
+
             setpaymentmethods([{
               paymentmethod: "",
               amount: 0,
@@ -1937,7 +1940,7 @@ function SaleEntryForm(props) {
           });
       } catch (e) {
         setloading(false);
-        Notiflix.Notify.failure(e.message);
+        // Notiflix.Notify.failure(e.message);
       }
     } else {
       Notiflix.Notify.warning('Unsufficent Amount to proceed Payment successfully')
@@ -1997,7 +2000,7 @@ function SaleEntryForm(props) {
     }
   }
 
-  console.log(patientid, patientdata, props.data)
+  console.log(patientid, patientdata, props.data, props.saleindex)
   return (
     <>
       <div className="saleentry rounded-2">
@@ -2046,7 +2049,7 @@ function SaleEntryForm(props) {
                 </div>
               </div>
 
-              <button className="button-sm button-charcoal rounded-1 my-2">Add Doctor</button>
+              {/* <button className="button-sm button-charcoal rounded-1 my-2">Add Doctor</button> */}
             </div>
           </div>
           <div className="w-100 position-absolute bottom-0 bg-pearl py-2">
@@ -2285,7 +2288,7 @@ function SaleEntryForm(props) {
           <div className="container mt-4 position-relative " >
             <h6 className="fw-bold text-charcoal75">Select Shipping Address</h6>
             {
-              props.data != undefined ? (
+              props.data != undefined && patientdata != undefined && patientdata.length == 0 ? (
                 props.data && props.data.patient && props.data.patient.address && props.data.patient.address.length !== 0 ? (
                   <div className="overflow-scroll " style={{ height: '30vh' }}>
                     {
@@ -2305,7 +2308,7 @@ function SaleEntryForm(props) {
             {
               patientdata && patientdata.address != undefined ? (
                 patientdata != undefined && patientdata.address.length == 0 ? (
-                  <div className="text-danger fw-bold p-2"> Addresses not found.Please add a new address2{" "} </div>
+                  <div className="text-danger fw-bold p-2"> Addresses not found.Please add a new address{" "} </div>
                 ) : (
                   <div className="overflow-scroll" style={{ height: '30vh' }}>
                     {

@@ -641,7 +641,7 @@ function DoctorSchedule(props) {
                               consumablesindex == i ? (
                                 <>
                                   <div className="backdrop"></div>
-                                  <td className={`consumables mx-auto position-absolute top-0 start-0 end-0   d-${consumablesindex == i ? consumables : 'none'} `} style={{ zIndex: '4' }} >
+                                  <td className={`consumables mx-auto position-absolute top-0 start-0 end-0   d-${consumablesindex == i ? consumables : 'none'} `} style={{ zIndex: '4', height: '70vh' }} >
                                     <AddConsumables appointmentdata={appointmentdata[i]} Appointmentlist={Appointmentlist} existedconsumables={appointmentdata[i].medicine_used.reverse()} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} appointmentid={data.id} toggleConsumables={toggleConsumables} />
                                   </td>
                                 </>

@@ -251,7 +251,7 @@ function Navbar(props) {
                             <div className="row p-0 m-0 align-items-center justify-content-md-start justify-content-center">
                                 <div className="col-sm-auto col-xl-8 col-lg-8 col-md-8 me-1 col-7 p-0 m-0 position-relative " style={{ zIndex: '3' }} >
                                     <input type="text" className="rounded-1 text-charcoal search bg-charcoal25 positon-relative border border-0 text-start py-sm-1 ps-2 py-1 fw-bold" placeholder="search" onChange={(e) => setsearchtext(e.target.value)} />
-                                    <div className="position-absolute bg-pearl rounded-2 end-0 shadow mt-1 ">
+                                    <div className="position-absolute bg-pearl rounded-2 end-0 shadow mt-1 " style={{ width: '60vh' }}>
                                         <SearchField searchtext={searchtext} fetchapi={props.fetchapi} />
                                     </div>
                                 </div>
@@ -288,7 +288,7 @@ function Navbar(props) {
                 )
             }
 
-            <div className="position-absolute bottom-0 end-0 me-5 mb-3 d-block">
+            <div className="position-absolute bottom-0 end-0 me-5 mb-3 d-block" style={{zIndex:'10  '}}>
                 <button className={`btn p-0 m-0 text-pearl fw-bold bg-charcoal p-2`} onClick={() => Toggle_Chat()}>Chat</button>
             </div>
             <div className={`d-${openchat}`} ref={message_Box} style={{ zIndex: '4' }}>
