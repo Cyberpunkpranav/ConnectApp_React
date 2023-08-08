@@ -95,7 +95,7 @@ h5 {
 }
 
 img {
-    width: 1.5rem !important;
+    width: 1.5rem;
     padding: 0.45rem !important;
     box-sizing: content-box !important;
     cursor: pointer;

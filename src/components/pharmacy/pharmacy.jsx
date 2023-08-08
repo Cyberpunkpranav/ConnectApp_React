@@ -17,6 +17,10 @@ import { UpdateMedicine } from "./UpdateMedicine";
 
 //-------------------------------------------------Sales------------------------------------------------------------------------------------------
 function Salesection(props) {
+  const currentDate = useContext(TodayDate);
+  const ClinicID = localStorage.getItem("ClinicId");
+  const [fromdate, setfromdate] = useState();
+  const [todate, settodate] = useState();
   const permission = useContext(Permissions);
   const first = [
     {
@@ -33,34 +37,45 @@ function Salesection(props) {
   const _selectedScreen = (_selected) => {
     if (_selected === 0) {
       return (
-        <Saleentrysection function={props.func} function2={props.function} />
+        <Saleentrysection function={props.func} function2={props.function} fromdate={fromdate} todate={todate} ClinicID={ClinicID} />
       );
     }
     if (_selected === 1) {
-      return <SaleReturns />;
+      return <SaleReturns fromdate={fromdate} todate={todate} ClinicID={ClinicID} />;
     }
     return <div className="fs-2">Nothing Selected</div>;
   };
   return (
     <>
       <section className="salesection pt-1">
-        <div className="container-fluid p-0 m-0">
-          <div className="row gx-3 p-0 m-0">
-            <div className="col-10">
-              <div className="row">
-                {first.map((e, i) => {
-                  return (
-                    <div
-                      className={`col-auto salebuttons d-${e.display == 1 ? "" : "none"
-                        }`}
-                    >
-                      <button className={`btn btn-sm rounded-pill text-${i === second ? "light" : "dark"} bg-${i === second ? "charcoal" : "seashell"}`} onClick={(a) => setSecond(i)} >
-                        {e.option}
-                      </button>
-                    </div>
-                  );
-                })}
+        <div className="container-fluid p-0 m-0 mt-3">
+          <div className="row gx-3 p-0 m-0 ms-1">
+            <div className="col-auto">
+              <div class="dropdown ">
+                <button class="button button-seashell border-0 rounded-2 fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Sale Type <img src={process.env.PUBLIC_URL + '/images/bottom.png'} style={{ rotate: '-90deg', width: '0.3rem' }} />
+                </button>
+                <ul class="dropdown-menu bg-seashell shadow-sm border-0">
+                  {
+                    first.map((e, i) => (
+                      <li className={`dropdown-item text-${i === second ? "light" : "dark"} fw-bold bg-${i === second ? "charcoal" : "seashell"}`} onClick={(a) => setSecond(i)} > {e.option} </li>
+                    )
+                    )
+                  }
+                </ul>
               </div>
+            </div>
+            <div className="col-auto bg-seashell rounded-2 ">
+              <div className="row p-0 m-0 align-items-center align-self-center">
+                <div className="col-auto p-0 m-0">
+                  <input type="date" placeholder="fromdate" className="button button-seashell rounded-0 border-0 text-charcoal text-center fw-bold " value={fromdate ? fromdate : currentDate ? currentDate : ""} onChange={(e) => { setfromdate(e.target.value); }} />
+                </div>
+                <div className="col-auto p-0 m-0">-</div>
+                <div className="col-auto p-0 m-0">
+                  <input type="date" className=" border-0 button button-seashell text-charcoal text-center fw-bold" value={todate ? todate : fromdate ? fromdate : currentDate ? currentDate : ""} onChange={(e) => { settodate(e.target.value); }} />                </div>
+              </div>
+            </div>
+            <div className="col-auto p-0 m-0">
             </div>
           </div>
         </div>
@@ -76,13 +91,13 @@ function Salesection(props) {
 function Saleentrysection(props) {
   const permission = useContext(Permissions);
   const currentDate = useContext(TodayDate);
-  const ClinicID = localStorage.getItem("ClinicId");
+  const ClinicID = props.ClinicID;
+  const fromdate = props.fromdate;
+  const todate = props.todate;
   const adminid = localStorage.getItem("id");
   const url = useContext(URL);
   const [seidw, setseidw] = useState("none");
   const [channel, setchannel] = useState(1);
-  const [fromdate, setfromdate] = useState();
-  const [todate, settodate] = useState();
   const [Loading, setLoading] = useState(false);
   const [saleentryarr, setsaleentryarr] = useState([]);
   const [saleentryarrforExcel, setsaleentryarrforExcel] = useState([]);
@@ -122,11 +137,7 @@ function Saleentrysection(props) {
   }
   function GetPages() {
     try {
-      axios
-        .get(
-          `${url}/sale/entry?clinic_id=${ClinicID}&from_date=${fromdate ? fromdate : currentDate
-          }&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`
-        )
+      axios.get(`${url}/sale/entry?clinic_id=${ClinicID}&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`)
         .then((response) => {
           setpagecount(response.data.data.total_count);
           setpages(Math.round(response.data.data.total_count / 25) + 1);
@@ -145,11 +156,7 @@ function Saleentrysection(props) {
     if (Data == undefined || Data.selected == undefined) {
       setLoading(true);
       try {
-        axios
-          .get(
-            `${url}/sale/entry?clinic_id=${ClinicID}&limit=25&offset=0&from_date=${fromdate ? fromdate : currentDate
-            }&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`
-          )
+        axios.get(`${url}/sale/entry?clinic_id=${ClinicID}&limit=25&offset=0&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`)
           .then((response) => {
             console.log(response);
             setsaleentryarr(response.data.data.sale_entry);
@@ -166,12 +173,7 @@ function Saleentrysection(props) {
     } else {
       setLoading(true);
       try {
-        axios
-          .get(
-            `${url}/sale/entry?clinic_id=${ClinicID}&limit=25&offset=${Data.selected * 25
-            }&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate
-            }`
-          )
+        axios.get(`${url}/sale/entry?clinic_id=${ClinicID}&limit=25&offset=${Data.selected * 25}&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`)
           .then((response) => {
             console.log(response);
             setsaleentryarr(response.data.data.sale_entry);
@@ -211,7 +213,7 @@ function Saleentrysection(props) {
 
   useEffect(() => {
     GetPages();
-  }, [channel, fromdate, todate]);
+  }, [fromdate, todate]);
 
   useEffect(() => {
     GETSalesList();
@@ -254,21 +256,16 @@ function Saleentrysection(props) {
   const UpdateStatus = async (e, id) => {
     console.log(e.target.value, id);
     try {
-      await axios
-        .post(`${url}/sale/entry/change/status`, {
-          sale_entry_id: id,
-          status: e.target.value,
-          admin_id: adminid,
-        })
+      await axios.post(`${url}/sale/entry/change/status`, { sale_entry_id: id, status: e.target.value, admin_id: adminid, })
         .then((response) => {
           console.log(response);
           Notiflix.Notify.success(response.data.message);
           GETSalesList();
-        });
+        })
     } catch (e) {
       Notiflix.Notify.failure(e.message);
     }
-  };
+  }
   const Generate_Bill = async (id) => {
     Notiflix.Loading.circle("Generating Bill", {
       backgroundColor: "rgb(242, 242, 242,0.5)",
@@ -322,32 +319,16 @@ function Saleentrysection(props) {
       }
     }
   };
-  console.log(saleentryarr, pages);
+  console.log(saleentryarr, pages, props.fromdate, props.todate);
   return (
     <>
       <button className={`button addentrypurchase button-charcoal position-absolute d-${permission.sale_entry_add == 1 ? "" : "none"}`} onClick={toggle_nsef} >
         <img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt="displaying_image" className="img-fluid p-0 m-0" style={{ width: `1.5rem` }} />
         Entry Sale
       </button>
-      <div className="row p-0 m-0 justify-content-lg-between justify-content-md-evenly justify-content-center text-center mt-2">
+      <div className="row p-0 m-0 justify-content-lg-between justify-content-md-evenly justify-content-center text-center">
         <div className="col-lg-2 col-md-2 col-3 text-center p-0 m-0 ">
-          <button type="button" className="btn p-0 m-0 heading text-charcoal fw-bolder" style={{ width: "fit-content" }} > {pagecount} {pagecount > 0 ? "Sale Entries" : "Sale Entry"}{" "} </button>
-        </div>
-        <div className="col-lg-8 col-md-8 col-7  p-0 m-0  border-0">
-          <div className="row p-0 m-0 border-burntumber fw-bolder rounded-1">
-            {/* <div className="col-4 bg-pearl rounded-1">
-              <select className='p-0 m-0 bg-pearl border-0 text-burntumber fw-bolder' value={channel ? channel : ''} onChange={(e) => { setchannel(e.target.value) }}>
-                <option className='border-0 text-burntumber fw-bolder' value='1'>Pharmacy</option>
-                <option className='border-0 text-burntumber fw-bolder' value='2'>Consumables</option>
-              </select>
-            </div> */}
-            <div className="col-6 p-0 m-0 text-burntumber text-center fw-bolder bg-pearl  rounded-1 ">
-              <input type="date" placeholder="fromdate" className="p-0 m-0 border-0 bg-pearl text-burntumber text-center fw-bolder " value={fromdate ? fromdate : currentDate ? currentDate : ""} onChange={(e) => { setfromdate(e.target.value); }} />
-            </div>
-            <div className="col-6 p-0 m-0  text-burntumber text-center fw-bolder bg-pearl rounded-1">
-              <input type="date" className=" p-0 m-0 border-0 bg-pearl text-burntumber text-center fw-bolder" value={todate ? todate : fromdate ? fromdate : currentDate ? currentDate : ""} onChange={(e) => { settodate(e.target.value); }} />
-            </div>
-          </div>
+          <h2 className=" ms-3 text-charcoal fw-bolder" style={{ width: "fit-content" }} > {pagecount} {pagecount > 0 ? "Sale Entries" : "Sale Entry"}{" "} </h2>
         </div>
         <div className="col-2 p-0 m-0 export col-md-2 col-lg-2 align-self-center text-center ">
           <ExportSaleEntry saleentryarr={saleentryarrforExcel} fromdate={reversefunction(fromdate)} todate={reversefunction(todate)} />
@@ -357,7 +338,7 @@ function Saleentrysection(props) {
         <table className="table text-start table-responsive">
           <thead className=" p-0 m-0 position-sticky top-0 bg-pearl">
             <tr className=" ">
-              <th className="text-charcoal75 fw-bolder p-0 m-0 px-1"> ID </th>
+              <th className="text-charcoal75 fw-bolder p-0 m-0 px-1 text-center"> ID </th>
               <th className="text-charcoal75 fw-bolder p-0 m-0 px-1"> Bill ID </th>
               <th className="text-charcoal75 fw-bolder p-0 m-0 px-1"> Patient Name </th>
               <th className="text-charcoal75 fw-bolder p-0 m-0 px-1"> Bill Date </th>
@@ -388,7 +369,7 @@ function Saleentrysection(props) {
             <tbody>
               {saleentryarr.map((item, i) => (
                 <tr className={` bg-${i % 2 == 0 ? "seashell" : "pearl"} align-middle`} key={i} >
-                  <td className="text-charcoal fw-bold"> {item.id && item.id !== null ? item.id : ""} </td>
+                  <td className="text-charcoal fw-bold text-center"> {item.id && item.id !== null ? item.id : ""} </td>
                   <td className="text-charcoal fw-bold"> {item.bill_id && item.bill_id !== null ? "P-" + item.bill_id : ""} </td>
                   <td className="text-charcoal fw-bold"> {item.patient && item.patient && item.patient.full_name != null ? item.patient.full_name : ""} </td>
                   <td className="text-charcoal fw-bold"> {item.bill_date && item.bill_date ? reversefunction(item.bill_date) : ""} </td>
@@ -1175,13 +1156,13 @@ function SEitemdetailssection(props) {
     </div>
   );
 }
-function SaleReturns() {
+function SaleReturns(props) {
   const currentDate = useContext(TodayDate);
-  const ClinicID = localStorage.getItem("ClinicId");
+  const ClinicID = props.ClinicID;
+  const fromdate = props.fromdate;
+  const todate = props.todate;
   const url = useContext(URL);
   const [sridw, setsridw] = useState("none");
-  const [fromdate, setfromdate] = useState();
-  const [todate, settodate] = useState();
   const [Loading, setLoading] = useState(false);
   const [salereturnarr, setsalereturnarr] = useState([]);
   const [salereturnarrExcel, setsalereturnarrExcel] = useState([]);
@@ -1322,16 +1303,6 @@ function SaleReturns() {
         <div className="row p-0 m-0 justify-content-lg-between justify-content-md-evenly justify-content-center text-center mt-2">
           <div className="col-lg-2 col-md-2 col-3 text-center p-0 m-0 ">
             <button type="button" className="btn p-0 m-0 heading text-charcoal fw-bolder  " style={{ width: "fit-content" }} > {pagecount} {pagecount > 0 ? "Sale Returns" : "Sale Return"}{" "} </button>
-          </div>
-          <div className="col-lg-8 col-md-8 col-7  p-0 m-0  border-0 ">
-            <div className="row p-0 m-0 border-burntumber fw-bolder rounded-1 text-center justify-content-center ">
-              <div className="col-6 p-0 m-0 text-burntumber text-center fw-bolder bg-pearl  rounded-1 ">
-                <input type="date" placeholder="fromdate" className="p-0 m-0 border-0 bg-pearl text-burntumber text-center fw-bolder " value={fromdate ? fromdate : currentDate ? currentDate : ""} onChange={(e) => { setfromdate(e.target.value); }} />
-              </div>
-              <div className="col-6 p-0 m-0 text-burntumber bg-pearl fw-bolder rounded-1">
-                <input type="date" className="p-0 m-0 border-0 text-burntumber fw-bolder bg-pearl" placeholder="todate" value={todate ? todate : fromdate ? fromdate : currentDate ? currentDate : ""} onChange={(e) => { settodate(e.target.value); }} />
-              </div>
-            </div>
           </div>
           <div className="col-md-2 col-lg-2 col-2 p-0 m-0 export align-self-center text-center ">
             <ExportSaleReturn salereturnarr={salereturnarrExcel} fromdate={reversefunction(fromdate)} todate={reversefunction(todate)} />

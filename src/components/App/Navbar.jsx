@@ -216,7 +216,7 @@ function Navbar(props) {
 
     }
     return (
-        <>
+        <div className='shadow shadow-sm' style={{zIndex:'10'}}>
             <div className="navsection p-0 m-0 py-1">
                 <div className="container-fluid p-0 m-0 ">
                     <div className="row m-0 p-0 justify-content-lg-between justify-content-md-between justify-content-sm-between justify-content-between align-items-center">
@@ -334,7 +334,7 @@ function Navbar(props) {
             </div >
 
 
-        </>
+        </div>
     );
 }
 

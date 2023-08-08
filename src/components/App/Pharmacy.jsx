@@ -51,16 +51,16 @@ function Pharmacy() {
   };
   return (
     <>
-      <section className={`pharmacy position-relative`}>
-        <div className="pharmacysection">
-          <div className="container-fluid pharmacytabsection">
-            <div className="  gap-3 d-flex p-0 m-0 ms-1 p-1 align-items-center">
+      <section className={`pharmacy position-relative mt-1`} >
+        <div className="pharmacysection p-0 m-0">
+          <div className="container-fluid pharmacytabsection border-bottom">
+            <div className="gap-3 d-flex p-0 m-0 ms-1 p-1 py-1 align-items-center ">
               {
                 menu.map((e, i) => {
                   return (
                     <>
                       <div className={`col-auto p-0 m-0 d-${e.display == 1 ? '' : 'none'}`}>
-                        <button className={`button animatebuttons rounded-1 p-0 m-0 py-1 px-4 btn-sm col-auto shadow-none text-${i === menuindex ? 'light' : 'charcoal75 fw-bolder'} button-${i === menuindex ? "charcoal" : "seashell"} border-${i === menuindex ? 'secondary' : 'none'}`} onClick={(a) => setmenuindex(i)} > {e.option} </button>
+                        <button className={`button animatebuttons rounded-1 col-auto shadow-none text-${i === menuindex ? 'light' : 'charcoal75 fw-bolder'} button-${i === menuindex ? "charcoal" : "seashell"} border-${i === menuindex ? 'secondary' : 'none'}`} onClick={(a) => setmenuindex(i)} > {e.option} </button>
                       </div>
                       <div className={`vr rounded-1 h-75 align-self-center d-${e.display == 1 ? '' : 'none'}`} style={{ padding: '0.8px' }}></div>
                     </>
@@ -69,9 +69,6 @@ function Pharmacy() {
               }
             </div>
           </div>
-        </div>
-        <div className="p-0 m-0 ms-1 text-charcoal75 fw-bold " style={{ letterSpacing: '1.2px' }}>
-          {<Livetime />}
         </div>
         <div className="p-0 m-0">{_selectedmenu(menuindex)}</div>
       </section>
