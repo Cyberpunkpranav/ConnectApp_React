@@ -16,7 +16,7 @@ const ExportExcel = ({ apiData, fileName }) => {
   }
 
   return (
-    <button className='button button-lightyellow m-0 p-0 text-start px-2 text-charcoal fw-bold ms-lg-2' onClick={(e) => exportToCSV(apiData, fileName)}>Export</button>
+    <button className='button button-seashell text-start text-charcoal fw-bold ms-lg-2' onClick={(e) => exportToCSV(apiData, fileName)}>Export</button>
   )
 }
 

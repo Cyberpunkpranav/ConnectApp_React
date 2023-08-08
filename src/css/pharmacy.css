@@ -48,10 +48,13 @@ font-size: 1rem !important ;
 .addentrypurchase,
 .viewcart,
 .exportstock {
-    top: -2.5rem;
+    top: -2.2rem;
     right: 3rem;
 }
-
+.export{
+    top: -2.2rem;
+    left: 20%;
+}
 .cartform {
     left: 25%;
     right: 25%;
@@ -160,6 +163,16 @@ font-size: 1rem !important ;
 
 }
 
+@media (min-width:768px){
+    .export{
+        left:60%;
+        }
+}
+@media (min-width:992px){
+    .export{
+        left:45%;
+        }
+}
  @media  (max-width:512px) {
     .pharmacysection .gap-3{
         gap: 0.3rem !important;

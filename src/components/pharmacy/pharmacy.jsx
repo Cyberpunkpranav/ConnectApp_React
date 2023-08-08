@@ -49,7 +49,7 @@ function Salesection(props) {
     <>
       <section className="salesection pt-1">
         <div className="container-fluid p-0 m-0 mt-3">
-          <div className="row gx-3 p-0 m-0 ms-1">
+          <div className="row gx-3 p-0 m-0 ms-1 position-relative">
             <div className="col-auto">
               <div class="dropdown ">
                 <button class="button button-seashell border-0 rounded-2 fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -318,22 +318,18 @@ function Saleentrysection(props) {
         Notiflix.Loading.remove();
       }
     }
-  };
+  };  
   console.log(saleentryarr, pages, props.fromdate, props.todate);
   return (
     <>
-      <button className={`button addentrypurchase button-charcoal position-absolute d-${permission.sale_entry_add == 1 ? "" : "none"}`} onClick={toggle_nsef} >
-        <img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt="displaying_image" className="img-fluid p-0 m-0" style={{ width: `1.5rem` }} />
-        Entry Sale
-      </button>
-      <div className="row p-0 m-0 justify-content-lg-between justify-content-md-evenly justify-content-center text-center">
-        <div className="col-lg-2 col-md-2 col-3 text-center p-0 m-0 ">
-          <h2 className=" ms-3 text-charcoal fw-bolder" style={{ width: "fit-content" }} > {pagecount} {pagecount > 0 ? "Sale Entries" : "Sale Entry"}{" "} </h2>
-        </div>
-        <div className="col-2 p-0 m-0 export col-md-2 col-lg-2 align-self-center text-center ">
+           <div className="col-auto position-absolute p-0 m-0 export align-self-center text-center ">
           <ExportSaleEntry saleentryarr={saleentryarrforExcel} fromdate={reversefunction(fromdate)} todate={reversefunction(todate)} />
         </div>
-      </div>
+      <button className={`button addentrypurchase button-charcoal end-0 me-3   position-absolute d-${permission.sale_entry_add == 1 ? "" : "none"}`} onClick={toggle_nsef} >
+        <img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt="displaying_image" className="img-fluid p-0 m-0" style={{ width: `1rem` }} />
+        Entry Sale
+      </button>
+          <h2 className=" ms-3 text-charcoal fw-bolder" style={{ width: "fit-content" }} > {pagecount} {pagecount > 0 ? "Sale Entries" : "Sale Entry"}{" "} </h2>
       <div className="scroll scroll-y p-0 m-0 mt-2" style={{ minHeight: "40vh", height: "58vh", maxHeight: "70vh" }} >
         <table className="table text-start table-responsive">
           <thead className=" p-0 m-0 position-sticky top-0 bg-pearl">
@@ -376,7 +372,7 @@ function Saleentrysection(props) {
                   <td className="text-charcoal fw-bold"> {item.grand_total && item.grand_total ? "Rs. " + item.grand_total : ""} </td>
                   <td className="text-charcoal fw-bold"> {item.appointment && item.appointment != null && item.appointment.appointment_date && item.appointment.appointment_date != null ? reversefunction(item.appointment.appointment_date) : ""} </td>
                   <td className="text-charcoal fw-bold"> {item && item.doctor_name != null ? item.doctor_name : ""} </td>
-                  <td className="text-charcoal fw-bold"> {item.appointment && item.appointment != null && item.appointment.bill_id && item.appointment.bill_id != null ? item.appointment.bill_id : ""} </td>
+                  <td className="text-charcoal fw-bold"> {item.bill_id && item.bill_id !== null ? "P-" + item.bill_id : ""} </td>
                   <td className="text-charcoal fw-bold text-center">
                     <select disabled={item.sale_entry_status == 4 ? true : false} className={` fw-bolder border-0 bg-${i % 2 == 0 ? "seashell" : "pearl"} text-center rounded-pill  bg-${status_color(item.sale_entry_status)}`} name={item.id} onChange={(e) => { UpdateStatus(e, item.id); }} style={{ appearance: "none" }} >
                       <option className="button" selected disabled> {status(item.sale_entry_status)} </option>
@@ -1297,17 +1293,14 @@ function SaleReturns(props) {
   console.log(salereturnarr);
   return (
     <>
+         <div className="col-auto position-absolute p-0 m-0 export align-self-center text-center ">
+            <ExportSaleReturn salereturnarr={salereturnarrExcel} fromdate={reversefunction(fromdate)} todate={reversefunction(todate)} />
+          </div>
       <button className="button addentrypurchase button-charcoal position-absolute" onClick={toggle_nref} >
         <img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt="displaying_image" className="img-fluid p-0 m-0" style={{ width: `1.5rem` }} /> Entry Return </button>
       <div classsName="p-0 m-0">
-        <div className="row p-0 m-0 justify-content-lg-between justify-content-md-evenly justify-content-center text-center mt-2">
-          <div className="col-lg-2 col-md-2 col-3 text-center p-0 m-0 ">
-            <button type="button" className="btn p-0 m-0 heading text-charcoal fw-bolder  " style={{ width: "fit-content" }} > {pagecount} {pagecount > 0 ? "Sale Returns" : "Sale Return"}{" "} </button>
-          </div>
-          <div className="col-md-2 col-lg-2 col-2 p-0 m-0 export align-self-center text-center ">
-            <ExportSaleReturn salereturnarr={salereturnarrExcel} fromdate={reversefunction(fromdate)} todate={reversefunction(todate)} />
-          </div>
-        </div>
+            <h2 className=" p-0 m-0 heading text-charcoal fw-bolder ms-3  " style={{ width: "fit-content" }} > {pagecount} {pagecount > 0 ? "Sale Returns" : "Sale Return"}{" "} </h2>
+ 
         <div className="scroll scroll-y overflow-scroll p-0 m-0" style={{ minHeight: "40vh", height: "59vh", maxHeight: "70vh" }} >
           <table className="table text-center p-0 m-0">
             <thead className="p-0 m-0 align-middle">
