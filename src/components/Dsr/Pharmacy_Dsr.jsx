@@ -487,7 +487,7 @@ const Pharmacy_Dsr = (props) => {
       <div className='position-relative'>
         <div className="col export_dropdown position-absolute top-0 ">
           <div className="dropdown">
-            <button className="button button p-0 m-0 px-1 py-1 button-pearl text-burntumber  fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"> Exports </button>
+            <button className="button button-seashell text-charcoal mt-2 fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"> Exports </button>
             <ul className="dropdown-menu" >
               <li className="text-justify border-bottom">
                 <span className={`d-${se}`}>
@@ -532,7 +532,7 @@ const Pharmacy_Dsr = (props) => {
         </div>
       </div>
       <div className=''>
-        <ul className="nav nav-pills mb-3 ms-2 ms-lg-3 ms-md-1 ms-sm-1" id="pills-tab" role="tablist">
+        <ul className="nav nav-pills mb-3 ms-2 ms-lg-3 ms-md-1 ms-sm-1 pt-2" id="pills-tab" role="tablist">
           <li className="nav-item" role="presentation">
             <button className="nav-link active p-0 m-0 py-1 px-3 rounded-pill" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true" onClick={() => { setpageindex(0) }}>Sale Entries<span class=" p-0 m-0 ms-2 badge text-lightyellow  fw-normal">{SaleEntryList.length}</span></button>
           </li>
@@ -547,7 +547,7 @@ const Pharmacy_Dsr = (props) => {
         <div className="tab-content" id="pills-tabContent">
 
           <div className="tab-pane fade show active text-start" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
-            <h6 className="text-charcoal fw-bold p-0 m-0 ms-2 ms-lg-3 ms-md-1 ms-sm-1">Payments</h6>
+
             <div className="row m-0 g-2 mt-md-2 p-0 text-start justify-content-start">
               <div className="col-auto col-md-auto col-lg-auto text-start  py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
                 <p className='fw-bold text-charcoal75 text-start p-0 m-0 justify-content-start'>CASH</p>
@@ -918,8 +918,8 @@ const Pharmacy_Dsr = (props) => {
             </div>
           </div>
           <div className="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
-            <h6 className="text-charcoal fw-bold p-0 m-0 ms-2 ms-lg-3 ms-md-1 ms-sm-1">Payments</h6>
-            <div className="row m-0 g-2 p-0 text-start">
+
+            <div className="row m-0 g-2 p-0 text-start mt-2">
               <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
                 <p className='fw-bold text-charcoal75 text-start p-0 m-0 justify-content-start'>CASH</p>
                 <h6 className='fw-bold p-0 m-0 text-start'>₹ {payment_method_detailsForCash()}</h6>
@@ -1054,7 +1054,7 @@ const Pharmacy_Dsr = (props) => {
             </div>
           </div>
           <div className="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">
-            <h6 className="text-charcoal fw-bold p-0 m-0 ms-2 ms-lg-3 ms-md-1 ms-sm-1">Payments</h6>
+
             <div className="row m-0 g-2 mt-md-2 p-0 text-start justify-content-start">
               <div className="col-auto col-md-auto col-lg-auto text-start  py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
                 <p className='fw-bold text-charcoal75 text-start p-0 m-0 justify-content-start'>CASH</p>

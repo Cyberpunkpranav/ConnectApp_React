@@ -220,7 +220,7 @@ const Doctors_Dsr = (props) => {
       <div className='position-relative'>
         <div className="col export_dropdown position-absolute top-0 ">
           <div className="dropdown">
-            <button className="button button p-0 m-0 px-1 py-1 button-pearl text-burntumber  fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <button className="button button-seashell text-charcoal mt-2 fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
               Exports
             </button>
             <ul className="dropdown-menu" >
@@ -295,7 +295,7 @@ const Doctors_Dsr = (props) => {
           </div>
         </div>
       </div> */}
-      <ul className="nav nav-pills mb-3 ms-2 ms-lg-2 ms-md-2 ms-sm-2" id="pills-tab" role="tablist">
+      <ul className="nav nav-pills mb-3 ms-2 ms-lg-2 ms-md-2 ms-sm-2 pt-2" id="pills-tab" role="tablist">
         <li className="nav-item" role="presentation">
           <button onClick={() => { setpageindex(0) }} className="nav-link active p-0 m-0 py-1 px-3 rounded-pill" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true" >Doctor's Login</button>
         </li>

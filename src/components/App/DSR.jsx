@@ -67,30 +67,22 @@ function DailySaleReport(props) {
           </div>
 
         </div>
-        <div className="row p-0 m-0 align-items-center gx-2 ">
+        <div className="container mt-2 ms-3 p-0 m-0">
           <div className="col-auto">
-            <div className="container-fluid p-0 m-0 my-2 ">
-              <div className="row m-0 p-0 align-items-center">
-                <span className='col-auto fs-4 text-charcoal fw-bold p-0 m-0'>{<Livetime />}</span>
-
-
-              </div>
-            </div>
-          </div>
-          <div className="col">
             <div className="dropdown">
-              <button className="button button p-0 m-0 px-1 py-1 button-pearl text-burntumber  fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <button className="button button-seashell text-charcoal fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Filter Options
               </button>
-              <ul className="dropdown-menu">
-                <li className="text-start"><button className="dropdown-item border-bottom" >
+              <ul className="dropdown-menu border-0 p-2 bg-seashell shadow-sm">
+                <li className="text-start fw-bold">
+                  <button className="dropdown-item border-bottom" >
                   <div className="col-auto p-0 m-0">
-                    <select className="px-1 bg-transparent border-0 text-charcoal py-2  py-md-1 text-center " value={clinic ? clinic : ''} onChange={(e) => { setclinic(e.target.value) }}>
+                    <select className="px-1 bg-transparent border-0 text-charcoal py-2 fw-bold py-md-1 text-center " value={clinic ? clinic : ''} onChange={(e) => { setclinic(e.target.value) }}>
                       <option value="Select Clinic">Clinic</option>
                       {
                         props.cliniclist ? (
                           props.cliniclist.map((data) => (
-                            <option className="text-start" value={data.id}>{data.id}.{' '}{data.title}</option>
+                            <option className="text-start" value={data.id}>{data.title}</option>
                           ))
                         ) : (
                           <option>Loading</option>
@@ -98,9 +90,10 @@ function DailySaleReport(props) {
                       }
                     </select>
                   </div></button></li>
-                <li className="text-start"><button className="dropdown-item border-bottom " >
+                <li className="text-start">
+                  <button className="dropdown-item border-bottom bg-seashell " >
                   <div className="col-auto p-0 m-0 ">
-                    <select className="bg-pearl text-center bg-transparent border-0 text-charcoal px-1 py-2 py-md-1" value={doctorid ? doctorid : ''} onChange={(e) => setdoctorid(e.target.value)}>
+                    <select className="bg-seashell border-0 text-charcoal px-1 text-start fw-bold py-2 py-md-1" value={doctorid ? doctorid : ''} onChange={(e) => setdoctorid(e.target.value)}>
                       <option value='Doctors'>Select Doctor</option>
                       {
                         Doctors.map((data) => (
@@ -112,22 +105,20 @@ function DailySaleReport(props) {
                       }
                     </select>
                   </div></button></li>
-                <li className="text-start"><button className="dropdown-item ">
-                  <div className="col-auto p-0 m-0">
-                    <div className="row p-0 m-0 text-center">
-                      <input type='date' placeholder="from Date" value={fromdate ? fromdate : CurrentDate ? CurrentDate : ''} className=' bg-pearl col-auto px-2 border-0 outline-none text-charcoal ' onChange={(e) => setfromdate(e.target.value)} />
-                      <div className="bg-pearl fw-bolder col-auto">-</div>
-                      <input type='date' placeholder="to Date" value={todate ? todate : CurrentDate ? CurrentDate : ''} className='bg-pearl px-2 border-0 col-auto outline-none text-charcoal' onChange={(e) => settodate(e.target.value)} />
+                <li className="text-start bg-seashell"><button className="dropdown-item bg-seashell ">
+                  <div className="col-auto p-0 m-0 bg-seashell">
+                    <div className="row p-0 m-0 text-start bg-seashell">
+                      <input type='date' placeholder="from Date" value={fromdate ? fromdate : CurrentDate ? CurrentDate : ''} className=' bg-seashell fw-bold col-auto border-0 outline-none text-charcoal ' onChange={(e) => setfromdate(e.target.value)} />
+                      <div className="bg-seashell fw-bolder col-auto">-</div>
+                      <input type='date' placeholder="to Date" value={todate ? todate : CurrentDate ? CurrentDate : ''} className='bg-seashell fw-bold border-0 col-auto outline-none text-charcoal' onChange={(e) => settodate(e.target.value)} />
                     </div>
                   </div></button></li>
               </ul>
             </div>
           </div>
-
-        </div>
-
+          </div>
       </div>
-      <div className="container-fluid  m-0 p-0 ">
+      <div className="container-fluid m-0 p-0 ">
         <div className="p-0 m-0">{ToggleOptions(menu)}</div>
       </div>
     </div>

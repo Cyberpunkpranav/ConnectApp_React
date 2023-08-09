@@ -177,11 +177,11 @@ function Patients() {
                       <tr className="align-middle">
                         <td className={`d-${permission.patient_edit == 1 ? '' : 'none'}`}>
                           <button className="button p-0 m-0 bg-transparent border-0 fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src={process.env.PUBLIC_URL + "/images/confirmed.png"} alt="displaying_image" style={{ width: "1rem" }} />
+                            <img src={process.env.PUBLIC_URL + "/images/confirmed.png"} alt="displaying_image"/>
                           </button>
                           <ul className="dropdown-menu shadow-sm p-2 scroll" style={{ '-webkit-appearance': 'none', 'appearance': 'none', width: 'max-content', height: '40vh' }}>
-                            <li className="dropdown-item d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { settabindex(i); OpenUpdatePatient(i) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/confirmed.png"} alt="displaying_image" style={{ width: "1.8rem" }} /> Update Patient</li>
-                            <li className="dropdown-item d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { OpenUpdateAddress(i) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/confirmed.png"} alt="displaying_image" style={{ width: "1.8rem" }} />Update Address</li>
+                            <li className="dropdown-item d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { settabindex(i); OpenUpdatePatient(i) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/confirmed.png"} alt="displaying_image"/> Update Patient</li>
+                            <li className="dropdown-item d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { OpenUpdateAddress(i) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/confirmed.png"} alt="displaying_image" />Update Address</li>
                           </ul>
                           {
                             form == i ? (

@@ -124,30 +124,33 @@ const UpdateAddress = (props) => {
             <div className="btn-close position-absolute top-0 end-0 mt-2 me-2" onClick={props.CloseUpdateAddress}></div>
             <div className="container text-start p-0 m-0">
                 {
-                    props.data.address.map((data, i) => (
-                        <div className="container-fluid position-relative">
-                            <div className="row">
-                                <div className="col-auto">
-                                    <div className="button p-0 m-0" onClick={() => { setindex(i); Toggle_Address() }}><img src={process.env.PUBLIC_URL + "/images/confirmed.png"} alt="" /></div>
+                    props.data.address.length ==0  ?(<p className='text-burntumber ms-3 fw-bold'> Please add an address to make changes</p>):(
+                        props.data.address.map((data, i) => (
+                            <div className="container-fluid position-relative">
+                                <div className="row">
+                                    <div className="col-auto">
+                                        <div className="button p-0 m-0" onClick={() => { setindex(i); Toggle_Address() }}><img src={process.env.PUBLIC_URL + "/images/confirmed.png"} alt="" /></div>
+                                    </div>
+                                    <div className="col-8">
+                                        <button className='button button-pearl d-block my-2'>
+                                            <div className="text-charcoal text-start">{data.address_line1 ? data.address_line1 + ',' : ''}{' '}{data.address_line2 ? data.address_line2 + ',' : ''}{' '}{data.city ? data.city + ',' : ''}{' '}{data.state ? data.state + ',' : ''}{' '}{data.country ? data.country : ''}</div>
+                                        </button>
+                                    </div>
+                                    <div className="col-2 text-end">
+                                        <div className="button p-0 m-0"><img src={process.env.PUBLIC_URL + "/images/minus.png"} alt="" /></div>
+                                    </div>
                                 </div>
-                                <div className="col-8">
-                                    <button className='button button-pearl d-block my-2'>
-                                        <div className="text-charcoal text-start">{data.address_line1 ? data.address_line1 + ',' : ''}{' '}{data.address_line2 ? data.address_line2 + ',' : ''}{' '}{data.city ? data.city + ',' : ''}{' '}{data.state ? data.state + ',' : ''}{' '}{data.country ? data.country : ''}</div>
-                                    </button>
-                                </div>
-                                <div className="col-2 text-end">
-                                    <div className="button p-0 m-0"><img src={process.env.PUBLIC_URL + "/images/minus.png"} alt="" /></div>
-                                </div>
+                                <section className={`d-${index == i ? addresspage : 'none'} position-absolute top-0 mx-auto bg-seashell shadow-sm border border-1`} style={{ zIndex: '4' }}>
+                                    {
+                                        index == i ? (
+                                            <AddAddress data={data} setindex={setindex} Toggle_Address={Toggle_Address} />
+                                        ) : (<></>)
+                                    }
+                                </section>
                             </div>
-                            <section className={`d-${index == i ? addresspage : 'none'} position-absolute top-0 mx-auto bg-seashell shadow-sm border border-1`} style={{ zIndex: '4' }}>
-                                {
-                                    index == i ? (
-                                        <AddAddress data={data} setindex={setindex} Toggle_Address={Toggle_Address} />
-                                    ) : (<></>)
-                                }
-                            </section>
-                        </div>
-                    ))
+                        ))
+                    )
+                    
                 }
             </div >
 

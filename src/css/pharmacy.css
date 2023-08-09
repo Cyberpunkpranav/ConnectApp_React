@@ -162,15 +162,23 @@ font-size: 1rem !important ;
 
 
 }
-
-@media (min-width:768px){
+@media(min-width:993px) and (max-width:1200px){
     .export{
-        left:60%;
+        left:35%;
+        transform: translateX(35%);
         }
 }
-@media (min-width:992px){
+@media (min-width:810px)and (max-width:992px){
     .export{
-        left:45%;
+        left:43%;
+        transform: translateX(43%);
+        }
+}
+@media (min-width:768px) and (max-width:800px){
+    .export{
+        left:53%;
+        top:-2.1rem;
+        transform: translateX(53%);
         }
 }
  @media  (max-width:512px) {

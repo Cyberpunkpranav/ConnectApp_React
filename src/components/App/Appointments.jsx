@@ -157,9 +157,9 @@ function Appointments(props) {
                         </div>
                         <div className="col-12 col-sm-12 col-md-5 col-lg-6 col-xl-6 daterange">
                             <div className="col-12 mt-3 mb-2">
-                                <img src={process.env.PUBLIC_URL + "/images/today.png"} alt="displaying_image" />
+                                <img src={process.env.PUBLIC_URL + "/images/today.png"} className="img-fluid" alt="displaying_image" />
                                 <span className="text-burntumber fw-bold">Select Date Range</span>
-                                <button className="float-end button-sm button-burntumber" onClick={clearfields}>Clear</button>
+                                <button className="float-end button-sm button-burntumber mt-2" onClick={clearfields}>Clear</button>
                             </div>
                             <div className="d-flex g-md-3">
                                 <input placeholder="Start Date" className="form-control" value={fromdate ? fromdate : APIDate ? APIDate : ''} onFocus={() => { settodate(); setdoctorid() }} type="date" onChange={(e) => { setfromdate(e.target.value) }} />

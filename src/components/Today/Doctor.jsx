@@ -575,7 +575,7 @@ function DoctorSchedule(props) {
                                 }
                               </div>
                             </td>
-                            <td className={` text-center py-0 bg-${vitalindex === i ? 'lightyellow' : ''}`}><button className="btn p-0 m-0" onClick={() => { setvitalindex(i); OpenVitals(); GetAppointmentVitals(data.id) }}><img src={process.env.PUBLIC_URL + "/images/vitals.png"} alt="displaying_image" style={{ height: "1.5rem" }} /></button></td>
+                            <td className={` text-center py-0 bg-${vitalindex === i ? 'lightyellow' : ''}`}><button className="btn p-0 m-0" onClick={() => { setvitalindex(i); OpenVitals(); GetAppointmentVitals(data.id) }}><img src={process.env.PUBLIC_URL + "/images/vitals.png"} alt="displaying_image" /></button></td>
                             <td className={` text-center py-0 d-${permission.appointment_charges_edit ? '' : 'none'} bg-${billindex === i ? 'lightyellow' : ''}`}> <img src={process.env.PUBLIC_URL + "/images/bill.png"} onClick={() => { setbillindex(i); OpenBillForm(); }} alt="displaying_image" className="me-1" />  </td>
                             <td className={` text-center py-0  bg-${consumablesindex === i ? 'lightyellow' : ''}`}>
                               <button className={`button-sm border-0 p-0 m-0 position-relative bg-${consumablesindex === i ? 'lightyellow' : 'transparent'}`}>
@@ -591,13 +591,13 @@ function DoctorSchedule(props) {
                                   <img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" style={{ width: "1rem" }} />
                                 </button>
                                 <ul className="dropdown-menu shadow-sm p-2 scroll" style={{ '-webkit-appearance': 'none', 'appearance': 'none', width: 'max-content', height: '40vh' }}>
-                                  <li className="dropdown-item d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => confirmmessage(data.patient.full_name, data.id)}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/speaker.png"} alt="displaying_image" style={{ width: "1.8rem" }} /> Call Patient</li>
-                                  <li className="dropdown-item d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { Generate_Bill(data.id) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" style={{ width: "2rem" }} /> Generate Bill</li>
-                                  <li className="dropdown-item d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { Generate_Prescription(data.id) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" style={{ width: "2rem" }} /> Generate Prescription</li>
-                                  <li className="dropdown-item d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { Confirm_For_Prescription(data.id, data.patient.phone_number) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/whatsapp.png"} alt="displaying_image" style={{ width: "2rem" }} /> Send on Whats App</li>
-                                  <li className="dropdown-item d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { Confirm_For_Prescription2(data.id, data.patient.phone_number) }}><img className='m-2 img-fluid ms-2' src={process.env.PUBLIC_URL + "/images/message.png"} alt="displaying_image" style={{ width: "1.8rem" }} />Send on SMS</li>
-                                  <li className="dropdown-item d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { toggle_nsef(); setsaleindex(i) }}><img className='m-2 img-fluid ms-2' src={process.env.PUBLIC_URL + "/images/medicine.png"} alt="displaying_image" style={{ width: "1.8rem" }} />Buy Medicines</li>
-                                  <li className={`dropdown-item p-0 m-0 align-items-center p-2  d-${permission.appointment_charges_edit ? 'flex' : 'none'}`} onClick={() => { setpaymentsindex(i); OpenPaymentsForm(); }}><img src={process.env.PUBLIC_URL + "/images/rupee.png"} alt="displaying_image" style={{ width: "0.8rem" }} />Payments</li>
+                                  <li className="dropdown-item d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => confirmmessage(data.patient.full_name, data.id)}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/speaker.png"} alt="displaying_image"/> Call Patient</li>
+                                  <li className="dropdown-item d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { Generate_Bill(data.id) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" /> Generate Bill</li>
+                                  <li className="dropdown-item d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { Generate_Prescription(data.id) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" /> Generate Prescription</li>
+                                  <li className="dropdown-item d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { Confirm_For_Prescription(data.id, data.patient.phone_number) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/whatsapp.png"} alt="displaying_image" /> Send on Whats App</li>
+                                  <li className="dropdown-item d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { Confirm_For_Prescription2(data.id, data.patient.phone_number) }}><img className='m-2 img-fluid ms-2' src={process.env.PUBLIC_URL + "/images/message.png"} alt="displaying_image"  />Send on SMS</li>
+                                  <li className="dropdown-item d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { toggle_nsef(); setsaleindex(i) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/medicine.png"}  alt="displaying_image" />Buy Medicines</li>
+                                  <li className={`dropdown-item p-0 m-0 align-items-center p-2  d-${permission.appointment_charges_edit ? 'flex' : 'none'}`} onClick={() => { setpaymentsindex(i); OpenPaymentsForm(); }}><img src={process.env.PUBLIC_URL + "/images/rupee.png"}  className='me-2 img-fluid' alt="displaying_image" />Payments</li>
                                 </ul>
                               </div></td>
                             {
@@ -809,7 +809,7 @@ function Timecard(props) {
                 startload ? (
                   <div className="text-charcoal spinner-border spinner-border-sm me-2 " role="status" aria-hidden="true" ></div>
                 ) : (
-                  <button className="btn playbutton p-0 m-0 mx-2" onClick={starttimeslot}><img src={process.env.PUBLIC_URL + 'images/play.png'} style={{ width: '1.8rem' }} /></button>
+                  <button className="btn playbutton p-0 m-0 mx-2" onClick={starttimeslot}><img className="img-fluid" src={process.env.PUBLIC_URL + 'images/play.png'}  /></button>
                 )
               }
 
@@ -855,7 +855,7 @@ function Timecard(props) {
                               data.logout_time ? (
                                 <div id="totalhrs" className=" p-0 m-0 timediff text-burntumber fw-bold text-center pe-2" defaultValue="" style={{ fontSize: '0.75rem' }}>{data.logout_time ? diff(data.login_time, data.logout_time) : ''}</div>
                               ) : (
-                                <button className="btn p-0 m-0 pausebutton" value={data.id} onClick={(e) => { endtimeslot(data); setcardindex(i) }}><img className="" src={process.env.PUBLIC_URL + 'images/pause.png'} onClick={(e) => { endtimeslot(e); setcardindex(i) }} style={{ width: '1.8rem' }} /></button>
+                                <button className="btn p-0 m-0 pausebutton" value={data.id} onClick={(e) => { endtimeslot(data); setcardindex(i) }}><img className="" src={process.env.PUBLIC_URL + 'images/pause.png'} onClick={(e) => { endtimeslot(e); setcardindex(i) }} /></button>
 
                               )
                             }

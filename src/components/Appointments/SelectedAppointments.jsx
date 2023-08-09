@@ -251,7 +251,7 @@ const SelectedAppointments = (props) => {
             props.appointmentdata.map((data, key) => (
               <tr id={key} className='text-charcoal fw-bold align-middle text-start'>
                 <td className={`ps-3 d-${permission.appointment_edit == 1 ? '' : 'none'} bg-${tableindex == key ? 'lightyellow' : ''}`}>
-                  <img src={process.env.PUBLIC_URL + "/images/confirmed.png"} style={{ width: "1.5rem" }} onClick={(e) => { settableindex(key); openapppointmentform(); }} className="btn p-0 m-0" />
+                  <img src={process.env.PUBLIC_URL + "/images/confirmed.png"} onClick={(e) => { settableindex(key); openapppointmentform(); }} className="btn p-0 m-0" />
                 </td>
                 <td>
                   <div className="row p-0 m-0 align-items-center">
@@ -309,20 +309,20 @@ const SelectedAppointments = (props) => {
                 {/* <td> <img src={process.env.PUBLIC_URL + "/images/cart.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1 m-0 p-0" /> </td> */}
                 <td className='text-center'><div className="dropdown text-decoration-none d-inline-block bg-transparent">
                   <button className="button p-0 m-0 px-1 py-1 bg-transparent border-0 p-0  fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" style={{ width: "1.5rem" }} />
+                    <img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image"  />
                   </button>
                   <ul className="dropdown-menu text-decoration-none bg-white p-2" style={{ '-webkit-appearance': 'none', 'appearance': 'none', width: 'max-content' }}>
-                    <li className='dropdown-item d-flex border-bottom p-0 m-0 align-items-center' onClick={() => { setbillindex(key); toggle_bill() }}><img className='m-2 img-fluid' style={{ 'width': '1.8rem' }} src={process.env.PUBLIC_URL + 'images/bill.png'} />Bill</li>
-                    <li className={`dropdown-item  border-bottom p-0 m-0 align-items-center d-${permission.appointment_charges_edit == 1 ? '' : 'none'}`} onClick={() => { setpaymentindex(key); toggle_payments(); }}><img className='m-2 img-fluid' style={{ 'width': '1.6rem' }} src={process.env.PUBLIC_URL + 'images/rupee.png'} />Payments</li>
-                    <li className='dropdown-item d-flex border-bottom p-0 m-0 align-items-center' onClick={() => { Generate_Bill(data.id) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" style={{ width: "2rem" }} />Generate Bill</li>
-                    <li className="dropdown-item d-flex border-bottom p-0 m-0 align-items-center" onClick={() => { Generate_Prescription(data.id) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" style={{ width: "2rem" }} /> Generate Prescription </li>
-                    <li className="dropdown-item d-flex border-bottom p-0 m-0 align-items-center" onClick={() => { Confirm_For_Prescription(data.id, data.patient.phone_number) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/whatsapp.png"} alt="displaying_image" style={{ width: "2rem" }} /> Send on Whats App </li>
-                    <li className="dropdown-item d-flex p-0 m-0 align-items-center" onClick={() => { Confirm_For_Prescription2(data.id, data.patient.phone_number) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/message.png"} alt="displaying_image" style={{ width: "1.5rem" }} />{' '}Send on SMS</li>
+                    <li className='dropdown-item d-flex border-bottom p-0 m-0 align-items-center' onClick={() => { setbillindex(key); toggle_bill() }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + 'images/bill.png'} />Bill</li>
+                    <li className={`dropdown-item  border-bottom p-0 m-0 align-items-center d-${permission.appointment_charges_edit == 1 ? '' : 'none'}`} onClick={() => { setpaymentindex(key); toggle_payments(); }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + 'images/rupee.png'} />Payments</li>
+                    <li className='dropdown-item d-flex border-bottom p-0 m-0 align-items-center' onClick={() => { Generate_Bill(data.id) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" />Generate Bill</li>
+                    <li className="dropdown-item d-flex border-bottom p-0 m-0 align-items-center" onClick={() => { Generate_Prescription(data.id) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image"/> Generate Prescription </li>
+                    <li className="dropdown-item d-flex border-bottom p-0 m-0 align-items-center" onClick={() => { Confirm_For_Prescription(data.id, data.patient.phone_number) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/whatsapp.png"} alt="displaying_image"/> Send on Whats App </li>
+                    <li className="dropdown-item d-flex p-0 m-0 align-items-center" onClick={() => { Confirm_For_Prescription2(data.id, data.patient.phone_number) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/message.png"} alt="displaying_image" />{' '}Send on SMS</li>
                   </ul>
                 </div></td>
                 {
                   tableindex == key ? (
-                    <td className={` d-${tableindex == key ? appointmentform : 'none'}  updateappointment bg-seashell col-lg-8 col-xl-5 col-md-8 col-sm-10 col-12 start-0 end-0  mx-auto top-0 border border-1 rounded-1 position-absolute`} style={{ zIndex: '3', marginTop: '10rem' }}>
+                    <td className={` d-${tableindex == key ? appointmentform : 'none'}  updateappointment bg-seashell col-lg-8 col-xl-5 col-md-10 col-sm-10 col-12 start-0 end-0  mx-auto top-0 border border-1 rounded-1 position-absolute`} style={{ zIndex: '3', marginTop: '10rem' }}>
                       <UpdateAppointment fetchallAppointmentslist={props.fetchallAppointmentslist}
                         patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : 'N/A'}
                         patientid={data.patient && data.patient.id !== null ? data.patient.id : 'N/A'} appointmentid={data.id && data.id !== null ? data.id : 'N/A'}

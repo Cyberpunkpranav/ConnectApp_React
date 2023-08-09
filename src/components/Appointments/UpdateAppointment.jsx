@@ -207,9 +207,9 @@ const UpdateAppointment = (props) => {
                             <div key={i} className={`d-${clinicID == data.id ? 'block' : 'none'} `}>
                                 <div className="row p-0 m-0 align-items-center">
                                     <div className="col-auto p-0 m-0 me-1">
-                                        <img src={process.env.PUBLIC_URL + '/images/location.png'} style={{ width: '1.5rem' }} />
+                                        <img src={process.env.PUBLIC_URL + '/images/location.png'}  />
                                     </div>
-                                    <div className="col-auto p-0 m-0 fw-bold" style={{ letterSpacing: '1px' }}>
+                                    <div className="col-auto p-0 m-0 fw-bold mt-1" style={{ letterSpacing: '1px' }}>
                                         {data.title} {data.address}
                                     </div>
                                 </div></div>

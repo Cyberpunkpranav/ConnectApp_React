@@ -58,7 +58,8 @@ const Appointments_Dsr = (props) => {
   useEffect(() => {
     DSR_All_Appointments()
   }, [props.doctorid, props.fromdate, props.todate, props.clinic])
-  // console.log(visibles)
+  
+  console.log(props.doctorid, props.fromdate, props.todate, props.clinic)
   // console.log(Appointments,props.clinic)
 
   const reversefunction = (date) => {
@@ -485,27 +486,27 @@ const Appointments_Dsr = (props) => {
     <div className='Appointments_Dsrsection'>
       <div className='position-relative'>
 
-        <div className="col export_dropdown position-absolute top-0">
+        <div className="col export_dropdown position-absolute top-0 py-2 start-0">
           <div className="dropdown">
-            <button className=" button p-0 m-0 px-1 py-1 button-pearl text-burntumber  fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <button className=" button button-seashell text-charcoal fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
               Exports
             </button>
-            <ul className="dropdown-menu p-2" >
+            <ul className="dropdown-menu p-2 bg-seashell border-0 shadow-sm" >
               <li className="text-start fw-bold border-bottom py-2" onClick={() => { setappxl('block') }}>
                 <DownloadTableExcel
                   filename={`${reversefunction(props.fromdate) + ' to ' + reversefunction(props.todate)} Appointments`}
                   sheet="Appointments"
                   currentTableRef={Appointmentref.current}
                 >
-                  <button className='btn text-start p-0 m-0 py-2'>Appointments Export</button>
+                  <button className='button button-seashell text-start fw-bold p-0 m-0 py-2'>Appointments Export</button>
 
                 </DownloadTableExcel></li>
-              <li className="text-start fw-bold  border-bottom" onClick={() => { setpprxl('block') }}><DownloadTableExcel
+              <li className="text-start fw-bold border-bottom" onClick={() => { setpprxl('block') }}><DownloadTableExcel
                 filename={`${reversefunction(props.fromdate) + ' to ' + reversefunction(props.todate)} Pending Payments Reciecved`}
                 sheet=" Pending Payments Reciecved"
                 currentTableRef={Pendingref.current}
               >
-                <button className='btn p-0 m-0 text-start py-2'>Pending Payments Reciecved Export</button>
+                <button className='btn p-0 m-0 text-start py-2 fw-bold'>Pending Payments Reciecved Export</button>
 
               </DownloadTableExcel></li>
               <li className="text-start fw-bold" onClick={() => { setadvxl('block') }}>
@@ -514,7 +515,7 @@ const Appointments_Dsr = (props) => {
                   sheet=" Advance payment Recieved"
                   currentTableRef={Advancedref.current}
                 >
-                  <button className=' btn p-0 m-0 text-start py-2'>Advance payment Recieved Export</button>
+                  <button className=' btn p-0 m-0 text-start py-2 fw-bold'>Advance payment Recieved Export</button>
 
                 </DownloadTableExcel>
               </li>
@@ -524,7 +525,7 @@ const Appointments_Dsr = (props) => {
       </div>
 
 
-      <ul className="nav nav-pills mb-3 ms-2 ms-lg-2 ms-md-2 ms-sm-2" id="pills-tab" role="tablist">
+      <ul className="nav nav-pills mb-3 ms-2 ms-lg-2 ms-md-2 ms-sm-2 pt-2" id="pills-tab" role="tablist">
         <li className="nav-item" role="presentation">
           <button onClick={() => { setpageindex(0) }} className="nav-link active p-0 m-0 py-1 px-3 rounded-pill" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true" >Appointments<span class=" p-0 m-0 ms-2 badge text-lightyellow fw-normal">{Appointments.length}</span></button>
         </li>

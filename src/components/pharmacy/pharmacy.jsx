@@ -51,10 +51,11 @@ function Salesection(props) {
         <div className="container-fluid p-0 m-0 mt-3">
           <div className="row gx-3 p-0 m-0 ms-1 position-relative">
             <div className="col-auto">
-              <div class="dropdown ">
+              <div class="dropdown">
                 <button class="button button-seashell border-0 rounded-2 fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Sale Type <img src={process.env.PUBLIC_URL + '/images/bottom.png'} style={{ rotate: '-90deg', width: '0.3rem' }} />
+                  Sale Type 
                 </button>
+
                 <ul class="dropdown-menu bg-seashell shadow-sm border-0">
                   {
                     first.map((e, i) => (
@@ -326,24 +327,25 @@ function Saleentrysection(props) {
           <ExportSaleEntry saleentryarr={saleentryarrforExcel} fromdate={reversefunction(fromdate)} todate={reversefunction(todate)} />
         </div>
       <button className={`button addentrypurchase button-charcoal end-0 me-3   position-absolute d-${permission.sale_entry_add == 1 ? "" : "none"}`} onClick={toggle_nsef} >
-        <img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt="displaying_image" className="img-fluid p-0 m-0" style={{ width: `1rem` }} />
+        <img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt="displaying_image" className="img-fluid p-0 m-0" />
         Entry Sale
       </button>
           <h2 className=" ms-3 text-charcoal fw-bolder" style={{ width: "fit-content" }} > {pagecount} {pagecount > 0 ? "Sale Entries" : "Sale Entry"}{" "} </h2>
-      <div className="scroll scroll-y p-0 m-0 mt-2" style={{ minHeight: "40vh", height: "58vh", maxHeight: "70vh" }} >
+      <div className="scroll scroll-y p-0 m-0 mt-2" style={{ minHeight: "40vh", height: "58vh", maxHeight: "100%" }} >
         <table className="table text-start table-responsive">
-          <thead className=" p-0 m-0 position-sticky top-0 bg-pearl">
+          <thead className=" position-sticky top-0 bg-pearl">
             <tr className=" ">
-              <th className="text-charcoal75 fw-bolder p-0 m-0 px-1 text-center"> ID </th>
-              <th className="text-charcoal75 fw-bolder p-0 m-0 px-1"> Bill ID </th>
-              <th className="text-charcoal75 fw-bolder p-0 m-0 px-1"> Patient Name </th>
-              <th className="text-charcoal75 fw-bolder p-0 m-0 px-1"> Bill Date </th>
-              <th className="text-charcoal75 fw-bolder p-0 m-0 px-1"> Bill Total </th>
-              <th className="text-charcoal75 fw-bolder p-0 m-0 px-1"> Appointment Date </th>
-              <th className="text-charcoal75 fw-bolder p-0 m-0 px-1"> Doctor Name </th>
-              <th className="text-charcoal75 fw-bolder p-0 m-0 px-1"> Invoice No. </th>
-              <th className="text-charcoal75 fw-bolder p-0 m-0 px-1 text-center"> Status </th>
-              <th className="text-charcoal75 fw-bolder p-0 m-0 px-1 text-center"> Actions </th>
+              <th className="text-charcoal75 fw-bolder text-center"> ID </th>
+              <th className="text-charcoal75 fw-bolder"> Bill ID </th>
+              <th className="text-charcoal75 fw-bolder"> Patient Name </th>
+              <th className="text-charcoal75 fw-bolder"> Bill Date </th>
+              <th className="text-charcoal75 fw-bolder"> Bill Total </th>
+              <th className="text-charcoal75 fw-bolder"> Appointment Date </th>
+              <th className="text-charcoal75 fw-bolder"> Doctor Name </th>
+              <th className="text-charcoal75 fw-bolder"> Invoice No. </th>
+              <th className="text-charcoal75 fw-bolder text-center"> Status </th>
+              <th className="text-charcoal75 fw-bolder text-center
+              "> Actions </th>
               {/* <th className='text-charcoal75 fw-bolder p-0 m-0 px-1' rowspan='2'>more</th> */}
             </tr>
           </thead>
@@ -382,21 +384,21 @@ function Saleentrysection(props) {
                       <option key={3} className="text-charcoal  bg-pearl" value="4" > Cancelled </option>
                     </select>
                   </td>
-                  <td className={`text-charcoal text-center bg-transparent fw-bold p-0 m-0 px-1 `} >
+                  <td className={`text-charcoal text-center bg-transparent fw-bold`} >
                     <div className={`dropdown  bg-${tabindex == i ? "lightyellow" : ""} d-inline-block text-center text-decoration-none`} >
                       <button className="button border-0 p-0 m-0 text-decoration-none dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" >
-                        <img src={process.env.PUBLIC_URL + "/images/confirmed.png"} alt="displaying_image" style={{ width: "1.5rem" }} />
+                        <img src={process.env.PUBLIC_URL + "/images/confirmed.png"} alt="displaying_image"/>
                       </button>
                       <ul className="dropdown-menu text-start">
-                        <li className={`text-start dropdown-item border-bottom `} onClick={() => { settabindex(i); toggle_payments(); }}> <img src={process.env.PUBLIC_URL + "/images/rupee.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1" /> Payments </li>
-                        <li className=" text-start dropdown-item border-bottom" onClick={() => { setindex(i); toggle_seidw(); }}> <img src={process.env.PUBLIC_URL + "/images/archivebox.png"} alt="displaying_image" className="ms-1" style={{ width: "1.5rem" }} />{" "} Inventory </li>
-                        <li className="text-start dropdown-item border-bottom" onClick={() => { Generate_Bill(item.id); }}> <img src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" style={{ width: "2rem" }} />{" "} Generate Bill </li>
-                        <li className="text-start dropdown-item" onClick={() => { Send_On_WhatsApp(item.id, item.patient.phone_number); }}> <img src={process.env.PUBLIC_URL + "/images/whatsapp.png"} alt="displaying_image" style={{ width: "2rem" }} />{" "} Send Bill On WhatsApp{" "} </li>
+                        <li className={`text-start dropdown-item border-bottom `} onClick={() => { settabindex(i); toggle_payments(); }}> <img src={process.env.PUBLIC_URL + "/images/rupee.png"} alt="displaying_image" className="me-1" /> Payments </li>
+                        <li className=" text-start dropdown-item border-bottom" onClick={() => { setindex(i); toggle_seidw(); }}> <img src={process.env.PUBLIC_URL + "/images/archivebox.png"} alt="displaying_image" className="me -1" />{" "} Inventory </li>
+                        <li className="text-start dropdown-item border-bottom" onClick={() => { Generate_Bill(item.id); }}> <img src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" />{" "} Generate Bill </li>
+                        <li className="text-start dropdown-item" onClick={() => { Send_On_WhatsApp(item.id, item.patient.phone_number); }}> <img src={process.env.PUBLIC_URL + "/images/whatsapp.png"} alt="displaying_image" />{" "} Send Bill On WhatsApp{" "} </li>
                       </ul>
                     </div>
                   </td>
 
-                  <td className={`position-absolute mt-1 d-${i == index ? seidw : "none"} start-0 end-0 border border-1 bg-seashell p-0 m-0`} style={{ zIndex: "2", top: "-7.5rem", height: "90vh" }} >
+                  <td className={`position-absolute d-${i == index ? seidw : "none"} start-0 end-0 mx-auto border border-1 bg-seashell rounded-2`} style={{ top: "0",width:'70vh',height: "40vh" }} >
                     {i == index ? (
                       <SEitemdetailssection saleentryarr={saleentryarr[i]} itembillid={"P-" + item.bill_id} toggle_seidw={toggle_seidw} />
                     ) : (
@@ -724,7 +726,7 @@ function SEitemdetailssection(props) {
   }
   console.log(props.saleentryarr);
   return (
-    <div className="container-fluid p-0 m-0 bg-seashell ">
+    <div className="container-fluid p-0 m-0 ">
       <h5 className="text-center text-charcoal pt-3">
         {props.itembillid} Sale Entry Item Details
       </h5>
@@ -796,7 +798,7 @@ function SEitemdetailssection(props) {
 
       <div
         className={`scroll bg-seashell scroll-y d-${medicine}`}
-        style={{ minHeight: "65vh", Height: "65vh", maxHeight: "70vh" }}
+        style={{ Height: "100%"}}
       >
         <table className="table datatable text-center bg-seashell">
           <thead>
@@ -1302,16 +1304,16 @@ function SaleReturns(props) {
             <h2 className=" p-0 m-0 heading text-charcoal fw-bolder ms-3  " style={{ width: "fit-content" }} > {pagecount} {pagecount > 0 ? "Sale Returns" : "Sale Return"}{" "} </h2>
  
         <div className="scroll scroll-y overflow-scroll p-0 m-0" style={{ minHeight: "40vh", height: "59vh", maxHeight: "70vh" }} >
-          <table className="table text-center p-0 m-0">
+          <table className="table text-start p-0 m-0">
             <thead className="p-0 m-0 align-middle">
               <tr>
-                <th className="fw-bolder text-charcoal75" scope="col"> Return No. </th>
-                <th className="fw-bolder text-charcoal75" scope="col"> Name </th>
-                <th className="fw-bolder text-charcoal75" scope="col"> Sale Entry ID </th>
-                <th className="fw-bolder text-charcoal75" scope="col"> Return Date </th>
-                <th className="fw-bolder text-charcoal75" scope="col"> Return Amount </th>
-                <th className="fw-bolder text-charcoal75" scope="col"> Inventory </th>
-                <th className="fw-bolder text-charcoal75" scope="col"> more </th>
+                <th className="fw-bolder text-charcoal75 text-center" scope="col"> Return No. </th>
+                <th className="fw-bolder text-charcoal75 text-start" scope="col"> Name </th>
+                <th className="fw-bolder text-charcoal75 text-start" scope="col"> Sale Entry ID </th>
+                <th className="fw-bolder text-charcoal75 text-start" scope="col"> Return Date </th>
+                <th className="fw-bolder text-charcoal75 text-start" scope="col"> Return Amount </th>
+                <th className="fw-bolder text-charcoal75 text-center" scope="col"> Inventory </th>
+                <th className="fw-bolder text-charcoal75 text-center" scope="col"> more </th>
               </tr>
             </thead>
             {Loading ? (
@@ -1328,23 +1330,22 @@ function SaleReturns(props) {
                 {
                   salereturnarr.map((item, i) => (
                     <tr key={i} className={`bg-${i % 2 == 0 ? "seashell" : "pearl"} align-middle`} >
-                      <td className="p-0 m-0 text-charcoal fw-bold"> SR-{item.return_no} </td>
-                      <td className="p-0 m-0 text-charcoal fw-bold"> {item.sale_entry && item.sale_entry.patient && item.sale_entry.patient.full_name != null ? item.sale_entry.patient.full_name : "N/A"} </td>
-                      <td className="p-0 m-0 text-charcoal fw-bold"> {item.sale_entry && item.sale_entry && item.sale_entry.id != null ? item.sale_entry.id : ""}</td>
-                      <td className="p-0 m-0 text-charcoal fw-bold"> {item.return_date ? reversefunction(item.return_date) : ""} </td>
-                      <td className="p-0 m-0 text-charcoal fw-bold"> {item.grand_total ? item.grand_total : "N/A"} </td>
-                      <td className="p-0 m-0 text-charcoal fw-bold">
+                      <td className="text-charcoal fw-bold text-center"> SR-{item.return_no} </td>
+                      <td className="text-charcoal fw-bold text-start"> {item.sale_entry && item.sale_entry.patient && item.sale_entry.patient.full_name != null ? item.sale_entry.patient.full_name : "N/A"} </td>
+                      <td className="text-charcoal fw-bold text-start"> {item.sale_entry && item.sale_entry && item.sale_entry.id != null ? item.sale_entry.id : ""}</td>
+                      <td className="text-charcoal fw-bold text-start"> {item.return_date ? reversefunction(item.return_date) : ""} </td>
+                      <td className="text-charcoal fw-bold text-start"> {item.grand_total ? item.grand_total : "N/A"} </td>
+                      <td className="text-charcoal fw-bold text-center">
                         {/* <button className='btn'><img src={process.env.PUBLIC_URL + "/images/cart.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1" /></button> */}
-                        <button className="btn" onClick={() => { setindex(i); toggle_sridw(); }} >
-                          <img src={process.env.PUBLIC_URL + "/images/archivebox.png"} alt="displaying_image" className="ms-1" style={{ width: "1.5rem" }} />
+                        <button className="btn p-0 m-0" onClick={() => { setindex(i); toggle_sridw(); }} >
+                          <img src={process.env.PUBLIC_URL + "/images/archivebox.png"} alt="displaying_image" className="ms-1"/>
                         </button>
                       </td>
-                      <td className="p-0 m-0 text-charcoal fw-bold">
+                      <td className="p-0 m-0 text-charcoal text-center fw-bold">
                         <button className="btn position-relative cursor-pointer more p-0 m-0">
                           <img
                             src={process.env.PUBLIC_URL + "/images/more.png"}
                             alt="displaying_image"
-                            style={{ width: "1.5rem" }}
                           />
                         </button>
                       </td>
@@ -7323,27 +7324,29 @@ function Stocksection() {
       );
     }
     return <div className="fs-2">Nothing Selected</div>;
-  };
+  };  
   return (
     <>
       <section className="stocksection pt-1">
-        <div className="container-fluid">
+        <div className="container-fluid mt-2">
           <div className="row gx-3">
             <div className="row m-0 p-0">
-              {menu.map((e, i) => {
-                return (
-                  <div className="col-auto">
-                    <button
-                      className={`btn btn-sm rounded-pill text-${i === menuindex ? "light" : "dark"
-                        } bg-${i === menuindex ? "charcoal" : "seashell"}`}
-                      onClick={(a) => setmenuindex(i)}
-                    >
-                      {e}
-                    </button>
-                  </div>
-                );
-              })}
-            </div>
+            <div class="dropdown">
+                <button class="button button-seashell border-0 rounded-2 fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Stock Type 
+                </button>
+
+                <ul class="dropdown-menu bg-seashell shadow-sm border-0">
+                  {
+                    menu.map((e, i) => (
+                      <li className={`dropdown-item text-${i === menuindex ? "light" : "dark"} fw-bold bg-${i === menuindex ? "charcoal" : "seashell"}`} onClick={(a) => setmenuindex(i)} > {e} </li>
+                    )
+                    )
+                  }
+                </ul>
+              </div>
+
+            </div>    
           </div>
         </div>
       </section>
@@ -7583,12 +7586,15 @@ function Stockvaccinesection() {
           <img
             src={process.env.PUBLIC_URL + "/images/search.png"}
             alt="displaying_image"
-            className="img-fluid p-0 m-0"
+            className="img-fluid p-0"
+            style={{width:'1.5rem',marginTop:'0.05rem'}}
           />
         </button>
       </div>
+      <h2 className=" ms-3 text-charcoal fw-bolder" style={{ width: "fit-content" }} > {pagecount} {pagecount > 0 ? "Vaccine Stocks Info" : "Vaccine Stock Info"}{" "} </h2>
+
       <div className="heading text-start text-charcoal p-lg-2 p-md-2 p-2 ms-lg-5 ms-md-3 ms-1 fw-bold">
-        Vaccine Stock Info
+        
       </div>
       <div className="scroll scroll-y">
         <table className="table datatable text-start">
@@ -7718,7 +7724,7 @@ function Stockvaccinesection() {
                     {GetStatus(data.totalstock, data.alert_stock_count) == 1 ? (
                       <img
                         src={process.env.PUBLIC_URL + "images/exclamation.png"}
-                        style={{ width: "1.5rem" }}
+                    
                       />
                     ) : (
                       <></>
@@ -7743,7 +7749,7 @@ function Stockvaccinesection() {
                     >
                       <img
                         src={process.env.PUBLIC_URL + "images/info.png"}
-                        style={{ width: "1.5rem" }}
+                        
                       />
                     </button>
                   </td>
@@ -8015,13 +8021,14 @@ function Stockmedicinesection() {
           <img
             src={process.env.PUBLIC_URL + "/images/search.png"}
             alt="displaying_image"
-            className="img-fluid p-0 m-0"
+            className="img-fluid p-0"
+            style={{width:'1.5rem',marginTop:'0.05rem'}}
+
           />
         </button>
       </div>
-      <div className="heading text-start ms-lg-5 ms-md-3 ms-1 text-charcoal fw-bold p-2">
-        Medicine Stock Info
-      </div>
+      <h2 className=" ms-3 text-charcoal fw-bolder" style={{ width: "fit-content" }} > {pagecount} {pagecount > 0 ? "Medicine Stocks Info" : "Medicine Stock Info"}{" "} </h2>
+
       <div
         className="scroll scroll-y p-0 m-0"
         style={{ height: "57vh", minHeight: "57vh", maxHeight: "57vh" }}
