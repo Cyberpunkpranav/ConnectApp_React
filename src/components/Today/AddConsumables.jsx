@@ -490,7 +490,7 @@ const AddConsumables = (props) => {
                                                     <td>{data.gst + '%'}</td>
                                                     <td>₹{data.disccost}</td>
                                                     <td>₹{data.totalamt}</td>
-                                                    <td><img src={process.env.PUBLIC_URL + 'images/delete.png'} onClick={() => { DeleteProduct(data.batch) }} /></td>
+                                                    <td><img src={process.env.PUBLIC_URL + 'images/delete.png'} className='img-fluid' onClick={() => { DeleteProduct(data.batch) }} /></td>
                                                 </tr>
                                             ))
                                         }
@@ -531,7 +531,7 @@ const AddConsumables = (props) => {
                                                             deleteload && i == key ? (
                                                                 <div className="text-charcoal spinner-border spinner-border-sm me-2 " role="status" aria-hidden="true" ></div>
                                                             ) : (
-                                                                <img src={process.env.PUBLIC_URL + 'images/delete.png'} onClick={() => { seti(key); RemoveConsumable(data.id) }} />
+                                                                <img src={process.env.PUBLIC_URL + 'images/delete.png'} className='img-fluid' onClick={() => { seti(key); RemoveConsumable(data.id) }} />
                                                             )
                                                         }
                                                     </td>

@@ -44,7 +44,7 @@ function Salesection(props) {
       return <SaleReturns fromdate={fromdate} todate={todate} ClinicID={ClinicID} />;
     }
     return <div className="fs-2">Nothing Selected</div>;
-  };
+  }
   return (
     <>
       <section className="salesection pt-1">
@@ -398,7 +398,7 @@ function Saleentrysection(props) {
                     </div>
                   </td>
 
-                  <td className={`position-absolute d-${i == index ? seidw : "none"} start-0 end-0 mx-auto border border-1 bg-seashell rounded-2`} style={{ top: "0",width:'70vh',height: "40vh" }} >
+                  <td className={`position-absolute d-${i == index ? seidw : "none"} start-0 end-0 mx-auto border border-1 bg-seashell rounded-2`} style={{zIndex:'10', top: "0",width:'70vh',height: "40vh" }} >
                     {i == index ? (
                       <SEitemdetailssection saleentryarr={saleentryarr[i]} itembillid={"P-" + item.bill_id} toggle_seidw={toggle_seidw} />
                     ) : (
@@ -3340,6 +3340,11 @@ export { SaleEntryForm };
 
 //  ---------------------------------------------------------------purchase-----------------------------------------------------------------------------------------
 function Purchasesection(props) {
+  const currentDate = useContext(TodayDate);
+  const ClinicID = localStorage.getItem("ClinicId");
+  const [fromdate, setfromdate] = useState();
+  const [todate, settodate] = useState();
+  const [channel, setchannel] = useState(1);
   const permission = useContext(Permissions);
   const first = [
     {
@@ -3350,54 +3355,75 @@ function Purchasesection(props) {
       option: "Purchase Returns",
       display: permission.purchase_return_view,
     },
-    {
-      option: "Purchase Orders",
-      display: permission.purchase_orders_view,
-    },
+    // {
+    //   option: "Purchase Orders",
+    //   display: permission.purchase_orders_view,
+    // },
   ];
   const [second, setSecond] = useState(0);
 
   const _selectedScreen = (_selected) => {
     if (_selected === 0) {
       return (
-        <Purchaseentrysection
-          function={props.func}
-          function2={props.function}
-        />
+        <Purchaseentrysection function={props.func} function2={props.function} channel = {channel} fromdate={fromdate} todate={todate} ClinicID={ClinicID} />
       );
     }
     if (_selected === 1) {
-      return <PurchaseReturns />;
+      return <PurchaseReturns fromdate={fromdate} todate={todate} ClinicID={ClinicID} channel={channel} />;
     }
-    if (_selected === 2) {
-      return <Purchaseordersection />;
-    }
+    // if (_selected === 2) {
+    //   return <Purchaseordersection />;
+    // }
     return <div className="">Nothing Selected</div>;
-  };
+  }
   return (
-    <>
+    <>  
       <section className="purchasesection">
-        <div className="row p-0 m-0 mt-1 gx-lg-3 gx-md-2">
-          {first.map((e, i) => {
-            return (
-              <div className={`col-auto d-${e.display == 1 ? "" : "none"}`}>
-                <button
-                  className={`btn btn-sm rounded-pill text-${i === second ? "light" : "dark"
-                    } bg-${i === second ? "charcoal" : "seashell"}`}
-                  onClick={(a) => setSecond(i)}
-                >
-                  {e.option}
+      <div className="container-fluid p-0 m-0 mt-3">
+        <div className="row p-0 m-0 mt-1 gx-3 position-relative">
+        <div className="col-auto">
+              <div class="dropdown">
+                <button class="button button-seashell border-0 rounded-2 fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Purchase Type 
                 </button>
+
+                <ul class="dropdown-menu bg-seashell shadow-sm border-0">
+                  {
+                    first.map((e, i) => (
+                      <li className={`dropdown-item text-${i === second ? "light" : "dark"} fw-bold bg-${i === second ? "charcoal" : "seashell"}`} onClick={(a) => setSecond(i)} > {e.option} </li>
+                    )
+                    )
+                  }
+                </ul>
               </div>
-            );
-          })}
+            </div>
+            <div className="col-auto">
+                <select className=" border-0 text-burntumber fw-bolder button-seashell rounded-2 button" value={channel ? channel : ""} onChange={(e) => { setchannel(e.target.value); }} >
+                <option className="border-0 text-charcoal fw-bolder" value="1" > Pharmacy </option>
+                <option className="border-0 text-charcoal fw-bolder" value="2" > Consumables </option>
+              </select>
+                </div>
+          <div className="col-auto bg-seashell rounded-2 ">
+              <div className="row p-0 m-0 align-items-center align-self-center">
+                <div className="col-auto p-0 m-0">
+                  <input type="date" placeholder="fromdate" className="button button-seashell rounded-0 border-0 text-charcoal text-center fw-bold " value={fromdate ? fromdate : currentDate ? currentDate : ""} onChange={(e) => { setfromdate(e.target.value); }} />
+                </div>
+                <div className="col-auto p-0 m-0">-</div>
+                <div className="col-auto p-0 m-0">
+                  <input type="date" className=" border-0 button button-seashell text-charcoal text-center fw-bold" value={todate ? todate : fromdate ? fromdate : currentDate ? currentDate : ""} onChange={(e) => { settodate(e.target.value); }} />                </div>
+              </div>
+            </div>
+        </div>
         </div>
       </section>
+  
       <section className="tablesrender position-relative">
         <div className="container-fluid mt-lg-4 mt-md-3 mt-2 p-0 m-0">
           <div className="">{_selectedScreen(second)}</div>
         </div>
+       
       </section>
+   
     </>
   );
 }
@@ -3416,9 +3442,10 @@ function Purchaseentrysection(props) {
       setpeidw("none");
     }
   };
-  const [channel, setchannel] = useState(1);
-  const [fromdate, setfromdate] = useState();
-  const [todate, settodate] = useState();
+
+  const fromdate = props.fromdate
+  const todate = props.todate
+  const channel = props.channel
   const [Loading, setLoading] = useState(false);
   const [purchaseentryarr, setpurchaseentryarr] = useState([]);
   const [purchaseentryarrExcel, setpurchaseentryarrExcel] = useState([]);
@@ -3582,7 +3609,6 @@ function Purchaseentrysection(props) {
       }
     }
 
-    console.log(medcount, vaccount);
     return (
       <div className="container-fluid">
         <h5 className="text-charcoal75 fw-bold">Medicines</h5>
@@ -3610,114 +3636,34 @@ function Purchaseentrysection(props) {
       </div>
     );
   }
+      console.log(fromdate,todate,channel);
+
   return (
     <>
-      <button
-        className={`button addpurchase button-charcoal position-absolute d-${permission.purchase_entry_add == 1 ? "" : "none"
-          }`}
-        onClick={toggle_npef}
-      >
-        <img
-          src={process.env.PUBLIC_URL + "/images/addiconwhite.png"}
-          alt="displaying_image"
-          className="img-fluid p-0 m-0"
-          style={{ width: `1.5rem` }}
-        />
-        Entry Purchase
-      </button>
-      <div className="row p-0 m-0 justify-content-lg-between justify-content-md-evenly justify-content-center text-center">
-        <div className="col-lg-2 col-md-2 col-12 text-center p-0 m-0 ms-lg-0 ms-md-0 ms-sm-0 ms-4">
-          <button
-            type="button"
-            className="btn p-0 m-0 heading text-charcoal fw-bolder  "
-            style={{ width: "fit-content" }}
-          >
-            {pagecount} {pagecount > 1 ? "Purchase Entries" : "Purchase Entry"}{" "}
-          </button>
+         <div className="col-auto position-absolute p-0 m-0 export_2 align-self-center text-center  ">
+          <ExportPurchaseEntry purchaseentryarr={purchaseentryarrExcel} fromdate={reversefunction(fromdate)} todate={reversefunction(todate)} />
         </div>
-        <div className="col-lg-8 col-md-7 col-12 ms-lg-0 px-5 align-self-center p-0 m-0 mt-lg-0 mt-md-0 mt-1  ">
-          <div className="row p-0 m-0 border-burntumber fw-bolder rounded-1 text-center justify-content-center ">
-            <div className="col-4 p-0 m-0  bg-pearl rounded-1">
-              <select
-                className="p-0 m-0 border-0 text-burntumber fw-bolder bg-pearl"
-                value={channel ? channel : ""}
-                onChange={(e) => {
-                  setchannel(e.target.value);
-                }}
-              >
-                <option
-                  className="border-0 text-burntumber fw-bolder"
-                  value="1"
-                >
-                  Pharmacy
-                </option>
-                <option
-                  className="border-0 text-burntumber fw-bolder"
-                  value="2"
-                >
-                  Consumables
-                </option>
-              </select>
-            </div>
-            <div className="col-4 p-0 m-0 text-burntumber fw-bolder bg-pearl">
-              <input
-                type="date"
-                className=" p-0 m-0 border-0 text-burntumber fw-bolder bg-pearl "
-                value={fromdate ? fromdate : currentDate ? currentDate : ""}
-                onChange={(e) => {
-                  setfromdate(e.target.value);
-                }}
-              />
-            </div>
-            <div className="col-4 p-0 m-0  text-burntumber fw-bolder bg-pearl rounded-1">
-              <input
-                type="date"
-                className=" p-0 m-0 border-0 text-burntumber fw-bolder bg-pearl rounded-1 "
-                value={
-                  todate
-                    ? todate
-                    : fromdate
-                      ? fromdate
-                      : currentDate
-                        ? currentDate
-                        : ""
-                }
-                onChange={(e) => {
-                  settodate(e.target.value);
-                }}
-              />
-            </div>
-          </div>
-        </div>
-        <div className="col-12 export col-md-2 mt-sm-2 col-lg-2 align-self-center order-1 ">
-          <ExportPurchaseEntry
-            purchaseentryarr={purchaseentryarrExcel}
-            fromdate={reversefunction(fromdate)}
-            todate={reversefunction(todate)}
-          />
-        </div>
-      </div>
+      <button className={`button addpurchase button-charcoal position-absolute d-${permission.purchase_entry_add == 1 ? "" : "none" }`} onClick={toggle_npef} > <img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt="displaying_image" className="img-fluid p-0 m-0" /> Entry Purchase </button>
+          <h2 className=" ms-3 text-charcoal fw-bolder" style={{ width: "fit-content" }} > {pagecount} {pagecount > 1 ? "Purchase Entries" : "Purchase Entry"}{" "} </h2>
       <div>
-        <div
-          className="scroll scroll-y overflow-scroll p-0 m-0 mt-2"
-          style={{ minHeight: "56vh", height: "56vh" }}
-        >
-          <table className="table p-0 m-0">
+        <div className="scroll scroll-y overflow-scroll p-0 m-0 mt-2" style={{ minHeight: "56vh", height: "56vh" }} >
+          <table className="table">
             <thead className="p-0 m-0 align-middle position-sticky top-0 bg-pearl">
               <tr>
-                <th className="fw-bolder py-0 my-0  text-charcoal75" scope="col" > PE ID </th>
-                <th className="fw-bolder py-0 my-0  text-charcoal75" scope="col" > PO ID </th>
-                <th className="fw-bolder py-0 my-0  text-charcoal75" scope="col" > Channel </th>
-                <th className="fw-bolder py-0 my-0  text-charcoal75" scope="col" > Invoice No. </th>
-                <th className="fw-bolder py-0 my-0  text-charcoal75" scope="col" > Bill Date </th>
-                <th className="fw-bolder py-0 my-0  text-charcoal75" scope="col" > Bill Total </th>
-                <th className="fw-bolder py-0 my-0  text-charcoal75" scope="col" > Vendor </th>
-                <th className="fw-bolder py-0 my-0 text-center  text-charcoal75" scope="col" > Actions </th>
+                <th className="fw-bolder py-0 my-0  text-charcoal75" > PE ID </th>
+                <th className="fw-bolder py-0 my-0  text-charcoal75" > PO ID </th>
+                <th className="fw-bolder py-0 my-0  text-charcoal75" > Channel </th>
+                <th className="fw-bolder py-0 my-0  text-charcoal75" > Invoice No. </th>
+                <th className="fw-bolder py-0 my-0  text-charcoal75" > Bill Date </th>
+                <th className="fw-bolder py-0 my-0  text-charcoal75" > Bill Total </th>
+                <th className="fw-bolder py-0 my-0  text-charcoal75" > Vendor </th>
+                <th className="fw-bolder py-0 my-0 text-center  text-charcoal75"  > Inventory </th>
+                <th className="fw-bolder py-0 my-0 text-center  text-charcoal75"  > QR Code </th>
                 {/* <th className='fw-bolder p-0 m-0  text-charcoal75 text-center' scope='col' style={{ zIndex: '3' }}>more</th> */}
               </tr>
             </thead>
             {Loading ? (
-              <body className=" text-center" style={{ minHeight: "55vh" }}>
+              <tbody className=" text-center" style={{ minHeight: "55vh" }}>
                 <tr className="position-absolute border-0 start-0 end-0 px-5">
                   <div class="d-flex align-items-center">
                     <strong className="">
@@ -3730,7 +3676,7 @@ function Purchaseentrysection(props) {
                     ></div>
                   </div>
                 </tr>
-              </body>
+              </tbody>
             ) : purchaseentryarr && purchaseentryarr.length != 0 ? (
               <tbody>
                 {purchaseentryarr.map((item, i) => (
@@ -3765,67 +3711,16 @@ function Purchaseentrysection(props) {
                     </td>
                     <td className="py-0 my-0 text-charcoal fw-bold text-center">
                       {/* <button className='btn'><img src={process.env.PUBLIC_URL + "/images/cart.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1" /></button> */}
-                      <button
-                        className="btn"
-                        onClick={() => {
-                          setindex(i);
-                          toggle_peidw();
-                        }}
-                      >
-                        <img
-                          src={
-                            process.env.PUBLIC_URL + "/images/archivebox.png"
-                          }
-                          alt="displaying_image"
-                          className="ms-1"
-                          style={{ width: "1.5rem" }}
-                        />
-                      </button>
-                      <button
-                        className="btn"
-                        onClick={() => {
-                          setqr(i);
-                        }}
-                      >
-                        <img
-                          src={process.env.PUBLIC_URL + "/images/qrcode.png"}
-                          alt="displaying_image"
-                          style={{ width: "1.5rem" }}
-                          className="me-1"
-                        />
-                      </button>
+                      <button className="btn p-0 m-0" onClick={() => { setindex(i); toggle_peidw(); }} > <img src={ process.env.PUBLIC_URL + "/images/archivebox.png" } alt="displaying_image" className="ms-1 img-fluid" /> </button>
                     </td>
-                    {/* <td className='p-0 m-0 text-charcoal fw-bold text-center'>
-                            <button className="btn position-relative cursor-pointer more p-0 m-0"><img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" style={{ width: "1.5rem" }} /></button>
-                          </td> */}
-                    <td
-                      className={` position-absolute d-${i == index ? peidw : "none"
-                        } border border-1 start-0 end-0 bg-seashell p-0 m-0`}
-                      style={{ top: "-8.5rem", zIndex: "5" }}
-                    >
-                      {i == index ? (
-                        <PEitemdetailssection
-                          purchaseentryarr={purchaseentryarr[i]}
-                          itembillid={"PE-" + item.bill_id}
-                          toggle_peidw={toggle_peidw}
-                        />
-                      ) : (
-                        <></>
-                      )}
-                    </td>
-                    <td
-                      className={`position-absolute start-0 text-start bg-pearl container-fluid d-${qr == i ? "block" : "none"
-                        }`}
-                      style={{ top: "-8.5rem", zIndex: "5", height: "89vh" }}
-                    >
+                    <td className='p-0 m-0 text-charcoal fw-bold text-center'>
+                    <button className="btn p-0 m-0" onClick={() => { setqr(i); }} > <img src={process.env.PUBLIC_URL + "/images/qrcode.png"} alt="displaying_image" className="me-1 img-fluid" /> </button>
+                          </td>
+                    <td className={` position-absolute d-${i == index ? peidw : "none" } border border-1 start-0 end-0 bg-seashell p-0 m-0`} style={{ top: "0rem", zIndex: "5" }} > {i == index ? ( <PEitemdetailssection purchaseentryarr={purchaseentryarr[i]} itembillid={"PE-" + item.bill_id} toggle_peidw={toggle_peidw} /> ) : ( <></> )} </td>
+                    <td className={`position-absolute start-0 text-start bg-pearl container-fluid d-${qr == i ? "block" : "none" }`} style={{ top: "-8.5rem", zIndex: "5", height: "89vh" }} >
                       {i == qr ? (
                         <div className="container-fluid position-relative">
-                          <button
-                            type="button"
-                            className="btn-close closebtn position-absolute end-0 me-2"
-                            onClick={() => setqr()}
-                            aria-label="Close"
-                          ></button>
+                          <button type="button" className="btn-close closebtn position-absolute end-0 me-2" onClick={() => setqr()} aria-label="Close" ></button>
                           <div className="row">
                             <GenerateQR purchaseentry={purchaseentryarr[i]} />
                           </div>
@@ -5337,36 +5232,15 @@ function Newpurchaseentryform(props) {
               </div>
               <div className="row p-0 m-0 align-items-center mt-2">
                 <div className="col-6 col-lg-5 col-md-5 p-0 m-0 align-self-center ms-1">
-                  <button
-                    className="button button-charcoal m-0 p-0 py-1 px-4"
-                    onClick={ToggleNewMedicine}
-                  >
-                    {" "}
-                    <img
-                      src={process.env.PUBLIC_URL + "/images/addiconwhite.png"}
-                      alt="displaying_image"
-                      style={{ width: "1.5rem" }}
-                    />{" "}
-                    Medicine{" "}
-                  </button>
+                  <button className="button button-charcoal p-0 m-0 pe-3 ms-2" onClick={ToggleNewMedicine} > {" "} <img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt="displaying_image" />{" "} Medicine{" "} </button>
                 </div>
                 <div className="col-6">
                   <div className="row">
                     <div className="col-5">
-                      <input
-                        ref={Tableref}
-                        className="form-control w-100 p-0 m-0 px-2 py-1 rounded-1 bg-pearl"
-                        onChange={SubmitExcel}
-                        type="file"
-                      />
+                      <input ref={Tableref} className="form-control w-100 p-0 m-0 px-2 py-1 rounded-1 bg-pearl" onChange={SubmitExcel} type="file" />
                     </div>
                     <div className="col-5 text-end">
-                      <button
-                        className="button button-lightyellow p-0 m-0 px-3 py-1"
-                        onClick={ConvertExcel}
-                      >
-                        Submit
-                      </button>
+                      <button className="button button-lightyellow p-0 m-0 px-3 py-1" onClick={ConvertExcel} > Submit </button>
                     </div>
                   </div>
                 </div>
@@ -5397,8 +5271,8 @@ function Newpurchaseentryform(props) {
                 {MedicineentriesArr ? (
                   <tbody style={{ Height: "48vh", maxHeight: "48vh", color: "var(--charcoal)", fontWeight: "600", }} >
                     {MedicineentriesArr.map((item, _key) => (
-                      <tr key={_key} className={`bg-${_key % 2 == 0 ? "lightred50" : "pearl"}`} >
-                        <td><input type="checkbox" checked={_key == tableindex ? true : false} onClick={() => { indexing(_key); }} className="bg-seashell form-check-input" /> </td>
+                      <tr key={_key} className={`bg-${_key % 2 == 0 ? "seashell" : "pearl"}`} >
+                        <td><input type="checkbox" checked={_key == tableindex ? true : false} onClick={() => { indexing(_key); }} className=" form-check-input" /> </td>
                         <td>{item.Itemid}</td>
                         <td>{item.Itemname}</td>
                         {/* <td>{reversefunction(item.manufacturingDate)}</td> */}
@@ -5434,7 +5308,7 @@ function Newpurchaseentryform(props) {
                 ) : (
                   <tbody className="position-relative bg-pearl text-center" style={{ height: "48vh", maxHeight: "48vh", color: "var(--charcoal)", fontWeight: "600", }} >
                     <tr className="">
-                      <td className="position-absolute start-0 end-0 top-0"> No items Added </td>
+                      <td className="position-absolute start-0 end-0"> No items Added </td>
                     </tr>
                   </tbody>
                 )}
@@ -5963,14 +5837,14 @@ function POitemdetailssection() {
     </table>
   );
 }
-function PurchaseReturns() {
+function PurchaseReturns(props) {
   const currentDate = useContext(TodayDate);
   const ClinicID = localStorage.getItem("ClinicId");
   const url = useContext(URL);
   const [pridw, setpridw] = useState("none");
-  const [channel, setchannel] = useState(1);
-  const [fromdate, setfromdate] = useState();
-  const [todate, settodate] = useState();
+  const channel =  props.channel
+  const fromdate = props.fromdate
+  const todate = props.todate
   const [Loading, setLoading] = useState(false);
   const [purchasereturnarr, setpurchasereturnarr] = useState([]);
   const [purchasereturnarrExcel, setpurchasereturnarrExcel] = useState([]);
@@ -6099,60 +5973,17 @@ function PurchaseReturns() {
   };
   return (
     <>
+    <div className="col-auto position-absolute p-0 m-0 export_2 align-self-center text-center   ">
+          <ExportPurchaseReturn purchasereturnarr={purchasereturnarrExcel} fromdate={reversefunction(fromdate)} todate={reversefunction(todate)} />
+        </div>
       <button className="button addpurchase button-charcoal position-absolute" onClick={toggle_nref} >
-        <img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt="displaying_image" className="img-fluid p-0 m-0" style={{ width: `1.5rem` }} />
+        <img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt="displaying_image" className="img-fluid p-0 m-0" />
         Entry Return
       </button>
-      <div className="row p-0 m-0 justify-content-lg-between justify-content-md-evenly justify-content-between text-center">
-        <div className="col-lg-2 col-md-2 col-12 text-center p-0 m-0 ms-lg-0 ms-md-0 ms-sm-0 ms-1 ">
-          <button type="button" className="btn p-0 m-0 heading text-charcoal fw-bolder  " style={{ width: "fit-content" }} > {pagecount} {pagecount > 0 ? "Purchase Returns" : "Purchase Return"}{" "} </button>
-        </div>
-        <div className="col-lg-8 col-md-7 col-sm-12 col-12 px-sm-5  align-self-center p-0 m-0 mt-lg-0 mt-md-0 mt-1  ">
-          <div className="row p-0 m-0 border-burntumber fw-bolder rounded-1 text-center justify-content-center ">
-            <div className="col-4">
-              <select className="p-0 m-0 border-0 text-burntumber bg-pearl fw-bolder" value={channel ? channel : ""} onChange={(e) => { setchannel(e.target.value); }} >
-                <option className="border-0 text-burntumber fw-bolder" value="1" > Pharmacy </option>
-                <option className="border-0 text-burntumber fw-bolder" value="2" > Consumables </option>
-              </select>
-            </div>
-            <div className="col-4 text-burntumber fw-bolder bg-pearl ">
-              <input
-                type="date"
-                className="p-0 m-0 border-0 bg-pearl text-burntumber fw-bolder "
-                value={fromdate ? fromdate : currentDate ? currentDate : ""}
-                onChange={(e) => {
-                  setfromdate(e.target.value);
-                }}
-              />
-            </div>
-            <div className="col-4 text-burntumber fw-bolder bg-pearl rounded-1 ">
-              <input
-                type="date"
-                className="p-0 m-0 border-0 bg-pearl text-burntumber fw-bolder "
-                value={
-                  todate
-                    ? todate
-                    : fromdate
-                      ? fromdate
-                      : currentDate
-                        ? currentDate
-                        : ""
-                }
-                onChange={(e) => {
-                  settodate(e.target.value);
-                }}
-              />
-            </div>
-          </div>
-        </div>
-        <div className="col-12 export col-md-2 col-lg-2 align-self-center mt-sm-2  ">
-          <ExportPurchaseReturn
-            purchasereturnarr={purchasereturnarrExcel}
-            fromdate={reversefunction(fromdate)}
-            todate={reversefunction(todate)}
-          />
-        </div>
-      </div>
+
+        <h2 className=" ms-3 text-charcoal fw-bolder" style={{ width: "fit-content" }} > {pagecount} {pagecount > 1 ? "Purchase Returns" : "Purchase Return"}{" "} </h2>
+        
+      
       <div className="scroll scroll-y overflow-scroll p-0 m-0" style={{ minHeight: "57vh", height: "57vh" }} >
         <table className="table text-center p-0 m-0">
           <thead className="p-0 m-0 align-middle">
@@ -6165,7 +5996,8 @@ function PurchaseReturns() {
               <th className="fw-bolder text-charcoal75" scope="col"> more </th>
             </tr>
           </thead>
-          {Loading ? (
+          {
+          Loading ? (
             <body className=" text-center" style={{ minHeight: "57vh" }}>
               <tr className="position-absolute border-0 start-0 end-0 px-5">
                 <div className="d-flex align-items-center">
@@ -6183,60 +6015,20 @@ function PurchaseReturns() {
           ) : purchasereturnarr && purchasereturnarr.length != 0 ? (
             <tbody>
               {purchasereturnarr.map((item, i) => (
-                <tr
-                  key={i}
-                  className={`bg-${i % 2 == 0 ? "seashell" : "pearl"
-                    } align-middle`}
-                >
+                <tr key={i} className={`bg-${i % 2 == 0 ? "seashell" : "pearl" } align-middle`} >
+                  <td className="p-0 m-0 text-charcoal fw-bold"> PR-{item.return_no} </td>
+                  <td className="p-0 m-0 text-charcoal fw-bold"> {item.distributor && item.distributor != null && item.distributor.entity_name && item.distributor.entity_name != null ? item.distributor.entity_name : "N/A"} </td>
+                  <td className="p-0 m-0 text-charcoal fw-bold"> {item.return_date ? reversefunction(item.return_date) : ""} </td>
+                  <td className="p-0 m-0 text-charcoal fw-bold"> {item.grand_total ? item.grand_total : "N/A"} </td>
                   <td className="p-0 m-0 text-charcoal fw-bold">
-                    PR-{item.return_no}
+                    <button className="btn" onClick={() => { setindex(i); toggle_pridw(); }} > <img src={process.env.PUBLIC_URL + "/images/archivebox.png"} alt="displaying_image" className="ms-1"/> </button>
                   </td>
                   <td className="p-0 m-0 text-charcoal fw-bold">
-                    {item.distributor &&
-                      item.distributor != null &&
-                      item.distributor.entity_name &&
-                      item.distributor.entity_name != null
-                      ? item.distributor.entity_name
-                      : "N/A"}
+                    <button className="btn position-relative cursor-pointer more p-0 m-0"> <img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image"  /> </button>
                   </td>
-                  <td className="p-0 m-0 text-charcoal fw-bold">
-                    {item.return_date ? reversefunction(item.return_date) : ""}
-                  </td>
-                  <td className="p-0 m-0 text-charcoal fw-bold">
-                    {item.grand_total ? item.grand_total : "N/A"}
-                  </td>
-                  <td className="p-0 m-0 text-charcoal fw-bold">
-                    {/* <button className='btn'><img src={process.env.PUBLIC_URL + "/images/cart.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1" /></button> */}
-                    <button
-                      className="btn"
-                      onClick={() => {
-                        setindex(i);
-                        toggle_pridw();
-                      }}
-                    >
-                      <img
-                        src={process.env.PUBLIC_URL + "/images/archivebox.png"}
-                        alt="displaying_image"
-                        className="ms-1"
-                        style={{ width: "1.5rem" }}
-                      />
-                    </button>
-                  </td>
-                  <td className="p-0 m-0 text-charcoal fw-bold">
-                    <button className="btn position-relative cursor-pointer more p-0 m-0">
-                      <img
-                        src={process.env.PUBLIC_URL + "/images/more.png"}
-                        alt="displaying_image"
-                        style={{ width: "1.5rem" }}
-                      />
-                    </button>
-                  </td>
-                  <td
-                    className={` position-absolute d-${i == index ? pridw : "none"
-                      } border border-1 start-0 end-0 bg-seashell p-0 m-0`}
-                    style={{ Height: "90vh", top: "-7.15rem", zIndex: "2" }}
-                  >
-                    {i == index ? (
+                  <td className={` position-absolute d-${i == index ? pridw : "none" } border border-1 start-0 end-0 bg-seashell p-0 m-0`} style={{ Height: "90vh", top: "-7.15rem", zIndex: "2" }} >
+                    {
+                    i == index ? (
                       <PRitemdetailssection
                         purchasereturnarr={purchasereturnarr[i]}
                         itembillid={"PR-" + item.return_no}
@@ -6250,14 +6042,9 @@ function PurchaseReturns() {
               ))}
             </tbody>
           ) : (
-            <tbody
-              className="text-center position-relative p-0 m-0 "
-              style={{ minHeight: "55vh" }}
-            >
+            <tbody className="text-center position-relative p-0 m-0 " style={{ minHeight: "55vh" }} >
               <tr className="">
-                <td className="fw-bolder text-charcoal text-center position-absolute border-0 start-0 end-0 mx-3 p-2 border-0">
-                  No Purchase Returns
-                </td>
+                <td className="fw-bolder text-charcoal text-center position-absolute border-0 start-0 end-0 mx-3 p-2 border-0"> No Purchase Returns </td>
               </tr>
             </tbody>
           )}
@@ -6274,9 +6061,7 @@ function PurchaseReturns() {
           onPageChange={GETPurchaseReturns}
           containerClassName={"pagination"}
           pageClassName={"page-item text-charcoal"}
-          pageLinkClassName={
-            "page-link text-decoration-none text-charcoal border-charcoal rounded-1 mx-1"
-          }
+          pageLinkClassName={ "page-link text-decoration-none text-charcoal border-charcoal rounded-1 mx-1" }
           previousClassName={"btn button-charcoal-outline me-2"}
           previousLinkClassName={"text-decoration-none text-charcoal"}
           nextClassName={"btn button-charcoal-outline ms-2"}
@@ -6287,14 +6072,9 @@ function PurchaseReturns() {
         />
       </div>
 
-      <section
-        className={`newreturnentrysection position-absolute bg-seashell border border-1 start-0 end-0 d-${nref}`}
-      >
+      <section className={`newreturnentrysection position-absolute bg-seashell border border-1 start-0 end-0 d-${nref}`} >
         {
-          <NewPurchaseReturnentryform
-            toggle_nref={toggle_nref}
-            GETPurchaseReturns={GETPurchaseReturns}
-          />
+          <NewPurchaseReturnentryform toggle_nref={toggle_nref} GETPurchaseReturns={GETPurchaseReturns} />
         }
       </section>
     </>
@@ -7351,7 +7131,7 @@ function Stocksection() {
         </div>
       </section>
       <section className="tablesrender position-relative">
-        <div className="container-fluid pt-3">
+        <div className="container-fluid p-0 m-0 pt-3">
           <div className="">{_selectedmenu(menuindex)}</div>
         </div>
       </section>
@@ -7685,7 +7465,7 @@ function Stockvaccinesection() {
           ) : vaccinearr == undefined || vaccinearr.length == 0 ? (
             <tbody className="text-center">
               <tr>
-                <td className="position-absolute text-charcoal fw-bolder start-0 end-0">
+                <td className="position-absolute text-charcoal fw-bolder start-0 end-0 text-center">
                   No Vaccines Found
                 </td>
               </tr>
@@ -7755,7 +7535,7 @@ function Stockvaccinesection() {
                   </td>
                   {index == i ? (
                     <td
-                      className={`stockdetailsfrom bg-white border border-1 col-lg-11 rounded-4 shadow p-0 col-md-12 col-sm-11 col-10 col-xl-6 d-${index == i ? detailsform : "none"
+                      className={`stockdetailsfrom bg-white border border-1 col-lg-11 rounded-4 shadow p-0 col-md-11 col-sm-11 col-10 col-xl-6 d-${index == i ? detailsform : "none"
                         } position-absolute start-0 end-0 top-0`}
                     >
                       <VaccinesectionItemDetails
@@ -7871,7 +7651,7 @@ function Stockmedicinesection() {
       let totalcurrentstockarr = [];
       if (medicineslist[i].stock_info.length == 0) {
         let medicineobj = {
-          id: medicineslist[i].id ? medicineslist[i].id : "",
+          id: medicineslist[i].id ? medicineslist[i].id : "", 
           name: medicineslist[i].name ? medicineslist[i].name : "",
           manufacturer: medicineslist[i].manufacturer ? medicineslist[i].manufacturer : "",
           max_stock_count: medicineslist[i].max_stock_count ? medicineslist[i].max_stock_count : "",
@@ -8029,10 +7809,7 @@ function Stockmedicinesection() {
       </div>
       <h2 className=" ms-3 text-charcoal fw-bolder" style={{ width: "fit-content" }} > {pagecount} {pagecount > 0 ? "Medicine Stocks Info" : "Medicine Stock Info"}{" "} </h2>
 
-      <div
-        className="scroll scroll-y p-0 m-0"
-        style={{ height: "57vh", minHeight: "57vh", maxHeight: "57vh" }}
-      >
+      <div className="scroll scroll-y p-0 m-0" style={{ height: "100%" }} >
         <table className="table datatable text-start">
           <thead className="position-sticky top-0 bg-pearl">
             <tr>
@@ -8117,7 +7894,7 @@ function Stockmedicinesection() {
           ) : medicinearr == undefined || medicinearr.length == 0 ? (
             <tbody className="">
               <tr>
-                <td className="position-absolute text-charcoal fw-bolder start-0 end-0">
+                <td className="position-absolute w-100 text-charcoal fw-bolder start-0 end-0 text-center">
                   No Medicines Found
                 </td>
               </tr>
@@ -8159,7 +7936,7 @@ function Stockmedicinesection() {
                     {GetStatus(data.totalstock, data.alert_stock_count) == 1 ? (
                       <img
                         src={process.env.PUBLIC_URL + "images/exclamation.png"}
-                        style={{ width: "1.5rem" }}
+                    
                       />
                     ) : (
                       <></>
@@ -8184,7 +7961,6 @@ function Stockmedicinesection() {
                     >
                       <img
                         src={process.env.PUBLIC_URL + "images/info.png"}
-                        style={{ width: "1.5rem" }}
                       />
                     </button>
                   </td>
@@ -8348,20 +8124,9 @@ function MedicinesectionItemDetails(props) {
       </h6>
       <hr className="p-0 m-0" />
       <button
-        className="btn-close position-absolute end-0 top-0 p-1 m-1"
+        className="btn-close position-absolute end-0 top-0 p-1 m-1 me-2"
         onClick={props.toggle_detailsform}
       ></button>
-      <p
-        className="bg-pearl m-0 p-0 border rounded-1 p-2 ms-3 mt-2 align-middle"
-        style={{ width: "fit-content" }}
-      >
-        <span className="text-charocal fw-bold p-0 m-0">Total</span>
-        <span className="vr mx-2"></span>
-        <span className="text-charocal fw-bold p-0 m-0">
-          {" "}
-          {props.data.total_amount ? props.data.total_amount : ""}
-        </span>
-      </p>
       <div className="p-0 m-0 scroll">
         <table className="table text-center scroll">
           <thead>

@@ -90,14 +90,14 @@ const SelectedTimeAppointment = (props) => {
     console.log(doctorname, doctorid);
     return (
         <>
-            <h5 className="text-center m-0 p-0 mt-3">Quick Appointment  at <span className=' text-charcoal fw-bold border-0 fs-6'>{tConvert(props.selectedtime)}</span></h5>
-            <button type="button" className="btn-close closebtn position-absolute top-0 mb-3" disabled={load == true ? true : false} aria-label="Close" onClick={(e) => { props.closeAddAppointmentform() }} ></button>
+            <h5 className="text-center m-0 p-0 mt-2">Quick Appointment  at <span className=' text-charcoal fw-bold border-0 fs-6'>{tConvert(props.selectedtime)}</span></h5>
+            <button type="button" className="btn-close closebtn position-absolute top-0 mt-2" disabled={load == true ? true : false} aria-label="Close" onClick={(e) => { props.closeAddAppointmentform() }} ></button>
             <hr className='p-0 m-0 mb-1' />
             <div className=" text-start p-0 m-0 ms-3 clinics align-items-end mb-2 fw-bold text-burntumber ">
                 {
                     cliniclist.map((data, i) => (
                         <label className={`d-${clinicID == data.id ? 'block' : 'none'}`}>
-                            <img src={process.env.PUBLIC_URL + '/images/location.png'} className=' align-self-center ' style={{ width: '1.3rem' }} /> {data.title} {data.address}</label>
+                            <img src={process.env.PUBLIC_URL + '/images/location.png'} className=' align-self-center '/> {data.title} {data.address}</label>
                     ))
                 }
             </div>

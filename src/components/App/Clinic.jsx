@@ -70,7 +70,7 @@ function Doctorsection(props) {
             )}
           <div className='col-auto'>
             <button className={`btn bg-transparent border-0 `} id="adddoctorbtn" onClick={toggledoctorform} >
-              <img src={process.env.PUBLIC_URL + "/images/addicon.png"} alt="displaying_image" style={{ width: "1.5rem" }} />
+              <img src={process.env.PUBLIC_URL + "/images/addicon.png"} alt="displaying_image" />
             </button>
           </div>
         </div>

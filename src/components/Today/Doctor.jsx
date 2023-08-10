@@ -17,7 +17,7 @@ import { AddConsumables } from "./AddConsumables";
 import { SaleEntryForm } from '../pharmacy/pharmacy';
 
 
-function DoctorSchedule(props) {
+function DoctorSchedule(props) { 
   //Global Variables
   const url = useContext(URL)
   const Date = useContext(TodayDate)
@@ -436,7 +436,7 @@ function DoctorSchedule(props) {
                   </div>
                   <div className="col-2 ps-1">
                     <button className="btn m-0 p-0">
-                      <img src={process.env.PUBLIC_URL + "/images/addicon.png"} style={{ width: "1.5rem" }} alt="displaying_image" onClick={OpenAddQuickSlots} />
+                      <img src={process.env.PUBLIC_URL + "/images/addicon.png"} alt="displaying_image" onClick={OpenAddQuickSlots} />
                     </button>
                     <div className={`d-${addquickslots} rounded-1 quickdocslots bg-seashell shadow col-lg-6 col-md-8 col-sm-12 col-12 col-xl-4 position-absolute end-0 start-0 top-0 m-auto mt-3`} style={{ zIndex: '3010', minWidth: '10rem', maxWidth: '30rem' }}>
                       <AddSelectedDoctorSlot CloseAddQuickSlots={CloseAddQuickSlots} fetchapi={props.fetchapi} DocClinic={props.DocClinic} DoctorID={props.DoctorID} DoctorName={props.DoctorName} />
@@ -457,7 +457,7 @@ function DoctorSchedule(props) {
                             {/* 
                             <div className='backdrop'>
                             </div> */}
-                            <div className={`d-${timeindex == i ? addappointmentform : 'none'} col-lg-8 col-md-10 col-sm-12 col-12 col-xl-6 shadow quickappointment position-absolute m-auto start-0 end-0 bg-seashell rounded-4 border border-1`} style={{ top: '-4.3rem' }}>
+                            <div className={`d-${timeindex == i ? addappointmentform : 'none'} col-lg-8 col-md-10 col-sm-12 col-12 col-xl-6 shadow quickappointment position-absolute m-auto start-0 end-0 bg-seashell rounded-4 border border-1`} style={{ top: '-3.8rem' }}>
                               <SelectedTimeAppointment fetchapi={props.fetchapi} closeAddAppointmentform={closeAddAppointmentform} DocClinic={props.DocClinic} timeindex={timeindex} selectedtime={data[0]} selectedtimeID={data[2]} />
                             </div>
                           </>
