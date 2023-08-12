@@ -73,7 +73,6 @@ const AddAppointment = (props) => {
         }
     }
     const get_value = async (value, name) => {
-        console.log(value, name)
         setsearchinput(value)
         setpatientid(name)
         setdisplaysearchlist('none');
@@ -102,7 +101,6 @@ const AddAppointment = (props) => {
         let timefrom = []
         if (data && data.length != 0) {
             setdate(props.todaydate)
-            console.log(data)
             for (let j = 0; j < data[0].length; j++) {
                 if (data[0][j].date === props.todaydate) {
                     timefrom.push([data[0][j].id, data[0][j].time_from, data[0][j].booking_status])
@@ -212,8 +210,6 @@ const AddAppointment = (props) => {
         }
 
     }
-    // console.log(searchinput, patientid, displaysearchlist);
-    console.log(props.doctorid, doctorid, date)
     return (
         <div className='fw-bold text-start'>
             <h5 className="text-center fw-bold mt-2">New Appointment</h5>

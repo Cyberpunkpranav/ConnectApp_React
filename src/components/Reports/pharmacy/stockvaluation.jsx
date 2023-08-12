@@ -63,7 +63,7 @@ const StockValuation = () => {
             try {
                 axios.get(`${url}/reports/stock/report?location_id=${Location_Id}&limit=10&offset=0&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`)
                     .then((response) => {
-                        console.log(response);
+                        ;
                         setstockvaluationarr(response.data.data.medicine);
                         setLoading(false);
                     }).catch((e) => {
@@ -78,7 +78,7 @@ const StockValuation = () => {
             setLoading(true);
             try {
                 axios.get(`${url}/reports/stock/report?location_id=${Location_Id}&limit=25&offset=${Data.selected * 10}&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`).then((response) => {
-                    console.log(response);
+                    ;
                     setstockvaluationarr(response.data.data.medicine);
                     setLoading(false);
                 })
@@ -105,7 +105,6 @@ const StockValuation = () => {
         id: key,
         ...stockvaluationarr[key]
     }));
-    console.log(parentArray);
     return (
         <>
             <div className="row p-0 m-0 justify-content-lg-between justify-content-md-evenly justify-content-center text-center mt-2">

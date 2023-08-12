@@ -34,7 +34,7 @@ const SummaryData = () => {
         try {
             axios.get(`${url}/reports/summary/wise/data?from_date=${fromdate ? fromdate : currentDate}`)
                 .then((response) => {
-                    console.log(response);
+                    ;
                     const parentArray = Object.keys(response.data.data).map(key => ({
                         particular: key,
                         ...response.data.data[key]
@@ -55,7 +55,6 @@ const SummaryData = () => {
     useEffect(() => {
         GETSummaryData();
     }, [fromdate]);
-    console.log(summarydataarr)
     let months = [["Jan", '01'], ["Feb", "02"], ["Mar", "03"], ["Apr", "04"], ["May", "05"], ["Jun", "06"], ["Jul", "07"], ["Aug", "08"], ["Sep", "09"], ["Oct", "10"], ["Nov", "11"], ["Dec", "12"]]
     function month_explorer(date) {
         date = date.split(" to ")
@@ -68,7 +67,6 @@ const SummaryData = () => {
                 fromdate[1] = months[i][0]
             }
         }
-        console.log(fromdate)
         let newdate = fromdate[1] + " " + fromdate[0]
         return newdate
     }

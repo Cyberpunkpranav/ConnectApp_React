@@ -272,7 +272,7 @@ function DoctorSchedule(props) {
         appointment_id: id,
         admin_id: adminid
       }).then((response) => {
-        console.log(response)
+        
         Notiflix.Notify.success(response.data.message)
         Notiflix.Loading.remove()
         window.open(response.data.data.bill_url, '_blank', 'noreferrer');
@@ -293,7 +293,7 @@ function DoctorSchedule(props) {
       axios.post(`${url}/swift/pdf`, {
         appointment_id: id,
       }).then((response) => {
-        console.log(response)
+        
         Notiflix.Notify.success(response.data.message)
         Notiflix.Loading.remove()
         window.open(response.data.data.prescription_pdf, '_blank', 'noreferrer');
@@ -320,7 +320,7 @@ function DoctorSchedule(props) {
           check_pres: checkpres,
           admin_id: adminid
         }).then((response) => {
-          console.log(response)
+          
           Notiflix.Notify.success(`${response.data.message}${checkpres == 1 ? ' with Prescription' : ' without Prescription'}`)
           Notiflix.Loading.remove()
         })
@@ -370,7 +370,7 @@ function DoctorSchedule(props) {
           check_bill: 1,
           check_pre: checkpres,
         }).then((response) => {
-          console.log(response)
+          
           Notiflix.Notify.success(`${response.data.message}${checkpres == 1 ? ' with Prescription' : ' without Prescription'}`)
           Notiflix.Loading.remove()
         })
@@ -418,11 +418,7 @@ function DoctorSchedule(props) {
       setsaleindex()
     }
   }
-  // const Modal = () => {
-  //   modalindex
-  // }
-  https://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/api/connect/swift/pdf
-  console.log(appointmentdata)
+
   return (
     <>
       <section id="doctorscheduledata">
@@ -489,7 +485,7 @@ function DoctorSchedule(props) {
                   <th className="border-0 bg-pearl text-center" key={0}>Update</th>
                   <th className="border-0 bg-pearl text-start" key={3}>Time</th>
                   <th className="border-0 bg-pearl" key={2}>Patient</th>
-                  <th className="border-0 bg-pearl text-start" key={1}>Status</th>
+                  <th className="border-0 bg-pearl text-start px-3" key={1}>Status</th>
                   <th className="border-0 bg-pearl" key={4}> Amount</th>
                   <th className="text-center border-0 bg-pearl" key={6}>Vitals</th>
                   <th className={`text-center border-0 bg-pearl d-${permission.appointment_charges_edit ? '' : 'none'}`} key={7}>Bill</th>
@@ -531,7 +527,7 @@ function DoctorSchedule(props) {
                               </div>
                             </td>
 
-                            <td className=" text-start">
+                            <td className=" text-start pe-5">
                               <div className="row p-0 m-0 align-items-center">
                                 <div className="col-1 p-0 m-0 me-2">
                                   <div className={`rounded-circle border-1 button-${status_color(data.appointment_status)} fontmain`} style={{ height: '12px', width: '12px' }}></div>
@@ -567,7 +563,7 @@ function DoctorSchedule(props) {
                                   paymentsi == i ? (
                                     <>
                                       <div className="backdrop"></div>
-                                      <td className={`payments bg-seashell shadow-sm start-0 end-0 top-0 mx-auto border border-1 rounded-1 col-lg-6 col-md-8 col-sm-12 col-12 mt-2 col-xl-6 position-absolute px-5 py-2 d-${paymentsi == i ? paymentsform : 'none'}`} >
+                                      <td className={`payments bg-seashell shadow-sm start-0 end-0 top-0 mx-auto border border-1 rounded-1 col-lg-6 col-md-10 col-sm-12 col-12 mt-2 col-xl-6 position-absolute px-5 py-2 d-${paymentsi == i ? paymentsform : 'none'}`} >
                                         <Payments ClosePaymentsForm={ClosePaymentsForm2} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} appointmentid={data.id} patientid={data.patient && data.patient.id != null ? data.patient.id : ""} Appointmentlist={Appointmentlist} setsingleload={setsingleload} isLoading={isLoading} appointmentdata={appointmentdata} paymentsi={paymentsi} /></td>
                                     </>
 
@@ -579,7 +575,7 @@ function DoctorSchedule(props) {
                             <td className={` text-center py-0 d-${permission.appointment_charges_edit ? '' : 'none'} bg-${billindex === i ? 'lightyellow' : ''}`}> <img src={process.env.PUBLIC_URL + "/images/bill.png"} onClick={() => { setbillindex(i); OpenBillForm(); }} alt="displaying_image" className="me-1" />  </td>
                             <td className={` text-center py-0  bg-${consumablesindex === i ? 'lightyellow' : ''}`}>
                               <button className={`button-sm border-0 p-0 m-0 position-relative bg-${consumablesindex === i ? 'lightyellow' : 'transparent'}`}>
-                                <img src={process.env.PUBLIC_URL + "/images/bill.png"} onClick={() => { setconsumablesindex(i); toggleConsumables(); }} alt="displaying_image" className="me-1" />
+                                <img src={process.env.PUBLIC_URL + "/images/bandage.png"} onClick={() => { setconsumablesindex(i); toggleConsumables(); }} alt="displaying_image" className="me-1" />
                                 <span class={` position-absolute start-75 translate-middle badge p-0 m-0 text-burntumber fw-bold rounded-2 `} style={{ zIndex: '2', top: "10%" }}>
                                   {appointmentdata[i].medicine_used.length}
                                 </span>
@@ -604,7 +600,7 @@ function DoctorSchedule(props) {
                               tableindex === i ? (
                                 <>
                                   <div className="backdrop"></div>
-                                  <td className={`updateappointment shadow-sm border-0 rounded-1 bg-seashell mt-2 start-0 end-0 top-0 col-lg-8 col-md-8 col-sm-11 col-11 col-xl-5 d-${tableindex == i ? appointmentform : 'none'} position-absolute`}>
+                                  <td className={`updateappointment shadow-sm border-0 rounded-1 bg-seashell mt-2 start-0 end-0 top-0 col-lg-8 col-md-10 col-sm-11 col-11 col-xl-5 d-${tableindex == i ? appointmentform : 'none'} position-absolute`}>
                                     <UpdateAppointment fetchapi={props.fetchapi} fetchallAppointmentslist={props.fetchallAppointmentslist} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} patientid={data.patient != null && data.patient.id != null ? data.patient.id : ""} appointmentid={data.id} addappointmentform={addappointmentform} closeappointmentform={closeappointmentform} doctorid={props.doctorid} appointmentdoctorid={data.doctor.id} appointmentdate={data.appointment_date} appointmenttime={tConvert(data.timeslot.time_from)} /></td>
                                 </>
                               ) : (<></>)
@@ -714,8 +710,7 @@ function Timecard(props) {
   async function fetchapi() {
     setisLoading(true);
     await axios.get(`${url}/todays/doctor/time/list?doctor_id=${props.docid}&clinic_id=${clinicid}`).then((response) => {
-      console.log(response)
-      console.log(response.data.data)
+      
       if (response.data.data.length == 0) {
         setisLoading(false);
       }
@@ -787,7 +782,6 @@ function Timecard(props) {
     }
 
   }, [clinicid])
-  // console.log(doctime, clinics, rooms, clinicid)
   return (
     <div className="scroll room_timecards align-items-center align-content-center my-auto mb-2 ms-2">
       <div id="cardslot" className={`d-${isLoading ? 'none' : 'inline-flex'}`}>

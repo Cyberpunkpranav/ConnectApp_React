@@ -98,7 +98,6 @@ const UpdatePatient = (props) => {
         setaccountinput(e.target.value)
         axios.get(`${url}/patient/list?search=${accountinput}&limit=5&offset=0`).then((response) => {
             setmainaccount(response.data.data.patient_list)
-            console.log(response.data.data.patients_list)
         })
         if (accountinput && accountinput.length > 1) {
             setdisplaymainaccount('block');
@@ -109,9 +108,7 @@ const UpdatePatient = (props) => {
 
     }
 
-    // console.log(props.patientid, fullname, countrycode, phonenumber, DOB, gender, props.gender, email, address, pincode, props.location, place, main, adminid, props.linkid, props.relation)
     async function UpdatePatient() {
-        console.log(props.patientid, fullname, countrycode, phonenumber, DOB, gender, email, address, pincode, props.location, place, main, adminid, props.linkid, props.relation)
         try {
             if (fullname && countrycode && phonenumber && DOB && email && address && pincode && main && adminid) {
                 await axios.post(`https://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/api/connect/update/patient`, {
@@ -180,7 +177,6 @@ const UpdatePatient = (props) => {
                 placeId: data.value.place_id
             }, (placeResult, status) => {
                 if (status === 'OK') {
-                    console.log(placeResult)
                     // find the address component with type "postal_code"
                     const postalCodeComponent = placeResult.address_components.find(component => {
                         return component.types.includes('postal_code');
@@ -196,8 +192,6 @@ const UpdatePatient = (props) => {
                     Notiflix.Notify.failure(`Failed to get place details: ${status}`);
                 }
             });
-        } else {
-            console.log(data)
         }
 
         data === "" ? setData("") : setData(data);
@@ -207,7 +201,6 @@ const UpdatePatient = (props) => {
     if (place) {
         geocodeByAddress(place).then(results => getLatLng(results[0])).then(({ lat, lng }) => { setlat(lat); setlng(lng) });
     }
-    console.log(props.location, place)
     return (
         <>
             <h5 className="text-center mt-3 position-relative">Update Patient Details </h5>
@@ -488,7 +481,7 @@ const UpdatePatient = (props) => {
                                 placeholder: "Select Location",
                             }}
                             onLoadFailed={(error) => {
-                                console.log(error);
+                                Notiflix.Notify.warning(error);
                             }}
                         />
                     </div>

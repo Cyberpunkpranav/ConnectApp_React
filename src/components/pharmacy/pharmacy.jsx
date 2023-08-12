@@ -159,7 +159,7 @@ function Saleentrysection(props) {
       try {
         axios.get(`${url}/sale/entry?clinic_id=${ClinicID}&limit=25&offset=0&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`)
           .then((response) => {
-            console.log(response);
+            ;
             setsaleentryarr(response.data.data.sale_entry);
             setLoading(false);
           })
@@ -176,7 +176,7 @@ function Saleentrysection(props) {
       try {
         axios.get(`${url}/sale/entry?clinic_id=${ClinicID}&limit=25&offset=${Data.selected * 25}&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`)
           .then((response) => {
-            console.log(response);
+            ;
             setsaleentryarr(response.data.data.sale_entry);
             setLoading(false);
           })
@@ -198,7 +198,7 @@ function Saleentrysection(props) {
           }&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`
         )
         .then((response) => {
-          console.log(response);
+          ;
           setsaleentryarrforExcel(response.data.data.sale_entry);
           setLoading(false);
         })
@@ -255,11 +255,10 @@ function Saleentrysection(props) {
   }
   //Status
   const UpdateStatus = async (e, id) => {
-    console.log(e.target.value, id);
     try {
       await axios.post(`${url}/sale/entry/change/status`, { sale_entry_id: id, status: e.target.value, admin_id: adminid, })
         .then((response) => {
-          console.log(response);
+          ;
           Notiflix.Notify.success(response.data.message);
           GETSalesList();
         })
@@ -281,7 +280,7 @@ function Saleentrysection(props) {
           admin_id: adminid,
         })
         .then((response) => {
-          console.log(response);
+          ;
           Notiflix.Notify.success(response.data.message);
           window.open(response.data.data.bill_url, "_blank", "noreferrer");
           Notiflix.Loading.remove();
@@ -310,7 +309,7 @@ function Saleentrysection(props) {
             admin_id: adminid,
           })
           .then((response) => {
-            console.log(response);
+            ;
             Notiflix.Notify.success(response.data.message);
             Notiflix.Loading.remove();
           });
@@ -320,7 +319,6 @@ function Saleentrysection(props) {
       }
     }
   };  
-  console.log(saleentryarr, pages, props.fromdate, props.todate);
   return (
     <>
            <div className="col-auto position-absolute p-0 m-0 export align-self-center text-center ">
@@ -335,8 +333,8 @@ function Saleentrysection(props) {
         <table className="table text-start table-responsive">
           <thead className=" position-sticky top-0 bg-pearl">
             <tr className=" ">
-              <th className="text-charcoal75 fw-bolder text-center"> ID </th>
-              <th className="text-charcoal75 fw-bolder"> Bill ID </th>
+              <th className="text-charcoal75 fw-bolder text-center px-3"> ID </th>
+              <th className="text-charcoal75 fw-bolder px-3"> Bill ID </th>
               <th className="text-charcoal75 fw-bolder"> Patient Name </th>
               <th className="text-charcoal75 fw-bolder"> Bill Date </th>
               <th className="text-charcoal75 fw-bolder"> Bill Total </th>
@@ -367,8 +365,8 @@ function Saleentrysection(props) {
             <tbody>
               {saleentryarr.map((item, i) => (
                 <tr className={` bg-${i % 2 == 0 ? "seashell" : "pearl"} align-middle`} key={i} >
-                  <td className="text-charcoal fw-bold text-center"> {item.id && item.id !== null ? item.id : ""} </td>
-                  <td className="text-charcoal fw-bold"> {item.bill_id && item.bill_id !== null ? "P-" + item.bill_id : ""} </td>
+                  <td className="text-charcoal fw-bold text-center px-3"> {item.id && item.id !== null ? item.id : ""} </td>
+                  <td className="text-charcoal fw-bold px-3"> {item.bill_id && item.bill_id !== null ? "P-" + item.bill_id : ""} </td>
                   <td className="text-charcoal fw-bold"> {item.patient && item.patient && item.patient.full_name != null ? item.patient.full_name : ""} </td>
                   <td className="text-charcoal fw-bold"> {item.bill_date && item.bill_date ? reversefunction(item.bill_date) : ""} </td>
                   <td className="text-charcoal fw-bold"> {item.grand_total && item.grand_total ? "Rs. " + item.grand_total : ""} </td>
@@ -398,12 +396,16 @@ function Saleentrysection(props) {
                     </div>
                   </td>
 
-                  <td className={`position-absolute d-${i == index ? seidw : "none"} start-0 end-0 mx-auto border border-1 bg-seashell rounded-2`} style={{zIndex:'10', top: "0",width:'70vh',height: "40vh" }} >
+                  <td  >
+                    <div className="backdrop"></div>
+                    <section className={`position-absolute d-${i == index ? seidw : "none"} start-0 end-0 mx-auto border border-1 bg-seashell rounded-2`} style={{zIndex:'10', top: "0",width:'70vh',height: "40vh" }}>
                     {i == index ? (
                       <SEitemdetailssection saleentryarr={saleentryarr[i]} itembillid={"P-" + item.bill_id} toggle_seidw={toggle_seidw} />
                     ) : (
                       <></>
                     )}
+                    </section>
+
                   </td>
 
                   <td className={`col-lg-8 col-xl-6 col-md-8 col-sm-10 start-0 end-0 top-0 mx-auto shadow rounded-4 position-absolute bg-pearl d-${tabindex == i ? paymentsapage : "none"}`} style={{ marginTop: "10rem" }} >
@@ -540,13 +542,11 @@ function SaleEntrypayments(props) {
   const CalPrevTotal = async () => {
     let total = 0;
     paymentmethods && paymentmethods.map((data) => (total += Number(data.amount)));
-    console.log(total);
     setprevioustotal(total);
   }
   useEffect(() => {
     CalPrevTotal();
   }, [props.saleentryarr]);
-  console.log(props.saleentryarr, paymentmethods, previoustotal);
 
   function AddMethods() {
     if (paymentmethods && paymentmethods.length > 0) {
@@ -563,7 +563,6 @@ function SaleEntrypayments(props) {
       for (let i = 0; i < paymentmethods.length; i++) {
         totalarr.push(Number(paymentmethods[i].amount));
       }
-      console.log(totalarr);
       totalarr.forEach((item) => {
         total += item;
       });
@@ -577,7 +576,6 @@ function SaleEntrypayments(props) {
 
   }
 
-  console.log(paymentmethods);
   return (
     <div className="p-0 m-0 text-center">
       <h6 className="text-center mt-2 fw-bold">{props.itembillid} Payments</h6>
@@ -613,7 +611,7 @@ function SaleEntrypayments(props) {
                   </div>
                   <div className="col-2 text-center">
                     <button className="btn btn-sm p-0 m-0" onClick={() => { DeletePaymentMethods(i); setpaymentmethods((prevState) => [...prevState]); }} >
-                      <img src={process.env.PUBLIC_URL + "/images/delete.png"} className="img-fluid" style={{ width: "1.5rem" }} />
+                      <img src={process.env.PUBLIC_URL + "/images/delete.png"} className="img-fluid"/>
                     </button>
                   </div>
                 </div>
@@ -637,7 +635,7 @@ function SaleEntrypayments(props) {
                   </div>
                   <div className="col-2 text-center">
                     <button className="btn btn-sm p-0 m-0" onClick={() => { DeletePaymentMethods(i); setpaymentmethods((prevState) => [...prevState]); }} >
-                      <img src={process.env.PUBLIC_URL + "/images/delete.png"} className="img-fluid" style={{ width: "1.5rem" }} />
+                      <img src={process.env.PUBLIC_URL + "/images/delete.png"} className="img-fluid" />
                     </button>
                   </div>
                 </div>
@@ -724,12 +722,9 @@ function SEitemdetailssection(props) {
       return e;
     }
   }
-  console.log(props.saleentryarr);
   return (
     <div className="container-fluid p-0 m-0 ">
-      <h5 className="text-center text-charcoal pt-3">
-        {props.itembillid} Sale Entry Item Details
-      </h5>
+      <h5 className="text-center text-charcoal pt-3"> {props.itembillid} Sale Entry Item Details </h5>
       <button
         type="button"
         className="btn-close closebtn position-absolute end-0 me-4"
@@ -737,28 +732,6 @@ function SEitemdetailssection(props) {
         aria-label="Close"
       ></button>
 
-      <div className="col-2 d-none">
-        <div
-          className=" position-relative searchbutton"
-          style={{ top: "0.25rem", right: "1rem" }}
-        >
-          <input
-            type="text"
-            className=" form-control d-inline PEsearch bg-seashell"
-            placeholder="Search PE"
-          />
-          <button
-            className="btn p-0 m-0 bg-transparent border-0 position-absolute"
-            style={{ width: "2rem", right: "0", left: "0", top: "0.25rem" }}
-          >
-            <img
-              src={process.env.PUBLIC_URL + "/images/search.png"}
-              alt="displaying_image"
-              className="img-fluid p-0 m-0"
-            />
-          </button>
-        </div>
-      </div>
       <div className="d-flex p-0 m-0 mt-3 mb-1 justify-content-center">
         {Items.map((data, i) => (
           <button
@@ -803,85 +776,24 @@ function SEitemdetailssection(props) {
         <table className="table datatable text-center bg-seashell">
           <thead>
             <tr>
-              <th rowspan="2" className="border p-0 m-0 px-1">
-                Stock ID
-              </th>
-              <th rowspan="2" className="border p-0 m-0 px-1">
-                Medicine
-              </th>
-              <th rowspan="2" className="border p-0 m-0 px-1">
-                MRP
-              </th>
-              <th rowspan="2" className="border p-0 m-0 px-1">
-                Qty
-              </th>
-              <th rowspan="2" className="border p-0 m-0 px-1">
-                Disc. %
-              </th>
-              <th
-                colspan={Taxon == true ? "8" : "2"}
-                scope="col-group"
-                className="border p-0 m-0 px-1"
-              >
-                Total Tax
-              </th>
-              <th rowspan="2" className="border p-0 m-0 px-1">
-                {" "}
-                Amt
-              </th>
-              <th rowspan="2" className="border p-0 m-0 px-1">
-                Grand Total
-              </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Stock ID </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Medicine </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> MRP </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Qty </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Disc. % </th>
+              <th colspan={Taxon == true ? "8" : "2"} scope="col-group" className="border p-0 m-0 px-1" > Total Tax </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> {" "} Amt </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Grand Total </th>
             </tr>
             <tr>
-              <th
-                scope="col"
-                className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none"
-                  }`}
-              >
-                CGST%
-              </th>
-              <th
-                scope="col"
-                className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none"
-                  }`}
-              >
-                Total CGST
-              </th>
-              <th
-                scope="col"
-                className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none"
-                  }`}
-              >
-                SGST%{" "}
-              </th>
-              <th
-                scope="col"
-                className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none"
-                  }`}
-              >
-                Total SGST
-              </th>
-              <th
-                scope="col"
-                className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none"
-                  }`}
-              >
-                IGST%
-              </th>
-              <th
-                scope="col"
-                className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none"
-                  }`}
-              >
-                Total IGST
-              </th>
-              <th scope="col" className={`border p-0 m-0 px-1`}>
-                Total%
-              </th>
-              <th scope="col" className={`border p-0 m-0 px-1`}>
-                Total Tax
-              </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > CGST% </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > Total CGST </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > SGST%{" "} </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > Total SGST </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > IGST% </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > Total IGST </th>
+              <th scope="col" className={`border p-0 m-0 px-1`}> Total% </th>
+              <th scope="col" className={`border p-0 m-0 px-1`}> Total Tax </th>
             </tr>
           </thead>
           {props.saleentryarr.sale_medicines &&
@@ -976,7 +888,7 @@ function SEitemdetailssection(props) {
       </div>
       <div
         className={`scroll bg-seashell scroll-y d-${vaccine}`}
-        style={{ minHeight: "65vh", Height: "65vh", maxHeight: "65vh" }}
+        style={{Height: "100%" }}
       >
         <table className="table datatable table-responsive text-center bg-seashell">
           <thead>
@@ -1170,7 +1082,6 @@ function SaleReturns(props) {
   const [pages, setpages] = useState();
   const [pagecount, setpagecount] = useState();
 
-  console.log(salereturnarr, pagecount);
   function GetPages() {
     try {
       axios
@@ -1201,7 +1112,7 @@ function SaleReturns(props) {
             }&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`
           )
           .then((response) => {
-            console.log(response);
+            ;
             setsalereturnarr(response.data.data.sale_return);
 
             setLoading(false);
@@ -1223,7 +1134,7 @@ function SaleReturns(props) {
             }`
           )
           .then((response) => {
-            console.log(response);
+            ;
             setsalereturnarr(response.data.data.sale_return);
             setLoading(false);
           })
@@ -1246,7 +1157,7 @@ function SaleReturns(props) {
           }&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`
         )
         .then((response) => {
-          console.log(response);
+          ;
           setpagecount(response.data.data.total_count);
           setsalereturnarrExcel(response.data.data.sale_return);
           setLoading(false);
@@ -1292,14 +1203,13 @@ function SaleReturns(props) {
     }
   };
 
-  console.log(salereturnarr);
   return (
     <>
          <div className="col-auto position-absolute p-0 m-0 export align-self-center text-center ">
             <ExportSaleReturn salereturnarr={salereturnarrExcel} fromdate={reversefunction(fromdate)} todate={reversefunction(todate)} />
           </div>
       <button className="button addentrypurchase button-charcoal position-absolute" onClick={toggle_nref} >
-        <img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt="displaying_image" className="img-fluid p-0 m-0" style={{ width: `1.5rem` }} /> Entry Return </button>
+        <img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt="displaying_image" className="img-fluid p-0 m-0"/> Entry Return </button>
       <div classsName="p-0 m-0">
             <h2 className=" p-0 m-0 heading text-charcoal fw-bolder ms-3  " style={{ width: "fit-content" }} > {pagecount} {pagecount > 0 ? "Sale Returns" : "Sale Return"}{" "} </h2>
  
@@ -1313,7 +1223,7 @@ function SaleReturns(props) {
                 <th className="fw-bolder text-charcoal75 text-start" scope="col"> Return Date </th>
                 <th className="fw-bolder text-charcoal75 text-start" scope="col"> Return Amount </th>
                 <th className="fw-bolder text-charcoal75 text-center" scope="col"> Inventory </th>
-                <th className="fw-bolder text-charcoal75 text-center" scope="col"> more </th>
+                {/* <th className="fw-bolder text-charcoal75 text-center" scope="col"> more </th> */}
               </tr>
             </thead>
             {Loading ? (
@@ -1341,14 +1251,14 @@ function SaleReturns(props) {
                           <img src={process.env.PUBLIC_URL + "/images/archivebox.png"} alt="displaying_image" className="ms-1"/>
                         </button>
                       </td>
-                      <td className="p-0 m-0 text-charcoal text-center fw-bold">
+                      {/* <td className="p-0 m-0 text-charcoal text-center fw-bold">
                         <button className="btn position-relative cursor-pointer more p-0 m-0">
                           <img
                             src={process.env.PUBLIC_URL + "/images/more.png"}
                             alt="displaying_image"
                           />
                         </button>
-                      </td>
+                      </td> */}
                       <td className={` position-absolute d-${i == index ? sridw : "none"} bg-seashell border border-1 start-0 end-0 p-0 m-0`} style={{ top: "-7.5rem", zIndex: "2" }} >
                         {
                           i == index ? (
@@ -1502,7 +1412,6 @@ function SaleEntryForm(props) {
         );
         items = medicines.concat(vaccines);
         items = items.flat();
-        console.log(items);
         setitemsearch(items);
         setloadsearch(false);
         if (search.length > 1) {
@@ -1551,7 +1460,6 @@ function SaleEntryForm(props) {
     if (Number(realcst) > Number(cost)) {
       Notiflix.Notify.failure("Selling Cost should not less than Cost");
     }
-    console.log(typeof realcst, typeof cost);
     if (!qty) {
       return 0;
     } else if (qty == 1) {
@@ -1680,7 +1588,6 @@ function SaleEntryForm(props) {
 
           })
           .catch(function error(e) {
-            console.log(e);
             Notiflix.Notify.failure(e.message);
             setload(false);
           });
@@ -1714,7 +1621,6 @@ function SaleEntryForm(props) {
     );
   }
   const UpdateStatus = async (e, id) => {
-    // console.log(e.target.value, id);
     try {
       await axios
         .post(`${url}/sale/entry/change/status`, {
@@ -1723,7 +1629,7 @@ function SaleEntryForm(props) {
           admin_id: adminid,
         })
         .then((response) => {
-          console.log(response);
+          ;
           Notiflix.Notify.success(response.data.message);
           props.GETSalesList();
         });
@@ -1876,7 +1782,6 @@ function SaleEntryForm(props) {
     for (let i = 0; i < paymentmethods.length; i++) {
       total_money += Number(paymentmethods[i].amount)
     }
-    console.log(total_money, Math.round(Data.g_total_main))
     if (total_money == Math.round(Data.g_total_main)) {
 
       Notiflix.Notify.success('Payment Successfull')
@@ -1917,14 +1822,12 @@ function SaleEntryForm(props) {
   const CalPrevTotal = async () => {
     let total = 0;
     paymentmethods && paymentmethods.map((data) => (total += Number(data.amount)));
-    console.log(total);
     setprevioustotal(total);
   };
   useEffect(() => {
     CalPrevTotal();
   }, [props.saleentryarr]);
-  // console.log(props.saleentryarr, paymentmethods, previoustotal);
-  console.log(Response)
+  
 
   function AddMethods() {
     if (paymentmethods && paymentmethods.length > 0) {
@@ -1941,7 +1844,6 @@ function SaleEntryForm(props) {
   //     for (let i = 0; i < paymentmethods.length; i++) {
   //       totalarr.push(Number(paymentmethods[i].amount));
   //     }
-  //     console.log(totalarr);
   //     totalarr.forEach((item) => {
   //       total += item;
   //     });
@@ -1965,7 +1867,6 @@ function SaleEntryForm(props) {
     }
   }
 
-  console.log(patientid, patientdata, props.data, props.saleindex)
   return (
     <>
       <div className="saleentry rounded-2">
@@ -2118,7 +2019,9 @@ function SaleEntryForm(props) {
                   <div ref={medbyidref} className="position-absolute rounded-1 mt-1" style={{ Width: "max-content", zIndex: "2" }} >
                     {itembyid ? (
                       loadbyId ? (
-                        <div className="rounded-1 p-1 bg-pearl"> Searching Please wait.... <div className="spinner-border my-auto" style={{ width: "1rem", height: "1rem" }} role="status" > <span className="sr-only"> </span>{" "} </div> </div>
+                        <div className="rounded-1 p-1 bg-pearl"> Searching Please wait.... 
+                        <div className="spinner-border my-auto" style={{ width: "1rem", height: "1rem" }} role="status" > 
+                        <span className="sr-only"> </span>{" "} </div> </div>
                       ) : loadbyId == false && itembyid.length == 0 ? (
                         <div className="bg-burntumber text-light rounded-1 p-1"> Oops! Not Avaliable </div>
                       ) : (
@@ -2184,7 +2087,7 @@ function SaleEntryForm(props) {
                           <td>{data.totalamt}</td>
                           <td>
                             <button className="btn p-0 m-0" onClick={() => { DeleteProduct(data.batch); }} >
-                              <img src={process.env.PUBLIC_URL + "images/delete.png"} style={{ width: "1.5rem" }} />
+                              <img src={process.env.PUBLIC_URL + "images/delete.png"} />
                             </button>
                           </td>
                         </tr>
@@ -2527,7 +2430,7 @@ function NewSaleReturnentryform(props) {
           `${url}/sale/return/item/search/by/id?item=${itemname}&bill_id=${billid}`
         )
         .then((response) => {
-          console.log(response);
+          ;
           setbillsearch([response.data.data]);
 
           setloadbills(false);
@@ -2578,7 +2481,6 @@ function NewSaleReturnentryform(props) {
       total_amount: Totalamount,
       grand_total: grosstotal,
     };
-    console.log(Data);
     setload(true);
     try {
       await axios.post(`${url}/sale/return/save`, Data).then((response) => {
@@ -2592,7 +2494,6 @@ function NewSaleReturnentryform(props) {
       });
     } catch (e) {
       Notiflix.Notify.warning(e.message);
-      console.log(e.message);
       setload(false);
     }
   };
@@ -2632,7 +2533,6 @@ function NewSaleReturnentryform(props) {
     }
     return c;
   }
-  console.log(billid, itemname, billsearch);
   return (
     <div className="p-0 m-0 ">
       <div className="container-fluid p-0 m-0 border border-1 ">
@@ -2724,7 +2624,7 @@ function NewSaleReturnentryform(props) {
               <button className="p-0 m-0 btn" onClick={searchProduct}>
                 <img
                   src={process.env.PUBLIC_URL + "images/search.png"}
-                  style={{ width: "1.8rem" }}
+                    
                 />
               </button>
             </div>
@@ -3315,7 +3215,7 @@ function SRitemdetailssection(props) {
                       <img
                         src={process.env.PUBLIC_URL + "/images/qrcode.png"}
                         alt="displaying_image"
-                        style={{ width: "1.5rem" }}
+                  
                         className="me-1"
                       />
                     </button>
@@ -3567,10 +3467,7 @@ function Purchaseentrysection(props) {
     }
   };
   function GenerateQR(props) {
-    console.log(props.purchaseentry);
-    let medicines = props.purchaseentry.medicines
-      ? props.purchaseentry.medicines
-      : 0;
+    let medicines = props.purchaseentry.medicines ? props.purchaseentry.medicines : 0;
     let vaccines = props.purchaseentry.vaccines
       ? props.purchaseentry.vaccines
       : 0;
@@ -3636,7 +3533,6 @@ function Purchaseentrysection(props) {
       </div>
     );
   }
-      console.log(fromdate,todate,channel);
 
   return (
     <>
@@ -3827,14 +3723,12 @@ function PEitemdetailssection(props) {
     for (let i = 0; i < props.qty; i++) {
       count.push(props.qty);
     }
-    // console.log(count)
     return count.map((data) => (
       <div className="col-auto m-2" key={data}>
         <QRcode id={props.id} />
       </div>
     ));
   }
-  console.log(props.purchaseentryarr);
   return (
     <div className="container-fluid p-0 m-0 bg-seashell ">
       <div className="container-fluid bg-seashell p-0 m-0">
@@ -4104,7 +3998,6 @@ function PEitemdetailssection(props) {
                       <img
                         src={process.env.PUBLIC_URL + "/images/qrcode.png"}
                         alt="displaying_image"
-                        style={{ width: "1.5rem" }}
                         className="me-1"
                       />
                     </button>
@@ -4346,7 +4239,6 @@ function PEitemdetailssection(props) {
                       <img
                         src={process.env.PUBLIC_URL + "/images/qrcode.png"}
                         alt="displaying_image"
-                        style={{ width: "1.5rem" }}
                         className="me-1"
                       />
                     </button>
@@ -4524,7 +4416,6 @@ function Newpurchaseentryform(props) {
           );
           items = medicines.concat(vaccines);
           items = items.flat();
-          console.log(items);
           setitemsearch(items);
           setloadsearch(false);
           if (search.length > 1) {
@@ -4640,7 +4531,6 @@ function Newpurchaseentryform(props) {
     totalamount.forEach((item) => {
       grosstotal += Number(item);
     });
-    console.log(Is_consumable, grosstotal, Type, MedId, medname, batches, expirydate, manufacturingDate, MRP, Rate, Discount, tradeDiscount, sgst, sgstpercent, cgst, cgstpercent, igst, igstpercent, costperunit, totalamount, quantity, freequantity);
     var Data = { distributor_id: vendorid, purchase_order_id: po, invoice_no: invoice, bill_date: invoicedate, clinic_id: ClinicId, channel: channel, is_consumable: Is_consumable, bill_total: grosstotal, id: MedId, type: Type, qty: quantity, free_qty: freequantity, mrp: MRP, rate: Rate, trade_discount: tradeDiscount, discount: Discount, SGST_rate: sgstpercent, SGST: sgst, CGST_rate: cgstpercent, CGST: cgst, IGST_rate: igstpercent, IGST: igst, cost: costperunit, total_amount: totalamount, expiry_date: expirydate, mfd_date: manufacturingDate, batch_no: batches, };
     setload(true);
     try {
@@ -4709,7 +4599,6 @@ function Newpurchaseentryform(props) {
     );
   }
   function indexing(i) {
-    console.log(i);
     if (tableindex == i) {
       settableindex(-1);
       Emptytableindex();
@@ -4825,7 +4714,6 @@ function Newpurchaseentryform(props) {
   function CalculateCPU() {
     let newqty = Number(qty) + Number(freeqty);
     CostPerUnit = Number(parseFloat(Calculate() / newqty));
-    // console.log(Calculate(), CostPerUnit, qty, freeqty)
     CostPerUnit = parseFloat(CostPerUnit).toFixed(2);
     return CostPerUnit;
   }
@@ -4881,19 +4769,12 @@ function Newpurchaseentryform(props) {
       );
       items = medicines.concat(vaccines);
       items = items.flat();
-      console.log(items);
       if (items[0] && items[0].id !== undefined) {
         let ID = items[0].id;
         return ID;
       } else {
         return "Please Select ID";
       }
-
-      // for(let i=0;i<items.length;i++){
-      //     if(items[i].itemname){
-
-      //     }
-      // }
     });
   };
   const CalGST = (rate, cgst) => {
@@ -4936,7 +4817,6 @@ function Newpurchaseentryform(props) {
         const ExcelSheet = Excelfile.SheetNames[0];
         const Sheet = Excelfile.Sheets[ExcelSheet];
         const data = XLSX.utils.sheet_to_json(Sheet);
-        console.log(data);
         for (let i = 0; i < data.length; i++) {
           let expiry = data[i].EXPIRY.replace("/", "-20");
           expiry = "01-" + expiry;
@@ -4950,7 +4830,6 @@ function Newpurchaseentryform(props) {
           CpU = CpU - Number(Disc(CpU, data[i].DIS));
           CpU = Number(CpU).toFixed(2);
           let ITEMID = await searchmedAuto(data[i]["ITEM NAME"]);
-          console.log(ITEMID);
 
           MedicineentriesObj = {
             type: "",
@@ -4975,7 +4854,6 @@ function Newpurchaseentryform(props) {
             totalamount: CpU * data[i].QTY.toFixed(2),
           };
           e.push(MedicineentriesObj);
-          console.log(e);
         }
       }
     }
@@ -4985,7 +4863,6 @@ function Newpurchaseentryform(props) {
         const ExcelSheet = Excelfile.SheetNames[0];
         const Sheet = Excelfile.Sheets[ExcelSheet];
         const data = XLSX.utils.sheet_to_json(Sheet);
-        console.log(data);
         for (let i = 0; i < data.length; i++) {
           let expiry = "20" + data[i].EXPYEAR;
           expiry =
@@ -5004,10 +4881,6 @@ function Newpurchaseentryform(props) {
             : CpU;
           CpU = CpU - Number(Disc(CpU, data[i].DIS));
           CpU = Number(CpU).toFixed(2);
-          // let mfddate = data[i].INVYEAR
-          // mfddate = mfddate + (data[i].INVMONTH < 10 ? '-' + '0' + data[i].INVMONTH : '-' + data[i].INVMONTH)
-          // mfddate = mfddate + (data[i].INVDAY < 10 ?  ('-' + '0' + data[i].INVDAY) :'-'+ data[i].INVDAY)
-          // console.log(mfddate)
           MedicineentriesObj = {
             type: "",
             Itemid: "",
@@ -5048,8 +4921,7 @@ function Newpurchaseentryform(props) {
       setNewMed("block");
     }
   };
-  // console.log(vendorid, vendorsearch, vendorcode, IsConsumable)
-  console.log(MedicineentriesArr);
+
   return (
     <div className="container-fluid p-0 m-0" style={{ zIndex: "2" }}>
       <div className="container-fluid bg-seashell border border-2 border-top-0 border-start-0 border-end-0 ">
@@ -5717,7 +5589,6 @@ function Purchaseordersection() {
           src={process.env.PUBLIC_URL + "/images/cartwhite.png"}
           alt="displaying_image"
           className="img-fluid"
-          style={{ width: `1.5rem` }}
         />
         View Cart
       </button>
@@ -6118,7 +5989,7 @@ function PRitemdetailssection(props) {
     }
   };
 
-  console.log(props.purchasereturnarr);
+
   return (
     <div className="container-fluid p-0 m-0 bg-seashell ">
       <div className="container-fluid bg-seashell p-0 m-0 position-relative">
@@ -6647,7 +6518,6 @@ function NewPurchaseReturnentryform(props) {
           `${url}/purchase/item/search/by/id?item=${itemname}&distributor_id=${vendorid}`
         )
         .then((response) => {
-          console.log(response.data.data);
           setitemsearch([response.data.data]);
           setloadsearch(false);
           if (itemname.length >= 1) {
@@ -6725,7 +6595,7 @@ function NewPurchaseReturnentryform(props) {
       total_amount: Totalamount,
       grand_total: grosstotal,
     };
-    console.log(Data);
+   
     setload(true);
     try {
       await axios.post(`${url}/purchase/return/save`, Data).then((response) => {
@@ -6745,7 +6615,7 @@ function NewPurchaseReturnentryform(props) {
     } catch (e) {
       Notiflix.Notify.warning(e.message);
       setload(false);
-      console.log(e);
+
     }
   };
   function confirmmessage() {
@@ -6916,7 +6786,6 @@ function NewPurchaseReturnentryform(props) {
               <button className="p-0 m-0 btn" onClick={searchmeds}>
                 <img
                   src={process.env.PUBLIC_URL + "images/search.png"}
-                  style={{ width: "1.8rem" }}
                 />
               </button>
             </div>
@@ -7176,7 +7045,6 @@ function Stockvaccinesection() {
         axios
           .get(`${url}/stock/list?search=${searchname}&limit=10&offset=0`)
           .then((response) => {
-            console.log(response.data.data);
             setvaccineslist(response.data.data.vaccines);
             setload(false);
           })
@@ -7197,7 +7065,6 @@ function Stockvaccinesection() {
             }`
           )
           .then((response) => {
-            console.log(response.data.data);
             setvaccineslist(response.data.data.vaccines);
 
             setload(false);
@@ -7232,7 +7099,6 @@ function Stockvaccinesection() {
           alert_stock_count: vaccineslist[i].alert_stock_count,
           min_stock_count: vaccineslist[i].min_stock_count,
         }
-        console.log(vaccineobj);
         if (vaccinearr == undefined && vaccinearr.length == 0) {
           setvaccinearr(vaccineobj);
         } else {
@@ -7348,8 +7214,6 @@ function Stockvaccinesection() {
   useEffect(() => {
     Get_Detailed_Data();
   }, [vaccineslist]);
-  // vaccinearr.sort(function (a, b) { return a.Days_to_expire - b.Days_to_expire })
-  console.log(vaccinearr);
   return (
     <div className="p-0 m-0 vaccinestockinfo">
       {/* <button className="button exportstock button-charcoal position-absolute"><img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt='displaying_image' className="img-fluid" style={{ width: `1.5rem` }} />Export Stock</button> */}
@@ -7658,7 +7522,6 @@ function Stockmedicinesection() {
           alert_stock_count: medicineslist[i].alert_stock_count ? medicineslist[i].alert_stock_count : "",
           min_stock_count: medicineslist[i].min_stock_count ? medicineslist[i].min_stock_count : "",
         };
-        console.log(medicineobj);
         if (medicinearr == undefined && medicinearr.length == 0) {
           setmedicinearr(medicineobj);
         } else {
@@ -7707,7 +7570,6 @@ function Stockmedicinesection() {
             totalstock: totalcurrentstockarr ? totalcurrentstockarr : "",
             Days_to_expire: ExpireDays ? ExpireDays : "",
           };
-          console.log(medicineobj);
           if (medicinearr == undefined && medicinearr.length == 0) {
             setmedicinearr(medicineobj);
           } else {
@@ -7781,7 +7643,6 @@ function Stockmedicinesection() {
       setindex();
     }
   };
-  console.log(medicineslist, medicinearr);
   return (
     <div className="p-0 m-0 vaccinestockinfo">
       {/* <button className="button exportstock button-charcoal position-absolute"><img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt='displaying_image' className="img-fluid" style={{ width: `1.5rem` }} />Export Stock</button> */}
@@ -8116,7 +7977,6 @@ function MedicinesectionItemDetails(props) {
       return date;
     }
   };
-  console.log(props.data);
   return (
     <div className=" p-0 m-0 position-relative bg-seashell rounded-4">
       <h6 className="text-center text-charcoal fw-bold pt-2">
@@ -8311,7 +8171,6 @@ function MedicineList() {
         await axios
           .get(`${url}/medicine/list?limit=20&offset=0`)
           .then((response) => {
-            console.log(response.data.data);
             setmedicines(response.data.data.medicine);
             setload(false);
           });
@@ -8325,7 +8184,6 @@ function MedicineList() {
         await axios
           .get(`${url}/medicine/list?limit=20&offset=${Data.selected * 20}`)
           .then((response) => {
-            console.log(response.data.data);
             setmedicines(response.data.data.medicine);
             setload(false);
           });
@@ -8364,7 +8222,6 @@ function MedicineList() {
         })
         .then((response) => {
           Notiflix.Notify.success(response.data.message);
-          console.log(response.data);
           medcinelist();
         });
     } catch (e) {
@@ -8392,7 +8249,7 @@ function MedicineList() {
       <div className="heading text-start ms-lg-5 ms-md-3 ms-sm-3 ms-1 text-charcoal fw-bold p-2"> Medicines List </div>
       <div className={` p-0 m-0 align-self-center ms-1 position-absolute top-0 end-0 d-${permission.medicine_add == 1 ? "" : "none"} `} >
         <button className="button button-charcoal m-0 p-0 py-1 px-4" onClick={ToggleNewMedicine} >
-          <img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} className="p-0 m-0" alt="displaying_image" style={{ width: "1.5rem" }} />{" "}
+          <img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} className="p-0 m-0" alt="displaying_image"/>{" "}
           Medicine
         </button>
       </div>
@@ -8447,7 +8304,7 @@ function MedicineList() {
                 <tr className={` bg-${i % 2 == 0 ? "seashell" : "pearl"} align-middle text-start`} >
                   <td className={`py-0 bg-${index === i ? "lightyellow" : ""} d-${permission.medicine_edit == 1 ? "" : "none"}`} >
                     <button className="btn m-0 p-0" key={i} onClick={(e) => { ToggleUpdateMedicine(); setindex(i); }} >
-                      <img src={process.env.PUBLIC_URL + "/images/confirmed.png"} alt="displaying_image" className="img-fluid" style={{ width: "1.5rem" }} key={i} />
+                      <img src={process.env.PUBLIC_URL + "/images/confirmed.png"} alt="displaying_image" className="img-fluid" key={i} />
                     </button>
                   </td>
                   <td className=" text-charcoal fw-bold"> {data.display_name && data.display_name !== null ? data.display_name : ""} </td>
@@ -8457,7 +8314,7 @@ function MedicineList() {
                   <td className=" text-charcoal fw-bold"> {data.manufacturer && data.manufacturer !== null ? data.manufacturer : ""} </td>
                   <td className={`d-${permission.medicine_delete == 1 ? "" : "none"}`} >
                     <button className="btn p-0 m-0" onClick={() => { confirmmessage(data.name, data.id); }} >
-                      <img src={process.env.PUBLIC_URL + "/images/delete.png"} style={{ width: "1.5rem" }} />
+                      <img src={process.env.PUBLIC_URL + "/images/delete.png"} />
                     </button>
                   </td>
                   {index == i ? (

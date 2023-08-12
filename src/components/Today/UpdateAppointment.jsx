@@ -123,7 +123,6 @@ const UpdateAppointment = (props) => {
     function UpdateAppointment(e) {
         if (props.appointmentid && doctorid && clinicid && time && adminid && props.patientid != null && props.patientid != 0) {
             try {
-                console.log(props.appointmentid, Number(doctorid), Number(clinicid), Number(time), Number(adminid), Number(props.patientid))
                 setload(true)
                 axios.post(`${url}/update/appointment`, {
                     appointment_id: props.appointmentid,
@@ -224,7 +223,7 @@ const UpdateAppointment = (props) => {
             await axios.post('http://aartas-qaapp-as.azurewebsites.net/aartas_redev/public/api/cancel/appointment', {
                 appointment_id: props.appointmentid
             }).then((response) => {
-                console.log(response)
+                
                 if (response.status == true) {
                     props.fetchallAppointmentslist()
                     props.fetchapi()
@@ -250,9 +249,9 @@ const UpdateAppointment = (props) => {
                             <div key={i} className={`d-${clinicID == data.id ? 'block' : 'none'} align-items-end text-charcoal `}>
                                 <div className="row p-0 m-0 align-items-end">
                                     <div className="col-auto p-0 m-0 me-1">
-                                        <img className='' src={process.env.PUBLIC_URL + '/images/location.png'} style={{ width: '1.3rem' }} />
+                                        <img className='img-fluid' src={process.env.PUBLIC_URL + '/images/location.png'} style={{ width: '1.3rem' }} />
                                     </div>
-                                    <div className="col-auto p-0 m-0 fw-bold" style={{ letterSpacing: '1px' }}>
+                                    <div className="col-auto p-0 m-0 fw-bold text-wrap mb-2" style={{ letterSpacing: '1px' }}>
                                         {data.title} {data.address}
                                     </div>
                                 </div>

@@ -38,7 +38,6 @@ const UpdateAddress = (props) => {
                 placeId: data.value.place_id
             }, (placeResult, status) => {
                 if (status === 'OK') {
-                    console.log(placeResult)
                     // find the address component with type "postal_code"
                     const postalCodeComponent = placeResult.address_components.find(component => {
                         return component.types.includes('postal_code');
@@ -54,8 +53,6 @@ const UpdateAddress = (props) => {
                     Notiflix.Notify.failure(`Failed to get place details: ${status}`);
                 }
             });
-        } else {
-            console.log(data)
         }
 
         data === "" ? setData("") : setData(data);
@@ -78,7 +75,7 @@ const UpdateAddress = (props) => {
                 props.setpatientdata(response.data.data)
                 clear()
             }
-            console.log(response)
+            
         })
     }
 
@@ -127,9 +124,9 @@ const UpdateAddress = (props) => {
                     props.data.address.length ==0  ?(<p className='text-burntumber ms-3 fw-bold'> Please add an address to make changes</p>):(
                         props.data.address.map((data, i) => (
                             <div className="container-fluid position-relative">
-                                <div className="row">
+                                <div className="row align-items-center">
                                     <div className="col-auto">
-                                        <div className="button p-0 m-0" onClick={() => { setindex(i); Toggle_Address() }}><img src={process.env.PUBLIC_URL + "/images/confirmed.png"} alt="" /></div>
+                                        <div className="button p-0 m-0" onClick={() => { setindex(i); Toggle_Address() }}><img src={process.env.PUBLIC_URL + "/images/confirmed.png"} className='img-fluid' style={{width:'1.5rem'}} alt="" /></div>
                                     </div>
                                     <div className="col-8">
                                         <button className='button button-pearl d-block my-2'>
@@ -137,7 +134,7 @@ const UpdateAddress = (props) => {
                                         </button>
                                     </div>
                                     <div className="col-2 text-end">
-                                        <div className="button p-0 m-0"><img src={process.env.PUBLIC_URL + "/images/minus.png"} alt="" /></div>
+                                        <div className="button p-0 m-0"><img src={process.env.PUBLIC_URL + "/images/minus.png"} className='img-fluid' style={{width:'1.5rem'}} alt="" /></div>
                                     </div>
                                 </div>
                                 <section className={`d-${index == i ? addresspage : 'none'} position-absolute top-0 mx-auto bg-seashell shadow-sm border border-1`} style={{ zIndex: '4' }}>

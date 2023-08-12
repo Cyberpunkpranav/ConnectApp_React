@@ -85,9 +85,6 @@ const SelectedTimeAppointment = (props) => {
             setload(false)
         }
     }
-    // console.log(displaysearchlist, props.DoctorName)
-    // Functions
-    console.log(doctorname, doctorid);
     return (
         <>
             <h5 className="text-center m-0 p-0 mt-2">Quick Appointment  at <span className=' text-charcoal fw-bold border-0 fs-6'>{tConvert(props.selectedtime)}</span></h5>

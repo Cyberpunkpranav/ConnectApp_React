@@ -61,7 +61,7 @@ const Payments = (props) => {
         async function Payment() {
             setloadadvancepayments(true)
             await axios.post(`${url}/save/advance`, Data).then((response) => {
-                console.log(response)
+                
                 props.Appointmentlist()
                 setadvancepaymentmethods([])
                 setDescription('')
@@ -109,7 +109,6 @@ const Payments = (props) => {
             }
         }
         for (let j = 0; j < pendingpaymentmethods.length; j++) {
-            console.log(pendingpaymentmethods[j])
             Paymentmethod.push(pendingpaymentmethods[j].paymentmethod)
             Paymentmethodsvalue.push(Number(pendingpaymentmethods[j].amount))
         }
@@ -128,6 +127,7 @@ const Payments = (props) => {
                 props.setsingleload(0)
                 setblocksindex(1)
                 setloadappoint(false)
+                props.ClosePaymentsForm()
             })
         }
         Payment()
@@ -138,7 +138,6 @@ const Payments = (props) => {
             return date
         }
     }
-    console.log(advancepaymentmethods)
     return (
 
         <div className='container-fluid'>
@@ -207,7 +206,7 @@ const Payments = (props) => {
                         <p className='text-charcoal fw-bold mt-3'>Add Payment Method</p>
                     </div>
                     <div className="col-auto p-0 m-0">
-                        <button className='btn py-0' onClick={() => setadvancepaymentmethods(prevState => [...prevState, advancepaymentmethoddetails])}><img src={process.env.PUBLIC_URL + '/images/add.png'} className='img-fluid' style={{ width: '2rem' }} /></button>
+                        <button className='btn py-0' onClick={() => setadvancepaymentmethods(prevState => [...prevState, advancepaymentmethoddetails])}><img src={process.env.PUBLIC_URL + '/images/add.png'} className='img-fluid' /></button>
                     </div>
                 </div>
 

@@ -42,7 +42,7 @@ function Doctors() {
       setDoctorslist()
       await axios.get(`${url}/doctor/list?clinic_id=${clinicID}&search=${Doctorssearch ? Doctorssearch : ''}&limit=10&offset=0`).then((response) => {
         setDoctorslist(response.data.data.doctor_list)
-        console.log(response)
+        
       })
       setpageloading(false)
     } else {

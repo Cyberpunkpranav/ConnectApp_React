@@ -51,7 +51,7 @@ const TransferOut = () => {
     try {
       axios.get(`https://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/api/transfer/stocks/list?location_id=${Location_Id} `)
         .then((response) => {
-          console.log(response);
+          ;
           settransferoutarr(response.data.data.transfer_stocks_sent);
           setLoading(false);
         })
@@ -96,7 +96,6 @@ const TransferOut = () => {
         Transferout.push(TransferOut)
       }
     }
-    console.log(Transferout)
     settransferout(Transferout)
   }
 
@@ -108,7 +107,6 @@ const TransferOut = () => {
     GETTransferOut();
     Detailed_Data()
   }, [Location_Id]);
-  console.log(transferoutarr, transferout)
   return (
     <>
       <div className="row p-0 m-0 justify-content-lg-between justify-content-md-evenly justify-content-center text-center mt-2">

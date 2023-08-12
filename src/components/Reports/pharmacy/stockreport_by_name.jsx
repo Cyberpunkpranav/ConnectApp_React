@@ -66,7 +66,7 @@ const StockReport_By_Name = () => {
             try {
                 axios.get(`${url}/reports/stock/report/by/item?item_id=${itemid ? itemid : ''}&item_type=${itemtype ? itemtype : ''}&from=${fromdate ? fromdate : currentDate}&to=${todate ? todate : fromdate ? fromdate : currentDate}`)
                     .then((response) => {
-                        console.log(response);
+                        ;
                         setstockreportarr(response.data.data.medicine);
                         setLoading(false);
                     })
@@ -83,7 +83,7 @@ const StockReport_By_Name = () => {
             try {
                 axios.get(`${url}/reports/stock/report/by/item?item_id=${itemid}&item_type=${itemtype}&from=${fromdate ? fromdate : currentDate}&to=${todate ? todate : fromdate ? fromdate : currentDate}`)
                     .then((response) => {
-                        console.log(response);
+                        ;
                         setstockreportarr(response.data.data.sale_entry);
                         setLoading(false);
                     })
@@ -132,7 +132,7 @@ const StockReport_By_Name = () => {
     useEffect(() => {
         GETStockReport();
     }, [itemid, fromdate, todate]);
-    console.log(itemid, itemtype, currentDate, stockreportarr)
+
     const parentArray = Object.keys(stockreportarr).map(key => ({
         id: key,
         ...stockreportarr[key]

@@ -131,7 +131,6 @@ const ExportPurchaseEntry = (props) => {
         }
         func()
     }, [props.purchaseentryarr])
-    // console.log(props.purchaseentryarr)
     return (
         <>
             <ExportExcel apiData={ExportPurchaseEntry} fileName={fileName} />
@@ -166,7 +165,6 @@ const ExportPurchaseReturn = (props) => {
             for (let i = 0; i < props.purchasereturnarr.length; i++) {
                 let distributor = props.purchasereturnarr[i].distributor.entity_name
                 let GST = props.purchasereturnarr[i].distributor.GSTIN_no
-                console.log()
                 var vendorsitems = props.purchasereturnarr[i].purchase_medicines.map(Data => ({
                     'Type': 'Medicine',
                     'PE ID': Data.purchase_entry.bill_id && Data.purchase_entry.bill_id != null ? "PE-" + Data.purchase_entry.bill_id : '',
@@ -273,7 +271,6 @@ const ExportPurchaseReturn = (props) => {
         }
         func()
     }, [props.purchasereturnarr])
-    console.log(props.purchasereturnarr)
     return (
         <>
             <ExportExcel apiData={ReturnEntry} fileName={fileName} />
@@ -432,7 +429,6 @@ const ExportSaleEntry = (props) => {
         }
         func()
     }, [props.saleentryarr])
-    console.log(props.saleentryarr)
     return (
         <>
             <ExportExcel apiData={SaleEntry} fileName={fileName} />
@@ -469,7 +465,6 @@ const ExportSaleReturn = (props) => {
                 let srid = props.salereturnarr[i].return_no !== null ? 'SR-' + props.salereturnarr[i].return_no : ''
                 let name = props.salereturnarr[i].sale_entry.patient.full_name !== null ? props.salereturnarr[i].sale_entry.patient.full_name : ''
                 let returnedamt = props.salereturnarr[i].grand_total !== null ? props.salereturnarr[i].grand_total : ''
-                console.log()
                 var vendorsitems = props.salereturnarr[i].sale_medicines.map(Data => ({
                     'Return No.': srid,
                     'Name': name,
@@ -532,43 +527,6 @@ const ExportSaleReturn = (props) => {
                 }))
                 obj.push(vendorsitems)
             }
-
-            // for (let i = 0; i < props.salereturnarr.length; i++) {
-            //     let returndate = props.salereturnarr[i].return_date !== null ? reversefunction(props.salereturnarr[i].return_date) : ''
-            //     let seid = props.salereturnarr[i].sale_entry_id !== null ? 'P-' + props.salereturnarr[i].sale_entry_id : ''
-            //     let srid = props.salereturnarr[i].return_no !== null ? 'SR-' + props.salereturnarr[i].return_no : ''
-            //     let name = props.salereturnarr[i].sale_entry.patient.full_name !== null ? props.salereturnarr[i].sale_entry.patient.full_name : ''
-            //     let returnedamt = props.salereturnarr[i].grand_total !== null ? props.salereturnarr[i].grand_total : ''
-            //     console.log()
-            //     var vendorsitems = props.salereturnarr[i].sale_vaccines.map(Data => ({
-            //         'Return No.': srid,
-            //         'Name': name,
-            //         'Type': 'Vaccine',
-            //         'SE ID': seid,
-            //         // 'Invoice No.': Data.sale_entry.invoice_no && Data.sale_entry.invoice_no != null ? Data.sale_entry.invoice_no : '',
-            //         'Return Date': returndate,
-            //         'Item ID': Data.id != null ? Data.id : '',
-            //         'Item Name': Data.vaccine && Data.vaccine.name && Data.vaccine.name != null ? Data.vaccine.name : '',
-            //         'Batch No.': Data.vaccine_stocks.batch_no != null ? Data.vaccine_stocks.batch_no : '',
-            //         'ExpiryDate': Data.medicine_stocks.expiry_date !== null ? reversefunction(Data.vaccine_stocks.expiry_date) : '',
-            //         'MRP': Data.vaccine_stocks.mrp != null ? Data.vaccine_stocks.mrp : '',
-            //         'Discount': Data.discount != null ? Data.discount : '',
-            //         'Selling Cost in Rs': Data.disc_mrp !== null ? Data.disc_mrp : '',
-            //         'Qty': Data.qty,
-            //         'CGST in Rs': Number(Data.CGST) * Number(Data.qty),
-            //         'CGST %': Data.CGST_rate,
-            //         'SGST in Rs': Number(Data.SGST) * Number(Data.qty),
-            //         'SGST %': Data.SGST_rate,
-            //         'IGST in Rs': Number(Data.IGST) * Number(Data.qty),
-            //         'Total Tax in Rs': TotalTax(Data.CGST, Data.SGST, Data.IGST),
-            //         'Total Tax %': TotalTaxRate(Data.CGST_rate, Data.SGST_rate, Data.IGST_rate),
-            //         'Total in Rs': Data.total_amount ? Data.total_amount : '',
-            //         'Returned Amount': returnedamt,
-            //         'HSN Code': Data.vaccine && Data.vaccine.hsn_code !== null ? Data.vaccine.hsn_code : ''
-            //     }))
-            //     obj.push(vendorsitems)
-
-            // }
             var obj2 = obj.flat()
             setReturnEntry(obj2)
         }
@@ -579,7 +537,6 @@ const ExportSaleReturn = (props) => {
         }
         func()
     }, [props.salereturnarr])
-    console.log(props.salereturnarr)
     return (
         <>
             <ExportExcel apiData={ReturnEntry} fileName={fileName} />

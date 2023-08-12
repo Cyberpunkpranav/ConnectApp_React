@@ -51,7 +51,7 @@ const OpeningStock = () => {
             try {
                 axios.get(`${url}/reports/stock/report?location_id=${Location_Id}&limit=10&offset=0&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`)
                     .then((response) => {
-                        console.log(response);
+                        ;
                         let medicines = []
                         let vaccines = []
                         let dataarr = []
@@ -82,7 +82,7 @@ const OpeningStock = () => {
             setLoading(true);
             try {
                 axios.get(`${url}/reports/stock/report?location_id=${Location_Id}&limit=25&offset=${Data.selected * 10}&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`).then((response) => {
-                    console.log(response);
+                    ;
                     setopeningstockarr(response.data.data.medicine);
                     setLoading(false);
                 })
@@ -110,7 +110,6 @@ const OpeningStock = () => {
         id: key,
         ...openingstockarr[key]
     }));
-    console.log(pagecount, pages, openingstockarr)
     return (
         <>
             <div className="row p-0 m-0 justify-content-lg-between justify-content-md-evenly justify-content-center text-center mt-2">

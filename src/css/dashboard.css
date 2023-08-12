@@ -456,7 +456,8 @@ body {
 } */
 @media (max-width:992px) {
     .search {
-        width: 12vh;
+        width: 145%;
+        margin-top:0.3rem;
     }
 
     /* .mainsearch{

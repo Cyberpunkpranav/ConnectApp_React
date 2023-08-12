@@ -125,9 +125,7 @@ function Appointments(props) {
             return ' | ' + '(' + arr.length + ' Appointments)'
         }
     }
-    // useEffect(() => {
-    // }, [fromdate, todate])
-    // console.log(docnames, visibles, getAppointments.length, appointmentdata.length)
+
     return (
         <>
             <section className="page2appointment ">

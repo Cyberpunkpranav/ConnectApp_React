@@ -161,14 +161,8 @@ const Bill = (props) => {
     let grosstotal = [];
     let total = 0;
     for (let i = 0; i < extrachargecount.length; i++) {
-      grosstotal.push(
-        (Number(extrachargecount[i].gross_amount) -
-          (Number(extrachargecount[i].amount) -
-            Number(extrachargecount[i].discount))) /
-        2
-      );
+      grosstotal.push( (Number(extrachargecount[i].gross_amount) - (Number(extrachargecount[i].amount) - Number(extrachargecount[i].discount))) / 2);
     }
-    // console.log(grosstotal,total)
     grosstotal.forEach((item) => {
       total += item;
     });
@@ -194,12 +188,14 @@ const Bill = (props) => {
     let total = 0;
     if (paymentmethods && paymentmethods.length > 0) {
       for (let i = 0; i < paymentmethods.length; i++) {
-        totalarr.push(Number(paymentmethods[i].amount));
+        if(paymentmethods[i].amount){
+          totalarr.push(Number(paymentmethods[i].amount));
+        }
       }
       totalarr.forEach((item) => {
         total += Number(item);
       });
-      total = total.toFixed(2);
+      total = total.toFixed(2)
       return total;
     } else {
       return 0;
@@ -237,7 +233,6 @@ const Bill = (props) => {
     let DiscountedAmount = [];
     let ids = [];
     let gstrate = [];
-    console.log(gstrate);
     for (let i = 0; i < extrachargecount.length; i++) {
       Description.push(extrachargecount[i].description);
       TotalAmount.push(Number(extrachargecount[i].amount));
@@ -298,6 +293,7 @@ const Bill = (props) => {
             setextrachargecount([]);
             Notiflix.Notify.success(response.data.message);
             setload(false);
+            props.CloseBillForm();
           });
       } catch (e) {
         Notiflix.Notify.failure(e.message);
@@ -369,7 +365,6 @@ const Bill = (props) => {
     Total = Total.toFixed(2)
     return Total
   }
-
   useEffect(() => {
     AdvancePayments();
     ConsumableAmount();
@@ -452,7 +447,7 @@ const Bill = (props) => {
                     </div>
                     <div className="col-auto p-0 m-0">
                       <button className="btn p-0 m-0 py-0" onClick={() => setextrachargecount((prevState) => [...prevState, Charges,])} >
-                        <img src={process.env.PUBLIC_URL + "/images/add.png"} className="img-fluid" style={{ width: "2rem" }} />
+                        <img src={process.env.PUBLIC_URL + "/images/add.png"} className="img-fluid" />
                       </button>
                     </div>
                   </div>
@@ -564,14 +559,16 @@ const Bill = (props) => {
 
                 </div>
               </div>
+              <hr/>
               <div className="container-fluid text-start position-relative mt-2">
                 <div className="row p-0 m-0 align-items-center">
                   <div className="col-auto p-0 m-0 ps-1">
                     <h6 className="text-charcoal p-0 m-0 fw-bolder">Payments</h6>
                   </div>
+           
                   <div className="col-auto p-0 m-0">
                     <button className="btn p-0 ms-1" onClick={() => setpaymentmethods((prevState) => [...prevState, paymentmethoddetails,])} >
-                      <img src={process.env.PUBLIC_URL + "/images/add.png"} className="img-fluid" style={{ width: "2rem" }} />
+                      <img src={process.env.PUBLIC_URL + "/images/add.png"} className="img-fluid" />
                     </button>
                   </div>
                 </div>
@@ -579,12 +576,7 @@ const Bill = (props) => {
                 <div className=" justify-content-start p-0 m-0 mt-2 me-3">
                   <div className="col-5 text-start p-0 m-0">
                     <span className=" text-end p-0 m-0 text-charcoal fw-bold ps-1"> Amount Recieved:{" "} </span>
-                    <span className="text-success fw-bolder">
-                      {" "}
-                      {paymentmethods && paymentmethods.length > 0
-                        ? "₹" + Total_Amount()
-                        : "₹" + 0}
-                    </span>
+                    <span className="text-success fw-bolder"> {" "} {paymentmethods && paymentmethods.length > 0 ? "₹" + Total_Amount() : "₹" + 0} </span>
                   </div>
                   <div className="col-5 text-start m-0 p-0">
                     {/* <span className="text-wrap text-center p-0 m-0 fw-bold ps-1"> Return Amount: </span> */}
@@ -612,7 +604,7 @@ const Bill = (props) => {
                     </div>
                     <div className="col-2">
                       <button className="btn btn-sm p-0 m-0" onClick={() => { DeletePaymentMethods(i); setpaymentmethods((prevState) => [...prevState]); }} >
-                        <img src={process.env.PUBLIC_URL + "/images/delete.png"} className="img-fluid" style={{ width: "1rem" }} />
+                        <img src={process.env.PUBLIC_URL + "/images/delete.png"} className="img-fluid"/>
                       </button>
                     </div>
                   </div>

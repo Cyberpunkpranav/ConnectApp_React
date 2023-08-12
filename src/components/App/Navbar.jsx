@@ -116,7 +116,7 @@ function Navbar(props) {
     }
 
 
-    let socket = new WebSocket('ws://localhost:8080/Chat')
+    let socket = new WebSocket('ws://192.168.3.92:8080/Chat')
 
     useEffect(() => {
         socket.onopen = () => {
@@ -132,7 +132,6 @@ function Navbar(props) {
                     break;
                 case "Broadcast":
                     if (data.message) {
-                        console.log(data)
                         if (data.message.length > 0) {
                             setmessages(data.message)
                             setuser(data.user)
@@ -236,7 +235,7 @@ function Navbar(props) {
                                         <div className={`col-auto p-0 m-0 align-self-end d-${data.display == 1 ? '' : 'none'} `} onClick={() => sethighlighticon(data.path)}>
                                             <Link to={data.path} className="text-decoration-none">
                                                 <div className="text-center">
-                                                    <img src={process.env.PUBLIC_URL + data.image} alt="displaying_image" className={`img-fluid rounded-1 p-2 bg-${location.pathname === data.path ? 'burntumber25' : 'seashell'}`} style={{ width: `1.2rem`, boxSizing: 'content-box' }} />
+                                                    <img src={process.env.PUBLIC_URL + data.image} alt="displaying_image" className={`img-fluid rounded-1 p-2 bg-${location.pathname === data.path ? 'burntumber25' : 'seashell'}`} style={{width:'1.5rem', boxSizing: 'content-box' }} />
                                                 </div>
                                                 <small className="col-12 m-0 p-0 px-2 text-center fw-bold text-charcoal">{data.title}</small>
                                             </Link>

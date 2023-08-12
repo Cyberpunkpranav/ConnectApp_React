@@ -36,7 +36,7 @@ const TransferIn = () => {
         try {
             axios.get(`https://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/api/transfer/stocks/list?location_id=${Location_Id} `)
                 .then((response) => {
-                    console.log(response);
+                    ;
                     settransferinarr(response.data.data.transfer_stocks_recevied);
                     setLoading(false);
                 })
@@ -58,7 +58,6 @@ const TransferIn = () => {
     useEffect(() => {
         GETTransferIn();
     }, [Location_Id]);
-    console.log(transferinarr)
     return (
         <>
             <div className="row p-0 m-0 justify-content-lg-between justify-content-md-evenly justify-content-center text-center mt-2">

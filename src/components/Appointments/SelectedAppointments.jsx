@@ -105,7 +105,7 @@ const SelectedAppointments = (props) => {
         appointment_id: id,
         admin_id: adminid
       }).then((response) => {
-        console.log(response)
+        
         Notiflix.Notify.success(response.data.message)
         window.open(response.data.data.bill_url, '_blank', 'noreferrer');
         Notiflix.Loading.remove()
@@ -126,7 +126,7 @@ const SelectedAppointments = (props) => {
       axios.post(`${url}/swift/pdf`, {
         appointment_id: id,
       }).then((response) => {
-        console.log(response)
+        
         Notiflix.Notify.success(response.data.message)
         Notiflix.Loading.remove()
         window.open(response.data.data.prescription_pdf, '_blank', 'noreferrer');
@@ -153,7 +153,7 @@ const SelectedAppointments = (props) => {
           check_pres: checkpres,
           admin_id: adminid
         }).then((response) => {
-          console.log(response)
+          
           Notiflix.Notify.success(`${response.data.message}${checkpres == 1 ? ' with Prescription' : ' without Prescription'}`)
           Notiflix.Loading.remove()
         })
@@ -199,7 +199,7 @@ const SelectedAppointments = (props) => {
           check_bill: 1,
           check_pre: checkpres,
         }).then((response) => {
-          console.log(response)
+          
           Notiflix.Notify.success(`${response.data.message}${checkpres == 1 ? ' with Prescription' : ' without Prescription'}`)
           Notiflix.Loading.remove()
         })
@@ -228,7 +228,6 @@ const SelectedAppointments = (props) => {
       },
     );
   }
-  console.log(paymentindex, props.getAppointments)
   return (
     <>
       {

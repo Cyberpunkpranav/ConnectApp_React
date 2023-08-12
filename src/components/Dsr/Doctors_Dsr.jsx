@@ -20,7 +20,7 @@ const Doctors_Dsr = (props) => {
   async function GetDoctors() {
     setload(true)
     await axios.get(`${url}/DSR/doctors?from_date=${props.fromdate}&to_date=${props.todate}`).then((response) => {
-      // console.log(response)
+      // 
       setAppointments(response.data.data.doctor_login_list)
       setload(false)
     })
@@ -122,7 +122,6 @@ const Doctors_Dsr = (props) => {
 
       }
     }
-    console.log(DoctorWisetotalarr)
     setDocTimetyp1(DoctorWisetotalarr)
   }
   useEffect(() => {
@@ -201,8 +200,7 @@ const Doctors_Dsr = (props) => {
         minsarr.push(0)
       }
     }
-    // console.log(hrarr)
-    // console.log(minsarr)
+
     hrarr.forEach(item => {
       GetTotalHours += Number(item)
     })
@@ -212,7 +210,6 @@ const Doctors_Dsr = (props) => {
 
     let a = Math.floor(GetTotalMins / 60)
     let b = GetTotalMins % 60
-    // console.log(GetTotalHours,GetTotalMins,a,b)
     return GetTotalHours + a + " Hours " + " and " + b + " Minutes "
   }
   return (
@@ -223,23 +220,23 @@ const Doctors_Dsr = (props) => {
             <button className="button button-seashell text-charcoal mt-2 fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
               Exports
             </button>
-            <ul className="dropdown-menu" >
+            <ul className="dropdown-menu bg-seashell border-0 shadow-sm" >
               <li className="text-center border-bottom">
                 <DownloadTableExcel
                   filename={`${reversefunction(props.fromdate) + ' to ' + reversefunction(props.todate)} All Doctors Login/Logout Details`}
                   sheet="Login/Logout Details"
                   currentTableRef={tableref.current}
                 >
-                  <button className='button-sm button-pearl text-start py-2'>All Doctors Login/Logout Details Export </button>
+                  <button className='button-sm button-seashell text-start fw-bold py-2'>All Doctors Login/Logout Details Export </button>
 
                 </DownloadTableExcel></li>
-              <li className="text-center  border-bottom">
+              <li className="text-center">
                 <DownloadTableExcel
                   filename={`${reversefunction(props.fromdate) + ' to ' + reversefunction(props.todate)} Doctors Summary`}
                   sheet="Summary Report"
                   currentTableRef={Doctorwisetable.current}
                 >
-                  <button className='button-sm button-pearl text-start py-2'>Doctors Summary Export</button>
+                  <button className='button-sm button-seashell fw-bold text-start py-2'>Doctors Summary Export</button>
 
                 </DownloadTableExcel></li>
 
@@ -332,10 +329,10 @@ const Doctors_Dsr = (props) => {
                 ) : (
                   Appointments.length == 0 || Appointments == undefined ? (
                     <tbody className='position-relative'>
-                      <tr className='position-absolute start-0 end-0 mx-auto fw-bolder text-charcoal'>No Doctors Login History Found </tr>
+                      <tr className='position-absolute start-0 end-0 text-center fw-bolder text-charcoal'>No Doctors Login History Found </tr>
                     </tbody>
                   ) : (
-                    <tbody className='border'>
+                    <tbody className=''>
                       {
                         Appointments.map((data, i) => (
                           <tr key={i}>
@@ -381,7 +378,7 @@ const Doctors_Dsr = (props) => {
               {
                 DocTimetyp1 == undefined || DocTimetyp1.length == 0 ? (
                   <tbody>
-                    <tr>Loading...</tr>
+                    <tr>Lo ading...</tr>
                   </tbody>
                 ) : (
                   <tbody>{

@@ -53,7 +53,7 @@ const StockConfirmation = () => {
             try {
                 axios.get(`${url}/sale/entry?clinic_id=${ClinicID}&limit=25&offset=0&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`)
                     .then((response) => {
-                        console.log(response);
+                        ;
                         setstockvaluecertificationarr(response.data.data.sale_entry);
                         setLoading(false);  
                     })
@@ -75,7 +75,7 @@ const StockConfirmation = () => {
                         }`
                     )
                     .then((response) => {
-                        console.log(response);
+                        ;
                         setstockvaluecertificationarr(response.data.data.sale_entry);
                         setLoading(false);
                     })

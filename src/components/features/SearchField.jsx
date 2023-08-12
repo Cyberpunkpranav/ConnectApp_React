@@ -39,8 +39,8 @@ const SearchField = (props) => {
             setpatientid()
             setpatientname()
 
-            await axios.get(`http://localhost:8080/Patient/Doctors/Appointments?search=${props.searchtext}`).then((response) => {
-                console.log(response)
+            await axios.get(`http://192.168.3.92:8080/Patient/Doctors/Appointments?search=${props.searchtext}`).then((response) => {
+                
                 setsearchlist(response.data.data.patient)
                 setsearchload(false)
             })
@@ -89,7 +89,7 @@ const SearchField = (props) => {
                 }
 
             }
-            // console.log(count)
+          
             let arr = []
             for (let k = 0; k < count.length; k++) {
                 arr.push(count[k].appointments)
@@ -99,16 +99,16 @@ const SearchField = (props) => {
             }
             count.map((data) => {
                 if (data.appointments == max) {
-                    // console.log(data.doctor)
+                  
                     doc = "Dr." + data.doctor
                 }
             })
-            // console.log(arr, max)
+        
         }
 
         return doc
     }
-    // console.log(searchlist, doctorid, patientid, patientname)
+
 
     return (
         <>
@@ -155,7 +155,7 @@ const SearchField = (props) => {
 
                 }
             </div>
-            <div className={`rounded-4 bg-seashell mt-4 appointmentinfosection d-${appointmentform} border p-2 border-1 position-absolute`} style={{ maxWidth: '25rem', right: '-7vh', top: '0' }}>
+            <div className={`rounded-4 bg-seashell mt-4 appointmentinfosection d-${appointmentform} border p-2 border-1 position-absolute`} style={{ maxWidth: '25rem', right: '-3vh', top: '0' }}>
                 <AddAppointment fetchapi={props.fetchapi} doctorid={doctorid} todaydate={todaydate} toggleappointmentform={toggleappointmentform} patientidfromsearch={patientid} patientnamefromsearch={patientname} />
             </div>
         </>

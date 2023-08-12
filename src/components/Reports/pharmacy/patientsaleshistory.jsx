@@ -49,7 +49,6 @@ const PatientSalesHistory = () => {
 
     }
     const get_value = async (value, name) => {
-        console.log(value, name)
         setsearchinput(value);
         setpatientid(name);
         setdisplaysearchlist('none');
@@ -62,7 +61,7 @@ const PatientSalesHistory = () => {
             try {
                 axios.get(`${url}/reports/sales/patient?&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}&patient_id=${patientid}`)
                     .then((response) => {
-                        console.log(response);
+                        ;
                         const parentArray = Object.keys(response.data.data.sales).map(key => ({
                             invoice_no: key,
                             ...response.data.data.sales[key]
@@ -87,7 +86,7 @@ const PatientSalesHistory = () => {
             try {
                 axios.get(`${url}/reports/sales/return/patient?&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}&patient_id=${patientid}`)
                     .then((response) => {
-                        console.log(response)
+                        
                         const parentArray = Object.keys(response.data.data.sales_return).map(key => ({
                             invoice_no: key,
                             ...response.data.data.sales_return[key]
@@ -106,7 +105,7 @@ const PatientSalesHistory = () => {
 
         }
     }
-    console.log(patientsalehistoryarr, patientsalereturnhistoryarr)
+
     useEffect(() => {
         GETPatientSalesHistory();
         GETPatientSalesReturnHistory();

@@ -121,7 +121,6 @@ const UpdateAppointment = (props) => {
     function UpdateAppointment(e) {
         if (props.appointmentid && doctorid && clinicid && time && adminid && props.patientid != null && props.patientid != 0) {
             try {
-                // console.log(props.appointmentid, Number(doctorid), Number(clinicid), Number(time), Number(adminid), Number(props.patientid))
                 setload(true)
                 axios.post(`${url}/update/appointment`, {
                     appointment_id: props.appointmentid,
@@ -267,7 +266,9 @@ const UpdateAppointment = (props) => {
                             </button>
                         </>
                     ) : (
-                        <div className='p-2 rounded fw-bold text-burntumber bg-lightred'>No timeslots Avaliable</div>
+                        <div className='p-2 w-100 m-0'>
+                            <button className="button rounded fw-bold text-burntumber button-lightred">No timeslots Avaliable</button> 
+                            </div>
                     )
                     }
                 </div>

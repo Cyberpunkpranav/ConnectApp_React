@@ -59,7 +59,6 @@ const AddConsumables = (props) => {
                 vaccines.push(response.data.data.vaccines ? response.data.data.vaccines : [])
                 items = medicines.concat(vaccines)
                 items = items.flat()
-                console.log(items)
                 setitemsearch(items)
                 setloadsearch(false)
                 if (search.length > 1) {
@@ -83,7 +82,6 @@ const AddConsumables = (props) => {
             } catch (e) {
                 setloadbyId(false)
                 Notiflix.Notify.failure(e.message)
-                console.log(e.message)
             }
         }
     }
@@ -264,7 +262,7 @@ const AddConsumables = (props) => {
         customconfirm()
         Notiflix.Confirm.show(
             `Save Sale Entry`,
-            `Do you surely want to save the following Note  `,
+            `Do you surely want to save the following Note`,
             'Yes',
             'No',
             () => {
@@ -315,7 +313,6 @@ const AddConsumables = (props) => {
             Notiflix.Notify.warning(e.data.message)
         }
     }
-    console.log(props.existedconsumables)
     return (
         <div className="container-fluid bg-seashell rounded-2 position-relative mx-auto col-lg-11 col-md-11 col-sm-11 col-11 col-xl-9" style-={{ height: '70vh' }}>
             <div className='position-relative mb-3 pt-2'>
@@ -467,7 +464,7 @@ const AddConsumables = (props) => {
                                                     <td>{reversefunction(data.expiry)}</td>
                                                     <td>{data.quantity}</td>
 
-                                                    <td className=''>
+                                                    <td>
                                                         <input className='border border-1 rounded-1 w-50 py-1 p-0 text-center bg-seashell'
                                                             value={data.qtytoSale ? data.qtytoSale : ''}
                                                             onChange={(e) => {
@@ -476,7 +473,7 @@ const AddConsumables = (props) => {
                                                                 setSelectedProducts(prevState => [...prevState])
                                                             }} /> </td>
 
-                                                    <td className='' style={{ Width: '0rem' }}>
+                                                    <td>
                                                         <input className='border border-1 rounded-1 w-50 py-1 p-0 text-center bg-seashell'
                                                             value={data.discount ? data.discount : ''}
                                                             onChange={(e) => {
@@ -496,13 +493,16 @@ const AddConsumables = (props) => {
                                         }
                                     </tbody>
                                 ) : (
-                                    <tbody className='p-0 m-0'>
+                                    props.existedconsumables && props.existedconsumables.length == 0?(
+                                        <tbody className='p-0 m-0 bg-seashell'>
                                         <tr className='p-0 m-0 text-center'>
                                             <td className='position-absolute text-charcoal75 fw-bold start-0 end-0'>No Consumabels Added</td>
                                         </tr>
 
 
                                     </tbody>
+                                    ):(<></>)
+
                                 )
                             }
 

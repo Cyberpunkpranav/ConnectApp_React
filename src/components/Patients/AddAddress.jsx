@@ -36,7 +36,6 @@ const AddAddress = (props) => {
                 placeId: data.value.place_id
             }, (placeResult, status) => {
                 if (status === 'OK') {
-                    console.log(placeResult)
                     // find the address component with type "postal_code"
                     const postalCodeComponent = placeResult.address_components.find(component => {
                         return component.types.includes('postal_code');
@@ -52,9 +51,7 @@ const AddAddress = (props) => {
                     Notiflix.Notify.failure(`Failed to get place details: ${status}`);
                 }
             });
-        } else {
-            console.log(data)
-        }
+        } 
 
         data === "" ? setData("") : setData(data);
         setplace(data && data.label != undefined ? data.label : '')
@@ -76,7 +73,7 @@ const AddAddress = (props) => {
                 props.setpatientdata(response.data.data)
                 clear()
             }
-            console.log(response)
+            
         })
     }
 
@@ -148,7 +145,7 @@ const AddAddress = (props) => {
                 props.Toggle_Address()
                 clear()
             }
-            console.log(response)
+            
         })
     }
 
@@ -157,7 +154,6 @@ const AddAddress = (props) => {
     useEffect(() => {
         fill_data()
     }, [])
-    console.log(props.data, place)
     return (
         <div className='text-center'>
             <div className="text-start">
@@ -181,7 +177,7 @@ const AddAddress = (props) => {
                                 placeholder: "Select Location",
                             }}
                             onLoadFailed={(error) => {
-                                console.log(error);
+                                Notiflix.Notify.warning(error);
                             }}
                         />
                     </div>

@@ -34,7 +34,7 @@ const Pharmacy_Dsr = (props) => {
         setSaleReturnList(response.data.data.pharmacy_sale_return)
         setSaleEntryList(response.data.data.pharmacy)
         setPendingPaid(response.data.data.pending_paid)
-        console.log(response)
+        
         setload(false)
       })
     } catch (e) {
@@ -488,7 +488,7 @@ const Pharmacy_Dsr = (props) => {
         <div className="col export_dropdown position-absolute top-0 ">
           <div className="dropdown">
             <button className="button button-seashell text-charcoal mt-2 fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"> Exports </button>
-            <ul className="dropdown-menu" >
+            <ul className="dropdown-menu bg-seashell border-0 shadow-sm" >
               <li className="text-justify border-bottom">
                 <span className={`d-${se}`}>
                   <DownloadTableExcel
@@ -496,7 +496,7 @@ const Pharmacy_Dsr = (props) => {
                     sheet="Sale Entries"
                     currentTableRef={saleentry.current}
                   >
-                    <button className='btn p-0 m-0 bg-pearl px-2'>All Export</button>
+                    <button className='btn p-0 m-0 bg-seashell fw-bold px-2'>All Export</button>
 
                   </DownloadTableExcel>
                 </span>
@@ -506,7 +506,7 @@ const Pharmacy_Dsr = (props) => {
                     sheet="Pendings"
                     currentTableRef={Pendingsonly.current}
                   >
-                    <button className='btn p-0 m-0 bg-pearl px-2  '>Pending Export</button>
+                    <button className='btn p-0 m-0 bg-seashell px-2 fw-bold  '>Pending Export</button>
 
                   </DownloadTableExcel>
                 </span></li>
@@ -516,7 +516,7 @@ const Pharmacy_Dsr = (props) => {
                   sheet="Sale Returns"
                   currentTableRef={salereturn.current}
                 >
-                  <button className='btn p-0 m-0 bg-pearl p-2'>Sale Returns Export</button>
+                  <button className='btn p-0 m-0 bg-seashell p-2 fw-bold'>Sale Returns Export</button>
                 </DownloadTableExcel></li>
               <li className="text-justify">
                 <DownloadTableExcel
@@ -524,7 +524,7 @@ const Pharmacy_Dsr = (props) => {
                   sheet="Pendings Recieved"
                   currentTableRef={pendingsrecieved.current}
                 >
-                  <button className='btn p-0 m-0 bg-pearl px-2 text-start ' onClick={() => { prxl('block') }} >Pendings Recieved Export</button>
+                  <button className='btn p-0 m-0 bg-seashell px-2 text-start fw-bold ' onClick={() => { prxl('block') }} >Pendings Recieved Export</button>
                 </DownloadTableExcel>
               </li>
             </ul>

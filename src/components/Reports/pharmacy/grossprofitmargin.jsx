@@ -55,7 +55,7 @@ const GrossProfitMargin = () => {
             try {
                 axios.get(`${url}/sale/entry?clinic_id=${ClinicID}&limit=25&offset=0&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`)
                     .then((response) => {
-                        console.log(response);
+                        ;
                         setgrossprofitmarginarr(response.data.data.sale_entry);
                         setLoading(false);
                     })
@@ -77,7 +77,7 @@ const GrossProfitMargin = () => {
                         }`
                     )
                     .then((response) => {
-                        console.log(response);
+                        ;
                         setgrossprofitmarginarr(response.data.data.sale_entry);
                         setLoading(false);
                     })

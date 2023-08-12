@@ -50,7 +50,7 @@ const BatchDetails = () => {
       try {
         axios.get(`${url}/stock/list?search=${searchname}&limit=10&offset=0`)
           .then((response) => {
-            console.log(response);
+            ;
             let arr = response.data.data.vaccines.concat(response.data.data.medicines)
             setbatchdetailsarr(arr);
             setLoading(false);
@@ -68,7 +68,7 @@ const BatchDetails = () => {
       try {
         axios.get(`${url}/stock/list?search=${searchname}&limit=10&offset=${Data.selected * 25}`)
           .then((response) => {
-            console.log(response);
+            ;
             let arr = response.data.data.vaccines.concat(response.data.data.medicines)
             setbatchdetailsarr(arr);
             setLoading(false);
@@ -92,7 +92,7 @@ const BatchDetails = () => {
   useEffect(() => {
     GETBatchDetails();
   }, [pagecount]);
-  console.log(batchdetailsarr)
+
   return (
     <>
       <div className="row p-0 m-0 justify-content-lg-between justify-content-md-evenly justify-content-center text-center mt-2">

@@ -81,7 +81,7 @@ const AddSelectedDoctorSlot = (props) => {
             <div className="col-12 text-center clinics">
                 {
                     cliniclist.map((data, i) => (
-                        <label className={`d-${clinicID == data.id ? 'block' : 'none'}`}><img src={process.env.PUBLIC_URL + '/images/location.png'} style={{ width: '1.5rem' }} />{data.title} {data.address}</label>
+                        <label className={`d-${clinicID == data.id ? 'block' : 'none'} img-fluid`}><img src={process.env.PUBLIC_URL + '/images/location.png'} />{data.title} {data.address}</label>
 
                     ))
                 }

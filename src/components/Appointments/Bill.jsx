@@ -130,7 +130,6 @@ const Bill = (props) => {
         for (let i = 0; i < extrachargecount.length; i++) {
             grosstotal.push((Number(extrachargecount[i].gross_amount) - (Number(extrachargecount[i].amount) - Number(extrachargecount[i].discount))) / 2)
         }
-        // console.log(grosstotal,total)
         grosstotal.forEach(item => {
             total += item
         })
@@ -198,8 +197,7 @@ const Bill = (props) => {
         let DiscountedAmount = []
         let ids = []
         let gstrate = [];
-        console.log(gstrate)
-        for (let i = 0; i < extrachargecount.length; i++) {
+            for (let i = 0; i < extrachargecount.length; i++) {
             Description.push(extrachargecount[i].description)
             TotalAmount.push(Number(extrachargecount[i].amount))
             Discount.push(Number(extrachargecount[i].discount))

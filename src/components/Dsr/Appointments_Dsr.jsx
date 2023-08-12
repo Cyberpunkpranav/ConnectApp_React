@@ -59,8 +59,7 @@ const Appointments_Dsr = (props) => {
     DSR_All_Appointments()
   }, [props.doctorid, props.fromdate, props.todate, props.clinic])
   
-  console.log(props.doctorid, props.fromdate, props.todate, props.clinic)
-  // console.log(Appointments,props.clinic)
+
 
   const reversefunction = (date) => {
     if (date !== undefined) {
@@ -481,7 +480,6 @@ const Appointments_Dsr = (props) => {
     })
     return sum
   }
-  console.log(Appointments)
   return (
     <div className='Appointments_Dsrsection'>
       <div className='position-relative'>

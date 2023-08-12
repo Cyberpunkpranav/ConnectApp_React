@@ -57,7 +57,6 @@ const Vitalsoperation = (props) => {
   }
 
   async function UpdateVital(vitalid, appointmentvitalid) {
-    // console.log(vitalid, vitalupdatevalue, appointmentvitalid, props.appointmentid, props.patientid)
     try {
       if (vitalid && vitalupdatevalue && appointmentvitalid && props.appointmentid && props.patientid) {
         await axios.post(`${url}/save/vitals`, {
@@ -114,12 +113,11 @@ const Vitalsoperation = (props) => {
       setvitalindex()
     }
   }
-  // console.log(props.appointmentvitalslist)
   return (
     <div className='container-fluid col-lg-10 col-md-11 col-sm-12 col-12 col-xl-10 bg-seashell rounded-2 position-relative pb-4 pt-2'>
       <h5 className='p-1 text-center'>{props.patientname} Vitals</h5>
       <button className=' btn-close position-absolute top-0 end-0 m-1 me-2 pt-3' disabled={props.loadvitals ? true : false} onClick={props.CloseVitals}></button>
-      <button className='btn p-0 m-0 position-absolute top-0 start-0 ms-2 m-1' onClick={refresh}><img src={process.env.PUBLIC_URL + '/images/refresh.png'} style={{ width: '1.5rem' }} /></button>
+      <button className='btn p-0 m-0 position-absolute top-0 start-0 ms-2 mt-1' onClick={refresh}><img src={process.env.PUBLIC_URL + '/images/refresh.png'} className='img-fluid' style={{ width: '1.2rem' }} /></button>
       {
         props.loadvitals ? (
           <div className="col-6 py-2 pb-2 m-auto text-center">
@@ -154,7 +152,7 @@ const Vitalsoperation = (props) => {
                     ) : (<></>)
                   }
 
-                  <div className="col-1 p-0 m-0 align-self-end">
+                  <div className="col-1 p-0 m-0">
                     {
                       data.vital.id ? (
                         <p className='p-0 m-0  text-charcoal text-center align-self-center'>{Vitalunit(data.vital.id)}</p>
@@ -196,7 +194,7 @@ const Vitalsoperation = (props) => {
           ) : (
             <div className="row justify-content-end align-items-center">
               <div className="col-3">
-                <select className='form-control p-0 text-center border-0 text-end bg-seashell' value={vitalid ? vitalid : ''} onChange={(e) => { setvitalid(e.target.value) }}>
+                <select className='form-control p-0 border-0 text-center bg-seashell' value={vitalid ? vitalid : ''} onChange={(e) => { setvitalid(e.target.value) }}>
                   <option>Select Vitals</option>
                   {
                     vitals.map((data) => (
@@ -208,7 +206,7 @@ const Vitalsoperation = (props) => {
               <div className="col-2">
                 <input className='form-control bg-seashell text-center p-0 border-start-0 border-end-0 border-top-0 border-bottom-burntumber' value={vitalvalue ? vitalvalue : ''} onChange={(e) => { setvitalvalue(e.target.value) }} />
               </div>
-              <div className="col-2">
+              <div className="col-1 p-0 m-0 ">
                 {
                   vitalid ? (
                     <p className='text-charcoal text-center p-0 m-0'>{Vitalunit(vitalid)}</p>
@@ -217,7 +215,7 @@ const Vitalsoperation = (props) => {
                   )
                 }
               </div>
-              <div className="col-2 px-1">
+              <div className="col-2">
                 {
                   loadvitals ? (
                     <div className="col-6 py-2 pb-2 m-auto text-center">
@@ -231,7 +229,10 @@ const Vitalsoperation = (props) => {
                 }
 
               </div>
-              <div className="col-2"></div>
+              <div className="col-auto me-5">
+              <button className='btn p-0 m-0 ' style={{opacity:'0'}}><img src={process.env.PUBLIC_URL + '/images/delete.png'} className='img-fluid' style={{ width: '1.3rem' }}/></button>
+
+              </div>
             </div>
           )
         }

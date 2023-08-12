@@ -79,18 +79,12 @@ function Doctorsection(props) {
       <section className="patientsection p-0 m-0 ps-1 position-relative">
         {
           props.Loading ? (
-            <div className=" position-absolute start-0 ms-2 end-0 m-auto loader ">
-              <button class="button button-pearl shadow-none fw-bolder text-charcoal75" type="button" disabled>
-                Please Be Patient While We are Fetching Data
-                <span class="spinner-grow spinner-grow ms-1 bg-brandy " role="status" aria-hidden="true"></span>
-              </button>
-              <button class="button button-pearl shadow-none m-0 p-0 " type="button" disabled>
-                <span class="spinner-grow spinner-grow bg-raffia" role="status" aria-hidden="true"></span>
-                <span class="spinner-grow spinner-grow-md ms-1 bg-burntumber" role="status" aria-hidden="true"></span>
-                <span class="spinner-grow spinner-grow-lg ms-1 bg-charcoal75" role="status" aria-hidden="true"></span>
-                <span class="visually-hidden">Loading...</span>
-              </button>
-            </div>
+            <div className="container-fliud pt-3">
+                <div className="d-flex fs-2 align-items-center justify-content-around">
+                  <strong className="text-charcoal">Please Wait...</strong>
+                  <div className="text-burntumber spinner-border ml-auto" role="status" aria-hidden="true" ></div>
+                </div>
+              </div>
 
           ) : (
             props.todayDoc && props.todayDoc.length != 0 ? (

@@ -38,11 +38,9 @@ const AddPatient = (props) => {
 
     const d = () => {
         if (main == 1) {
-            console.log(main)
             setdisplay('flex')
         }
         if (main == 2) {
-            console.log(main)
             setdisplay('none')
         }
     }
@@ -82,9 +80,9 @@ const AddPatient = (props) => {
     const CheckAvailability = async (e) => {
         setphonenumber(e.target.value)
         await axios.get(`${url}/patient/list?search=${e.target.value ? e.target.value : ''}&limit=10&offset=0`).then((response) => {
-            console.log(response.data.data.patients_list)
+
             for (let i = 0; i < response.data.data.patients_list.length; i++) {
-                console.log(('+' + countrycode + e.target.value), response.data.data.patients_list[i].phone_number)
+
                 if (('+' + countrycode + e.target.value) == response.data.data.patients_list[i].phone_number) {
                     setwarning('block')
                 } else {
@@ -115,7 +113,7 @@ const AddPatient = (props) => {
                 admin_id: adminid
             }).then((response) => {
                 setload(false)
-                console.log(response)
+                
                 Notiflix.Notify.success(response.data.message);
                 props.togglepatientform()
                 resetform(e)
@@ -133,7 +131,7 @@ const AddPatient = (props) => {
 
         if (data.value !== undefined && data.value.place_id !== undefined) {
             setpincode()
-            console.log(data.value.place_id)
+
             setplaceid()
             // initialize the map
             const map = new window.google.maps.Map({
@@ -148,7 +146,7 @@ const AddPatient = (props) => {
                 placeId: data.value.place_id
             }, (placeResult, status) => {
                 if (status === 'OK') {
-                    console.log(placeResult)
+                    
                     // find the address component with type "postal_code"
                     const postalCodeComponent = placeResult.address_components.find(component => {
                         return component.types.includes('postal_code');
@@ -164,8 +162,6 @@ const AddPatient = (props) => {
                     Notiflix.Notify.failure(`Failed to get place details: ${status}`);
                 }
             });
-        } else {
-            console.log(data)
         }
 
         data === "" ? setData("") : setData(data);
@@ -193,7 +189,7 @@ const AddPatient = (props) => {
             },
         );
     }
-    console.log(place);
+   
     return (
         <>
             <h5 className="text-center position-relative fw-bold pt-2 "> Patient Details </h5>
@@ -471,7 +467,7 @@ const AddPatient = (props) => {
                                 placeholder: "Select Location",
                             }}
                             onLoadFailed={(error) => {
-                                console.log(error);
+                                Notiflix.Notify.warning(error);
                             }}
                         />
                     </div>

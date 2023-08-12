@@ -47,7 +47,6 @@ const UpdateMedicine = (props) => {
     FillDetails()
   }, [])
   const handleimage = async (e) => {
-    console.log(e.target.files)
     if (e.target.files.length !== 0) {
       setimg(e.target.files)
     }
@@ -81,11 +80,10 @@ const UpdateMedicine = (props) => {
 
       } : ''
     }
-    console.log(props.data)
-    console.log(props.data.id)
+
     try {
       await axios.post(`${url}/medicine/update`, Data).then((response) => {
-        console.log(response)
+        
         Notiflix.Notify.success(response.data.message)
         props.medcinelist()
       })
@@ -112,10 +110,7 @@ const UpdateMedicine = (props) => {
     )
   }
 
-  if (img !== null) {
-    console.log(img[0])
-  }
-  console.log(data)
+
   return (
     <div className='position-relative bg-seashell p-0 m-0 fw-bold'>
       <h5 className='p-0 m-0 text-center py-2 border-bottom'>Update Medicine</h5>

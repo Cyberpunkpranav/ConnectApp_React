@@ -33,7 +33,6 @@ const Payments = (props) => {
         axios.post(`${url}/advance/balance`, {
             patient_id: props.patientid
         }).then((response) => {
-            console.log(response.data)
             setadvancepaid(response.data.data)
             setloadadvancepayments(false)
         })
@@ -61,7 +60,7 @@ const Payments = (props) => {
         async function Payment() {
             setloadadvancepayments(true)
             await axios.post(`${url}/save/advance`, Data).then((response) => {
-                console.log(response)
+                
                 props.fetchallAppointmentslist()
                 setadvancepaymentmethods([])
                 setDescription('')
@@ -103,7 +102,6 @@ const Payments = (props) => {
         }
 
         for (let j = 0; j < pendingpaymentmethods.length; j++) {
-            console.log(pendingpaymentmethods[j])
             Paymentmethod.push(pendingpaymentmethods[j].paymentmethod)
             Paymentmethodsvalue.push(Number(pendingpaymentmethods[j].amount))
         }
@@ -132,9 +130,7 @@ const Payments = (props) => {
             return date
         }
     }
-    // console.log(advancepaymentmethods)
-    console.log(props.appointmentdata)
-    console.log(advancepaid)
+ 
     return (
         <div className=' text-start p-0 m-0'>
             <h5 className='text-start fw-bold'>{props.patientname} Payments Section</h5>

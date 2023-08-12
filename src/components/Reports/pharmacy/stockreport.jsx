@@ -44,8 +44,6 @@ const StockReport = () => {
             axios.get(`${url}/reports/stock/report?location_id=${Location_Id}&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`)
                 .then((response) => {
                     setpagecount(response.data.data.count);
-                    console.log(response.data.data.count);
-                    console.log(Math.round(response.data.data.count / 10) + 1)
                     setpages(Math.round(response.data.data.count / 10) + 1);
                     setLoading(false);
                 })
@@ -64,7 +62,7 @@ const StockReport = () => {
             try {
                 axios.get(`${url}/reports/stock/report?location_id=${Location_Id}&limit=10&offset=0&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`)
                     .then((response) => {
-                        console.log(response);
+                        ;
                         setstockreportarr(response.data.data.medicine);
                         setLoading(false);
                     }).catch((e) => {
@@ -79,7 +77,7 @@ const StockReport = () => {
             setLoading(true);
             try {
                 axios.get(`${url}/reports/stock/report?location_id=${Location_Id}&limit=10&offset=${Data.selected * 10}&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`).then((response) => {
-                    console.log(response);
+                    ;
                     let medicines = []
                     let vaccines = []
                     let dataarr = []
@@ -122,7 +120,7 @@ const StockReport = () => {
         id: key,
         ...stockreportarr[key]
     }));
-    // console.log(parentArray, pages);
+
 
     return (
         <>

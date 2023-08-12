@@ -73,7 +73,7 @@ const VendorDetails = () => {
     //         try {
     //             axios.get(`${url}/sale/entry?clinic_id=${ClinicID}&limit=25&offset=0&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`)
     //                 .then((response) => {
-    //                     console.log(response);
+    //                     ;
     //                     setvendordetailsarr(response.data.data.sale_entry);
     //                     setLoading(false);
     //                 })
@@ -95,7 +95,7 @@ const VendorDetails = () => {
     //                     }`
     //                 )
     //                 .then((response) => {
-    //                     console.log(response);
+    //                     ;
     //                     setvendordetailsarr(response.data.data.sale_entry);
     //                     setLoading(false);
     //                 })
@@ -118,22 +118,11 @@ const VendorDetails = () => {
     useEffect(() => {
         GETVendorDetails();
     }, []);
-    console.log(vendorsearch)
     return (
         <>
             <div className="row p-0 m-0 justify-content-lg-between justify-content-md-evenly justify-content-center text-center mt-2">
                 <div className="col-lg-2 col-md-2 col-3 text-center p-0 m-0 ">
                     <button type="button" className="btn p-0 m-0 heading text-charcoal fw-bolder  " style={{ width: "fit-content" }} > {pagecount} {pagecount > 0 ? "Vendors Details" : "Vendor Details"}{" "} </button>
-                </div>
-                <div className="col-lg-8 col-md-8 col-7  p-0 m-0  border-0">
-                    {/* <div className="row p-0 m-0 border-burntumber fw-bolder rounded-1">
-                        <div className="col-6 p-0 m-0 text-burntumber text-center fw-bolder bg-pearl  rounded-1 ">
-                            <input type="date" placeholder="fromdate" className="p-0 m-0 border-0 bg-pearl text-burntumber text-center fw-bolder " value={fromdate ? fromdate : currentDate ? currentDate : ""} onChange={(e) => { setfromdate(e.target.value); }} />
-                        </div>
-                        <div className="col-6 p-0 m-0  text-burntumber text-center fw-bolder bg-pearl rounded-1">
-                            <input type="date" className=" p-0 m-0 border-0 bg-pearl text-burntumber text-center fw-bolder" value={todate ? todate : fromdate ? fromdate : currentDate ? currentDate : ""} onChange={(e) => { settodate(e.target.value); }} />
-                        </div>
-                    </div> */}
                 </div>
                 <div className="col-2 p-0 m-0 export col-md-2 col-lg-2 align-self-center text-center ">
                     <DownloadTableExcel

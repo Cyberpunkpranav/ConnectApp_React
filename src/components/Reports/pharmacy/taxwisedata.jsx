@@ -32,7 +32,7 @@ const TaxWiseData = () => {
         try {
             axios.get(`${url}/reports/summary/wise/data?from_date=${fromdate ? fromdate : ''}`)
                 .then((response) => {
-                    console.log(response);
+                    ;
                     const parentArray = Object.keys(response.data.data).map(key => ({
                         particular: key,
                         ...response.data.data[key]
@@ -67,7 +67,6 @@ const TaxWiseData = () => {
                 fromdate[1] = months[i][0]
             }
         }
-        console.log(fromdate)
         let newdate = fromdate[1] + " " + fromdate[0]
         return newdate
     }

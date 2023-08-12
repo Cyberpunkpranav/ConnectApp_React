@@ -256,7 +256,7 @@ function Switchpage() {
       )
       .then((response) => {
         setload(false);
-        console.log(response)
+        
         if (response.data.status === true) {
           localStorage.setItem("email", logininput.email);
           localStorage.setItem("name", response.data.data.name);
@@ -280,7 +280,7 @@ function Switchpage() {
   async function Permissions() {
     await axios.post(`https://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/api/connect/role/permissions/list`, { role_id: role ? role : 1, })
       .then((response) => {
-        console.log(response);
+        ;
         if (response.data.status === true) {
           setpermissions(response.data.data.permissions);
           Changepage();
@@ -394,7 +394,7 @@ function Switchpage() {
       );
     }
   }
-  // console.log(isTimeout);
+
   return Changepage();
 }
 

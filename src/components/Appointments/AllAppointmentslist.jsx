@@ -108,7 +108,7 @@ const AllAppointmentslist = (props) => {
                 appointment_id: id,
                 admin_id: adminid
             }).then((response) => {
-                console.log(response)
+                
                 Notiflix.Notify.success(response.data.message)
                 window.open(response.data.data.bill_url, '_blank', 'noreferrer');
                 Notiflix.Loading.remove()
@@ -129,7 +129,7 @@ const AllAppointmentslist = (props) => {
             axios.post(`${url}/swift/pdf`, {
                 appointment_id: id,
             }).then((response) => {
-                console.log(response)
+                
                 Notiflix.Notify.success(response.data.message)
                 Notiflix.Loading.remove()
                 window.open(response.data.data.prescription_pdf, '_blank', 'noreferrer');
@@ -156,7 +156,7 @@ const AllAppointmentslist = (props) => {
                     check_pres: checkpres,
                     admin_id: adminid
                 }).then((response) => {
-                    console.log(response)
+                    
                     Notiflix.Notify.success(`${response.data.message}${checkpres == 1 ? ' with Prescription' : ' without Prescription'}`)
                     Notiflix.Loading.remove()
                 })
@@ -202,7 +202,7 @@ const AllAppointmentslist = (props) => {
                     check_bill: 1,
                     check_pre: checkpres,
                 }).then((response) => {
-                    console.log(response)
+                    
                     Notiflix.Notify.success(`${response.data.message}${checkpres == 1 ? ' with Prescription' : ' without Prescription'}`)
                     Notiflix.Loading.remove()
                 })
@@ -232,7 +232,6 @@ const AllAppointmentslist = (props) => {
         );
     }
 
-    console.log(permission, permission.appointment_edit)
     return (
         <>
             {
@@ -319,12 +318,12 @@ const AllAppointmentslist = (props) => {
                                         <img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" />
                                     </button>
                                     <ul className="dropdown-menu shadow-sm text-decoration-none p-0 m-0 p-2" style={{ '-webkit-appearance': 'none', width: 'max-content' }}>
-                                        <li className='dropdown-item border-bottom p-0 m-0 align-items-center' onClick={() => { setbillindex(key); toggle_bill() }}><img className='m-2 img-fluid' style={{ 'width': '1.8rem' }} src={process.env.PUBLIC_URL + 'images/bill.png'} />Bill</li>
-                                        <li className={`dropdown-item border-bottom p-0 m-0 align-items-center d-${permission.appointment_charges_edit == 1 ? '' : 'none'}`} onClick={() => { setpaymentindex(key); toggle_payments(); }}><img className='m-2 img-fluid' style={{ 'width': '1.6rem' }} src={process.env.PUBLIC_URL + 'images/rupee.png'} />Payments</li>
-                                        <li className='dropdown-item border-bottom p-0 m-0 align-items-center' onClick={() => { Generate_Bill(data.id) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" style={{ width: "2rem" }} />Generate Bill</li>
-                                        <li className="dropdown-item border-bottom p-0 m-0 align-items-center" onClick={() => { Generate_Prescription(data.id) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" style={{ width: "2rem" }} /> Generate Prescription </li>
-                                        <li className="dropdown-item border-bottom p-0 m-0 align-items-center" onClick={() => { Confirm_For_Prescription(data.id, data.patient.phone_number) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/whatsapp.png"} alt="displaying_image" style={{ width: "2rem" }} /> Send on Whats App </li>
-                                        <li className="dropdown-item p-0 m-0 align-items-center" onClick={() => { Confirm_For_Prescription2(data.id, data.patient.phone_number) }}><img className='m-2 img-fluid ms-2' src={process.env.PUBLIC_URL + "/images/message.png"} alt="displaying_image" style={{ width: "1.8rem" }} />{' '}Send on SMS</li>
+                                        <li className='dropdown-item border-bottom p-0 m-0 align-items-center' onClick={() => { setbillindex(key); toggle_bill() }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + 'images/bill.png'} />Bill</li>
+                                        <li className={`dropdown-item border-bottom p-0 m-0 align-items-center d-${permission.appointment_charges_edit == 1 ? '' : 'none'}`} onClick={() => { setpaymentindex(key); toggle_payments(); }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + 'images/rupee.png'} />Payments</li>
+                                        <li className='dropdown-item border-bottom p-0 m-0 align-items-center' onClick={() => { Generate_Bill(data.id) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" />Generate Bill</li>
+                                        <li className="dropdown-item border-bottom p-0 m-0 align-items-center" onClick={() => { Generate_Prescription(data.id) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" /> Generate Prescription </li>
+                                        <li className="dropdown-item border-bottom p-0 m-0 align-items-center" onClick={() => { Confirm_For_Prescription(data.id, data.patient.phone_number) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/whatsapp.png"} alt="displaying_image" /> Send on Whats App </li>
+                                        <li className="dropdown-item p-0 m-0 align-items-center" onClick={() => { Confirm_For_Prescription2(data.id, data.patient.phone_number) }}><img className='m-2 img-fluid ms-2' src={process.env.PUBLIC_URL + "/images/message.png"} alt="displaying_image"/>{' '}Send on SMS</li>
                                     </ul>
                                 </div></td>
                             {

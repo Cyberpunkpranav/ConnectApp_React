@@ -38,7 +38,7 @@ const DoctorWiseSales = () => {
             try {
                 axios.get(`${url}/reports/sales/doctor?from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}&doctor_id=${doctorid}`)
                     .then((response) => {
-                        console.log(response);
+                        ;
                         let medicines = []
                         let vaccines = []
                         let dataarr = []
@@ -74,7 +74,7 @@ const DoctorWiseSales = () => {
             try {
                 axios.get(`${url}/reports/sales/return/doctor?from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}&doctor_id=${doctorid}`)
                     .then((response) => {
-                        console.log(response);
+                        ;
                         let medicines = []
                         let vaccines = []
                         let dataarr = []
@@ -109,7 +109,6 @@ const DoctorWiseSales = () => {
         GETDoctorWiseSales();
         GETDoctorWiseSalesReturn()
     }, [doctorid, fromdate, todate]);
-    console.log(doctorid, doctorwisesales, doctorwisesalesreturn)
     return (
         <>
             <div className="row p-0 m-0 justify-content-lg-between justify-content-md-evenly justify-content-center text-center mt-2">
