@@ -72,58 +72,54 @@ const TaxWiseData = () => {
     }
     return (
         <>
-            <div className="row p-0 m-0 justify-content-lg-between justify-content-md-evenly justify-content-center text-center mt-2">
-                <div className="col-lg-2 col-md-2 col-3 text-center p-0 m-0 ">
-                    <button type="button" className="btn p-0 m-0 heading text-charcoal fw-bolder  " style={{ width: "fit-content" }} > {taxwisearr.length} Tax-Wise Data</button>
-                </div>
-                <div className="col-lg-8 col-md-8 col-7  p-0 m-0  border-0">
-                    <div className="row p-0 m-0 border-burntumber fw-bolder rounded-1">
-                        <div className="col-12 p-0 m-0 text-burntumber text-center fw-bolder bg-pearl  rounded-1 ">
-                            <input type="month" placeholder="month" className="p-0 m-0 border-0 bg-pearl text-burntumber text-center fw-bolder " value={fromdate ? fromdate : currentDate ? currentDate.trim(4) : ""} onChange={(e) => { setfromdate(e.target.value); }} />
+                        <h2 className=" ms-3 text-charcoal fw-bolder mt-2" style={{ width: "fit-content" }}>  {taxwisearr.length} Tax-Wise Data </h2>
+
+            <div className="row p-0 m-0 text-center mt-2 ms-2">
+                <div className="col-auto p-0 m-0">
+                    <div className="row p-0 m-0 fw-bolder">
+                        <div className="col-auto p-0 m-0 text-charcoal text-center fw-bolder bg-seashell rounded-2">
+                            <input type="month" placeholder="month" className="button button-seashell border-0 text-center fw-bolder " value={fromdate ? fromdate : currentDate ? currentDate.trim(4) : ""} onChange={(e) => { setfromdate(e.target.value); }} />
                         </div>
-                        {/* <div className="col-6 p-0 m-0  text-burntumber text-center fw-bolder bg-pearl rounded-1">
-                            <input type="date" className=" p-0 m-0 border-0 bg-pearl text-burntumber text-center fw-bolder" value={todate ? todate : fromdate ? fromdate : currentDate ? currentDate : ""} onChange={(e) => { settodate(e.target.value); }} />
-                        </div> */}
                     </div>
                 </div>
-                <div className="col-2 p-0 m-0 export col-md-2 col-lg-2 align-self-center text-center ">
+                <div className="col-auto export align-self-center text-center ">
                     <DownloadTableExcel
                         filename={`TaxWiseData`}
                         sheet="StockReports"
                         currentTableRef={TaxWiseDataref.current}
                     >
-                        <button className='btn button-lightyellow text-start p-0 m-0 px-2 fw-bold'> Export</button>
+                        <button className='button button-seashell text-start fw-bold'> Export</button>
 
                     </DownloadTableExcel>
                 </div>
             </div>
-            <div className="scroll scroll-y p-0 m-0 mt-2" style={{ minHeight: "40vh", height: "58vh", maxHeight: "70vh" }} >
+            <div className="scroll scroll-y p-0 m-0 mt-2" style={{ minHeight: "40vh", height: "70vh", maxHeight: "70vh" }} >
                 <table className="table text-start table-responsive" ref={TaxWiseDataref}>
                     <thead className=" p-0 m-0 position-sticky top-0 bg-pearl">
                         <tr className=" ">
-                            <th rowSpan='2' className="text-charcoal75 fw-bolder p-0 m-0 px-1"> Particular </th>
-                            <th colSpan='3' scope="colgroup" className="text-charcoal75 fw-bolder p-0 m-0 px-1"> 0% </th>
-                            <th colSpan='3' scope="colgroup" className="text-charcoal75 fw-bolder p-0 m-0 px-1"> 5% </th>
-                            <th colSpan='3' scope="colgroup" className="text-charcoal75 fw-bolder p-0 m-0 px-1"> 12% </th>
-                            <th colSpan='3' scope="colgroup" className="text-charcoal75 fw-bolder p-0 m-0 px-1"> 18% </th>
-                            <th colSpan='3' scope="colgroup" className="text-charcoal75 fw-bolder p-0 m-0 px-1"> 28% </th>
+                            <th rowSpan='2' className="text-charcoal75 fw-bolder p-0 m-0 px-1 border-end"> Particular </th>
+                            <th colSpan='3' scope="colgroup" className="text-charcoal75 fw-bolder border-end"> 0% </th>
+                            <th colSpan='3' scope="colgroup" className="text-charcoal75 fw-bolder border-end"> 5% </th>
+                            <th colSpan='3' scope="colgroup" className="text-charcoal75 fw-bolder border-end"> 12% </th>
+                            <th colSpan='3' scope="colgroup" className="text-charcoal75 fw-bolder border-end"> 18% </th>
+                            <th colSpan='3' scope="colgroup" className="text-charcoal75 fw-bolder border-end"> 28% </th>
                         </tr>
                         <tr>
-                            <th scope='col' className="text-charcoal75 fw-bolder p-0 m-0 px-1"> Taxable </th>
-                            <th scope='col' className="text-charcoal75 fw-bolder p-0 m-0 px-1"> Tax </th>
-                            <th scope='col' className="text-charcoal75 fw-bolder p-0 m-0 px-1"> Total </th>
-                            <th scope='col' className="text-charcoal75 fw-bolder p-0 m-0 px-1"> Taxable </th>
-                            <th scope='col' className="text-charcoal75 fw-bolder p-0 m-0 px-1"> Tax </th>
-                            <th scope='col' className="text-charcoal75 fw-bolder p-0 m-0 px-1"> Total </th>
-                            <th scope='col' className="text-charcoal75 fw-bolder p-0 m-0 px-1"> Taxable </th>
-                            <th scope='col' className="text-charcoal75 fw-bolder p-0 m-0 px-1"> Tax </th>
-                            <th scope='col' className="text-charcoal75 fw-bolder p-0 m-0 px-1"> Total </th>
-                            <th scope='col' className="text-charcoal75 fw-bolder p-0 m-0 px-1"> Taxable </th>
-                            <th scope='col' className="text-charcoal75 fw-bolder p-0 m-0 px-1"> Tax </th>
-                            <th scope='col' className="text-charcoal75 fw-bolder p-0 m-0 px-1"> Total </th>
-                            <th scope='col' className="text-charcoal75 fw-bolder p-0 m-0 px-1"> Taxable </th>
-                            <th scope='col' className="text-charcoal75 fw-bolder p-0 m-0 px-1"> Tax </th>
-                            <th scope='col' className="text-charcoal75 fw-bolder p-0 m-0 px-1"> Total </th>
+                            <th scope='col' className="text-charcoal75 fw-bolder"> Taxable </th>
+                            <th scope='col' className="text-charcoal75 fw-bolder"> Tax </th>        
+                            <th scope='col' className="text-charcoal75 fw-bolder border-end"> Total </th>
+                            <th scope='col' className="text-charcoal75 fw-bolder"> Taxable </th>
+                            <th scope='col' className="text-charcoal75 fw-bolder"> Tax </th>
+                            <th scope='col' className="text-charcoal75 fw-bolder border-end"> Total </th>
+                            <th scope='col' className="text-charcoal75 fw-bolder"> Taxable </th>
+                            <th scope='col' className="text-charcoal75 fw-bolder"> Tax </th>
+                            <th scope='col' className="text-charcoal75 fw-bolder border-end"> Total </th>
+                            <th scope='col' className="text-charcoal75 fw-bolder"> Taxable </th>
+                            <th scope='col' className="text-charcoal75 fw-bolder"> Tax </th>
+                            <th scope='col' className="text-charcoal75 fw-bolder border-end"> Total </th>
+                            <th scope='col' className="text-charcoal75 fw-bolder"> Taxable </th>
+                            <th scope='col' className="text-charcoal75 fw-bolder"> Tax </th>
+                            <th scope='col' className="text-charcoal75 fw-bolder border-end"> Total </th>
                         </tr>
                     </thead>
                     {Loading ? (
@@ -147,23 +143,23 @@ const TaxWiseData = () => {
                     ) : taxwisearr && taxwisearr.length != 0 ? (
                         <tbody>
                             {taxwisearr.map((item, i) => (
-                                <tr className={` bg-${i % 2 == 0 ? "seashell" : "pearl"} align-middle`} key={i} >
-                                    <td className="text-charcoal fw-bold">{month_explorer(item.particular)} </td>
-                                    <td className="text-charcoal fw-bold">₹{item['taxable 0%'] !== undefined ? Number(item['taxable 0%']).toFixed(2) : ''} </td>
-                                    <td className="text-charcoal fw-bold">₹{item['tax 0%'] !== undefined ? Number(item['tax 0%']).toFixed(2) : ''} </td>
-                                    <td className="text-charcoal fw-bold">₹{item['taxable 0%'] !== undefined && item['tax 0%'] !== undefined ? Number(Number(item['taxable 0%']) + Number(item['tax 0%'])).toFixed(2) : ''} </td>
-                                    <td className="text-charcoal fw-bold">₹{item['taxable 5%'] !== undefined ? Number(item['taxable 5%']).toFixed(2) : ''} </td>
-                                    <td className="text-charcoal fw-bold">₹{item['tax 5%'] !== undefined ? Number(item['tax 5%']).toFixed(2) : ''} </td>
-                                    <td className="text-charcoal fw-bold">₹{item['taxable 5%'] !== undefined && Number(item['tax 5%']).toFixed(2) !== undefined ? Number(Number(item['taxable 5%']) + Number(item['tax 5%'])).toFixed(2) : ''} </td>
-                                    <td className="text-charcoal fw-bold">₹{item['taxable 12%'] !== undefined ? Number(item['taxable 12%']).toFixed(2) : ''} </td>
-                                    <td className="text-charcoal fw-bold">₹{item['tax 12%'] !== undefined ? Number(item['tax 12%']).toFixed(2) : ''} </td>
-                                    <td className="text-charcoal fw-bold">₹{item['taxable 12%'] !== undefined && Number(item['tax 12%']).toFixed(2) !== undefined ? Number(Number(item['taxable 12%']) + Number(item['tax 12%'])).toFixed(2) : ''} </td>
-                                    <td className="text-charcoal fw-bold">₹{item['taxable 18%'] !== undefined ? Number(item['taxable 18%']).toFixed(2) : ''} </td>
-                                    <td className="text-charcoal fw-bold">₹{item['tax 18%'] !== undefined ? Number(item['tax 18%']).toFixed(2) : ''} </td>
-                                    <td className="text-charcoal fw-bold">₹{item['taxable 18%'] !== undefined && Number(item['tax 18%']).toFixed(2) !== undefined ? Number(Number(item['taxable 18%']) + Number(item['tax 18%'])).toFixed(2) : ''} </td>
-                                    <td className="text-charcoal fw-bold">₹{item['taxable 28%'] !== undefined ? Number(item['taxable 28%']).toFixed(2) : ''} </td>
-                                    <td className="text-charcoal fw-bold">₹{item['tax 28%'] !== undefined ? Number(item['tax 28%']).toFixed(2) : ''} </td>
-                                    <td className="text-charcoal fw-bold">₹{item['taxable 28%'] !== undefined && item['tax 28%'] !== undefined ? Number(Number(item['taxable 28%']) + Number(item['tax 28%'])).toFixed(2) : ''} </td>
+                                <tr className={` bg-${i % 2 == 0 ? "seashell" : "pearl"} p-3 align-middle`} key={i} >
+                                    <td className="text-charcoal p-3 fw-bold border-end">{month_explorer(item.particular)} </td>
+                                    <td className="text-charcoal p-3 fw-bold">₹{item['taxable 0%'] !== undefined ? Number(item['taxable 0%']).toFixed(2) : ''} </td>
+                                    <td className="text-charcoal p-3 fw-bold">₹{item['tax 0%'] !== undefined ? Number(item['tax 0%']).toFixed(2) : ''} </td>
+                                    <td className="text-charcoal p-3 fw-bold border-end">₹{item['taxable 0%'] !== undefined && item['tax 0%'] !== undefined ? Number(Number(item['taxable 0%']) + Number(item['tax 0%'])).toFixed(2) : ''} </td>
+                                    <td className="text-charcoal p-3 fw-bold">₹{item['taxable 5%'] !== undefined ? Number(item['taxable 5%']).toFixed(2) : ''} </td>
+                                    <td className="text-charcoal p-3 fw-bold">₹{item['tax 5%'] !== undefined ? Number(item['tax 5%']).toFixed(2) : ''} </td>
+                                    <td className="text-charcoal p-3 fw-bold border-end">₹{item['taxable 5%'] !== undefined && Number(item['tax 5%']).toFixed(2) !== undefined ? Number(Number(item['taxable 5%']) + Number(item['tax 5%'])).toFixed(2) : ''} </td>
+                                    <td className="text-charcoal p-3 fw-bold">₹{item['taxable 12%'] !== undefined ? Number(item['taxable 12%']).toFixed(2) : ''} </td>
+                                    <td className="text-charcoal p-3 fw-bold">₹{item['tax 12%'] !== undefined ? Number(item['tax 12%']).toFixed(2) : ''} </td>
+                                    <td className="text-charcoal p-3 fw-bold border-end">₹{item['taxable 12%'] !== undefined && Number(item['tax 12%']).toFixed(2) !== undefined ? Number(Number(item['taxable 12%']) + Number(item['tax 12%'])).toFixed(2) : ''} </td>
+                                    <td className="text-charcoal p-3 fw-bold">₹{item['taxable 18%'] !== undefined ? Number(item['taxable 18%']).toFixed(2) : ''} </td>
+                                    <td className="text-charcoal p-3 fw-bold">₹{item['tax 18%'] !== undefined ? Number(item['tax 18%']).toFixed(2) : ''} </td>
+                                    <td className="text-charcoal p-3 fw-bold border-end">₹{item['taxable 18%'] !== undefined && Number(item['tax 18%']).toFixed(2) !== undefined ? Number(Number(item['taxable 18%']) + Number(item['tax 18%'])).toFixed(2) : ''} </td>
+                                    <td className="text-charcoal p-3 fw-bold">₹{item['taxable 28%'] !== undefined ? Number(item['taxable 28%']).toFixed(2) : ''} </td>
+                                    <td className="text-charcoal p-3 fw-bold">₹{item['tax 28%'] !== undefined ? Number(item['tax 28%']).toFixed(2) : ''} </td>
+                                    <td className="text-charcoal p-3 fw-bold border-end">₹{item['taxable 28%'] !== undefined && item['tax 28%'] !== undefined ? Number(Number(item['taxable 28%']) + Number(item['tax 28%'])).toFixed(2) : ''} </td>
                                 </tr>
                             ))}
                         </tbody>

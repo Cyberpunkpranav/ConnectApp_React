@@ -226,4 +226,4 @@ const StockValuation = () => {
     )
 }
 
-export { StockValuation }
+export default StockValuation 

@@ -72,28 +72,20 @@ const SummaryData = () => {
     }
     return (
         <>
-            <div className="row p-0 m-0 justify-content-lg-between justify-content-md-evenly justify-content-center text-center mt-2">
-                <div className="col-lg-2 col-md-2 col-3 text-center p-0 m-0 ">
-                    <button type="button" className="btn p-0 m-0 heading text-charcoal fw-bolder  " style={{ width: "fit-content" }} > {pagecount} {pagecount > 0 ? "Summary Data" : "Summary Data"}{" "} </button>
-                </div>
-                <div className="col-lg-8 col-md-8 col-7  p-0 m-0  border-0">
-                    <div className="row p-0 m-0 border-burntumber fw-bolder rounded-1">
-                        <div className="col-12 p-0 m-0 text-burntumber text-center fw-bolder bg-pearl  rounded-1 ">
-                            <input type="month" placeholder="fromdate" className="p-0 m-0 border-0 bg-pearl text-burntumber text-center fw-bolder " value={fromdate ? fromdate : currentDate ? currentDate : ""} onChange={(e) => { setfromdate(e.target.value); }} />
-                        </div>
-                        {/* <div className="col-6 p-0 m-0  text-burntumber text-center fw-bolder bg-pearl rounded-1">
-                            <input type="date" className=" p-0 m-0 border-0 bg-pearl text-burntumber text-center fw-bolder" value={todate ? todate : fromdate ? fromdate : currentDate ? currentDate : ""} onChange={(e) => { settodate(e.target.value); }} />
-                        </div> */}
-                    </div>
-                </div>
-                <div className="col-2 p-0 m-0 export col-md-2 col-lg-2 align-self-center text-center ">
+                <h2 className=" ms-3 text-charcoal fw-bolder mt-2" style={{ width: "fit-content" }}> {pagecount} {pagecount > 1 ? "Summary Data" : "Summary Data"}{" "} </h2>
+
+            <div className="row p-0 m-0">
+            <div className="col-auto row text-charcoal text-center fw-bolder bg-seashell ms-2 rounded-2 ">
+            <input type="month" placeholder="month and year" className="p-0 m-0 border-0 bg-seashell text-charcoal text-center fw-bolder " value={fromdate ? fromdate : currentDate ? currentDate : ""} onChange={(e) => { setfromdate(e.target.value); }} />
+            </div>
+        
+                <div className="col-auto p-0 m-0 export align-self-center text-center ">
                     <DownloadTableExcel
                         filename={` Summary Data`}
                         sheet="SummaryData"
                         currentTableRef={OpeningStockref.current}
                     >
-                        <button className='btn button-lightyellow text-start p-0 m-0 px-2 fw-bold'> Export</button>
-
+                        <button className='button button-seashell text-start fw-bold'> Export</button>
                     </DownloadTableExcel>
                 </div>
             </div>

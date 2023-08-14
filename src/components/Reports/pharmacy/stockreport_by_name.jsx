@@ -275,4 +275,4 @@ const StockReport_By_Name = () => {
     )
 }
 
-export { StockReport_By_Name }
+export default StockReport_By_Name 

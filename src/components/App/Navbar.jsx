@@ -222,7 +222,7 @@ function Navbar(props) {
                         <div className="col-lg-auto col-xl-auto col-md-2 col-sm-auto col-auto p-0 m-0 ms-2 text-start dropdown">
                             <button className="button dropdown-toggle button-seashell shadow-none d-inline-block col-md-auto col-auto user position-relative p-0 m-0 ms-2" data-bs-toggle="dropdown" aria-expanded="false">
                                 <h1 className="m-0 username text-decoration-none  text-start fw-bold"> {props.username} </h1>
-                                <div className="m-0 userstatus text-decoration-none text-start text-burntumber fw-bold" >{props.designation} </div>
+                                <div className="m-0 userstatus text-decoration-none text-start text-burntumber fw-bold text-wrap" >{props.designation} </div>
                                 <ul class="dropdown-menu p-0 m-0 border-0" onClick={props.logout}>
                                     <li class="dropdown-item p-0 m-0 bg-lightred50 text-center rounded-2 p-1 fw-bold border-0 text-burntumber">Logout</li>
                                 </ul>

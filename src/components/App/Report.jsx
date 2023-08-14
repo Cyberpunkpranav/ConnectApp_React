@@ -29,7 +29,7 @@ import "../../css/pharmacy.css";
 
 const Reports = () => {
   const permission = useContext(Permissions);
-  const [select, setselect] = useState('0')
+  const [select, setselect] = useState('')
   const first = [
     {
       option: "Pharmacy",
@@ -42,18 +42,36 @@ const Reports = () => {
   ];
   const [second, setSecond] = useState(0);
   function selectfunc() {
+    if( select == ''){
+      return (
+        <div className="container rounded-4 border border-1  mt-5" >
+          <h1 className="row p-0 m-0 align-items-center text-center fw-bold justify-content-center text-charcoal75"style={{height:'50vh'}}>
+               select Report to show data   
+            </h1> 
+        </div>
+      )
+    }
     if (select == 0) {
-      return <StockReport />
+      window.open('/Reports/stock_report','_blank')
+      window.location.reload()
+      // return <StockReport />
 
     }
     if (select == 1) {
-      return <StockReport_By_Name />
+      window.open('/Reports/stock_report_by_name','_blank')
+      window.location.reload()
+      // return <StockReport_By_Name />
     }
     if (select == 2) {
-      return <StockValuation />
+      window.open('/Reports/stock_valuation','_blank')
+      window.location.reload()
+
+      // return <StockValuation />
     }
     if (select == 3) {
-      return <OpeningStock />
+      window.open('/Reports/opening_stock','_blank')
+      window.location.reload()
+      // return <OpeningStock />
     }
     if (select == 4) {
       return <RateList />
@@ -98,8 +116,8 @@ const Reports = () => {
   const _selectedScreen = (_selected) => {
     if (_selected === 0) {
       return (
-        <>
-          <select className="ms-2 mt-2 px-4 py-1 text-white rounded-pill bg-charcoal text-center " onChange={(e) => { setselect(e.target.value) }} style={{ cursor: 'pointer' }} >
+          <select className="button button-seashell text-charcoal text-center fw-bold rounded-2 border-0  bg-seashell " onChange={(e) => { setselect(e.target.value) }} style={{ cursor: 'pointer' }} >
+          <option className="bg-seashell text-charcoal" value="" style={{ cursor: 'pointer' }} >Select report</option>
             <option className="bg-seashell text-charcoal" value="0" style={{ cursor: 'pointer' }} >Stock Report</option>
             <option className="bg-seashell text-charcoal" value="1" style={{ cursor: 'pointer' }} >StockReport By ItemName</option>
             <option className="bg-seashell text-charcoal" value="2" style={{ cursor: 'pointer' }} >Stock Valuation</option>
@@ -117,8 +135,6 @@ const Reports = () => {
             <option className="bg-seashell text-charcoal" value="14" style={{ cursor: 'pointer' }} >Transfer Stock In</option>
             <option className="bg-seashell text-charcoal" value="15" style={{ cursor: 'pointer' }} >Transfer Stock Out</option>
           </select>
-          <div>{selectfunc(select)}</div>
-        </>
       )
 
     }
@@ -128,29 +144,39 @@ const Reports = () => {
   return (
     <>
       <section className="pharmacy_report_section pt-2">
-        <div className="container-fluid p-0 m-0">
+        <div className="container-fluid p-0 m-0 mt-3">
           <div className="row gx-3 p-0 m-0">
-            <div className="col-10">
-              <div className="row">
-                {first.map((e, i) => {
-                  return (
-                    <div className={`col-auto d-${e.display == 1 ? "" : "none"}`} >
-                      <button className={`btn btn-sm rounded-pill text-${i === second ? "light" : "dark"} bg-${i === second ? "charcoal" : "seashell"}`} onClick={(a) => setSecond(i)} >
-                        {e.option}
-                      </button>
-                    </div>
-                  );
-                })}
+            <div className="col-auto">
+            <div class="dropdown">
+                <button class="button button-seashell border-0 rounded-2 fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Report Type 
+                </button>
+
+                <ul class="dropdown-menu bg-seashell shadow-sm border-0">
+                  {
+                    first.map((e, i) => (
+                      <li className={`dropdown-item text-${i === second ? "light" : "dark"} fw-bold bg-${i === second ? "charcoal" : "seashell"}`} onClick={(a) => setSecond(i)} > {e.option} </li>
+                    )
+                    ) 
+                  }
+                </ul>
               </div>
             </div>
+              <div className="col-auto">
+              <div className="">{_selectedScreen(second)}</div>
+              </div>
           </div>
         </div>
       </section>
-      <section className="tablesrender position-relative">
-        <div className="container-fluid p-0 m-0 pt-3">
-          <div className="">{_selectedScreen(second)}</div>
+      <div className="col-auto">
+            <section className="tablesrender position-relative p-0 m-0">
+        <div className="container-fluid p-0 m-0 ">
+        <div>{selectfunc(select)}</div>
+   
         </div>
-      </section></>
+      </section>
+            </div>
+      </>
   )
 }
 

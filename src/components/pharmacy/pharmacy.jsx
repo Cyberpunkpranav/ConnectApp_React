@@ -6310,47 +6310,13 @@ function PRitemdetailssection(props) {
               >
                 CGST%
               </th>
-              <th
-                scope="col"
-                className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none"
-                  }`}
-              >
-                CGST
-              </th>
-              <th
-                scope="col"
-                className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none"
-                  }`}
-              >
-                SGST%
-              </th>
-              <th
-                scope="col"
-                className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none"
-                  }`}
-              >
-                SGST{" "}
-              </th>
-              <th
-                scope="col"
-                className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none"
-                  }`}
-              >
-                IGST%
-              </th>
-              <th
-                scope="col"
-                className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none"
-                  }`}
-              >
-                IGST{" "}
-              </th>
-              <th scope="col" className={`border p-0 m-0 px-1`}>
-                Total%
-              </th>
-              <th scope="col" className={`border p-0 m-0 px-1`}>
-                Total
-              </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > CGST </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > SGST% </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > SGST{" "} </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > IGST% </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > IGST{" "} </th>
+              <th scope="col" className={`border p-0 m-0 px-1`}> Total% </th>
+              <th scope="col" className={`border p-0 m-0 px-1`}> Total </th>
             </tr>
           </thead>
           {props.purchasereturnarr.purchase_vaccines &&
@@ -6409,40 +6375,13 @@ function PRitemdetailssection(props) {
                   >
                     {item.CGST_rate ? item.CGST_rate : "N/A"}
                   </td>
-                  <td
-                    className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none"
-                      }`}
-                  >
-                    {item.CGST ? item.CGST : "N/A"}
-                  </td>
-                  <td
-                    className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none"
-                      }`}
-                  >
-                    {item.IGST_rate ? item.IGST_rate : "N/A"}
-                  </td>
-                  <td
-                    className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none"
-                      }`}
-                  >
-                    {item.IGST ? item.IGST : "N/A"}
-                  </td>
-                  <td className="border p-0 m-0 align-middle">
-                    {TotalTaxPercent(
-                      item.CGST_rate,
-                      item.SGST_rate,
-                      item.IGST_rate
-                    )}
-                  </td>
-                  <td className="border p-0 m-0 align-middle">
-                    {TotalTaxRate(item.CGST, item.SGST, item.IGST)}
-                  </td>
-                  <td className="border p-0 m-0 align-middle">
-                    {item.cost ? item.cost : "N/A"}
-                  </td>
-                  <td className="border p-0 m-0 align-middle">
-                    {item.total_amount ? item.total_amount : "N/A"}
-                  </td>
+                  <td className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none" }`} > {item.CGST ? item.CGST : "N/A"} </td>
+                  <td className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none" }`} > {item.IGST_rate ? item.IGST_rate : "N/A"} </td>
+                  <td className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none" }`} > {item.IGST ? item.IGST : "N/A"} </td>
+                  <td className="border p-0 m-0 align-middle"> {TotalTaxPercent( item.CGST_rate, item.SGST_rate, item.IGST_rate )} </td>
+                  <td className="border p-0 m-0 align-middle"> {TotalTaxRate(item.CGST, item.SGST, item.IGST)} </td>
+                  <td className="border p-0 m-0 align-middle"> {item.cost ? item.cost : "N/A"} </td>
+                  <td className="border p-0 m-0 align-middle"> {item.total_amount ? item.total_amount : "N/A"} </td>
                 </tr>
               ))}
             </tbody>
@@ -7017,7 +6956,8 @@ function Stockvaccinesection() {
   const [load, setload] = useState();
   const [searchname, setsearchname] = useState("");
   const [index, setindex] = useState();
-  const [detailsform, setdetailsform] = useState("none");
+  const [detailsform, setdetailsform] = useState("none")
+  
   function GetPages() {
     try {
       axios
@@ -7059,14 +6999,9 @@ function Stockvaccinesection() {
     } else {
       setload(true);
       try {
-        axios
-          .get(
-            `${url}/stock/list?search=${searchname}&limit=10&offset=${Data.selected * 10
-            }`
-          )
+        axios.get( `${url}/stock/list?search=${searchname}&limit=10&offset=${Data.selected * 10 }` )
           .then((response) => {
             setvaccineslist(response.data.data.vaccines);
-
             setload(false);
           })
           .catch(function error(e) {
@@ -7218,22 +7153,8 @@ function Stockvaccinesection() {
     <div className="p-0 m-0 vaccinestockinfo">
       {/* <button className="button exportstock button-charcoal position-absolute"><img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt='displaying_image' className="img-fluid" style={{ width: `1.5rem` }} />Export Stock</button> */}
       <div className="position-absolute searchbutton">
-        <input
-          type="text"
-          className=" form-control d-inline vaccinesearch bg-pearl"
-          placeholder="Vaccine Name"
-          onChange={(e) => {
-            setsearchname(e.target.value);
-          }}
-        />
-        <button className="btn searchbtn p-0 m-0 bg-transparent border-0 position-absolute">
-          <img
-            src={process.env.PUBLIC_URL + "/images/search.png"}
-            alt="displaying_image"
-            className="img-fluid p-0"
-            style={{width:'1.5rem',marginTop:'0.05rem'}}
-          />
-        </button>
+        <input type="text" className=" form-control d-inline vaccinesearch bg-pearl" placeholder="Vaccine Name" onChange={(e) => { setsearchname(e.target.value); }} />
+        <button className="btn searchbtn p-0 m-0 bg-transparent border-0 position-absolute"> <img src={process.env.PUBLIC_URL + "/images/search.png"} alt="displaying_image" className="img-fluid p-0" style={{width:'1.5rem',marginTop:'0.05rem'}} /> </button>
       </div>
       <h2 className=" ms-3 text-charcoal fw-bolder" style={{ width: "fit-content" }} > {pagecount} {pagecount > 0 ? "Vaccine Stocks Info" : "Vaccine Stock Info"}{" "} </h2>
 
@@ -7253,155 +7174,56 @@ function Stockvaccinesection() {
               <th className="text-charcoal75 fw-bold">Cost/Unit</th>
               <th className="text-charcoal75 fw-bold">B.Stock</th>
               <th className="text-charcoal75 fw-bold">T.Stock</th>
-              <th className="text-charcoal75 fw-bold text-center">
-                Expired in
-              </th>
-              <th className="text-charcoal75 fw-bold text-center">
-                Stock Status
-              </th>
+              <th className="text-charcoal75 fw-bold text-center"> Expired in </th>
+              <th className="text-charcoal75 fw-bold text-center"> Stock Status </th>
               <th className="text-charcoal75 fw-bold text-center"></th>
               <th className="text-charcoal75 fw-bold text-center">more info</th>
             </tr>
           </thead>
           {load ? (
             <tr className="p-0 m-0">
-              <td className="placeholder-glow">
-                <div className="placeholder col-12 p-0 m-0 w-100 px-1">
-                  Loading..
-                </div>
-              </td>
-              <td className="placeholder-glow">
-                <div className="placeholder col-12 p-0 m-0 w-100 px-1">
-                  Loading..
-                </div>
-              </td>
-              <td className="placeholder-glow">
-                <div className="placeholder col-12 p-0 m-0 w-100 px-1">
-                  Loading..
-                </div>
-              </td>
-              <td className="placeholder-glow">
-                <div className="placeholder col-12 p-0 m-0 w-100 px-1">
-                  Loading..
-                </div>
-              </td>
-              <td className="placeholder-glow">
-                <div className="placeholder col-12 p-0 m-0 w-100 px-1">
-                  Loading..
-                </div>
-              </td>
-              <td className="placeholder-glow">
-                <div className="placeholder col-12 p-0 m-0 w-100 px-1">
-                  Loading..
-                </div>
-              </td>
-              <td className="placeholder-glow">
-                <div className="placeholder col-12 p-0 m-0 w-100 px-1">
-                  Loading..
-                </div>
-              </td>
-              <td className="placeholder-glow">
-                <div className="placeholder col-12 p-0 m-0 w-100 px-1">
-                  Loading..
-                </div>
-              </td>
-              <td className="placeholder-glow text-center">
-                <div className="placeholder col-12 p-0 m-0 w-100 px-1">
-                  Loading..
-                </div>
-              </td>
-              <td className="placeholder-glow text-center">
-                <div className="placeholder col-12 p-0 m-0 w-100 px-1">
-                  Loading..
-                </div>
-              </td>
-              <td className="placeholder-glow text-center">
-                <div className="placeholder col-12 p-0 m-0 w-100 px-1">
-                  Loading..
-                </div>
-              </td>
-              <td className="placeholder-glow text-center">
-                <div className="placeholder col-12 p-0 m-0 w-100 px-1">
-                  Loading..
-                </div>
-              </td>
+              <td className="placeholder-glow"> <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div> </td>
+              <td className="placeholder-glow"> <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div> </td>
+              <td className="placeholder-glow"> <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div> </td>
+              <td className="placeholder-glow"> <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div> </td>
+              <td className="placeholder-glow"> <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div> </td>
+              <td className="placeholder-glow"> <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div> </td>
+              <td className="placeholder-glow"> <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div> </td>
+              <td className="placeholder-glow"> <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div> </td>
+              <td className="placeholder-glow text-center"> <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div> </td>
+              <td className="placeholder-glow text-center"> <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div> </td>
+              <td className="placeholder-glow text-center"> <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div> </td>
+              <td className="placeholder-glow text-center"> <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div> </td>
             </tr>
           ) : vaccinearr == undefined || vaccinearr.length == 0 ? (
             <tbody className="text-center">
               <tr>
-                <td className="position-absolute text-charcoal fw-bolder start-0 end-0 text-center">
-                  No Vaccines Found
-                </td>
+                <td className="position-absolute text-charcoal fw-bolder start-0 end-0 text-center"> No Vaccines Found </td>
               </tr>
             </tbody>
           ) : (
             <tbody className="">
-              {/*  */}
-              {vaccinearr.map((data, i) => (
+              {
+              vaccinearr.map((data, i) => (
                 <tr className={`text-start align-middle`}>
                   <td className=" text-charcoal fw-bold">{i + 1}</td>
-                  <td className=" text-charcoal fw-bold">
-                    v{data.Batch_stock_id}
-                  </td>
-                  <td className=" text-charcoal fw-bold">
-                    {data.name && data.name !== null ? data.name : ""}
-                  </td>
+                  <td className=" text-charcoal fw-bold"> v{data.Batch_stock_id} </td>
+                  <td className=" text-charcoal fw-bold"> {data.name && data.name !== null ? data.name : ""} </td>
                   <td className=" text-charcoal fw-bold">{data.batch_no}</td>
-                  <td className=" text-charcoal fw-bold">
-                    {reversefunction(data.expiry_date)}
-                  </td>
+                  <td className=" text-charcoal fw-bold"> {reversefunction(data.expiry_date)} </td>
                   <td className=" text-charcoal fw-bold">{data.mrp}</td>
                   <td className=" text-charcoal fw-bold">{data.cost}</td>
-                  <td className=" text-charcoal fw-bold">
-                    {data.current_stock}
+                  <td className=" text-charcoal fw-bold"> {data.current_stock} </td>
+                  <td className=" text-charcoal fw-bold"> {CalculateTStock(data.totalstock)} </td>
+                  <td className={`text-${data.Days_to_expire <= 2 ? "burntumber" : "charcoal" } fw-bold text-center`} > {data.Days_to_expire} Months </td>
+                  <td className=" text-charcoal fw-bold text-center"> {GetStatus(data.totalstock, data.alert_stock_count) == 1 ? ( <img src={process.env.PUBLIC_URL + "images/exclamation.png"} /> ) : ( <></> )} </td>
+                  <td className="p-0 m-0 text-charcoal fw-bold align-items-center text-center "> <div className="vr rounded-1 align-self-center" style={{ padding: "0.8px" }} ></div> </td>
+                  <td className={` bg-${index == i ? "lightyellow" : "" } p-0 m-0 text-charcoal fw-bold text-center`} >
+                    <button className="btn p-0 m-0" onClick={() => { setindex(i); toggle_detailsform(); }} > <img src={process.env.PUBLIC_URL + "images/info.png"} /> </button>
                   </td>
-                  <td className=" text-charcoal fw-bold">
-                    {CalculateTStock(data.totalstock)}
-                  </td>
-                  <td
-                    className={`text-${data.Days_to_expire <= 2 ? "burntumber" : "charcoal"
-                      } fw-bold text-center`}
-                  >
-                    {data.Days_to_expire} Months
-                  </td>
-                  <td className=" text-charcoal fw-bold text-center">
-                    {GetStatus(data.totalstock, data.alert_stock_count) == 1 ? (
-                      <img
-                        src={process.env.PUBLIC_URL + "images/exclamation.png"}
-                    
-                      />
-                    ) : (
-                      <></>
-                    )}
-                  </td>
-                  <td className="p-0 m-0 text-charcoal fw-bold align-items-center text-center ">
-                    <div
-                      className="vr rounded-1 align-self-center"
-                      style={{ padding: "0.8px" }}
-                    ></div>
-                  </td>
-                  <td
-                    className={` bg-${index == i ? "lightyellow" : ""
-                      } p-0 m-0 text-charcoal fw-bold text-center`}
-                  >
-                    <button
-                      className="btn p-0 m-0"
-                      onClick={() => {
-                        setindex(i);
-                        toggle_detailsform();
-                      }}
-                    >
-                      <img
-                        src={process.env.PUBLIC_URL + "images/info.png"}
-                        
-                      />
-                    </button>
-                  </td>
-                  {index == i ? (
-                    <td
-                      className={`stockdetailsfrom bg-white border border-1 col-lg-11 rounded-4 shadow p-0 col-md-11 col-sm-11 col-10 col-xl-6 d-${index == i ? detailsform : "none"
-                        } position-absolute start-0 end-0 top-0`}
-                    >
+                  {
+                  index == i ? (
+                    <td className={`stockdetailsfrom bg-white border border-1 col-lg-11 rounded-4 shadow p-0 col-md-11 col-sm-11 col-10 col-xl-6 d-${index == i ? detailsform : "none" } position-absolute start-0 end-0 top-0`} >
                       <VaccinesectionItemDetails
                         toggle_detailsform={toggle_detailsform}
                         data={vaccinearr[i]}
@@ -7409,7 +7231,8 @@ function Stockvaccinesection() {
                     </td>
                   ) : (
                     <></>
-                  )}
+                  )
+                  }
                 </tr>
               ))}
             </tbody>
@@ -7453,7 +7276,7 @@ function Stockmedicinesection() {
   const [index, setindex] = useState();
   const [detailsform, setdetailsform] = useState("none");
 
-  function GetPages() {
+  function GetPages() {       
     try {
       axios
         .get(`${url}/stock/list?search=${searchname}&limit=10&offset=0`)
@@ -7645,36 +7468,19 @@ function Stockmedicinesection() {
   };
   return (
     <div className="p-0 m-0 vaccinestockinfo">
-      {/* <button className="button exportstock button-charcoal position-absolute"><img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt='displaying_image' className="img-fluid" style={{ width: `1.5rem` }} />Export Stock</button> */}
-      <div
-        className="position-absolute searchbutton"
-        style={{ top: "0.25rem", right: "1rem" }}
-      >
-        <input
-          type="text"
-          className=" form-control d-inline vaccinesearch bg-pearl"
-          placeholder="Medicine Name"
-          onChange={(e) => {
-            setsearchname(e.target.value);
-          }}
-        />
+      <div className="position-absolute searchbutton" style={{ top: "0.25rem", right: "1rem" }} >
+        <input type="text" className=" form-control d-inline vaccinesearch bg-pearl" placeholder="Medicine Name" onChange={(e) => { setsearchname(e.target.value); }} />
         <button className="btn searchbtn p-0 m-0 bg-transparent border-0 position-absolute">
-          <img
-            src={process.env.PUBLIC_URL + "/images/search.png"}
-            alt="displaying_image"
-            className="img-fluid p-0"
-            style={{width:'1.5rem',marginTop:'0.05rem'}}
-
-          />
+          <img src={process.env.PUBLIC_URL + "/images/search.png"} alt="displaying_image" className="img-fluid p-0" style={{width:'1.5rem',marginTop:'0.05rem'}} />
         </button>
       </div>
       <h2 className=" ms-3 text-charcoal fw-bolder" style={{ width: "fit-content" }} > {pagecount} {pagecount > 0 ? "Medicine Stocks Info" : "Medicine Stock Info"}{" "} </h2>
 
-      <div className="scroll scroll-y p-0 m-0" style={{ height: "100%" }} >
+      <div className="scroll scroll-y p-0 m-0">
         <table className="table datatable text-start">
           <thead className="position-sticky top-0 bg-pearl">
             <tr>
-              <th className="text-charcoal75 fw-bold">No.</th>
+       
               <th className="text-charcoal75 fw-bold">ID</th>
               <th className="text-charcoal75 fw-bold">Medicine Name</th>
               <th className="text-charcoal75 fw-bold">Batch No.</th>
@@ -7683,74 +7489,26 @@ function Stockmedicinesection() {
               <th className="text-charcoal75 fw-bold">Cost/Unit</th>
               <th className="text-charcoal75 fw-bold">B.Stock</th>
               <th className="text-charcoal75 fw-bold">T.Stock</th>
-              <th className="text-charcoal75 fw-bold text-center">
-                Expired in
-              </th>
-              <th className="text-charcoal75 fw-bold text-center">
-                Stock Status
-              </th>
+              <th className="text-charcoal75 fw-bold text-center"> Expired in </th>
+              <th className="text-charcoal75 fw-bold text-center"> Stock Status </th>
               <th className="text-charcoal75 fw-bold text-center"></th>
               <th className="text-charcoal75 fw-bold text-center">more info</th>
             </tr>
           </thead>
           {load ? (
             <tr className="p-0 m-0">
-              <td className="placeholder-glow">
-                <div className="placeholder col-12 p-0 m-0 w-100 px-1">
-                  Loading..
-                </div>
-              </td>
-              <td className="placeholder-glow">
-                <div className="placeholder col-12 p-0 m-0 w-100 px-1">
-                  Loading..
-                </div>
-              </td>
-              <td className="placeholder-glow">
-                <div className="placeholder col-12 p-0 m-0 w-100 px-1">
-                  Loading..
-                </div>
-              </td>
-              <td className="placeholder-glow">
-                <div className="placeholder col-12 p-0 m-0 w-100 px-1">
-                  Loading..
-                </div>
-              </td>
-              <td className="placeholder-glow">
-                <div className="placeholder col-12 p-0 m-0 w-100 px-1">
-                  Loading..
-                </div>
-              </td>
-              <td className="placeholder-glow">
-                <div className="placeholder col-12 p-0 m-0 w-100 px-1">
-                  Loading..
-                </div>
-              </td>
-              <td className="placeholder-glow">
-                <div className="placeholder col-12 p-0 m-0 w-100 px-1">
-                  Loading..
-                </div>
-              </td>
-              <td className="placeholder-glow">
-                <div className="placeholder col-12 p-0 m-0 w-100 px-1">
-                  Loading..
-                </div>
-              </td>
-              <td className="placeholder-glow text-center">
-                <div className="placeholder col-12 p-0 m-0 w-100 px-1">
-                  Loading..
-                </div>
-              </td>
-              <td className="placeholder-glow text-center">
-                <div className="placeholder col-12 p-0 m-0 w-100 px-1">
-                  Loading..
-                </div>
-              </td>
+              <td className="placeholder-glow"> <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div> </td>
+              <td className="placeholder-glow"> <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div> </td>
+              <td className="placeholder-glow"> <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div> </td>
+              <td className="placeholder-glow"> <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div> </td> 
+              <td className="placeholder-glow"> <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div> </td>
+              <td className="placeholder-glow"> <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div> </td>
+              <td className="placeholder-glow"> <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div> </td>
+              <td className="placeholder-glow"> <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div> </td> 
+              <td className="placeholder-glow text-center"> <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div> </td>
+              <td className="placeholder-glow text-center"> <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div> </td>
               {/* <td className='placeholder-glow text-center'><div className='placeholder col-12 p-0 m-0 w-100 px-1'>Loading..</div></td> */}
-              <td className="placeholder-glow text-center">
-                <div className="placeholder col-12 p-0 m-0 w-100 px-1">
-                  Loading..
-                </div>
-              </td>
+              <td className="placeholder-glow text-center"> <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div> </td>
             </tr>
           ) : medicinearr == undefined || medicinearr.length == 0 ? (
             <tbody className="">
@@ -7764,72 +7522,21 @@ function Stockmedicinesection() {
             <tbody className="">
               {medicinearr.map((data, i) => (
                 <tr className={`text-start align-middle`}>
-                  <td className=" text-charcoal fw-bold">{i + 1}</td>
-                  <td className=" text-charcoal fw-bold">
-                    m{data.Batch_stock_id}
-                  </td>
-                  <td className=" text-charcoal fw-bold">
-                    {data.name && data.name !== null ? data.name : ""}
-                  </td>
+         
+                  <td className=" text-charcoal fw-bold"> m{data.Batch_stock_id} </td>
+                  <td className=" text-charcoal fw-bold"> {data.name && data.name !== null ? data.name : ""} </td>
                   <td className=" text-charcoal fw-bold">{data.batch_no}</td>
-                  <td className=" text-charcoal fw-bold">
-                    {reversefunction(data.expiry_date)}
-                  </td>
+                  <td className=" text-charcoal fw-bold"> {reversefunction(data.expiry_date)} </td>
                   <td className=" text-charcoal fw-bold">{data.mrp}</td>
                   <td className=" text-charcoal fw-bold">{data.cost}</td>
-                  <td className=" text-charcoal fw-bold">
-                    {data.current_stock}
-                  </td>
-                  <td className=" text-charcoal fw-bold">
-                    {data.totalstock ? CalculateTStock(data.totalstock) : ""}
-                  </td>
-                  <td
-                    className={`text-${data.Days_to_expire
-                      ? data.Days_to_expire
-                      : "" <= 2
-                        ? "burntumber"
-                        : "charcoal"
-                      } fw-bold text-center`}
-                  >
-                    {data.Days_to_expire ? data.Days_to_expire : ""} Months
-                  </td>
-                  <td className=" text-charcoal fw-bold text-center">
-                    {GetStatus(data.totalstock, data.alert_stock_count) == 1 ? (
-                      <img
-                        src={process.env.PUBLIC_URL + "images/exclamation.png"}
-                    
-                      />
-                    ) : (
-                      <></>
-                    )}
-                  </td>
-                  <td className="p-0 m-0 text-charcoal fw-bold align-items-center text-center ">
-                    <div
-                      className="vr rounded-1 align-self-center"
-                      style={{ padding: "0.8px" }}
-                    ></div>
-                  </td>
-                  <td
-                    className={` bg-${index == i ? "lightyellow" : ""
-                      } p-0 m-0 text-charcoal fw-bold text-center`}
-                  >
-                    <button
-                      className="btn p-0 m-0"
-                      onClick={() => {
-                        setindex(i);
-                        toggle_detailsform();
-                      }}
-                    >
-                      <img
-                        src={process.env.PUBLIC_URL + "images/info.png"}
-                      />
-                    </button>
-                  </td>
+                  <td className=" text-charcoal fw-bold"> {data.current_stock} </td>
+                  <td className=" text-charcoal fw-bold"> {data.totalstock ? CalculateTStock(data.totalstock) : ""} </td>
+                  <td className={`text-${data.Days_to_expire ? data.Days_to_expire : "" <= 2 ? "burntumber" : "charcoal" } fw-bold text-center`} > {data.Days_to_expire ? data.Days_to_expire : ""} Months </td>
+                  <td className=" text-charcoal fw-bold text-center"> {GetStatus(data.totalstock, data.alert_stock_count) == 1 ? ( <img src={process.env.PUBLIC_URL + "images/exclamation.png"} /> ) : ( <></> )} </td>
+                  <td className="p-0 m-0 text-charcoal fw-bold align-items-center text-center "> <div className="vr rounded-1 align-self-center" style={{ padding: "0.8px" }} ></div> </td>
+                  <td className={` bg-${index == i ? "lightyellow" : "" } p-0 m-0 text-charcoal fw-bold text-center`} > <button className="btn p-0 m-0" onClick={() => { setindex(i); toggle_detailsform(); }} > <img src={process.env.PUBLIC_URL + "images/info.png"} /> </button> </td>
                   {index == i ? (
-                    <td
-                      className={`stockdetailsfrom bg-white border border-1 col-lg-11 rounded-4 shadow p-0 col-md-11 col-sm-11 col-10 col-xl-6 d-${index == i ? detailsform : "none"
-                        } position-absolute start-0 end-0 top-0`}
-                    >
+                    <td className={`stockdetailsfrom bg-white border border-1 col-lg-11 rounded-4 shadow p-0 col-md-11 col-sm-11 col-10 col-xl-6 d-${index == i ? detailsform : "none" } position-absolute start-0 end-0 top-0`} >
                       <MedicinesectionItemDetails
                         toggle_detailsform={toggle_detailsform}
                         data={medicinearr[i]}
@@ -7870,7 +7577,7 @@ function Stockmedicinesection() {
         />
       </div>
     </div>
-  );
+  )
 }
 function VaccinesectionItemDetails(props) {
   const reversefunction = (date) => {

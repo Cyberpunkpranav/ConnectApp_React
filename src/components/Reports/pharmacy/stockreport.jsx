@@ -246,4 +246,4 @@ const StockReport = () => {
     )
 }
 
-export { StockReport }
+export default StockReport 

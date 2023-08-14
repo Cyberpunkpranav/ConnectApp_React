@@ -15,6 +15,10 @@ import { WelcomeLoader } from "./components/features/WelcomeLoader";
 //Notiflix
 import Notiflix from "notiflix";
 import IdleTimer from "./components/features/InactiveLogout";
+const OpeningStock= lazy(()=> import('./components/Reports/pharmacy/openingstock'));
+const StockReport = lazy(()=> import('./components/Reports/pharmacy/stockreport'));
+const StockReport_By_Name = lazy(()=> import('./components/Reports/pharmacy/stockreport_by_name'))
+const StockValuation = lazy(()=> import('./components/Reports/pharmacy/stockvaluation'))
 // import Navbar from './components/App/Navbar'
 const Doctorsection = lazy(() => import("./components/App/Clinic"));
 const Navbar = lazy(() => import("./components/App/Navbar"));
@@ -136,6 +140,10 @@ function Connectapp(props) {
     localStorage.setItem("ClinicId", clinicid);
     setisWelcomeLoading(0);
   }
+  const fromdate = localStorage.getItem('fromdate')
+  const todate = localStorage.getItem('todate')
+  const location = localStorage.getItem('location')
+  const searchname=  localStorage.getItem('searchname')
   return isWelcomeLoading == 0 ? (
     <>
       <WelcomeLoader />
@@ -191,6 +199,11 @@ function Connectapp(props) {
                             <Route path="/DailySaleReport" onChange={() => setpath("/DailySaleReport")} element={<DailySaleReport id={props.id} cliniclist={cliniclist} docapi={docapi} />} />
                             <Route path="/Pharmacy" onChange={() => setpath("/Pharmacy")} element={<Pharmacy id={props.id} />} />
                             <Route path="/Reports" onChange={() => setpath("/Reports")} element={<Reports id={props.id} />} />
+                            <Route path ="/Reports/stock_report" element={<StockReport id={props.id}/>}/>
+                            <Route path="/Reports/stock_report_by_name" element={<StockReport_By_Name id={props.id}/>}/>
+                            <Route path="/Reports/stock_valuation" element={<StockValuation id={props.id}/>}/>
+                            <Route path ="/Reports/opening_stock" element={<OpeningStock id={props.id}/>}/>
+
                             {/* <Route path='/Files' element={<Exports id={props.id} />} /> */}
                           </Routes>
                         </Suspense>

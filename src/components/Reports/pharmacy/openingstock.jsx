@@ -232,4 +232,4 @@ const OpeningStock = () => {
     )
 }
 
-export { OpeningStock }
+export default OpeningStock 

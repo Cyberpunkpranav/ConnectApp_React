@@ -29,10 +29,11 @@ const BatchDetails = () => {
 
   function GetPages() {
     try {
-      axios.get(`${url}/stock/list?search=${searchname}&limit=10&offset=0`)
+      axios.get(`${url}/stock/list?search=${searchname}&limit=25&offset=0`)
         .then((response) => {
-          setpagecount(response.data.data.total_count);
-          setpages(Math.round(response.data.data.total_count / 25) + 1);
+          console.log(response)
+          setpagecount(Number(response.data.data.total_count_medicines + response.data.data.total_count_vaccines));
+          setpages(Math.round(Number(response.data.data.total_count_medicines + response.data.data.total_count_vaccines) / 25) + 1);
           setLoading(false);
         })
         .catch((e) => {
@@ -48,7 +49,7 @@ const BatchDetails = () => {
     if (Data == undefined || Data.selected == undefined) {
       setLoading(true);
       try {
-        axios.get(`${url}/stock/list?search=${searchname}&limit=10&offset=0`)
+        axios.get(`${url}/stock/list?search=${searchname}&limit=25&offset=0`)
           .then((response) => {
             ;
             let arr = response.data.data.vaccines.concat(response.data.data.medicines)
@@ -66,7 +67,7 @@ const BatchDetails = () => {
     } else {
       setLoading(true);
       try {
-        axios.get(`${url}/stock/list?search=${searchname}&limit=10&offset=${Data.selected * 25}`)
+        axios.get(`${url}/stock/list?search=${searchname}&limit=25&offset=${Data.selected * 25}`)
           .then((response) => {
             ;
             let arr = response.data.data.vaccines.concat(response.data.data.medicines)
@@ -84,15 +85,22 @@ const BatchDetails = () => {
     }
   }
 
-
+const store =()=>{
+  localStorage.setItem('searchname',searchname)
+  localStorage.setItem('fromdate',fromdate)
+  localStorage.setItem('todate',todate)
+}
   useEffect(() => {
     GetPages();
+    GETBatchDetails();
+    store();
   }, [searchname]);
 
   useEffect(() => {
     GETBatchDetails();
   }, [pagecount]);
-
+  
+  console.log(pages)
   return (
     <>
       <div className="row p-0 m-0 justify-content-lg-between justify-content-md-evenly justify-content-center text-center mt-2">
@@ -120,9 +128,9 @@ const BatchDetails = () => {
           >
             <button className='btn button-lightyellow text-start p-0 m-0 px-2 fw-bold'> Export</button>
 
-          </DownloadTableExcel>
+          </DownloadTableExcel> 
         </div>
-      </div>
+      </div>  
       <div className="scroll scroll-y p-0 m-0 mt-2" style={{ minHeight: "40vh", height: "58vh", maxHeight: "70vh" }} >
         <table className="table text-start table-responsive" ref={BatchDetailsref}>
           <thead className=" p-0 m-0 position-sticky top-0 bg-pearl">
