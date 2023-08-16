@@ -28,7 +28,7 @@ const StockReport_By_Name = () => {
     //search meds
     const [itemsearch, setitemsearch] = useState([""]);
     const [itemname, setitemname] = useState();
-    const [itemid, setitemid] = useState('');
+    const [itemid, setitemid] = useState();
     const [itemtype, setitemtype] = useState('');
     const [loadsearch, setloadsearch] = useState();
 
@@ -60,7 +60,7 @@ const StockReport_By_Name = () => {
     // }
     function GETStockReport(Data) {
         // if (itemid && itemtype && itemid !== undefined && itemtype !== undefined) {
-
+            if (itemid !== undefined){
         if (Data == undefined || Data.selected == undefined) {
             setLoading(true);
             try {
@@ -96,15 +96,17 @@ const StockReport_By_Name = () => {
                 setLoading(false);
             }
         }
+    }
         // } else {
         //     Notiflix.Notify.info('Please Select Item to get the stock report')
         // }
     }
 
     const searchmeds = async (search) => {
+       
         setloadsearch(true);
         try {
-            await axios.get(`${url}/item/search?search=${search}`)
+            await axios.get(`${url}/item/search?search=${search}`)  
                 .then((response) => {
                     let medicines = [];
                     let vaccines = [];
@@ -124,6 +126,7 @@ const StockReport_By_Name = () => {
         } catch (e) {
             Notiflix.Notify.warning(e.data.message);
         }
+    
     };
     // useEffect(() => {
     //     GetPages();
@@ -137,10 +140,11 @@ const StockReport_By_Name = () => {
         id: key,
         ...stockreportarr[key]
     }));
+    console.log(itemid)
     return (
         <>
-                    <h2 className=" ms-3 text-charcoal fw-bolder mt-4" style={{ width: "fit-content" }}> {pagecount} {pagecount > 1 ? "Stock Reports" : "Stock Report"}{" "}  </h2>
-            <div className="row p-0 m-0 justify-content-lg-between justify-content-md-evenly justify-content-center text-center mt-2 ms-2">
+                    <h2 className=" ms-3 text-charcoal fw-bolder mt-4" style={{ width: "fit-content" }}> {pagecount} {pagecount > 1 ? `${itemname?itemname:''} Stock Reports` : `${itemname?itemname:""} Stock Report`}{" "}  </h2>
+            <div className="row p-0 m-0  mt-2 ms-2">
                 <div className="col-auto bg-seashell rounded-2">
                     <div className="row p-0 m-0 align-items-center align-self-center">
                         <div className="col-auto p-0 m-0 text-charcoal text-center fw-bolder bg-seashell  ">
@@ -183,13 +187,13 @@ const StockReport_By_Name = () => {
             </div>
                     </div>
                 </div>
-                <div className="col-2 p-0 m-0 export col-md-2 col-lg-2 align-self-center text-center ">
+                <div className="col-auto    export align-self-center text-center ">
                     <DownloadTableExcel
                         filename={`${reversefunction(fromdate) + ' to ' + reversefunction(todate)} StockReports_by_Name`}
                         sheet="StockReports_by_Name"
                         currentTableRef={StockReport_By_Name_ref.current}
                     >
-                        <button className='btn button-lightyellow text-start p-0 m-0 px-2 fw-bold'> Export</button>
+                        <button className='button button-seashell fw-bold'> Export</button>
 
                     </DownloadTableExcel>
                 </div>
