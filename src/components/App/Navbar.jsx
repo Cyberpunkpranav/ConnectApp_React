@@ -116,7 +116,7 @@ function Navbar(props) {
     }
 
 
-    let socket = new WebSocket('ws://192.168.3.92:8080/Chat')
+    let socket = new WebSocket('ws://192.168.3.99:8080/Chat')
 
     useEffect(() => {
         socket.onopen = () => {

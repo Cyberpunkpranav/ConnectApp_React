@@ -107,14 +107,12 @@ const StockValuation = () => {
     }));
     return (
         <>
-            <div className="row p-0 m-0 justify-content-lg-between justify-content-md-evenly justify-content-center text-center mt-2">
-                <div className="col-lg-2 col-md-2 col-3 text-center p-0 m-0 ">
-                    <button type="button" className="btn p-0 m-0 heading text-charcoal fw-bolder  " style={{ width: "fit-content" }} > {pagecount} {pagecount > 0 ? "Stock Valuations" : "Stock Valution"}{" "} </button>
-                </div>
-                <div className="col-lg-8 col-md-8 col-7  p-0 m-0  border-0">
-                    <div className="row p-0 m-0 border-burntumber fw-bolder rounded-1">
-                        <div className="col-4 p-0 m-0 text-burntumber text-center fw-bolder bg-pearl  rounded-1 ">
-                            <select className="fw-bold text-burntumber border-0" onChange={(e) => { setLocation_Id(e.target.value) }}>
+            <h2 className=" ms-3 text-charcoal fw-bolder mt-2" style={{ width: "fit-content" }}> {pagecount} {pagecount > 1 ? "Stock Valuations" : "Stock Valution"}{" "}  </h2>
+            <div className="row p-0 m-0 ms-2 mt-2">
+                <div className="col-auto bg-seashell rounded-2">
+                    <div className="row p-0 m-0 align-items-center align-self-center">
+                        <div className="col-auto p-0 m-0 text-burntumber text-center fw-bolder bg-seashell ">
+                            <select className="fw-bold form-control bg-seashell text-burntumber border-0" onChange={(e) => { setLocation_Id(e.target.value) }}>
                                 <option value="Choose Location">Choose Location</option>
                                 {
                                     clinic.map((data) => (
@@ -123,21 +121,22 @@ const StockValuation = () => {
                                 }
                             </select>
                         </div>
-                        <div className="col-4 p-0 m-0 text-burntumber text-center fw-bolder bg-pearl  rounded-1 ">
-                            <input type="date" placeholder="fromdate" className="p-0 m-0 border-0 bg-pearl text-burntumber text-center fw-bolder " value={fromdate ? fromdate : currentDate ? currentDate : ""} onChange={(e) => { setfromdate(e.target.value); }} />
+                        <div className="col-auto p-0 m-0 text-burntumber text-center fw-bolder bg-pearl  rounded-1 ">
+                            <input type="date" placeholder="fromdate" className="form-control border-0 bg-seashell text-charcoal text-center fw-bolder " value={fromdate ? fromdate : currentDate ? currentDate : ""} onChange={(e) => { setfromdate(e.target.value); }} />
                         </div>
-                        <div className="col-4 p-0 m-0  text-burntumber text-center fw-bolder bg-pearl rounded-1">
-                            <input type="date" className=" p-0 m-0 border-0 bg-pearl text-burntumber text-center fw-bolder" value={todate ? todate : fromdate ? fromdate : currentDate ? currentDate : ""} onChange={(e) => { settodate(e.target.value); }} />
+                        <div className="col-auto p-0 m-0">-</div>
+                        <div className="col-auto p-0 m-0  text-burntumber text-center fw-bolder bg-pearl rounded-1">
+                            <input type="date" className=" form-control border-0 bg-seashell text-charcoal text-center fw-bolder" value={todate ? todate : fromdate ? fromdate : currentDate ? currentDate : ""} onChange={(e) => { settodate(e.target.value); }} />
                         </div>
                     </div>
                 </div>
-                <div className="col-2 p-0 m-0 export col-md-2 col-lg-2 align-self-center text-center ">
+                <div className="col-auto p-0 m-0 export ">
                     <DownloadTableExcel
                         filename={`${reversefunction(fromdate) + ' to ' + reversefunction(todate)} StockValuation`}
                         sheet="StockValuation"
                         currentTableRef={StockValuationref.current}
                     >
-                        <button className='btn button-lightyellow text-start p-0 m-0 px-2 fw-bold'> Export</button>
+                        <button className='button button-seashell fw-bold'> Export</button>
 
                     </DownloadTableExcel>
                 </div>

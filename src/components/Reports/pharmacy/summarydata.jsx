@@ -7,7 +7,11 @@ import { DownloadTableExcel } from 'react-export-table-to-excel';
 
 const SummaryData = () => {
     const permission = useContext(Permissions);
-    const currentDate = useContext(TodayDate);
+    const d = new Date();
+    const date = d.getDate() < 10 ? "0" + d.getDate() : d.getDate();
+    const monthcount = d.getMonth() + 1 < 10 ? `0${d.getMonth() + 1}` : d.getMonth() + 1;
+    const yearcount = d.getFullYear();
+    var currentDate = `${yearcount}-${monthcount}`;
     const ClinicID = localStorage.getItem("ClinicId");
     const adminid = localStorage.getItem("id");
     const url = useContext(URL);
@@ -70,13 +74,14 @@ const SummaryData = () => {
         let newdate = fromdate[1] + " " + fromdate[0]
         return newdate
     }
+    console.log(fromdate,currentDate)
     return (
         <>
                 <h2 className=" ms-3 text-charcoal fw-bolder mt-2" style={{ width: "fit-content" }}> {pagecount} {pagecount > 1 ? "Summary Data" : "Summary Data"}{" "} </h2>
 
-            <div className="row p-0 m-0">
-            <div className="col-auto row text-charcoal text-center fw-bolder bg-seashell ms-2 rounded-2 ">
-            <input type="month" placeholder="month and year" className="p-0 m-0 border-0 bg-seashell text-charcoal text-center fw-bolder " value={fromdate ? fromdate : currentDate ? currentDate : ""} onChange={(e) => { setfromdate(e.target.value); }} />
+            <div className="row p-0 m-0 align-items-center ms-2">
+            <div className="col-auto text-charcoal text-center fw-bolder bg-seashell rounded-2">
+                    <input type="month" placeholder="month" className="form-control rounded-0 border-0 bg-seashell text-charcoal text-center fw-bolder " value={fromdate ? fromdate : currentDate ? currentDate : ""} onChange={(e) => { setfromdate(e.target.value); }} /> 
             </div>
         
                 <div className="col-auto p-0 m-0 export align-self-center text-center ">

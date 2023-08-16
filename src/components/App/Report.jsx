@@ -30,6 +30,7 @@ import "../../css/pharmacy.css";
 const Reports = () => {
   const permission = useContext(Permissions);
   const [select, setselect] = useState('')
+  const [reportname,setreportname] =  useState('')
   const first = [
     {
       option: "Pharmacy",
@@ -46,17 +47,12 @@ const Reports = () => {
       return (
         <div className="container rounded-4 border border-1  mt-5" >
           <h1 className="row p-0 m-0 align-items-center text-center fw-bold justify-content-center text-charcoal75"style={{height:'50vh'}}>
-               select Report to show data   
+               Select Report to show data   
             </h1> 
         </div>
       )
     }
-    if (select == 0) {
-      window.open('/Reports/stock_report','_blank')
-      window.location.reload()
-      // return <StockReport />
 
-    }
     if (select == 1) {
       window.open('/Reports/stock_report_by_name','_blank')
       window.location.reload()
@@ -112,33 +108,44 @@ const Reports = () => {
     if (select == 15) {
       return <TransferOut />
     }
+    if (select == 16) {
+      window.open('/Reports/stock_report','_blank')
+      window.location.reload()
+      // return <StockReport />
+
+    }
   }
   const _selectedScreen = (_selected) => {
     if (_selected === 0) {
       return (
-          <select className="button button-seashell text-charcoal text-center fw-bold rounded-2 border-0  bg-seashell " onChange={(e) => { setselect(e.target.value) }} style={{ cursor: 'pointer' }} >
-          <option className="bg-seashell text-charcoal" value="" style={{ cursor: 'pointer' }} >Select report</option>
-            <option className="bg-seashell text-charcoal" value="0" style={{ cursor: 'pointer' }} >Stock Report</option>
-            <option className="bg-seashell text-charcoal" value="1" style={{ cursor: 'pointer' }} >StockReport By ItemName</option>
-            <option className="bg-seashell text-charcoal" value="2" style={{ cursor: 'pointer' }} >Stock Valuation</option>
-            <option className="bg-seashell text-charcoal" value="3" style={{ cursor: 'pointer' }} >Opening Stock</option>
-            <option className="bg-seashell text-charcoal" value="4" style={{ cursor: 'pointer' }} >Rate List</option>
-            <option className="bg-seashell text-charcoal" value="5" style={{ cursor: 'pointer' }} >Summary Wise Data (for All)</option>
-            <option className="bg-seashell text-charcoal" value="6" style={{ cursor: 'pointer' }} >Tax Rate Wise Data</option>
-            <option className="bg-seashell text-charcoal" value="7" style={{ cursor: 'pointer' }} >Gross Profit Margin</option>
-            <option className="bg-seashell text-charcoal" value="8" style={{ cursor: 'pointer' }} >Patient Sales History</option>
-            <option className="bg-seashell text-charcoal" value="9" style={{ cursor: 'pointer' }} >Schedule Wise Sales</option>
-            <option className="bg-seashell text-charcoal" value="10" style={{ cursor: 'pointer' }} >Vendor Details</option>
-            <option className="bg-seashell text-charcoal" value="11" style={{ cursor: 'pointer' }} >Batch Details</option>
-            <option className="bg-seashell text-charcoal" value="12" style={{ cursor: 'pointer' }} >Stock Value Confirmation</option>
-            <option className="bg-seashell text-charcoal" value="13" style={{ cursor: 'pointer' }} >Doctor Wise Sales</option>
-            <option className="bg-seashell text-charcoal" value="14" style={{ cursor: 'pointer' }} >Transfer Stock In</option>
-            <option className="bg-seashell text-charcoal" value="15" style={{ cursor: 'pointer' }} >Transfer Stock Out</option>
-          </select>
+        <div class="dropdown">
+        <button class="button button-seashell border-0 rounded-2 fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          {reportname?reportname:"Select Report"}
+        </button>
+        <ul class="dropdown-menu bg-seashell shadow-sm border-0">
+            <li className={`dropdown-item fw-bold text-charcoal`} onClick={(a) =>{ setselect(16);setreportname("Stock Report");}} >Stock Report<img src={process.env.PUBLIC_URL + '/images/new_tab.png'} className="img-fluid"/></li>
+            <li className={`dropdown-item fw-bold text-charcoal`} onClick={(a) =>{setselect(1); setreportname("StockReport By ItemName ");}}>StockReport By ItemName<img src={process.env.PUBLIC_URL + '/images/new_tab.png'} className="img-fluid"/></li>
+            <li className={`dropdown-item fw-bold text-charcoal`} onClick={(a) =>{setselect(2); setreportname("Stock Valuation");}}>Stock Valuation<img src={process.env.PUBLIC_URL + '/images/new_tab.png'} className="img-fluid"/></li>
+            <li className={`dropdown-item fw-bold text-charcoal`} onClick={(a) =>{setselect(3); setreportname("Opening Stocks");}}>Opening Stocks <img src={process.env.PUBLIC_URL + '/images/new_tab.png'} className="img-fluid"/></li>
+            <li className={`dropdown-item fw-bold text-charcoal py-2`} onClick={(a) =>{setselect(4); setreportname("Rate List");}}>Rate List</li>
+            <li className={`dropdown-item fw-bold text-charcoal py-2`} onClick={(a) =>{setselect(5); setreportname("Summary Wise Data (for All)");}}>Summary Wise Data (for All)</li>
+            <li className={`dropdown-item fw-bold text-charcoal py-2`} onClick={(a) =>{setselect(6); setreportname("Tax Rate Wise Data");}}>Tax Rate Wise Data</li>
+            <li className={`dropdown-item fw-bold text-charcoal py-2`} onClick={(a) =>{setselect(7); setreportname("Gross Profit Margin");}}>Gross Profit Margin</li>
+            <li className={`dropdown-item fw-bold text-charcoal py-2`} onClick={(a) =>{setselect(8); setreportname("Patient Sales History");}}>Patient Sales History</li>
+            <li className={`dropdown-item fw-bold text-charcoal py-2`} onClick={(a) =>{setselect(9); setreportname("Schedule Wise Sales");}}>Schedule Wise Sales</li>
+            <li className={`dropdown-item fw-bold text-charcoal py-2`} onClick={(a) =>{setselect(10); setreportname("Vendor Details");}}>Vendor Details</li>
+            <li className={`dropdown-item fw-bold text-charcoal py-2`} onClick={(a) =>{setselect(11); setreportname("Batch Details");}}>Batch Details</li>
+            <li className={`dropdown-item fw-bold text-charcoal py-2`} onClick={(a) =>{setselect(12); setreportname("Stock Value Confirmation");}}>Stock Value Confirmation</li>
+            <li className={`dropdown-item fw-bold text-charcoal py-2`} onClick={(a) =>{setselect(13); setreportname("Doctor Wise Sales");}}>Doctor Wise Sales</li>
+            <li className={`dropdown-item fw-bold text-charcoal py-2`} onClick={(a) =>{setselect(14); setreportname("Transfer Stocks In");}}>Transfer Stocks In</li>
+            <li className={`dropdown-item fw-bold text-charcoal py-2`} onClick={(a) =>{setselect(15); setreportname("Transfer Stocks Out");}}>Transfer Stocks Out</li>
+      </ul>
+      </div>
+
       )
 
     }
-
+    console.log(select)
     return <div className="fs-2">Nothing Selected</div>;
   };
   return (

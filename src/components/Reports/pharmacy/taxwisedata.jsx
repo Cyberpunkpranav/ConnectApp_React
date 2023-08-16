@@ -7,7 +7,11 @@ import { DownloadTableExcel } from 'react-export-table-to-excel';
 
 const TaxWiseData = () => {
     const permission = useContext(Permissions);
-    const currentDate = useContext(TodayDate);
+    const d = new Date();
+    const date = d.getDate() < 10 ? "0" + d.getDate() : d.getDate();
+    const monthcount = d.getMonth() + 1 < 10 ? `0${d.getMonth() + 1}` : d.getMonth() + 1;
+    const yearcount = d.getFullYear();
+    var currentDate = `${yearcount}-${monthcount}`;
     const ClinicID = localStorage.getItem("ClinicId");
     const adminid = localStorage.getItem("id");
     const url = useContext(URL);
@@ -75,13 +79,9 @@ const TaxWiseData = () => {
                         <h2 className=" ms-3 text-charcoal fw-bolder mt-2" style={{ width: "fit-content" }}>  {taxwisearr.length} Tax-Wise Data </h2>
 
             <div className="row p-0 m-0 text-center mt-2 ms-2">
-                <div className="col-auto p-0 m-0">
-                    <div className="row p-0 m-0 fw-bolder">
-                        <div className="col-auto p-0 m-0 text-charcoal text-center fw-bolder bg-seashell rounded-2">
-                            <input type="month" placeholder="month" className="button button-seashell border-0 text-center fw-bolder " value={fromdate ? fromdate : currentDate ? currentDate.trim(4) : ""} onChange={(e) => { setfromdate(e.target.value); }} />
-                        </div>
-                    </div>
-                </div>
+            <div className="col-auto text-charcoal text-center fw-bolder bg-seashell rounded-2">
+                    <input type="month" placeholder="month" className="form-control rounded-0 border-0 bg-seashell text-charcoal text-center fw-bolder " value={fromdate ? fromdate : currentDate ? currentDate : ""} onChange={(e) => { setfromdate(e.target.value); }} />
+            </div>
                 <div className="col-auto export align-self-center text-center ">
                     <DownloadTableExcel
                         filename={`TaxWiseData`}

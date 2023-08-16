@@ -110,7 +110,7 @@ function DailySaleReport(props) {
                     <div className="row p-0 m-0 text-start bg-seashell">
                       <input type='date' placeholder="from Date" value={fromdate ? fromdate : CurrentDate ? CurrentDate : ''} className=' bg-seashell fw-bold col-auto border-0 outline-none text-charcoal ' onChange={(e) => setfromdate(e.target.value)} />
                       <div className="bg-seashell fw-bolder col-auto">-</div>
-                      <input type='date' placeholder="to Date" value={todate ? todate : CurrentDate ? CurrentDate : ''} className='bg-seashell fw-bold border-0 col-auto outline-none text-charcoal' onChange={(e) => settodate(e.target.value)} />
+                      <input type='date' placeholder="to Date" value={todate ? todate :fromdate?fromdate: CurrentDate ? CurrentDate : ''} className='bg-seashell fw-bold border-0 col-auto outline-none text-charcoal' onChange={(e) => settodate(e.target.value)} />
                     </div>
                   </div></button></li>
               </ul>

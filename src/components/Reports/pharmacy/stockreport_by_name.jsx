@@ -139,15 +139,13 @@ const StockReport_By_Name = () => {
     }));
     return (
         <>
-            <div className="row p-0 m-0 justify-content-lg-between justify-content-md-evenly justify-content-center text-center mt-2">
-                <div className="col-lg-2 col-md-2 col-3 text-center p-0 m-0 ">
-                    <button type="button" className="btn p-0 m-0 heading text-charcoal fw-bolder  " style={{ width: "fit-content" }} > {pagecount} {pagecount > 1 ? "Stock Reports" : "Stock Report"}{" "} </button>
-                </div>
-                <div className="col-lg-8 col-md-8 col-7  p-0 m-0  border-0">
-                    <div className="row p-0 m-0 border-burntumber fw-bolder rounded-1">
-                        <div className="col-4 p-0 m-0 text-burntumber text-center fw-bolder bg-pearl  rounded-1 ">
+                    <h2 className=" ms-3 text-charcoal fw-bolder mt-4" style={{ width: "fit-content" }}> {pagecount} {pagecount > 1 ? "Stock Reports" : "Stock Report"}{" "}  </h2>
+            <div className="row p-0 m-0 justify-content-lg-between justify-content-md-evenly justify-content-center text-center mt-2 ms-2">
+                <div className="col-auto bg-seashell rounded-2">
+                    <div className="row p-0 m-0 align-items-center align-self-center">
+                        <div className="col-auto p-0 m-0 text-charcoal text-center fw-bolder bg-seashell  ">
                             <div className="position-relative">
-                                <input className="fw-bold text-burntumber border-0 bg-pearl bg-seashell" placeholder="Search Items" value={itemname ? itemname : ""} onChange={(e) => { searchmeds(e.target.value); setitemname(e.target.value); setitemtype(); }} />
+                                <input className="fw-bold text-charcoal border-0 text-center bg-seashell" placeholder="Search Items" value={itemname ? itemname : ""} onChange={(e) => { searchmeds(e.target.value); setitemname(e.target.value); setitemtype(); }} />
                                 <div ref={medicinesref} className="position-absolute rounded-4 col-12" style={{ zIndex: "2" }} >
                                     {
                                         itemsearch ? (
@@ -176,12 +174,13 @@ const StockReport_By_Name = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-4 p-0 m-0 text-burntumber text-center fw-bolder bg-pearl  rounded-1 ">
-                            <input type="date" placeholder="fromdate" className="p-0 m-0 border-0 bg-pearl text-burntumber text-center fw-bolder " value={fromdate ? fromdate : currentDate ? currentDate : ""} onChange={(e) => { setfromdate(e.target.value); }} />
-                        </div>
-                        <div className="col-4 p-0 m-0  text-burntumber text-center fw-bolder bg-pearl rounded-1">
-                            <input type="date" className=" p-0 m-0 border-0 bg-pearl text-burntumber text-center fw-bolder" value={todate ? todate : fromdate ? fromdate : currentDate ? currentDate : ""} onChange={(e) => { settodate(e.target.value); }} />
-                        </div>
+                        <div className="col-auto p-0 m-0 text-charcoal text-center fw-bolder bg-seashell ">
+              <input type="date" placeholder="fromdate" className="button button-seashell rounded-0 text-charcoal text-center fw-bolder " value={fromdate ? fromdate : currentDate ? currentDate : ""} onChange={(e) => { setfromdate(e.target.value); }} />
+            </div>
+            <div className="col-auto p-0 m-0">-</div>
+            <div className="col-auto p-0 m-0  text-charcoal text-center fw-bolder bg-seashell">
+              <input type="date" className="button button-seashell rounded-0 text-charcoal text-center bg-seashell fw-bolder" value={todate ? todate : fromdate ? fromdate : currentDate ? currentDate : ""} onChange={(e) => { settodate(e.target.value); }} />
+            </div>
                     </div>
                 </div>
                 <div className="col-2 p-0 m-0 export col-md-2 col-lg-2 align-self-center text-center ">
