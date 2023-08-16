@@ -41,7 +41,8 @@ const Reports = () => {
       display: permission.sale_return_view ? 1 : 0,
     },
   ];
-  const [second, setSecond] = useState(0);
+  const [second, setSecond] = useState(0)
+
   function selectfunc() {
     if( select == ''){
       return (

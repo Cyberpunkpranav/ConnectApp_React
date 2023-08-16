@@ -17,6 +17,7 @@ const BatchDetails = () => {
   const [todate, settodate] = useState();
   const [Loading, setLoading] = useState(false);
   const [batchdetailsarr, setbatchdetailsarr] = useState([]);
+  const [batcharr,setbatcharr] =useState([])
   const [pages, setpages] = useState([]);
   const [pagecount, setpagecount] = useState();
 
@@ -31,7 +32,6 @@ const BatchDetails = () => {
     try {
       axios.get(`${url}/stock/list?search=${searchname}&limit=25&offset=0`)
         .then((response) => {
-          console.log(response)
           setpagecount(Number(response.data.data.total_count_medicines + response.data.data.total_count_vaccines));
           setpages(Math.round(Number(response.data.data.total_count_medicines + response.data.data.total_count_vaccines) / 25) + 1);
           setLoading(false);
@@ -84,16 +84,78 @@ const BatchDetails = () => {
       }
     }
   }
-
+  const Get_Detailed_Data = async () => {
+    setbatcharr([]);
+    for (let i = 0; i < batchdetailsarr.length; i++) {
+      let totalcurrentstockarr = [];
+      if (batchdetailsarr[i].stock_info.length == 0) {
+        let batchobj = {
+          id: batchdetailsarr[i].id,
+          name: batchdetailsarr[i].name,
+          manufacturer: batchdetailsarr[i].manufacturer,
+          max_stock_count: batchdetailsarr[i].max_stock_count,
+          alert_stock_count: batchdetailsarr[i].alert_stock_count,
+          min_stock_count: batchdetailsarr[i].min_stock_count,
+        }
+        if (batchdetailsarr == undefined && batchdetailsarr.length == 0) {
+          setbatcharr(batchobj);
+        } else {
+          setbatcharr((prevState) => [...prevState, batchobj]);
+        }
+      } else {
+        for (let j = 0; j < batchdetailsarr[i].stock_info.length; j++) {
+          totalcurrentstockarr.push(
+            batchdetailsarr[i].stock_info[j].current_stock
+          );
+          let batchobj = {
+            id: batchdetailsarr[i].id,
+            name: batchdetailsarr[i].name,
+            manufacturer: batchdetailsarr[i].manufacturer,
+            max_stock_count: batchdetailsarr[i].max_stock_count,
+            alert_stock_count: batchdetailsarr[i].alert_stock_count,
+            min_stock_count: batchdetailsarr[i].min_stock_count,
+            CGST: batchdetailsarr[i].stock_info[j].CGST,
+            CGST_rate: batchdetailsarr[i].stock_info[j].CGST_rate,
+            IGST: batchdetailsarr[i].stock_info[j].IGST,
+            IGST_rate: batchdetailsarr[i].stock_info[j].IGST_rate,
+            SGST: batchdetailsarr[i].stock_info[j].SGST,
+            SGST_rate: batchdetailsarr[i].stock_info[j].SGST_rate,
+            batch_no: batchdetailsarr[i].stock_info[j].batch_no,
+            channel: batchdetailsarr[i].stock_info[j].channel,
+            cost: batchdetailsarr[i].stock_info[j].cost,
+            current_stock: batchdetailsarr[i].stock_info[j].current_stock,
+            discount: batchdetailsarr[i].stock_info[j].discount,
+            expiry_date: batchdetailsarr[i].stock_info[j].expiry_date,
+            free_qty: batchdetailsarr[i].stock_info[j].free_qty,
+            Batch_stock_id: batchdetailsarr[i].stock_info[j].id,
+            mfd_date: batchdetailsarr[i].stock_info[j].mfd_date,
+            mrp: batchdetailsarr[i].stock_info[j].mrp,
+            purchase_entry_id: batchdetailsarr[i].stock_info[j].purchase_entry_id,
+            qty: batchdetailsarr[i].stock_info[j].qty,
+            rate: batchdetailsarr[i].stock_info[j].rate,
+            trade_discount: batchdetailsarr[i].stock_info[j].trade_discount,
+            total_amount: batchdetailsarr[i].stock_info[j].total_amount,
+            totalstock: totalcurrentstockarr,
+          };
+          if (batchdetailsarr == undefined && batchdetailsarr.length == 0) {
+            setbatcharr(batchobj);
+          } else {
+            setbatcharr((prevState) => [...prevState, batchobj]);
+          }
+        }
+      }
+    }
+  }
   useEffect(() => {
     GetPages();
     GETBatchDetails();
+    Get_Detailed_Data()
   }, [searchname,fromdate,todate]);
 
   useEffect(() => {
     GETBatchDetails();
   }, [pagecount]);
- 
+  console.log(batchdetailsarr,batcharr)
   return (
     <>
     <h2 className=" ms-3 text-charcoal fw-bolder mt-2" style={{ width: "fit-content" }}> {pagecount} {pagecount > 1 ? "Batches Details" : "Batch Details"}{" "}  </h2>
@@ -155,19 +217,18 @@ const BatchDetails = () => {
                 </div>
               </tr>
             </tbody>
-          ) : batchdetailsarr && batchdetailsarr.length != 0 ? (
+          ) : batcharr && batcharr.length != 0 ? (
             <tbody>
-              {batchdetailsarr.map((item, i) => (
+              {batcharr.map((item, i) => (
                 <tr className={` bg-${i % 2 == 0 ? "seashell" : "pearl"} align-middle`} key={i} >
                   <td className="text-charcoal fw-bold">{item.id?item.id:''} </td>
                   <td className="text-charcoal fw-bold">{item.name?item.name:''}</td>
+                  <td className="text-charcoal fw-bold">{item.batch_no?item.batch_no:''} </td>
                   <td className="text-charcoal fw-bold"> </td>
-                  <td className="text-charcoal fw-bold"> </td>
-                  <td className="text-charcoal fw-bold"> </td>
-                  <td className="text-charcoal fw-bold"> </td>
-                  <td className="text-charcoal fw-bold"> </td>
-                  <td className="text-charcoal fw-bold"> </td>
-                  <td className="text-charcoal fw-bold"> </td>
+                  <td className="text-charcoal fw-bold">{item.expiry_date?reversefunction(item.expiry_date):""} </td>
+                  <td className="text-charcoal fw-bold">{item.qty?item.qty:''} </td>
+                  <td className="text-charcoal fw-bold">₹{item.mrp?item.mrp:''}</td>
+                  <td className="text-charcoal fw-bold">₹{item.cost?item.cost:''}</td>
                 </tr>
               ))}
             </tbody>

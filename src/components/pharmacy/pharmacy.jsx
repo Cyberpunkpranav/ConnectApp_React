@@ -397,8 +397,7 @@ function Saleentrysection(props) {
                   </td>
 
                   <td  >
-                    <div className="backdrop"></div>
-                    <section className={`position-absolute d-${i == index ? seidw : "none"} start-0 end-0 mx-auto border border-1 bg-seashell rounded-2`} style={{zIndex:'10', top: "0",width:'70vh',height: "40vh" }}>
+                    <section className={`position-absolute d-${i == index ? seidw : "none"} start-0 end-0 mx-auto border border-1 bg-seashell rounded-4`} style={{zIndex:'10', top: "0",width:'70vh',height: "40vh" }}>
                     {i == index ? (
                       <SEitemdetailssection saleentryarr={saleentryarr[i]} itembillid={"P-" + item.bill_id} toggle_seidw={toggle_seidw} />
                     ) : (
@@ -1259,7 +1258,7 @@ function SaleReturns(props) {
                           />
                         </button>
                       </td> */}
-                      <td className={` position-absolute d-${i == index ? sridw : "none"} bg-seashell border border-1 start-0 end-0 p-0 m-0`} style={{ top: "-7.5rem", zIndex: "2" }} >
+                      <td className={` position-absolute d-${i == index ? sridw : "none"} bg-seashell border border-1 start-0 end-0 mx-auto p-0 m-0 rounded-4`} style={{zIndex:'10', top: "0",width:'70vh',height: "40vh" }} >
                         {
                           i == index ? (
                             <SRitemdetailssection salereturnarr={salereturnarr[i]} toggle_sridw={toggle_sridw} />
@@ -2828,8 +2827,9 @@ function SRitemdetailssection(props) {
   };
 
   return (
-    <div className="container-fluid p-0 m-0 bg-seashell ">
-      <div className="container-fluid bg-seashell p-0 m-0">
+
+    <div className="container-fluid p-0 m-0 ">
+      <div className="container-fluid p-0 m-0">
         <div className="row p-0 m-0 position-relative">
           <h5 className="text-center text-charcoal pt-3">
             {props.itembillid} Sale Return Item Details
@@ -2893,7 +2893,7 @@ function SRitemdetailssection(props) {
       </div>
       <div
         className={`scroll bg-seashell scroll-y d-${medicine}`}
-        style={{ minHeight: "70vh", Height: "70vh", maxHeight: "82vh" }}
+        style={{ height:'100%' }}
       >
         <table className="table datatable table-responsive text-center bg-seashell">
           <thead>
@@ -3020,7 +3020,7 @@ function SRitemdetailssection(props) {
       </div>
       <div
         className={`scroll bg-seashell scroll-y d-${vaccine}`}
-        style={{ minHeight: "70vh", Height: "70vh", maxHeight: "70vh" }}
+        style={{ height:"100%"}}
       >
         <table className="table datatable table-responsive text-center bg-seashell">
           <thead>
@@ -3536,7 +3536,7 @@ function Purchaseentrysection(props) {
 
   return (
     <>
-         <div className="col-auto position-absolute p-0 m-0 export_2 align-self-center text-center  ">
+         <div className="col-auto position-absolute p-0 m-0 export_2 align-self-center text-center">
           <ExportPurchaseEntry purchaseentryarr={purchaseentryarrExcel} fromdate={reversefunction(fromdate)} todate={reversefunction(todate)} />
         </div>
       <button className={`button addpurchase button-charcoal position-absolute d-${permission.purchase_entry_add == 1 ? "" : "none" }`} onClick={toggle_npef} > <img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt="displaying_image" className="img-fluid p-0 m-0" /> Entry Purchase </button>
@@ -3544,17 +3544,17 @@ function Purchaseentrysection(props) {
       <div>
         <div className="scroll scroll-y overflow-scroll p-0 m-0 mt-2" style={{ minHeight: "56vh", height: "56vh" }} >
           <table className="table">
-            <thead className="p-0 m-0 align-middle position-sticky top-0 bg-pearl">
+            <thead className=" align-middle position-sticky top-0 bg-pearl">
               <tr>
-                <th className="fw-bolder py-0 my-0  text-charcoal75" > PE ID </th>
-                <th className="fw-bolder py-0 my-0  text-charcoal75" > PO ID </th>
-                <th className="fw-bolder py-0 my-0  text-charcoal75" > Channel </th>
-                <th className="fw-bolder py-0 my-0  text-charcoal75" > Invoice No. </th>
-                <th className="fw-bolder py-0 my-0  text-charcoal75" > Bill Date </th>
-                <th className="fw-bolder py-0 my-0  text-charcoal75" > Bill Total </th>
-                <th className="fw-bolder py-0 my-0  text-charcoal75" > Vendor </th>
-                <th className="fw-bolder py-0 my-0 text-center  text-charcoal75"  > Inventory </th>
-                <th className="fw-bolder py-0 my-0 text-center  text-charcoal75"  > QR Code </th>
+                <th className="fw-bolder   text-charcoal75" > PE ID </th>
+                <th className="fw-bolder   text-charcoal75" > PO ID </th>
+                <th className="fw-bolder   text-charcoal75" > Channel </th>
+                <th className="fw-bolder   text-charcoal75" > Invoice No. </th>
+                <th className="fw-bolder   text-charcoal75" > Bill Date </th>
+                <th className="fw-bolder   text-charcoal75" > Bill Total </th>
+                <th className="fw-bolder   text-charcoal75" > Vendor </th>
+                <th className="fw-bolder  text-center  text-charcoal75"  > Inventory </th>
+                <th className="fw-bolder  text-center  text-charcoal75"  > QR Code </th>
                 {/* <th className='fw-bolder p-0 m-0  text-charcoal75 text-center' scope='col' style={{ zIndex: '3' }}>more</th> */}
               </tr>
             </thead>
@@ -3584,20 +3584,20 @@ function Purchaseentrysection(props) {
                     <td className="py-0 my-0 text-charcoal fw-bold ps-2">
                       PE-{item.bill_id}
                     </td>
-                    <td className="py-0 my-0 text-charcoal fw-bold"> {item.purchase_order_id && item.purchase_order_id !== null ? item.purchase_order_id : "N/A"} </td>
-                    <td className="py-0 my-0 text-charcoal fw-bold"> {item.channel && item.channel == 1 ? "Pharmacy" : "Clinic"} </td>
-                    <td className="py-0 my-0 text-charcoal fw-bold"> {item.invoice_no ? item.invoice_no : "N/A"} </td>
-                    <td className="py-0 my-0 text-charcoal fw-bold">
+                    <td className="text-charcoal fw-bold"> {item.purchase_order_id && item.purchase_order_id !== null ? item.purchase_order_id : "N/A"} </td>
+                    <td className="text-charcoal fw-bold"> {item.channel && item.channel == 1 ? "Pharmacy" : "Clinic"} </td>
+                    <td className="text-charcoal fw-bold"> {item.invoice_no ? item.invoice_no : "N/A"} </td>
+                    <td className="text-charcoal fw-bold">
                       {item.bill_date && item.bill_date
                         ? reversefunction(item.bill_date)
                         : "N/A"}
                     </td>
-                    <td className="py-0 my-0 text-charcoal fw-bold">
+                    <td className="text-charcoal fw-bold">
                       {item.bill_total && item.bill_total
                         ? "Rs. " + item.bill_total
                         : "N/A"}
                     </td>
-                    <td className="py-0 my-0 text-charcoal fw-bold">
+                    <td className="text-charcoal fw-bold">
                       {item.distributor &&
                         item.distributor != null &&
                         item.distributor.entity_name &&
@@ -3605,14 +3605,17 @@ function Purchaseentrysection(props) {
                         ? item.distributor.entity_name
                         : "N/A"}
                     </td>
-                    <td className="py-0 my-0 text-charcoal fw-bold text-center">
+                    <td className="text-charcoal fw-bold text-center">
                       {/* <button className='btn'><img src={process.env.PUBLIC_URL + "/images/cart.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1" /></button> */}
                       <button className="btn p-0 m-0" onClick={() => { setindex(i); toggle_peidw(); }} > <img src={ process.env.PUBLIC_URL + "/images/archivebox.png" } alt="displaying_image" className="ms-1 img-fluid" /> </button>
                     </td>
-                    <td className='p-0 m-0 text-charcoal fw-bold text-center'>
+                    <td className='text-charcoal fw-bold text-center'>
                     <button className="btn p-0 m-0" onClick={() => { setqr(i); }} > <img src={process.env.PUBLIC_URL + "/images/qrcode.png"} alt="displaying_image" className="me-1 img-fluid" /> </button>
                           </td>
-                    <td className={` position-absolute d-${i == index ? peidw : "none" } border border-1 start-0 end-0 bg-seashell p-0 m-0`} style={{ top: "0rem", zIndex: "5" }} > {i == index ? ( <PEitemdetailssection purchaseentryarr={purchaseentryarr[i]} itembillid={"PE-" + item.bill_id} toggle_peidw={toggle_peidw} /> ) : ( <></> )} </td>
+                    <td className={` position-absolute d-${i == index ? peidw : "none" } border border-1 start-0 mx-auto end-0 bg-seashell rounded-4 p-0 m-0`} style={{zIndex:'10', top: "0",width:'70vh',height: "40vh" }} >
+                       {i == index ? 
+                       ( <PEitemdetailssection purchaseentryarr={purchaseentryarr[i]} itembillid={"PE-" + item.bill_id} toggle_peidw={toggle_peidw} /> ) : ( <></> )}
+                    </td>
                     <td className={`position-absolute start-0 text-start bg-pearl container-fluid d-${qr == i ? "block" : "none" }`} style={{ top: "-8.5rem", zIndex: "5", height: "89vh" }} >
                       {i == qr ? (
                         <div className="container-fluid position-relative">
@@ -3629,10 +3632,7 @@ function Purchaseentrysection(props) {
                 ))}
               </tbody>
             ) : (
-              <tbody
-                className="text-center position-relative p-0 m-0 "
-                style={{ minHeight: "55vh" }}
-              >
+              <tbody className="text-center position-relative p-0 m-0 " style={{ minHeight: "55vh" }} >
                 <tr className="">
                   <td className="fw-bolder text-charcoal text-center position-absolute border-0 start-0 end-0 mx-3 p-2 border-0">
                     No Purchase Entries
@@ -3653,9 +3653,7 @@ function Purchaseentrysection(props) {
             onPageChange={GETPurchaseList}
             containerClassName={"pagination"}
             pageClassName={"page-item text-charcoal"}
-            pageLinkClassName={
-              "page-link text-decoration-none text-charcoal border-charcoal rounded-1 mx-1"
-            }
+            pageLinkClassName={ "page-link text-decoration-none text-charcoal border-charcoal rounded-1 mx-1" }
             previousClassName={"btn button-charcoal-outline me-2"}
             previousLinkClassName={"text-decoration-none text-charcoal"}
             nextClassName={"btn button-charcoal-outline ms-2"}
@@ -3666,9 +3664,7 @@ function Purchaseentrysection(props) {
           />
         </div>
       </div>
-      <section
-        className={`newpurchaseentrysection position-absolute start-0 end-0 bg-seashell border border-1 d-${npef}`}
-      >
+      <section className={`newpurchaseentrysection position-absolute start-0 end-0 bg-seashell border border-1 d-${npef}`} >
         {
           <Newpurchaseentryform
             toggle_npef={toggle_npef}
@@ -3730,8 +3726,8 @@ function PEitemdetailssection(props) {
     ));
   }
   return (
-    <div className="container-fluid p-0 m-0 bg-seashell ">
-      <div className="container-fluid bg-seashell p-0 m-0">
+    <div className="container-fluid p-0 m-0 ">
+      <div className="container-fluid p-0 m-0">
         <h5 className="text-center pt-3 text-charcoal">
           {props.itembillid} Purchase Entry Item Details
         </h5>
@@ -3792,7 +3788,7 @@ function PEitemdetailssection(props) {
       </div>
       <div
         className={`scroll bg-seashell scroll-y d-${medicine}`}
-        style={{ minHeight: "70vh", Height: "70vh", maxHeight: "70vh" }}
+        style={{ height:"100%" }}
       >
         <table className="table datatable table-responsive text-center bg-seashell">
           <thead>
@@ -4039,104 +4035,34 @@ function PEitemdetailssection(props) {
       </div>
       <div
         className={`scroll bg-seashell scroll-y d-${vaccine}`}
-        style={{ minHeight: "70vh", Height: "70vh", maxHeight: "70vh" }}
+        style={{ height:'100%' }}
       >
         <table className="table datatable table-responsive text-center bg-seashell">
           <thead>
             <tr>
-              <th rowspan="2" className="border p-0 m-0 px-1">
-                Item ID
-              </th>
-              <th rowspan="2" className="border p-0 m-0 px-1">
-                Item Name
-              </th>
-              <th rowspan="2" className="border p-0 m-0 px-1">
-                Batch No.
-              </th>
-              <th rowspan="2" className="border p-0 m-0 px-1">
-                Expiry Date
-              </th>
-              <th rowspan="2" className="border p-0 m-0 px-1">
-                MRP{" "}
-              </th>
-              <th rowspan="2" className="border p-0 m-0 px-1">
-                Rate{" "}
-              </th>
-              <th rowspan="2" className="border p-0 m-0 px-1">
-                Qty.
-              </th>
-              <th rowspan="2" className="border p-0 m-0 px-1">
-                Disc%
-              </th>
-              <th rowspan="2" className="border p-0 m-0 px-1">
-                Trade Disc%
-              </th>
-              <th
-                colspan={Taxon == true ? "8" : "2"}
-                scope="col-group"
-                className={`border p-0 m-0 px-1`}
-              >
-                Total Tax
-              </th>
-              <th rowspan="2" className="border p-0 m-0 px-1">
-                Cost{" "}
-              </th>
-              <th rowspan="2" className="border p-0 m-0 px-1">
-                Total{" "}
-              </th>
-              <th rowspan="2" className="border p-0 m-0 px-1">
-                Print QR
-              </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Item ID </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Item Name </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Batch No. </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Expiry Date </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> MRP{" "} </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Rate{" "} </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Qty. </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Disc% </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Trade Disc% </th>
+              <th colspan={Taxon == true ? "8" : "2"} scope="col-group" className={`border p-0 m-0 px-1`} > Total Tax </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Cost{" "} </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Total{" "} </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Print QR </th>
             </tr>
             <tr>
-              <th
-                scope="col"
-                className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none"
-                  }`}
-              >
-                CGST%
-              </th>
-              <th
-                scope="col"
-                className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none"
-                  }`}
-              >
-                CGST
-              </th>
-              <th
-                scope="col"
-                className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none"
-                  }`}
-              >
-                SGST%
-              </th>
-              <th
-                scope="col"
-                className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none"
-                  }`}
-              >
-                SGST{" "}
-              </th>
-              <th
-                scope="col"
-                className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none"
-                  }`}
-              >
-                IGST%
-              </th>
-              <th
-                scope="col"
-                className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none"
-                  }`}
-              >
-                IGST{" "}
-              </th>
-              <th scope="col" className={`border p-0 m-0 px-1`}>
-                Total%
-              </th>
-              <th scope="col" className={`border p-0 m-0 px-1`}>
-                Total{" "}
-              </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > CGST% </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > CGST </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > SGST% </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > SGST{" "} </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > IGST% </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > IGST{" "} </th>
+              <th scope="col" className={`border p-0 m-0 px-1`}> Total% </th>
+              <th scope="col" className={`border p-0 m-0 px-1`}> Total{" "} </th>
             </tr>
           </thead>
           {props.purchaseentryarr.vaccines &&
@@ -4144,123 +4070,32 @@ function PEitemdetailssection(props) {
             <tbody className="border align-items-center p-0 m-0">
               {props.purchaseentryarr.vaccines.map((item, _key) => (
                 <tr className="border p-0 m-0 align-middle" key={_key}>
+                  <td className="border p-0 m-0 align-middle"> {item && item.id !== null ? "v" + item.id : "N/A"} </td>
+                  <td className="border p-0 m-0 align-middle"> {item.vaccine && item.vaccine.name !== null ? item.vaccine.name : "N/A"} </td>
+                  <td className="border p-0 m-0 align-middle"> {item.batch_no && item.batch_no != null ? item.batch_no : "N/A"} </td>
+                  <td className="border p-0 m-0 align-middle"> {item.expiry_date && item.expiry_date != null ? reversefunction(item.expiry_date) : "N/A"} </td>
+                  <td className="border p-0 m-0 align-middle"> {item.mrp ? item.mrp : "N/A"} </td>
+                  <td className="border p-0 m-0 align-middle"> {item.rate ? item.rate : "N/A"} </td>
+                  <td className="border p-0 m-0 align-middle"> {item.qty ? item.qty : "N/A"} </td>
+                  <td className="border p-0 m-0 align-middle"> {item.discount ? item.discount : "N/A"} </td>
+                  <td className="border p-0 m-0 align-middle"> {item.trade_discount ? item.trade_discount : "N/A"} </td>
+                  <td className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none" }`} > {item.SGST_rate ? item.SGST_rate : "N/A"} </td>
+                  <td className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none" }`} > {item.SGST ? item.SGST : "N/A"} </td>
+                  <td className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none" }`} > {item.CGST_rate ? item.CGST_rate : "N/A"} </td>
+                  <td className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none" }`} > {item.CGST ? item.CGST : "N/A"} </td>
+                  <td className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none" }`} > {item.IGST_rate ? item.IGST_rate : "N/A"} </td>
+                  <td className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none" }`} > {item.IGST ? item.IGST : "N/A"} </td>
+                  <td className="border p-0 m-0 align-middle"> {TotalTaxPercent( item.CGST_rate, item.SGST_rate, item.IGST_rate )} </td>
+                  <td className="border p-0 m-0 align-middle"> {TotalTaxRate(item.CGST, item.SGST, item.IGST, item.qty)} </td>
+                  <td className="border p-0 m-0 align-middle"> {item.cost ? item.cost : "N/A"} </td>
+                  <td className="border p-0 m-0 align-middle"> {item.total_amount ? item.total_amount : "N/A"} </td>
                   <td className="border p-0 m-0 align-middle">
-                    {item && item.id !== null ? "v" + item.id : "N/A"}
+                    <button className="btn" onClick={() => { setqr(_key); }} > <img src={process.env.PUBLIC_URL + "/images/qrcode.png"} alt="displaying_image" className="me-1" /> </button>
                   </td>
-                  <td className="border p-0 m-0 align-middle">
-                    {item.vaccine && item.vaccine.name !== null
-                      ? item.vaccine.name
-                      : "N/A"}
-                  </td>
-                  <td className="border p-0 m-0 align-middle">
-                    {item.batch_no && item.batch_no != null
-                      ? item.batch_no
-                      : "N/A"}
-                  </td>
-                  <td className="border p-0 m-0 align-middle">
-                    {item.expiry_date && item.expiry_date != null
-                      ? reversefunction(item.expiry_date)
-                      : "N/A"}
-                  </td>
-                  <td className="border p-0 m-0 align-middle">
-                    {item.mrp ? item.mrp : "N/A"}
-                  </td>
-                  <td className="border p-0 m-0 align-middle">
-                    {item.rate ? item.rate : "N/A"}
-                  </td>
-                  <td className="border p-0 m-0 align-middle">
-                    {item.qty ? item.qty : "N/A"}
-                  </td>
-                  <td className="border p-0 m-0 align-middle">
-                    {item.discount ? item.discount : "N/A"}
-                  </td>
-                  <td className="border p-0 m-0 align-middle">
-                    {item.trade_discount ? item.trade_discount : "N/A"}
-                  </td>
-                  <td
-                    className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none"
-                      }`}
-                  >
-                    {item.SGST_rate ? item.SGST_rate : "N/A"}
-                  </td>
-                  <td
-                    className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none"
-                      }`}
-                  >
-                    {item.SGST ? item.SGST : "N/A"}
-                  </td>
-                  <td
-                    className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none"
-                      }`}
-                  >
-                    {item.CGST_rate ? item.CGST_rate : "N/A"}
-                  </td>
-                  <td
-                    className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none"
-                      }`}
-                  >
-                    {item.CGST ? item.CGST : "N/A"}
-                  </td>
-                  <td
-                    className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none"
-                      }`}
-                  >
-                    {item.IGST_rate ? item.IGST_rate : "N/A"}
-                  </td>
-                  <td
-                    className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none"
-                      }`}
-                  >
-                    {item.IGST ? item.IGST : "N/A"}
-                  </td>
-                  <td className="border p-0 m-0 align-middle">
-                    {TotalTaxPercent(
-                      item.CGST_rate,
-                      item.SGST_rate,
-                      item.IGST_rate
-                    )}
-                  </td>
-                  <td className="border p-0 m-0 align-middle">
-                    {TotalTaxRate(item.CGST, item.SGST, item.IGST, item.qty)}
-                  </td>
-                  <td className="border p-0 m-0 align-middle">
-                    {item.cost ? item.cost : "N/A"}
-                  </td>
-                  <td className="border p-0 m-0 align-middle">
-                    {item.total_amount ? item.total_amount : "N/A"}
-                  </td>
-                  <td className="border p-0 m-0 align-middle">
-                    <button
-                      className="btn"
-                      onClick={() => {
-                        setqr(_key);
-                      }}
-                    >
-                      <img
-                        src={process.env.PUBLIC_URL + "/images/qrcode.png"}
-                        alt="displaying_image"
-                        className="me-1"
-                      />
-                    </button>
-                  </td>
-                  <div
-                    className={`position-absolute top-0 start-0  text-start bg-pearl container-fluid d-${qr == _key ? "block" : "none"
-                      }`}
-                    style={{ top: "-8.2rem", zIndex: "5", height: "89vh" }}
-                  >
+                  <div className={`position-absolute top-0 start-0  text-start bg-pearl container-fluid d-${qr == _key ? "block" : "none" }`} style={{ top: "-8.2rem", zIndex: "5", height: "89vh" }} >
                     <div className="container-fluid position-relative">
-                      <button
-                        type="button"
-                        className="btn-close closebtn position-absolute end-0 me-2"
-                        onClick={() => setqr()}
-                        aria-label="Close"
-                      ></button>
-                      <p className="mt-2 text-burntumber border-1 ">
-                        {item.vaccine && item.vaccine.name !== null
-                          ? item.vaccine.name
-                          : "N/A"}{" "}
-                        | {item && item.id !== null ? "v" + item.id : "N/A"}
-                      </p>
+                      <button type="button" className="btn-close closebtn position-absolute end-0 me-2" onClick={() => setqr()} aria-label="Close" ></button>
+                      <p className="mt-2 text-burntumber border-1 "> {item.vaccine && item.vaccine.name !== null ? item.vaccine.name : "N/A"}{" "} | {item && item.id !== null ? "v" + item.id : "N/A"} </p>
                       <div className="row">
                         <GenerateQR qty={item.qty} id={"v" + item.id} />
                       </div>
@@ -5897,7 +5732,7 @@ function PurchaseReturns(props) {
                   <td className="p-0 m-0 text-charcoal fw-bold">
                     <button className="btn position-relative cursor-pointer more p-0 m-0"> <img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image"  /> </button>
                   </td>
-                  <td className={` position-absolute d-${i == index ? pridw : "none" } border border-1 start-0 end-0 bg-seashell p-0 m-0`} style={{ Height: "90vh", top: "-7.15rem", zIndex: "2" }} >
+                  <td className={` position-absolute d-${i == index ? pridw : "none" } border border-1 start-0 mx-auto end-0 bg-seashell rounded-4 p-0 m-0`} style={{zIndex:'10', top: "0",width:'70vh',height: "40vh" }} >
                     {
                     i == index ? (
                       <PRitemdetailssection
@@ -6042,7 +5877,7 @@ function PRitemdetailssection(props) {
       <div className="d-flex justify-content-end me-5 ">
         <input
           type="checkbox"
-          className=""
+          className="form-check-input"
           value={Taxon ? Taxon : ""}
           onChange={() => {
             Taxon == true ? setTaxon(false) : setTaxon(true);
@@ -6051,103 +5886,32 @@ function PRitemdetailssection(props) {
         <label>Show Tax Details</label>
       </div>
 
-      <div
-        className={`scroll bg-seashell scroll-y d-${medicine}`}
-        style={{ minHeight: "70vh", maxHeight: "70vh" }}
-      >
+      <div className={`scroll bg-seashell scroll-y d-${medicine}`} style={{ height:"100%"}} >
         <table className="table datatable text-center bg-seashell">
           <thead>
             <tr>
-              <th rowspan="2" className="border p-0 m-0 px-1">
-                Item ID
-              </th>
-              <th rowspan="2" className="border p-0 m-0 px-1">
-                Item Name
-              </th>
-              <th rowspan="2" className="border p-0 m-0 px-1">
-                Batch No.
-              </th>
-              <th rowspan="2" className="border p-0 m-0 px-1">
-                Expiry Date
-              </th>
-              <th rowspan="2" className="border p-0 m-0 px-1">
-                MRP
-              </th>
-              <th rowspan="2" className="border p-0 m-0 px-1">
-                Rate
-              </th>
-              <th rowspan="2" className="border p-0 m-0 px-1">
-                Qty.
-              </th>
-              <th rowspan="2" className="border p-0 m-0 px-1">
-                Disc%
-              </th>
-              <th rowspan="2" className="border p-0 m-0 px-1">
-                Trade Disc%
-              </th>
-              <th
-                colspan={Taxon == true ? "8" : "2"}
-                scope="col-group"
-                className="border p-0 m-0 px-1"
-              >
-                Total Tax
-              </th>
-              <th rowspan="2" className="border p-0 m-0 px-1">
-                Cost
-              </th>
-              <th rowspan="2" className="border p-0 m-0 px-1">
-                Total
-              </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Item ID </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Item Name </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Batch No. </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Expiry Date </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> MRP </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Rate </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Qty. </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Disc% </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Trade Disc% </th>
+              <th colspan={Taxon == true ? "8" : "2"} scope="col-group" className="border p-0 m-0 px-1" > Total Tax </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Cost </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Total </th>
             </tr>
             <tr>
-              <th
-                scope="col"
-                className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none"
-                  }`}
-              >
-                CGST%
-              </th>
-              <th
-                scope="col"
-                className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none"
-                  }`}
-              >
-                CGST
-              </th>
-              <th
-                scope="col"
-                className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none"
-                  }`}
-              >
-                SGST%
-              </th>
-              <th
-                scope="col"
-                className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none"
-                  }`}
-              >
-                SGST
-              </th>
-              <th
-                scope="col"
-                className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none"
-                  }`}
-              >
-                IGST%
-              </th>
-              <th
-                scope="col"
-                className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none"
-                  }`}
-              >
-                IGST
-              </th>
-              <th scope="col" className={`border p-0 m-0 px-1`}>
-                Total%
-              </th>
-              <th scope="col" className={`border p-0 m-0 px-1`}>
-                Total
-              </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > CGST% </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > CGST </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > SGST% </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > SGST </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > IGST% </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > IGST </th>
+              <th scope="col" className={`border p-0 m-0 px-1`}> Total% </th>
+              <th scope="col" className={`border p-0 m-0 px-1`}> Total </th>
             </tr>
           </thead>
           {props.purchasereturnarr.purchase_medicines &&
@@ -6256,7 +6020,7 @@ function PRitemdetailssection(props) {
       </div>
       <div
         className={`scroll bg-seashell scroll-y d-${vaccine}`}
-        style={{ minHeight: "70vh", maxHeight: "70vh" }}
+        style={{ height:"100%" }}
       >
         <table className="table datatable table-responsive text-center bg-seashell">
           <thead>
