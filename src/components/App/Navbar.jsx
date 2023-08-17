@@ -116,7 +116,7 @@ function Navbar(props) {
     }
 
 
-    let socket = new WebSocket('ws://192.168.3.99:8080/Chat')
+    let socket = new WebSocket('ws://192.168.3.27:8080/Chat')
 
     useEffect(() => {
         socket.onopen = () => {
@@ -219,7 +219,7 @@ function Navbar(props) {
             <div className="navsection p-0 m-0 py-1">
                 <div className="container-fluid p-0 m-0 ">
                     <div className="row m-0 p-0 justify-content-lg-between justify-content-md-between justify-content-sm-between justify-content-between align-items-center">
-                        <div className="col-lg-auto col-xl-auto col-md-2 col-sm-auto col-auto p-0 m-0 ms-2 text-start dropdown">
+                        <div className="col-lg-auto col-xl-auto col-md-2 col-sm-auto col-auto p-0 m-0 ms-2 text-start dropdown logout">
                             <button className="button dropdown-toggle button-seashell shadow-none d-inline-block col-md-auto col-auto user position-relative p-0 m-0 ms-2" data-bs-toggle="dropdown" aria-expanded="false">
                                 <h1 className="m-0 username text-decoration-none  text-start fw-bold"> {props.username} </h1>
                                 <div className="m-0 userstatus text-decoration-none text-start text-burntumber fw-bold text-wrap" >{props.designation} </div>

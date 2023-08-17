@@ -30,9 +30,11 @@ function DailySaleReport(props) {
   const [menu, setmenu] = useState(permission.dsr_appointments ? 0 : permission.dsr_doctor_timings ? 1 : permission.dsr_pharmacy ? 2 : '')
   const [type, settype] = useState('text')
   const [doctorid, setdoctorid] = useState()
+  const [doctorname, setdoctorname] = useState()
   const [fromdate, setfromdate] = useState()
   const [todate, settodate] = useState()
   const [clinic, setclinic] = useState(clinicid)
+  const [clinicname, setclinicname] = useState("Aartas CliniShare Delhi")
 
 
   function ToggleOptions(_menu) {
@@ -58,7 +60,7 @@ function DailySaleReport(props) {
               options.map((data, i) => (
                 <>
                   <div className={`col-auto p-0 m-0 d-${data.display == 1 ? '' : 'none'}`}>
-                    <button className={`button m-0 p-0 px-2 py-1 ms-1 border-0 button-${i == menu ? 'charcoal' : ''} `} id={i} key={i} onClick={() => { setmenu(i) }}>{data.option}</button>
+                    <button className={`button m-0 p-0 px-2 py-1 ms-1 border-0 button-${i == menu ? 'charcoal' : 'seashell text-charcoal75 fw-bold'} `} id={i} key={i} onClick={() => { setmenu(i) }}>{data.option}</button>
                   </div>
                   <div className={`vr rounded-1 h-50 align-self-center d-${data.display == 1 ? '' : 'none'}`} style={{ padding: '0.8px' }}></div>
                 </>
@@ -67,33 +69,44 @@ function DailySaleReport(props) {
           </div>
 
         </div>
-        <div className="container mt-2 ms-3 p-0 m-0">
-          <div className="col-auto">
-            <div className="dropdown">
-              <button className="button button-seashell text-charcoal fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Filter Options
-              </button>
-              <ul className="dropdown-menu border-0 p-2 bg-seashell shadow-sm">
-                <li className="text-start fw-bold">
-                  <button className="dropdown-item border-bottom" >
-                  <div className="col-auto p-0 m-0">
-                    <select className="px-1 bg-transparent border-0 text-charcoal py-2 fw-bold py-md-1 text-center " value={clinic ? clinic : ''} onChange={(e) => { setclinic(e.target.value) }}>
-                      <option value="Select Clinic">Clinic</option>
-                      {
+
+          <div className="row p-0 m-0 align-items-center align-self-center mt-2 ms-2 ">
+          <div className="col-auto p-0 m-0 bg-seashell rounded-2">
+          <div className="dropdown ">
+            <button className=" button button-seashell text-charcoal fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"> {clinicname?clinicname:"Select Clnic"} </button>
+            <ul className="dropdown-menu p-2 bg-seashell border-0 shadow-sm" >
+            {
                         props.cliniclist ? (
                           props.cliniclist.map((data) => (
-                            <option className="text-start" value={data.id}>{data.title}</option>
+                            <li className="text-start p-2 text-charcoal fw-bolder border-bottom py-2" onClick={() => { setclinic(data.id);setclinicname(data.title) }}>{data.title} </li>
                           ))
                         ) : (
-                          <option>Loading</option>
-                        )
-                      }
-                    </select>
-                  </div></button></li>
-                <li className="text-start">
-                  <button className="dropdown-item border-bottom bg-seashell " >
-                  <div className="col-auto p-0 m-0 ">
-                    <select className="bg-seashell border-0 text-charcoal px-1 text-start fw-bold py-2 py-md-1" value={doctorid ? doctorid : ''} onChange={(e) => setdoctorid(e.target.value)}>
+                          <li className="text-start p-2 text-charcoal fw-bolder border-bottom py-2" >Loading...</li>
+                          )
+            }
+            </ul>
+          </div>
+                    {/* <select className="button button-seashell fw-bolder border-0 w-100 custom_select" value={clinic ? clinic : ''} onChange={(e) => { setclinic(e.target.value) }}>
+                      <option value="Select Clinic">Clinic</option>
+              
+                    </select> */}
+                    </div>
+                    <div className="col-auto p-0 m-0 ms-1 bg-seashell rounded-2">
+                    <div className="dropdown ">
+            <button className=" button button-seashell text-charcoal fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"> {doctorname?doctorname:"Select Doctor"} </button>
+            <ul className="dropdown-menu p-2 bg-seashell border-0 scroll-y scroll" style={{maxHeight:'50vh'}} >
+            {
+                        Doctors ? (
+                          Doctors.map((data) => (
+                            <li className="text-start p-2 text-charcoal fw-bolder border-bottom py-2" onClick={() => { setdoctorid(data[0]);setdoctorname(`Dr.${data[1]}` ) }}>Dr.{data[1]}  </li>
+                          ))
+                        ) : (
+                          <li className="text-start p-2 text-charcoal fw-bolder border-bottom py-2" >Loading...</li>
+                          )
+            }
+            </ul>
+          </div>
+                    {/* <select className="button button-seashell fw-bolder border-0 w-100" value={doctorid ? doctorid : ''} onChange={(e) => setdoctorid(e.target.value)}>
                       <option value='Doctors'>Select Doctor</option>
                       {
                         Doctors.map((data) => (
@@ -102,23 +115,25 @@ function DailySaleReport(props) {
 
                           </>
                         ))
-                      }
-                    </select>
-                  </div></button></li>
-                <li className="text-start bg-seashell"><button className="dropdown-item bg-seashell ">
-                  <div className="col-auto p-0 m-0 bg-seashell">
-                    <div className="row p-0 m-0 text-start bg-seashell">
-                      <input type='date' placeholder="from Date" value={fromdate ? fromdate : CurrentDate ? CurrentDate : ''} className=' bg-seashell fw-bold col-auto border-0 outline-none text-charcoal ' onChange={(e) => setfromdate(e.target.value)} />
-                      <div className="bg-seashell fw-bolder col-auto">-</div>
-                      <input type='date' placeholder="to Date" value={todate ? todate :fromdate?fromdate: CurrentDate ? CurrentDate : ''} className='bg-seashell fw-bold border-0 col-auto outline-none text-charcoal' onChange={(e) => settodate(e.target.value)} />
+                      } 
+                    </select> */}
                     </div>
-                  </div></button></li>
-              </ul>
-            </div>
+                    <div className="col-5 bg-seashell rounded-2 ms-1 ">
+                    <div className="row p-0 m-0 text-center justify-content-between bg-seashell align-items-center align-self-center">
+                      <div className="col-5 p-0 m-0">
+                      <input type='date' placeholder="from Date" value={fromdate ? fromdate : CurrentDate ? CurrentDate : ''} className='button button-seashell w-100 border-0 rounded-0 fw-bolder text-charcoal ' onChange={(e) => setfromdate(e.target.value)} />
+
+                      </div>
+                      <div className="col-auto p-0 m-0"> - </div>
+                      <div className="col-5 p-0 m-0">
+                      <input type='date' placeholder="to Date" value={todate ? todate :fromdate?fromdate: CurrentDate ? CurrentDate : ''} className='button button-seashell border-0 fw-bolder text-charcoal ' onChange={(e) => settodate(e.target.value)} />
+                      </div>
+                    </div>
+                    </div>
           </div>
-          </div>
+       
       </div>
-      <div className="container-fluid m-0 p-0 ">
+      <div className="container-fluid m-0 p-0  ">
         <div className="p-0 m-0">{ToggleOptions(menu)}</div>
       </div>
     </div>

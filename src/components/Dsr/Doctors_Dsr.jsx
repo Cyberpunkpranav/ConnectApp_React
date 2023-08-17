@@ -13,7 +13,7 @@ const Doctors_Dsr = (props) => {
   const [load, setload] = useState(false)
   const [Appointments, setAppointments] = useState([])
   const [DocTimetyp1, setDocTimetyp1] = useState()
-  const [pageindex, setpageindex] = useState()
+  const [pageindex, setpageindex] = useState("Doctor's Login")
   const tableref = useRef()
   const Doctorwisetable = useRef()
 
@@ -214,12 +214,23 @@ const Doctors_Dsr = (props) => {
   }
   return (
     <div className="container-fluid Doctors_Dsrsection">
-      <div className='position-relative'>
-        <div className="col export_dropdown position-absolute top-0 ">
-          <div className="dropdown">
-            <button className="button button-seashell text-charcoal mt-2 fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Exports
+      <div className='row p-0 m-0 align-items-center align-self-center'>
+        <div className="col-auto p-0 m-0">
+        <div className="dropdown ">
+            <button className=" button button-seashell text-charcoal fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              {pageindex?pageindex:"Doctor's Login"} 
             </button>
+            <ul className="dropdown-menu p-2 bg-seashell border-0 shadow-sm" >
+              <li className="text-start p-2 text-charcoal fw-bolder border-bottom py-2" onClick={() => { setpageindex("Doctor's Login") }}>Doctor's Login </li>
+              <li className="text-start p-2 text-charcoal fw-bolder border-bottom" onClick={() => { setpageindex("Login Summary") }}>Login Summary </li>
+            </ul>
+          </div>
+        </div>
+        <div className="col-auto p-0 m-0 ms-1 export_dropdown ">
+          <div className="dropdown">
+            <div className="button button-seashell text-charcoal fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Exports
+            </div>
             <ul className="dropdown-menu bg-seashell border-0 shadow-sm" >
               <li className="text-center border-bottom">
                 <DownloadTableExcel
@@ -227,7 +238,7 @@ const Doctors_Dsr = (props) => {
                   sheet="Login/Logout Details"
                   currentTableRef={tableref.current}
                 >
-                  <button className='button-sm button-seashell text-start fw-bold py-2'>All Doctors Login/Logout Details Export </button>
+                  <div className='button-sm button-seashell text-start fw-bold py-2'>All Doctors Login/Logout Details Export </div>
 
                 </DownloadTableExcel></li>
               <li className="text-center">
@@ -236,75 +247,20 @@ const Doctors_Dsr = (props) => {
                   sheet="Summary Report"
                   currentTableRef={Doctorwisetable.current}
                 >
-                  <button className='button-sm button-seashell fw-bold text-start py-2'>Doctors Summary Export</button>
+                  <div className='button-sm button-seashell fw-bold text-start py-2'>Doctors Summary Export</div>
 
                 </DownloadTableExcel></li>
 
             </ul>
           </div>
         </div>
-      </div>
-      {/* <div className='py-2'>
-        <div className="container-fluid m-0 p-0">
-          <div className="row p-0 m-0 justify-content-around">
-            <div className="col-4 col-lg-3 col-md-4 col-sm-4 py-2 border border-1 rounded-1 shadow-sm">
-              <h6 className='text-charcoa50 fw-bold'>Total Report</h6>
-              <div className="row gx-1">
-                <div className="col-6 col-lg-6 col-md-6 p-0 m-0">
-                  <button className='button-sm button-brandy'>Export CSV </button>
-                </div>
-                <div className="col-6 col-lg-6 col-md-6  p-0 m-0">
-                  <DownloadTableExcel
-                    filename={`${reversefunction(props.fromdate) + ' to ' + reversefunction(props.todate)} All Doctors Login/Logout Details`}
-                    sheet="Login/Logout Details"
-                    currentTableRef={tableref.current}
-                  >
-                    <button className='button-sm button-lightgreen'>Export Excel </button>
-
-                  </DownloadTableExcel>
-
-                </div>
-              </div>
-            </div>
-            <div className="col-4 col-lg-3 col-md-4 col-sm-4 py-2 border border-1 rounded-1 shadow-sm">
-              <h6 className='text-charcoa50 fw-bold'>Doctor Wise Report</h6>
-              <div className="row gx-1">
-                <div className="col-6 col-lg-6 col-md-6 p-0 m-0">
-                  <button className='button-sm button-brandy'>Export CSV </button>
-                </div>
-                <div className="col-6 col-lg-6 col-md-6 col-sm-4  p-0 m-0">
-                  <DownloadTableExcel
-                    filename={`${reversefunction(props.fromdate) + ' to ' + reversefunction(props.todate)} Doctors Summary`}
-                    sheet="Summary Report"
-                    currentTableRef={Doctorwisetable.current}
-                  >
-                    <button className='button-sm button-lightgreen'>Export Excel </button>
-
-                  </DownloadTableExcel>
-
-                </div>
-              </div>
-            </div>
-            <div className="col-4 col-lg-3 col-md-4 col-sm-4 border border-1 rounded-1 shadow-sm text-center align-items-center">
-              <h6 className='text-charcoa50 fw-bold'>Summary</h6>
-              <div className="col-12 col-lg-12 p-0 m-0 bg-lightyellow rounded-1 align-self-center mt-2 fw-bold">Total Time :- {TotalTime()}</div>
-            </div>
-          </div>
+        <div className="col-auto p-0 m-0">
+        <button className="button button-pearl text-burntumber fw-bold p-0 m-0 py-1 px-3 "> {TotalTime()}</button>
         </div>
-      </div> */}
-      <ul className="nav nav-pills mb-3 ms-2 ms-lg-2 ms-md-2 ms-sm-2 pt-2" id="pills-tab" role="tablist">
-        <li className="nav-item" role="presentation">
-          <button onClick={() => { setpageindex(0) }} className="nav-link active p-0 m-0 py-1 px-3 rounded-pill" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true" >Doctor's Login</button>
-        </li>
-        <li className="nav-item ms-lg-3 ms-md-2 ms-sm-1 ms-1" role="presentation">
-          <button onClick={() => { setpageindex(1) }} className="nav-link p-0 m-0 py-1 px-3 rounded-pill" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Login's Summary</button>
-        </li>
-        <li className="nav-item ms-lg-3 ms-md-2 ms-sm-1 ms-1" role="presentation">
-          <button className="button button-pearl text-burntumber fw-bold p-0 m-0 py-1 px-3 " type="button" role="tab" aria-controls="pills-profile" aria-selected="false"> {TotalTime()}</button>
-        </li>
-      </ul>
-      <div className="tab-content" id="pills-tabContent ">
-        <div className="tab-pane fade show active text-start" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
+      </div>
+
+      <div>
+        <div className={` text-start d-${pageindex =="Doctor's Login"?'block':'none'}`} >
           <div className='container-fluid scroll scroll-y doctordsrtable' ref={tableref}>
             <span className='d-none'>Total Time:{TotalTime()}</span>
             <table className='table text-start fw-bold'>
@@ -357,7 +313,7 @@ const Doctors_Dsr = (props) => {
             </table>
           </div>
         </div>
-        <div className="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
+        <div className={`d-${pageindex == "Login Summary"?'block':'none'}`}>
           <div className='container-fluid scroll scroll-y doctordsrtable' ref={Doctorwisetable}>
             <table className='table text-start fw-bold'>
               <thead className='position-sticky top-0 bg-pearl'>

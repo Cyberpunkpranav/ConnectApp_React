@@ -63,18 +63,18 @@
     border-top: 1px solid var(--charcoal50);
     border-bottom: 1px solid var(--charcoal50);
 }
-.Appointments_Dsrsection .export_dropdown{
+/* .Appointments_Dsrsection .export_dropdown{
   margin-top: -3.2rem;
   margin-left: 9rem;
-}
-.Pharmacy_Dsrsection .export_dropdown{
+} */
+/* .Pharmacy_Dsrsection .export_dropdown{
     margin-top: -3.2rem;
     margin-left: 9rem;
-  }
-.Doctors_Dsrsection .export_dropdown{
+  } */
+/* .Doctors_Dsrsection .export_dropdown{
     margin-top: -3.2rem;
     margin-left: 9rem;
-  }
+  } */
 
 .Appointments_Dsrsection .CARD3,.Pharmacy_Dsrsection .CARD3 {
     border-left: 3px solid var(--lightgreen);

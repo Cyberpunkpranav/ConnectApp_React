@@ -3246,6 +3246,7 @@ function Purchasesection(props) {
   const [todate, settodate] = useState();
   const [channel, setchannel] = useState(1);
   const permission = useContext(Permissions);
+  const [pageindex,setpageindex] =useState(0)
   const first = [
     {
       option: "Purchase Entry",
@@ -3260,7 +3261,7 @@ function Purchasesection(props) {
     //   display: permission.purchase_orders_view,
     // },
   ];
-  const [second, setSecond] = useState(0);
+  const [second, setSecond] = useState("Pharmacy");
 
   const _selectedScreen = (_selected) => {
     if (_selected === 0) {
@@ -3290,7 +3291,7 @@ function Purchasesection(props) {
                 <ul class="dropdown-menu bg-seashell shadow-sm border-0">
                   {
                     first.map((e, i) => (
-                      <li className={`dropdown-item text-${i === second ? "light" : "dark"} fw-bold bg-${i === second ? "charcoal" : "seashell"}`} onClick={(a) => setSecond(i)} > {e.option} </li>
+                      <li className={`dropdown-item text-${i === pageindex ? "light" : "dark"} fw-bold bg-${i ===pageindex ? "charcoal" : "seashell"}`} onClick={(a) => setpageindex(i)} > {e.option} </li>
                     )
                     )
                   }
@@ -3298,11 +3299,21 @@ function Purchasesection(props) {
               </div>
             </div>
             <div className="col-auto">
-                <select className=" border-0 text-burntumber fw-bolder button-seashell rounded-2 button" value={channel ? channel : ""} onChange={(e) => { setchannel(e.target.value); }} >
+            <div class="dropdown">
+                <button class="button button-seashell border-0 rounded-2 fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  {second?second:""}
+                </button>
+
+                <ul class="dropdown-menu bg-seashell shadow-sm border-0">
+                      <li className={`dropdown-item text-${second === "Pharmacy" ? "light" : "dark"} fw-bold bg-${second === 'Pharmacy' ? "charcoal" : "seashell"}`} onClick={(a) => {setSecond('Pharmacy');setchannel(1)}} > Pharmacy </li>
+                      <li className={`dropdown-item text-${second === "Consumables" ? "light" : "dark"} fw-bold bg-${second === 'Consumables' ? "charcoal" : "seashell"}`} onClick={(a) => {setSecond('Consumables');setchannel(2)}} > Consumables </li>
+                </ul>
+              </div>
+                {/* <select className=" border-0 text-burntumber fw-bolder button-seashell rounded-2 button" value={channel ? channel : ""} onChange={(e) => { setchannel(e.target.value); }} >
                 <option className="border-0 text-charcoal fw-bolder" value="1" > Pharmacy </option>
                 <option className="border-0 text-charcoal fw-bolder" value="2" > Consumables </option>
-              </select>
-                </div>
+              </select> */}
+            </div>
           <div className="col-auto bg-seashell rounded-2 ">
               <div className="row p-0 m-0 align-items-center align-self-center">
                 <div className="col-auto p-0 m-0">
@@ -3319,7 +3330,7 @@ function Purchasesection(props) {
   
       <section className="tablesrender position-relative">
         <div className="container-fluid mt-lg-4 mt-md-3 mt-2 p-0 m-0">
-          <div className="">{_selectedScreen(second)}</div>
+          <div className="">{_selectedScreen(pageindex)}</div>
         </div>
        
       </section>
@@ -3536,7 +3547,7 @@ function Purchaseentrysection(props) {
 
   return (
     <>
-         <div className="col-auto position-absolute p-0 m-0 export_2 align-self-center text-center">
+         <div className="col-auto position-absolute p-0 m-0 ms-2 export_2 align-self-center text-center">
           <ExportPurchaseEntry purchaseentryarr={purchaseentryarrExcel} fromdate={reversefunction(fromdate)} todate={reversefunction(todate)} />
         </div>
       <button className={`button addpurchase button-charcoal position-absolute d-${permission.purchase_entry_add == 1 ? "" : "none" }`} onClick={toggle_npef} > <img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt="displaying_image" className="img-fluid p-0 m-0" /> Entry Purchase </button>
@@ -5679,7 +5690,7 @@ function PurchaseReturns(props) {
   };
   return (
     <>
-    <div className="col-auto position-absolute p-0 m-0 export_2 align-self-center text-center   ">
+    <div className="col-auto position-absolute p-0 m-0 ms-2  export_2 align-self-center text-center   ">
           <ExportPurchaseReturn purchasereturnarr={purchasereturnarrExcel} fromdate={reversefunction(fromdate)} todate={reversefunction(todate)} />
         </div>
       <button className="button addpurchase button-charcoal position-absolute" onClick={toggle_nref} >
@@ -7598,7 +7609,7 @@ function Listsection() {
         </div>
       </section>
       <section className="tablesrender position-relative">
-        <div className="container-fluid mt-lg-3 mt-md-3 mt-sm-2 mt-1">
+        <div className="container-fluid mt-lg-3 mt-md-3 mt-sm-2 mt-1 p-0">
           <div className="">{_selectedmenu(menuindex)}</div>
         </div>
       </section>
@@ -7720,7 +7731,7 @@ function MedicineList() {
       <div className="heading text-start ms-lg-5 ms-md-3 ms-sm-3 ms-1 text-charcoal fw-bold p-2"> Medicines List </div>
       <div className={` p-0 m-0 align-self-center ms-1 position-absolute top-0 end-0 d-${permission.medicine_add == 1 ? "" : "none"} `} >
         <button className="button button-charcoal m-0 p-0 py-1 px-4" onClick={ToggleNewMedicine} >
-          <img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} className="p-0 m-0" alt="displaying_image"/>{" "}
+          <img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} className="p-0 m-0 img-fluid" alt="displaying_image"/>{" "}
           Medicine
         </button>
       </div>
@@ -7731,13 +7742,13 @@ function MedicineList() {
         <table className="table datatable text-start">
           <thead className="position-sticky top-0 bg-pearl">
             <tr>
-              <th rowSpan="2" className={`p-0 m-0 px-1 text-charcoal75 fw-bold d-${permission.medicine_edit == 1 ? "" : "none"}`} > Update </th>
-              <th rowSpan="2" className="p-0 m-0 px-1 text-charcoal75 fw-bold"> Display Name </th>
-              <th rowSpan="2" className="p-0 m-0 px-1 text-charcoal75 fw-bold"> Name </th>
-              <th rowSpan="2" className="p-0 m-0 px-1 text-charcoal75 fw-bold"> Salt Name </th>
-              <th rowSpan="2" className="p-0 m-0 px-1 text-charcoal75 fw-bold"> HSN Code </th>
-              <th rowSpan="2" className="p-0 m-0 px-1 text-charcoal75 fw-bold"> Manufacturer </th>
-              <th rowSpan="2" className={`p-0 m-0 px-1 text-charcoal75 fw-bold d-${permission.medicine_delete == 1 ? "" : "none"}`} > Delete </th>
+              <th rowSpan="2" className={`text-charcoal75 fw-bold d-${permission.medicine_edit == 1 ? "" : "none"}`} > Update </th>
+              <th rowSpan="2" className="text-charcoal75 fw-bold"> Display Name </th>
+              <th rowSpan="2" className="text-charcoal75 fw-bold"> Name </th>
+              <th rowSpan="2" className="text-charcoal75 fw-bold"> Salt Name </th>
+              <th rowSpan="2" className="text-charcoal75 fw-bold"> HSN Code </th>
+              <th rowSpan="2" className="text-charcoal75 fw-bold"> Manufacturer </th>
+              <th rowSpan="2" className={`text-charcoal75 fw-bold d-${permission.medicine_delete == 1 ? "" : "none"}`} > Delete </th>
             </tr>
           </thead>
           {load ? (
@@ -7785,7 +7796,7 @@ function MedicineList() {
                   <td className=" text-charcoal fw-bold"> {data.manufacturer && data.manufacturer !== null ? data.manufacturer : ""} </td>
                   <td className={`d-${permission.medicine_delete == 1 ? "" : "none"}`} >
                     <button className="btn p-0 m-0" onClick={() => { confirmmessage(data.name, data.id); }} >
-                      <img src={process.env.PUBLIC_URL + "/images/delete.png"} />
+                      <img src={process.env.PUBLIC_URL + "/images/delete.png"} className="img-fluid" />
                     </button>
                   </td>
                   {index == i ? (
@@ -7801,9 +7812,9 @@ function MedicineList() {
           )}
         </table>
       </div>
-      <section className={`position-absolute border-1 shadow start-0 bg-seashell rounded-1 end-0 d-${NewMed}`} style={{ top: "-8.15rem", zIndex: "2" }} >
+      <section className={`position-absolute border-1 shadow start-0 bg-seashell rounded-1 end-0 d-${NewMed}`} style={{ top: "-4rem", zIndex: "2" }} >
         <NewMedicine ToggleNewMedicine={ToggleNewMedicine} />
-      </section>
+      </section>  
       <div className="container-fluid d-flex justify-content-center mt-2">
         <ReactPaginate
           previousLabel={"Previous"}

@@ -21,7 +21,7 @@ const Appointments_Dsr = (props) => {
 
   const [advancepaid, setadvancepaid] = useState([])
   const [visibles, setvisibles] = useState([])
-  const [pageindex, setpageindex] = useState()
+  const [pageindex, setpageindex] = useState("Appointments")
   const [loading, setloading] = useState()
   const [appxl, setappxl] = useState('none')
   const [pprxl, setpprxl] = useState('none')
@@ -80,7 +80,7 @@ const Appointments_Dsr = (props) => {
   function payment_method_detailsForCash() {
     let casharr = []
     let cash = 0
-    if (pageindex == undefined || pageindex == 0) {
+    if (pageindex == undefined || pageindex == "Appointments") {
       for (let i = 0; i < Appointments.length; i++) {
         if (JSON.parse(Appointments[i].payment_method_details) != null && JSON.parse(Appointments[i].payment_method_details).Cash != null) {
           casharr.push(Number(JSON.parse(Appointments[i].payment_method_details).Cash))
@@ -92,7 +92,7 @@ const Appointments_Dsr = (props) => {
         })
       }
     }
-    if (pageindex == 1) {
+    if (pageindex == "Pendings Paid") {
       for (let i = 0; i < pendingpaid.length; i++) {
         if (JSON.parse(pendingpaid[i].payment_method_details) != null && JSON.parse(pendingpaid[i].payment_method_details).Cash != null) {
           casharr.push(Number(JSON.parse(pendingpaid[i].payment_method_details).Cash))
@@ -104,7 +104,7 @@ const Appointments_Dsr = (props) => {
         })
       }
     }
-    if (pageindex == 2) {
+    if (pageindex == "Advance Payments") {
       for (let i = 0; i < advancepaid.length; i++) {
         if (JSON.parse(advancepaid[i].payment_method_details) != null && JSON.parse(advancepaid[i].payment_method_details).Cash != null) {
           casharr.push(Number(JSON.parse(advancepaid[i].payment_method_details).Cash))
@@ -124,7 +124,7 @@ const Appointments_Dsr = (props) => {
     let cardarr = []
     let card = 0
 
-    if (pageindex == undefined || pageindex == 0) {
+    if (pageindex == undefined || pageindex == "Appointments") {
       for (let i = 0; i < Appointments.length; i++) {
         if (JSON.parse(Appointments[i].payment_method_details) != null && JSON.parse(Appointments[i].payment_method_details).Card != null) {
           cardarr.push(Number(JSON.parse(Appointments[i].payment_method_details).Card))
@@ -138,7 +138,7 @@ const Appointments_Dsr = (props) => {
       }
     }
 
-    if (pageindex == 1) {
+    if (pageindex == "Pendings Paid") {
       for (let i = 0; i < pendingpaid.length; i++) {
         if (JSON.parse(pendingpaid[i].payment_method_details) != null && JSON.parse(pendingpaid[i].payment_method_details).Card != null) {
           cardarr.push(Number(JSON.parse(pendingpaid[i].payment_method_details).Card))
@@ -152,7 +152,7 @@ const Appointments_Dsr = (props) => {
       }
     }
 
-    if (pageindex == 2) {
+    if (pageindex == "Advance Payments") {
       for (let i = 0; i < advancepaid.length; i++) {
         if (JSON.parse(advancepaid[i].payment_method_details) != null && JSON.parse(advancepaid[i].payment_method_details).Card != null) {
           cardarr.push(Number(JSON.parse(advancepaid[i].payment_method_details).Card))
@@ -170,7 +170,7 @@ const Appointments_Dsr = (props) => {
   function payment_method_detailsForPaytm() {
     let paytmarr = []
     let paytm = 0
-    if (pageindex == undefined || pageindex == 0) {
+    if (pageindex == undefined || pageindex == "Appointments") {
       for (let i = 0; i < Appointments.length; i++) {
         if (JSON.parse(Appointments[i].payment_method_details) != null && JSON.parse(Appointments[i].payment_method_details).Paytm != null) {
           paytmarr.push(Number(JSON.parse(Appointments[i].payment_method_details).Paytm))
@@ -183,7 +183,7 @@ const Appointments_Dsr = (props) => {
 
       }
     }
-    if (pageindex == 1) {
+    if (pageindex == "Pendings Paid") {
       for (let i = 0; i < pendingpaid.length; i++) {
         if (JSON.parse(pendingpaid[i].payment_method_details) != null && JSON.parse(pendingpaid[i].payment_method_details).Paytm != null) {
           paytmarr.push(Number(JSON.parse(pendingpaid[i].payment_method_details).Paytm))
@@ -196,7 +196,7 @@ const Appointments_Dsr = (props) => {
 
       }
     }
-    if (pageindex == 2) {
+    if (pageindex == "Advance Payments") {
       for (let i = 0; i < advancepaid.length; i++) {
         if (JSON.parse(advancepaid[i].payment_method_details) != null && JSON.parse(advancepaid[i].payment_method_details).Paytm != null) {
           paytmarr.push(Number(JSON.parse(advancepaid[i].payment_method_details).Paytm))
@@ -216,7 +216,7 @@ const Appointments_Dsr = (props) => {
   function payment_method_detailsForRazorPay() {
     let razorpayarr = []
     let razorpay = 0
-    if (pageindex == undefined || pageindex == 0) {
+    if (pageindex == undefined || pageindex == "Appointments") {
       for (let i = 0; i < Appointments.length; i++) {
         if (JSON.parse(Appointments[i].payment_method_details) != null && JSON.parse(Appointments[i].payment_method_details).Razorpay != null) {
           razorpayarr.push(Number(JSON.parse(Appointments[i].payment_method_details).Razorpay))
@@ -228,7 +228,7 @@ const Appointments_Dsr = (props) => {
         })
       }
     }
-    if (pageindex == 1) {
+    if (pageindex == "Pendings Paid") {
       for (let i = 0; i < pendingpaid.length; i++) {
         if (JSON.parse(pendingpaid[i].payment_method_details) != null && JSON.parse(pendingpaid[i].payment_method_details).Razorpay != null) {
           razorpayarr.push(Number(JSON.parse(pendingpaid[i].payment_method_details).Razorpay))
@@ -240,7 +240,7 @@ const Appointments_Dsr = (props) => {
         })
       }
     }
-    if (pageindex == 2) {
+    if (pageindex == "Advance Payments") {
       for (let i = 0; i < advancepaid.length; i++) {
         if (JSON.parse(advancepaid[i].payment_method_details) != null && JSON.parse(advancepaid[i].payment_method_details).Razorpay != null) {
           razorpayarr.push(Number(JSON.parse(advancepaid[i].payment_method_details).Razorpay))
@@ -257,7 +257,7 @@ const Appointments_Dsr = (props) => {
   function payment_method_detailsForPoints() {
     let pointsarr = []
     let points = 0
-    if (pageindex == undefined || pageindex == 0) {
+    if (pageindex == undefined || pageindex == "Appointments") {
       for (let i = 0; i < Appointments.length; i++) {
         if (JSON.parse(Appointments[i].payment_method_details) != null && JSON.parse(Appointments[i].payment_method_details).Points != null) {
           pointsarr.push(Number(JSON.parse(Appointments[i].payment_method_details).Points))
@@ -269,7 +269,7 @@ const Appointments_Dsr = (props) => {
         })
       }
     }
-    if (pageindex == 1) {
+    if (pageindex == "Pendings Paid") {
       for (let i = 0; i < pendingpaid.length; i++) {
         if (JSON.parse(pendingpaid[i].payment_method_details) != null && JSON.parse(pendingpaid[i].payment_method_details).Points != null) {
           pointsarr.push(Number(JSON.parse(pendingpaid[i].payment_method_details).Points))
@@ -281,7 +281,7 @@ const Appointments_Dsr = (props) => {
         })
       }
     }
-    if (pageindex == 2) {
+    if (pageindex == "Advance Payments") {
       for (let i = 0; i < advancepaid.length; i++) {
         if (JSON.parse(advancepaid[i].payment_method_details) != null && JSON.parse(advancepaid[i].payment_method_details).Points != null) {
           pointsarr.push(Number(JSON.parse(advancepaid[i].payment_method_details).Points))
@@ -301,7 +301,7 @@ const Appointments_Dsr = (props) => {
     let phonepearr = []
     let phonepe = 0
 
-    if (pageindex == undefined || pageindex == 0) {
+    if (pageindex == undefined || pageindex == "Appointments") {
       for (let i = 0; i < Appointments.length; i++) {
         if (JSON.parse(Appointments[i].payment_method_details) != null && JSON.parse(Appointments[i].payment_method_details).Phonepe != null) {
           phonepearr.push(Number(JSON.parse(Appointments[i].payment_method_details).Phonepe))
@@ -314,7 +314,7 @@ const Appointments_Dsr = (props) => {
 
       }
     }
-    if (pageindex == 1) {
+    if (pageindex == "Pendings Paid") {
       for (let i = 0; i < pendingpaid.length; i++) {
         if (JSON.parse(pendingpaid[i].payment_method_details) != null && JSON.parse(pendingpaid[i].payment_method_details).Phonepe != null) {
           phonepearr.push(Number(JSON.parse(pendingpaid[i].payment_method_details).Phonepe))
@@ -327,7 +327,7 @@ const Appointments_Dsr = (props) => {
 
       }
     }
-    if (pageindex == 2) {
+    if (pageindex == "Advance Payments") {
       for (let i = 0; i < advancepaid.length; i++) {
         if (JSON.parse(advancepaid[i].payment_method_details) != null && JSON.parse(advancepaid[i].payment_method_details).Phonepe != null) {
           phonepearr.push(Number(JSON.parse(advancepaid[i].payment_method_details).Phonepe))
@@ -346,7 +346,7 @@ const Appointments_Dsr = (props) => {
     let wiretransferarr = []
     let wiretransfer = 0
 
-    if (pageindex == undefined || pageindex == 0) {
+    if (pageindex == undefined || pageindex == "Appointments") {
       for (let i = 0; i < Appointments.length; i++) {
         if (JSON.parse(Appointments[i].payment_method_details) != null && JSON.parse(Appointments[i].payment_method_details)['Wire-Transfer'] != null) {
           wiretransferarr.push(Number(JSON.parse(Appointments[i].payment_method_details)['Wire-Transfer']))
@@ -359,7 +359,7 @@ const Appointments_Dsr = (props) => {
 
       }
     }
-    if (pageindex == 1) {
+    if (pageindex == "Pendings Paid") {
       for (let i = 0; i < pendingpaid.length; i++) {
         if (JSON.parse(pendingpaid[i].payment_method_details) != null && JSON.parse(pendingpaid[i].payment_method_details)['Wire-Transfer'] != null) {
           wiretransferarr.push(Number(JSON.parse(pendingpaid[i].payment_method_details)['Wire-Transfer']))
@@ -372,7 +372,7 @@ const Appointments_Dsr = (props) => {
 
       }
     }
-    if (pageindex == 2) {
+    if (pageindex == "Advance Payments") {
       for (let i = 0; i < advancepaid.length; i++) {
         if (JSON.parse(advancepaid[i].payment_method_details) != null && JSON.parse(advancepaid[i].payment_method_details)['Wire-Transfer'] != null) {
           wiretransferarr.push(Number(JSON.parse(advancepaid[i].payment_method_details)['Wire-Transfer']))
@@ -482,9 +482,20 @@ const Appointments_Dsr = (props) => {
   }
   return (
     <div className='Appointments_Dsrsection'>
-      <div className='position-relative'>
-
-        <div className="col export_dropdown position-absolute top-0 py-2 start-0">
+      <div className='row p-0 m-0 ms-2'>
+      <div className="col-auto p-0 m-0">
+      <div className="dropdown ">
+            <button className=" button button-seashell text-charcoal fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              {pageindex?pageindex:"List type"} <span className='ms-2 text-burntumber fw-bolder'>{pageindex =="Appointments"?Appointments.length:pageindex =='Pendings Paid'?pendingpaid.length:pageindex=='Advance Payments'?advancepaid.length:''}</span>
+            </button>
+            <ul className="dropdown-menu p-2 bg-seashell border-0 shadow-sm" >
+              <li className="text-start p-2 text-charcoal fw-bolder border-bottom py-2" onClick={() => { setpageindex("Appointments") }}>Appointments<span class=" p-0 m-0 ms-2 badge text-burntumber fw-bolder">{Appointments.length}</span> </li>
+              <li className="text-start p-2 text-charcoal fw-bolder border-bottom" onClick={() => { setpageindex("Pendings Paid") }}>Pendings Paid<span class=" p-0 m-0 ms-2 badge text-burntumber fw-bolder">{pendingpaid.length}</span> </li>
+              <li className="text-start p-2 text-charcoal fw-bolder"  onClick={() => { setpageindex("Advance Payments") }} >Advance Payments<span class=" p-0 m-0 ms-2 badge text-burntumber fw-bolder">{advancepaid.length}</span> </li>
+            </ul>
+          </div>
+          </div>
+        <div className="col-auto p-0 m-0 ms-1 export_dropdown ">
           <div className="dropdown">
             <button className=" button button-seashell text-charcoal fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
               Exports
@@ -496,7 +507,7 @@ const Appointments_Dsr = (props) => {
                   sheet="Appointments"
                   currentTableRef={Appointmentref.current}
                 >
-                  <button className='button button-seashell text-start fw-bold p-0 m-0 py-2'>Appointments Export</button>
+                  <div className='button button-seashell text-start fw-bold p-0 m-0 py-2'>Appointments Export</div>
 
                 </DownloadTableExcel></li>
               <li className="text-start fw-bold border-bottom" onClick={() => { setpprxl('block') }}><DownloadTableExcel
@@ -504,7 +515,7 @@ const Appointments_Dsr = (props) => {
                 sheet=" Pending Payments Reciecved"
                 currentTableRef={Pendingref.current}
               >
-                <button className='btn p-0 m-0 text-start py-2 fw-bold'>Pending Payments Reciecved Export</button>
+                <div className='btn p-0 m-0 text-start py-2 fw-bold'>Pending Payments Reciecved Export</div>
 
               </DownloadTableExcel></li>
               <li className="text-start fw-bold" onClick={() => { setadvxl('block') }}>
@@ -513,31 +524,17 @@ const Appointments_Dsr = (props) => {
                   sheet=" Advance payment Recieved"
                   currentTableRef={Advancedref.current}
                 >
-                  <button className=' btn p-0 m-0 text-start py-2 fw-bold'>Advance payment Recieved Export</button>
+                  <div className=' btn p-0 m-0 text-start py-2 fw-bold'>Advance payment Recieved Export</div>
 
                 </DownloadTableExcel>
               </li>
             </ul>
           </div>
         </div>
-      </div>
+        </div>
 
 
-      <ul className="nav nav-pills mb-3 ms-2 ms-lg-2 ms-md-2 ms-sm-2 pt-2" id="pills-tab" role="tablist">
-        <li className="nav-item" role="presentation">
-          <button onClick={() => { setpageindex(0) }} className="nav-link active p-0 m-0 py-1 px-3 rounded-pill" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true" >Appointments<span class=" p-0 m-0 ms-2 badge text-lightyellow fw-normal">{Appointments.length}</span></button>
-        </li>
-        <li className="nav-item ms-lg-3 ms-md-2 ms-sm-1 ms-1" role="presentation">
-          <button onClick={() => { setpageindex(1) }} className="nav-link p-0 m-0 py-1 px-3 rounded-pill" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Pendings Paid<span class=" p-0 m-0 ms-2 badge text-lightyellow fw-normal">{pendingpaid.length}</span></button>
-        </li>
-        <li className="nav-item ms-lg-3 ms-md-2 ms-sm-1 ms-1" role="presentation">
-          <button onClick={() => { setpageindex(2) }} className="nav-link p-0 m-0 py-1 px-3 rounded-pill" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Advance Payments<span class=" p-0 m-0 ms-2 badge text-lightyellow fw-normal">{advancepaid.length}</span></button>
-        </li>
-      </ul>
-
-
-      <div className="tab-content" id="pills-tabContent ">
-        <div className="tab-pane fade show active text-start" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
+        <div className={`d-${pageindex=='Appointments'?'block':'none'}  text-start`} >
           {/* <h6 className="text-charcoal fw-bold p-0 m-0 ms-2 ms-lg-3 ms-md-3 ms-sm-1">Payments</h6> */}
           <div className="row m-0 g-2 mt-md-2 p-0 ms-md-1 text-start justify-content-start">
             <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 ps-md-2 ps-1 pe-md-3 pe-md-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
@@ -752,8 +749,8 @@ const Appointments_Dsr = (props) => {
           </div>
 
         </div>
-        <div className="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
-          <h6 className="text-charcoal fw-bold p-0 m-0 ms-2 ms-lg-3 ms-md-1 ms-sm-1">Payments</h6>
+        <div className={`d-${pageindex=='Pendings Paid'?'block':'none'}`} >
+          {/* <h6 className="text-charcoal fw-bold p-0 m-0 ms-2 ms-lg-3 ms-md-1 ms-sm-1">Payments</h6> */}
           <div className="row m-0 g-2 mt-md-2 p-0 text-start justify-content-start">
             <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 ps-md-2 ps-1 pe-md-3 pe-md-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1  bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
               <p className='fw-bold text-charcoal75 text-start p-0 m-0 justify-content-start'>CASH</p>
@@ -886,8 +883,8 @@ const Appointments_Dsr = (props) => {
             </div>
           </div>
         </div>
-        <div className="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">
-          <h6 className="text-charcoal fw-bold p-0 m-0 ms-2 ms-lg-3 ms-md-1 ms-sm-1">Payments</h6>
+        <div className={`d-${pageindex=='Advance Payments'?'block':'none'} `} >
+          {/* <h6 className="text-charcoal fw-bold p-0 m-0 ms-2 ms-lg-3 ms-md-1 ms-sm-1">Payments</h6> */}
           <div className="row m-0 g-2 mt-md-2 p-0 text-start justify-content-start">
             <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 ps-md-2 ps-1 pe-md-3 pe-md-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
               <p className='fw-bold text-charcoal75 text-start p-0 m-0 justify-content-start'>CASH</p>
@@ -1017,11 +1014,6 @@ const Appointments_Dsr = (props) => {
           </div>
         </div>
       </div>
-
-
-    </div>
-
-
   )
 }
 

@@ -25,7 +25,7 @@ const Pharmacy_Dsr = (props) => {
   const [se, setse] = useState('block')
   const [pr, setpr] = useState('block')
   const [prxl, setprxl] = useState('none')
-  const [pageindex, setpageindex] = useState()
+  const [pageindex, setpageindex] = useState('Sale Entries')
 
   const PharmacyList = async () => {
     setload(true)
@@ -56,7 +56,7 @@ const Pharmacy_Dsr = (props) => {
   function payment_method_detailsForCash() {
     let casharr = []
     let cash = 0
-    if (pageindex == undefined || pageindex == 0) {
+    if (pageindex == undefined || pageindex == "Sale Entries") {
       for (let i = 0; i < SaleEntryList.length; i++) {
         if (JSON.parse(SaleEntryList[i].payment_method_details) != null && JSON.parse(SaleEntryList[i].payment_method_details).Cash != null) {
           casharr.push(Number(JSON.parse(SaleEntryList[i].payment_method_details).Cash))
@@ -70,7 +70,7 @@ const Pharmacy_Dsr = (props) => {
       }
       return cash
     }
-    if (pageindex == 1) {
+    if (pageindex == "Sale Returns") {
       for (let i = 0; i < SaleReturnList.length; i++) {
         if (JSON.parse(SaleReturnList[i].sale_entry.payment_method_details) != null && JSON.parse(SaleReturnList[i].sale_entry.payment_method_details).Cash != null) {
           casharr.push(Number(JSON.parse(SaleReturnList[i].sale_entry.payment_method_details).Cash))
@@ -85,7 +85,7 @@ const Pharmacy_Dsr = (props) => {
       return cash
     }
 
-    if (pageindex == 2) {
+    if (pageindex == "Pendings Recieved") {
       for (let i = 0; i < PendingPaid.length; i++) {
         if (JSON.parse(PendingPaid[i].payment_method_details) != null && JSON.parse(PendingPaid[i].payment_method_details).Cash != null) {
           casharr.push(Number(JSON.parse(PendingPaid[i].payment_method_details).Cash))
@@ -104,7 +104,7 @@ const Pharmacy_Dsr = (props) => {
   function payment_method_detailsForCard() {
     let cardarr = []
     let card = 0
-    if (pageindex == undefined || pageindex == 0) {
+    if (pageindex == undefined || pageindex == "Sale Entries") {
       for (let i = 0; i < SaleEntryList.length; i++) {
         if (JSON.parse(SaleEntryList[i].payment_method_details) != null && JSON.parse(SaleEntryList[i].payment_method_details).Card != null) {
           cardarr.push(Number(JSON.parse(SaleEntryList[i].payment_method_details).Card))
@@ -118,7 +118,7 @@ const Pharmacy_Dsr = (props) => {
       }
       return card
     }
-    if (pageindex == 1) {
+    if (pageindex == "Sale Returns") {
       for (let i = 0; i < SaleReturnList.length; i++) {
         if (JSON.parse(SaleReturnList[i].sale_entry.payment_method_details) != null && JSON.parse(SaleReturnList[i].sale_entry.payment_method_details).Card != null) {
           cardarr.push(Number(JSON.parse(SaleReturnList[i].sale_entry.payment_method_details).Card))
@@ -133,7 +133,7 @@ const Pharmacy_Dsr = (props) => {
       return card
     }
 
-    if (pageindex == 2) {
+    if (pageindex == "Pendings Recieved") {
       for (let i = 0; i < PendingPaid.length; i++) {
         if (JSON.parse(PendingPaid[i].payment_method_details) != null && JSON.parse(PendingPaid[i].payment_method_details).Card != null) {
           cardarr.push(Number(JSON.parse(PendingPaid[i].payment_method_details).Card))
@@ -152,7 +152,7 @@ const Pharmacy_Dsr = (props) => {
   function payment_method_detailsForPaytm() {
     let paytmarr = []
     let paytm = 0
-    if (pageindex == undefined || pageindex == 0) {
+    if (pageindex == undefined || pageindex == "Sale Entries") {
       for (let i = 0; i < SaleEntryList.length; i++) {
         if (JSON.parse(SaleEntryList[i].payment_method_details) != null && JSON.parse(SaleEntryList[i].payment_method_details).Paytm != null) {
           paytmarr.push(Number(JSON.parse(SaleEntryList[i].payment_method_details).Paytm))
@@ -165,7 +165,7 @@ const Pharmacy_Dsr = (props) => {
       }
       return paytm
     }
-    if (pageindex == 1) {
+    if (pageindex == "Sale Returns") {
       for (let i = 0; i < SaleReturnList.length; i++) {
         if (JSON.parse(SaleReturnList[i].sale_entry.payment_method_details) != null && JSON.parse(SaleReturnList[i].sale_entry.payment_method_details).Paytm != null) {
           paytmarr.push(Number(JSON.parse(SaleReturnList[i].sale_entry.payment_method_details).Paytm))
@@ -178,7 +178,7 @@ const Pharmacy_Dsr = (props) => {
       }
       return paytm
     }
-    if (pageindex == 2) {
+    if (pageindex == "Pendings Recieved") {
       for (let i = 0; i < PendingPaid.length; i++) {
         if (JSON.parse(PendingPaid[i].payment_method_details) != null && JSON.parse(PendingPaid[i].payment_method_details).Paytm != null) {
           paytmarr.push(Number(JSON.parse(PendingPaid[i].payment_method_details).Paytm))
@@ -195,7 +195,7 @@ const Pharmacy_Dsr = (props) => {
   function payment_method_detailsForRazorPay() {
     let razorpayarr = []
     let razorpay = 0
-    if (pageindex == undefined || pageindex == 0) {
+    if (pageindex == undefined || pageindex == "Sale Entries") {
       for (let i = 0; i < SaleEntryList.length; i++) {
         if (JSON.parse(SaleEntryList[i].payment_method_details) != null && JSON.parse(SaleEntryList[i].payment_method_details).Razorpay != null) {
           razorpayarr.push(Number(JSON.parse(SaleEntryList[i].payment_method_details).Razorpay))
@@ -208,7 +208,7 @@ const Pharmacy_Dsr = (props) => {
       }
       return razorpay
     }
-    if (pageindex == 1) {
+    if (pageindex == "Sale Returns") {
       for (let i = 0; i < SaleReturnList.length; i++) {
         if (JSON.parse(SaleReturnList[i].sale_entry.payment_method_details) != null && JSON.parse(SaleReturnList[i].sale_entry.payment_method_details).Razorpay != null) {
           razorpayarr.push(Number(JSON.parse(SaleReturnList[i].sale_entry.payment_method_details).Razorpay))
@@ -221,7 +221,7 @@ const Pharmacy_Dsr = (props) => {
       }
       return razorpay
     }
-    if (pageindex == 2) {
+    if (pageindex == "Pendings Recieved") {
       for (let i = 0; i < PendingPaid.length; i++) {
         if (JSON.parse(PendingPaid[i].payment_method_details) != null && JSON.parse(PendingPaid[i].payment_method_details).Razorpay != null) {
           razorpayarr.push(Number(JSON.parse(PendingPaid[i].payment_method_details).Razorpay))
@@ -239,7 +239,7 @@ const Pharmacy_Dsr = (props) => {
   function payment_method_detailsForPoints() {
     let pointsarr = []
     let points = 0
-    if (pageindex == undefined || pageindex == 1) {
+    if (pageindex == undefined || pageindex == "Sale Entries") {
       for (let i = 0; i < SaleEntryList.length; i++) {
         if (JSON.parse(SaleEntryList[i].payment_method_details) != null && JSON.parse(SaleEntryList[i].payment_method_details).Points != null) {
           pointsarr.push(Number(JSON.parse(SaleEntryList[i].payment_method_details).Points))
@@ -253,7 +253,7 @@ const Pharmacy_Dsr = (props) => {
       }
       return points
     }
-    if (pageindex == 1) {
+    if (pageindex == "Sale Returns") {
       for (let i = 0; i < SaleReturnList.length; i++) {
         if (JSON.parse(SaleReturnList[i].sale_entry.payment_method_details) != null && JSON.parse(SaleReturnList[i].sale_entry.payment_method_details).Points != null) {
           pointsarr.push(Number(JSON.parse(SaleReturnList[i].sale_entry.payment_method_details).Points))
@@ -267,7 +267,7 @@ const Pharmacy_Dsr = (props) => {
       }
       return points
     }
-    if (pageindex == 2) {
+    if (pageindex == "Pendings Recieved") {
       for (let i = 0; i < PendingPaid.length; i++) {
         if (JSON.parse(PendingPaid[i].payment_method_details) != null && JSON.parse(PendingPaid[i].payment_method_details).Points != null) {
           pointsarr.push(Number(JSON.parse(PendingPaid[i].payment_method_details).Points))
@@ -285,7 +285,7 @@ const Pharmacy_Dsr = (props) => {
   function payment_method_detailsForPhonepe() {
     let phonepearr = []
     let phonepe = 0
-    if (pageindex == undefined || pageindex == 0) {
+    if (pageindex == undefined || pageindex == "Sale Entries") {
       for (let i = 0; i < SaleEntryList.length; i++) {
         if (JSON.parse(SaleEntryList[i].payment_method_details) != null && JSON.parse(SaleEntryList[i].payment_method_details).Phonepe != null) {
           phonepearr.push(Number(JSON.parse(SaleEntryList[i].payment_method_details).Phonepe))
@@ -299,7 +299,7 @@ const Pharmacy_Dsr = (props) => {
       }
       return phonepe
     }
-    if (pageindex == 1) {
+    if (pageindex == "Sale Returns") {
       for (let i = 0; i < SaleReturnList.length; i++) {
         if (JSON.parse(SaleReturnList[i].sale_entry.payment_method_details) != null && JSON.parse(SaleReturnList[i].sale_entry.payment_method_details).Phonepe != null) {
           phonepearr.push(Number(JSON.parse(SaleReturnList[i].sale_entry.payment_method_details).Phonepe))
@@ -313,7 +313,7 @@ const Pharmacy_Dsr = (props) => {
       }
       return phonepe
     }
-    if (pageindex == 2) {
+    if (pageindex == "Pendings Recieved") {
       for (let i = 0; i < PendingPaid.length; i++) {
         if (JSON.parse(PendingPaid[i].payment_method_details) != null && JSON.parse(PendingPaid[i].payment_method_details).Phonepe != null) {
           phonepearr.push(Number(JSON.parse(PendingPaid[i].payment_method_details).Phonepe))
@@ -331,7 +331,7 @@ const Pharmacy_Dsr = (props) => {
   function payment_method_detailsForWireTransfer() {
     let wiretransferarr = []
     let wiretransfer = 0
-    if (pageindex == undefined || pageindex == 0) {
+    if (pageindex == undefined || pageindex == "Sale Entries") {
       for (let i = 0; i < SaleEntryList.length; i++) {
         if (JSON.parse(SaleEntryList[i].payment_method_details) != null && JSON.parse(SaleEntryList[i].payment_method_details)['Wire-Transfer'] != null) {
           wiretransferarr.push(Number(JSON.parse(SaleEntryList[i].payment_method_details)['Wire-Transfer']))
@@ -345,7 +345,7 @@ const Pharmacy_Dsr = (props) => {
       }
       return wiretransfer
     }
-    if (pageindex == 1) {
+    if (pageindex == "Sale Returns") {
       for (let i = 0; i < SaleReturnList.length; i++) {
         if (JSON.parse(SaleReturnList[i].sale_entry.payment_method_details) != null && JSON.parse(SaleReturnList[i].sale_entry.payment_method_details)['Wire-Transfer'] != null) {
           wiretransferarr.push(Number(JSON.parse(SaleReturnList[i].sale_entry.payment_method_details)['Wire-Transfer']))
@@ -359,7 +359,7 @@ const Pharmacy_Dsr = (props) => {
       }
       return wiretransfer
     }
-    if (pageindex == 2) {
+    if (pageindex == "Pendings Recieved") {
       for (let i = 0; i < PendingPaid.length; i++) {
         if (JSON.parse(PendingPaid[i].payment_method_details) != null && JSON.parse(PendingPaid[i].payment_method_details)['Wire-Transfer'] != null) {
           wiretransferarr.push(Number(JSON.parse(PendingPaid[i].payment_method_details)['Wire-Transfer']))
@@ -397,7 +397,7 @@ const Pharmacy_Dsr = (props) => {
   function GrandTotal() {
     let grandtotalarr = []
     let grandtotal = 0;
-    if (pageindex == 0 || pageindex == undefined) {
+    if (pageindex == "Sale Entries" || pageindex == undefined) {
       for (let i = 0; i < SaleEntryList.length; i++) {
 
         grandtotalarr.push(JSON.parse(SaleEntryList[i].grand_total))
@@ -410,7 +410,7 @@ const Pharmacy_Dsr = (props) => {
       }
       return grandtotal
     }
-    if (pageindex == 1) {
+    if (pageindex == "Sale Returns") {
       for (let i = 0; i < SaleReturnList.length; i++) {
 
         grandtotalarr.push(JSON.parse(SaleReturnList[i].grand_total))
@@ -423,7 +423,7 @@ const Pharmacy_Dsr = (props) => {
       }
       return grandtotal
     }
-    if (pageindex == 2) {
+    if (pageindex == "Pendings Recieved") {
       for (let i = 0; i < PendingPaid.length; i++) {
 
         grandtotalarr.push(JSON.parse(PendingPaid[i].paid_amount))
@@ -484,10 +484,22 @@ const Pharmacy_Dsr = (props) => {
   // d-${Pendingsonly.current.checked = true ? Conditionaldisplay(i) : ''}
   return (
     <div className='Pharmacy_Dsrsection p-0 m-0'>
-      <div className='position-relative'>
-        <div className="col export_dropdown position-absolute top-0 ">
+      <div className='row m-0 p-0 mt-2 ms-2'>
+        <div className="col-auto p-0 m-0">
+        <div className="dropdown ">
+            <button className=" button button-seashell text-charcoal fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              {pageindex?pageindex:"List type"} <span className='ms-2 text-burntumber fw-bolder'>{pageindex =="Sale Entries"?SaleEntryList.length:pageindex =='Sale Returns'?SaleReturnList.length:pageindex=='Pendings Recieved'?PendingPaid.length:''}</span>
+            </button>
+            <ul className="dropdown-menu p-2 bg-seashell border-0 shadow-sm" >
+              <li className="text-start p-2 text-charcoal fw-bolder border-bottom py-2" onClick={() => { setpageindex("Sale Entries") }}>Sale Entries<span class=" p-0 m-0 ms-2 badge text-burntumber fw-bolder">{SaleEntryList.length}</span> </li>
+              <li className="text-start p-2 text-charcoal fw-bolder border-bottom" onClick={() => { setpageindex("Sale Returns") }}>Sale Returns<span class=" p-0 m-0 ms-2 badge text-burntumber fw-bolder">{SaleReturnList.length}</span> </li>
+              <li className="text-start p-2 text-charcoal fw-bolder"  onClick={() => { setpageindex("Pendings Recieved") }} >Pendings Recieved<span class=" p-0 m-0 ms-2 badge text-burntumber fw-bolder">{PendingPaid.length}</span> </li>
+            </ul>
+          </div>
+        </div>
+        <div className="col-auto p-0 m-0 ms-1 export_dropdown ">
           <div className="dropdown">
-            <button className="button button-seashell text-charcoal mt-2 fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"> Exports </button>
+            <button className="button button-seashell text-charcoal fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"> Exports </button>
             <ul className="dropdown-menu bg-seashell border-0 shadow-sm" >
               <li className="text-justify border-bottom">
                 <span className={`d-${se}`}>
@@ -496,7 +508,7 @@ const Pharmacy_Dsr = (props) => {
                     sheet="Sale Entries"
                     currentTableRef={saleentry.current}
                   >
-                    <button className='btn p-0 m-0 bg-seashell fw-bold px-2'>All Export</button>
+                    <div className='btn p-0 m-0 bg-seashell fw-bold px-2 text-start'>All Export</div>
 
                   </DownloadTableExcel>
                 </span>
@@ -506,7 +518,7 @@ const Pharmacy_Dsr = (props) => {
                     sheet="Pendings"
                     currentTableRef={Pendingsonly.current}
                   >
-                    <button className='btn p-0 m-0 bg-seashell px-2 fw-bold  '>Pending Export</button>
+                    <div className='btn p-0 m-0 bg-seashell px-2 fw-bold text-start  '>Pending Export</div>
 
                   </DownloadTableExcel>
                 </span></li>
@@ -516,7 +528,7 @@ const Pharmacy_Dsr = (props) => {
                   sheet="Sale Returns"
                   currentTableRef={salereturn.current}
                 >
-                  <button className='btn p-0 m-0 bg-seashell p-2 fw-bold'>Sale Returns Export</button>
+                  <div className='btn p-0 m-0 bg-seashell p-2 fw-bold text-start'>Sale Returns Export</div>
                 </DownloadTableExcel></li>
               <li className="text-justify">
                 <DownloadTableExcel
@@ -524,7 +536,7 @@ const Pharmacy_Dsr = (props) => {
                   sheet="Pendings Recieved"
                   currentTableRef={pendingsrecieved.current}
                 >
-                  <button className='btn p-0 m-0 bg-seashell px-2 text-start fw-bold ' onClick={() => { prxl('block') }} >Pendings Recieved Export</button>
+                  <div className='btn p-0 m-0 bg-seashell px-2 text-start fw-bold text-start ' onClick={() => { prxl('block') }} >Pendings Recieved Export</div>
                 </DownloadTableExcel>
               </li>
             </ul>
@@ -532,22 +544,7 @@ const Pharmacy_Dsr = (props) => {
         </div>
       </div>
       <div className=''>
-        <ul className="nav nav-pills mb-3 ms-2 ms-lg-3 ms-md-1 ms-sm-1 pt-2" id="pills-tab" role="tablist">
-          <li className="nav-item" role="presentation">
-            <button className="nav-link active p-0 m-0 py-1 px-3 rounded-pill" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true" onClick={() => { setpageindex(0) }}>Sale Entries<span class=" p-0 m-0 ms-2 badge text-lightyellow  fw-normal">{SaleEntryList.length}</span></button>
-          </li>
-          <li className="nav-item ms-lg-3 ms-md-2 ms-sm-1 ms-1" role="presentation">
-            <button className="nav-link p-0 m-0 py-1 px-3 rounded-pill" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false" onClick={() => { setpageindex(1) }}>Sale Returns<span class=" p-0 m-0 ms-2 badge text-lightyellow  fw-normal">{SaleReturnList.length}</span></button>
-          </li>
-          <li className="nav-item ms-lg-3 ms-md-2 ms-sm-1 ms-1" role="presentation">
-            <button className="nav-link p-0 m-0 py-1 px-3 rounded-pill" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false" onClick={() => { setpageindex(2) }}>Pendings Recieved<span class=" p-0 m-0 ms-2 badge text-lightyellow  fw-normal">{PendingPaid.length}</span></button>
-          </li>
-        </ul>
-
-        <div className="tab-content" id="pills-tabContent">
-
-          <div className="tab-pane fade show active text-start" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
-
+          <div className={`d-${pageindex =='Sale Entries'?'block':'none'} text-start`} >
             <div className="row m-0 g-2 mt-md-2 p-0 text-start justify-content-start">
               <div className="col-auto col-md-auto col-lg-auto text-start  py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
                 <p className='fw-bold text-charcoal75 text-start p-0 m-0 justify-content-start'>CASH</p>
@@ -579,28 +576,7 @@ const Pharmacy_Dsr = (props) => {
               </div>
             </div>
 
-            {/* onClick={()=>{setse('block')}} */}
-            <div className=' saleoptions mt-2 position-absolute end-0 me-md-2 me-5 text-end'>
-              {/* <span className={`d-${se}`}>
-                <DownloadTableExcel
-                  filename={`${reversefunction(props.fromdate) + ' to ' + reversefunction(props.todate)} Sale Entries`}
-                  sheet="Sale Entries"
-                  currentTableRef={saleentry.current}
-                >
-                  <button className='btn p-0 m-0 ms-lg-5 ms-md-5 ms-sm-3 ms-1 bg-pearl border-charcoal px-2 py-1 fw-bold '> <img src={process.env.PUBLIC_URL + '/images/download.png'} style={{ 'width': '1.5rem' }} />All Export</button>
-
-                </DownloadTableExcel>
-              </span>
-              <span className={`d-${pd}`}>
-                <DownloadTableExcel
-                  filename={`${reversefunction(props.fromdate) + ' to ' + reversefunction(props.todate)} Pending Sale Entries`}
-                  sheet="Pendings"
-                  currentTableRef={Pendingsonly.current}
-                >
-                  <button className='btn p-0 m-0 ms-5 fw-bold bg-pearl border-charcoal px-2 py-1 '> <img src={process.env.PUBLIC_URL + '/images/download.png'} style={{ 'width': '1.5rem' }} />Pending Export</button>
-
-                </DownloadTableExcel>
-              </span> */}
+            <div className=' saleoptions mt-2 position-absolute end-0 me-md-2 me-5 mt-4 text-end'>
               <div className='selector '>
                 <input ref={Pendingsonly} type="checkbox" className='form-check-input ms-2 me-1' onChange={() => { Conditionaldisplay() }} /><label className='text-burntumber fw-bold'>Show Pendings Only</label>
               </div>
@@ -917,7 +893,7 @@ const Pharmacy_Dsr = (props) => {
               </div>
             </div>
           </div>
-          <div className="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
+          <div className={`d-${pageindex=='Sale Returns'?'block':'none'}`}>
 
             <div className="row m-0 g-2 p-0 text-start mt-2">
               <div className="col-auto col-md-auto col-lg-auto text-start py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
@@ -1053,7 +1029,7 @@ const Pharmacy_Dsr = (props) => {
               </div>
             </div>
           </div>
-          <div className="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">
+          <div className={`d-${pageindex=='Pendings Recieved'?'block':'none'}`}>
 
             <div className="row m-0 g-2 mt-md-2 p-0 text-start justify-content-start">
               <div className="col-auto col-md-auto col-lg-auto text-start  py-lg-1 py-md-1 px-lg-3 px-md-3 px-2 ms-lg-2 ms-md-2 ms-lg-3 ms-1 bg-seashell" style={{ borderLeft: '3.5px solid var(--burntumber)' }}>
@@ -1242,7 +1218,6 @@ const Pharmacy_Dsr = (props) => {
             </div>
           </div>
 
-        </div>
       </div>
 
     </div>

@@ -25,6 +25,7 @@
     --charcoal50: #22202331;
     --charcoal75: #222023ad;
     --lightred50: #e8ad988a;
+    --public_url: process.env.PUBLIC_URL
 
 }
 
@@ -121,6 +122,7 @@ select {
     font-family: 'Urbanist', sans-serif !important;
 }
 
+
 input {
     font-size: 0.85rem !important;
 }
@@ -128,8 +130,15 @@ input {
 label {
     font-size: 0.85rem !important;
 }
-
-.dropdown-toggle::after {
+/* .dropdown-menu{
+    max-height: 40vh;
+    overflow: auto;
+    box-shadow: none !important;
+} */
+.dropdown-menu{
+    --bs-dropdown-min-width: 'fit-content';
+}
+.logout .dropdown-toggle::after {
     content: none;
 }
 
