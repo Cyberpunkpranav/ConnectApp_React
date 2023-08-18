@@ -262,7 +262,7 @@ const AllAppointmentslist = (props) => {
                                         <div className={`rounded-circle border-1 button-${props.status_color(data.appointment_status)}`} style={{ height: '12px', width: '12px' }}></div>
                                     </div>
                                     <div className="col-5 p-0 m-0 text-wrap ">
-                                        <select disabled={permission.appointment_edit == 1 ? false : true} className={`bg-transparent fw-bold border-0 text-wrap `} name={data.id} onChange={(e) => { UpadteStatus(e) }}>
+                                        <select disabled={permission.appointment_edit == 1 ? false : true} className={`bg-transparent fw-bold border-0 text-wrap `} name={data.status} onChange={(e) => { UpadteStatus(e) }}>
                                             <option className="button text-start" selected disabled>{props.status(data.appointment_status)}</option>
                                             <option className="button-lightred" value='1'>Pending</option>
                                             <option className="button-lightblue" value='2'>Booked</option>

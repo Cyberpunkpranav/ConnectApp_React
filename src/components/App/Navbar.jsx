@@ -101,88 +101,88 @@ function Navbar(props) {
 
     ]
     //websocket
-    const [Users, setUsers] = useState([])
-    const [messages, setmessages] = useState([])
-    const [openchat, setopenchat] = useState('none')
-    const [sendmessage, setsendmessage] = useState()
-    const [user, setuser] = useState()
-    const [online, setonline] = useState(0)
+    // const [Users, setUsers] = useState([])
+    // const [messages, setmessages] = useState([])
+    // const [openchat, setopenchat] = useState('none')
+    // const [sendmessage, setsendmessage] = useState()
+    // const [user, setuser] = useState()
+    // const [online, setonline] = useState(0)
 
-    let JsonData = {
-        action: 'username',
-        username: '',
-        message: sendmessage,
-        id: adminid
-    }
+    // let JsonData = {
+    //     action: 'username',
+    //     username: '',
+    //     message: sendmessage,
+    //     id: adminid
+    // }
 
 
-    let socket = new WebSocket('ws://192.168.3.27:8080/Chat')
+    // let socket = new WebSocket('ws://192.168.3.27:8080/Chat')
 
-    useEffect(() => {
-        socket.onopen = () => {
-            setonline(1)
-        }
-        socket.onmessage = (msg) => {
-            let data = JSON.parse(msg.data)
-            switch (data.action) {
-                case "UserLists":
-                    if (data.connected_users.length > 0) {
-                        setUsers(data.connected_users)
-                    }
-                    break;
-                case "Broadcast":
-                    if (data.message) {
-                        if (data.message.length > 0) {
-                            setmessages(data.message)
-                            setuser(data.user)
-                        }
-                    }
-                    break;
-            }
+    // useEffect(() => {
+    //     socket.onopen = () => {
+    //         setonline(1)
+    //     }
+    //     socket.onmessage = (msg) => {
+    //         let data = JSON.parse(msg.data)
+    //         switch (data.action) {
+    //             case "UserLists":
+    //                 if (data.connected_users.length > 0) {
+    //                     setUsers(data.connected_users)
+    //                 }
+    //                 break;
+    //             case "Broadcast":
+    //                 if (data.message) {
+    //                     if (data.message.length > 0) {
+    //                         setmessages(data.message)
+    //                         setuser(data.user)
+    //                     }
+    //                 }
+    //                 break;
+    //         }
 
-        }
-    }, [socket.data])
-    socket.onclose = (event) => {
-        if (event.code === 1001) {
-            socket.close()
-            setonline(0)
-        }
-    }
-    let JsonDataOut = {
-        action: 'left',
-        username: props.username,
-        message: '',
-        id: adminid
-    }
-    window.addEventListener('beforeunload', function () {
-        JsonDataOut = {
-            action: 'left',
-            username: props.username,
-            message: '',
-            id: adminid
-        }
-    })
-    window.addEventListener('unload', function () {
-        if (JsonDataOut) {
-            // socket.onopen = () => {
-            socket.send(JSON.stringify(JsonData))
-            // }
-        }
+    //     }
+    // }, [socket.data])
+    // socket.onclose = (event) => {
+    //     if (event.code === 1001) {
+    //         socket.close()
+    //         setonline(0)
+    //     }
+    // }
+    // let JsonDataOut = {
+    //     action: 'left',
+    //     username: props.username,
+    //     message: '',
+    //     id: adminid
+    // }
+    // window.addEventListener('beforeunload', function () {
+    //     JsonDataOut = {
+    //         action: 'left',
+    //         username: props.username,
+    //         message: '',
+    //         id: adminid
+    //     }
+    // })
+    // window.addEventListener('unload', function () {
+    //     if (JsonDataOut) {
+    //         // socket.onopen = () => {
+    //         socket.send(JSON.stringify(JsonData))
+    //         // }
+    //     }
 
-    })
-    useEffect(() => {
-        JsonData = {
-            action: 'username',
-            username: props.username,
-            message: sendmessage,
-            id: adminid
-        }
+    // })
+    // useEffect(() => {
+    //     JsonData = {
+    //         action: 'username',
+    //         username: props.username,
+    //         message: sendmessage,
+    //         id: adminid
+    //     }
 
-        socket.onopen = () => {
-            socket.send(JSON.stringify(JsonData))
-        }
+    //     socket.onopen = () => {
+    //         socket.send(JSON.stringify(JsonData))
+    //     }
 
-    }, [props.username])
+    // }, [props.username])
 
 
     // function LeftChat() {
@@ -196,24 +196,25 @@ function Navbar(props) {
     //         socket.send(JSON.stringify(JsonData))
     //     }
     // }
-    function Braodcast() {
-        JsonData = {
-            action: 'broadcast',
-            username: props.username,
-            message: sendmessage,
-            Id: adminid
-        }
-        socket.send(JSON.stringify(JsonData))
-    }
-    function Toggle_Chat() {
-        if (openchat == 'none') {
-            setopenchat('block')
-        }
-        if (openchat == 'block') {
-            setopenchat('none')
-        }
 
-    }
+    // function Braodcast() {
+    //     JsonData = {
+    //         action: 'broadcast',
+    //         username: props.username,
+    //         message: sendmessage,
+    //         Id: adminid
+    //     }
+    //     socket.send(JSON.stringify(JsonData))
+    // }
+    // function Toggle_Chat() {
+    //     if (openchat == 'none') {
+    //         setopenchat('block')
+    //     }
+    //     if (openchat == 'block') {
+    //         setopenchat('none')
+    //     }
+
+    // }
     return (
         <div className='shadow shadow-sm' style={{zIndex:'10'}}>
             <div className="navsection p-0 m-0 py-1">
@@ -286,7 +287,7 @@ function Navbar(props) {
                     <div></div>
                 )
             }
-
+{/* 
             <div className="position-absolute bottom-0 end-0 me-5 mb-3 d-block" style={{zIndex:'10  '}}>
                 <button className={`btn p-0 m-0 text-pearl fw-bold bg-charcoal p-2`} onClick={() => Toggle_Chat()}>Chat</button>
             </div>
@@ -330,7 +331,7 @@ function Navbar(props) {
 
 
                 </div >
-            </div >
+            </div > */}
 
 
         </div>

@@ -2,8 +2,8 @@ import { useState, useEffect, useContext, useRef } from "react"
 import axios from "axios"
 import ReactPaginate from 'react-paginate';
 import { URL, TodayDate, DoctorsList, Doctorapi, Permissions, Secretkey } from '../../index'
-import { Salesection, Purchasesection, Stocksection, Listsection } from "../pharmacy/pharmacy"
-import { Livetime } from "../features/livetime"
+import { Salesection, Purchasesection, Stocksection, Listsection,Transfersection } from "../pharmacy/pharmacy"
+
 //css
 import '../../css/pharmacy.css'
 function Pharmacy() {
@@ -25,27 +25,28 @@ function Pharmacy() {
       option: "Lists",
       display: permission.vaccine_view == undefined && permission.medicine_view == undefined ? 0 : 1,
     },
-
-  ];
+    {
+      option: "Transfers",
+      display: 1,
+      // permission.transfer_view == undefined && permission.transfer_view == undefined ? 0 : 
+    }
+  ]
   const [menuindex, setmenuindex] = useState(0);
   const _selectedmenu = (_menu) => {
     if (_menu === 0) {
-      return <div className="">
-        <Salesection />
-      </div>;
+      return <Salesection />
     }
     if (_menu === 1) {
-      return (
-        <div className="">
-          <Stocksection />
-        </div>
-      );
+      return <Stocksection />
     }
     if (_menu === 2) {
       return <Purchasesection />;
     }
     if (_menu === 3) {
       return <Listsection />;
+    }
+    if (_menu === 4){
+      return <Transfersection/>
     }
     return <div className="">Nothing Selected</div>;
   };

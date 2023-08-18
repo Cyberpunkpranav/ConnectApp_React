@@ -32,15 +32,15 @@ function Salesection(props) {
       display: permission.sale_return_view ? 1 : 0,
     },
   ];
-  const [second, setSecond] = useState(0);
+  const [second, setSecond] = useState("Sale Entry");
 
   const _selectedScreen = (_selected) => {
-    if (_selected === 0) {
+    if (_selected === "Sale Entry") {
       return (
         <Saleentrysection function={props.func} function2={props.function} fromdate={fromdate} todate={todate} ClinicID={ClinicID} />
       );
     }
-    if (_selected === 1) {
+    if (_selected === "Sale Returns") {
       return <SaleReturns fromdate={fromdate} todate={todate} ClinicID={ClinicID} />;
     }
     return <div className="fs-2">Nothing Selected</div>;
@@ -53,13 +53,13 @@ function Salesection(props) {
             <div className="col-auto">
               <div class="dropdown">
                 <button class="button button-seashell border-0 rounded-2 fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Sale Type 
+                 {second?second:" Sale Type "}
                 </button>
 
                 <ul class="dropdown-menu bg-seashell shadow-sm border-0">
                   {
                     first.map((e, i) => (
-                      <li className={`dropdown-item text-${i === second ? "light" : "dark"} fw-bold bg-${i === second ? "charcoal" : "seashell"}`} onClick={(a) => setSecond(i)} > {e.option} </li>
+                      <li className={`dropdown-item text-${e.option === second ? "light" : "dark"} fw-bold bg-${e.option === second ? "charcoal" : "seashell"}`} onClick={(a) => setSecond(e.option)} > {e.option} </li>
                     )
                     )
                   }
@@ -2368,7 +2368,6 @@ function SaleEntryForm(props) {
     </>
   )
 }
-
 function NewSaleReturnentryform(props) {
   const url = useContext(URL);
   const medicinesref = useRef(null);
@@ -3246,7 +3245,7 @@ function Purchasesection(props) {
   const [todate, settodate] = useState();
   const [channel, setchannel] = useState(1);
   const permission = useContext(Permissions);
-  const [pageindex,setpageindex] =useState(0)
+  const [pageindex,setpageindex] =useState("Purchase Entry")
   const first = [
     {
       option: "Purchase Entry",
@@ -3256,20 +3255,16 @@ function Purchasesection(props) {
       option: "Purchase Returns",
       display: permission.purchase_return_view,
     },
-    // {
-    //   option: "Purchase Orders",
-    //   display: permission.purchase_orders_view,
-    // },
-  ];
+  ]
   const [second, setSecond] = useState("Pharmacy");
 
   const _selectedScreen = (_selected) => {
-    if (_selected === 0) {
+    if (_selected === "Purchase Entry") {
       return (
         <Purchaseentrysection function={props.func} function2={props.function} channel = {channel} fromdate={fromdate} todate={todate} ClinicID={ClinicID} />
       );
     }
-    if (_selected === 1) {
+    if (_selected === "Purchase Returns") {
       return <PurchaseReturns fromdate={fromdate} todate={todate} ClinicID={ClinicID} channel={channel} />;
     }
     // if (_selected === 2) {
@@ -3285,13 +3280,13 @@ function Purchasesection(props) {
         <div className="col-auto">
               <div class="dropdown">
                 <button class="button button-seashell border-0 rounded-2 fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Purchase Type 
+                  {pageindex?pageindex:"Purchase Type "}
                 </button>
 
                 <ul class="dropdown-menu bg-seashell shadow-sm border-0">
                   {
                     first.map((e, i) => (
-                      <li className={`dropdown-item text-${i === pageindex ? "light" : "dark"} fw-bold bg-${i ===pageindex ? "charcoal" : "seashell"}`} onClick={(a) => setpageindex(i)} > {e.option} </li>
+                      <li className={`dropdown-item text-${ pageindex == e.option ? "light" : "dark"} fw-bold bg-${pageindex == e.option? "charcoal" : "seashell"}`} onClick={(a) => setpageindex(e.option)} > {e.option} </li>
                     )
                     )
                   }
@@ -7845,3 +7840,988 @@ function MedicineList() {
 }
 export { Stocksection };
 export { Listsection };
+
+function Transfersection(){
+  const currentDate = useContext(TodayDate);
+  const ClinicID = localStorage.getItem("ClinicId");
+  const [fromdate, setfromdate] = useState();
+  const [todate, settodate] = useState();
+  const permission = useContext(Permissions);
+  const [pageindex,setpageindex] =useState("Transfers In")
+  const [status,setstatus] =useState()
+
+  const first = [
+    {
+      option: "Transfers In",
+      display: permission.purchase_entry_view,
+    },
+    {
+      option: "Transfers Out",
+      display: permission.purchase_return_view,
+    },
+  ]
+
+  const Selected_Screen=(_menu)=>{
+    if(_menu  == "Transfers In"){
+      return <TransferIn/>
+    }
+    if(_menu == "Transfers Out"){
+      return <TransferOut/>
+    }
+  }
+return(
+  <>
+  <section className="purchasesection">
+  <div className="container-fluid p-0 m-0 mt-3">
+    <div className="row p-0 m-0 mt-1 gx-3 position-relative">
+    <div className="col-auto">
+          <div class="dropdown">
+            <button class="button button-seashell border-0 rounded-2 fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              {pageindex?pageindex:"Transfers Type "}
+            </button>
+            <ul class="dropdown-menu bg-seashell shadow-sm border-0">
+              {
+                first.map((e, i) => (
+                  <li className={`dropdown-item text-${e.option === pageindex ? "light" : "dark"} fw-bold bg-${e.option === pageindex ? "charcoal" : "seashell"}`} onClick={(a) => setpageindex(e.option)} > {e.option} </li>
+                )
+                )
+              }
+            </ul>
+          </div>
+        </div>
+        <div className="col-auto">
+          <div className="dropdown">
+          <button class="button button-seashell border-0 rounded-2 fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Status 
+            </button>
+            <ul class="dropdown-menu bg-seashell shadow-sm border-0">
+                  <li className={`dropdown-item`} onClick={(a) =>setstatus()} > </li>
+            </ul>
+          </div>
+        </div>
+      <div className="col-auto bg-seashell rounded-2 ">
+          <div className="row p-0 m-0 align-items-center align-self-center">
+            <div className="col-auto p-0 m-0">
+              <input type="date" placeholder="fromdate" className="button button-seashell rounded-0 border-0 text-charcoal text-center fw-bold " value={fromdate ? fromdate : currentDate ? currentDate : ""} onChange={(e) => { setfromdate(e.target.value); }} />
+            </div>
+            <div className="col-auto p-0 m-0">-</div>
+            <div className="col-auto p-0 m-0">
+              <input type="date" className=" border-0 button button-seashell text-charcoal text-center fw-bold" value={todate ? todate : fromdate ? fromdate : currentDate ? currentDate : ""} onChange={(e) => { settodate(e.target.value); }} />                
+            </div>
+          </div>
+        </div>
+    </div>
+    </div>
+  </section>
+  <section className="tablesrender position-relative">
+  <div className=" p-0 mt-lg-4 mt-md-3 mt-2 me-0 ms-0">
+    {Selected_Screen(pageindex)}
+  </div>
+  </section>
+  </>
+)
+}
+export{Transfersection}
+
+function TransferIn(props){
+  const currentDate = useContext(TodayDate);
+  const ClinicID = localStorage.getItem("ClinicId");
+  const permission = useContext(Permissions);
+  const url = useContext(URL);
+  const [peidw, setpeidw] = useState("none");
+
+  const toggle_peidw = () => {
+    if (peidw === "none") {
+      setpeidw("block");
+    }
+    if (peidw === "block") {
+      setpeidw("none");
+    }
+  }
+
+  const fromdate = props.fromdate
+  const todate = props.todate
+  const channel = props.channel
+  const [Loading, setLoading] = useState(false);
+  const [transferinarr, settransferinarr] = useState([]);
+  const [transferinarrExcel, settransferinarrExcel] = useState([]);
+  const [index, setindex] = useState();
+  const [npef, setnpef] = useState("none");
+  const [pages, setpages] = useState();
+  const [pagecount, setpagecount] = useState();
+  const [qr, setqr] = useState("none");
+  
+  function GetPages() {
+    try {
+      axios
+        .get(
+          `${url}/purchase/entry?clinic_id=${ClinicID}&channel=${channel}&from_date=${fromdate ? fromdate : currentDate
+          }&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`
+        )
+        .then((response) => {
+          setpagecount(response.data.data.total_count);
+          setpages(Math.round(response.data.data.total_count / 25) + 1);
+          setLoading(false);
+        })
+        .catch((e) => {
+          Notiflix.Notify.warning(e);
+          setLoading(false);
+        });
+    } catch (e) {
+      Notiflix.Notify.warning(e.message);
+      setLoading(false);
+    }
+  }
+
+  // &from_date=${fromdate ? fromdate : currentDate }&to_date=${todate ? todate : fromdate ? fromdate : currentDate}
+  // &from_date=${fromdate ? fromdate : currentDate }&to_date=${todate ? todate : fromdate ? fromdate : currentDate}
+  // https://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/api/transfer/stocks/list?location_id=1&limit=10&offset=0
+  
+  function GETTransferInList(Data) {
+    if (Data == undefined || Data.selected == undefined) {
+      setLoading(true);
+      try {
+        axios.get( `${url}/transfer/stocks/list?location_id=${ClinicID}&limit=25&offset=0` )
+          .then((response) => {
+            setpagecount(response.data.data.total_count);
+            settransferinarr(response.data.data.transfer_stocks_recevied);
+            setLoading(false);
+          })
+          .catch((e) => {
+            Notiflix.Notify.warning(e.message);
+            setLoading(false);
+          });
+      } catch (e) {
+        Notiflix.Notify.warning(e.data.message);
+        setLoading(false);
+      }
+    } else {
+      setLoading(true);
+      try {
+        axios.get(`${url}/purchase/entry?location_id=${ClinicID}&limit=25&offset=${Data.selected * 25 }` )
+          .then((response) => {
+            setpagecount(response.data.data.total_count);
+            settransferinarr(response.data.data.purchase_entry);
+            setLoading(false);
+          })
+          .catch((e) => {
+            Notiflix.Notify.warning(e.message);
+            setLoading(false);
+          });
+      } catch (e) {
+        Notiflix.Notify.warning(e.data.message);
+        setLoading(false);
+      }
+    }
+  }
+  function GETTransferInListForExcel() {
+    setLoading(true);
+    try {
+      axios.get(`${url}/transfer/stocks/list?location_id=${ClinicID}&limit=${pagecount}&offset=0` )
+        .then((response) => {
+          settransferinarrExcel(response.data.data.transfer_stocks_recevied);
+          setLoading(false);
+        })
+        .catch((e) => {
+          Notiflix.Notify.warning(e.message);
+          setLoading(false);
+        });
+    } catch (e) {
+      Notiflix.Notify.warning(e.data.message);
+      setLoading(false);
+    }
+  }
+  useEffect(() => {
+    GetPages();
+  }, [fromdate, todate]);
+
+  useEffect(() => {
+    GETTransferInList();
+    GETTransferInListForExcel();
+  }, [fromdate, todate]);
+
+  const toggle_npef = () => {
+    if (npef === "none") {
+      setnpef("block");
+    }
+    if (npef === "block") {
+      setnpef("none");
+    }
+  };
+  const reversefunction = (date) => {
+    if (date) {
+      date = date.split("-").reverse().join("-");
+      return date;
+    }
+  };
+  // function GenerateQR(props) {
+  //   let medicines = props.purchaseentry.medicines ? props.purchaseentry.medicines : 0;
+  //   let vaccines = props.purchaseentry.vaccines
+  //     ? props.purchaseentry.vaccines
+  //     : 0;
+  //   let medicineobj = {};
+  //   let vaccineobj = {};
+  //   let medcount = [];
+  //   let vaccount = [];
+  //   if (
+  //     props.purchaseentry.medicines !== undefined &&
+  //     props.purchaseentry.medicines.length !== 0
+  //   ) {
+  //     for (let i = 0; i < medicines.length; i++) {
+  //       for (let j = 0; j < props.purchaseentry.medicines[i].qty; j++) {
+  //         medicineobj[j] = {
+  //           id: "m" + props.purchaseentry.medicines[i].id,
+  //           name: props.purchaseentry.medicines[i].medicine.name,
+  //           qrcode: <QRcode id={"m" + props.purchaseentry.medicines[i].id} />,
+  //         };
+  //         medcount.push(medicineobj[j]);
+  //       }
+  //     }
+  //   }
+  //   if (
+  //     props.purchaseentry.vaccines !== undefined &&
+  //     props.purchaseentry.vaccines.length !== 0
+  //   ) {
+  //     for (let i = 0; i < vaccines.length; i++) {
+  //       for (let j = 0; j < props.purchaseentry.vaccines[i].qty; j++) {
+  //         vaccineobj[j] = {
+  //           id: "v" + props.purchaseentry.vaccines[i].id,
+  //           name: props.purchaseentry.vaccines[i].vaccine.name,
+  //           qrcode: <QRcode id={"v" + props.purchaseentry.vaccines[i].id} />,
+  //         };
+  //         vaccount.push(vaccineobj[j]);
+  //       }
+  //     }
+  //   }
+
+  //   return (
+  //     <div className="container-fluid">
+  //       <h5 className="text-charcoal75 fw-bold">Medicines</h5>
+  //       <div className="row">
+  //         {medcount.map((Data) => (
+  //           <div className="col-auto m-2" key={Data}>
+  //             <p className="text-charcoal75">
+  //               {Data.name} | {Data.id}
+  //             </p>
+  //             <div className="container">{Data.qrcode}</div>
+  //           </div>
+  //         ))}
+  //       </div>
+  //       <h5 className="text-charcoal75 fw-bold mt-2">Vaccines</h5>
+  //       <div className="row">
+  //         {vaccount.map((Data) => (
+  //           <div className="col-auto m-2" key={Data}>
+  //             <p className="text-charcoal75">
+  //               {Data.name} | {Data.id}
+  //             </p>
+  //             <div className="container">{Data.qrcode}</div>
+  //           </div>
+  //         ))}
+  //       </div>
+  //     </div>
+  //   );
+  // }
+  console.log(transferinarr)
+  return(
+    <>
+    <div className="col-auto position-absolute p-0 m-0 ms-2 export_2 align-self-center text-center">
+     <ExportPurchaseEntry transferinarr={transferinarrExcel} fromdate={reversefunction(fromdate)} todate={reversefunction(todate)} />
+   </div>
+ <button className={`button addpurchase button-charcoal me-3 position-absolute d-${permission.purchase_entry_add == 1 ? "" : "none" }`} onClick={toggle_npef} > <img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt="displaying_image" className="img-fluid p-0 m-0" />Transfer In </button>
+     <h2 className=" ms-3 text-charcoal fw-bolder" style={{ width: "fit-content" }} > {transferinarr!=undefined?transferinarr.length:""} {transferinarr!=undefined?transferinarr.length > 1 ? "Transfers In" : "Transfer In":""}{" "} </h2>
+ <div>
+   <div className="scroll scroll-y overflow-scroll p-0 m-0 mt-2" style={{ minHeight: "56vh", height: "56vh" }} >
+     <table className="table">
+       <thead className=" align-middle position-sticky top-0 bg-pearl">
+         <tr>
+           <th className="fw-bolder text-charcoal75" > TI ID </th>
+           <th className="fw-bolder text-charcoal75" > Channel </th>
+           <th className="fw-bolder text-charcoal75" > Location From </th>
+           <th className="fw-bolder text-charcoal75" > Location To </th>
+           <th className="fw-bolder text-charcoal75" > Date </th>
+           <th className="fw-bolder text-charcoal75" >Transfer By </th>
+           <th className="fw-bolder text-charcoal75" >Transfer To </th>
+           <th className="fw-bolder text-charcoal75" > Total Items</th>
+           <th className="fw-bolder text-charcoal75" > Amount </th>
+           <th className="fw-bolder text-charcoal75" > Approval Status </th>
+           <th className="fw-bolder text-center  text-charcoal75"  > Item Cost </th>
+           {/* <th className='fw-bolder p-0 m-0  text-charcoal75 text-center' scope='col' style={{ zIndex: '3' }}>more</th> */}
+         </tr>
+       </thead>
+       {Loading ? (
+         <tbody className=" text-center" style={{ minHeight: "55vh" }}>
+           <tr className="position-absolute border-0 start-0 end-0 px-5">
+             <div class="d-flex align-items-center">
+               <strong className="">
+                 Getting Details please be Patient ...
+               </strong>
+               <div
+                 class="spinner-border ms-auto"
+                 role="status"
+                 aria-hidden="true"
+               ></div>
+             </div>
+           </tr>
+         </tbody>
+       ) : transferinarr && transferinarr.length != 0 ? (
+         <tbody>
+           {transferinarr.map((item, i) => (
+             <tr key={i} className={`bg-${i % 2 == 0 ? "seashell" : "pearl" } align-middle`} >
+               <td className="py-0 my-0 text-charcoal fw-bold ps-2"> PE-{item.bill_id} </td>
+               <td className="text-charcoal fw-bold"> {item.purchase_order_id && item.purchase_order_id !== null ? item.purchase_order_id : "N/A"} </td>
+               <td className="text-charcoal fw-bold"> {item.channel && item.channel == 1 ? "Pharmacy" : "Clinic"} </td>
+               <td className="text-charcoal fw-bold"> {item.invoice_no ? item.invoice_no : "N/A"} </td>
+               <td className="text-charcoal fw-bold"> {item.bill_date && item.bill_date ? reversefunction(item.bill_date) : "N/A"} </td>
+               <td className="text-charcoal fw-bold"> {item.bill_total && item.bill_total ? "Rs. " + item.bill_total : "N/A"} </td>
+               <td className="text-charcoal fw-bold"> {item.distributor && item.distributor != null && item.distributor.entity_name && item.distributor.entity_name != null ? item.distributor.entity_name : "N/A"} </td>
+               <td className="text-charcoal fw-bold text-center">
+                 <button className="btn p-0 m-0" onClick={() => { setindex(i); toggle_peidw(); }} > <img src={ process.env.PUBLIC_URL + "/images/archivebox.png" } alt="displaying_image" className="ms-1 img-fluid" /> </button>
+               </td>
+               <td className='text-charcoal fw-bold text-center'>
+               <button className="btn p-0 m-0" onClick={() => { setqr(i); }} > <img src={process.env.PUBLIC_URL + "/images/qrcode.png"} alt="displaying_image" className="me-1 img-fluid" /> </button>
+                     </td>
+               <td className={` position-absolute d-${i == index ? peidw : "none" } border border-1 start-0 mx-auto end-0 bg-seashell rounded-4 p-0 m-0`} style={{zIndex:'10', top: "0",width:'70vh',height: "40vh" }} >
+                  {i == index ? 
+                  ( <PEitemdetailssection transferinarr={transferinarr[i]} itembillid={"PE-" + item.bill_id} toggle_peidw={toggle_peidw} /> ) : ( <></> )}
+               </td>
+               {/* <td className={`position-absolute start-0 text-start bg-pearl container-fluid d-${qr == i ? "block" : "none" }`} style={{ top: "-8.5rem", zIndex: "5", height: "89vh" }} >
+                 {i == qr ? (
+                   <div className="container-fluid position-relative">
+                     <button type="button" className="btn-close closebtn position-absolute end-0 me-2" onClick={() => setqr()} aria-label="Close" ></button>
+                     <div className="row">
+                       <GenerateQR purchaseentry={purchaseentryarr[i]} />
+                     </div>
+                   </div>
+                 ) : (
+                   <></>
+                 )}
+               </td> */}
+             </tr>
+           ))}
+         </tbody>
+       ) : (
+         <tbody className="text-center position-relative p-0 m-0 " style={{ minHeight: "55vh" }} >
+           <tr className="">
+             <td className="fw-bolder text-charcoal text-center position-absolute border-0 start-0 end-0 mx-3 p-2 border-0">
+               No Transfers In
+             </td>
+           </tr>
+         </tbody>
+       )}
+     </table>
+   </div>
+   <div className="container-fluid mt-2 d-flex justify-content-center">
+     <ReactPaginate
+       previousLabel={"Previous"}
+       nextLabel={"Next"}
+       breakLabel={". . ."}
+       pageCount={pages}
+       marginPagesDisplayed={3}
+       pageRangeDisplayed={2}
+       onPageChange={GETTransferInList}
+       containerClassName={"pagination"}
+       pageClassName={"page-item text-charcoal"}
+       pageLinkClassName={ "page-link text-decoration-none text-charcoal border-charcoal rounded-1 mx-1" }
+       previousClassName={"btn button-charcoal-outline me-2"}
+       previousLinkClassName={"text-decoration-none text-charcoal"}
+       nextClassName={"btn button-charcoal-outline ms-2"}
+       nextLinkClassName={"text-decoration-none text-charcoal"}
+       breakClassName={"mx-2 text-charcoal fw-bold fs-4"}
+       breakLinkClassName={"text-decoration-none text-charcoal"}
+       activeClassName={"active"}
+     />
+   </div>
+ </div>
+ <section className={`newpurchaseentrysection position-absolute start-0 end-0 bg-seashell border border-1 d-${npef}`} >
+   {
+     <NewTransferInForm
+       toggle_npef={toggle_npef}
+       GETTransferInList={GETTransferInList}
+     />
+   }
+ </section>
+</>
+)
+}
+function TransferOut(props){
+  const currentDate = useContext(TodayDate);
+  const ClinicID = localStorage.getItem("ClinicId");
+  const permission = useContext(Permissions);
+  const url = useContext(URL);
+  const [peidw, setpeidw] = useState("none");
+
+  const toggle_peidw = () => {
+    if (peidw === "none") {
+      setpeidw("block");
+    }
+    if (peidw === "block") {
+      setpeidw("none");
+    }
+  }
+
+  const fromdate = props.fromdate
+  const todate = props.todate
+  const channel = props.channel
+  const [Loading, setLoading] = useState(false);
+  const [transferoutarr, settransferoutarr] = useState([]);
+  const [transferoutarrExcel, settransferoutarrExcel] = useState([]);
+  const [index, setindex] = useState();
+  const [npef, setnpef] = useState("none");
+  const [pages, setpages] = useState();
+  const [pagecount, setpagecount] = useState();
+  const [qr, setqr] = useState("none");
+
+  // &from_date=${fromdate ? fromdate : currentDate }&to_date=${todate ? todate : fromdate ? fromdate : currentDate}
+  // &from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate }
+  function GetPages() {
+    try {
+      axios.get(`${url}/transfer/stocks/list?location_id=${ClinicID}&from_date=${fromdate ? fromdate : currentDate }&to_date=${todate ? todate : fromdate ? fromdate : currentDate}` )
+        .then((response) => {
+          setpagecount(response.data.data.total_count);
+          setpages(Math.round(response.data.data.total_count / 25) + 1);
+          setLoading(false);
+        })
+        .catch((e) => {
+          Notiflix.Notify.warning(e);
+          setLoading(false);
+        });
+    } catch (e) {
+      Notiflix.Notify.warning(e.message);
+      setLoading(false);
+    }
+  }
+
+  function GETTransferOutList(Data) {
+    if (Data == undefined || Data.selected == undefined) {
+      setLoading(true);
+      try {
+        axios.get(`${url}/transfer/stocks/list?location_id=${ClinicID}&limit=25&offset=0` )
+          .then((response) => {
+            // setpagecount(response.data.data.total_count);
+            settransferoutarr(response.data.data.transfer_stocks_sent);
+            setLoading(false);
+          })
+          .catch((e) => {
+            Notiflix.Notify.warning(e.message);
+            setLoading(false);
+          });
+      } catch (e) {
+        Notiflix.Notify.warning(e.data.message);
+        setLoading(false);
+      }
+    } else {
+      setLoading(true);
+      try {
+        axios.get(`${url}/purchase/stocks/list?location_id=${ClinicID}&limit=25&offset=${Data.selected * 25 }` )
+          .then((response) => {
+            setpagecount(response.data.data.total_count);
+            settransferoutarr(response.data.data.transfer_stocks_sent);
+            setLoading(false);
+          })
+          .catch((e) => {
+            Notiflix.Notify.warning(e.message);
+            setLoading(false);
+          });
+      } catch (e) {
+        Notiflix.Notify.warning(e.data.message);
+        setLoading(false);
+      }
+    }
+  }
+  function GETTransferOutListForExcel() {
+    setLoading(true);
+    try {
+      axios
+        .get( `${url}/purchase/entry?location_id=${ClinicID}&limit=${pagecount}&offset=0` )
+        .then((response) => {
+          settransferoutarrExcel(response.data.data.transfer_stocks_sent);
+          setLoading(false);
+        })
+        .catch((e) => {
+          Notiflix.Notify.warning(e.message);
+          setLoading(false);
+        });
+    } catch (e) {
+      Notiflix.Notify.warning(e.data.message);
+      setLoading(false);
+    }
+  }
+  useEffect(() => {
+    GetPages();
+  }, [fromdate, todate]);
+
+  useEffect(() => {
+    GETTransferOutList();
+    GETTransferOutListForExcel();
+  }, [fromdate, todate]);
+
+  const toggle_npef = () => {
+    if (npef === "none") {
+      setnpef("block");
+    }
+    if (npef === "block") {
+      setnpef("none");
+    }
+  };
+  const reversefunction = (date) => {
+    if (date) {
+      date = date.split("-").reverse().join("-");
+      return date;
+    }
+  };
+  // function GenerateQR(props) {
+  //   let medicines = props.purchaseentry.medicines ? props.purchaseentry.medicines : 0;
+  //   let vaccines = props.purchaseentry.vaccines
+  //     ? props.purchaseentry.vaccines
+  //     : 0;
+  //   let medicineobj = {};
+  //   let vaccineobj = {};
+  //   let medcount = [];
+  //   let vaccount = [];
+  //   if (
+  //     props.purchaseentry.medicines !== undefined &&
+  //     props.purchaseentry.medicines.length !== 0
+  //   ) {
+  //     for (let i = 0; i < medicines.length; i++) {
+  //       for (let j = 0; j < props.purchaseentry.medicines[i].qty; j++) {
+  //         medicineobj[j] = {
+  //           id: "m" + props.purchaseentry.medicines[i].id,
+  //           name: props.purchaseentry.medicines[i].medicine.name,
+  //           qrcode: <QRcode id={"m" + props.purchaseentry.medicines[i].id} />,
+  //         };
+  //         medcount.push(medicineobj[j]);
+  //       }
+  //     }
+  //   }
+  //   if (
+  //     props.purchaseentry.vaccines !== undefined &&
+  //     props.purchaseentry.vaccines.length !== 0
+  //   ) {
+  //     for (let i = 0; i < vaccines.length; i++) {
+  //       for (let j = 0; j < props.purchaseentry.vaccines[i].qty; j++) {
+  //         vaccineobj[j] = {
+  //           id: "v" + props.purchaseentry.vaccines[i].id,
+  //           name: props.purchaseentry.vaccines[i].vaccine.name,
+  //           qrcode: <QRcode id={"v" + props.purchaseentry.vaccines[i].id} />,
+  //         };
+  //         vaccount.push(vaccineobj[j]);
+  //       }
+  //     }
+  //   }
+
+  //   return (
+  //     <div className="container-fluid">
+  //       <h5 className="text-charcoal75 fw-bold">Medicines</h5>
+  //       <div className="row">
+  //         {medcount.map((Data) => (
+  //           <div className="col-auto m-2" key={Data}>
+  //             <p className="text-charcoal75">
+  //               {Data.name} | {Data.id}
+  //             </p>
+  //             <div className="container">{Data.qrcode}</div>
+  //           </div>
+  //         ))}
+  //       </div>
+  //       <h5 className="text-charcoal75 fw-bold mt-2">Vaccines</h5>
+  //       <div className="row">
+  //         {vaccount.map((Data) => (
+  //           <div className="col-auto m-2" key={Data}>
+  //             <p className="text-charcoal75">
+  //               {Data.name} | {Data.id}
+  //             </p>
+  //             <div className="container">{Data.qrcode}</div>
+  //           </div>
+  //         ))}
+  //       </div>
+  //     </div>
+  //   );
+  // }
+  let array = [[0, 'Pending', 'lightred'], [1, 'Accepted', 'lightgreen'], [3, 'Rejected', 'lightred']]
+  function status(number) {
+    let status
+    for (let i = 0; i < array.length; i++) {
+      if (number == array[i][0]) {
+        status = array[i][1]
+        break;
+      }
+    }
+    return status
+  }
+  function status_color(number) {
+    let status_color;
+    for (let j = 0; j < array.length; j++) {
+      if (number == array[j][0]) {
+        status_color = array[j][2]
+        break;
+      }
+    }
+    return status_color
+  }
+  console.log(transferoutarr)
+  return(
+    <>
+    <div className="col-auto position-absolute p-0 m-0 ms-2 export_2 align-self-center text-center">
+     <ExportPurchaseEntry transferoutarrarr={transferoutarrExcel} fromdate={reversefunction(fromdate)} todate={reversefunction(todate)} />
+   </div>
+ <button className={`button addpurchase button-charcoal me-3 position-absolute d-${permission.purchase_entry_add == 1 ? "" : "none" }`} onClick={toggle_npef} > <img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt="displaying_image" className="img-fluid p-0 m-0" />Transfer Out </button>
+     <h2 className=" ms-3 text-charcoal fw-bolder" style={{ width: "fit-content" }} > {transferoutarr!=undefined?transferoutarr.length:''} {transferoutarr!=undefined?transferoutarr.length > 1 ? "Transfers Out" : "Transfer Out":''}{" "} </h2>
+ <div>
+   <div className="scroll scroll-y overflow-scroll p-0 m-0 mt-2" style={{ minHeight: "56vh", height: "56vh" }} >
+     <table className="table">
+       <thead className=" align-middle position-sticky top-0 bg-pearl">
+         <tr>
+           <th className="fw-bolder   text-charcoal75" > TI ID </th>
+           <th className="fw-bolder   text-charcoal75" > Channel </th>
+           <th className="fw-bolder   text-charcoal75" > Location From </th>
+           <th className="fw-bolder   text-charcoal75" > Location To </th>
+           <th className="fw-bolder   text-charcoal75" > Date </th>
+           <th className="fw-bolder   text-charcoal75" >Transfer By </th>
+           <th className="fw-bolder   text-charcoal75" >Transfer To </th>
+           <th className="fw-bolder   text-charcoal75" > Total Items</th>
+           <th className="fw-bolder   text-charcoal75" > Amount </th>
+           <th className="fw-bolder   text-charcoal75" > Approval Status </th>
+           <th className="fw-bolder  text-center  text-charcoal75"  > Inventory </th>
+           {/* <th className='fw-bolder p-0 m-0  text-charcoal75 text-center' scope='col' style={{ zIndex: '3' }}>more</th> */}
+         </tr>
+       </thead>
+       {Loading ? (
+         <tbody className=" text-center" style={{ minHeight: "55vh" }}>
+           <tr className="position-absolute border-0 start-0 end-0 px-5">
+             <div class="d-flex align-items-center">
+               <strong className="">
+                 Getting Details please be Patient ...
+               </strong>
+               <div
+                 class="spinner-border ms-auto"
+                 role="status"
+                 aria-hidden="true"
+               ></div>
+             </div>
+           </tr>
+         </tbody>
+       ) : transferoutarr && transferoutarr.length != 0 ? (
+         <tbody>
+           {
+           transferoutarr.map((item, i) => (
+             <tr key={i} className={`bg-${i % 2 == 0 ? "seashell" : "pearl" } align-middle`} >
+               <td className="py-0 my-0 text-charcoal fw-bold ps-2"> TO-{item.id} </td>
+               <td className="text-charcoal fw-bold"> {item.channel && item.channel == 1 ? "Pharmacy" : "Clinic"} </td>
+               <td className="text-charcoal fw-bold"> {item.from_location.title ? item.from_location.title : "N/A"} </td>
+               <td className="text-charcoal fw-bold"> {item.to_location.title ? item.to_location.title : "N/A"} </td>
+               <td className="text-charcoal fw-bold"> {item.transfer_date && item.transfer_date ? reversefunction(item.transfer_date) : "N/A"} </td>
+               <td className="text-charcoal fw-bold"> </td>
+               <td className="text-charcoal fw-bold"> </td>
+               <td className="text-charcoal fw-bold"> </td>
+               <td className="text-charcoal fw-bold"> {item.total_amount && item.total_amount ? "Rs. " + item.total_amount : "N/A"} </td>
+               <td>
+               <select className={`bg-${status_color(item.transfer_status)} rounded-2 px-2 py-1 fw-bold border-0 text-wrap `} name={item.transfer_status}>
+                                            <option className="button text-start" selected disabled>{status(item.transfer_status)}</option>
+                                            <option className="button-lightred" value='0'>Pending</option>
+                                            <option className="button-lightblue" value='1'>Accepted</option>
+                                            <option className="button-lightred" value='2'>Rejected</option>
+                  
+                                        </select>
+               </td>
+               <td className="text-charcoal fw-bold text-center">
+                 <button className="btn p-0 m-0" onClick={() => { setindex(i); toggle_peidw(); }} > <img src={ process.env.PUBLIC_URL + "/images/archivebox.png" } alt="displaying_image" className="ms-1 img-fluid" /> </button>
+               </td>
+               <td className={` position-absolute d-${i == index ? peidw : "none" } border border-1 start-0 mx-auto end-0 bg-seashell rounded-4 p-0 m-0`} style={{zIndex:'10', top: "0",width:'70vh',height: "40vh" }} >
+                  {i == index ? 
+                  ( <TOitemdetailssection transferoutarr={transferoutarr[i]} id={"TO-" + item.id} toggle_peidw={toggle_peidw} /> ) : ( <></> )}
+               </td>
+               {/* <td className={`position-absolute start-0 text-start bg-pearl container-fluid d-${qr == i ? "block" : "none" }`} style={{ top: "-8.5rem", zIndex: "5", height: "89vh" }} >
+                 {i == qr ? (
+                   <div className="container-fluid position-relative">
+                     <button type="button" className="btn-close closebtn position-absolute end-0 me-2" onClick={() => setqr()} aria-label="Close" ></button>
+                     <div className="row">
+                       <GenerateQR purchaseentry={purchaseentryarr[i]} />
+                     </div>
+                   </div>
+                 ) : (
+                   <></>
+                 )}
+               </td> */}
+             </tr>
+           ))}
+         </tbody>
+       ) : (
+         <tbody className="text-center position-relative p-0 m-0 " style={{ minHeight: "55vh" }} >
+           <tr className="">
+             <td className="fw-bolder text-charcoal text-center position-absolute border-0 start-0 end-0 mx-3 p-2 border-0">
+               No Transfers Out
+             </td>
+           </tr>
+         </tbody>
+       )}
+     </table>
+   </div>
+   <div className="container-fluid mt-2 d-flex justify-content-center">
+     <ReactPaginate
+       previousLabel={"Previous"}
+       nextLabel={"Next"}
+       breakLabel={". . ."}
+       pageCount={pages}
+       marginPagesDisplayed={3}
+       pageRangeDisplayed={2}
+       onPageChange={GETTransferOutList}
+       containerClassName={"pagination"}
+       pageClassName={"page-item text-charcoal"}
+       pageLinkClassName={ "page-link text-decoration-none text-charcoal border-charcoal rounded-1 mx-1" }
+       previousClassName={"btn button-charcoal-outline me-2"}
+       previousLinkClassName={"text-decoration-none text-charcoal"}
+       nextClassName={"btn button-charcoal-outline ms-2"}
+       nextLinkClassName={"text-decoration-none text-charcoal"}
+       breakClassName={"mx-2 text-charcoal fw-bold fs-4"}
+       breakLinkClassName={"text-decoration-none text-charcoal"}
+       activeClassName={"active"}
+     />
+   </div>
+ </div>
+ <section className={`newpurchaseentrysection position-absolute start-0 end-0 bg-seashell border border-1 d-${npef}`} >
+   {
+     <NewTransferInForm
+       toggle_npef={toggle_npef}
+       GETTransferOutList={GETTransferOutList}
+     />
+   }
+ </section>
+</>
+)
+}
+function TOitemdetailssection(props) {
+  const [medicine, setmedicine] = useState("block");
+  const [vaccine, setvaccine] = useState("none");
+  const [index, setindex] = useState(0);
+  const Items = ["Medicine", "Vaccine"];
+  const [qr, setqr] = useState("none");
+  const reversefunction = (date) => {
+    if (date) {
+      date = date.split("-").reverse().join("-");
+      return date;
+    }
+  };
+
+  if (index == 0) {
+    if (medicine == "none") {
+      setmedicine("block");
+      setvaccine("none");
+    }
+  }
+  if (index == 1) {
+    if (vaccine == "none") {
+      setvaccine("block");
+      setmedicine("none");
+    }
+  }
+  const [Taxon, setTaxon] = useState(false);
+
+  function TotalTaxPercent(cgst, sgst, igst) {
+    if ((cgst && sgst && igst !== null) || undefined) {
+      return Number(cgst) + Number(sgst) + Number(igst);
+    }
+  }
+  function TotalTaxRate(cgst, sgst, igst, qty) {
+    if ((cgst && sgst) || igst !== null || undefined) {
+      let e = Number(Number(cgst) + Number(sgst) + Number(igst)) * Number(qty);
+      e = e.toFixed(2);
+      return e;
+    }
+  }
+  function GenerateQR(props) {
+    let count = [];
+    for (let i = 0; i < props.qty; i++) {
+      count.push(props.qty);
+    }
+    return count.map((data) => (
+      <div className="col-auto m-2" key={data}>
+        <QRcode id={props.id} />
+      </div>
+    ));
+  }
+  return (
+    <div className="container-fluid p-0 m-0 ">
+      <div className="container-fluid p-0 m-0">
+        <h5 className="text-center pt-3 text-charcoal">
+          {props.id} Transfer Out Item Details
+        </h5>
+        <button type="button" className="btn-close closebtn position-absolute end-0 me-2" onClick={props.toggle_peidw} aria-label="Close" ></button>
+
+        <div className="col-2 d-none">
+          <div className=" position-relative searchbutton" style={{ top: "0.25rem", right: "1rem" }} >
+            <input type="text" className=" form-control d-inline PEsearch bg-seashell" placeholder="Search PE" />
+            <button className="btn p-0 m-0 bg-transparent border-0 position-absolute" style={{ width: "2rem", right: "0", left: "0", top: "0.25rem" }} >
+              <img src={process.env.PUBLIC_URL + "/images/search.png"} alt="displaying_image" className="img-fluid p-0 m-0" />
+            </button>
+          </div>
+        </div>
+      </div>
+      <div className="d-flex justify-content-center p-0 m-0 mt-3 mb-1">
+        {Items.map((data, i) => (
+          <button className={`button border-charcoal rounded-0 shadow-0 button-${i == index ? "charcoal" : "seashell" }`} onClick={() => { setindex(i); }} > {data} </button>
+        ))}
+      </div>
+
+      <div className=" d-flex justify-content-end me-5">
+        <input type="checkbox" className="form-check-input" value={Taxon ? Taxon : ""} onChange={() => { Taxon == true ? setTaxon(false) : setTaxon(true); }} />
+        <label>Show Tax Details</label>
+      </div>
+      <div className={`scroll bg-seashell scroll-y d-${medicine}`} style={{ height:"100%" }} >
+        <table className="table datatable table-responsive text-center bg-seashell">
+          <thead>
+            <tr>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Item ID </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Item Name </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Batch No. </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Expiry Date </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> MRP </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Rate </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Qty. </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Disc% </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Trade Disc% </th>
+              <th colspan={Taxon == true ? "8" : "2"} scope="col-group" className="border p-0 m-0 px-1" > Total Tax </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Cost </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Total </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Print QR </th>
+            </tr>
+            <tr>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > CGST% </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > CGST </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > SGST% </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > SGST </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > IGST% </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > IGST </th>
+              <th scope="col" className={`border p-0 m-0 px-1`}> Total% </th>
+              <th scope="col" className={`border p-0 m-0 px-1`}> Total </th>
+            </tr>
+          </thead>
+          {props.transferoutarr.medicines &&
+            props.transferoutarr.medicines.length !== 0 ? (
+            <tbody className="border align-items-center p-0 m-0">
+              {props.transferoutarr.medicines.map((item, _key) => (
+                <tr className="border p-0 m-0 align-middle" key={_key}>
+                  <td className="border p-0 m-0 align-middle"> {item && item.id !== null ? "m" + item.id : "N/A"} </td>
+                  <td className="border p-0 m-0 align-middle"> {item.medicine && item.medicine.name !== null ? item.medicine.name : "N/A"} </td>
+                  <td className="border p-0 m-0 align-middle"> {item.batch_no && item.batch_no != null ? item.batch_no : "N/A"} </td>
+                  <td className="border p-0 m-0 align-middle"> {item.expiry_date && item.expiry_date != null ? reversefunction(item.expiry_date) : "N/A"} </td>
+                  <td className="border p-0 m-0 align-middle"> {item.mrp ? item.mrp : "N/A"} </td>
+                  <td className="border p-0 m-0 align-middle"> {item.rate ? item.rate : "N/A"} </td>
+                  <td className="border p-0 m-0 align-middle"> {item.qty ? item.qty : "N/A"} </td>
+                  <td className="border p-0 m-0 align-middle"> {item.discount ? item.discount : "N/A"} </td>
+                  <td className="border p-0 m-0 align-middle"> {item.trade_discount ? item.trade_discount : "N/A"} </td>
+                  <td className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none" }`} > {item.SGST_rate ? Number(item.SGST_rate) : ""} </td>
+                  <td className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none" }`} > {item.SGST ? (Number(item.SGST) * Number(item.qty)).toFixed(2) : ""} </td>
+                  <td className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none" }`} > {item.CGST_rate ? Number(item.CGST_rate) : ""} </td>
+                  <td className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none" }`} > {item.CGST ? (Number(item.CGST) * Number(item.qty)).toFixed(2) : ""} </td>
+                  <td className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none" }`} > {item.IGST_rate ? Number(item.IGST_rate) : ""} </td>
+                  <td className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none" }`} > {item.IGST ? (Number(item.IGST) * Number(item.qty)).toFixed(2) : ""} </td>
+                  <td className="border p-0 m-0 align-middle"> {TotalTaxPercent( item.CGST_rate, item.SGST_rate, item.IGST_rate )} </td>
+                  <td className="border p-0 m-0 align-middle"> {TotalTaxRate(item.CGST, item.SGST, item.IGST, item.qty)} </td>
+                  <td className="border p-0 m-0 align-middle"> {item.cost ? item.cost : "N/A"} </td>
+                  <td className="border p-0 m-0 align-middle"> {item.total_amount ? item.total_amount : "N/A"} </td>
+                  <td className="border p-0 m-0 align-middle"> <button className="btn" onClick={() => { setqr(_key); }} > <img src={process.env.PUBLIC_URL + "/images/qrcode.png"} alt="displaying_image" className="me-1" /> </button> </td>
+                  <div className={`position-absolute top-0 start-0  text-start bg-pearl container-fluid d-${qr == _key ? "block" : "none" }`} style={{ top: "-4.2rem", zIndex: "5", height: "89vh" }} >
+                    <div className="container-fluid position-relative">
+                      <button type="button" className="btn-close closebtn position-absolute end-0 me-2" onClick={() => setqr()} aria-label="Close" ></button>
+                      <p className="mt-2 text-burntumber border-1 "> {item.medicine && item.medicine.name !== null ? item.medicine.name : "N/A"}{" "} | {item && item.id !== null ? "m" + item.id : "N/A"} </p>
+                      <div className="row">
+                        <GenerateQR qty={item.qty} id={"m" + item.id} />
+                      </div>
+                    </div>
+                  </div>
+                </tr>
+              ))}
+            </tbody>
+          ) : (
+            <body className="text-center p-0 m-0 border border-1 ">
+              <div className="position-absolute border-0 start-0 end-0 mx-3 p-2 ">
+                <p className=" text-center fw-bold">No Medicines Found</p>
+              </div>
+            </body>
+          )}
+        </table>
+      </div>
+      <div className={`scroll bg-seashell scroll-y d-${vaccine}`} style={{ height:'100%' }} >
+        <table className="table datatable table-responsive text-center bg-seashell">
+          <thead>
+            <tr>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Item ID </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Item Name </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Batch No. </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Expiry Date </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> MRP{" "} </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Rate{" "} </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Qty. </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Disc% </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Trade Disc% </th>
+              <th colspan={Taxon == true ? "8" : "2"} scope="col-group" className={`border p-0 m-0 px-1`} > Total Tax </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Cost{" "} </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Total{" "} </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Print QR </th>
+            </tr>
+            <tr>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > CGST% </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > CGST </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > SGST% </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > SGST{" "} </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > IGST% </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > IGST{" "} </th>
+              <th scope="col" className={`border p-0 m-0 px-1`}> Total% </th>
+              <th scope="col" className={`border p-0 m-0 px-1`}> Total{" "} </th>
+            </tr>
+          </thead>
+          {props.transferoutarr.vaccines &&
+            props.transferoutarr.vaccines.length !== 0 ? (
+            <tbody className="border align-items-center p-0 m-0">
+              {props.transferoutarr.vaccines.map((item, _key) => (
+                <tr className="border p-0 m-0 align-middle" key={_key}>
+                  <td className="border p-0 m-0 align-middle"> {item && item.id !== null ? "v" + item.id : "N/A"} </td>
+                  <td className="border p-0 m-0 align-middle"> {item.vaccine && item.vaccine.name !== null ? item.vaccine.name : "N/A"} </td>
+                  <td className="border p-0 m-0 align-middle"> {item.batch_no && item.batch_no != null ? item.batch_no : "N/A"} </td>
+                  <td className="border p-0 m-0 align-middle"> {item.expiry_date && item.expiry_date != null ? reversefunction(item.expiry_date) : "N/A"} </td>
+                  <td className="border p-0 m-0 align-middle"> {item.mrp ? item.mrp : "N/A"} </td>
+                  <td className="border p-0 m-0 align-middle"> {item.rate ? item.rate : "N/A"} </td>
+                  <td className="border p-0 m-0 align-middle"> {item.qty ? item.qty : "N/A"} </td>
+                  <td className="border p-0 m-0 align-middle"> {item.discount ? item.discount : "N/A"} </td>
+                  <td className="border p-0 m-0 align-middle"> {item.trade_discount ? item.trade_discount : "N/A"} </td>
+                  <td className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none" }`} > {item.SGST_rate ? item.SGST_rate : "N/A"} </td>
+                  <td className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none" }`} > {item.SGST ? item.SGST : "N/A"} </td>
+                  <td className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none" }`} > {item.CGST_rate ? item.CGST_rate : "N/A"} </td>
+                  <td className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none" }`} > {item.CGST ? item.CGST : "N/A"} </td>
+                  <td className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none" }`} > {item.IGST_rate ? item.IGST_rate : "N/A"} </td>
+                  <td className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none" }`} > {item.IGST ? item.IGST : "N/A"} </td>
+                  <td className="border p-0 m-0 align-middle"> {TotalTaxPercent( item.CGST_rate, item.SGST_rate, item.IGST_rate )} </td>
+                  <td className="border p-0 m-0 align-middle"> {TotalTaxRate(item.CGST, item.SGST, item.IGST, item.qty)} </td>
+                  <td className="border p-0 m-0 align-middle"> {item.cost ? item.cost : "N/A"} </td>
+                  <td className="border p-0 m-0 align-middle"> {item.total_amount ? item.total_amount : "N/A"} </td>
+                  <td className="border p-0 m-0 align-middle">
+                    <button className="btn" onClick={() => { setqr(_key); }} > <img src={process.env.PUBLIC_URL + "/images/qrcode.png"} alt="displaying_image" className="me-1" /> </button>
+                  </td>
+                  <div className={`position-absolute top-0 start-0  text-start bg-pearl container-fluid d-${qr == _key ? "block" : "none" }`} style={{ top: "-8.2rem", zIndex: "5", height: "89vh" }} >
+                    <div className="container-fluid position-relative">
+                      <button type="button" className="btn-close closebtn position-absolute end-0 me-2" onClick={() => setqr()} aria-label="Close" ></button>
+                      <p className="mt-2 text-burntumber border-1 "> {item.vaccine && item.vaccine.name !== null ? item.vaccine.name : "N/A"}{" "} | {item && item.id !== null ? "v" + item.id : "N/A"} </p>
+                      <div className="row">
+                        <GenerateQR qty={item.qty} id={"v" + item.id} />
+                      </div>
+                    </div>
+                  </div>
+                </tr>
+              ))}
+            </tbody>
+          ) : (
+            <body className="text-center p-0 m-0 border border-1 ">
+              <div className="position-absolute border-0 start-0 end-0 mx-3 p-2 ">
+                <p className="fw-bold text-center">No Vaccines Found</p>
+              </div>
+            </body>
+          )}
+        </table>
+      </div>
+    </div>
+  );
+}
+function NewTransferInForm(){
+return(
+  <></>
+)
+}

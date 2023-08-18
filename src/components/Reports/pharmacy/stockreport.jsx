@@ -127,11 +127,9 @@ const StockReport = () => {
             <h2 className=" ms-3 text-charcoal fw-bolder mt-4" style={{ width: "fit-content" }}> {pagecount} {pagecount > 1 ? "Stock Reports" : "Stock Report"}{" "}  </h2>
 
             <div className="row p-0 m-0 text-center ms-2 mt-2">
-                <div className="col-auto bg-seashell rounded-2">
-                    <div className="row p-0 m-0 align-items-center align-self-center">
-                        <div className="col-auto p-0 m-0 text-charcoal text-center fw-bolder bg-seashell ">
+            <div className="col-auto text-charcoal text-center fw-bolder bg-seashell rounded-2 ">
                             <select className="fw-bold form-control bg-seashell text-burntumber border-0" onChange={(e) => { setLocation_Id(e.target.value) }}>
-                                <option value="Choose Location">Choose Location</option>
+                                <option value="Choose Location">Choose Location <div className="mt-3 bg-seashell border-0"></div> </option>
                                 {
                                     clinic.map((data) => (
                                         <option value={data.id}>{data.title}</option>
@@ -139,9 +137,12 @@ const StockReport = () => {
                                 }
                             </select>
                         </div>
+                <div className="col-auto ms-1 bg-seashell rounded-2">
+                    <div className="row p-0 m-0 align-items-center align-self-center">
                         <div className="col-auto p-0 m-0 text-charcoal text-center fw-bolder bg-seashell ">
                             <input type="date" placeholder="fromdate" className="form-control border-0 bg-seashell text-charcoal text-center fw-bolder " value={fromdate ? fromdate : currentDate ? currentDate : ""} onChange={(e) => { setfromdate(e.target.value); }} />
                         </div>
+                        <div className="col-auto p-0 m-0">-</div>
                         <div className="col-auto p-0 m-0  text-charcoal text-center fw-bolder bgseashell">
                             <input type="date" className=" form-control border-0 bg-seashell text-charcoal text-center fw-bolder" value={todate ? todate : fromdate ? fromdate : currentDate ? currentDate : ""} onChange={(e) => { settodate(e.target.value); }} />
                         </div>
