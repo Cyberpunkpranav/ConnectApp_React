@@ -26,6 +26,8 @@ function Appointments(props) {
     const [isLoading, setisLoading] = useState()
     const [visibles, setvisibles] = useState([])
 
+    const [pageindex,setpageindex] = useState("All")
+    const[doctorname,setdoctorname]=useState('')
     async function fetchallAppointmentslist() {
         if (doctorid) {
             setgetAppointments([])
@@ -111,6 +113,7 @@ function Appointments(props) {
     const clearfields = () => {
         setdoctorid()
         setfromdate()
+        setdoctorname()
         settodate()
     }
 
@@ -122,7 +125,7 @@ function Appointments(props) {
             }
         }
         if (arr.length != 0) {
-            return ' | ' + '(' + arr.length + ' Appointments)'
+            return '(' + arr.length + ' Appointments)'
         }
     }
 
@@ -131,36 +134,71 @@ function Appointments(props) {
             <section className="page2appointment ">
                 <div className="container-fluid">
                     <div className="row justify-content-between">
-                        <div className="col-12 col-sm-12 col-md-7 col-lg-6 col-xl-6">
-                            <div className="col-12 mt-3">
+                        <div className="col-auto">
+                            <div className="col-12 mt-2">
                                 <h4 className="p-lg-2 p-md-2 p-sm-2">All Appointments</h4>
                             </div>
-                            <div className="col-12 mt-2">
+                            <div className="col-auto mt-2">
                                 <div className="row p-0 m-0 g-lg-2 g-md-2 g-sm-2 g-2">
-                                    {
-                                        options.map((data, index) => (
-                                            <div className="col-auto">
-                                                <button className={`button-sm px-4 rounded-5 border-charcoal mx-1 position-relative button-${optionsindex == index ? 'charcoal' : 'pearl'}`} key={index} onClick={(e) => { setoptionsindex(index); settype(data[1]) }}>
-                                                    {data[0]}
-                                                    <span class={` d-${optionsindex == index ? '' : 'none'} position-absolute top-0 text-pearl start-100 translate-middle badge fw-normal px-2 rounded-pill bg-burntumber border-burntumber`} style={{ zIndex: '2' }}>
-                                                        {doctorid ? appointmentdata.length : getAppointments.length}
+                                    <div className="col-auto">
+                                        <div className="dropdown">
+                                        <button class="button button-seashell border-0 rounded-2 fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                           {pageindex?pageindex :"Status"}    <span class={` p-0 m-0 ms-2 badge text-burntumber fw-bolder`} style={{ zIndex: '2' }}> {doctorid ? appointmentdata.length : getAppointments.length} </span>
+                                         </button>
+                                        <ul class="dropdown-menu bg-seashell shadow-sm border-0">
+                                              <li className={`dropdown-item fw-bolder text-${pageindex == "All"?"white":'charcoal'} bg-${pageindex == "All"?"charcoal":'seashell'}`} onClick={()=>{setpageindex("All");settype('') }} >All  </li>
+                                              <li className={`dropdown-item fw-bolder text-${pageindex == "Cancelled"?"white":'charcoal'} bg-${pageindex == "Cancelled"?"charcoal":'seashell'}`} onClick={()=>{setpageindex("Cancelled");settype(3) }} >Cancelled </li>
+                                              <li className={`dropdown-item fw-bolder text-${pageindex == "Completed"?"white":'charcoal'} bg-${pageindex == "Completed"?"charcoal":'seashell'}`} onClick={()=>{setpageindex("Completed");settype(10) }} >Completed </li>
+                                              <li className={`dropdown-item fw-bolder text-${pageindex == "Unattended"?"white":'charcoal'} bg-${pageindex == "Unattended"?"charcoal":'seashell'}`} onClick={()=>{setpageindex("Unattended");settype(9) }} >Unattended </li>
+                                        </ul>
+                                        </div>
 
-                                                    </span>
-                                                </button>
+                                    </div>
+                                    <div className="col-auto">
+                                        <div className="dropdown">
+                                        <button class="button button-seashell border-0 rounded-2 fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                           {doctorname?doctorname :"Select Doctor"} 
+                                         </button>
+                                        <ul class="dropdown-menu bg-seashell shadow-sm border-0">
+                                            {
+                                               visibles ? (
+                                                docnames.map((response,i)=>(
+                                                    <li className={`dropdown-item fw-bolder text-${doctorid == response[0]?"white":'charcoal'} bg-${doctorid == response[0]?"charcoal":'seashell'}`} onClick={()=>{setdoctorid(response[0]);setdoctorname("Dr." +response[1]+" "+CountAppointments(response[0])) }} >Dr. {response[1]}{' '}{' '}{CountAppointments(response[0])}  </li>
+
+                                                ))
+                                               ):(
+                                                <li></li>
+                                               ) 
+                                            }
+                                        </ul>
+                                        </div>
+
+                                    </div>
+                                    <div className="col-auto bg-seashell rounded-2">
+                                        <div className="row p-0 m-0 align-items-center align-self-center">
+                                            <div className="col-auto p-0 m-0 bg-seashell">
+                                            <input placeholder="Start Date" className="button button-seashell bg-seashell fw-bolder" value={fromdate ? fromdate : APIDate ? APIDate : ''} onFocus={() => { settodate(); setdoctorid();setdoctorname(""); }} type="date" onChange={(e) => { setfromdate(e.target.value) }} />
                                             </div>
-                                        ))
-                                    }
+                                            <div className="col-auto p-0 m-0">-</div>
+                                            <div className="col-auto p-0 m-0">
+                                            <input disabled={fromdate == null} value={todate ? todate : fromdate ? fromdate : APIDate ? APIDate : ''} placeholder="End Date" className="button button-seashell border-0 fw-bolder" type="date" onChange={(e) => { settodate(e.target.value) }} />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="col-auto">
+                                    <button className=" button fw-bolder text-burntumber button-pearl" onClick={clearfields}>Clear</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div className="col-12 col-sm-12 col-md-5 col-lg-6 col-xl-6 daterange">
+                        {/* <div className="col-12 col-sm-12 col-md-5 col-lg-6 col-xl-6 daterange">
                             <div className="col-12 mt-3 mb-2">
                                 <img src={process.env.PUBLIC_URL + "/images/today.png"} className="img-fluid" alt="displaying_image" />
                                 <span className="text-burntumber fw-bold">Select Date Range</span>
                                 <button className="float-end button-sm button-burntumber mt-2" onClick={clearfields}>Clear</button>
                             </div>
                             <div className="d-flex g-md-3">
-                                <input placeholder="Start Date" className="form-control" value={fromdate ? fromdate : APIDate ? APIDate : ''} onFocus={() => { settodate(); setdoctorid() }} type="date" onChange={(e) => { setfromdate(e.target.value) }} />
+                                <input placeholder="Start Date" className="form-control" value={fromdate ? fromdate : APIDate ? APIDate : ''} onFocus={() => { settodate(); setdoctorid();setdoctorname(); }} type="date" onChange={(e) => { setfromdate(e.target.value) }} />
                                 <div className="text-center">_</div>
                                 <input disabled={fromdate == null} value={todate ? todate : fromdate ? fromdate : APIDate ? APIDate : ''} placeholder="End Date" className="form-control" type="date" onChange={(e) => { settodate(e.target.value) }} />
                             </div>
@@ -179,7 +217,7 @@ function Appointments(props) {
 
                                 </select>
                             </div>
-                        </div>
+                        </div> */}  
                     </div>
                 </div>
                 <section className="container-fluid scroll scroll-y mt-2 " >
@@ -190,17 +228,13 @@ function Appointments(props) {
                                 <th className="">Status</th>
                                 <th>Patient</th>
                                 <th>Doctor Name</th>
-                                {/* <th>Phone Number</th> */}
                                 <th>Date & F/U Date</th>
                                 <th>Time</th>
                                 <th>Amount</th>
-                                {/* <th>Rx</th> */}
-                                {/* <th>F/U Date</th> */}
-                                {/* <th>Actions</th> */}
                                 <th className=" text-center bg-pearl">More</th>
                             </tr>
                         </thead>
-                        <tbody className="text-charcoal ">
+                        <tbody className="text-charcoal appointments ">
                             {
                                 doctorid ? (
                                     <SelectedAppointments appointmentdata={appointmentdata} isselectedLoading={isselectedLoading} type={type} doctorid={doctorid} fromdate={fromdate} todate={todate} fetchallAppointmentslist={fetchallAppointmentslist} status={status} status_color={status_color} tConvert={tConvert} fetchapi={props.fetchapi} />

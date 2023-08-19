@@ -4173,7 +4173,7 @@ function Newpurchaseentryform(props) {
       date = date.split("-").reverse().join("-");
       return date;
     }
-  };
+  }
   async function filterclinic() {
     for (let i = 0; i < ClinicList.length; i++) {
       if (ClinicList[i].id == ClinicId) {
@@ -4959,10 +4959,7 @@ function Newpurchaseentryform(props) {
                 </div>
               </div>
             </div>
-            <div
-              className=" p-0 m-0 scroll scroll-y"
-              style={{ maxHeight: "50vh", Height: "50vh" }}
-            >
+            <div className=" p-0 m-0 scroll scroll-y" style={{ maxHeight: "50vh", Height: "50vh" }} >
               <table className="table m-0 datatable bg-pearl text-start position-relative">
                 <thead className=" bg-pearl position-sticky top-0" style={{ color: "gray", fontWeight: "600" }} >
                   <tr>
@@ -4983,7 +4980,8 @@ function Newpurchaseentryform(props) {
                 </thead>
                 {MedicineentriesArr ? (
                   <tbody style={{ Height: "48vh", maxHeight: "48vh", color: "var(--charcoal)", fontWeight: "600", }} >
-                    {MedicineentriesArr.map((item, _key) => (
+                    {
+                    MedicineentriesArr.map((item, _key) => (
                       <tr key={_key} className={`bg-${_key % 2 == 0 ? "seashell" : "pearl"}`} >
                         <td><input type="checkbox" checked={_key == tableindex ? true : false} onClick={() => { indexing(_key); }} className=" form-check-input" /> </td>
                         <td>{item.Itemid}</td>
@@ -4999,16 +4997,7 @@ function Newpurchaseentryform(props) {
                         <td>{item.Qty}</td>
                         <td>{item.costperunit}</td>
                         <td>{item.totalamount}</td>
-                        <td>
-                          <button
-                            onClick={() => {
-                              DeleteMedicine(item.Itemid);
-                            }}
-                            className="btn btn-sm button-burntumber"
-                          >
-                            Delete
-                          </button>
-                        </td>
+                        <td><button onClick={() => { DeleteMedicine(item.Itemid); }} className="btn btn-sm button-burntumber" > Delete </button> </td>
                       </tr>
                     ))}
                   </tbody>
@@ -5032,14 +5021,7 @@ function Newpurchaseentryform(props) {
             className={`col-4 m-0 p-0 scroll scroll-y border border-1 medicineinfosection d-${vendorid ? "block" : "none"} bg-seashell ps-2`} id="medicineinfosection" style={{ maxHeight: "81vh", Height: "81vh" }} >
             <h5 className="mt-2">Add Items</h5>
             <div className="col-12">
-              <input
-                type="checkbox"
-                checked={IsConsumable == 0 ? false : true}
-                className="form-check-input"
-                onChange={() => {
-                  IsConsumable == 0 ? setIsConsumable(1) : setIsConsumable(0);
-                }}
-              />{" "}
+              <input type="checkbox" checked={IsConsumable == 0 ? false : true} className="form-check-input" onChange={() => { IsConsumable == 0 ? setIsConsumable(1) : setIsConsumable(0); }} />
               <label>Is Consumable</label>
               <div className=" col-10 col-md-11">
                 <div className="position-relative">
@@ -5078,232 +5060,80 @@ function Newpurchaseentryform(props) {
                       )}
                   </div>
                 </div>
-
                 <label className="mb-2 pt-2">Batch Number</label>
-                <input
-                  type="text"
-                  max="10"
-                  className="form-control bg-seashell batchnumber rounded-1"
-                  id="inputEmail4"
-                  placeholder="Batch Number"
-                  value={batchno ? batchno : ""}
-                  onChange={(e) => setbatchno(e.target.value)}
-                  required
-                />
+                <input type="text" max="10" className="form-control bg-seashell batchnumber rounded-1" id="inputEmail4" placeholder="Batch Number" value={batchno ? batchno : ""} onChange={(e) => setbatchno(e.target.value)} required />
                 <label className="pt-3 mb-2">Expiry Date</label>
-                <input
-                  type="Date"
-                  className="form-control bg-seashell reounded-1 expirydate"
-                  value={expdate ? expdate : ""}
-                  onChange={(e) => {
-                    setexpdate(e.target.value);
-                  }}
-                  required
-                />
+                <input type="Date" className="form-control bg-seashell reounded-1 expirydate" value={expdate ? expdate : ""} onChange={(e) => { setexpdate(e.target.value); }} required />
                 <label className="pt-3 mb-2">Manufacturing Date</label>
-                <input
-                  type="Date"
-                  className="form-control bg-seashell reounded-1 manufacturingdate"
-                  value={manufdate ? manufdate : ""}
-                  onChange={(e) => {
-                    setmanufdate(e.target.value);
-                  }}
-                  required
-                />
+                <input type="Date" className="form-control bg-seashell reounded-1 manufacturingdate" value={manufdate ? manufdate : ""} onChange={(e) => { setmanufdate(e.target.value); }} required />
               </div>
               <div className="col-12 form-group col-md-11 col-lg-11">
                 <div className="row p-0 m-0">
                   <div className="col-5">
                     <label className="mb-2">MRP</label>
-                    <input
-                      type="number"
-                      max="10"
-                      className="form-control bg-seashell mrp rounded-1  m-auto"
-                      placeholder="00"
-                      value={mrp ? mrp : ""}
-                      onChange={(e) => {
-                        setmrp(e.target.value);
-                      }}
-                      required
-                    />
+                    <input type="number" max="10" className="form-control bg-seashell mrp rounded-1  m-auto" placeholder="00" value={mrp ? mrp : ""} onChange={(e) => { setmrp(e.target.value); }} required />
                   </div>
                   <div className="col-5">
                     <label className="mb-2"> Rate</label>
-                    <input
-                      type="number"
-                      max="10"
-                      className="form-control bg-seashell rate rounded-1  m-auto"
-                      placeholder="00"
-                      value={rate ? rate : ""}
-                      onChange={(e) => {
-                        setrate(e.target.value);
-                        Calculate(e.target.value);
-                      }}
-                      required
-                    />
+                    <input type="number" max="10" className="form-control bg-seashell rate rounded-1  m-auto" placeholder="00" value={rate ? rate : ""} onChange={(e) => { setrate(e.target.value); Calculate(e.target.value); }} required />
                   </div>
                 </div>
                 <div className="row p-0 m-0">
                   <div className="col-5">
                     <label className="mb-2">Qty</label>
-                    <input
-                      type="number"
-                      max="10"
-                      className="form-control bg-seashell mrp rounded-1  m-auto"
-                      placeholder="00"
-                      value={qty ? qty : ""}
-                      onChange={(e) => {
-                        setqty(e.target.value);
-                        Calculate(rate, e.target.value);
-                      }}
-                      required
-                    />
+                    <input type="number" max="10" className="form-control bg-seashell mrp rounded-1  m-auto" placeholder="00" value={qty ? qty : ""} onChange={(e) => { setqty(e.target.value); Calculate(rate, e.target.value); }} required />
                   </div>
                   <div className="col-5">
                     <label className="mb-2">Free Qty</label>
-                    <input
-                      type="number"
-                      max="10"
-                      className="form-control bg-seashell rate rounded-1  m-auto"
-                      placeholder="00"
-                      value={freeqty ? freeqty : ""}
-                      onChange={(e) => {
-                        setfreeqty(e.target.value);
-                      }}
-                      required
-                    />
+                    <input type="number" max="10" className="form-control bg-seashell rate rounded-1  m-auto" placeholder="00" value={freeqty ? freeqty : ""} onChange={(e) => { setfreeqty(e.target.value); }} required />
                   </div>
                 </div>
                 <div className="row p-0 m-0 mt-2">
                   <div className="col-5">
                     <label className="mb-2">Discount &#40;%&#41;</label>
-                    <input
-                      type="number"
-                      max="10"
-                      className="form-control bg-seashell mrp rounded-1  m-auto"
-                      placeholder="00"
-                      value={disc ? disc : ""}
-                      onChange={(e) => {
-                        setdisc(e.target.value);
-                      }}
-                      required
-                    />
+                    <input type="number" max="10" className="form-control bg-seashell mrp rounded-1  m-auto" placeholder="00" value={disc ? disc : ""} onChange={(e) => { setdisc(e.target.value); }} required />
                   </div>
                   <div className="col-5 pb-3">
                     <label className="mb-2">Trade Disc. &#40;%&#41;</label>
-                    <input
-                      type="number"
-                      max="10"
-                      className="form-control bg-seashell rate rounded-1  m-auto"
-                      placeholder="00"
-                      value={trddisc ? trddisc : ""}
-                      onChange={(e) => {
-                        settrddisc(e.target.value);
-                      }}
-                      required
-                    />
+                    <input type="number" max="10" className="form-control bg-seashell rate rounded-1  m-auto" placeholder="00" value={trddisc ? trddisc : ""} onChange={(e) => { settrddisc(e.target.value); }} required />
                   </div>
                   <hr />
-                  <div
-                    className={`col-12 ps-2 py-2 d-${vendorcode == clinicstatecode ? "block" : "none"
-                      }`}
-                  >
+                  <div className={`col-12 ps-2 py-2 d-${vendorcode == clinicstatecode ? "block" : "none" }`} >
                     <div className="row align-items-center p-0 m-0">
                       <div className="col-2 ">
                         <h6>SGST</h6>
                       </div>
                       <div className="col-5">
-                        <input
-                          type="number"
-                          max="10"
-                          className="form-control bg-seashell mrp rounded-1  m-auto"
-                          placeholder="00"
-                          disabled={true}
-                          value={sgst ? sgst : ""}
-                          required
-                        />
+                        <input type="number" max="10" className="form-control bg-seashell mrp rounded-1  m-auto" placeholder="00" disabled={true} value={sgst ? sgst : ""} required />
                       </div>
                       <div className="col-3">
-                        <input
-                          type="number"
-                          max="10"
-                          className="form-control bg-seashell mrp rounded-1  m-auto"
-                          placeholder="Rate"
-                          value={sgstprcnt ? sgstprcnt : ""}
-                          onChange={(e) => {
-                            setsgstprcnt(e.target.value);
-                            setcgstprcnt(e.target.value);
-                            CalculateGst();
-                          }}
-                          required
-                        />
+                        <input type="number" max="10" className="form-control bg-seashell mrp rounded-1  m-auto" placeholder="Rate" value={sgstprcnt ? sgstprcnt : ""} onChange={(e) => { setsgstprcnt(e.target.value); setcgstprcnt(e.target.value); CalculateGst(); }} required />
                       </div>
                     </div>
                   </div>
-                  <div
-                    className={`col-12 ps-2 py-2 d-${vendorcode == clinicstatecode ? "block" : "none"
-                      }`}
-                  >
+                  <div className={`col-12 ps-2 py-2 d-${vendorcode == clinicstatecode ? "block" : "none" }`} >
                     <div className="row p-0 m-0 align-items-center">
                       <div className="col-2">
                         <h6>CGST</h6>
                       </div>
                       <div className="col-5">
-                        <input
-                          type="number"
-                          max="10"
-                          className="form-control bg-seashell mrp rounded-1  m-auto"
-                          disabled={true}
-                          placeholder="00"
-                          value={cgst ? cgst : sgst ? sgst : ""}
-                          required
-                        />
+                        <input type="number" max="10" className="form-control bg-seashell mrp rounded-1  m-auto" disabled={true} placeholder="00" value={cgst ? cgst : sgst ? sgst : ""} required />
                       </div>
                       <div className="col-3">
-                        <input
-                          type="number"
-                          max="10"
-                          className="form-control bg-seashell mrp rounded-1  m-auto"
-                          disabled={true}
-                          placeholder="Rate"
-                          value={
-                            cgstprcnt ? cgstprcnt : sgstprcnt ? sgstprcnt : ""
-                          }
-                          required
-                        />
+                        <input type="number" max="10" className="form-control bg-seashell mrp rounded-1  m-auto" disabled={true} placeholder="Rate" value={ cgstprcnt ? cgstprcnt : sgstprcnt ? sgstprcnt : "" } required />
                       </div>
                     </div>
                   </div>
-                  <div
-                    className={`col-12 ps-2 py-2 d-${vendorcode == clinicstatecode ? "none" : "block"
-                      }`}
-                  >
+                  <div className={`col-12 ps-2 py-2 d-${vendorcode == clinicstatecode ? "none" : "block" }`} >
                     <div className="row p-0 m-0 align-items-center">
                       <div className="col-2 ">
                         <h6>IGST</h6>
                       </div>
                       <div className="col-5">
-                        <input
-                          type="number"
-                          max="10"
-                          className="form-control bg-seashell mrp rounded-1  m-auto"
-                          placeholder="00"
-                          disabled={true}
-                          value={CalculateIGst() ? CalculateIGst() : ""}
-                        />
+                        <input type="number" max="10" className="form-control bg-seashell mrp rounded-1  m-auto" placeholder="00" disabled={true} value={CalculateIGst() ? CalculateIGst() : ""} />
                       </div>
                       <div className="col-3">
-                        <input
-                          type="number"
-                          max="10"
-                          className="form-control bg-seashell mrp rounded-1  m-auto"
-                          placeholder="Rate"
-                          value={igstprcnt ? igstprcnt : ""}
-                          onChange={(e) => {
-                            setigstprcnt(e.target.value);
-                          }}
-                          required
-                        />
+                        <input type="number" max="10" className="form-control bg-seashell mrp rounded-1  m-auto" placeholder="Rate" value={igstprcnt ? igstprcnt : ""} onChange={(e) => { setigstprcnt(e.target.value); }} required />
                       </div>
                     </div>
                   </div>
@@ -5314,55 +5144,19 @@ function Newpurchaseentryform(props) {
                 <div className="row p-0 m-0 g-3">
                   <div className="col-5">
                     <label className="mb-2">Cost/Unit</label>
-                    <input
-                      type="number"
-                      max="10"
-                      className="form-control bg-seashell costunit rounded-1"
-                      placeholder="00"
-                      disabled
-                      value={CalculateCPU() ? CalculateCPU() : ""}
-                      onChange={(e) => {
-                        setcpu(e.target.value);
-                      }}
-                      required
-                    />
+                    <input type="number" max="10" className="form-control bg-seashell costunit rounded-1" placeholder="00" disabled value={CalculateCPU() ? CalculateCPU() : ""} onChange={(e) => { setcpu(e.target.value); }} required />
                   </div>
                   <div className="col-5">
                     <label className="mb-2">Total Amount</label>
-                    <input
-                      type="number"
-                      max="10"
-                      className="form-control bg-seashell totalamount rounded-1"
-                      placeholder="00"
-                      disabled
-                      value={Calculate() ? Calculate() : ""}
-                      onChange={(e) => {
-                        settotalamt(e.target.value);
-                      }}
-                      required
-                    />
+                    <input type="number" max="10" className="form-control bg-seashell totalamount rounded-1" placeholder="00" disabled value={Calculate() ? Calculate() : ""} onChange={(e) => { settotalamt(e.target.value); }} required />
                   </div>
                 </div>
               </div>
               <div className="col-6 py-3 m-auto text-center">
                 {tableindex == -1 || tableindex == undefined ? (
-                  <button
-                    type="submit"
-                    className="btn  button-charcoal done px-5"
-                    onClick={InsertMedicines}
-                  >
-                    {" "}
-                    Add{" "}
-                  </button>
+                  <button type="submit" className="btn  button-charcoal done px-5" onClick={InsertMedicines} > {" "} Add{" "} </button>
                 ) : (
-                  <button
-                    type="submit"
-                    className="btn  button-charcoal done px-5"
-                    onClick={UpdateMedicines}
-                  >
-                    {" "}
-                    Update{" "}
-                  </button>
+                  <button type="submit" className="btn  button-charcoal done px-5" onClick={UpdateMedicines} > {" "} Update{" "} </button>
                 )}
               </div>
             </div>
@@ -8247,7 +8041,7 @@ function TransferOut(props){
   const currentDate = useContext(TodayDate);
   const ClinicID = localStorage.getItem("ClinicId");
   const permission = useContext(Permissions);
-  const url = useContext(URL);
+  const url = useContext(URL);  
   const [peidw, setpeidw] = useState("none");
 
   const toggle_peidw = () => {
@@ -8470,16 +8264,16 @@ function TransferOut(props){
      <table className="table">
        <thead className=" align-middle position-sticky top-0 bg-pearl">
          <tr>
-           <th className="fw-bolder   text-charcoal75" > TI ID </th>
-           <th className="fw-bolder   text-charcoal75" > Channel </th>
-           <th className="fw-bolder   text-charcoal75" > Location From </th>
-           <th className="fw-bolder   text-charcoal75" > Location To </th>
-           <th className="fw-bolder   text-charcoal75" > Date </th>
-           <th className="fw-bolder   text-charcoal75" >Transfer By </th>
-           <th className="fw-bolder   text-charcoal75" >Transfer To </th>
-           <th className="fw-bolder   text-charcoal75" > Total Items</th>
-           <th className="fw-bolder   text-charcoal75" > Amount </th>
-           <th className="fw-bolder   text-charcoal75" > Approval Status </th>
+           <th className="fw-bolder text-charcoal75"> TO ID </th>
+           <th className="fw-bolder text-charcoal75"> Channel </th>
+           <th className="fw-bolder text-charcoal75"> Location From </th>
+           <th className="fw-bolder text-charcoal75"> Location To </th>
+           <th className="fw-bolder text-charcoal75"> Date </th>
+           <th className="fw-bolder text-charcoal75">Transfer By </th>
+           <th className="fw-bolder text-charcoal75">Transfer To </th>
+           <th className="fw-bolder text-charcoal75"> Total Items</th>
+           <th className="fw-bolder text-charcoal75"> Amount </th>
+           <th className="fw-bolder text-charcoal75"> Approval Status </th>
            <th className="fw-bolder  text-center  text-charcoal75"  > Inventory </th>
            {/* <th className='fw-bolder p-0 m-0  text-charcoal75 text-center' scope='col' style={{ zIndex: '3' }}>more</th> */}
          </tr>
@@ -8498,7 +8292,7 @@ function TransferOut(props){
                ></div>
              </div>
            </tr>
-         </tbody>
+         </tbody> 
        ) : transferoutarr && transferoutarr.length != 0 ? (
          <tbody>
            {
@@ -8529,18 +8323,6 @@ function TransferOut(props){
                   {i == index ? 
                   ( <TOitemdetailssection transferoutarr={transferoutarr[i]} id={"TO-" + item.id} toggle_peidw={toggle_peidw} /> ) : ( <></> )}
                </td>
-               {/* <td className={`position-absolute start-0 text-start bg-pearl container-fluid d-${qr == i ? "block" : "none" }`} style={{ top: "-8.5rem", zIndex: "5", height: "89vh" }} >
-                 {i == qr ? (
-                   <div className="container-fluid position-relative">
-                     <button type="button" className="btn-close closebtn position-absolute end-0 me-2" onClick={() => setqr()} aria-label="Close" ></button>
-                     <div className="row">
-                       <GenerateQR purchaseentry={purchaseentryarr[i]} />
-                     </div>
-                   </div>
-                 ) : (
-                   <></>
-                 )}
-               </td> */}
              </tr>
            ))}
          </tbody>
@@ -8577,9 +8359,9 @@ function TransferOut(props){
      />
    </div>
  </div>
- <section className={`newpurchaseentrysection position-absolute start-0 end-0 bg-seashell border border-1 d-${npef}`} >
+ <section className={` position-absolute start-0 top-0 end-0 mx-auto bg-seashell rounded-2 border border-1 d-${npef}`} style={{height:'70vh',width:'60vh'}} >
    {
-     <NewTransferInForm
+     <NewTransferOutForm
        toggle_npef={toggle_npef}
        GETTransferOutList={GETTransferOutList}
      />
@@ -8681,7 +8463,6 @@ function TOitemdetailssection(props) {
               <th colspan={Taxon == true ? "8" : "2"} scope="col-group" className="border p-0 m-0 px-1" > Total Tax </th>
               <th rowspan="2" className="border p-0 m-0 px-1"> Cost </th>
               <th rowspan="2" className="border p-0 m-0 px-1"> Total </th>
-              <th rowspan="2" className="border p-0 m-0 px-1"> Print QR </th>
             </tr>
             <tr>
               <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > CGST% </th>
@@ -8694,40 +8475,30 @@ function TOitemdetailssection(props) {
               <th scope="col" className={`border p-0 m-0 px-1`}> Total </th>
             </tr>
           </thead>
-          {props.transferoutarr.medicines &&
-            props.transferoutarr.medicines.length !== 0 ? (
+          {props.transferoutarr.medicines && props.transferoutarr.medicines.length !== 0 ? (
             <tbody className="border align-items-center p-0 m-0">
               {props.transferoutarr.medicines.map((item, _key) => (
-                <tr className="border p-0 m-0 align-middle" key={_key}>
-                  <td className="border p-0 m-0 align-middle"> {item && item.id !== null ? "m" + item.id : "N/A"} </td>
-                  <td className="border p-0 m-0 align-middle"> {item.medicine && item.medicine.name !== null ? item.medicine.name : "N/A"} </td>
-                  <td className="border p-0 m-0 align-middle"> {item.batch_no && item.batch_no != null ? item.batch_no : "N/A"} </td>
-                  <td className="border p-0 m-0 align-middle"> {item.expiry_date && item.expiry_date != null ? reversefunction(item.expiry_date) : "N/A"} </td>
-                  <td className="border p-0 m-0 align-middle"> {item.mrp ? item.mrp : "N/A"} </td>
-                  <td className="border p-0 m-0 align-middle"> {item.rate ? item.rate : "N/A"} </td>
-                  <td className="border p-0 m-0 align-middle"> {item.qty ? item.qty : "N/A"} </td>
-                  <td className="border p-0 m-0 align-middle"> {item.discount ? item.discount : "N/A"} </td>
-                  <td className="border p-0 m-0 align-middle"> {item.trade_discount ? item.trade_discount : "N/A"} </td>
-                  <td className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none" }`} > {item.SGST_rate ? Number(item.SGST_rate) : ""} </td>
-                  <td className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none" }`} > {item.SGST ? (Number(item.SGST) * Number(item.qty)).toFixed(2) : ""} </td>
-                  <td className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none" }`} > {item.CGST_rate ? Number(item.CGST_rate) : ""} </td>
-                  <td className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none" }`} > {item.CGST ? (Number(item.CGST) * Number(item.qty)).toFixed(2) : ""} </td>
-                  <td className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none" }`} > {item.IGST_rate ? Number(item.IGST_rate) : ""} </td>
-                  <td className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none" }`} > {item.IGST ? (Number(item.IGST) * Number(item.qty)).toFixed(2) : ""} </td>
-                  <td className="border p-0 m-0 align-middle"> {TotalTaxPercent( item.CGST_rate, item.SGST_rate, item.IGST_rate )} </td>
-                  <td className="border p-0 m-0 align-middle"> {TotalTaxRate(item.CGST, item.SGST, item.IGST, item.qty)} </td>
-                  <td className="border p-0 m-0 align-middle"> {item.cost ? item.cost : "N/A"} </td>
-                  <td className="border p-0 m-0 align-middle"> {item.total_amount ? item.total_amount : "N/A"} </td>
-                  <td className="border p-0 m-0 align-middle"> <button className="btn" onClick={() => { setqr(_key); }} > <img src={process.env.PUBLIC_URL + "/images/qrcode.png"} alt="displaying_image" className="me-1" /> </button> </td>
-                  <div className={`position-absolute top-0 start-0  text-start bg-pearl container-fluid d-${qr == _key ? "block" : "none" }`} style={{ top: "-4.2rem", zIndex: "5", height: "89vh" }} >
-                    <div className="container-fluid position-relative">
-                      <button type="button" className="btn-close closebtn position-absolute end-0 me-2" onClick={() => setqr()} aria-label="Close" ></button>
-                      <p className="mt-2 text-burntumber border-1 "> {item.medicine && item.medicine.name !== null ? item.medicine.name : "N/A"}{" "} | {item && item.id !== null ? "m" + item.id : "N/A"} </p>
-                      <div className="row">
-                        <GenerateQR qty={item.qty} id={"m" + item.id} />
-                      </div>
-                    </div>
-                  </div>
+                <tr className="border align-middle" key={_key}>
+                  <td className="border align-middle"> {item.medicine_stock_details && item.medicine_stock_details.medicine.id !== undefined ? "m"+item.medicine_stock_details.medicine.id : "N/A"} </td>
+                  <td className="border align-middle"> {item.medicine_stock_details && item.medicine_stock_details.medicine.display_name !== undefined ? item.medicine_stock_details.medicine.display_name : "N/A"} </td>
+                  <td className="border align-middle"> {item.medicine_stock_details && item.medicine_stock_details.batch_no !== undefined ? item.medicine_stock_details.batch_no : "N/A"}</td>
+                  <td className="border align-middle"> {item.medicine_stock_details && item.medicine_stock_details.expiry_date !== undefined ? reversefunction(item.medicine_stock_details.expiry_date) : "N/A"} </td>
+                  <td className="border align-middle"> {item.medicine_stock_details && item.medicine_stock_details.mrp !== undefined ? "₹"+item.medicine_stock_details.mrp : "N/A"} </td>
+                  <td className="border align-middle"> {item.medicine_stock_details && item.medicine_stock_details.rate !== undefined ? "₹"+item.medicine_stock_details.rate : "N/A"} </td>
+                  <td className="border align-middle"> {item.qty ? item.qty : "N/A"} </td>
+                  <td className="border align-middle"> {item.medicine_stock_details && item.medicine_stock_details.discount !== undefined ?  item.medicine_stock_details.discount: "N/A"} </td>
+                  <td className="border align-middle"> {item.medicine_stock_details && item.medicine_stock_details.trade_discount !== undefined ?  item.medicine_stock_details.trade_discount: "N/A"} </td>
+                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.medicine_stock_details && item.medicine_stock_details.SGST_rate ? Number( item.medicine_stock_details.SGST_rate) : ""} </td>
+                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.medicine_stock_details && item.medicine_stock_details.SGST ? (Number(item.medicine_stock_details.SGST) * Number(item.qty)).toFixed(2) : ""} </td>
+                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.medicine_stock_details && item.medicine_stock_details.CGST_rate ? Number(item.medicine_stock_details.CGST_rate ) : ""} </td>
+                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.medicine_stock_details && item.medicine_stock_details.CGST ? (Number(item.medicine_stock_details.CGST) * Number(item.qty)).toFixed(2) : ""} </td>
+                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.medicine_stock_details && item.medicine_stock_details.IGST_rate ? Number(item.medicine_stock_details.IGST_rate ) : ""} </td>
+                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.medicine_stock_details && item.medicine_stock_details.IGST ? (Number(item.medicine_stock_details.IGST) * Number(item.qty)).toFixed(2) : ""} </td>
+                  <td className="border align-middle"> {TotalTaxPercent(item.medicine_stock_details.CGST_rate , item.medicine_stock_details.SGST_rate, item.medicine_stock_details.IGST_rate)} </td>
+                  <td className="border align-middle"> {TotalTaxRate(item.medicine_stock_details.CGST,item.medicine_stock_details.SGST,item.medicine_stock_details.IGST, item.qty)} </td>
+                  <td className="border align-middle"> {item.medicine_stock_details.cost ?"₹"+item.medicine_stock_details.cost  : "N/A"} </td>
+                  <td className="border align-middle"> {item.total_amount ? item.total_amount : "N/A"} </td>
+  
                 </tr>
               ))}
             </tbody>
@@ -8756,7 +8527,6 @@ function TOitemdetailssection(props) {
               <th colspan={Taxon == true ? "8" : "2"} scope="col-group" className={`border p-0 m-0 px-1`} > Total Tax </th>
               <th rowspan="2" className="border p-0 m-0 px-1"> Cost{" "} </th>
               <th rowspan="2" className="border p-0 m-0 px-1"> Total{" "} </th>
-              <th rowspan="2" className="border p-0 m-0 px-1"> Print QR </th>
             </tr>
             <tr>
               <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > CGST% </th>
@@ -8774,37 +8544,26 @@ function TOitemdetailssection(props) {
             <tbody className="border align-items-center p-0 m-0">
               {props.transferoutarr.vaccines.map((item, _key) => (
                 <tr className="border p-0 m-0 align-middle" key={_key}>
-                  <td className="border p-0 m-0 align-middle"> {item && item.id !== null ? "v" + item.id : "N/A"} </td>
-                  <td className="border p-0 m-0 align-middle"> {item.vaccine && item.vaccine.name !== null ? item.vaccine.name : "N/A"} </td>
-                  <td className="border p-0 m-0 align-middle"> {item.batch_no && item.batch_no != null ? item.batch_no : "N/A"} </td>
-                  <td className="border p-0 m-0 align-middle"> {item.expiry_date && item.expiry_date != null ? reversefunction(item.expiry_date) : "N/A"} </td>
-                  <td className="border p-0 m-0 align-middle"> {item.mrp ? item.mrp : "N/A"} </td>
-                  <td className="border p-0 m-0 align-middle"> {item.rate ? item.rate : "N/A"} </td>
-                  <td className="border p-0 m-0 align-middle"> {item.qty ? item.qty : "N/A"} </td>
-                  <td className="border p-0 m-0 align-middle"> {item.discount ? item.discount : "N/A"} </td>
-                  <td className="border p-0 m-0 align-middle"> {item.trade_discount ? item.trade_discount : "N/A"} </td>
-                  <td className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none" }`} > {item.SGST_rate ? item.SGST_rate : "N/A"} </td>
-                  <td className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none" }`} > {item.SGST ? item.SGST : "N/A"} </td>
-                  <td className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none" }`} > {item.CGST_rate ? item.CGST_rate : "N/A"} </td>
-                  <td className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none" }`} > {item.CGST ? item.CGST : "N/A"} </td>
-                  <td className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none" }`} > {item.IGST_rate ? item.IGST_rate : "N/A"} </td>
-                  <td className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none" }`} > {item.IGST ? item.IGST : "N/A"} </td>
-                  <td className="border p-0 m-0 align-middle"> {TotalTaxPercent( item.CGST_rate, item.SGST_rate, item.IGST_rate )} </td>
-                  <td className="border p-0 m-0 align-middle"> {TotalTaxRate(item.CGST, item.SGST, item.IGST, item.qty)} </td>
-                  <td className="border p-0 m-0 align-middle"> {item.cost ? item.cost : "N/A"} </td>
-                  <td className="border p-0 m-0 align-middle"> {item.total_amount ? item.total_amount : "N/A"} </td>
-                  <td className="border p-0 m-0 align-middle">
-                    <button className="btn" onClick={() => { setqr(_key); }} > <img src={process.env.PUBLIC_URL + "/images/qrcode.png"} alt="displaying_image" className="me-1" /> </button>
-                  </td>
-                  <div className={`position-absolute top-0 start-0  text-start bg-pearl container-fluid d-${qr == _key ? "block" : "none" }`} style={{ top: "-8.2rem", zIndex: "5", height: "89vh" }} >
-                    <div className="container-fluid position-relative">
-                      <button type="button" className="btn-close closebtn position-absolute end-0 me-2" onClick={() => setqr()} aria-label="Close" ></button>
-                      <p className="mt-2 text-burntumber border-1 "> {item.vaccine && item.vaccine.name !== null ? item.vaccine.name : "N/A"}{" "} | {item && item.id !== null ? "v" + item.id : "N/A"} </p>
-                      <div className="row">
-                        <GenerateQR qty={item.qty} id={"v" + item.id} />
-                      </div>
-                    </div>
-                  </div>
+                  <td className="border align-middle"> {item.vaccine_stock_details  && item.vaccine_stock_details.vaccine.id !== undefined ? "v"+item.vaccine_stock_details.vaccine.id : "N/A"} </td>
+                  <td className="border align-middle"> {item.vaccine_stock_details  && item.vaccine_stock_details.vaccine.name !== undefined ? item.vaccine_stock_details.vaccine.name : "N/A"} </td>
+                  <td className="border align-middle"> {item.vaccine_stock_details  && item.vaccine_stock_details.batch_no !== undefined ? item.vaccine_stock_details.batch_no : "N/A"}</td>
+                  <td className="border align-middle"> {item.vaccine_stock_details  && item.vaccine_stock_details.expiry_date !== undefined ? reversefunction(item.vaccine_stock_details.expiry_date) : "N/A"} </td>
+                  <td className="border align-middle"> {item.vaccine_stock_details  && item.vaccine_stock_details.mrp !== undefined ? "₹"+item.vaccine_stock_details.mrp : "N/A"} </td>
+                  <td className="border align-middle"> {item.vaccine_stock_details  && item.vaccine_stock_details.rate !== undefined ? "₹"+item.vaccine_stock_details.rate : "N/A"} </td>
+                  <td className="border align-middle"> {item.qty ? item.qty : "N/A"} </td>
+                  <td className="border align-middle"> {item.vaccine_stock_details && item.vaccine_stock_details.discount !== undefined ?  item.vaccine_stock_details.discount: "N/A"} </td>
+                  <td className="border align-middle"> {item.vaccine_stock_details && item.vaccine_stock_details.trade_discount !== undefined ?  item.vaccine_stock_details.trade_discount: "N/A"} </td>
+                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.vaccine_stock_details && item.vaccine_stock_details.SGST_rate ? Number( item.vaccine_stock_details.SGST_rate) : ""} </td>
+                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.vaccine_stock_details && item.vaccine_stock_details.SGST ? (Number(item.vaccine_stock_details.SGST) * Number(item.qty)).toFixed(2) : ""} </td>
+                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.vaccine_stock_details && item.vaccine_stock_details.CGST_rate ? Number(item.vaccine_stock_details.CGST_rate ) : ""} </td>
+                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.vaccine_stock_details && item.vaccine_stock_details.CGST ? (Number(item.vaccine_stock_details.CGST) * Number(item.qty)).toFixed(2) : ""} </td>
+                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.vaccine_stock_details && item.vaccine_stock_details.IGST_rate ? Number(item.vaccine_stock_details.IGST_rate ) : ""} </td>
+                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.vaccine_stock_details && item.vaccine_stock_details.IGST ? (Number(item.vaccine_stock_details.IGST) * Number(item.qty)).toFixed(2) : ""} </td>
+                  <td className="border align-middle"> {TotalTaxPercent(item.vaccine_stock_details.CGST_rate , item.vaccine_stock_details.SGST_rate, item.vaccine_stock_details.IGST_rate)} </td>
+                  <td className="border align-middle"> {TotalTaxRate(item.vaccine_stock_details.CGST,item.vaccine_stock_details.SGST,item.vaccine_stock_details.IGST, item.qty)} </td>
+                  <td className="border align-middle"> {item.vaccine_stock_details.cost ?"₹"+item.vaccine_stock_details.cost  : "N/A"} </td>
+                  <td className="border align-middle"> {item.total_amount ? item.total_amount : "N/A"} </td>
+
                 </tr>
               ))}
             </tbody>
@@ -8820,8 +8579,340 @@ function TOitemdetailssection(props) {
     </div>
   );
 }
-function NewTransferInForm(){
+function NewTransferInForm(props){
 return(
   <></>
 )
 }
+function NewTransferOutForm(props){
+  const url = useContext(URL)
+  const medicinesref = useRef(null)
+  const cliniclist = useContext(Clinic)
+  const currentDate = useContext(TodayDate);
+  const clinicid = localStorage.getItem('ClinicId')
+  const [fromlocation,setfromlocation] =useState(clinicid)
+  const [fromlocationname,setfromlocationname] =useState("")
+  const [tolocation,settolocation] =useState()
+  const [tolocationname,settolocationname] =useState("")
+  const [channel,setchannel]=useState("")
+  const [channelname,setchannelname]=useState("")
+  const [transferdate,settransferdate]=useState()
+  const [stage1, setstage1] = useState('block')
+  const [stage2, setstage2] = useState('none')
+  const [loadsearch,setloadsearch]=useState(false)
+  const [itemsearch, setitemsearch] = useState([""]);
+  const [itemname, setitemname] = useState();
+  const [itemid, setitemid] = useState();
+  const [itemtype, setitemtype] = useState();
+  const [qty,setqty] =useState();
+  const [MedicineentriesArr, setMedicineentriesArr] = useState();
+  const [tableindex, settableindex] = useState()
+  const toggleStage1 = () => {
+    if (stage1 == 'block') {
+      setstage1('none')
+    }
+    if (stage1 == 'none') {
+      setstage1('block')
+    }
+  }
+
+  const toggleStage2 = () => {
+    if (stage2 == 'block') {
+      setstage2('none')
+    }
+    if (stage2 == 'none') {
+      setstage2('block')
+    }
+  }
+  const Go_Back = () => {
+    if (stage2 === 'block') {
+      toggleStage2()
+      toggleStage1()
+    }
+  }
+  const confirmmessage = (e) => {
+    customconfirm();
+    Notiflix.Confirm.show(
+      `Add Transfer Out`,
+      `Do you surely want to do the following Transfer Out `,
+      "Yes",
+      "No",
+      () => {
+        SaveTransferOut();
+      },
+      () => {
+        return 0;
+      },
+      {}
+    );
+  };
+  const SaveTransferOut = ()=>{
+ 
+  } 
+  function Emptytableindex() {
+    setitemid();
+    setitemname();
+    setqty();
+  }
+  let MedicineentriesObj = {
+    type: '',
+    Itemid: '',
+    Itemname: '',
+    Qty: '',
+  };
+  async function InsertMedicines() {
+    MedicineentriesObj = {
+      type: itemtype,
+      Itemid: itemid,
+      Itemname: itemname,
+      Qty: qty,
+    };
+    if (qty) {
+      if (MedicineentriesArr == undefined || MedicineentriesArr.length == 0) {
+        setMedicineentriesArr([MedicineentriesObj]);
+      } else {
+        setMedicineentriesArr((prevState) => [...prevState, MedicineentriesObj,]);
+      }
+    } else {
+      Notiflix.Notify.warning("please choose quantity");
+    }
+    resetfields();
+  }
+  async function DeleteMedicine(id) {
+    let obj = [];
+    obj.push(
+      MedicineentriesArr.filter(function (e) {
+        return e.Itemid !== id;
+      })
+    );
+    obj = obj.flat();
+    setMedicineentriesArr(obj);
+  }
+  const resetfields = async () => {
+    setitemname();
+    setitemid();
+    setqty();
+    setloadsearch();
+  };
+  function indexing(i) {
+    if (tableindex == i) {
+      settableindex(-1);
+      Emptytableindex();
+    } else {
+      settableindex(i);
+
+    }
+  }
+  const searchmeds = async (search) => {
+    setloadsearch(true);
+    try {
+      await axios
+        .get(`${url}/item/search?search=${search}`)
+        .then((response) => {
+          let medicines = [];
+          let vaccines = [];
+          let items = [];
+          medicines.push(
+            response.data.data.medicines ? response.data.data.medicines : []
+          );
+          vaccines.push(
+            response.data.data.vaccines ? response.data.data.vaccines : []
+          );
+          items = medicines.concat(vaccines);
+          items = items.flat();
+          setitemsearch(items);
+          setloadsearch(false);
+          if (search.length > 1) {
+            medicinesref.current.style.display = "block";
+          } else {
+            medicinesref.current.style.display = "none";
+          }
+        });
+    } catch (e) {
+      Notiflix.Notify.warning(e.data.message);
+    }
+  }
+  const reversefunction = (date) => {
+    if (date) {
+      date = date.split("-").reverse().join("-");
+      return date;
+    }
+  }
+  console.log(fromlocation,tolocation,channel,MedicineentriesArr)
+  return(
+    <section className="position-relative" style={{minHeight:'100%'}}>
+      <h5 className="text-center text-charocal fw-bold pt-2 shadow-sm pb-2">New Transfer Out</h5> 
+      <button className={`btn btn-back position-absolute start-0 top-0 ms-2 d-${stage1 == 'block' ? 'none' : 'block'}`} onClick={() => { Go_Back() }}   ></button>
+      <button type="button" className="btn-close closebtn m-auto mt-2 position-absolute top-0 end-0 me-2 mt-2" onClick={props.toggle_npef} aria-label="Close" ></button>
+      <div className={`stage1 d-${stage1}`} style={{minHeight:'90%'}}>
+      <div className="row p-0 m-0 mt-4 ms-3 align-items-end align-self-end">
+        <div className="col-5">
+          <label className="text-charcoal75 fw-bold" htmlFor="">From Location</label>
+        <div className="dropdown ">
+            <button className=" button button-pearl text-charcoal fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"> {fromlocationname?fromlocationname:"From Location"} </button>
+            <ul className="dropdown-menu p-2 bg-pearl border-0 shadow-sm" >
+            {
+                        cliniclist ? (
+                        cliniclist.map((data) => (
+                            <li className="text-start p-2 text-charcoal fw-bolder border-bottom py-2" onClick={() => { setfromlocation(data.id);setfromlocationname(data.title) }}>{data.title} </li>
+                          ))
+                        ) : (
+                          <li className="text-start p-2 text-charcoal fw-bolder border-bottom py-2" >Loading...</li>
+                          )
+            }
+            </ul>
+          </div>
+        </div>
+
+        <div className="col-5">
+        <label className="text-charcoal75 fw-bold" htmlFor="">To Location</label>
+        <div className="dropdown ">
+            <button className=" button button-pearl text-charcoal fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"> {tolocationname?tolocationname:"To Location"} </button>
+            <ul className="dropdown-menu p-2 bg-pearl border-0 shadow-sm" >
+            {
+                        cliniclist ? (
+                        cliniclist.map((data) => (
+                            <li className={`text-start p-2 text-charcoal fw-bolder border-bottom py-2 d-${clinicid==data.id?'none':''}`} onClick={() => { settolocation(data.id);settolocationname(data.title) }}>{data.title} </li>
+                          ))
+                        ) : (
+                          <li className="text-start p-2 text-charcoal fw-bolder border-bottom py-2" >Loading...</li>
+                          )
+            }
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div className="row p-0 m-0 mt-5 ms-3 ">
+        <div className="col-5">
+        <div className="text-charcoal75 fw-bold" htmlFor="">Select Channel</div>
+        <div className="dropdown ">
+            <button className=" button button-pearl text-charcoal fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"> {channelname?channelname:"Select Channel"} </button>
+            <ul className="dropdown-menu p-2 bg-pearl border-0 shadow-sm" >
+              <li className="text-start p-2 text-charcoal fw-bolder border-bottom py-2" onClick={() => { setchannel(1);setchannelname("Pharmacy") }}>Pharmacy </li>
+              <li className="text-start p-2 text-charcoal fw-bolder py-2" onClick={() => { setchannel(2);setchannelname("Clinic") }}>Clinic </li>
+            </ul>
+          </div>
+            </div>
+
+            <div className="col-5">
+            <div className="text-charcoal75 fw-bold" htmlFor="">Transfer Date</div>
+              <input type="date" className="button button-pearl fw-bolder tet-charcoal " value={transferdate?transferdate:currentDate}/>
+            </div>
+        </div>
+        <div className="container-fluid p-0 m-0 position-absolute bottom-0 bg-pearl">
+          <div className="row p-0 m-0 py-3 justify-content-end">
+            <div className="col-auto">
+            <button className="button button-charcoal" onMouseDown={() => { toggleStage2(); }} onMouseUp={() => { toggleStage1() }} >Add Items</button>
+            </div>
+          </div>
+        </div>
+        </div>
+        <div className={`stage2 d-${stage2}`}>
+          <div className="row p-0 m-0 align-items-end align-self-end">
+            <div className="col-auto">
+            <div className="position-relative">
+                  <label>Search Items </label>
+                  <input className="form-control bg-seashell" placeholder="Items" value={itemname ? itemname : ""} onChange={(e) => { searchmeds(e.target.value); setitemname(e.target.value); setitemtype(); }} />
+                  <div ref={medicinesref} className="position-absolute rounded-4 col-12" style={{ zIndex: "2" }} >
+                    {
+                      itemsearch ? (
+                        loadsearch ? (
+                          <div className="rounded-1 p-1 bg-pearl">
+                            Searching Please wait....
+                            <div
+                              className="spinner-border my-auto"
+                              style={{ width: "1rem", height: "1rem" }}
+                              role="status"
+                            >
+                              <span className="sr-only"> </span>{" "}
+                            </div>
+                          </div>
+                        ) : itemsearch.length == 0 ? (
+                          <div className="bg-burntumber text-light rounded-1 p-1 text-wrap">
+                            Oops! Not Avaliable
+                          </div>
+                        ) : (
+                          <div className={`mt-1 rounded-4 bg-pearl shadow px-1 pb-2 d-${itemsearch && itemsearch.length > 1 ? "block" : "none"}`} >
+                            <p className={`p-0 m-0 bg-pearl fw-bold text-charcoal75 rounded-4 ps-2 `} style={{ fontSize: "0.8rem" }} > {itemsearch.length} Search Results </p>
+                            {itemsearch.map((data, i) => (
+                              <div style={{ cursor: "pointer" }} className={`p-0 ps-1 text-wrap  bg-${i % 2 == 0 ? "" : "lightyellow"}`} name={data.id} onClick={(e) => { setitemname(data.display_name ? data.display_name : data.name); setitemid(data.id); setitemtype(data.vaccines_id ? "v" : "m"); medicinesref.current.style.display = "none"; }} >
+                                {data.display_name ? data.display_name : data.name}
+                              </div>
+                            ))}
+                          </div>
+                        )
+                      ) : (
+                        <></>
+                      )}
+                  </div>
+                </div>
+            </div>
+            <div className="col-auto">
+              <input/>
+            </div>
+            <div className="col-auto">
+            {tableindex == -1 || tableindex == undefined ? (
+                  <button type="submit" className="button button-charcoal done" onClick={InsertMedicines} > {" "} Add{" "} </button>
+                ) : (
+                  <></>
+                )}
+            </div>
+          </div>
+     
+                <div className="container-fluid p-0 m-0 mt-2">
+                <table className="table m-0 datatable bg-seashell text-start position-relative">
+                <thead className=" bg-pearl position-sticky top-0" style={{ color: "gray", fontWeight: "600" }} >
+                  <tr>
+                    <th>Item ID</th>
+                    <th>Item Name</th>
+                    <th>Qty.</th>
+                    <th>Delete</th>
+                  </tr>
+                </thead>
+                {MedicineentriesArr ? (
+                  <tbody style={{ color: "var(--charcoal)", fontWeight: "600", }} >
+                    {
+                    MedicineentriesArr.map((item, _key) => (
+                      <tr key={_key} className={`bg-${_key % 2 == 0 ? "seashell" : "pearl"}`} >
+                        <td><input type="checkbox" checked={_key == tableindex ? true : false} onClick={() => { indexing(_key); }} className=" form-check-input" /> </td>
+                        <td>{item.Itemid}</td>
+                        <td>{item.Itemname}</td>
+                        <td>{item.batchno}</td>
+                        <td>{reversefunction(item.expirydate)}</td>
+                        <td>{item.MRP}</td>
+                        <td>{item.Rate}</td>
+                        <td> {Number(item.Discount) + Number(item.tradeDiscount)} </td>
+                        <td>{item.Qty}</td>
+                        <td>{item.costperunit}</td>
+                        <td>{item.totalamount}</td>
+                        <td><button onClick={() => { DeleteMedicine(item.Itemid); }} className="btn btn-sm button-burntumber" > Delete </button> </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                ) : MedicineentriesArr && MedicineentriesArr.length == 0 ? (
+                  <tbody className="position-relative bg-pearl text-center" style={{fontWeight: "600", }} >
+                    <tr>
+                      <td className="position-absolute start-0 end-0 top-0"> No items Added </td>
+                    </tr>
+                  </tbody>
+                ) : (
+                  <tbody className="position-relative bg-pearl text-center" style={{fontWeight: "600", }} >
+                    <tr className="">
+                      <td className="position-absolute start-0 end-0"> No items Added </td>
+                    </tr>
+                  </tbody>
+                )}
+              </table>  
+                </div>
+                     
+        <div className="container-fluid p-0 m-0 position-absolute bottom-0 bg-pearl">
+          <div className="row p-0 m-0 py-3 justify-content-end">
+            <div className="col-auto">
+            <button className="button button-charcoal"onClick={()=>confirmmessage()} >Save Transfer</button>
+            </div>
+          </div>
+        </div>
+        </div>
+    </section>
+  )
+  }

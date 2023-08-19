@@ -33,8 +33,8 @@
     width:2rem;
 }
 .page2appointment section{
-    min-height: 68vh;
-    max-height: 68vh;
+    min-height: 75vh;
+    max-height: 75vh;
   } 
 
 .page2appointment tr:nth-child(even) {
