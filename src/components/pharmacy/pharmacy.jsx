@@ -4762,7 +4762,7 @@ function Newpurchaseentryform(props) {
       setNewMed("block");
     }
   };
-
+console.log(MedicineentriesArr)
   return (
     <div className="container-fluid p-0 m-0" style={{ zIndex: "2" }}>
       <div className="container-fluid bg-seashell border border-2 border-top-0 border-start-0 border-end-0 ">
@@ -4849,17 +4849,7 @@ function Newpurchaseentryform(props) {
                 </div>
                 <div className="col-5">
                   <h6 className="p-0 m-0 ms-3 fw-bold">Select Vendor</h6>
-                  <input
-                    className="form-control ms-2 rounded-1"
-                    placeholder="Search Vendors"
-                    value={vendorname ? vendorname : ""}
-                    onChange={(e) => {
-                      searchvendors(e.target.value);
-                      setvendorname(e.target.value);
-                      setvendorid();
-                      setvendorcode();
-                    }}
-                  />
+                  <input className="form-control ms-2 rounded-1" placeholder="Search Vendors" value={vendorname ? vendorname : ""} onChange={(e) => { searchvendors(e.target.value); setvendorname(e.target.value); setvendorid(); setvendorcode(); }} />
                   <div
                     ref={vendorsref}
                     className="position-absolute ms-2 rounded-1 bg-pearl col-2"
@@ -4867,10 +4857,7 @@ function Newpurchaseentryform(props) {
                   >
                     {vendorsearch ? (
                       loadvendors ? (
-                        <div
-                          className="rounded-1 p-1 bg-pearl mt-1 border shadow"
-                          style={{ width: "fit-content" }}
-                        >
+                        <div className="rounded-1 p-1 bg-pearl mt-1 border shadow" style={{ width: "fit-content" }} >
                           Searching Please wait....
                           <div
                             className="spinner-border my-auto"
@@ -4885,30 +4872,10 @@ function Newpurchaseentryform(props) {
                           Oops! Not Avaliable
                         </div>
                       ) : (
-                        <div
-                          className="bg-pearl border shadow rounded-1 p-1"
-                          style={{ zIndex: "40", width: "fit-content" }}
-                        >
-                          {vendorsearch.map((data, i) => (
-                            <div
-                              style={{ cursor: "pointer" }}
-                              className={`p-0 p-1 d-${vendorsearch == undefined ||
-                                vendorsearch.length > 0
-                                ? ""
-                                : "none"
-                                }  bg-${i % 2 == 0 ? "pearl" : "lightblue"
-                                } fs-6 `}
-                              name={data.id}
-                              onClick={(e) => {
-                                setvendorname(data.entity_name);
-                                setvendorid(data.id);
-                                setvendorcode(data.state_code);
-                                filterclinic();
-                                vendorsref.current.style.display = "none";
-                              }}
-                            >
-                              {data.entity_name}
-                            </div>
+                        <div className="bg-pearl border shadow rounded-1 p-1" style={{ zIndex: "40", width: "fit-content" }} >
+                          {
+                          vendorsearch.map((data, i) => (
+                            <div style={{ cursor: "pointer" }} className={`p-0 p-1 d-${vendorsearch == undefined || vendorsearch.length > 0 ? "" : "none" }  bg-${i % 2 == 0 ? "pearl" : "lightblue" } fs-6 `} name={data.id} onClick={(e) => { setvendorname(data.entity_name); setvendorid(data.id); setvendorcode(data.state_code); filterclinic(); vendorsref.current.style.display = "none"; }} > {data.entity_name} </div>
                           ))}
                         </div>
                       )
@@ -4919,28 +4886,11 @@ function Newpurchaseentryform(props) {
                 </div>
                 <div className="col-5">
                   <h6 className="p-0 m-0 ms-3 fw-bold">Invoice Number</h6>
-                  <input
-                    type="text"
-                    placeholder="Enter No."
-                    className="form-control ms-2 rounded-1"
-                    value={invoice ? invoice : ""}
-                    onChange={(e) => {
-                      setinvoice(e.target.value);
-                    }}
-                    style={{ color: "gray" }}
-                  />
+                  <input type="text" placeholder="Enter No." className="form-control ms-2 rounded-1" value={invoice ? invoice : ""} onChange={(e) => { setinvoice(e.target.value); }} style={{ color: "gray" }} />
                 </div>
                 <div className="col-5">
                   <h6 className="p-0 m-0 ms-3 fw-bold">Invoice Date</h6>
-                  <input
-                    type="date"
-                    className="form-control ms-2 rounded-1"
-                    value={invoicedate ? invoicedate : ""}
-                    onChange={(e) => {
-                      setinvoicedate(e.target.value);
-                    }}
-                    style={{ color: "gray" }}
-                  />
+                  <input type="date" className="form-control ms-2 rounded-1" value={invoicedate ? invoicedate : ""} onChange={(e) => { setinvoicedate(e.target.value); }} style={{ color: "gray" }} />
                 </div>
               </div>
               <div className="row p-0 m-0 align-items-center mt-2">
@@ -4966,7 +4916,6 @@ function Newpurchaseentryform(props) {
                     <th>Edit</th>
                     <th>Item ID</th>
                     <th>Item Name</th>
-                    {/* <th>Manuf. Date</th> */}
                     <th>batch No.</th>
                     <th>Expiry Date</th>
                     <th>MRP</th>
@@ -4991,9 +4940,7 @@ function Newpurchaseentryform(props) {
                         <td>{reversefunction(item.expirydate)}</td>
                         <td>{item.MRP}</td>
                         <td>{item.Rate}</td>
-                        <td>
-                          {Number(item.Discount) + Number(item.tradeDiscount)}
-                        </td>
+                        <td>{Number(item.Discount) + Number(item.tradeDiscount)} </td>
                         <td>{item.Qty}</td>
                         <td>{item.costperunit}</td>
                         <td>{item.totalamount}</td>
@@ -7842,6 +7789,27 @@ function TransferIn(props){
       setnpef("none");
     }
   };
+  let array = [[0, 'Pending', 'lightred'], [1, 'Accepted', 'lightgreen'], [3, 'Rejected', 'lightred']]
+  function status(number) {
+    let status
+    for (let i = 0; i < array.length; i++) {
+      if (number == array[i][0]) {
+        status = array[i][1]
+        break;
+      }
+    }
+    return status
+  }
+  function status_color(number) {
+    let status_color;
+    for (let j = 0; j < array.length; j++) {
+      if (number == array[j][0]) {
+        status_color = array[j][2]
+        break;
+      }
+    }
+    return status_color
+  }
   const reversefunction = (date) => {
     if (date) {
       date = date.split("-").reverse().join("-");
@@ -7915,30 +7883,29 @@ function TransferIn(props){
   //     </div>
   //   );
   // }
-  console.log(transferinarr)
   return(
     <>
     <div className="col-auto position-absolute p-0 m-0 ms-2 export_2 align-self-center text-center">
      <ExportPurchaseEntry transferinarr={transferinarrExcel} fromdate={reversefunction(fromdate)} todate={reversefunction(todate)} />
    </div>
- <button className={`button addpurchase button-charcoal me-3 position-absolute d-${permission.purchase_entry_add == 1 ? "" : "none" }`} onClick={toggle_npef} > <img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt="displaying_image" className="img-fluid p-0 m-0" />Transfer In </button>
+ {/* <button className={`button addpurchase button-charcoal me-3 position-absolute d-${permission.purchase_entry_add == 1 ? "" : "none" }`} onClick={toggle_npef} > <img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt="displaying_image" className="img-fluid p-0 m-0" />Transfer In </button> */}
      <h2 className=" ms-3 text-charcoal fw-bolder" style={{ width: "fit-content" }} > {transferinarr!=undefined?transferinarr.length:""} {transferinarr!=undefined?transferinarr.length > 1 ? "Transfers In" : "Transfer In":""}{" "} </h2>
  <div>
    <div className="scroll scroll-y overflow-scroll p-0 m-0 mt-2" style={{ minHeight: "56vh", height: "56vh" }} >
-     <table className="table">
+   <table className="table">
        <thead className=" align-middle position-sticky top-0 bg-pearl">
          <tr>
-           <th className="fw-bolder text-charcoal75" > TI ID </th>
-           <th className="fw-bolder text-charcoal75" > Channel </th>
-           <th className="fw-bolder text-charcoal75" > Location From </th>
-           <th className="fw-bolder text-charcoal75" > Location To </th>
-           <th className="fw-bolder text-charcoal75" > Date </th>
-           <th className="fw-bolder text-charcoal75" >Transfer By </th>
-           <th className="fw-bolder text-charcoal75" >Transfer To </th>
-           <th className="fw-bolder text-charcoal75" > Total Items</th>
-           <th className="fw-bolder text-charcoal75" > Amount </th>
-           <th className="fw-bolder text-charcoal75" > Approval Status </th>
-           <th className="fw-bolder text-center  text-charcoal75"  > Item Cost </th>
+           <th className="fw-bolder text-charcoal75"> TI ID </th>
+           <th className="fw-bolder text-charcoal75"> Channel </th>
+           <th className="fw-bolder text-charcoal75"> Location From </th>
+           <th className="fw-bolder text-charcoal75"> Location To </th>
+           <th className="fw-bolder text-charcoal75"> Date </th>
+           <th className="fw-bolder text-charcoal75">Transfer By </th>
+           <th className="fw-bolder text-charcoal75">Transfer To </th>
+           <th className="fw-bolder text-charcoal75"> Total Items</th>
+           <th className="fw-bolder text-charcoal75"> Amount </th>
+           <th className="fw-bolder text-charcoal75"> Approval Status </th>
+           <th className="fw-bolder  text-center  text-charcoal75"  > Inventory </th>
            {/* <th className='fw-bolder p-0 m-0  text-charcoal75 text-center' scope='col' style={{ zIndex: '3' }}>more</th> */}
          </tr>
        </thead>
@@ -7956,40 +7923,37 @@ function TransferIn(props){
                ></div>
              </div>
            </tr>
-         </tbody>
+         </tbody> 
        ) : transferinarr && transferinarr.length != 0 ? (
          <tbody>
-           {transferinarr.map((item, i) => (
+           {
+           transferinarr.map((item, i) => (
              <tr key={i} className={`bg-${i % 2 == 0 ? "seashell" : "pearl" } align-middle`} >
-               <td className="py-0 my-0 text-charcoal fw-bold ps-2"> PE-{item.bill_id} </td>
-               <td className="text-charcoal fw-bold"> {item.purchase_order_id && item.purchase_order_id !== null ? item.purchase_order_id : "N/A"} </td>
+               <td className="py-0 my-0 text-charcoal fw-bold ps-2"> TO-{item.id} </td>
                <td className="text-charcoal fw-bold"> {item.channel && item.channel == 1 ? "Pharmacy" : "Clinic"} </td>
-               <td className="text-charcoal fw-bold"> {item.invoice_no ? item.invoice_no : "N/A"} </td>
-               <td className="text-charcoal fw-bold"> {item.bill_date && item.bill_date ? reversefunction(item.bill_date) : "N/A"} </td>
-               <td className="text-charcoal fw-bold"> {item.bill_total && item.bill_total ? "Rs. " + item.bill_total : "N/A"} </td>
-               <td className="text-charcoal fw-bold"> {item.distributor && item.distributor != null && item.distributor.entity_name && item.distributor.entity_name != null ? item.distributor.entity_name : "N/A"} </td>
+               <td className="text-charcoal fw-bold"> {item.from_location.title ? item.from_location.title : "N/A"} </td>
+               <td className="text-charcoal fw-bold"> {item.to_location.title ? item.to_location.title : "N/A"} </td>
+               <td className="text-charcoal fw-bold"> {item.transfer_date && item.transfer_date ? reversefunction(item.transfer_date) : "N/A"} </td>
+               <td className="text-charcoal fw-bold"> </td>
+               <td className="text-charcoal fw-bold"> </td>
+               <td className="text-charcoal fw-bold"> </td>
+               <td className="text-charcoal fw-bold"> {item.total_amount && item.total_amount ? "Rs. " + item.total_amount : "N/A"} </td>
+               <td>
+               <select className={`bg-${status_color(item.transfer_status)} rounded-2 px-2 py-1 fw-bold border-0 text-wrap `} name={item.transfer_status}>
+                                            <option className="button text-start" selected disabled>{status(item.transfer_status)}</option>
+                                            <option className="button-lightred" value='0'>Pending</option>
+                                            <option className="button-lightblue" value='1'>Accepted</option>
+                                            <option className="button-lightred" value='2'>Rejected</option>
+                  
+                                        </select>
+               </td>
                <td className="text-charcoal fw-bold text-center">
                  <button className="btn p-0 m-0" onClick={() => { setindex(i); toggle_peidw(); }} > <img src={ process.env.PUBLIC_URL + "/images/archivebox.png" } alt="displaying_image" className="ms-1 img-fluid" /> </button>
                </td>
-               <td className='text-charcoal fw-bold text-center'>
-               <button className="btn p-0 m-0" onClick={() => { setqr(i); }} > <img src={process.env.PUBLIC_URL + "/images/qrcode.png"} alt="displaying_image" className="me-1 img-fluid" /> </button>
-                     </td>
                <td className={` position-absolute d-${i == index ? peidw : "none" } border border-1 start-0 mx-auto end-0 bg-seashell rounded-4 p-0 m-0`} style={{zIndex:'10', top: "0",width:'70vh',height: "40vh" }} >
                   {i == index ? 
-                  ( <PEitemdetailssection transferinarr={transferinarr[i]} itembillid={"PE-" + item.bill_id} toggle_peidw={toggle_peidw} /> ) : ( <></> )}
+                  ( <TIitemdetailssection transferinarr={transferinarr[i]} id={"TI-" + item.id} toggle_peidw={toggle_peidw} /> ) : ( <></> )}
                </td>
-               {/* <td className={`position-absolute start-0 text-start bg-pearl container-fluid d-${qr == i ? "block" : "none" }`} style={{ top: "-8.5rem", zIndex: "5", height: "89vh" }} >
-                 {i == qr ? (
-                   <div className="container-fluid position-relative">
-                     <button type="button" className="btn-close closebtn position-absolute end-0 me-2" onClick={() => setqr()} aria-label="Close" ></button>
-                     <div className="row">
-                       <GenerateQR purchaseentry={purchaseentryarr[i]} />
-                     </div>
-                   </div>
-                 ) : (
-                   <></>
-                 )}
-               </td> */}
              </tr>
            ))}
          </tbody>
@@ -8040,6 +8004,7 @@ function TransferIn(props){
 function TransferOut(props){
   const currentDate = useContext(TodayDate);
   const ClinicID = localStorage.getItem("ClinicId");
+  const adminid = localStorage.getItem("id");
   const permission = useContext(Permissions);
   const url = useContext(URL);  
   const [peidw, setpeidw] = useState("none");
@@ -8063,10 +8028,7 @@ function TransferOut(props){
   const [npef, setnpef] = useState("none");
   const [pages, setpages] = useState();
   const [pagecount, setpagecount] = useState();
-  const [qr, setqr] = useState("none");
 
-  // &from_date=${fromdate ? fromdate : currentDate }&to_date=${todate ? todate : fromdate ? fromdate : currentDate}
-  // &from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate }
   function GetPages() {
     try {
       axios.get(`${url}/transfer/stocks/list?location_id=${ClinicID}&from_date=${fromdate ? fromdate : currentDate }&to_date=${todate ? todate : fromdate ? fromdate : currentDate}` )
@@ -8156,80 +8118,14 @@ function TransferOut(props){
     if (npef === "block") {
       setnpef("none");
     }
-  };
+  }
   const reversefunction = (date) => {
     if (date) {
       date = date.split("-").reverse().join("-");
       return date;
     }
   };
-  // function GenerateQR(props) {
-  //   let medicines = props.purchaseentry.medicines ? props.purchaseentry.medicines : 0;
-  //   let vaccines = props.purchaseentry.vaccines
-  //     ? props.purchaseentry.vaccines
-  //     : 0;
-  //   let medicineobj = {};
-  //   let vaccineobj = {};
-  //   let medcount = [];
-  //   let vaccount = [];
-  //   if (
-  //     props.purchaseentry.medicines !== undefined &&
-  //     props.purchaseentry.medicines.length !== 0
-  //   ) {
-  //     for (let i = 0; i < medicines.length; i++) {
-  //       for (let j = 0; j < props.purchaseentry.medicines[i].qty; j++) {
-  //         medicineobj[j] = {
-  //           id: "m" + props.purchaseentry.medicines[i].id,
-  //           name: props.purchaseentry.medicines[i].medicine.name,
-  //           qrcode: <QRcode id={"m" + props.purchaseentry.medicines[i].id} />,
-  //         };
-  //         medcount.push(medicineobj[j]);
-  //       }
-  //     }
-  //   }
-  //   if (
-  //     props.purchaseentry.vaccines !== undefined &&
-  //     props.purchaseentry.vaccines.length !== 0
-  //   ) {
-  //     for (let i = 0; i < vaccines.length; i++) {
-  //       for (let j = 0; j < props.purchaseentry.vaccines[i].qty; j++) {
-  //         vaccineobj[j] = {
-  //           id: "v" + props.purchaseentry.vaccines[i].id,
-  //           name: props.purchaseentry.vaccines[i].vaccine.name,
-  //           qrcode: <QRcode id={"v" + props.purchaseentry.vaccines[i].id} />,
-  //         };
-  //         vaccount.push(vaccineobj[j]);
-  //       }
-  //     }
-  //   }
 
-  //   return (
-  //     <div className="container-fluid">
-  //       <h5 className="text-charcoal75 fw-bold">Medicines</h5>
-  //       <div className="row">
-  //         {medcount.map((Data) => (
-  //           <div className="col-auto m-2" key={Data}>
-  //             <p className="text-charcoal75">
-  //               {Data.name} | {Data.id}
-  //             </p>
-  //             <div className="container">{Data.qrcode}</div>
-  //           </div>
-  //         ))}
-  //       </div>
-  //       <h5 className="text-charcoal75 fw-bold mt-2">Vaccines</h5>
-  //       <div className="row">
-  //         {vaccount.map((Data) => (
-  //           <div className="col-auto m-2" key={Data}>
-  //             <p className="text-charcoal75">
-  //               {Data.name} | {Data.id}
-  //             </p>
-  //             <div className="container">{Data.qrcode}</div>
-  //           </div>
-  //         ))}
-  //       </div>
-  //     </div>
-  //   );
-  // }
   let array = [[0, 'Pending', 'lightred'], [1, 'Accepted', 'lightgreen'], [3, 'Rejected', 'lightred']]
   function status(number) {
     let status
@@ -8250,6 +8146,22 @@ function TransferOut(props){
       }
     }
     return status_color
+  }
+  const UpdateStatus = async (data,e) => {
+    try {
+      await axios.post(`${url}/transfer/stocks/change/status`, { 
+        transfer_id: data.id, 
+        transfer_status: e.target.value, 
+        admin_id: adminid, 
+      })
+        .then((response) => {
+          ;
+          Notiflix.Notify.success(response.data.message);
+          GETTransferOutList();
+        })
+    } catch (e) {
+      Notiflix.Notify.failure(e.message);
+    }
   }
   console.log(transferoutarr)
   return(
@@ -8308,7 +8220,7 @@ function TransferOut(props){
                <td className="text-charcoal fw-bold"> </td>
                <td className="text-charcoal fw-bold"> {item.total_amount && item.total_amount ? "Rs. " + item.total_amount : "N/A"} </td>
                <td>
-               <select className={`bg-${status_color(item.transfer_status)} rounded-2 px-2 py-1 fw-bold border-0 text-wrap `} name={item.transfer_status}>
+               <select className={`bg-${status_color(item.transfer_status)} rounded-2 px-2 py-1 fw-bold border-0 text-wrap `} onChange={(e)=>{UpdateStatus(item,e)}} name={item.transfer_status}>
                                             <option className="button text-start" selected disabled>{status(item.transfer_status)}</option>
                                             <option className="button-lightred" value='0'>Pending</option>
                                             <option className="button-lightblue" value='1'>Accepted</option>
@@ -8370,6 +8282,206 @@ function TransferOut(props){
 </>
 )
 }
+function TIitemdetailssection(props) {
+  const [medicine, setmedicine] = useState("block");
+  const [vaccine, setvaccine] = useState("none");
+  const [index, setindex] = useState(0);
+  const Items = ["Medicine", "Vaccine"];
+  const [qr, setqr] = useState("none");
+  const reversefunction = (date) => {
+    if (date) {
+      date = date.split("-").reverse().join("-");
+      return date;
+    }
+  };
+
+  if (index == 0) {
+    if (medicine == "none") {
+      setmedicine("block");
+      setvaccine("none");
+    }
+  }
+  if (index == 1) {
+    if (vaccine == "none") {
+      setvaccine("block");
+      setmedicine("none");
+    }
+  }
+  const [Taxon, setTaxon] = useState(false);
+
+  function TotalTaxPercent(cgst, sgst, igst) {
+    if ((cgst && sgst && igst !== null) || undefined) {
+      return Number(cgst) + Number(sgst) + Number(igst);
+    }
+  }
+  function TotalTaxRate(cgst, sgst, igst, qty) {
+    if ((cgst && sgst) || igst !== null || undefined) {
+      let e = Number(Number(cgst) + Number(sgst) + Number(igst)) * Number(qty);
+      e = e.toFixed(2);
+      return e;
+    }
+  }
+
+  // console.log(props.transferoutarr)
+  return (
+    <div className="container-fluid p-0 m-0 ">
+      <div className="container-fluid p-0 m-0">
+        <h5 className="text-center pt-3 text-charcoal">
+          {props.id} Transfer In Item Details
+        </h5>
+        <button type="button" className="btn-close closebtn position-absolute end-0 me-2" onClick={props.toggle_peidw} aria-label="Close" ></button>
+
+        <div className="col-2 d-none">
+          <div className=" position-relative searchbutton" style={{ top: "0.25rem", right: "1rem" }} >
+            <input type="text" className=" form-control d-inline PEsearch bg-seashell" placeholder="Search PE" />
+            <button className="btn p-0 m-0 bg-transparent border-0 position-absolute" style={{ width: "2rem", right: "0", left: "0", top: "0.25rem" }} >
+              <img src={process.env.PUBLIC_URL + "/images/search.png"} alt="displaying_image" className="img-fluid p-0 m-0" />
+            </button>
+          </div>
+        </div>
+      </div>
+      <div className="d-flex justify-content-center p-0 m-0 mt-3 mb-1">
+        {Items.map((data, i) => (
+          <button className={`button border-charcoal rounded-0 shadow-0 button-${i == index ? "charcoal" : "seashell" }`} onClick={() => { setindex(i); }} > {data} </button>
+        ))}
+      </div>
+
+      <div className=" d-flex justify-content-end me-5">
+        <input type="checkbox" className="form-check-input" value={Taxon ? Taxon : ""} onChange={() => { Taxon == true ? setTaxon(false) : setTaxon(true); }} />
+        <label>Show Tax Details</label>
+      </div>
+      <div className={`scroll bg-seashell scroll-y d-${medicine}`} style={{ height:"100%" }} >
+        <table className="table datatable table-responsive text-center bg-seashell">
+          <thead>
+            <tr>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Item ID </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Item Name </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Batch No. </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Expiry Date </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> MRP </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Rate </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Qty. </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Disc% </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Trade Disc% </th>
+              <th colspan={Taxon == true ? "8" : "2"} scope="col-group" className="border p-0 m-0 px-1" > Total Tax </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Cost </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Total </th>
+            </tr>
+            <tr>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > CGST% </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > CGST </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > SGST% </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > SGST </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > IGST% </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > IGST </th>
+              <th scope="col" className={`border p-0 m-0 px-1`}> Total% </th>
+              <th scope="col" className={`border p-0 m-0 px-1`}> Total </th>
+            </tr>
+          </thead>
+          {props.transferinarr.medicines && props.transferinarr.medicines.length !== 0 ? (
+            <tbody className="border align-items-center p-0 m-0">
+              {props.transferinarr.medicines.map((item, _key) => (
+                <tr className="border align-middle" key={_key}>
+                  <td className="border align-middle"> {item.medicies_stocks_id && item.medicies_stocks_id !== undefined ? "m"+item.medicies_stocks_id : "N/A"} </td>
+                  <td className="border align-middle"> {item.medicine_stock_details && item.medicine_stock_details.medicine.display_name !== undefined ? item.medicine_stock_details.medicine.display_name : "N/A"} </td>
+                  <td className="border align-middle"> {item.medicine_stock_details && item.medicine_stock_details.batch_no !== undefined ? item.medicine_stock_details.batch_no : "N/A"}</td>
+                  <td className="border align-middle"> {item.medicine_stock_details && item.medicine_stock_details.expiry_date !== undefined ? reversefunction(item.medicine_stock_details.expiry_date) : "N/A"} </td>
+                  <td className="border align-middle"> {item.medicine_stock_details && item.medicine_stock_details.mrp !== undefined ? "₹"+item.medicine_stock_details.mrp : "N/A"} </td>
+                  <td className="border align-middle"> {item.medicine_stock_details && item.medicine_stock_details.rate !== undefined ? "₹"+item.medicine_stock_details.rate : "N/A"} </td>
+                  <td className="border align-middle"> {item.qty ? item.qty : "N/A"} </td>
+                  <td className="border align-middle"> {item.medicine_stock_details && item.medicine_stock_details.discount !== undefined ?  item.medicine_stock_details.discount: "N/A"} </td>
+                  <td className="border align-middle"> {item.medicine_stock_details && item.medicine_stock_details.trade_discount !== undefined ?  item.medicine_stock_details.trade_discount: "N/A"} </td>
+                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.medicine_stock_details && item.medicine_stock_details.SGST_rate ? Number( item.medicine_stock_details.SGST_rate) : ""} </td>
+                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.medicine_stock_details && item.medicine_stock_details.SGST ? (Number(item.medicine_stock_details.SGST) * Number(item.qty)).toFixed(2) : ""} </td>
+                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.medicine_stock_details && item.medicine_stock_details.CGST_rate ? Number(item.medicine_stock_details.CGST_rate ) : ""} </td>
+                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.medicine_stock_details && item.medicine_stock_details.CGST ? (Number(item.medicine_stock_details.CGST) * Number(item.qty)).toFixed(2) : ""} </td>
+                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.medicine_stock_details && item.medicine_stock_details.IGST_rate ? Number(item.medicine_stock_details.IGST_rate ) : ""} </td>
+                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.medicine_stock_details && item.medicine_stock_details.IGST ? (Number(item.medicine_stock_details.IGST) * Number(item.qty)).toFixed(2) : ""} </td>
+                  <td className="border align-middle"> {TotalTaxPercent(item.medicine_stock_details.CGST_rate , item.medicine_stock_details.SGST_rate, item.medicine_stock_details.IGST_rate)} </td>
+                  <td className="border align-middle"> {TotalTaxRate(item.medicine_stock_details.CGST,item.medicine_stock_details.SGST,item.medicine_stock_details.IGST, item.qty)} </td>
+                  <td className="border align-middle"> {item.medicine_stock_details.cost ?"₹"+item.medicine_stock_details.cost  : "N/A"} </td>
+                  <td className="border align-middle"> {item.total_amount ? item.total_amount : "N/A"} </td>
+  
+                </tr>
+              ))}
+            </tbody>
+          ) : (
+            <body className="text-center p-0 m-0 border border-1 ">
+              <div className="position-absolute border-0 start-0 end-0 mx-3 p-2 ">
+                <p className=" text-center fw-bold">No Medicines Found</p>
+              </div>
+            </body>
+          )}
+        </table>
+      </div>
+      <div className={`scroll bg-seashell scroll-y d-${vaccine}`} style={{ height:'100%' }} >
+        <table className="table datatable table-responsive text-center bg-seashell">
+          <thead>
+            <tr>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Item ID </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Item Name </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Batch No. </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Expiry Date </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> MRP{" "} </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Rate{" "} </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Qty. </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Disc% </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Trade Disc% </th>
+              <th colspan={Taxon == true ? "8" : "2"} scope="col-group" className={`border p-0 m-0 px-1`} > Total Tax </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Cost{" "} </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Total{" "} </th>
+            </tr>
+            <tr>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > CGST% </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > CGST </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > SGST% </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > SGST{" "} </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > IGST% </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > IGST{" "} </th>
+              <th scope="col" className={`border p-0 m-0 px-1`}> Total% </th>
+              <th scope="col" className={`border p-0 m-0 px-1`}> Total{" "} </th>
+            </tr>
+          </thead>
+          {props.transferinarr.vaccines &&
+            props.transferinarr.vaccines.length !== 0 ? (
+            <tbody className="border align-items-center p-0 m-0">
+              {props.transferinarr.vaccines.map((item, _key) => (
+                <tr className="border p-0 m-0 align-middle" key={_key}>
+                  <td className="border align-middle"> {item.vaccine_stocks_id  && item.vaccine_stocks_id !== undefined ? "v"+item.vaccine_stocks_id : "N/A"} </td>
+                  <td className="border align-middle"> {item.vaccine_stock_details  && item.vaccine_stock_details.vaccine.name !== undefined ? item.vaccine_stock_details.vaccine.name : "N/A"} </td>
+                  <td className="border align-middle"> {item.vaccine_stock_details  && item.vaccine_stock_details.batch_no !== undefined ? item.vaccine_stock_details.batch_no : "N/A"}</td>
+                  <td className="border align-middle"> {item.vaccine_stock_details  && item.vaccine_stock_details.expiry_date !== undefined ? reversefunction(item.vaccine_stock_details.expiry_date) : "N/A"} </td>
+                  <td className="border align-middle"> {item.vaccine_stock_details  && item.vaccine_stock_details.mrp !== undefined ? "₹"+item.vaccine_stock_details.mrp : "N/A"} </td>
+                  <td className="border align-middle"> {item.vaccine_stock_details  && item.vaccine_stock_details.rate !== undefined ? "₹"+item.vaccine_stock_details.rate : "N/A"} </td>
+                  <td className="border align-middle"> {item.qty ? item.qty : "N/A"} </td>
+                  <td className="border align-middle"> {item.vaccine_stock_details && item.vaccine_stock_details.discount !== undefined ?  item.vaccine_stock_details.discount: "N/A"} </td>
+                  <td className="border align-middle"> {item.vaccine_stock_details && item.vaccine_stock_details.trade_discount !== undefined ?  item.vaccine_stock_details.trade_discount: "N/A"} </td>
+                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.vaccine_stock_details && item.vaccine_stock_details.SGST_rate ? Number( item.vaccine_stock_details.SGST_rate) : ""} </td>
+                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.vaccine_stock_details && item.vaccine_stock_details.SGST ? (Number(item.vaccine_stock_details.SGST) * Number(item.qty)).toFixed(2) : ""} </td>
+                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.vaccine_stock_details && item.vaccine_stock_details.CGST_rate ? Number(item.vaccine_stock_details.CGST_rate ) : ""} </td>
+                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.vaccine_stock_details && item.vaccine_stock_details.CGST ? (Number(item.vaccine_stock_details.CGST) * Number(item.qty)).toFixed(2) : ""} </td>
+                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.vaccine_stock_details && item.vaccine_stock_details.IGST_rate ? Number(item.vaccine_stock_details.IGST_rate ) : ""} </td>
+                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.vaccine_stock_details && item.vaccine_stock_details.IGST ? (Number(item.vaccine_stock_details.IGST) * Number(item.qty)).toFixed(2) : ""} </td>
+                  <td className="border align-middle"> {TotalTaxPercent(item.vaccine_stock_details.CGST_rate , item.vaccine_stock_details.SGST_rate, item.vaccine_stock_details.IGST_rate)} </td>
+                  <td className="border align-middle"> {TotalTaxRate(item.vaccine_stock_details.CGST,item.vaccine_stock_details.SGST,item.vaccine_stock_details.IGST, item.qty)} </td>
+                  <td className="border align-middle"> {item.vaccine_stock_details.cost ?"₹"+item.vaccine_stock_details.cost  : "N/A"} </td>
+                  <td className="border align-middle"> {item.total_amount ? item.total_amount : "N/A"} </td>
+
+                </tr>
+              ))}
+            </tbody>
+          ) : (
+            <body className="text-center p-0 m-0 border border-1 ">
+              <div className="position-absolute border-0 start-0 end-0 mx-3 p-2 ">
+                <p className="fw-bold text-center">No Vaccines Found</p>
+              </div>
+            </body>
+          )}
+        </table>
+      </div>
+    </div>
+  );
+}
 function TOitemdetailssection(props) {
   const [medicine, setmedicine] = useState("block");
   const [vaccine, setvaccine] = useState("none");
@@ -8420,6 +8532,7 @@ function TOitemdetailssection(props) {
       </div>
     ));
   }
+  // console.log(props.transferoutarr)
   return (
     <div className="container-fluid p-0 m-0 ">
       <div className="container-fluid p-0 m-0">
@@ -8479,7 +8592,7 @@ function TOitemdetailssection(props) {
             <tbody className="border align-items-center p-0 m-0">
               {props.transferoutarr.medicines.map((item, _key) => (
                 <tr className="border align-middle" key={_key}>
-                  <td className="border align-middle"> {item.medicine_stock_details && item.medicine_stock_details.medicine.id !== undefined ? "m"+item.medicine_stock_details.medicine.id : "N/A"} </td>
+                  <td className="border align-middle"> {item.medicies_stocks_id && item.medicies_stocks_id !== undefined ? "m"+item.medicies_stocks_id : "N/A"} </td>
                   <td className="border align-middle"> {item.medicine_stock_details && item.medicine_stock_details.medicine.display_name !== undefined ? item.medicine_stock_details.medicine.display_name : "N/A"} </td>
                   <td className="border align-middle"> {item.medicine_stock_details && item.medicine_stock_details.batch_no !== undefined ? item.medicine_stock_details.batch_no : "N/A"}</td>
                   <td className="border align-middle"> {item.medicine_stock_details && item.medicine_stock_details.expiry_date !== undefined ? reversefunction(item.medicine_stock_details.expiry_date) : "N/A"} </td>
@@ -8544,7 +8657,7 @@ function TOitemdetailssection(props) {
             <tbody className="border align-items-center p-0 m-0">
               {props.transferoutarr.vaccines.map((item, _key) => (
                 <tr className="border p-0 m-0 align-middle" key={_key}>
-                  <td className="border align-middle"> {item.vaccine_stock_details  && item.vaccine_stock_details.vaccine.id !== undefined ? "v"+item.vaccine_stock_details.vaccine.id : "N/A"} </td>
+                  <td className="border align-middle"> {item.vaccine_stocks_id  && item.vaccine_stocks_id !== undefined ? "v"+item.vaccine_stocks_id : "N/A"} </td>
                   <td className="border align-middle"> {item.vaccine_stock_details  && item.vaccine_stock_details.vaccine.name !== undefined ? item.vaccine_stock_details.vaccine.name : "N/A"} </td>
                   <td className="border align-middle"> {item.vaccine_stock_details  && item.vaccine_stock_details.batch_no !== undefined ? item.vaccine_stock_details.batch_no : "N/A"}</td>
                   <td className="border align-middle"> {item.vaccine_stock_details  && item.vaccine_stock_details.expiry_date !== undefined ? reversefunction(item.vaccine_stock_details.expiry_date) : "N/A"} </td>
@@ -8587,26 +8700,31 @@ return(
 function NewTransferOutForm(props){
   const url = useContext(URL)
   const medicinesref = useRef(null)
+  const stockref = useRef(null)
   const cliniclist = useContext(Clinic)
   const currentDate = useContext(TodayDate);
   const clinicid = localStorage.getItem('ClinicId')
+  const [clinicname,setclinicname]= useState("")
   const [fromlocation,setfromlocation] =useState(clinicid)
   const [fromlocationname,setfromlocationname] =useState("")
   const [tolocation,settolocation] =useState()
   const [tolocationname,settolocationname] =useState("")
   const [channel,setchannel]=useState("")
-  const [channelname,setchannelname]=useState("")
-  const [transferdate,settransferdate]=useState()
+  const [channelname,setchannelname]=useState()
+  const [transferdate,settransferdate]=useState(currentDate)
   const [stage1, setstage1] = useState('block')
   const [stage2, setstage2] = useState('none')
   const [loadsearch,setloadsearch]=useState(false)
-  const [itemsearch, setitemsearch] = useState([""]);
+  const [itemsearch, setitemsearch] = useState();
   const [itemname, setitemname] = useState();
   const [itemid, setitemid] = useState();
   const [itemtype, setitemtype] = useState();
   const [qty,setqty] =useState();
-  const [MedicineentriesArr, setMedicineentriesArr] = useState();
   const [tableindex, settableindex] = useState()
+  const [products, setproducts] = useState([]);
+  const [SelectedProducts, setSelectedProducts] = useState([]); 
+  const [load,setload]=useState(false)
+  const [Grandtotal, setGrandtotal] = useState();
   const toggleStage1 = () => {
     if (stage1 == 'block') {
       setstage1('none')
@@ -8625,7 +8743,7 @@ function NewTransferOutForm(props){
     }
   }
   const Go_Back = () => {
-    if (stage2 === 'block') {
+    if (stage2 === 'block') { 
       toggleStage2()
       toggleStage1()
     }
@@ -8646,99 +8764,182 @@ function NewTransferOutForm(props){
       {}
     );
   };
-  const SaveTransferOut = ()=>{
- 
-  } 
+  const SaveTransferOut = async () => {
+    let MedId = [];
+    let Type = [];
+    let quantity = [];
+    for (let i = 0; i < SelectedProducts.length; i++) {
+      Type.push(SelectedProducts[i].type ? SelectedProducts[i].type : "");
+      MedId.push( SelectedProducts[i].productid ? SelectedProducts[i].productid : "" );
+      quantity.push(SelectedProducts[i].qtytoTransfer ? Number(SelectedProducts[i].qtytoTransfer) : "");
+    }
+    var Data = {
+      from_location:fromlocation,
+      to_location:tolocation, 
+      channel: channel, 
+      transfer_date: transferdate,
+      total_amount:Grandtotal,
+      items: MedId, 
+      items_type: Type, 
+      qty: quantity
+     }
+    setload(true);
+    try {
+      await axios.post(`${url}/transfer/stocks/add`, Data).then((response) => {
+        setload(false);
+        props.GETTransferOutList();
+        setload(false);
+        props.toggle_npef();
+        if (response.data.status == true) {
+          Notiflix.Notify.success(response.data.message);
+        } else {
+          Notiflix.Notify.warning(response.data.message);
+        }
+        resetfields()
+      });
+    } catch (e) {
+      setload(false);
+      Notiflix.Notify.warning(e.message);
+    }
+  };
+
   function Emptytableindex() {
     setitemid();
     setitemname();
     setqty();
   }
-  let MedicineentriesObj = {
-    type: '',
-    Itemid: '',
-    Itemname: '',
-    Qty: '',
-  };
-  async function InsertMedicines() {
-    MedicineentriesObj = {
-      type: itemtype,
-      Itemid: itemid,
-      Itemname: itemname,
-      Qty: qty,
-    };
-    if (qty) {
-      if (MedicineentriesArr == undefined || MedicineentriesArr.length == 0) {
-        setMedicineentriesArr([MedicineentriesObj]);
-      } else {
-        setMedicineentriesArr((prevState) => [...prevState, MedicineentriesObj,]);
-      }
+
+  useEffect(() => {
+    CalGrandttl();
+  }, [SelectedProducts]);
+
+  function AddProducts(data) {
+    let T = "";
+    if (data.vaccine_brand_id) {
+      T = "v";
     } else {
-      Notiflix.Notify.warning("please choose quantity");
+      T = "m";
     }
-    resetfields();
+    let ProductDetails = {
+      productid: data.id,
+      product: data.item_name ? data.item_name : itemname,
+      type: data.type ? data.type : T,
+      avlstock: data.current_stock,
+      qtytoTransfer: '',
+      mrp: data.mrp,
+    }
+    if (SelectedProducts && SelectedProducts.length == 0) {
+      setSelectedProducts([ProductDetails]);
+    } else {
+      setSelectedProducts((prevState) => [...prevState, ProductDetails]);
+    }
   }
-  async function DeleteMedicine(id) {
+  async function DeleteProduct(productid) {
     let obj = [];
     obj.push(
-      MedicineentriesArr.filter(function (e) {
-        return e.Itemid !== id;
+      SelectedProducts.filter(function (e) {
+        return e.productid !== productid;
       })
     );
     obj = obj.flat();
-    setMedicineentriesArr(obj);
+    setSelectedProducts(obj);
   }
   const resetfields = async () => {
-    setitemname();
-    setitemid();
-    setqty();
-    setloadsearch();
+    setclinicname()
+    setfromlocation()
+    settolocation()
+    settransferdate()
+    setchannelname()
+    setchannel()
+    setSelectedProducts([])
   };
-  function indexing(i) {
-    if (tableindex == i) {
-      settableindex(-1);
-      Emptytableindex();
-    } else {
-      settableindex(i);
 
-    }
-  }
   const searchmeds = async (search) => {
     setloadsearch(true);
     try {
-      await axios
-        .get(`${url}/item/search?search=${search}`)
-        .then((response) => {
-          let medicines = [];
-          let vaccines = [];
-          let items = [];
-          medicines.push(
-            response.data.data.medicines ? response.data.data.medicines : []
-          );
-          vaccines.push(
-            response.data.data.vaccines ? response.data.data.vaccines : []
-          );
-          items = medicines.concat(vaccines);
-          items = items.flat();
-          setitemsearch(items);
-          setloadsearch(false);
-          if (search.length > 1) {
-            medicinesref.current.style.display = "block";
-          } else {
-            medicinesref.current.style.display = "none";
-          }
-        });
+      await axios.get(`${url}/stock/list?search=${search}`).then((response) => {
+        let medicines = [];
+        let vaccines = [];
+        let items = [];
+        medicines.push(
+          response.data.data.medicines ? response.data.data.medicines : []
+        );
+        vaccines.push(
+          response.data.data.vaccines ? response.data.data.vaccines : []
+        );
+        items = medicines.concat(vaccines);
+        items = items.flat();
+        setitemsearch(items);
+        setloadsearch(false);
+        if (search.length > 1) {
+          medicinesref.current.style.display = "block";
+        } else {
+          medicinesref.current.style.display = "none";
+        }
+      });
     } catch (e) {
       Notiflix.Notify.warning(e.data.message);
     }
-  }
+  };
   const reversefunction = (date) => {
     if (date) {
       date = date.split("-").reverse().join("-");
       return date;
     }
   }
-  console.log(fromlocation,tolocation,channel,MedicineentriesArr)
+  const ClinicName = ()=>{
+    for(let i=0;i<cliniclist.length;i++){
+      if(clinicid == cliniclist[i].id){
+        setclinicname(cliniclist[i].title)
+      }
+    }
+  }
+  function AddProducts(data) {
+    let T = "";
+    if (data.vaccine_brand_id) {
+      T = "v";
+    } else {
+      T = "m";
+    }
+    let ProductDetails = {
+      productid: data.id,
+      type: data.type ? data.type : T,
+      product: data.item_name ? data.item_name : itemname,
+      avlstock: data.current_stock,
+      qtytoTransfer: '',
+      mrp: data.mrp,
+    };
+
+    if (SelectedProducts && SelectedProducts.length == 0) {
+      setSelectedProducts([ProductDetails]);
+    } else {
+      setSelectedProducts((prevState) => [...prevState, ProductDetails]);
+    }
+  }
+  function CalTotalAmount(qty, mrp) {
+    let cost = mrp;
+    if (!qty) {
+      return 0;
+    } else if (qty == 1 || qty =='1') {
+      mrp = Number(mrp);
+      return mrp;
+    } else {
+      cost = Number(mrp) * Number(qty);
+      cost = cost.toFixed(2);
+      return cost;
+    }
+  }
+  function CalGrandttl() {
+    let ttl = 0;
+    SelectedProducts.map((data) => (ttl += Number(data.totalamt)));
+    setGrandtotal(ttl);
+  }
+  useEffect(()=>{
+    ClinicName()
+  },[])
+  // console.log(fromlocation,tolocation,channel,transferdate,MedicineentriesArr,clinicname,cliniclist)
+  // console.log(clinicname)
+  // console.log(SelectedProducts)
   return(
     <section className="position-relative" style={{minHeight:'100%'}}>
       <h5 className="text-center text-charocal fw-bold pt-2 shadow-sm pb-2">New Transfer Out</h5> 
@@ -8749,7 +8950,7 @@ function NewTransferOutForm(props){
         <div className="col-5">
           <label className="text-charcoal75 fw-bold" htmlFor="">From Location</label>
         <div className="dropdown ">
-            <button className=" button button-pearl text-charcoal fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"> {fromlocationname?fromlocationname:"From Location"} </button>
+            <button className=" button button-pearl text-charcoal fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"> {fromlocationname?fromlocationname:clinicname} </button>
             <ul className="dropdown-menu p-2 bg-pearl border-0 shadow-sm" >
             {
                         cliniclist ? (
@@ -8793,10 +8994,9 @@ function NewTransferOutForm(props){
             </ul>
           </div>
             </div>
-
             <div className="col-5">
             <div className="text-charcoal75 fw-bold" htmlFor="">Transfer Date</div>
-              <input type="date" className="button button-pearl fw-bolder tet-charcoal " value={transferdate?transferdate:currentDate}/>
+              <input type="date" className="button button-pearl fw-bolder tet-charcoal " onChange={(e)=>{settransferdate(e.target.value)}} value={transferdate?transferdate:currentDate}/>
             </div>
         </div>
         <div className="container-fluid p-0 m-0 position-absolute bottom-0 bg-pearl">
@@ -8810,105 +9010,124 @@ function NewTransferOutForm(props){
         <div className={`stage2 d-${stage2}`}>
           <div className="row p-0 m-0 align-items-end align-self-end">
             <div className="col-auto">
-            <div className="position-relative">
-                  <label>Search Items </label>
-                  <input className="form-control bg-seashell" placeholder="Items" value={itemname ? itemname : ""} onChange={(e) => { searchmeds(e.target.value); setitemname(e.target.value); setitemtype(); }} />
-                  <div ref={medicinesref} className="position-absolute rounded-4 col-12" style={{ zIndex: "2" }} >
+                  <input className="form-control fw-bold border-charcoal75 border-2 rounded-1 bg-seashell" placeholder="Search Product by Name" value={itemname ? itemname : ""} onChange={(e) => { searchmeds(e.target.value); setitemname(e.target.value); setitemid(); setproducts(); stockref.current.style.display = "none"; }} />
+                  <div ref={medicinesref} className="position-absolute rounded-1 mt-1" style={{ Width: "max-content", zIndex: "1" }} >
                     {
                       itemsearch ? (
                         loadsearch ? (
                           <div className="rounded-1 p-1 bg-pearl">
                             Searching Please wait....
-                            <div
-                              className="spinner-border my-auto"
-                              style={{ width: "1rem", height: "1rem" }}
-                              role="status"
-                            >
-                              <span className="sr-only"> </span>{" "}
+                            <div className="spinner-border my-auto" style={{ width: "1rem", height: "1rem" }} role="status" >
+                              <span className="sr-only"> </span>
                             </div>
                           </div>
-                        ) : itemsearch.length == 0 ? (
-                          <div className="bg-burntumber text-light rounded-1 p-1 text-wrap">
-                            Oops! Not Avaliable
-                          </div>
+                        ) : loadsearch == false && itemsearch.length == 0 ? (
+                          <div className="bg-burntumber text-light rounded-1 p-1"> Oops! Not Avaliable </div>
                         ) : (
-                          <div className={`mt-1 rounded-4 bg-pearl shadow px-1 pb-2 d-${itemsearch && itemsearch.length > 1 ? "block" : "none"}`} >
-                            <p className={`p-0 m-0 bg-pearl fw-bold text-charcoal75 rounded-4 ps-2 `} style={{ fontSize: "0.8rem" }} > {itemsearch.length} Search Results </p>
-                            {itemsearch.map((data, i) => (
-                              <div style={{ cursor: "pointer" }} className={`p-0 ps-1 text-wrap  bg-${i % 2 == 0 ? "" : "lightyellow"}`} name={data.id} onClick={(e) => { setitemname(data.display_name ? data.display_name : data.name); setitemid(data.id); setitemtype(data.vaccines_id ? "v" : "m"); medicinesref.current.style.display = "none"; }} >
-                                {data.display_name ? data.display_name : data.name}
-                              </div>
-                            ))}
+                          <div className={`rounded-4 scroll border border-1 bg-pearl p-1 d-${itemsearch && itemsearch.length > 0 ? "block" : "none"}`} style={{ height: '30vh' }} >
+                            <p className={`text-start p-2 position-sticky top-0 bg-pearl fw-bold text-charcoal75 ms-2`} style={{ fontSize: "0.8rem" }} > {itemsearch.length} Search Results </p>
+                            {
+                              itemsearch.map((data, i) => (
+                                <div style={{ cursor: "pointer", Width: "10rem" }} className={`bg-${i % 2 == 0 ? "pearl" : "seashell"} text-start fw-bold p-2 border-bottom text-charcoal `} onClick={(e) => { setproducts(data); setitemname(data.display_name ? data.display_name : data.name); setitemid(data.id); stockref.current.style.display = "block"; }} > {data.display_name ? data.display_name : data.name} <span className='text-burntumber fw-bold rounded-2 px-1'>{data && data.stock_info !== undefined ? data.stock_info.length : ""} stocks</span> </div>
+                              ))
+                            }
                           </div>
                         )
                       ) : (
-                        <></>
+                        <div className="bg-seashell"></div>
                       )}
                   </div>
-                </div>
-            </div>
-            <div className="col-auto">
-              <input/>
-            </div>
-            <div className="col-auto">
-            {tableindex == -1 || tableindex == undefined ? (
-                  <button type="submit" className="button button-charcoal done" onClick={InsertMedicines} > {" "} Add{" "} </button>
-                ) : (
-                  <></>
-                )}
+                  <div ref={stockref} className={`position-absolute start-50 mt-1 bg-pearl scroll scroll-y align-self-center rounded-2 border border-1 p-2 d-${products && products.stock_info && products.stock_info !== undefined ? "block" : "none"}`} style={{ zIndex: "2", width: "10rem", 'min-height': "30vh", }} >
+                    <p className={`text-start fw-bold text-charcoal75`} style={{ fontSize: "0.8rem" }} > {products && products.stock_info !== undefined ? products.stock_info.length : ""}{" "} Batch Stocks </p>
+                    {
+                      products && products.length != 0 ? (
+                        products.stock_info.length == 0 ? (
+                          <div className="bg-burntumber text-white fw-bold p-2">Oops! Not Available</div>
+                        ) : (
+                          products.stock_info.map((data, i) => (
+                            <div style={{ cursor: "pointer", Width: "max-content" }} className={`bg-${i % 2 == 0 ? "pearl" : "seashell"} border-bottom text-wrap`} onClick={() => { AddProducts(data); setitemname(); setitemid(); setproducts(); setitemsearch(); }} >
+                              <p className="text-start m-0 p-0 fw-bold">{itemname}</p>
+                              <p className="text-start p-0 m-0 "> BatchNo. -{" "} {data.batch_no && data.batch_no !== null ? data.batch_no : ""} </p>
+                              <p className="text-start p-0 m-0 "> Stock -{" "} {data.current_stock && data.current_stock ? data.current_stock : ""} </p>
+                              <p className="text-start p-0 m-0 "> Expiry Date -{" "} {data.expiry_date ? reversefunction(data.expiry_date) : ""} </p>
+                            </div>
+                          ))
+                        )
+                      ) : (
+                        <div className="bg-seashell p-2">Not Avaliable</div>
+                      )
+                    }
+                  </div>
+                  <div>
+                  </div>
+       
             </div>
           </div>
      
                 <div className="container-fluid p-0 m-0 mt-2">
-                <table className="table m-0 datatable bg-seashell text-start position-relative">
-                <thead className=" bg-pearl position-sticky top-0" style={{ color: "gray", fontWeight: "600" }} >
-                  <tr>
-                    <th>Item ID</th>
-                    <th>Item Name</th>
-                    <th>Qty.</th>
-                    <th>Delete</th>
-                  </tr>
-                </thead>
-                {MedicineentriesArr ? (
-                  <tbody style={{ color: "var(--charcoal)", fontWeight: "600", }} >
-                    {
-                    MedicineentriesArr.map((item, _key) => (
-                      <tr key={_key} className={`bg-${_key % 2 == 0 ? "seashell" : "pearl"}`} >
-                        <td><input type="checkbox" checked={_key == tableindex ? true : false} onClick={() => { indexing(_key); }} className=" form-check-input" /> </td>
-                        <td>{item.Itemid}</td>
-                        <td>{item.Itemname}</td>
-                        <td>{item.batchno}</td>
-                        <td>{reversefunction(item.expirydate)}</td>
-                        <td>{item.MRP}</td>
-                        <td>{item.Rate}</td>
-                        <td> {Number(item.Discount) + Number(item.tradeDiscount)} </td>
-                        <td>{item.Qty}</td>
-                        <td>{item.costperunit}</td>
-                        <td>{item.totalamount}</td>
-                        <td><button onClick={() => { DeleteMedicine(item.Itemid); }} className="btn btn-sm button-burntumber" > Delete </button> </td>
+                <table className="table p-0 m-0">
+                  <thead className="p-0 m-0">
+                    <tr className={`p-0 m-0 `}>
+                      <th className="p-0 m-0 px-2 text-charcoal75" rowSpan="2"> Item ID </th>
+                      <th className="p-0 m-0 px-2 text-charcoal75" rowSpan="2"> Item Name </th>
+                      <th className="p-0 m-0 px-2 text-charcoal75" rowSpan="2"> Mrp </th>
+                      <th className="p-0 m-0 px-2 text-charcoal75" rowSpan="2"> Avl.Stock </th>
+                      <th className="p-0 m-0 px-2 text-charcoal75" rowSpan="2"> Qty To Transfer </th>
+                      <th className="p-0 m-0 px-2 text-charcoal75" rowSpan="2"> Total </th>
+                      <th className="p-0 m-0 px-2 text-charcoal75" rowSpan="2"> Delete </th>
+                    </tr>
+                  </thead>
+                  {SelectedProducts && SelectedProducts.length !== 0 ? (
+                    <tbody className="p-0 m-0">
+                      {
+                      SelectedProducts.map((data) => (
+                        <tr className={`p-0 m-0 align-middle text-charcoal fw-bold`} >
+                          <td>{data.type} {data.productid} </td>
+                          <td>{data.product}</td>
+                          <td>{data.mrp}</td>
+                          <td>{data.avlstock}</td>
+                          <td>
+                            <input className="border border-1 rounded-1 w-25 text-center p-0 m-0 bg-seashell" value={data.qtytoTransfer ? data.qtytoTransfer : ""} onChange={(e) => { e.target.value <= data.avlstock ? (data.qtytoTransfer = e.target.value) : Notiflix.Notify.failure("Quantity Cannot be Greater then Current Stock Available"); data.totalamt = CalTotalAmount(data.qtytoTransfer, data.mrp); setSelectedProducts((prevState) => [...prevState]); }} />{" "}
+                          </td>
+                          <td>{data.totalamt}</td>
+                          <td>
+                            <button className="btn p-0 m-0" onClick={() => { DeleteProduct(data.productid); }} >
+                              <img src={process.env.PUBLIC_URL + "images/minus.png"} />
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  ) : (
+                    <tbody className="p-0 m-0 position-relative">
+                      <tr className="p-0 m-0">
+                        <td className="p-0 m-0 position-absolute text-charcoal75 fw-bold text-center start-0 end-0"> No Product Added </td>
                       </tr>
-                    ))}
-                  </tbody>
-                ) : MedicineentriesArr && MedicineentriesArr.length == 0 ? (
-                  <tbody className="position-relative bg-pearl text-center" style={{fontWeight: "600", }} >
-                    <tr>
-                      <td className="position-absolute start-0 end-0 top-0"> No items Added </td>
-                    </tr>
-                  </tbody>
-                ) : (
-                  <tbody className="position-relative bg-pearl text-center" style={{fontWeight: "600", }} >
-                    <tr className="">
-                      <td className="position-absolute start-0 end-0"> No items Added </td>
-                    </tr>
-                  </tbody>
-                )}
-              </table>  
+                    </tbody>
+                  )}
+                </table>
                 </div>
                      
         <div className="container-fluid p-0 m-0 position-absolute bottom-0 bg-pearl">
-          <div className="row p-0 m-0 py-3 justify-content-end">
+          <div className="row p-0 m-0 py-3 justify-content-between align-items-center align-self-center">
             <div className="col-auto">
+              <label className="fw-bolder text-charcoal75" htmlFor="">Grand Total</label>
+              <div className="col-auto ">
+              <h5 className="fw-bolder text-charcoal">₹{Grandtotal }</h5>
+              </div>
+          
+            </div>
+            <div className="col-auto">
+            {load ? (
+              <div className="col-6 py-2 pb-2 m-auto text-center">
+                <div class="spinner-border" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+              </div>
+            ) : (
             <button className="button button-charcoal"onClick={()=>confirmmessage()} >Save Transfer</button>
+            )
+            }
             </div>
           </div>
         </div>
