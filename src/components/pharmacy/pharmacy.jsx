@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useState, useEffect, useContext, useRef } from "react";
 import { URL, TodayDate, DoctorsList, Clinic, Permissions } from "../../index";
-import { ExportPurchaseEntry, ExportPurchaseReturn, ExportSaleEntry, ExportSaleReturn, } from "../pharmacy/Exports";
+import { ExportPurchaseEntry, ExportPurchaseReturn, ExportSaleEntry, ExportSaleReturn,ExportTransferOut } from "../pharmacy/Exports";
 import { QRcode } from "../features/qrcode";
 import Notiflix from "notiflix";
 import ReactPaginate from "react-paginate";
@@ -6676,7 +6676,6 @@ function Stockvaccinesection() {
         <table className="table datatable text-start">
           <thead className="position-sticky top-0 bg-pearl">
             <tr className="text-start">
-              <th className="text-charcoal75 fw-bold">No.</th>
               <th className="text-charcoal75 fw-bold">ID</th>
               <th className="text-charcoal75 fw-bold">Vaccine Name</th>
               <th className="text-charcoal75 fw-bold">Batch No.</th>
@@ -6700,7 +6699,6 @@ function Stockvaccinesection() {
               <td className="placeholder-glow"> <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div> </td>
               <td className="placeholder-glow"> <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div> </td>
               <td className="placeholder-glow"> <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div> </td>
-              <td className="placeholder-glow"> <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div> </td>
               <td className="placeholder-glow text-center"> <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div> </td>
               <td className="placeholder-glow text-center"> <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div> </td>
               <td className="placeholder-glow text-center"> <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div> </td>
@@ -6717,7 +6715,6 @@ function Stockvaccinesection() {
               {
               vaccinearr.map((data, i) => (
                 <tr className={`text-start align-middle`}>
-                  <td className=" text-charcoal fw-bold">{i + 1}</td>
                   <td className=" text-charcoal fw-bold"> v{data.Batch_stock_id} </td>
                   <td className=" text-charcoal fw-bold"> {data.name && data.name !== null ? data.name : ""} </td>
                   <td className=" text-charcoal fw-bold">{data.batch_no}</td>
@@ -7590,7 +7587,7 @@ function Transfersection(){
   const permission = useContext(Permissions);
   const [pageindex,setpageindex] =useState("Transfers In")
   const [status,setstatus] =useState()
-
+  const [statusname,setstatusname]=useState()
   const first = [
     {
       option: "Transfers In",
@@ -7604,7 +7601,7 @@ function Transfersection(){
 
   const Selected_Screen=(_menu)=>{
     if(_menu  == "Transfers In"){
-      return <TransferIn/>
+      return <TransferIn fromdate={fromdate} todate={todate} status={status}/>
     }
     if(_menu == "Transfers Out"){
       return <TransferOut/>
@@ -7633,14 +7630,17 @@ return(
         <div className="col-auto">
           <div className="dropdown">
           <button class="button button-seashell border-0 rounded-2 fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Status 
+              {statusname?statusname:'Status'} 
             </button>
             <ul class="dropdown-menu bg-seashell shadow-sm border-0">
-                  <li className={`dropdown-item`} onClick={(a) =>setstatus()} > </li>
+            <li className={`dropdown-item fw-bolder text-charcoal`} onClick={(a) =>{setstatus('');setstatusname('Status')} }>Status</li>
+                  <li className={`dropdown-item fw-bolder text-charcoal`} onClick={(a) =>{setstatus(0);setstatusname('Pending')} }>Pending</li>
+                  <li className={`dropdown-item fw-bolder text-charcoal`} onClick={(a) =>{setstatus(1);setstatusname('Accepted')}}>Accepted</li>
+                  <li className={`dropdown-item fw-bolder text-charcoal`} onClick={(a) =>{setstatus(2);setstatusname('Rejected')}}>Rejected</li>
             </ul>
           </div>
         </div>
-      <div className="col-auto bg-seashell rounded-2 ">
+      <div className="col-auto bg-seashell rounded-2">
           <div className="row p-0 m-0 align-items-center align-self-center">
             <div className="col-auto p-0 m-0">
               <input type="date" placeholder="fromdate" className="button button-seashell rounded-0 border-0 text-charcoal text-center fw-bold " value={fromdate ? fromdate : currentDate ? currentDate : ""} onChange={(e) => { setfromdate(e.target.value); }} />
@@ -7662,10 +7662,9 @@ return(
   </>
 )
 }
-export{Transfersection}
-
 function TransferIn(props){
   const currentDate = useContext(TodayDate);
+  const adminid = localStorage.getItem("id");
   const ClinicID = localStorage.getItem("ClinicId");
   const permission = useContext(Permissions);
   const url = useContext(URL);
@@ -7682,7 +7681,7 @@ function TransferIn(props){
 
   const fromdate = props.fromdate
   const todate = props.todate
-  const channel = props.channel
+  const stat = props.status
   const [Loading, setLoading] = useState(false);
   const [transferinarr, settransferinarr] = useState([]);
   const [transferinarrExcel, settransferinarrExcel] = useState([]);
@@ -7690,15 +7689,12 @@ function TransferIn(props){
   const [npef, setnpef] = useState("none");
   const [pages, setpages] = useState();
   const [pagecount, setpagecount] = useState();
-  const [qr, setqr] = useState("none");
+  const [updateload, setupdateload] = useState(false);
+  const[updateindex,setupdateindex]=useState()
   
   function GetPages() {
     try {
-      axios
-        .get(
-          `${url}/purchase/entry?clinic_id=${ClinicID}&channel=${channel}&from_date=${fromdate ? fromdate : currentDate
-          }&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`
-        )
+      axios.get( `${url}/transfer/stocks/list?location_id=${ClinicID}&limit=25&offset=0` )
         .then((response) => {
           setpagecount(response.data.data.total_count);
           setpages(Math.round(response.data.data.total_count / 25) + 1);
@@ -7739,7 +7735,7 @@ function TransferIn(props){
     } else {
       setLoading(true);
       try {
-        axios.get(`${url}/purchase/entry?location_id=${ClinicID}&limit=25&offset=${Data.selected * 25 }` )
+        axios.get(`${url}/transfer/stocks/list?location_id=${ClinicID}&limit=25&offset=${Data.selected * 25 }` )
           .then((response) => {
             setpagecount(response.data.data.total_count);
             settransferinarr(response.data.data.purchase_entry);
@@ -7774,12 +7770,12 @@ function TransferIn(props){
   }
   useEffect(() => {
     GetPages();
-  }, [fromdate, todate]);
+  }, [fromdate, todate,stat]);
 
   useEffect(() => {
     GETTransferInList();
     GETTransferInListForExcel();
-  }, [fromdate, todate]);
+  }, [fromdate, todate,stat]);
 
   const toggle_npef = () => {
     if (npef === "none") {
@@ -7816,73 +7812,24 @@ function TransferIn(props){
       return date;
     }
   };
-  // function GenerateQR(props) {
-  //   let medicines = props.purchaseentry.medicines ? props.purchaseentry.medicines : 0;
-  //   let vaccines = props.purchaseentry.vaccines
-  //     ? props.purchaseentry.vaccines
-  //     : 0;
-  //   let medicineobj = {};
-  //   let vaccineobj = {};
-  //   let medcount = [];
-  //   let vaccount = [];
-  //   if (
-  //     props.purchaseentry.medicines !== undefined &&
-  //     props.purchaseentry.medicines.length !== 0
-  //   ) {
-  //     for (let i = 0; i < medicines.length; i++) {
-  //       for (let j = 0; j < props.purchaseentry.medicines[i].qty; j++) {
-  //         medicineobj[j] = {
-  //           id: "m" + props.purchaseentry.medicines[i].id,
-  //           name: props.purchaseentry.medicines[i].medicine.name,
-  //           qrcode: <QRcode id={"m" + props.purchaseentry.medicines[i].id} />,
-  //         };
-  //         medcount.push(medicineobj[j]);
-  //       }
-  //     }
-  //   }
-  //   if (
-  //     props.purchaseentry.vaccines !== undefined &&
-  //     props.purchaseentry.vaccines.length !== 0
-  //   ) {
-  //     for (let i = 0; i < vaccines.length; i++) {
-  //       for (let j = 0; j < props.purchaseentry.vaccines[i].qty; j++) {
-  //         vaccineobj[j] = {
-  //           id: "v" + props.purchaseentry.vaccines[i].id,
-  //           name: props.purchaseentry.vaccines[i].vaccine.name,
-  //           qrcode: <QRcode id={"v" + props.purchaseentry.vaccines[i].id} />,
-  //         };
-  //         vaccount.push(vaccineobj[j]);
-  //       }
-  //     }
-  //   }
-
-  //   return (
-  //     <div className="container-fluid">
-  //       <h5 className="text-charcoal75 fw-bold">Medicines</h5>
-  //       <div className="row">
-  //         {medcount.map((Data) => (
-  //           <div className="col-auto m-2" key={Data}>
-  //             <p className="text-charcoal75">
-  //               {Data.name} | {Data.id}
-  //             </p>
-  //             <div className="container">{Data.qrcode}</div>
-  //           </div>
-  //         ))}
-  //       </div>
-  //       <h5 className="text-charcoal75 fw-bold mt-2">Vaccines</h5>
-  //       <div className="row">
-  //         {vaccount.map((Data) => (
-  //           <div className="col-auto m-2" key={Data}>
-  //             <p className="text-charcoal75">
-  //               {Data.name} | {Data.id}
-  //             </p>
-  //             <div className="container">{Data.qrcode}</div>
-  //           </div>
-  //         ))}
-  //       </div>
-  //     </div>
-  //   );
-  // }
+  const UpdateStatus = async (data,e) => {
+    setupdateload(true)
+    try {
+      await axios.post(`${url}/transfer/stocks/change/status`, { 
+        transfer_id: data.id, 
+        transfer_status: e.target.value, 
+        admin_id: adminid, 
+      })
+        .then((response) => {
+          Notiflix.Notify.success(response.data.message);
+          GETTransferInList();
+          setupdateload(false)
+        })
+    } catch (e) {
+      Notiflix.Notify.failure(e.message);
+      setupdateload(false)
+    }
+  }
   return(
     <>
     <div className="col-auto position-absolute p-0 m-0 ms-2 export_2 align-self-center text-center">
@@ -7929,7 +7876,7 @@ function TransferIn(props){
            {
            transferinarr.map((item, i) => (
              <tr key={i} className={`bg-${i % 2 == 0 ? "seashell" : "pearl" } align-middle`} >
-               <td className="py-0 my-0 text-charcoal fw-bold ps-2"> TO-{item.id} </td>
+               <td className="py-0 my-0 text-charcoal fw-bold ps-2"> TI-{item.id} </td>
                <td className="text-charcoal fw-bold"> {item.channel && item.channel == 1 ? "Pharmacy" : "Clinic"} </td>
                <td className="text-charcoal fw-bold"> {item.from_location.title ? item.from_location.title : "N/A"} </td>
                <td className="text-charcoal fw-bold"> {item.to_location.title ? item.to_location.title : "N/A"} </td>
@@ -7938,14 +7885,23 @@ function TransferIn(props){
                <td className="text-charcoal fw-bold"> </td>
                <td className="text-charcoal fw-bold"> </td>
                <td className="text-charcoal fw-bold"> {item.total_amount && item.total_amount ? "Rs. " + item.total_amount : "N/A"} </td>
-               <td>
-               <select className={`bg-${status_color(item.transfer_status)} rounded-2 px-2 py-1 fw-bold border-0 text-wrap `} name={item.transfer_status}>
-                                            <option className="button text-start" selected disabled>{status(item.transfer_status)}</option>
-                                            <option className="button-lightred" value='0'>Pending</option>
-                                            <option className="button-lightblue" value='1'>Accepted</option>
-                                            <option className="button-lightred" value='2'>Rejected</option>
-                  
-                                        </select>
+               <td className="text-center">
+                { 
+                updateload == true && updateindex==i ? (
+        <div className="col-6 py-2 pb-2 m-auto text-center">
+        <div className="spinner-border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      </div>
+                ):(
+                  <select className={`bg-${status_color(item.transfer_status)} rounded-2 rounded-pill py-1 px-2 fw-bold text-center border-0 text-wrap `} value={status(item.transfer_status)} onChange={(e)=>{UpdateStatus(item,e);updateindex(i)}} name={item.transfer_status}>
+                  <option className="button text-center" selected disabled>{status(item.transfer_status)}</option>
+                  <option className="button-lightred" value='0'  >Pending</option>
+                  <option className="button-lightblue" value='1'>Accepted</option>
+                  <option className="button-lightred" value='2'   >Rejected</option>
+              </select>
+                )}
+
                </td>
                <td className="text-charcoal fw-bold text-center">
                  <button className="btn p-0 m-0" onClick={() => { setindex(i); toggle_peidw(); }} > <img src={ process.env.PUBLIC_URL + "/images/archivebox.png" } alt="displaying_image" className="ms-1 img-fluid" /> </button>
@@ -8031,7 +7987,7 @@ function TransferOut(props){
 
   function GetPages() {
     try {
-      axios.get(`${url}/transfer/stocks/list?location_id=${ClinicID}&from_date=${fromdate ? fromdate : currentDate }&to_date=${todate ? todate : fromdate ? fromdate : currentDate}` )
+      axios.get(`${url}/transfer/stocks/list?location_id=${ClinicID}&limit=25&offset=0` )
         .then((response) => {
           setpagecount(response.data.data.total_count);
           setpages(Math.round(response.data.data.total_count / 25) + 1);
@@ -8068,7 +8024,7 @@ function TransferOut(props){
     } else {
       setLoading(true);
       try {
-        axios.get(`${url}/purchase/stocks/list?location_id=${ClinicID}&limit=25&offset=${Data.selected * 25 }` )
+        axios.get(`${url}/transfer/stocks/list?location_id=${ClinicID}&limit=25&offset=${Data.selected * 25 }` )
           .then((response) => {
             setpagecount(response.data.data.total_count);
             settransferoutarr(response.data.data.transfer_stocks_sent);
@@ -8163,11 +8119,10 @@ function TransferOut(props){
       Notiflix.Notify.failure(e.message);
     }
   }
-  console.log(transferoutarr)
   return(
     <>
     <div className="col-auto position-absolute p-0 m-0 ms-2 export_2 align-self-center text-center">
-     <ExportPurchaseEntry transferoutarrarr={transferoutarrExcel} fromdate={reversefunction(fromdate)} todate={reversefunction(todate)} />
+     <ExportTransferOut transferoutarrarr={transferoutarrExcel} fromdate={reversefunction(fromdate)} todate={reversefunction(todate)} />
    </div>
  <button className={`button addpurchase button-charcoal me-3 position-absolute d-${permission.purchase_entry_add == 1 ? "" : "none" }`} onClick={toggle_npef} > <img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt="displaying_image" className="img-fluid p-0 m-0" />Transfer Out </button>
      <h2 className=" ms-3 text-charcoal fw-bolder" style={{ width: "fit-content" }} > {transferoutarr!=undefined?transferoutarr.length:''} {transferoutarr!=undefined?transferoutarr.length > 1 ? "Transfers Out" : "Transfer Out":''}{" "} </h2>
@@ -8220,8 +8175,8 @@ function TransferOut(props){
                <td className="text-charcoal fw-bold"> </td>
                <td className="text-charcoal fw-bold"> {item.total_amount && item.total_amount ? "Rs. " + item.total_amount : "N/A"} </td>
                <td>
-               <select className={`bg-${status_color(item.transfer_status)} rounded-2 px-2 py-1 fw-bold border-0 text-wrap `} onChange={(e)=>{UpdateStatus(item,e)}} name={item.transfer_status}>
-                                            <option className="button text-start" selected disabled>{status(item.transfer_status)}</option>
+               <select className={`bg-${status_color(item.transfer_status)} rounded-2 rounded-pill py-1 px-2  fw-bold border-0 text-wrap `} onChange={(e)=>{UpdateStatus(item,e)}} name={item.transfer_status}>
+                                            <option className="button text-center" selected disabled>{status(item.transfer_status)}</option>
                                             <option className="button-lightred" value='0'>Pending</option>
                                             <option className="button-lightblue" value='1'>Accepted</option>
                                             <option className="button-lightred" value='2'>Rejected</option>
@@ -9120,8 +9075,8 @@ function NewTransferOutForm(props){
             <div className="col-auto">
             {load ? (
               <div className="col-6 py-2 pb-2 m-auto text-center">
-                <div class="spinner-border" role="status">
-                  <span class="visually-hidden">Loading...</span>
+                <div className="spinner-border" role="status">
+                  <span className="visually-hidden">Loading...</span>
                 </div>
               </div>
             ) : (
@@ -9134,4 +9089,332 @@ function NewTransferOutForm(props){
         </div>
     </section>
   )
+}
+
+export{Transfersection}
+
+function Dumpsection(props){
+  const currentDate = useContext(TodayDate);
+  const adminid = localStorage.getItem("id");
+  const ClinicID = localStorage.getItem("ClinicId");
+  const permission = useContext(Permissions);
+  const url = useContext(URL);
+  const [peidw, setpeidw] = useState("none");
+  const [Loading, setLoading] = useState(false);
+  const [dumpsarr, setdumpsarr] = useState([]);
+  const [dumpsarrExcel, setdumpsarrExcel] = useState([]);
+  const [index, setindex] = useState();
+  const [npef, setnpef] = useState("none");
+  const [pages, setpages] = useState();
+  const [pagecount, setpagecount] = useState();
+  const [updateload, setupdateload] = useState(false);
+  const [fromdate,setfromdate] =useState()
+  const [todate,settodate] =useState()
+  const [channel,setchannel] =useState()
+  const [second ,setSecond] =  useState()
+
+
+
+  const toggle_peidw = () => {
+    if (peidw === "none") {
+      setpeidw("block");
+    }
+    if (peidw === "block") {
+      setpeidw("none");
+    }
   }
+  function GetPages() {
+    try {
+      axios
+        .get(
+          `${url}/dump/stocks/list?clinic_id=${ClinicID}&channel=${channel}&from_date=${fromdate ? fromdate : currentDate
+          }&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`
+        )
+        .then((response) => {
+          setpagecount(response.data.data.total_count);
+          setpages(Math.round(response.data.data.total_count / 25) + 1);
+          setLoading(false);
+        })
+        .catch((e) => {
+          Notiflix.Notify.warning(e);
+          setLoading(false);
+        });
+    } catch (e) {
+      Notiflix.Notify.warning(e.message);
+      setLoading(false);
+    }
+  }
+
+  // &from_date=${fromdate ? fromdate : currentDate }&to_date=${todate ? todate : fromdate ? fromdate : currentDate}
+  // &from_date=${fromdate ? fromdate : currentDate }&to_date=${todate ? todate : fromdate ? fromdate : currentDate}
+  // https://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/api/transfer/stocks/list?location_id=1&limit=10&offset=0
+  
+  function GETDumpList(Data) {
+    if (Data == undefined || Data.selected == undefined) {
+      setLoading(true);
+      try {
+        axios.get( `${url}/dump/stocks/list?location_id=${ClinicID}&limit=25&offset=0` )
+          .then((response) => {
+            setpagecount(response.data.data.total_count);
+            setdumpsarr(response.data.data.dump_stocks);
+            setLoading(false);
+          })
+          .catch((e) => {
+            Notiflix.Notify.warning(e.message);
+            setLoading(false);
+          });
+      } catch (e) {
+        Notiflix.Notify.warning(e.data.message);
+        setLoading(false);
+      }
+    } else {
+      setLoading(true);
+      try {
+        axios.get(`${url}/purchase/entry?location_id=${ClinicID}&limit=25&offset=${Data.selected * 25 }` )
+          .then((response) => {
+            setpagecount(response.data.data.total_count);
+            setdumpsarr(response.data.data.dump_stocks);
+            setLoading(false);
+          })
+          .catch((e) => {
+            Notiflix.Notify.warning(e.message);
+            setLoading(false);
+          });
+      } catch (e) {
+        Notiflix.Notify.warning(e.data.message);
+        setLoading(false);
+      }
+    }
+  }
+  function GETDumpListForExcel() {
+    setLoading(true);
+    try {
+      axios.get(`${url}/transfer/stocks/list?location_id=${ClinicID}&limit=${pagecount}&offset=0` )
+        .then((response) => {
+          setdumpsarrExcel(response.data.data.dump_stocks);
+          setLoading(false);
+        })
+        .catch((e) => {
+          Notiflix.Notify.warning(e.message);
+          setLoading(false);
+        });
+    } catch (e) {
+      Notiflix.Notify.warning(e.data.message);
+      setLoading(false);
+    }
+  }
+  useEffect(() => {
+    GetPages();
+  }, [fromdate, todate,channel]);
+
+  useEffect(() => {
+    GETDumpList();
+    GETDumpListForExcel();
+  }, [fromdate, todate,channel]);
+
+  const toggle_npef = () => {
+    if (npef === "none") {
+      setnpef("block");
+    }
+    if (npef === "block") {
+      setnpef("none");
+    }
+  };
+  let array = [[0, 'Pending', 'lightred'], [1, 'Accepted', 'lightgreen'], [3, 'Rejected', 'lightred']]
+  function status(number) {
+    let status
+    for (let i = 0; i < array.length; i++) {
+      if (number == array[i][0]) {
+        status = array[i][1]
+        break;
+      }
+    }
+    return status
+  }
+  function status_color(number) {
+    let status_color;
+    for (let j = 0; j < array.length; j++) {
+      if (number == array[j][0]) {
+        status_color = array[j][2]
+        break;
+      }
+    }
+    return status_color
+  }
+  const reversefunction = (date) => {
+    if (date) {
+      date = date.split("-").reverse().join("-");
+      return date;
+    }
+  };
+  const UpdateStatus = async (data,e) => {
+    setupdateload(true)
+    try {
+      await axios.post(`${url}/transfer/stocks/change/status`, { 
+        transfer_id: data.id, 
+        transfer_status: e.target.value, 
+        admin_id: adminid, 
+      })
+        .then((response) => {
+          Notiflix.Notify.success(response.data.message);
+          GETDumpList();
+          setupdateload(false)
+        })
+    } catch (e) {
+      Notiflix.Notify.failure(e.message);
+      setupdateload(false)
+    }
+  }
+  console.log(dumpsarr)
+  return(
+    <>
+   <div className="row p-0 m-0 mt-2">
+   <div className="col-auto">
+            <div class="dropdown">
+                <button class="button button-seashell border-0 rounded-2 fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  {second?second:"Channel"}
+                </button>
+
+                <ul class="dropdown-menu bg-seashell shadow-sm border-0">
+                      <li className={`dropdown-item text-${second === "Pharmacy" ? "light" : "dark"} fw-bold bg-${second === 'Pharmacy' ? "charcoal" : "seashell"}`} onClick={(a) => {setSecond('Pharmacy');setchannel(1)}} > Pharmacy </li>
+                      <li className={`dropdown-item text-${second === "Consumables" ? "light" : "dark"} fw-bold bg-${second === 'Consumables' ? "charcoal" : "seashell"}`} onClick={(a) => {setSecond('Consumables');setchannel(2)}} > Consumables </li>
+                </ul>
+              </div>
+            </div>
+            <div className="col-auto bg-seashell rounded-2 ">
+              <div className="row p-0 m-0 align-items-center align-self-center">
+                <div className="col-auto p-0 m-0">
+                  <input type="date" placeholder="fromdate" className="button button-seashell rounded-0 border-0 text-charcoal text-center fw-bold " value={fromdate ? fromdate : currentDate ? currentDate : ""} onChange={(e) => { setfromdate(e.target.value); }} />
+                </div>
+                <div className="col-auto p-0 m-0">-</div>
+                <div className="col-auto p-0 m-0">
+                  <input type="date" className=" border-0 button button-seashell text-charcoal text-center fw-bold" value={todate ? todate : fromdate ? fromdate : currentDate ? currentDate : ""} onChange={(e) => { settodate(e.target.value); }} />                </div>
+              </div>
+            </div>
+    <div className="col-auto">
+    <ExportPurchaseEntry dumpsarr={dumpsarrExcel} fromdate={reversefunction(fromdate)} todate={reversefunction(todate)} />
+    </div>
+   </div>
+ {/* <button className={`button addpurchase button-charcoal me-3 position-absolute d-${permission.purchase_entry_add == 1 ? "" : "none" }`} onClick={toggle_npef} > <img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt="displaying_image" className="img-fluid p-0 m-0" />Transfer In </button> */}
+     <h2 className=" ms-3 text-charcoal fw-bolder" style={{ width: "fit-content" }} > {dumpsarr!=undefined?dumpsarr.length:""} {dumpsarr!=undefined?dumpsarr.length > 1 ? "Dumps" : "Dump":""}{" "} </h2>
+ <div>
+   <div className="scroll scroll-y overflow-scroll p-0 m-0 mt-2" style={{ minHeight: "56vh", height: "56vh" }} >
+   <table className="table">
+       <thead className=" align-middle position-sticky top-0 bg-pearl">
+         <tr>
+           <th className="fw-bolder text-charcoal75">  ID </th>
+           <th className="fw-bolder text-charcoal75"> Channel </th>
+           <th className="fw-bolder text-charcoal75"> Location From </th>
+           <th className="fw-bolder text-charcoal75"> Location To </th>
+           <th className="fw-bolder text-charcoal75"> Dump Date </th>
+           <th className="fw-bolder text-charcoal75">Transfer By </th>
+           <th className="fw-bolder text-charcoal75">Transfer To </th>
+           <th className="fw-bolder text-charcoal75"> Total Items</th>
+           <th className="fw-bolder text-charcoal75"> Amount </th>
+           <th className="fw-bolder text-charcoal75"> Approval Status </th>
+           <th className="fw-bolder  text-center  text-charcoal75"  > Inventory </th>
+           {/* <th className='fw-bolder p-0 m-0  text-charcoal75 text-center' scope='col' style={{ zIndex: '3' }}>more</th> */}
+         </tr>
+       </thead>
+       {Loading ? (
+         <tbody className=" text-center" style={{ minHeight: "55vh" }}>
+           <tr className="position-absolute border-0 start-0 end-0 px-5">
+             <div class="d-flex align-items-center">
+               <strong className="">
+                 Getting Details please be Patient ...
+               </strong>
+               <div
+                 class="spinner-border ms-auto"
+                 role="status"
+                 aria-hidden="true"
+               ></div>
+             </div>
+           </tr>
+         </tbody> 
+       ) : dumpsarr && dumpsarr.length != 0 ? (
+         <tbody>
+           {
+           dumpsarr.map((item, i) => (
+             <tr key={i} className={`bg-${i % 2 == 0 ? "seashell" : "pearl" } align-middle`} >
+               <td className="py-0 my-0 text-charcoal fw-bold ps-2"> TI-{item.id} </td>
+               <td className="text-charcoal fw-bold"> {item.channel && item.channel == 1 ? "Pharmacy" : "Clinic"} </td>
+               <td className="text-charcoal fw-bold"> {item.from_location.title ? item.from_location.title : "N/A"} </td>
+               <td className="text-charcoal fw-bold"> {item.to_location.title ? item.to_location.title : "N/A"} </td>
+               <td className="text-charcoal fw-bold"> {item.transfer_date && item.transfer_date ? reversefunction(item.transfer_date) : "N/A"} </td>
+               <td className="text-charcoal fw-bold"> </td>
+               <td className="text-charcoal fw-bold"> </td>
+               <td className="text-charcoal fw-bold"> </td>
+               <td className="text-charcoal fw-bold"> {item.total_amount && item.total_amount ? "Rs. " + item.total_amount : "N/A"} </td>
+               <td className="text-center">
+                {     updateload == true ? (
+        <div className="col-6 py-2 pb-2 m-auto text-center">
+        <div className="spinner-border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      </div>
+                ):(
+                  <select className={`bg-${status_color(item.transfer_status)} rounded-2 rounded-pill py-1 px-2 fw-bold text-center border-0 text-wrap `} onChange={(e)=>{UpdateStatus(item,e)}} name={item.transfer_status}>
+                  <option className="button text-center" selected disabled>{status(item.transfer_status)}</option>
+                  <option className="button-lightred" value='0'>Pending</option>
+                  <option className="button-lightblue" value='1'>Accepted</option>
+                  <option className="button-lightred" value='2'>Rejected</option>
+
+              </select>
+                )}
+
+               </td>
+               <td className="text-charcoal fw-bold text-center">
+                 <button className="btn p-0 m-0" onClick={() => { setindex(i); toggle_peidw(); }} > <img src={ process.env.PUBLIC_URL + "/images/archivebox.png" } alt="displaying_image" className="ms-1 img-fluid" /> </button>
+               </td>
+               <td className={` position-absolute d-${i == index ? peidw : "none" } border border-1 start-0 mx-auto end-0 bg-seashell rounded-4 p-0 m-0`} style={{zIndex:'10', top: "0",width:'70vh',height: "40vh" }} >
+                  {i == index ? 
+                  ( <TIitemdetailssection dumpsarr={dumpsarr[i]} id={"TI-" + item.id} toggle_peidw={toggle_peidw} /> ) : ( <></> )}
+               </td>
+             </tr>
+           ))}
+         </tbody>
+       ) : (
+         <tbody className="text-center position-relative p-0 m-0 " style={{ minHeight: "55vh" }} >
+           <tr className="">
+             <td className="fw-bolder text-charcoal text-center position-absolute border-0 start-0 end-0 mx-3 p-2 border-0">
+               No Transfers In
+             </td>
+           </tr>
+         </tbody>
+       )}
+     </table>
+   </div>
+   <div className="container-fluid mt-2 d-flex justify-content-center">
+     <ReactPaginate
+       previousLabel={"Previous"}
+       nextLabel={"Next"}
+       breakLabel={". . ."}
+       pageCount={pages}
+       marginPagesDisplayed={3}
+       pageRangeDisplayed={2}
+       onPageChange={GETDumpList}
+       containerClassName={"pagination"}
+       pageClassName={"page-item text-charcoal"}
+       pageLinkClassName={ "page-link text-decoration-none text-charcoal border-charcoal rounded-1 mx-1" }
+       previousClassName={"btn button-charcoal-outline me-2"}
+       previousLinkClassName={"text-decoration-none text-charcoal"}
+       nextClassName={"btn button-charcoal-outline ms-2"}
+       nextLinkClassName={"text-decoration-none text-charcoal"}
+       breakClassName={"mx-2 text-charcoal fw-bold fs-4"}
+       breakLinkClassName={"text-decoration-none text-charcoal"}
+       activeClassName={"active"}
+     />
+   </div>
+ </div>
+ <section className={`newpurchaseentrysection position-absolute start-0 end-0 bg-seashell border border-1 d-${npef}`} >
+   {
+     <NewTransferInForm
+       toggle_npef={toggle_npef}
+       GETDumpList={GETDumpList}
+     />
+   }
+ </section>
+</>
+  )
+}
+export {Dumpsection}

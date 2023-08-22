@@ -128,7 +128,7 @@ const StockReport = () => {
 
             <div className="row p-0 m-0 text-center ms-2 mt-2">
             <div className="col-auto text-charcoal text-center fw-bolder bg-seashell rounded-2 ">
-                            <select className="fw-bold form-control bg-seashell text-burntumber border-0" onChange={(e) => { setLocation_Id(e.target.value) }}>
+                            <select className="fw-bold form-control bg-seashell text-burntumber text-center border-0" onChange={(e) => { setLocation_Id(e.target.value) }}>
                                 <option value="Choose Location">Choose Location <div className="mt-3 bg-seashell border-0"></div> </option>
                                 {
                                     clinic.map((data) => (
@@ -148,7 +148,7 @@ const StockReport = () => {
                         </div>
                     </div>
                 </div>
-                <div className="col-auto p-0 m-0 export align-self-center text-center ">
+                <div className="col-auto p-0 m-0 export align-self-center text-center ms-xl-4 ">
                     <DownloadTableExcel
                         filename={`${reversefunction(fromdate) + ' to ' + reversefunction(todate)} StockReports`}
                         sheet="StockReports"

@@ -111,12 +111,10 @@ const DoctorWiseSales = () => {
     }, [doctorid, fromdate, todate]);
     return (
         <>
-            <h2 className=" ms-3 text-charcoal fw-bolder mt-2" style={{ width: "fit-content" }}> {pagecount} {pagecount > 1 ? "Sales" : "Sale"}{" "}  </h2>
+            <h2 className=" ms-3 text-charcoal fw-bolder mt-2" style={{ width: "fit-content" }}> Doctor Wise Sales</h2>
             <div className="row p-0 m-0 ms-2  mt-2">
-                <div className="col-auto bg-seashell rounded-2">
-                    <div className="row p-0 m-0 align-items-center align-self-center">
-                        <div className="col-auto p-0 m-0 text-charcoal text-center fw-bolder bg-seashell">
-                            <select className="form-control p-0 border-0 bg-seashell text-charcoal fw-bold text-center" value={doctorid ? doctorid : ''} onChange={(e) => { setdoctorid(e.target.value) }}>
+            <div className="col-auto p-0 m-0 text-charcoal text-center fw-bolder bg-seashell me-2 rounded-2">
+                            <select className="button button-seashell border-0 text-charcoal fw-bold text-center" value={doctorid ? doctorid : ''} onChange={(e) => { setdoctorid(e.target.value) }}>
                                 <option selected value="Select Doctor">Select Doctor</option>
                                 {
                                     docnames ? (
@@ -128,6 +126,9 @@ const DoctorWiseSales = () => {
                                 }
                             </select>
                         </div>
+                <div className="col-auto bg-seashell rounded-2">
+                    <div className="row p-0 m-0 align-items-center align-self-center">
+
                         <div className="col-auto p-0 m-0 text-burntumber text-center fw-bolder bg-pearl  rounded-1 ">
                             <input type="date" placeholder="fromdate" className="form-control bg-seashell border-0 bg-seashell text-charcoal text-center fw-bolder " value={fromdate ? fromdate : currentDate ? currentDate : ""} onChange={(e) => { setfromdate(e.target.value); }} />
                         </div>
@@ -152,7 +153,7 @@ const DoctorWiseSales = () => {
                 <table className="table text-start table-responsive" ref={BatchDetailsref}>
                     <thead className=" p-0 m-0 position-sticky top-0 bg-pearl">
                         <tr className=" ">
-                            <th className="text-charcoal75 fw-bolder p-0 m-0 px-1">Item ID </th>
+                            {/* <th className="text-charcoal75 fw-bolder p-0 m-0 px-1">Item ID </th> */}
                             <th className="text-charcoal75 fw-bolder p-0 m-0 px-1">Item Name</th>
                             <th className="text-charcoal75 fw-bolder p-0 m-0 px-1">Type</th>
                             <th className="text-charcoal75 fw-bolder p-0 m-0 px-1">SaleType</th>
@@ -181,7 +182,7 @@ const DoctorWiseSales = () => {
                         <tbody>
                             {doctorwisesales.map((item, i) => (
                                 <tr className={` bg-${i % 2 == 0 ? "seashell" : "pearl"} align-middle`} key={i} >
-                                    <td className="text-charcoal fw-bold">{item.medicine_id ? item.medicine_id : item.vaccine_id ? item.vaccine_id : ''} </td>
+                                    {/* <td className="text-charcoal fw-bold">{item.medicine_id ? item.medicine_id : item.vaccine_id ? item.vaccine_id : ''} </td> */}
                                     <td className="text-charcoal fw-bold">{item.item ? item.item : ''} </td>
                                     <td className="text-charcoal fw-bold">{item.medicine_id ? 'medicine' : item.vaccine_id ? 'vaccine' : ''} </td>
                                     <td className="text-charcoal fw-bold">Sales</td>
@@ -197,7 +198,7 @@ const DoctorWiseSales = () => {
                             ))}
                             {doctorwisesalesreturn.length !== undefined ? doctorwisesalesreturn.map((item, i) => (
                                 <tr className={` bg-${i % 2 == 0 ? "seashell" : "pearl"} align-middle`} key={i} >
-                                    <td className="text-charcoal fw-bold">{item.medicine_id ? item.medicine_id : item.vaccine_id ? item.vaccine_id : ''} </td>
+                                    {/* <td className="text-charcoal fw-bold">{item.medicine_id ? item.medicine_id : item.vaccine_id ? item.vaccine_id : ''} </td> */}
                                     <td className="text-charcoal fw-bold">{item.item ? item.item : ''} </td>
                                     <td className="text-charcoal fw-bold">{item.medicine_id ? 'medicine' : item.vaccine_id ? 'vaccine' : ''} </td>
                                     <td className="text-charcoal fw-bold">Sales Return</td>

@@ -2,7 +2,7 @@ import { useState, useEffect, useContext, useRef } from "react"
 import axios from "axios"
 import ReactPaginate from 'react-paginate';
 import { URL, TodayDate, DoctorsList, Doctorapi, Permissions, Secretkey } from '../../index'
-import { Salesection, Purchasesection, Stocksection, Listsection,Transfersection } from "../pharmacy/pharmacy"
+import { Salesection, Purchasesection, Stocksection, Listsection,Transfersection,Dumpsection } from "../pharmacy/pharmacy"
 
 //css
 import '../../css/pharmacy.css'
@@ -29,6 +29,11 @@ function Pharmacy() {
       option: "Transfers",
       display: 1,
       // permission.transfer_view == undefined && permission.transfer_view == undefined ? 0 : 
+    },
+    {
+      option: "Dumps",
+      display: 1,
+      // permission.transfer_view == undefined && permission.transfer_view == undefined ? 0 : 
     }
   ]
   const [menuindex, setmenuindex] = useState(0);
@@ -47,6 +52,9 @@ function Pharmacy() {
     }
     if (_menu === 4){
       return <Transfersection/>
+    }
+    if (_menu === 5){
+      return <Dumpsection/>
     }
     return <div className="">Nothing Selected</div>;
   };

@@ -113,13 +113,11 @@ const PatientSalesHistory = () => {
 
     return (
         <>
-                        <h2 className=" ms-3 text-charcoal fw-bolder mt-2" style={{ width: "fit-content" }}>{pagecount} {pagecount > 0 ? "Sales History" : "Sales History"}{" "} </h2>
+                        <h2 className=" ms-3 text-charcoal fw-bolder mt-2" style={{ width: "fit-content" }}>{pagecount} {pagecount > 0 ? "Patient Sales History" : "Patient Sales History"}{" "} </h2>
 
-            <div className="row p-0 m-0 text-center mt-2">
-                <div className="col-auto p-0 m-0">
-                    <div className="row align-items-center rounded-2 bg-seashell rounded-2 ms-2">
-                <div className="col-auto p-0 m-0 text-burntumber text-center fw-bolder bg-seashell position-relative ">
-                            <input type="text" placeholder="patient name" className="form-control p-0 m-0 selectpatient bg-seashell border-0 position-relative text-center text-charcoal fw-bold" value={searchinput ? searchinput : ''} onChange={searchpatient} />
+            <div className="row p-0 m-0 text-center mt-2 ms-2">
+            <div className="col-auto p-0 m-0 text-burntumber text-center fw-bolder bg-seashell position-relative align-self-center rounded-2 ">
+                            <input type="text" placeholder="patient name" className="button button-seashell selectpatient bg-seashell border-0 position-relative text-center text-charcoal fw-bold" value={searchinput ? searchinput : ''} onChange={searchpatient} />
                             <div className={`w-100 d-${displaysearchlist} position-absolute top-10 mt-2 border shadow-sm`} style={{ zIndex: '10' }}>
                                 {
                                     searchload ? (
@@ -142,6 +140,9 @@ const PatientSalesHistory = () => {
                                 }
                             </div>
                         </div>
+                <div className="col-auto p-0 m-0">
+                    <div className="row align-items-center rounded-2 bg-seashell rounded-2 ms-2">
+
                         <div className="col-auto">
                         <div className="row p-0 m-0 align-items-center align-self-center bg-seashell">
                         <div className="col-auto text-burntumber text-center fw-bolder bg-seashell  rounded-1 ">

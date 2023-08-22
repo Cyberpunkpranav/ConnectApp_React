@@ -42,6 +42,8 @@ const Reports = () => {
     },
   ];
   const [second, setSecond] = useState(0)
+  const [secondname, setSecondname] = useState("Pharmacy")
+
 
   function selectfunc() {
     if( select == ''){
@@ -157,13 +159,13 @@ const Reports = () => {
             <div className="col-auto">
             <div class="dropdown">
                 <button class="button button-seashell border-0 rounded-2 fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Report Type 
+                  {secondname?secondname:'Report Type '}
                 </button>
 
                 <ul class="dropdown-menu bg-seashell shadow-sm border-0">
                   {
                     first.map((e, i) => (
-                      <li className={`dropdown-item text-${i === second ? "light" : "dark"} fw-bold bg-${i === second ? "charcoal" : "seashell"}`} onClick={(a) => setSecond(i)} > {e.option} </li>
+                      <li className={`dropdown-item text-${i === second ? "light" : "dark"} fw-bold bg-${i === second ? "charcoal" : "seashell"}`} onClick={(a) => {setSecond(i);setSecondname(e.option)}} > {e.option} </li>
                     )
                     ) 
                   }

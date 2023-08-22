@@ -109,10 +109,8 @@ const StockValuation = () => {
         <>
             <h2 className=" ms-3 text-charcoal fw-bolder mt-2" style={{ width: "fit-content" }}> {pagecount} {pagecount > 1 ? "Stock Valuations" : "Stock Valution"}{" "}  </h2>
             <div className="row p-0 m-0 ms-2 mt-2">
-                <div className="col-auto bg-seashell rounded-2">
-                    <div className="row p-0 m-0 align-items-center align-self-center">
-                        <div className="col-auto p-0 m-0 text-burntumber text-center fw-bolder bg-seashell ">
-                            <select className="fw-bold form-control bg-seashell text-burntumber border-0" onChange={(e) => { setLocation_Id(e.target.value) }}>
+            <div className="col-auto p-0 m-0 text-burntumber text-center fw-bolder bg-seashell me-2 align-self-center rounded-2 ">
+                            <select className="fw-bold button button-seashell text-burntumber border-0 text-center" onChange={(e) => { setLocation_Id(e.target.value) }}>
                                 <option value="Choose Location">Choose Location</option>
                                 {
                                     clinic.map((data) => (
@@ -121,6 +119,9 @@ const StockValuation = () => {
                                 }
                             </select>
                         </div>
+                <div className="col-auto bg-seashell rounded-2">
+                    <div className="row p-0 m-0 align-items-center align-self-center">
+     
                         <div className="col-auto p-0 m-0 text-burntumber text-center fw-bolder bg-pearl  rounded-1 ">
                             <input type="date" placeholder="fromdate" className="form-control border-0 bg-seashell text-charcoal text-center fw-bolder " value={fromdate ? fromdate : currentDate ? currentDate : ""} onChange={(e) => { setfromdate(e.target.value); }} />
                         </div>
@@ -130,7 +131,7 @@ const StockValuation = () => {
                         </div>
                     </div>
                 </div>
-                <div className="col-auto p-0 m-0 export ">
+                <div className="col-auto p-0 m-0 export ms-xl-4">
                     <DownloadTableExcel
                         filename={`${reversefunction(fromdate) + ' to ' + reversefunction(todate)} StockValuation`}
                         sheet="StockValuation"

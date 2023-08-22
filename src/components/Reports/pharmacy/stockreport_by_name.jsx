@@ -143,13 +143,11 @@ const StockReport_By_Name = () => {
     console.log(itemid)
     return (
         <>
-                    <h2 className=" ms-3 text-charcoal fw-bolder mt-4" style={{ width: "fit-content" }}> {pagecount} {pagecount > 1 ? `${itemname?itemname:''} Stock Reports` : `${itemname?itemname:""} Stock Report`}{" "}  </h2>
+                    <h2 className=" ms-3 text-charcoal fw-bolder mt-4" style={{ width: "fit-content" }}> {pagecount} {pagecount > 1 ? ` Stock Reports By Name` : ` Stock Report By Name`}{" "}  </h2>
             <div className="row p-0 m-0  mt-2 ms-2">
-                <div className="col-auto bg-seashell rounded-2">
-                    <div className="row p-0 m-0 align-items-center align-self-center">
-                        <div className="col-auto p-0 m-0 text-charcoal text-center fw-bolder bg-seashell  ">
+            <div className="col-auto p-0 m-0 text-charcoal text-center fw-bolder bg-seashell me-2 align-items-center rounded-2">
                             <div className="position-relative">
-                                <input className="fw-bold text-charcoal border-0 text-center bg-seashell" placeholder="Search Items" value={itemname ? itemname : ""} onChange={(e) => { searchmeds(e.target.value); setitemname(e.target.value); setitemtype(); }} />
+                                <input className="fw-bold button button-seashell text-charcoal border-0 text-center bg-seashell" placeholder="Search Items" value={itemname ? itemname : ""} onChange={(e) => { searchmeds(e.target.value); setitemname(e.target.value); setitemtype(); }} />
                                 <div ref={medicinesref} className="position-absolute rounded-4 col-12" style={{ zIndex: "2" }} >
                                     {
                                         itemsearch ? (
@@ -178,6 +176,9 @@ const StockReport_By_Name = () => {
                                 </div>
                             </div>
                         </div>
+                <div className="col-auto bg-seashell rounded-2">
+                    <div className="row p-0 m-0 align-items-center align-self-center">
+                  
                         <div className="col-auto p-0 m-0 text-charcoal text-center fw-bolder bg-seashell ">
               <input type="date" placeholder="fromdate" className="button button-seashell rounded-0 text-charcoal text-center fw-bolder " value={fromdate ? fromdate : currentDate ? currentDate : ""} onChange={(e) => { setfromdate(e.target.value); }} />
             </div>

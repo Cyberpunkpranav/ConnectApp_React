@@ -544,3 +544,8 @@ const ExportSaleReturn = (props) => {
     )
 }
 export { ExportSaleReturn }
+
+const ExportTransferOut=(props)=>{
+
+}
+export {ExportTransferOut}

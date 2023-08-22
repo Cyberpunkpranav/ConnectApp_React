@@ -115,10 +115,8 @@ const OpeningStock = () => {
             <h2 className=" ms-3 text-charcoal fw-bolder mt-4" style={{ width: "fit-content" }}> {pagecount} {pagecount > 1 ? "Opening Stocks" : "Opening Stock"}{" "}  </h2>
 
             <div className="row p-0 m-0 ms-2 mt-2">
-                <div className="col-auto bg-seashell rounded-2">
-                    <div className="row p-0 m-0 align-items-center align-self-center">
-                        <div className="col-4 p-0 m-0 text-center fw-bolder bg-seashell ">
-                            <select className="fw-bold form-contol bg-seashell text-burntumber border-0" onChange={(e) => { setLocation_Id(e.target.value) }}>
+            <div className="col-auto p-0 m-0 text-center fw-bolder bg-seashell rounded-2 align-self-center me-2 text-center ">
+                            <select className="fw-bold button button-seashell text-burntumber text-center border-0" onChange={(e) => { setLocation_Id(e.target.value) }} style={{cursor:'pointer'}}>
                                 <option value="Choose Location">Choose Location</option>
                                 {
                                     clinic.map((data) => (
@@ -127,6 +125,9 @@ const OpeningStock = () => {
                                 }
                             </select>
                         </div>
+                <div className="col-auto bg-seashell rounded-2">
+                    <div className="row p-0 m-0 align-items-center align-self-center">
+     
                         <div className="col-auto p-0 m-0 text-charcoal text-center fw-bolder bg-seashell ">
               <input type="date" placeholder="fromdate" className="button button-seashell rounded-0 text-charcoal text-center fw-bolder " value={fromdate ? fromdate : currentDate ? currentDate : ""} onChange={(e) => { setfromdate(e.target.value); }} />
             </div>
@@ -136,7 +137,7 @@ const OpeningStock = () => {
             </div>
                     </div>
                 </div>
-                <div className="col-auto p-0 m-0 export ">
+                <div className="col-auto p-0 m-0 export ms-xl-5 ms-lg-0 ">
                     <DownloadTableExcel
                         filename={`${reversefunction(fromdate) + ' to ' + reversefunction(todate)} StockReports`}
                         sheet="StockReports"
