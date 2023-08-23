@@ -19,44 +19,46 @@ const AddAddress = (props) => {
     const [state, setstate] = useState()
     const [country, setcountry] = useState()
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        if (data !== undefined && data.value != undefined && data.value.place_id !== undefined) {
-            setpincode()
-            setplaceid()
-            // initialize the map
-            const map = new window.google.maps.Map({
-                zoom: 14
-            });
-            // initialize the PlacesService object with your API key and map
-            const placesService = new window.google.maps.places.PlacesService(map);
+    //     if (data !== undefined && data.value != undefined && data.value.place_id !== undefined) {
+    //         setpincode()
+    //         setplaceid()
+    //         // initialize the map
+    //         const map = new window.google.maps.Map({
+    //             zoom: 14
+    //         });
+    //         // initialize the PlacesService object with your API key and map
+    //         const placesService = new window.google.maps.places.PlacesService(map);
 
-            // send a getDetails request for the place using its Place ID
-            placesService.getDetails({
-                placeId: data.value.place_id
-            }, (placeResult, status) => {
-                if (status === 'OK') {
-                    // find the address component with type "postal_code"
-                    const postalCodeComponent = placeResult.address_components.find(component => {
-                        return component.types.includes('postal_code');
-                    });
+    //         // send a getDetails request for the place using its Place ID
+    //         placesService.getDetails({
+    //             placeId: data.value.place_id
+    //         }, (placeResult, status) => {
+    //             if (status === 'OK') {
+    //                 // find the address component with type "postal_code"
+    //                 const postalCodeComponent = placeResult.address_components.find(component => {
+    //                     return component.types.includes('postal_code');
+    //                 });
 
-                    if (postalCodeComponent) {
-                        const postalCode = postalCodeComponent.short_name;
-                        setpincode(postalCode);
-                    } else {
-                        Notiflix.Notify.warning('Postal code not found for this place.');
-                    }
-                } else {
-                    Notiflix.Notify.failure(`Failed to get place details: ${status}`);
-                }
-            });
-        } 
+    //                 if (postalCodeComponent) {
+    //                     const postalCode = postalCodeComponent.short_name;
+    //                     setpincode(postalCode);
+    //                 } else {
+    //                     Notiflix.Notify.warning('Postal code not found for this place.');
+    //                 }
+    //             } else {
+    //                 Notiflix.Notify.failure(`Failed to get place details: ${status}`);
+    //             }
+    //         });
+    //     } 
 
-        data === "" ? setData("") : setData(data);
+    //     data === "" ? setData("") : setData(data);
+    //     setplace(data && data.label != undefined ? data.label : '')
+    // }, [data]);
+    useEffect(()=>{
         setplace(data && data.label != undefined ? data.label : '')
-    }, [data]);
-
+    },[data])
     const Add_Address = async () => {
         await axios.post(`${url}/add/patient/address`, {
             patient_id: props.patientid,
@@ -148,9 +150,7 @@ const AddAddress = (props) => {
             
         })
     }
-
-
-
+    
     useEffect(() => {
         fill_data()
     }, [])

@@ -74,6 +74,7 @@ body {
     font-weight: 700 !important;
 }
 
+  
 table {
     font-family: 'Urbanist', sans-serif;
     font-size: 0.85rem !important;
@@ -145,6 +146,13 @@ label {
 .appointments .dropdown-toggle::after {
     content: none;
 }
+.allappointmentsection .dropdown-toggle::after {
+    content: none;
+}
+.patientsection .dropdown-toggle::after {
+    content: none;
+}
+
 input[type='date'] {
     -webkit-appearance: none;
     font-size: 0.85rem !important;

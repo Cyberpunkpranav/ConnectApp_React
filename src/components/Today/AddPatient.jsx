@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import axios from 'axios'
 import { useContext } from 'react'
+
 //Context APis
 import { URL } from '../../index'
 //Google maps
@@ -113,7 +114,6 @@ const AddPatient = (props) => {
                 admin_id: adminid
             }).then((response) => {
                 setload(false)
-                
                 Notiflix.Notify.success(response.data.message);
                 props.togglepatientform()
                 resetform(e)
@@ -127,47 +127,49 @@ const AddPatient = (props) => {
     }
 
     const [data, setData] = useState("");
-    useEffect(() => {
+    // useEffect(() => {
 
-        if (data.value !== undefined && data.value.place_id !== undefined) {
-            setpincode()
+    //     if (data.value !== undefined && data.value.place_id !== undefined) {
+    //         setpincode()
 
-            setplaceid()
-            // initialize the map
-            const map = new window.google.maps.Map({
-                center: { lat: lat, lng: lng },
-                zoom: 14
-            });
-            // initialize the PlacesService object with your API key and map
-            const placesService = new window.google.maps.places.PlacesService(map);
-
-            // send a getDetails request for the place using its Place ID
-            placesService.getDetails({
-                placeId: data.value.place_id
-            }, (placeResult, status) => {
-                if (status === 'OK') {
+    //         setplaceid()
+    //         // initialize the map
+    //         const map = new window.google.maps.Map({
+    //             center: { lat: lat, lng: lng },
+    //             zoom: 14
+    //         });
+    //         // initialize the PlacesService object with your API key and map
+    //         const placesService = new window.google.maps.places.PlacesService(map);
+    //         console.log(placesService)
+    //         // send a getDetails request for the place using its Place ID
+    //         placesService.getDetails({
+    //             placeId: data.value.place_id
+   
+    //         }, (placeResult, status) => {
+    //             if (status === 'OK') {
                     
-                    // find the address component with type "postal_code"
-                    const postalCodeComponent = placeResult.address_components.find(component => {
-                        return component.types.includes('postal_code');
-                    });
+    //                 // find the address component with type "postal_code"
+    //                 const postalCodeComponent = placeResult.address_components.find(component => {
+    //                     return component.types.includes('postal_code');
+    //                 })
+    //                 if (postalCodeComponent) {
+    //                     const postalCode = postalCodeComponent.short_name;
+    //                     setpincode(postalCode);
+    //                 } else {
+    //                     Notiflix.Notify.warning('Postal code not found for this place.');
+    //                 }
+    //             } else {
+    //                 Notiflix.Notify.failure(`Failed to get place details: ${status}`);
+    //             }
+    //         });
+    //     }
 
-                    if (postalCodeComponent) {
-                        const postalCode = postalCodeComponent.short_name;
-                        setpincode(postalCode);
-                    } else {
-                        Notiflix.Notify.warning('Postal code not found for this place.');
-                    }
-                } else {
-                    Notiflix.Notify.failure(`Failed to get place details: ${status}`);
-                }
-            });
-        }
-
-        data === "" ? setData("") : setData(data);
+    //     data === "" ? setData("") : setData(data);
+    //     setplace(data.label)
+    // }, [data])
+    useEffect(()=>{
         setplace(data.label)
-    }, [data]);
-
+    },[data])
     if (place) {
         geocodeByAddress(place).then(results => getLatLng(results[0])).then(({ lat, lng }) => { setlat(lat); setlng(lng) });
     }
@@ -189,7 +191,8 @@ const AddPatient = (props) => {
             },
         );
     }
-   
+   console.log(data,lat,lng,address)
+  
     return (
         <>
             <h5 className="text-center position-relative fw-bold pt-2 "> Patient Details </h5>
@@ -456,7 +459,7 @@ const AddPatient = (props) => {
                     <label htmlFor="inputAddress" className="mb-2">Add Address</label>
                     <input type="text" className="form-control" id="inputAddress" value={address ? address : ''} placeholder="Address" onChange={(e) => { setaddress(e.target.value) }} required />
                 </div>
-                <div className="row p-0 m-0 py-2">
+                  <div className="row p-0 m-0 py-2">
                     <div className="col-6 m-auto">
                         <label htmlFor="inputAddress" className="">Select Location</label>
                         <GooglePlacesAutocomplete

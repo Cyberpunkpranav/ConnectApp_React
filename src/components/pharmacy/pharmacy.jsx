@@ -2266,7 +2266,7 @@ function SaleEntryForm(props) {
                           </div>
                           <div className="col-2">
                             <button className={`btn btn-sm p-0 m-0 d-${i == 0 ? 'none' : 'block'}`} onClick={() => { DeletePaymentMethods(i); setpaymentmethods((prevState) => [...prevState]); }} >
-                              <img src={process.env.PUBLIC_URL + "/images/minus.png"} className="img-fluid" style={{ width: "2.5rem" }} />
+                              <img src={process.env.PUBLIC_URL + "/images/minus.png"} className="img-fluid" style={{ width: "1.8rem" }}/>
                             </button>
                           </div>
                         </div>
@@ -2295,7 +2295,7 @@ function SaleEntryForm(props) {
                             </div>
                             <div className="col-2">
                               <button className={`btn btn-sm p-0 m-0 d-${i == 0 ? 'none' : 'block'}`} onClick={() => { DeletePaymentMethods(i); setpaymentmethods((prevState) => [...prevState]); }} >
-                                <img src={process.env.PUBLIC_URL + "/images/minus.png"} className="img-fluid" style={{ width: "2.5rem" }} />
+                                <img src={process.env.PUBLIC_URL + "/images/minus.png"} className="img-fluid" style={{ width: "1.8rem" }} />
                               </button>
                             </div>
                           </div>
@@ -2323,7 +2323,7 @@ function SaleEntryForm(props) {
               {
                 permission.sale_entry_charges_edit == 1 ? (
                   <button className="btn py-0" onClick={AddMethods}>
-                    <img src={process.env.PUBLIC_URL + "/images/add.png"} className="img-fluid" style={{ width: "2rem" }} />
+                    <img src={process.env.PUBLIC_URL + "/images/add.png"} className="img-fluid" style={{ width: "1.8rem" }} />
                   </button>
                 ) : (
                   <></>
@@ -4652,7 +4652,7 @@ function Newpurchaseentryform(props) {
   };
   const ConvertExcel = async () => {
     let e = [];
-    if (vendorid == 2) {
+    if (vendorid == 3) {
       if (Exceldata && Exceldata.length != 0) {
         const Excelfile = XLSX.read(Exceldata, { type: "buffer" });
         const ExcelSheet = Excelfile.SheetNames[0];
@@ -4698,7 +4698,7 @@ function Newpurchaseentryform(props) {
         }
       }
     }
-    if (vendorid == 4 || vendorid == 3) {
+    if (vendorid == 4 || vendorid == 2) {
       if (Exceldata && Exceldata.length != 0) {
         const Excelfile = XLSX.read(Exceldata, { type: "buffer" });
         const ExcelSheet = Excelfile.SheetNames[0];
@@ -4762,7 +4762,7 @@ function Newpurchaseentryform(props) {
       setNewMed("block");
     }
   };
-console.log(MedicineentriesArr)
+console.log(MedicineentriesArr,vendorid)
   return (
     <div className="container-fluid p-0 m-0" style={{ zIndex: "2" }}>
       <div className="container-fluid bg-seashell border border-2 border-top-0 border-start-0 border-end-0 ">
