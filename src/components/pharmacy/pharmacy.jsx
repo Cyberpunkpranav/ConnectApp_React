@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useState, useEffect, useContext, useRef } from "react";
 import { URL, TodayDate, DoctorsList, Clinic, Permissions } from "../../index";
-import { ExportPurchaseEntry, ExportPurchaseReturn, ExportSaleEntry, ExportSaleReturn,ExportTransferOut } from "../pharmacy/Exports";
+import { ExportPurchaseEntry, ExportPurchaseReturn, ExportSaleEntry, ExportSaleReturn,ExportTransferIn,ExportTransferOut } from "../pharmacy/Exports";
 import { QRcode } from "../features/qrcode";
 import Notiflix from "notiflix";
 import ReactPaginate from "react-paginate";
@@ -4762,7 +4762,6 @@ function Newpurchaseentryform(props) {
       setNewMed("block");
     }
   };
-console.log(MedicineentriesArr,vendorid)
   return (
     <div className="container-fluid p-0 m-0" style={{ zIndex: "2" }}>
       <div className="container-fluid bg-seashell border border-2 border-top-0 border-start-0 border-end-0 ">
@@ -7738,8 +7737,9 @@ function TransferIn(props){
       try {
         axios.get(`${url}/transfer/stocks/list?location_id=${ClinicID}&limit=25&offset=${Data.selected * 25 }` )
           .then((response) => {
+    
             setpagecount(response.data.data.total_count);
-            settransferinarr(response.data.data.purchase_entry);
+            settransferinarr(response.data.data.transfer_stocks_recevied);
             setLoading(false);
           })
           .catch((e) => {
@@ -7755,7 +7755,7 @@ function TransferIn(props){
   function GETTransferInListForExcel() {
     setLoading(true);
     try {
-      axios.get(`${url}/transfer/stocks/list?location_id=${ClinicID}&limit=${pagecount}&offset=0` )
+      axios.get(`${url}/transfer/stocks/list?location_id=${ClinicID}&limit=${pagecount?pagecount:25}&offset=0` )
         .then((response) => {
           settransferinarrExcel(response.data.data.transfer_stocks_recevied);
           setLoading(false);
@@ -7834,7 +7834,7 @@ function TransferIn(props){
   return(
     <>
     <div className="col-auto position-absolute p-0 m-0 ms-2 export_2 align-self-center text-center">
-     <ExportPurchaseEntry transferinarr={transferinarrExcel} fromdate={reversefunction(fromdate)} todate={reversefunction(todate)} />
+     <ExportTransferIn transferinarr={transferinarrExcel} fromdate={reversefunction(fromdate ? fromdate:currentDate)} todate={reversefunction(todate?todate:fromdate?fromdate:currentDate)}  />
    </div>
  {/* <button className={`button addpurchase button-charcoal me-3 position-absolute d-${permission.purchase_entry_add == 1 ? "" : "none" }`} onClick={toggle_npef} > <img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt="displaying_image" className="img-fluid p-0 m-0" />Transfer In </button> */}
      <h2 className=" ms-3 text-charcoal fw-bolder" style={{ width: "fit-content" }} > {transferinarr!=undefined?transferinarr.length:""} {transferinarr!=undefined?transferinarr.length > 1 ? "Transfers In" : "Transfer In":""}{" "} </h2>
@@ -7947,14 +7947,7 @@ function TransferIn(props){
      />
    </div>
  </div>
- <section className={`newpurchaseentrysection position-absolute start-0 end-0 bg-seashell border border-1 d-${npef}`} >
-   {
-     <NewTransferInForm
-       toggle_npef={toggle_npef}
-       GETTransferInList={GETTransferInList}
-     />
-   }
- </section>
+
 </>
 )
 }
@@ -8045,7 +8038,6 @@ function TransferOut(props){
     setLoading(true);
     try {
       await axios.get(`${url}/transfer/stocks/list?location_id=${ClinicID}&limit=${pagecount?pagecount:''}&offset=0` ) .then((response) => {
-        console.log(response)
           settransferoutarrExcel(response.data.data.transfer_stocks_sent);
           setLoading(false);
         })
@@ -8119,11 +8111,10 @@ function TransferOut(props){
       Notiflix.Notify.failure(e.message);
     }
   }
-  console.log(transferoutarrExcel,todate)
   return(
     <>
     <div className="col-auto position-absolute p-0 m-0 ms-2 export_2 align-self-center text-center">
-     <ExportTransferOut transferoutarrarr={transferoutarrExcel} fromdate={reversefunction(fromdate ?fromdate:currentDate)} todate={reversefunction(todate?todate:fromdate?fromdate:currentDate)} />
+     <ExportTransferOut transferoutarr={transferoutarrExcel} fromdate={reversefunction(fromdate ?fromdate:currentDate)} todate={reversefunction(todate?todate:fromdate?fromdate:currentDate)} />
    </div>
  <button className={`button addpurchase button-charcoal me-3 position-absolute d-${permission.purchase_entry_add == 1 ? "" : "none" }`} onClick={toggle_npef} > <img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt="displaying_image" className="img-fluid p-0 m-0" />Transfer Out </button>
      <h2 className=" ms-3 text-charcoal fw-bolder" style={{ width: "fit-content" }} > {transferoutarr!=undefined?transferoutarr.length:''} {transferoutarr!=undefined?transferoutarr.length > 1 ? "Transfers Out" : "Transfer Out":''}{" "} </h2>
@@ -8153,11 +8144,7 @@ function TransferOut(props){
                <strong className="">
                  Getting Details please be Patient ...
                </strong>
-               <div
-                 class="spinner-border ms-auto"
-                 role="status"
-                 aria-hidden="true"
-               ></div>
+               <div class="spinner-border ms-auto" role="status" aria-hidden="true" ></div>
              </div>
            </tr>
          </tbody> 
@@ -8275,7 +8262,6 @@ function TIitemdetailssection(props) {
     }
   }
 
-  // console.log(props.transferoutarr)
   return (
     <div className="container-fluid p-0 m-0 ">
       <div className="container-fluid p-0 m-0">
@@ -8485,7 +8471,6 @@ function TOitemdetailssection(props) {
       </div>
     ));
   }
-  // console.log(props.transferoutarr)
   return (
     <div className="container-fluid p-0 m-0 ">
       <div className="container-fluid p-0 m-0">
@@ -8645,11 +8630,7 @@ function TOitemdetailssection(props) {
     </div>
   );
 }
-function NewTransferInForm(props){
-return(
-  <></>
-)
-}
+
 function NewTransferOutForm(props){
   const url = useContext(URL)
   const medicinesref = useRef(null)
@@ -8890,9 +8871,7 @@ function NewTransferOutForm(props){
   useEffect(()=>{
     ClinicName()
   },[])
-  // console.log(fromlocation,tolocation,channel,transferdate,MedicineentriesArr,clinicname,cliniclist)
-  // console.log(clinicname)
-  // console.log(SelectedProducts)
+
   return(
     <section className="position-relative" style={{minHeight:'100%'}}>
       <h5 className="text-center text-charocal fw-bold pt-2 shadow-sm pb-2">New Transfer Out</h5> 
@@ -9263,7 +9242,7 @@ function Dumpsection(props){
       setupdateload(false)
     }
   }
-  console.log(dumpsarr)
+  console.log(dumpsarr) 
   return(
     <>
    <div className="row p-0 m-0 mt-2">
@@ -9362,7 +9341,6 @@ function Dumpsection(props){
                   <option className="button-lightred" value='0'>Pending</option>
                   <option className="button-lightblue" value='1'>Accepted</option>
                   <option className="button-lightred" value='2'>Rejected</option>
-
               </select>
                 )}
 
@@ -9410,7 +9388,7 @@ function Dumpsection(props){
      />
    </div>
  </div>
- <section className={`newpurchaseentrysection position-absolute start-0 end-0 bg-seashell border border-1 d-${npef}`} >
+ <section className={` position-absolute bottom-0 start-0 mx-auto end-0 bg-seashell border border-1 d-${npef}`} style={{height:'70vh',width:'60vh'}} >
    {
      <NewDumpForm toggle_npef={toggle_npef} GETDumpList={GETDumpList} />
    }
@@ -9419,6 +9397,399 @@ function Dumpsection(props){
   )
 }
 export {Dumpsection}
-function NewDumpForm(){
 
+function NewDumpForm(props){
+
+  const url = useContext(URL)
+  const medicinesref = useRef(null)
+  const stockref = useRef(null)
+  const cliniclist = useContext(Clinic)
+  const currentDate = useContext(TodayDate);
+  const clinicid = localStorage.getItem('ClinicId')
+  const [channel,setchannel]=useState("")
+  const [channelname,setchannelname]=useState()
+  const [dumpdate,setdumpdate]=useState(currentDate)
+  const [stage1, setstage1] = useState('block')
+  const [stage2, setstage2] = useState('none')
+  const [loadsearch,setloadsearch]=useState(false)
+  const [itemsearch, setitemsearch] = useState();
+  const [itemname, setitemname] = useState();
+  const [itemid, setitemid] = useState();
+  const [itemtype, setitemtype] = useState();
+  const [qty,setqty] =useState();
+  const [tableindex, settableindex] = useState()
+  const [products, setproducts] = useState([]);
+  const [SelectedProducts, setSelectedProducts] = useState([]); 
+  const [load,setload]=useState(false)
+  const [Grandtotal, setGrandtotal] = useState();
+  const toggleStage1 = () => {
+    if (stage1 == 'block') {
+      setstage1('none')
+    }
+    if (stage1 == 'none') {
+      setstage1('block')
+    }
+  }
+
+  const toggleStage2 = () => {
+    if (stage2 == 'block') {
+      setstage2('none')
+    }
+    if (stage2 == 'none') {
+      setstage2('block')
+    }
+  }
+  const Go_Back = () => {
+    if (stage2 === 'block') { 
+      toggleStage2()
+      toggleStage1()
+    }
+  }
+  const confirmmessage = (e) => {
+    customconfirm();
+    Notiflix.Confirm.show(
+      `Add Transfer Out`,
+      `Do you surely want to do the following Dump `,
+      "Yes",
+      "No",
+      () => {
+        SaveDump();
+      },
+      () => {
+        return 0;
+      },
+      {}
+    );
+  };
+  const SaveDump = async () => {
+    let MedId = [];
+    let Type = [];
+    let quantity = [];
+    for (let i = 0; i < SelectedProducts.length; i++) {
+      Type.push(SelectedProducts[i].type ? SelectedProducts[i].type : "");
+      MedId.push( SelectedProducts[i].productid ? SelectedProducts[i].productid : "" );
+      quantity.push(SelectedProducts[i].qtytoTransfer ? Number(SelectedProducts[i].qtytoTransfer) : "");
+    }
+    var Data = {
+      location_id:clinicid,
+      dump_date:dumpdate,
+      channel: channel, 
+      dump_date: dumpdate,
+      total_amount:Grandtotal,
+      items: MedId, 
+      items_type: Type, 
+      qty: quantity
+     }
+    setload(true);
+    try {
+      await axios.post(`${url}/dump/stocks/add`, Data).then((response) => {
+        setload(false);
+        props.GETDumpList();
+        setload(false);
+        props.toggle_npef();
+        if (response.data.status == true) {
+          Notiflix.Notify.success(response.data.message);
+        } else {
+          Notiflix.Notify.warning(response.data.message);
+        }
+        resetfields()
+      });
+    } catch (e) {
+      setload(false);
+      Notiflix.Notify.warning(e.message);
+    }
+  };
+
+  useEffect(() => {
+    CalGrandttl();
+  }, [SelectedProducts]);
+
+  function AddProducts(data) {
+    let T = "";
+    if (data.vaccine_brand_id) {
+      T = "v";
+    } else {
+      T = "m";
+    }
+    let ProductDetails = {
+      productid: data.id,
+      product: data.item_name ? data.item_name : itemname,
+      type: data.type ? data.type : T,
+      avlstock: data.current_stock,
+      qtytoTransfer: '',
+      mrp: data.mrp,
+    }
+    if (SelectedProducts && SelectedProducts.length == 0) {
+      setSelectedProducts([ProductDetails]);
+    } else {
+      setSelectedProducts((prevState) => [...prevState, ProductDetails]);
+    }
+  }
+  async function DeleteProduct(productid) {
+    let obj = [];
+    obj.push(
+      SelectedProducts.filter(function (e) {
+        return e.productid !== productid;
+      })
+    );
+    obj = obj.flat();
+    setSelectedProducts(obj);
+  }
+  const resetfields = async () => {
+    setdumpdate()
+    setchannelname()
+    setchannel()
+    setSelectedProducts([])
+  };
+
+  const searchmeds = async (search) => {
+    setloadsearch(true);
+    try {
+      await axios.get(`${url}/stock/list?search=${search}`).then((response) => {
+        let medicines = [];
+        let vaccines = [];
+        let items = [];
+        medicines.push(
+          response.data.data.medicines ? response.data.data.medicines : []
+        );
+        vaccines.push(
+          response.data.data.vaccines ? response.data.data.vaccines : []
+        );
+        items = medicines.concat(vaccines);
+        items = items.flat();
+        setitemsearch(items);
+        setloadsearch(false);
+        if (search.length > 1) {
+          medicinesref.current.style.display = "block";
+        } else {
+          medicinesref.current.style.display = "none";
+        }
+      });
+    } catch (e) {
+      Notiflix.Notify.warning(e.data.message);
+    }
+  };
+  const reversefunction = (date) => {
+    if (date) {
+      date = date.split("-").reverse().join("-");
+      return date;
+    }
+  }
+
+  function AddProducts(data) {
+    let T = "";
+    if (data.vaccine_brand_id) {
+      T = "v";
+    } else {
+      T = "m";
+    }
+    let ProductDetails = {
+      productid: data.id,
+      type: data.type ? data.type : T,
+      product: data.item_name ? data.item_name : itemname,
+      avlstock: data.current_stock,
+      qtytoTransfer: '',
+      mrp: data.mrp,
+    };
+
+    if (SelectedProducts && SelectedProducts.length == 0) {
+      setSelectedProducts([ProductDetails]);
+    } else {
+      setSelectedProducts((prevState) => [...prevState, ProductDetails]);
+    }
+  }
+  function CalTotalAmount(qty, mrp) {
+    let cost = mrp;
+    if (!qty) {
+      return 0;
+    } else if (qty == 1 || qty =='1') {
+      mrp = Number(mrp);
+      return mrp;
+    } else {
+      cost = Number(mrp) * Number(qty);
+      cost = cost.toFixed(2);
+      return cost;
+    }
+  }
+  function CalGrandttl() {
+    let ttl = 0;
+    SelectedProducts.map((data) => (ttl += Number(data.totalamt)));
+    setGrandtotal(ttl);
+  }
+
+
+  return(
+    <section className="position-relative" style={{minHeight:'100%'}}>
+      <h5 className="text-center text-charocal fw-bold pt-2 shadow-sm pb-2">New Dump</h5> 
+      <button className={`btn btn-back position-absolute start-0 top-0 ms-2 d-${stage1 == 'block' ? 'none' : 'block'}`} onClick={() => { Go_Back() }}   ></button>
+      <button type="button" className="btn-close closebtn m-auto mt-2 position-absolute top-0 end-0 me-2 mt-2" onClick={props.toggle_npef} aria-label="Close" ></button>
+      <div className={`stage1 d-${stage1}`} style={{minHeight:'90%'}}>
+      <div className="row p-0 m-0 mt-4 ms-3 align-items-end align-self-end">
+          <div className="col-12 clinics bg-seashell align-self-center border-0 ps-2" >
+                    {
+                        cliniclist.map((data, i) => (
+                            <div key={i} className={`d-${clinicid == data.id ? 'block' : 'none'} `}>
+                                <div className="row p-0 m-0 align-items-center">
+                                    <div className="col-auto p-0 m-0 me-1">
+                                        <img src={process.env.PUBLIC_URL + '/images/location.png'}  />
+                                    </div>
+                                    <div className="col-auto p-0 m-0 fw-bold mt-1" style={{ letterSpacing: '1px' }}>
+                                        {data.title} {data.address}
+                                    </div>
+                                </div></div>
+                        ))
+                    }
+                </div>
+      </div>
+      <div className="row p-0 m-0 mt-3 ms-3 ">
+        <div className="col-5">
+        <div className="text-charcoal75 fw-bold" htmlFor="">Select Channel</div>
+        <div className="dropdown ">
+            <button className=" button button-pearl text-charcoal fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"> {channelname?channelname:"Select Channel"} </button>
+            <ul className="dropdown-menu p-2 bg-pearl border-0 shadow-sm" >
+              <li className="text-start p-2 text-charcoal fw-bolder border-bottom py-2" onClick={() => { setchannel(1);setchannelname("Pharmacy") }}>Pharmacy </li>
+              <li className="text-start p-2 text-charcoal fw-bolder py-2" onClick={() => { setchannel(2);setchannelname("Clinic") }}>Clinic </li>
+            </ul>
+          </div>
+            </div>
+            <div className="col-5">
+            <div className="text-charcoal75 fw-bold" htmlFor="">Dump Date</div>
+              <input type="date" className="button button-pearl fw-bolder tet-charcoal " onChange={(e)=>{setdumpdate(e.target.value)}} value={dumpdate?dumpdate:currentDate}/>
+            </div>
+        </div>
+        <div className="container-fluid p-0 m-0 position-absolute bottom-0 bg-pearl">
+          <div className="row p-0 m-0 py-3 justify-content-end">
+            <div className="col-auto">
+            <button className="button button-charcoal" onMouseDown={() => { toggleStage2(); }} onMouseUp={() => { toggleStage1() }} >Add Items</button>
+            </div>
+          </div>
+        </div>
+        </div>
+        <div className={`stage2 d-${stage2}`}>
+          <div className="row p-0 m-0 align-items-end align-self-end">
+            <div className="col-auto">
+                  <input className="form-control fw-bold border-charcoal75 border-2 rounded-1 bg-seashell" placeholder="Search Product by Name" value={itemname ? itemname : ""} onChange={(e) => { searchmeds(e.target.value); setitemname(e.target.value); setitemid(); setproducts(); stockref.current.style.display = "none"; }} />
+                  <div ref={medicinesref} className="position-absolute rounded-1 mt-1" style={{ Width: "max-content", zIndex: "1" }} >
+                    {
+                      itemsearch ? (
+                        loadsearch ? (
+                          <div className="rounded-1 p-1 bg-pearl">
+                            Searching Please wait....
+                            <div className="spinner-border my-auto" style={{ width: "1rem", height: "1rem" }} role="status" >
+                              <span className="sr-only"> </span>
+                            </div>
+                          </div>
+                        ) : loadsearch == false && itemsearch.length == 0 ? (
+                          <div className="bg-burntumber text-light rounded-1 p-1"> Oops! Not Avaliable </div>
+                        ) : (
+                          <div className={`rounded-4 scroll border border-1 bg-pearl p-1 d-${itemsearch && itemsearch.length > 0 ? "block" : "none"}`} style={{ height: '30vh' }} >
+                            <p className={`text-start p-2 position-sticky top-0 bg-pearl fw-bold text-charcoal75 ms-2`} style={{ fontSize: "0.8rem" }} > {itemsearch.length} Search Results </p>
+                            {
+                              itemsearch.map((data, i) => (
+                                <div style={{ cursor: "pointer", Width: "10rem" }} className={`bg-${i % 2 == 0 ? "pearl" : "seashell"} text-start fw-bold p-2 border-bottom text-charcoal `} onClick={(e) => { setproducts(data); setitemname(data.display_name ? data.display_name : data.name); setitemid(data.id); stockref.current.style.display = "block"; }} > {data.display_name ? data.display_name : data.name} <span className='text-burntumber fw-bold rounded-2 px-1'>{data && data.stock_info !== undefined ? data.stock_info.length : ""} stocks</span> </div>
+                              ))
+                            }
+                          </div>
+                        )
+                      ) : (
+                        <div className="bg-seashell"></div>
+                      )}
+                  </div>
+                  <div ref={stockref} className={`position-absolute start-50 mt-1 bg-pearl scroll scroll-y align-self-center rounded-2 border border-1 p-2 d-${products && products.stock_info && products.stock_info !== undefined ? "block" : "none"}`} style={{ zIndex: "2", width: "10rem", 'min-height': "30vh", }} >
+                    <p className={`text-start fw-bold text-charcoal75`} style={{ fontSize: "0.8rem" }} > {products && products.stock_info !== undefined ? products.stock_info.length : ""}{" "} Batch Stocks </p>
+                    {
+                      products && products.length != 0 ? (
+                        products.stock_info.length == 0 ? (
+                          <div className="bg-burntumber text-white fw-bold p-2">Oops! Not Available</div>
+                        ) : (
+                          products.stock_info.map((data, i) => (
+                            <div style={{ cursor: "pointer", Width: "max-content" }} className={`bg-${i % 2 == 0 ? "pearl" : "seashell"} border-bottom text-wrap`} onClick={() => { AddProducts(data); setitemname(); setitemid(); setproducts(); setitemsearch(); }} >
+                              <p className="text-start m-0 p-0 fw-bold">{itemname}</p>
+                              <p className="text-start p-0 m-0 "> BatchNo. -{" "} {data.batch_no && data.batch_no !== null ? data.batch_no : ""} </p>
+                              <p className="text-start p-0 m-0 "> Stock -{" "} {data.current_stock && data.current_stock ? data.current_stock : ""} </p>
+                              <p className="text-start p-0 m-0 "> Expiry Date -{" "} {data.expiry_date ? reversefunction(data.expiry_date) : ""} </p>
+                            </div>
+                          ))
+                        )
+                      ) : (
+                        <div className="bg-seashell p-2">Not Avaliable</div>
+                      )
+                    }
+                  </div>
+                  <div>
+                  </div>
+       
+            </div>
+          </div>
+     
+                <div className="container-fluid p-0 m-0 mt-2">
+                <table className="table p-0 m-0">
+                  <thead className="p-0 m-0">
+                    <tr className={`p-0 m-0 `}>
+                      <th className="p-0 m-0 px-2 text-charcoal75" rowSpan="2"> Item ID </th>
+                      <th className="p-0 m-0 px-2 text-charcoal75" rowSpan="2"> Item Name </th>
+                      <th className="p-0 m-0 px-2 text-charcoal75" rowSpan="2"> Mrp </th>
+                      <th className="p-0 m-0 px-2 text-charcoal75" rowSpan="2"> Avl.Stock </th>
+                      <th className="p-0 m-0 px-2 text-charcoal75" rowSpan="2"> Qty To Dump </th>
+                      <th className="p-0 m-0 px-2 text-charcoal75" rowSpan="2"> Total </th>
+                      <th className="p-0 m-0 px-2 text-charcoal75" rowSpan="2"> Delete </th>
+                    </tr>
+                  </thead>
+                  {SelectedProducts && SelectedProducts.length !== 0 ? (
+                    <tbody className="p-0 m-0">
+                      {
+                      SelectedProducts.map((data) => (
+                        <tr className={`p-0 m-0 align-middle text-charcoal fw-bold`} >
+                          <td>{data.type} {data.productid} </td>
+                          <td>{data.product}</td>
+                          <td>{data.mrp}</td>
+                          <td>{data.avlstock}</td>
+                          <td>
+                            <input className="border border-1 rounded-1 w-25 text-center p-0 m-0 bg-seashell" value={data.qtytoTransfer ? data.qtytoTransfer : ""} onChange={(e) => { e.target.value <= data.avlstock ? (data.qtytoTransfer = e.target.value) : Notiflix.Notify.failure("Quantity Cannot be Greater then Current Stock Available"); data.totalamt = CalTotalAmount(data.qtytoTransfer, data.mrp); setSelectedProducts((prevState) => [...prevState]); }} />{" "}
+                          </td>
+                          <td>{data.totalamt}</td>
+                          <td>
+                            <button className="btn p-0 m-0" onClick={() => { DeleteProduct(data.productid); }} >
+                              <img src={process.env.PUBLIC_URL + "images/minus.png"} />
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  ) : (
+                    <tbody className="p-0 m-0 position-relative">
+                      <tr className="p-0 m-0">
+                        <td className="p-0 m-0 position-absolute text-charcoal75 fw-bold text-center start-0 end-0"> No Product Added </td>
+                      </tr>
+                    </tbody>
+                  )}
+                </table>
+                </div>
+                     
+        <div className="container-fluid p-0 m-0 position-absolute bottom-0 bg-pearl">
+          <div className="row p-0 m-0 py-3 justify-content-between align-items-center align-self-center">
+            <div className="col-auto">
+              <label className="fw-bolder text-charcoal75" htmlFor="">Grand Total</label>
+              <div className="col-auto ">
+              <h5 className="fw-bolder text-charcoal">₹{Grandtotal }</h5>
+              </div>
+          
+            </div>
+            <div className="col-auto">
+            {load ? (
+              <div className="col-6 py-2 pb-2 m-auto text-center">
+                <div className="spinner-border" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </div>
+              </div>
+            ) : (
+            <button className="button button-charcoal"onClick={()=>confirmmessage()} >Save Dump</button>
+            )
+            }
+            </div>
+          </div>
+        </div>
+        </div>
+    </section>
+  )
 }

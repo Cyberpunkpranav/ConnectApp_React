@@ -78,7 +78,7 @@ body {
     color: var(--charcoal);
     font-weight: 600;
     background-color: var(--pearl);
-    border-color: var(--seashell);
+    border-color: var(--charcoal50);
     outline: 0;
     box-shadow: none;
 }

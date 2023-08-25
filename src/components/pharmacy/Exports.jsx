@@ -193,41 +193,6 @@ const ExportPurchaseReturn = (props) => {
                 }))
                 obj.push(vendorsitems)
             }
-
-            // for (let i = 0; i < props.purchasereturnarr.length; i++) {
-            //     let distributor = props.purchasereturnarr[i].distributor.entity_name
-            //     let GST = props.purchasereturnarr[i].distributor.GSTIN_no
-            //     var vendorsitems = props.purchasereturnarr[i].purchase_vaccines.map(Data => ({
-            //         'Type': 'Vaccine',
-            //         'PE ID': Data.purchase_entry.bill_id && Data.purchase_entry.bill_id != null ? "PE-" + Data.purchase_entry.bill_id : '',
-            //         'Invoice No.': Data.purchase_entry.invoice_no && Data.purchase_entry.invoice_no != null ? Data.purchase_entry.invoice_no : '',
-            //         'Bill Date': reversefunction(Data.purchase_entry.bill_date),
-            //         'Distributor': distributor,
-            //         'GSTIN': GST,
-            //         'Item ID': Data.id != null ? Data.id : '',
-            //         'Item Name': Data.vaccine && Data.vaccine.name && Data.vaccine.name != null ? Data.vaccine.name : '',
-            //         'Batch No.': Data.batch_no != null ? Data.batch_no : '',
-            //         'ExpiryDate': Data.expiry_date !== null ? reversefunction(Data.expiry_date) : '',
-            //         'MRP': Data.mrp != null ? Data.mrp : '',
-            //         'Rate': Data.rate != null ? Data.rate : '',
-            //         'Discount %': Data.discount != null ? Data.discount : '',
-            //         'Trade Disc. %5': Data.trade_discount != null ? Data.trade_discount : '',
-            //         'CGST in Rs': Number(Data.CGST) * Number(Data.qty),
-            //         'CGST %': Data.CGST_rate,
-            //         'SGST in Rs': Number(Data.SGST) * Number(Data.qty),
-            //         'SGST %': Data.SGST_rate,
-            //         'IGST in Rs': Number(Data.IGST) * Number(Data.qty),
-            //         'IGST %': Data.IGST_rate,
-            //         'Total Tax in Rs': TotalTax(Data.CGST, Data.SGST, Data.IGST, Data.qty),
-            //         'Total Tax %': TotalTaxRate(Data.CGST_rate, Data.SGST_rate, Data.IGST_rate),
-            //         'Cost Rs': Data.cost,
-            //         'Qty': Data.qty,
-            //         'Total Rs': Data.total_amount ? Data.total_amount : '',
-            //         'HSN Code': Data.vaccine && Data.vaccine.hsn_code !== null ? Data.vaccine.hsn_code : ''
-            //     }))
-            //     obj.push(vendorsitems)
-
-            // }
             var obj2 = obj.flat()
             setReturnEntry(obj2)
         }
@@ -350,42 +315,6 @@ const ExportSaleEntry = (props) => {
                 }))
                 obj.push(vendorsitems)
             }
-
-            // for (let i = 0; i < props.saleentryarr.length; i++) {
-            //     let billid = props.saleentryarr[i].bill_id ? props.saleentryarr[i].bill_id : ''
-            //     let billdate = props.saleentryarr[i].bill_date ? reversefunction(props.saleentryarr[i].bill_date) : ''
-            //     let name = props.saleentryarr[i].patient.full_name !== null ? props.saleentryarr[i].patient.full_name : ''
-            //     let doctor = props.saleentryarr[i].doctor_name !== null ? props.saleentryarr[i].doctor_name : ''
-            //     var vendorsitems = props.saleentryarr[i].sale_vaccines.map(Data => ({
-            //         'Type': 'Vaccine',
-            //         'Bill ID': billid,
-            //         'Name': name,
-            //         'Doctor Name': doctor,
-            //         // 'Invoice No.': Data.purchase_entry.invoice_no && Data.purchase_entry.invoice_no != null ? Data.purchase_entry.invoice_no : '',
-            //         'Bill Date': billdate,
-            //         'Item ID': Data.vaccine_stocks.id != null ? Data.vaccine_stocks.id : '',
-            //         'Item Name': Data.vaccine && Data.vaccine.name && Data.vaccine.name != null ? Data.vaccine.name : '',
-            //         'Batch No.': Data.vaccine_stocks.batch_no != null ? Data.vaccine_stocks.batch_no : '',
-            //         'Qty': Data.qty,
-            //         'ExpiryDate': Data.vaccine_stocks.expiry_date !== null ? reversefunction(Data.vaccine_stocks.expiry_date) : '',
-            //         'MRP': Data.vaccine_stocks.mrp != null ? Data.vaccine_stocks.mrp : '',
-            //         'Rate': Data.vaccine_stocks.rate != null ? Data.vaccine_stocks.rate : '',
-            //         'Discount': Data.discount != null ? Data.discount : '',
-            //         'Taxable Amount in Rs': Data.total_amount !== null ? Data.total_amount : '',
-            //         'CGST in Rs': Number(Data.CGST) * Number(Data.qty),
-            //         'CGST %': Data.CGST_rate,
-            //         'SGST in Rs': Number(Data.SGST) * Number(Data.qty),
-            //         'SGST %': Data.SGST_rate,
-            //         'IGST in Rs': Number(Data.IGST) * Number(Data.qty),
-            //         'IGST %': Data.IGST_rate,
-            //         'Total Tax in %': TotalTaxPercent(Data.CGST_rate, Data.SGST_rate, Data.IGST_rate),
-            //         'Total Tax in Rs': TotalTax(Data.CGST, Data.CGST, Data.CGST, Data.qty),
-            //         'Grand Total Rs': Data.vaccine_stocks.total_amount ? Data.vaccine_stocks.total_amount : '',
-            //         'HSN Code': Data.vaccine && Data.vaccine.hsn_code !== null ? Data.vaccine.hsn_code : ''
-            //     }))
-            //     obj.push(vendorsitems)
-
-            // }
             var obj2 = obj.flat()
             setSaleEntry(obj2)
         }
@@ -403,6 +332,7 @@ const ExportSaleEntry = (props) => {
     )
 }
 export { ExportSaleEntry }
+
 const ExportSaleReturn = (props) => {
     const [ReturnEntry, setReturnEntry] = useState([])
     const fileName = props.fromdate + '-' + props.todate + 'Sale Returns'
@@ -512,15 +442,15 @@ const ExportSaleReturn = (props) => {
 }
 export { ExportSaleReturn }
 
-const ExportTransferOut=(props)=>{
-    const [ExportTransferOut, setExportTransferOut] = useState([])
-    const fileName = props.fromdate + '-' + props.todate + 'Transfer Out'
+const ExportTransferIn=(props)=>{
+    const [ExportTransferIn, setExportTransferIn] = useState([])
+    const fileName = props.fromdate + '-' + props.todate + ' Transfer In '
+
     const reversefunction = (date) => {
         if (date) {
             date = date.split("-").reverse().join("-")
             return date
         }
-
     }
     function TotalTax(cgst, sgst, igst, qty) {
         if (cgst && sgst && igst !== null || undefined) {
@@ -533,15 +463,16 @@ const ExportTransferOut=(props)=>{
         }
     }
     var obj = []
-    async function MakeTransferOutExport() {
-        if (props.transferoutarrarr.length !== 0) {
-            for (let i = 0; i < props.transferoutarrarr.length; i++) {
-                var vendorsitems = props.transferoutarrarr[i].medicines.map(Data => ({
-                    'Type': 'Medicine',
-                    'TO ID': Data.id && Data.id != null ? "TO-" + Data.id : '', 
-                    'From Location' :Data.from_location != undefined && Data.from_location.title !=undefined ? Data.from_location.title:'',
-                    'To Location' :Data.to_location !== undefined && Data.to_location.title !=undefined ? Data.to_location.title:'',
-                    'Transfer Date': Data?reversefunction(Data.transfer_date):"",
+    async function MakeTransferInExport() {
+        if (props.transferinarr.length !== 0) {
+            for (let i = 0; i < props.transferinarr.length; i++) {
+                var vendorsitems = props.transferinarr[i].medicines.map(Data => ({
+                    'Type': 'Medicine', 
+                    'TI ID': props.transferinarr[i].id != undefined ? "TI-" + props.transferinarr[i].id : '', 
+                    'From Location' :props.transferinarr[i].from_location != undefined && props.transferinarr[i].from_location.title !=undefined ? props.transferinarr[i].from_location.title:'',
+                    'Channel' :props.transferinarr[i].channel !=undefined ? props.transferinarr[i].channel== 1 ? "Pharmacy" : "Clinic":'',
+                    'To Location' :props.transferinarr[i].to_location !== undefined && props.transferinarr[i].to_location.title !=undefined ? props.transferinarr[i].to_location.title:'',
+                    'Transfer Date': props.transferinarr[i].transfer_date!=undefined?reversefunction(props.transferinarr[i].transfer_date):"",
                     'Item ID': Data.medicine_id != null ? Data.medicine_id : '',
                     'Item Stock ID': Data.medicies_stocks_id != null ? Data.medicies_stocks_id : '',
                     'Item Name': Data.medicine_stock_details.medicine.name && Data.medicine_stock_details.medicine.name !== null ? Data.medicine_stock_details.medicine.name : '',
@@ -563,16 +494,16 @@ const ExportTransferOut=(props)=>{
                     'Total Tax %': TotalTaxRate( Data.medicine_stock_details.CGST_rate,  Data.medicine_stock_details.SGST_rate, Data.medicine_stock_details.IGST_rate),
                     'Cost in Rs':  Data.medicine_stock_details.cost,
                     'Total Rs':  Data.medicine_stock_details.total_amount ?  Data.medicine_stock_details.total_amount : '',
-
                 }))
                 obj.push(vendorsitems)
                 console.log(obj)
-                var vendorsitems = props.transferoutarrarr[i].vaccines.map(Data => ({
+                var vendorsitems = props.transferinarr[i].vaccines.map(Data => ({
                     'Type': 'Vaccine',
-                    'TO ID': Data.id && Data.id != null ? "TO-" + Data.id : '', 
-                    'From Location' : Data.from_location.title !=undefined ? Data.from_location.title:'',
-                    'To Location' : Data.to_location.title !=null ? Data.to_location.title:'',
-                    'Transfer Date': reversefunction(Data.transfer_date),
+                    'TO ID': props.transferinarr[i].id && props.transferinarr[i].id != null ? "TO-" + props.transferinarr[i].id : '',
+                    'Channel' :props.transferinarr[i].channel !=undefined ? props.transferinarr[i].channel== 1 ? "Pharmacy" : "Clinic":'', 
+                    'From Location' : props.transferinarr[i].from_location!=undefined && props.transferinarr[i].from_location.title !=undefined ? props.transferinarr[i].from_location.title:'',
+                    'To Location' :  props.transferinarr[i].to_location!=undefined && props.transferinarr[i].to_location.title !=undefined ? props.transferinarr[i].to_location.title:'',
+                    'Transfer Date': props.transferinarr[i].transfer_date!=undefined?reversefunction(props.transferinarr[i].transfer_date):"",
                     'Item ID': Data.vaccine_brand_id != null ? Data.vaccine_brand_id : '',
                     'Item Stock ID': Data.vaccine_stocks_id != null ? Data.vaccine_stocks_id : '',
                     'Item Name': Data.vaccine_stock_details.vaccine.name && Data.vaccine_stock_details.vaccine.name !== null ? Data.vaccine_stock_details.vaccine.name : '',
@@ -602,6 +533,112 @@ const ExportTransferOut=(props)=>{
             console.log(obj)
             var obj2 = obj.flat()
             console.log(obj2)
+            setExportTransferIn(obj2)
+        }
+    }
+    useEffect(() => {
+        async function func() {
+            await MakeTransferInExport()
+        }
+        func()
+    }, [props.transferinarr])
+    console.log(props.transferinarr)
+    return (
+        <>
+            <ExportExcel apiData={ExportTransferIn} fileName={fileName} />
+        </>
+    )
+}
+export {ExportTransferIn}
+
+const ExportTransferOut=(props)=>{
+    const [ExportTransferOut, setExportTransferOut] = useState([])
+    const fileName = props.fromdate + '-' + props.todate + ' Transfer Out '
+
+    const reversefunction = (date) => {
+        if (date) {
+            date = date.split("-").reverse().join("-")
+            return date
+        }
+
+    }
+    function TotalTax(cgst, sgst, igst, qty) {
+        if (cgst && sgst && igst !== null || undefined) {
+            return (Number(cgst) + Number(sgst) + Number(igst)) * Number(qty)
+        }
+    }
+    function TotalTaxRate(cgst, sgst, igst) {
+        if (cgst && sgst && igst !== null || undefined) {
+            return Number(cgst) + Number(sgst) + Number(igst)
+        }
+    }
+    var obj = []
+    async function MakeTransferOutExport() {
+        if (props.transferoutarr.length !== 0) {
+            for (let i = 0; i < props.transferoutarr.length; i++) {
+                var vendorsitems = props.transferoutarr[i].medicines.map(Data => ({
+                    'Type': 'Medicine', 
+                    'TO ID': props.transferoutarr[i].id != undefined ? "TO-" + props.transferoutarr[i].id : '', 
+                    'From Location' :props.transferoutarr[i].from_location != undefined && props.transferoutarr[i].from_location.title !=undefined ? props.transferoutarr[i].from_location.title:'',
+                    'Channel' :props.transferoutarr[i].channel !=undefined ? props.transferoutarr[i].channel== 1 ? "Pharmacy" : "Clinic":'',
+                    'To Location' :props.transferoutarr[i].to_location !== undefined && props.transferoutarr[i].to_location.title !=undefined ? props.transferoutarr[i].to_location.title:'',
+                    'Transfer Date': props.transferoutarr[i].transfer_date!=undefined?reversefunction(props.transferoutarr[i].transfer_date):"",
+                    'Item ID': Data.medicine_id != null ? Data.medicine_id : '',
+                    'Item Stock ID': Data.medicies_stocks_id != null ? Data.medicies_stocks_id : '',
+                    'Item Name': Data.medicine_stock_details.medicine.name && Data.medicine_stock_details.medicine.name !== null ? Data.medicine_stock_details.medicine.name : '',
+                    'HSN Code': Data.medicine_stock_details.medicine.hsn_code && Data.medicine_stock_details.medicine.hsn_code !== null ? Data.medicine_stock_details.medicine.hsn_code : '',
+                    'Batch No.': Data.medicine_stock_details.batch_no && Data.medicine_stock_details.batch_no !== null ? Data.medicine_stock_details.batch_no : '',
+                    'ExpiryDate': Data.medicine_stock_details.expiry_date !== null ? reversefunction(Data.medicine_stock_details.expiry_date) : '',
+                    'MRP': Data.medicine_stock_details.mrp != null ? Data.medicine_stock_details.mrp : '',
+                    'Rate': Data.medicine_stock_details.rate != null ? Data.medicine_stock_details.rate : '',
+                    'Qty': Data.qty !==null ? Data.qty:'',
+                    'Discount':  Data.medicine_stock_details.discount != null ?  Data.medicine_stock_details.discount : '',
+                    'Trade Disc.':  Data.medicine_stock_details.trade_discount != null ?  Data.medicine_stock_details.trade_discount : '',
+                    'CGST in Rs': Number( Data.medicine_stock_details.CGST) * Number(Data.qty),
+                    'CGST %':  Data.medicine_stock_details.CGST_rate,
+                    'SGST in Rs': Number(Data.medicine_stock_details.SGST) * Number(Data.qty),
+                    'SGST %':  Data.medicine_stock_details.SGST_rate,
+                    'IGST in Rs': Number( Data.medicine_stock_details.IGST) * Number(Data.qty),
+                    'IGST %':  Data.medicine_stock_details.IGST_rate,
+                    'Total Tax': TotalTax( Data.medicine_stock_details.CGST,  Data.medicine_stock_details.SGST,  Data.medicine_stock_details.IGST, Data.qty),
+                    'Total Tax %': TotalTaxRate( Data.medicine_stock_details.CGST_rate,  Data.medicine_stock_details.SGST_rate, Data.medicine_stock_details.IGST_rate),
+                    'Cost in Rs':  Data.medicine_stock_details.cost,
+                    'Total Rs':  Data.medicine_stock_details.total_amount ?  Data.medicine_stock_details.total_amount : '',
+                }))
+                obj.push(vendorsitems)
+                var vendorsitems = props.transferoutarr[i].vaccines.map(Data => ({
+                    'Type': 'Vaccine',
+                    'TO ID': props.transferoutarr[i].id && props.transferoutarr[i].id != null ? "TO-" + props.transferoutarr[i].id : '',
+                    'Channel' :props.transferoutarr[i].channel !=undefined ? props.transferoutarr[i].channel== 1 ? "Pharmacy" : "Clinic":'', 
+                    'From Location' : props.transferoutarr[i].from_location!=undefined && props.transferoutarr[i].from_location.title !=undefined ? props.transferoutarr[i].from_location.title:'',
+                    'To Location' :  props.transferoutarr[i].to_location!=undefined && props.transferoutarr[i].to_location.title !=undefined ? props.transferoutarr[i].to_location.title:'',
+                    'Transfer Date': props.transferoutarr[i].transfer_date!=undefined?reversefunction(props.transferoutarr[i].transfer_date):"",
+                    'Item ID': Data.vaccine_brand_id != null ? Data.vaccine_brand_id : '',
+                    'Item Stock ID': Data.vaccine_stocks_id != null ? Data.vaccine_stocks_id : '',
+                    'Item Name': Data.vaccine_stock_details.vaccine.name && Data.vaccine_stock_details.vaccine.name !== null ? Data.vaccine_stock_details.vaccine.name : '',
+                    'HSN Code': Data.vaccine_stock_details.vaccine.hsn_code && Data.vaccine_stock_details.vaccine.hsn_code !== null ? Data.vaccine_stock_details.vaccine.hsn_code : '',
+                    'Batch No.': Data.vaccine_stock_details.batch_no && Data.vaccine_stock_details.batch_no !== null ? Data.vaccine_stock_details.batch_no : '',
+                    'ExpiryDate': Data.vaccine_stock_details.expiry_date !== null ? reversefunction(Data.vaccine_stock_details.expiry_date) : '',
+                    'MRP': Data.vaccine_stock_details.mrp != null ? Data.vaccine_stock_details.mrp : '',
+                    'Rate': Data.vaccine_stock_details.rate != null ? Data.vaccine_stock_details.rate : '',
+                    'Qty': Data.qty !==null ? Data.qty:'',
+                    'Discount':  Data.vaccine_stock_details.discount != null ?  Data.vaccine_stock_details.discount : '',
+                    'Trade Disc.':  Data.vaccine_stock_details.trade_discount != null ?  Data.vaccine_stock_details.trade_discount : '',
+                    'CGST in Rs': Number( Data.vaccine_stock_details.CGST) * Number(Data.qty),
+                    'CGST %':  Data.vaccine_stock_details.CGST_rate,
+                    'SGST in Rs': Number(Data.vaccine_stock_details.SGST) * Number(Data.qty),
+                    'SGST %':  Data.vaccine_stock_details.SGST_rate,
+                    'IGST in Rs': Number( Data.vaccine_stock_details.IGST) * Number(Data.qty),
+                    'IGST %':  Data.vaccine_stock_details.IGST_rate,
+                    'Total Tax': TotalTax( Data.vaccine_stock_details.CGST,  Data.vaccine_stock_details.SGST,  Data.vaccine_stock_details.IGST, Data.qty),
+                    'Total Tax %': TotalTaxRate( Data.vaccine_stock_details.CGST_rate,  Data.vaccine_stock_details.SGST_rate, Data.vaccine_stock_details.IGST_rate),
+                    'Cost in Rs':  Data.vaccine_stock_details.cost,
+                    'Total Rs':  Data.vaccine_stock_details.total_amount ?  Data.vaccine_stock_details.total_amount : '',
+
+                }))
+                obj.push(vendorsitems)
+            }
+            var obj2 = obj.flat()
             setExportTransferOut(obj2)
         }
     }
@@ -610,8 +647,7 @@ const ExportTransferOut=(props)=>{
             await MakeTransferOutExport()
         }
         func()
-    }, [props.transferoutarrarr])
-    console.log(props.transferoutarrarr)
+    }, [props.transferoutarr])
     return (
         <>
             <ExportExcel apiData={ExportTransferOut} fileName={fileName} />
