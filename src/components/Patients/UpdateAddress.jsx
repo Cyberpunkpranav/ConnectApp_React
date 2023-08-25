@@ -60,9 +60,29 @@ const UpdateAddress = (props) => {
     // }, [data]);
     
     useEffect(()=>{
-        setplace(data.label)
+        setplace(data && data.label != undefined ? data.label : '')
+        setplaceid(data && data.value !=undefined && data.value.place_id !=undefined ?data.value.place_id:'')
+        GetPostal_code()
     },[data])
 
+    const GetPostal_code = async()=>{
+        setpincode('')
+        await axios.get(`https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeid}&key=AIzaSyC4wk5k8E6jKkpJClZlXZ8oavuPyi0AMVE`).then((response)=>{
+                if(response){
+                    let data = response.data.result !=undefined ? response.data.result.address_components:[]
+                for(let i=0;i<data.length;i++){
+                        if(data[i].types.includes('postal_code')){
+                            setpincode(data[i].short_name?data[i].short_name:'')
+                        }
+                }
+            }
+
+        })
+       }
+       useEffect(()=>{
+        GetPostal_code()
+       },[placeid])
+       
     const Add_Address = async () => {
         await axios.post(`${url}/add/patient/address`, {
             patient_id: props.patientid,
@@ -131,7 +151,7 @@ const UpdateAddress = (props) => {
                             <div className="container-fluid position-relative">
                                 <div className="row align-items-center">
                                     <div className="col-auto">
-                                        <div className="button p-0 m-0" onClick={() => { setindex(i); Toggle_Address() }}><img src={process.env.PUBLIC_URL + "/images/confirmed.png"} className='img-fluid' style={{width:'1.5rem'}} alt="" /></div>
+                                        <div className={`button p-0 m-0 bg-${index == i ?'lightyellow':''}`} onClick={() => { setindex(i); Toggle_Address() }}><img src={process.env.PUBLIC_URL + "/images/confirmed.png"} className='img-fluid' style={{width:'1.5rem'}} alt="" /></div>
                                     </div>
                                     <div className="col-8">
                                         <button className='button button-pearl d-block my-2'>
@@ -142,7 +162,7 @@ const UpdateAddress = (props) => {
                                         <div className="button p-0 m-0"><img src={process.env.PUBLIC_URL + "/images/minus.png"} className='img-fluid' style={{width:'1.5rem'}} alt="" /></div>
                                     </div>
                                 </div>
-                                <section className={`d-${index == i ? addresspage : 'none'} position-absolute top-0 mx-auto bg-seashell shadow-sm border border-1`} style={{ zIndex: '4' }}>
+                                <section className={`d-${index == i ? addresspage : 'none'} position-absolute top-0 mx-auto start-0 end-0 bg-pearl shadow rounded-2 border border-1 col-10`} style={{ zIndex: '4' }}>
                                     {
                                         index == i ? (
                                             <AddAddress data={data} setindex={setindex} Toggle_Address={Toggle_Address} />

@@ -1895,7 +1895,7 @@ function SaleEntryForm(props) {
                   )}
                 </div>
               </div>
-              <button className="button-sm button-charcoal rounded-1 my-2">Add User</button>
+  
               <div className="row mt-4">
                 <div className="doctor col-6">
                   <h6 className="m-0 p-0 pb-1 fw-bold text-charcoal75">Doctor</h6>
@@ -6407,6 +6407,7 @@ export { PEitemdetailssection };
 function Stocksection() {
   let menu = ["Vaccines", "Medicines"];
   const [menuindex, setmenuindex] = useState(0);
+  const [stockname,setstockname] = useState('Vaccines')
   const _selectedmenu = (_menu) => {
     if (_menu === 0) {
       return (
@@ -6432,13 +6433,13 @@ function Stocksection() {
             <div className="row m-0 p-0">
             <div class="dropdown">
                 <button class="button button-seashell border-0 rounded-2 fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Stock Type 
+                  {stockname?stockname:'Stock Type'} 
                 </button>
 
                 <ul class="dropdown-menu bg-seashell shadow-sm border-0">
                   {
                     menu.map((e, i) => (
-                      <li className={`dropdown-item text-${i === menuindex ? "light" : "dark"} fw-bold bg-${i === menuindex ? "charcoal" : "seashell"}`} onClick={(a) => setmenuindex(i)} > {e} </li>
+                      <li className={`dropdown-item text-${i === menuindex ? "light" : "dark"} fw-bold bg-${i === menuindex ? "charcoal" : "seashell"}`} onClick={(a) => {setmenuindex(i);setstockname(e)}} > {e} </li>
                     )
                     )
                   }
@@ -8003,7 +8004,7 @@ function TransferOut(props){
     }
   }
 
-  function GETTransferOutList(Data) {
+  async function GETTransferOutList(Data) {
     if (Data == undefined || Data.selected == undefined) {
       setLoading(true);
       try {
@@ -8040,19 +8041,18 @@ function TransferOut(props){
       }
     }
   }
-  function GETTransferOutListForExcel() {
+ async  function GETTransferOutListForExcel() {
     setLoading(true);
     try {
-      axios
-        .get( `${url}/purchase/entry?location_id=${ClinicID}&limit=${pagecount}&offset=0` )
-        .then((response) => {
+      await axios.get(`${url}/transfer/stocks/list?location_id=${ClinicID}&limit=${pagecount?pagecount:''}&offset=0` ) .then((response) => {
+        console.log(response)
           settransferoutarrExcel(response.data.data.transfer_stocks_sent);
           setLoading(false);
         })
         .catch((e) => {
           Notiflix.Notify.warning(e.message);
           setLoading(false);
-        });
+        })
     } catch (e) {
       Notiflix.Notify.warning(e.data.message);
       setLoading(false);
@@ -8119,10 +8119,11 @@ function TransferOut(props){
       Notiflix.Notify.failure(e.message);
     }
   }
+  console.log(transferoutarrExcel,todate)
   return(
     <>
     <div className="col-auto position-absolute p-0 m-0 ms-2 export_2 align-self-center text-center">
-     <ExportTransferOut transferoutarrarr={transferoutarrExcel} fromdate={reversefunction(fromdate)} todate={reversefunction(todate)} />
+     <ExportTransferOut transferoutarrarr={transferoutarrExcel} fromdate={reversefunction(fromdate ?fromdate:currentDate)} todate={reversefunction(todate?todate:fromdate?fromdate:currentDate)} />
    </div>
  <button className={`button addpurchase button-charcoal me-3 position-absolute d-${permission.purchase_entry_add == 1 ? "" : "none" }`} onClick={toggle_npef} > <img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt="displaying_image" className="img-fluid p-0 m-0" />Transfer Out </button>
      <h2 className=" ms-3 text-charcoal fw-bolder" style={{ width: "fit-content" }} > {transferoutarr!=undefined?transferoutarr.length:''} {transferoutarr!=undefined?transferoutarr.length > 1 ? "Transfers Out" : "Transfer Out":''}{" "} </h2>
@@ -8228,10 +8229,7 @@ function TransferOut(props){
  </div>
  <section className={` position-absolute start-0 top-0 end-0 mx-auto bg-seashell rounded-2 border border-1 d-${npef}`} style={{height:'70vh',width:'60vh'}} >
    {
-     <NewTransferOutForm
-       toggle_npef={toggle_npef}
-       GETTransferOutList={GETTransferOutList}
-     />
+     <NewTransferOutForm toggle_npef={toggle_npef} GETTransferOutList={GETTransferOutList} />
    }
  </section>
 </>
@@ -9170,7 +9168,7 @@ function Dumpsection(props){
     } else {
       setLoading(true);
       try {
-        axios.get(`${url}/purchase/entry?location_id=${ClinicID}&limit=25&offset=${Data.selected * 25 }` )
+        axios.get(`${url}/dump/stocks/list?location_id=${ClinicID}&limit=25&offset=${Data.selected * 25 }` )
           .then((response) => {
             setpagecount(response.data.data.total_count);
             setdumpsarr(response.data.data.dump_stocks);
@@ -9189,7 +9187,7 @@ function Dumpsection(props){
   function GETDumpListForExcel() {
     setLoading(true);
     try {
-      axios.get(`${url}/transfer/stocks/list?location_id=${ClinicID}&limit=${pagecount}&offset=0` )
+      axios.get(`${url}/dump/stocks/list?location_id=${ClinicID}&limit=${pagecount}&offset=0` )
         .then((response) => {
           setdumpsarrExcel(response.data.data.dump_stocks);
           setLoading(false);
@@ -9295,8 +9293,14 @@ function Dumpsection(props){
     <ExportPurchaseEntry dumpsarr={dumpsarrExcel} fromdate={reversefunction(fromdate)} todate={reversefunction(todate)} />
     </div>
    </div>
- {/* <button className={`button addpurchase button-charcoal me-3 position-absolute d-${permission.purchase_entry_add == 1 ? "" : "none" }`} onClick={toggle_npef} > <img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt="displaying_image" className="img-fluid p-0 m-0" />Transfer In </button> */}
-     <h2 className=" ms-3 text-charcoal fw-bolder" style={{ width: "fit-content" }} > {dumpsarr!=undefined?dumpsarr.length:""} {dumpsarr!=undefined?dumpsarr.length > 1 ? "Dumps" : "Dump":""}{" "} </h2>
+   <div className="row p-0 m-0 justify-content-between">
+    <div className="col-auto">
+    <h2 className=" ms-3 text-charcoal fw-bolder" style={{ width: "fit-content" }} > {dumpsarr!=undefined?dumpsarr.length:""} {dumpsarr!=undefined?dumpsarr.length > 1 ? "Dumps" : "Dump":""}{" "} </h2>
+    </div>
+    <div className="col-auto me-3">
+    <button className={`button addpurchase button-charcoal  d-${permission.purchase_entry_add == 1 ? "" : "none" }`} onClick={toggle_npef} > <img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt="displaying_image" className="img-fluid p-0 m-0" />Dump </button>
+    </div>
+   </div>
  <div>
    <div className="scroll scroll-y overflow-scroll p-0 m-0 mt-2" style={{ minHeight: "56vh", height: "56vh" }} >
    <table className="table">
@@ -9336,7 +9340,7 @@ function Dumpsection(props){
            {
            dumpsarr.map((item, i) => (
              <tr key={i} className={`bg-${i % 2 == 0 ? "seashell" : "pearl" } align-middle`} >
-               <td className="py-0 my-0 text-charcoal fw-bold ps-2"> TI-{item.id} </td>
+               <td className="py-0 my-0 text-charcoal fw-bold ps-2"> D-{item.id} </td>
                <td className="text-charcoal fw-bold"> {item.channel && item.channel == 1 ? "Pharmacy" : "Clinic"} </td>
                <td className="text-charcoal fw-bold"> {item.from_location.title ? item.from_location.title : "N/A"} </td>
                <td className="text-charcoal fw-bold"> {item.to_location.title ? item.to_location.title : "N/A"} </td>
@@ -9377,7 +9381,7 @@ function Dumpsection(props){
          <tbody className="text-center position-relative p-0 m-0 " style={{ minHeight: "55vh" }} >
            <tr className="">
              <td className="fw-bolder text-charcoal text-center position-absolute border-0 start-0 end-0 mx-3 p-2 border-0">
-               No Transfers In
+               No Dumps
              </td>
            </tr>
          </tbody>
@@ -9408,13 +9412,13 @@ function Dumpsection(props){
  </div>
  <section className={`newpurchaseentrysection position-absolute start-0 end-0 bg-seashell border border-1 d-${npef}`} >
    {
-     <NewTransferInForm
-       toggle_npef={toggle_npef}
-       GETDumpList={GETDumpList}
-     />
+     <NewDumpForm toggle_npef={toggle_npef} GETDumpList={GETDumpList} />
    }
  </section>
 </>
   )
 }
 export {Dumpsection}
+function NewDumpForm(){
+
+}

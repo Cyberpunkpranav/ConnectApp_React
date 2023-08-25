@@ -512,7 +512,7 @@ function DoctorSchedule(props) {
                           <tr className='align-middle'>
                             <td className={`py-0 bg-${tableindex === i ? 'lightyellow' : ''}  text-center`}>
                               <button className="btn m-0 p-0" key={i} onClick={(e) => { openapppointmentform(); settableindex(i); setappointmentid(data.id) }}>
-                                <img src={process.env.PUBLIC_URL + "/images/confirmed.png"} alt="displaying_image" className="img-fluid" style={{ width: "1rem" }} key={i} />
+                                <img src={process.env.PUBLIC_URL + "/images/confirmed.png"} alt="displaying_image" className="img-fluid" key={i} />
                               </button>
                             </td>
                             <td className="py-0 text-start fw-bold" style={{ letterSpacing: '1px' }}>{tConvert(data.timeslot.time_from)}</td>
@@ -584,7 +584,7 @@ function DoctorSchedule(props) {
                             <td className="text-center">
                               <div className="dropdown d-inline-block ">
                                 <button className="button p-0 m-0 bg-transparent border-0 fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                  <img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" style={{ width: "1rem" }} />
+                                  <img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" className="img-fluid" />
                                 </button>
                                 <ul className="dropdown-menu shadow-sm p-2 scroll" style={{ '-webkit-appearance': 'none', 'appearance': 'none', width: 'max-content', height: '40vh' }}>
                                   <li className="dropdown-item d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => confirmmessage(data.patient.full_name, data.id)}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/speaker.png"} alt="displaying_image"/> Call Patient</li>

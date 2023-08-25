@@ -58,7 +58,28 @@ const AddAddress = (props) => {
     // }, [data]);
     useEffect(()=>{
         setplace(data && data.label != undefined ? data.label : '')
+        setplaceid(data && data.value !=undefined && data.value.place_id !=undefined ?data.value.place_id:'')
+        GetPostal_code()
     },[data])
+
+    const GetPostal_code = async()=>{
+        setpincode('')
+        await axios.get(`https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeid}&key=AIzaSyC4wk5k8E6jKkpJClZlXZ8oavuPyi0AMVE`).then((response)=>{
+                if(response){
+                    let data = response.data.result !=undefined ? response.data.result.address_components:[]
+                for(let i=0;i<data.length;i++){
+                        if(data[i].types.includes('postal_code')){
+                            setpincode(data[i].short_name?data[i].short_name:'')
+                        }
+                }
+            }
+
+        })
+                                       }
+       useEffect(()=>{
+        GetPostal_code()
+       },[placeid])
+       
     const Add_Address = async () => {
         await axios.post(`${url}/add/patient/address`, {
             patient_id: props.patientid,
@@ -155,10 +176,10 @@ const AddAddress = (props) => {
         fill_data()
     }, [])
     return (
-        <div className='text-center'>
+        <div className='text-center px-2 py-1'>
             <div className="text-start">
                 <h5 className='fw-bold text-charcoal py-2 ms-2'>{props.data != undefined ? 'Update Address' : 'Add New Address'}</h5>
-                <div className="btn-close position-absolute end-0 top-0" onClick={props.Toggle_Address}></div>
+                <div className="btn-close position-absolute end-0 top-0 mt-2 me-2" onClick={props.Toggle_Address}></div>
                 <div className="col-auto mx-2 pb-2 m-auto">
                     <label htmlFor="inputAddress" className=" fw-bold text-charcoal75 ">Add Address</label>
                     <input type="text" className="form-control " id="inputAddress" value={address ? address : ''} placeholder="Address" onChange={(e) => { setaddress(e.target.value) }} required />

@@ -29,7 +29,7 @@ const AddPatient = (props) => {
     const [linkid, setlinkid] = useState()
     const [lat, setlat] = useState()
     const [lng, setlng] = useState()
-    const [placeid, setplaceid] = useState()
+    const [placeid, setplaceid] = useState('')
     const [mainaccount, setmainaccount] = useState([])
     const [display, setdisplay] = useState("none")
     const [accountinput, setaccountinput] = useState()
@@ -168,8 +168,29 @@ const AddPatient = (props) => {
     //     setplace(data.label)
     // }, [data])
     useEffect(()=>{
-        setplace(data.label)
+        setplace(data && data.label != undefined ? data.label : '')
+        setplaceid(data && data.value !=undefined && data.value.place_id !=undefined ?data.value.place_id:'')
+        GetPostal_code()
     },[data])
+
+       const GetPostal_code = async()=>{
+        setpincode('')
+        await axios.get(`https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeid}&key=AIzaSyC4wk5k8E6jKkpJClZlXZ8oavuPyi0AMVE`).then((response)=>{
+                if(response){
+                    let data = response.data.result !=undefined ? response.data.result.address_components:[]
+                for(let i=0;i<data.length;i++){
+                        if(data[i].types.includes('postal_code')){
+                            setpincode(data[i].short_name?data[i].short_name:'')
+                        }
+                }
+            }
+
+        })
+       }
+       useEffect(()=>{
+        GetPostal_code()
+       },[placeid])
+
     if (place) {
         geocodeByAddress(place).then(results => getLatLng(results[0])).then(({ lat, lng }) => { setlat(lat); setlng(lng) });
     }
@@ -191,7 +212,7 @@ const AddPatient = (props) => {
             },
         );
     }
-   console.log(data,lat,lng,address)
+//    console.log(data,lat,lng,placeid,pincode)
   
     return (
         <>

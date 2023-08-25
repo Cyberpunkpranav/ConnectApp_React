@@ -12,6 +12,7 @@ import '../../css/patient.css';
 const UpdatePatient = (props) => {
     const url = useContext(URL);
     let adminid = localStorage.getItem('id')
+    const [load,setload] =useState(false)
     const [fullname, setfullname] = useState()
     const [countrycode, setcountrycode] = useState()
     const [phonenumber, setphonenumber] = useState()
@@ -26,16 +27,13 @@ const UpdatePatient = (props) => {
     const [linkid, setlinkid] = useState()
     const [lat, setlat] = useState()
     const [lng, setlng] = useState()
-
+    const [placeid,setplaceid]=useState('')
     const [mainaccount, setmainaccount] = useState([])
     const [display, setdisplay] = useState("none")
     const [accountinput, setaccountinput] = useState()
     const [displaymainaccount, setdisplaymainaccount] = useState('none')
     const ismainref = useRef()
 
-    function capitalizeFirstLetter(string) {
-        return string.charAt(0).toUpperCase() + string.slice(1);
-    }
 
     async function currentvalue() {
         setgender(props.data.gender)
@@ -47,7 +45,7 @@ const UpdatePatient = (props) => {
             setaddress('')
         }
         props.phonecountrycode ? setcountrycode(props.phonecountrycode) : setcountrycode()
-        props.PhoneNo ? setphonenumber(props.PhoneNo) : setphonenumber()
+        props.PhoneNo ? setphonenumber(props.PhoneNo.toString()) : setphonenumber()
         props.full_name ? setfullname(props.full_name) : setfullname('')
         props.dob ? setDOB(props.dob) : setDOB()
         props.pincode ? setpincode(props.pincode) : setpincode()
@@ -109,6 +107,7 @@ const UpdatePatient = (props) => {
     }
 
     async function UpdatePatient() {
+        setload(true)
         try {
             if (fullname && countrycode && phonenumber && DOB && email && address && pincode && main && adminid) {
                 await axios.post(`https://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/api/connect/update/patient`, {
@@ -132,12 +131,15 @@ const UpdatePatient = (props) => {
                     Notiflix.Notify.success(response.data.message);
                     props.getAllPatients(0)
                     props.CloseUpdatePatient()
+                    setload(false)
                 })
             } else {
                 Notiflix.Notify.warning('Please Fill all Detais');
+                setload(false)
             }
         } catch (e) {
-            alert(e)
+            Notiflix.Notify.warning(e.message)
+            setload(false)
         }
 
     }
@@ -160,47 +162,42 @@ const UpdatePatient = (props) => {
     }
 
     const [data, setData] = useState("");
-    useEffect(() => {
+    useEffect(()=>{
+        setplace(data && data.label != undefined ? data.label : '')
+        setplaceid(data && data.value !=undefined && data.value.place_id !=undefined ?data.value.place_id:'')
+        GetPostal_code()
+    },[data])
 
-        if (data.value !== undefined && data.value.place_id !== undefined) {
-            setpincode()
-            // initialize the map
-            const map = new window.google.maps.Map({
-                center: { lat: lat, lng: lng },
-                zoom: 14
-            });
-            // initialize the PlacesService object with your API key and map
-            const placesService = new window.google.maps.places.PlacesService(map);
-
-            // send a getDetails request for the place using its Place ID
-            placesService.getDetails({
-                placeId: data.value.place_id
-            }, (placeResult, status) => {
-                if (status === 'OK') {
-                    // find the address component with type "postal_code"
-                    const postalCodeComponent = placeResult.address_components.find(component => {
-                        return component.types.includes('postal_code');
-                    });
-
-                    if (postalCodeComponent) {
-                        const postalCode = postalCodeComponent.short_name;
-                        setpincode(postalCode);
-                    } else {
-                        Notiflix.Notify.warning('Postal code not found for this place.');
-                    }
-                } else {
-                    Notiflix.Notify.failure(`Failed to get place details: ${status}`);
+       const GetPostal_code = async()=>{
+        await axios.get(`https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeid}&key=AIzaSyC4wk5k8E6jKkpJClZlXZ8oavuPyi0AMVE`).then((response)=>{
+                if(response){
+                    let data = response.data.result !=undefined ? response.data.result.address_components:[]
+                for(let i=0;i<data.length;i++){
+                        if(data[i].types.includes('postal_code')){
+                            setpincode(data[i].short_name?data[i].short_name:'')
+                        }
                 }
-            });
-        }
+            }
 
-        data === "" ? setData("") : setData(data);
-        setplace(data.label)
-    }, [data]);
+        })
+       }
+       useEffect(()=>{
+        GetPostal_code()
+       },[placeid])
 
     if (place) {
         geocodeByAddress(place).then(results => getLatLng(results[0])).then(({ lat, lng }) => { setlat(lat); setlng(lng) });
     }
+    const ValidatePhone_Number = ()=>{
+        if (phonenumber !=undefined){
+        let number = phonenumber.toString().replace('91','')
+        setphonenumber(number)
+        }
+    }
+    useEffect(()=>{
+        ValidatePhone_Number()
+    },[phonenumber])
+    console.log(phonenumber)
     return (
         <>
             <h5 className="text-center mt-3 position-relative">Update Patient Details </h5>
@@ -470,8 +467,6 @@ const UpdatePatient = (props) => {
                 </div>
                 <div className="row p-0 m-0 py-2 align-items-end">
                     <div className="col-5 m-auto">
-                        <label htmlFor="" className='text-wrap mb-2'>Current Location:<span className='text-charcoal75'>{props.location}</span></label>
-                        <br />
                         <label htmlFor="inputAddress" className="">Select Location</label>
                         <GooglePlacesAutocomplete
                             apiKey='AIzaSyC4wk5k8E6jKkpJClZlXZ8oavuPyi0AMVE'
@@ -534,7 +529,18 @@ const UpdatePatient = (props) => {
                 </div>
                 <div className="row p-0 m-0 py-5">
                     <div className="col-6 text-center">
-                        <button className="btn button-charcoal" onClick={confirmmessage} > Save Changes </button>
+                        {
+                            load ?(
+                                <div className="col-6 py-2 pb-2 m-auto text-center">
+                                <div class="spinner-border" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+                            ):(
+                                <button className="btn button-charcoal" onClick={confirmmessage} > Save Changes </button>
+                            )
+                        }
+     
                     </div>
                     <div className="col-6 text-center">
                         <button className="btn button-pearl " onClick={currentvalue}>Set Previous</button>
