@@ -159,6 +159,9 @@ label {
 .patientsection .dropdown-toggle::after {
     content: none;
 }
+.addbutton .dropdown-toggle::after {
+    content: none;
+}
 
 input[type='date'] {
     -webkit-appearance: none;

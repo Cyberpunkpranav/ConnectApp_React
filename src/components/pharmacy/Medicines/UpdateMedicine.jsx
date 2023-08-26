@@ -1,11 +1,11 @@
 import axios from 'axios'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import Notiflix from 'notiflix'
-import { URL } from '../../index'
-import { customconfirm } from '../features/notiflix/customconfirm'
+import { URL } from '../../../index'
+import { customconfirm } from '../../features/notiflix/customconfirm'
 
 
-const NewMedicine = (props) => {
+const UpdateMedicine = (props) => {
   const url = useContext(URL)
   const [displayname, setdisplayname] = useState()
   const [name, setname] = useState()
@@ -22,54 +22,85 @@ const NewMedicine = (props) => {
   const [maxsc, setmaxsc] = useState()
   const [minsc, setminsc] = useState()
   const [altsc, setaltsc] = useState()
-  const [img, setimg] = useState()
+  const [img, setimg] = useState('')
+  const data = props.data
+  const FillDetails = async () => {
+    setdisplayname(data.display_name)
+    setname(data.name)
+    setsaltname(data.salt_name)
+    setmanufacturer(data.manufacturer)
+    setstrength(data.strength)
+    setunit(data.medicine_unit)
+    setpack(data.packaging)
+    setpacktype(data.packaging_type_id)
+    setmfid(data.medicine_form_id)
+    setschedule(data.schedule)
+    sethsn(data.hsn_code)
+    setrack(data.rack_number)
+    setmaxsc(data.max_stock_count)
+    setminsc(data.min_stock_count)
+    setaltsc(data.alert_stock_count)
+    setimg(data.image)
 
-  const SaveMedicine = async () => {
-    const data = {
+  }
+  useEffect(() => {
+    FillDetails()
+  }, [])
+  const handleimage = async (e) => {
+    if (e.target.files.length !== 0) {
+      setimg(e.target.files)
+    }
+
+  }
+  const UpdateMedicine = async () => {
+    const Data = {
+      medicine_id: data.id,
       display_name: displayname,
       name: name,
       salt_name: saltname,
       manufacturer: manufacturer,
       strength: strength,
-      medicine_unit: unit,
+      medicine_unit: Number(unit),
       packaging: pack,
-      packaging_type_id: packtype,
-      medicine_form_id: mfid,
+      packaging_type_id: Number(packtype),
+      medicine_form_id: Number(mfid),
       schedule: schedule,
       hsn_code: hsn,
       rack_number: rack,
-      max_stock_count: maxsc,
-      min_stock_count: minsc,
-      alert_stock_count: altsc,
-      image: img
+      max_stock_count: Number(maxsc),
+      min_stock_count: Number(minsc),
+      alert_stock_count: Number(altsc),
+      image: img ? {
+        name: img[0].name,
+        size: img[0].size,
+        type: img[0].type,
+        webkitRelativePath: img[0].webkitRelativePath,
+        lastModifiedDate: img[0].lastModifiedDate,
+        lastModified: img[0].lastModified
+
+      } : ''
     }
-    if (displayname && name && saltname && manufacturer && strength && unit && pack && packtype && mfid && schedule && hsn && rack && maxsc && minsc && altsc && img) {
-      try {
-        await axios.post(`${url}/medicine/add`, data).then((response) => {
-          props.ToggleNewMedicine()
-          ClearFields()
-          if (response.data.status == true) {
-            Notiflix.Notify.success(response.data.message)
-          } else {
-            Notiflix.Notify.warning(response.data.message)
-          }
-        })
-      } catch (e) {
-        Notiflix.Notify.failure(e.message)
-      }
-    } else {
-      Notiflix.Notify.warning('Please Fill all Details')
+
+    try {
+      await axios.post(`${url}/medicine/update`, Data).then((response) => {
+        
+        Notiflix.Notify.success(response.data.message)
+        props.medcinelist()
+      })
+    } catch (e) {
+      Notiflix.Notify.failure(e.message)
     }
+
   }
   function confirmmessage() {
     customconfirm()
     Notiflix.Confirm.show(
       `Save Purchase Entry`,
-      `Do you surely want to add ${displayname} as New Medicine `,
+      `Do you surely want to Update ${data.display_name} Details`,
       'Yes',
       'No',
       () => {
-        SaveMedicine()
+        UpdateMedicine()
       },
       () => {
         return 0
@@ -78,28 +109,12 @@ const NewMedicine = (props) => {
       },
     )
   }
-  const ClearFields = async () => {
-    setdisplayname()
-    setname()
-    setsaltname()
-    setmanufacturer()
-    setstrength()
-    setunit()
-    setpack()
-    setpacktype()
-    setmfid()
-    setschedule()
-    sethsn()
-    setrack()
-    setmaxsc()
-    setminsc()
-    setaltsc()
-    setimg()
-  }
+
+
   return (
     <div className='position-relative bg-seashell p-0 m-0 fw-bold'>
-      <h5 className='p-0 m-0 text-center py-2 border-bottom'>Add New Medicine</h5>
-      <button className='btn btn-close position-absolute end-0 top-0 mt-1 me-1' onClick={props.ToggleNewMedicine}></button>
+      <h5 className='p-0 m-0 text-center py-2 border-bottom'>Update Medicine</h5>
+      <button className='btn btn-close position-absolute end-0 top-0 mt-1 me-1' onClick={props.ToggleUpdateMedicine}></button>
       <div className='scroll scroll-y' style={{ height: '78vh' }}>
         <div className="row p-0 m-0">
           <div className="row p-0 m-0 justify-content-end">
@@ -207,15 +222,15 @@ const NewMedicine = (props) => {
             </div>
           </div>
         </div>
-        <div className="row p-0 m-0 justify-content-center mt-3">
+        {/* <div className="row p-0 m-0 justify-content-center mt-3">
           <p className='text-charcoal fw-bold p-0 m-0 py-2 text-center'>Choose Medicine Photo</p>
           <div className="col-4 ms-5">
-            <input type='file' className='form-control bg-seashell p-0 m-0 px-2 py-1' value={img ? img : ''} onChange={(e) => { setimg(e.target.value) }} />
+            <input type='file' className='form-control bg-seashell p-0 m-0 px-2 py-1' onChange={(e) => { handleimage(e) }} />
           </div>
-        </div>
+        </div> */}
         <div className="row p-0 m-0 justify-content-end mt-3 mb-3">
           <p className='text-charcoal fw-bold p-0 m-0 py-2 text-center'>HSN Code and Count</p>
-          <div className="col-12">
+          <div className="col-3">
             <p className='p-0 m-0'>HSN Code</p>
             <input className='form-control bg-seashell p-0 m-0 px-2 py-1' value={hsn ? hsn : ''} onChange={(e) => { sethsn(e.target.value) }} />
           </div>
@@ -237,14 +252,14 @@ const NewMedicine = (props) => {
           </div>
         </div>
       </div>
-      <div className='bg-pearl border p-3 align-items-center '>
+      <div className='bg-pearl border p-2 align-items-center '>
         <div className="row p-0 m-0 text-center justify-content-between align-items-center align-self-center">
 
           <div className="col-6">
-            <button className='button button-charcoal ' onClick={confirmmessage}>Save</button>
+            <button className='button button-charcoal ' onClick={confirmmessage}>Update</button>
           </div>
           <div className="col-6">
-            <button className='button button-seashell' onClick={ClearFields}>Cancel</button>
+            <button className='button button-seashell' onClick={FillDetails}>Set Previous</button>
 
 
           </div>
@@ -253,5 +268,4 @@ const NewMedicine = (props) => {
     </div>
   )
 }
-
-export { NewMedicine }
+export { UpdateMedicine }

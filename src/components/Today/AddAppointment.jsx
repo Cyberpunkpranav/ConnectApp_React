@@ -222,20 +222,21 @@ const AddAppointment = (props) => {
             }
             <hr />
             <div className="col-12">
+                <div className="col-auto position-relative">
                 <label className="m-0 mb-2">Search Using Phone or Name</label>
-                <input type="text" className="form-control selectpatient col-10 position-relative" value={searchinput ? searchinput : ''} onChange={searchpatient} />
-                <div className={`col-8 d-${displaysearchlist} searchinput`}>
+                <input type="text" className="form-control bg-seashell selectpatient col-10 position-relative fw-bold" placeholder='Search Patient here' value={searchinput ? searchinput : ''} onChange={searchpatient} />
+                <div className={`col-11 position-absolute shadow-sm d-${displaysearchlist} searchinput`} style={{zIndex:'10'}}>
                     {
                         searchload ? (
-                            <p className="btn text-charcoal75 fw-bold bg-pearl rounded-2  p-0 m-0 ps-1">Loading... </p>
+                            <p className="bg-seashell text-charcoal75 fw-bold bg-pearl rounded-2 py-2 p-0 m-0 ps-1">Loading... </p>
                         ) : (
                             searchinput && searchlist.length == 0 ? (
                                 <p className="text-danger btn bg-lightred p-0 m-0">Patient not found add as new user to book appointements</p>
                             ) : (
-                                <div className="p-2 bg-pearl">
+                                <div className="p-2 bg-pearl rounded-2">
                                     {
                                         searchlist.map((data) => (
-                                            <div style={{ cursor: 'pointer' }} className='col-12 d-block p-0 m-0 ms-1 border-0 bg-pearl py-1 border-bottom text-charcoal text-start border border-1' onClick={(e) => get_value(data.full_name, data.id)}>{data.full_name}  {data.phone_number}</div>
+                                            <div style={{ cursor: 'pointer' }} className='col-12 d-block p-0 m-0 ms-1 border-0 bg-pearl py-1 border-bottom text-charcoal text-start border border-1' onClick={(e) => get_value(data.full_name, data.id)}>{data.full_name} <span className='fw-bold text-burntumber'>{data.phone_number}</span> </div>
                                         ))
                                     }
                                 </div>
@@ -244,6 +245,7 @@ const AddAppointment = (props) => {
                         )
 
                     }
+                </div>
                 </div>
                 <hr />
                 <label>Select Location</label>
@@ -295,7 +297,7 @@ const AddAppointment = (props) => {
                                 ))
                             }
                             <button className="btn btn-sm done m-1">
-                                <img src="/images/addicon.png" alt="displaying_image" className="mb-1 me-1" style={{ width: "1.2rem" }} /> Time Slot
+                                <img src="/images/addicon.png" alt="displaying_image" className="mb-1 me-1 img-fluid" /> Time Slot
                             </button>
 
                         </>
@@ -319,7 +321,7 @@ const AddAppointment = (props) => {
                                 <button className="btn button button-charcoal px-5" onClick={confirmmessage}> Done </button>
                             </div>
                             <div className="col-6 pb-2 m-auto text-center">
-                                <button className="btn btn-light px-5" onClick={resetform}>Reset</button>
+                                <button className="button button-pearl px-5" onClick={resetform}>Reset</button>
                             </div>
                         </>
                     )

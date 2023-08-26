@@ -66,8 +66,24 @@ const StockReport_By_Name = () => {
             try {
                 axios.get(`${url}/reports/stock/report/by/item?item_id=${itemid ? itemid : ''}&item_type=${itemtype ? itemtype : ''}&from=${fromdate ? fromdate : currentDate}&to=${todate ? todate : fromdate ? fromdate : currentDate}`)
                     .then((response) => {
-                        ;
-                        setstockreportarr(response.data.data.medicine);
+                        console.log(response)
+                        let medicines = []
+                        let vaccines = []
+                        let dataarr = []
+                        const medicinearr = Object.keys(response.data.data.medicine).map(key => ({
+                            medicine_id: key,
+                            ...response.data.data.medicine[key]
+                        }));
+                        medicines.push(medicinearr)
+                        const vaccinearr = Object.keys(response.data.data.vaccine).map(key => ({
+                            vaccine_id: key,
+                            ...response.data.data.vaccine[key]
+                        }));
+                        vaccines.push(vaccinearr)
+                        dataarr.push(medicines)
+                        dataarr.push(vaccines)
+                        dataarr = dataarr.flat()
+                        setstockreportarr(dataarr.flat());
                         setLoading(false);
                     })
                     .catch((e) => {
@@ -83,8 +99,25 @@ const StockReport_By_Name = () => {
             try {
                 axios.get(`${url}/reports/stock/report/by/item?item_id=${itemid}&item_type=${itemtype}&from=${fromdate ? fromdate : currentDate}&to=${todate ? todate : fromdate ? fromdate : currentDate}`)
                     .then((response) => {
-                        ;
-                        setstockreportarr(response.data.data.sale_entry);
+                        console.log(response)
+                        let medicines = []
+                        let vaccines = []
+                        let dataarr = []
+                        const medicinearr = Object.keys(response.data.data.medicine).map(key => ({
+                            medicine_id: key,
+                            ...response.data.data.medicine[key]
+                        }));
+                        medicines.push(medicinearr)
+                        const vaccinearr = Object.keys(response.data.data.vaccine).map(key => ({
+                            vaccine_id: key,
+                            ...response.data.data.vaccine[key]
+                        }));
+                        vaccines.push(vaccinearr)
+                        dataarr.push(medicines)
+                        dataarr.push(vaccines)
+                        dataarr = dataarr.flat()
+                        setstockreportarr(dataarr.flat());
+                        // setstockreportarr(response.data.data.sale_entry);
                         setLoading(false);
                     })
                     .catch((e) => {
@@ -140,7 +173,7 @@ const StockReport_By_Name = () => {
         id: key,
         ...stockreportarr[key]
     }));
-    console.log(itemid)
+    console.log(stockreportarr,itemid)
     return (
         <>
                     <h2 className=" ms-3 text-charcoal fw-bolder mt-4" style={{ width: "fit-content" }}> {pagecount} {pagecount > 1 ? ` Stock Reports By Name` : ` Stock Report By Name`}{" "}  </h2>
@@ -188,7 +221,7 @@ const StockReport_By_Name = () => {
             </div>
                     </div>
                 </div>
-                <div className="col-auto    export align-self-center text-center ">
+                <div className="col-auto export align-self-center text-center ">
                     <DownloadTableExcel
                         filename={`${reversefunction(fromdate) + ' to ' + reversefunction(todate)} StockReports_by_Name`}
                         sheet="StockReports_by_Name"

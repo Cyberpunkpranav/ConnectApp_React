@@ -143,7 +143,7 @@ const AddDoctorSlot = (props) => {
               <button type="button" className="button button-charcoal px-5" onClick={confirmmessage} > Done </button>
             </div>
             <div className="col-6 pb-2 m-auto text-center">
-              <button className="btn btn-light px-5" onClick={resetform}>Reset</button>
+              <button className="button button-pearl px-5" onClick={resetform}>Reset</button>
             </div>
           </>
         )

@@ -10,10 +10,11 @@ import { customconfirm } from "../features/notiflix/customconfirm";
 import "../../css/bootstrap.css";
 import "../../css/dashboard.css";
 import "../../css/pharmacy.css";
-import { Purchaseorderarray, Pharmacystocktable, POitemdetailsarray, } from "./apiarrays";
 import { AddAddress } from '../Patients/AddAddress';
-import { NewMedicine } from "./NewMedicine";
-import { UpdateMedicine } from "./UpdateMedicine";
+import { NewMedicine } from "./Medicines/NewMedicine";
+import { UpdateMedicine } from "./Medicines/UpdateMedicine";
+import {UpdateVaccine} from './Vaccines/UpdateVaccine'
+import {NewVaccine} from './Vaccines/NewVaccine'
 
 //-------------------------------------------------Sales------------------------------------------------------------------------------------------
 function Salesection(props) {
@@ -5115,180 +5116,180 @@ function Newpurchaseentryform(props) {
     </div>
   );
 }
-function Purchaseordersection() {
-  let cartselect = ["Pharmacy", "Clinic"];
-  const [cartselectindex, setcartselectindex] = useState(0);
-  const [displayviewcart, setdisplayviewcart] = useState("none");
-  const [displayitemdetails, setdisplayitemdetails] = useState("none");
-  const _displayviewcart = () => {
-    if (displayviewcart === "none") {
-      setdisplayviewcart("block");
-    }
-    if (displayviewcart === "block") {
-      setdisplayviewcart("none");
-    }
-  };
-  const _displayitemdetails = () => {
-    if (displayitemdetails === "none") {
-      setdisplayitemdetails("block");
-    }
-    if (displayitemdetails === "block") {
-      setdisplayitemdetails("none");
-    }
-  };
-  const _selectedcart = (cardindex) => {
-    if (cardindex === 0) {
-      return (
-        <table className="table datatable text-center">
-          <thead>
-            <tr>
-              <th>No.</th>
-              <th>Item Name</th>
-              <th>Total Qty</th>
-              <th>Amount</th>
-              <th>Last Vendor</th>
-              <th>Add</th>
-              <th>Delete</th>
-            </tr>
-          </thead>
-          <tbody>{<Pharmacystocktable />}</tbody>
-        </table>
-      );
-    }
-    if (cardindex === 1) {
-      return <div className="">{cardindex}</div>;
-    }
-    return <div className="fs-2">Nothing Selected</div>;
-  };
-  return (
-    <>
-      <button
-        className="button viewcart button-charcoal position-absolute"
-        onClick={_displayviewcart}
-      >
-        <img
-          src={process.env.PUBLIC_URL + "/images/cartwhite.png"}
-          alt="displaying_image"
-          className="img-fluid"
-        />
-        View Cart
-      </button>
-      <div
-        className={`container-fluid pt-2  p-0 m-0 cartform d-${displayviewcart} w-50 border1 rounded bg-seashell position-absolute text-center`}
-      >
-        <div className="container-fluid  w-100 shadow-sm">
-          <h5 className="text-dark fw-bold">Items in Cart</h5>
-        </div>
-        <button
-          type="button"
-          className="btn-close closebtn position-absolute"
-          aria-label="Close"
-          onClick={_displayviewcart}
-        ></button>
-        <div className="pt-1">
-          <div className="row g-0 justify-content-center">
-            {cartselect.map((e, i) => {
-              return (
-                <button
-                  className={`col-2 p-0 m-0 button text-${i === cartselectindex ? "light" : "dark"
-                    } bg-${i === cartselectindex ? "charcoal" : "seashell"
-                    } rounded-0`}
-                  onClick={(a) => setcartselectindex(i)}
-                >
-                  {e}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-        <div className="scroll scroll-y">{_selectedcart(cartselectindex)}</div>
-        <div className="bg-pearl rounded">
-          <div className="row p-3 justify-content-between">
-            <div className="col-3">
-              <select
-                className="form-control bg-pearl"
-                style={{ color: "gray" }}
-              >
-                <option
-                  selected
-                  disabled
-                  defaultValue="Select Vendor"
-                  className="Selectvendor"
-                  style={{ color: "gray" }}
-                >
-                  Select Vendor
-                </option>
-              </select>
-            </div>
-            <div className="col-3">
-              <button className="button button-charcoal">Create New PO</button>
-            </div>
-          </div>
-        </div>
-      </div>
+// function Purchaseordersection() {
+//   let cartselect = ["Pharmacy", "Clinic"];
+//   const [cartselectindex, setcartselectindex] = useState(0);
+//   const [displayviewcart, setdisplayviewcart] = useState("none");
+//   const [displayitemdetails, setdisplayitemdetails] = useState("none");
+//   const _displayviewcart = () => {
+//     if (displayviewcart === "none") {
+//       setdisplayviewcart("block");
+//     }
+//     if (displayviewcart === "block") {
+//       setdisplayviewcart("none");
+//     }
+//   };
+//   const _displayitemdetails = () => {
+//     if (displayitemdetails === "none") {
+//       setdisplayitemdetails("block");
+//     }
+//     if (displayitemdetails === "block") {
+//       setdisplayitemdetails("none");
+//     }
+//   };
+//   const _selectedcart = (cardindex) => {
+//     if (cardindex === 0) {
+//       return (
+//         <table className="table datatable text-center">
+//           <thead>
+//             <tr>
+//               <th>No.</th>
+//               <th>Item Name</th>
+//               <th>Total Qty</th>
+//               <th>Amount</th>
+//               <th>Last Vendor</th>
+//               <th>Add</th>
+//               <th>Delete</th>
+//             </tr>
+//           </thead>
+//           <tbody>{<Pharmacystocktable />}</tbody>
+//         </table>
+//       );
+//     }
+//     if (cardindex === 1) {
+//       return <div className="">{cardindex}</div>;
+//     }
+//     return <div className="fs-2">Nothing Selected</div>;
+//   };
+//   return (
+//     <>
+//       <button
+//         className="button viewcart button-charcoal position-absolute"
+//         onClick={_displayviewcart}
+//       >
+//         <img
+//           src={process.env.PUBLIC_URL + "/images/cartwhite.png"}
+//           alt="displaying_image"
+//           className="img-fluid"
+//         />
+//         View Cart
+//       </button>
+//       <div
+//         className={`container-fluid pt-2  p-0 m-0 cartform d-${displayviewcart} w-50 border1 rounded bg-seashell position-absolute text-center`}
+//       >
+//         <div className="container-fluid  w-100 shadow-sm">
+//           <h5 className="text-dark fw-bold">Items in Cart</h5>
+//         </div>
+//         <button
+//           type="button"
+//           className="btn-close closebtn position-absolute"
+//           aria-label="Close"
+//           onClick={_displayviewcart}
+//         ></button>
+//         <div className="pt-1">
+//           <div className="row g-0 justify-content-center">
+//             {cartselect.map((e, i) => {
+//               return (
+//                 <button
+//                   className={`col-2 p-0 m-0 button text-${i === cartselectindex ? "light" : "dark"
+//                     } bg-${i === cartselectindex ? "charcoal" : "seashell"
+//                     } rounded-0`}
+//                   onClick={(a) => setcartselectindex(i)}
+//                 >
+//                   {e}
+//                 </button>
+//               );
+//             })}
+//           </div>
+//         </div>
+//         <div className="scroll scroll-y">{_selectedcart(cartselectindex)}</div>
+//         <div className="bg-pearl rounded">
+//           <div className="row p-3 justify-content-between">
+//             <div className="col-3">
+//               <select
+//                 className="form-control bg-pearl"
+//                 style={{ color: "gray" }}
+//               >
+//                 <option
+//                   selected
+//                   disabled
+//                   defaultValue="Select Vendor"
+//                   className="Selectvendor"
+//                   style={{ color: "gray" }}
+//                 >
+//                   Select Vendor
+//                 </option>
+//               </select>
+//             </div>
+//             <div className="col-3">
+//               <button className="button button-charcoal">Create New PO</button>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
 
-      <div
-        className={`container-fluid pt-2  p-0 m-0 itemdetailsform d-${displayitemdetails} w-50 border1 rounded bg-seashell position-absolute text-center`}
-      >
-        <div className="container-fluid  w-100 shadow-sm">
-          <h5 className="text-dark fw-bold">PO-14 Item Details</h5>
-        </div>
-        <button
-          type="button"
-          className="btn-close closebtn position-absolute"
-          aria-label="Close"
-          onClick={_displayitemdetails}
-        ></button>
-        <div className="scroll scroll-y">{<POitemdetailsarray />}</div>
-        <button
-          type="button"
-          className="btn btn-lg text-center button-charcoal m-2"
-          onClick={_displayitemdetails}
-        >
-          Done
-        </button>
-      </div>
-      <h3 className="ps-3">Purchase Order List</h3>
-      <table className="table datatable text-center">
-        <thead>
-          <tr>
-            <th>PO ID</th>
-            <th>Channel</th>
-            <th>Vendor</th>
-            <th>PO Date</th>
-            <th>Created By</th>
-            <th>Total Items</th>
-            <th>Amount</th>
-            <th>Approval Status</th>
-            <th></th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {<Purchaseorderarray itemdetails={_displayitemdetails} />}
-        </tbody>
-      </table>
-    </>
-  );
-}
-function POitemdetailssection() {
-  return (
-    <table className="table datatable text-center">
-      <thead>
-        <tr>
-          <th>No.</th>
-          <th>Item Name</th>
-          <th>Total Qty</th>
-          <th>Amount</th>
-          <th>Last Vendor</th>
-          <th>Add</th>
-          <th>Delete</th>
-        </tr>
-      </thead>
-      <tbody>{<POitemdetailsarray />}</tbody>
-    </table>
-  );
-}
+//       <div
+//         className={`container-fluid pt-2  p-0 m-0 itemdetailsform d-${displayitemdetails} w-50 border1 rounded bg-seashell position-absolute text-center`}
+//       >
+//         <div className="container-fluid  w-100 shadow-sm">
+//           <h5 className="text-dark fw-bold">PO-14 Item Details</h5>
+//         </div>
+//         <button
+//           type="button"
+//           className="btn-close closebtn position-absolute"
+//           aria-label="Close"
+//           onClick={_displayitemdetails}
+//         ></button>
+//         <div className="scroll scroll-y">{<POitemdetailsarray />}</div>
+//         <button
+//           type="button"
+//           className="btn btn-lg text-center button-charcoal m-2"
+//           onClick={_displayitemdetails}
+//         >
+//           Done
+//         </button>
+//       </div>
+//       <h3 className="ps-3">Purchase Order List</h3>
+//       <table className="table datatable text-center">
+//         <thead>
+//           <tr>
+//             <th>PO ID</th>
+//             <th>Channel</th>
+//             <th>Vendor</th>
+//             <th>PO Date</th>
+//             <th>Created By</th>
+//             <th>Total Items</th>
+//             <th>Amount</th>
+//             <th>Approval Status</th>
+//             <th></th>
+//             <th></th>
+//           </tr>
+//         </thead>
+//         <tbody>
+//           {<Purchaseorderarray itemdetails={_displayitemdetails} />}
+//         </tbody>
+//       </table>
+//     </>
+//   );
+// }
+// function POitemdetailssection() {
+//   return (
+//     <table className="table datatable text-center">
+//       <thead>
+//         <tr>
+//           <th>No.</th>
+//           <th>Item Name</th>
+//           <th>Total Qty</th>
+//           <th>Amount</th>
+//           <th>Last Vendor</th>
+//           <th>Add</th>
+//           <th>Delete</th>
+//         </tr>
+//       </thead>
+//       <tbody>{<POitemdetailsarray />}</tbody>
+//     </table>
+//   );
+// }
 function PurchaseReturns(props) {
   const currentDate = useContext(TodayDate);
   const ClinicID = localStorage.getItem("ClinicId");
@@ -6396,9 +6397,9 @@ function NewPurchaseReturnentryform(props) {
 }
 
 export { Purchasesection };
-export { Purchaseordersection };
+// export { Purchaseordersection };
 export { Purchaseentrysection };
-export { POitemdetailssection };
+// export { POitemdetailssection };
 export { PEitemdetailssection };
 
 //-------------------------------------------------------------------------Stock Info---------------------------------------------------------
@@ -7300,16 +7301,16 @@ function Listsection() {
     },
   ];
 
-  const [menuindex, setmenuindex] = useState(0);
+  const [menuindex, setmenuindex] = useState('Vaccines');
   const _selectedmenu = (_menu) => {
-    if (_menu === 0) {
+    if (_menu === 'Vaccines') {
       return (
         <div className="">
           <VaccineList />
         </div>
       );
     }
-    if (_menu === 1) {
+    if (_menu === 'Medicines') {
       return (
         <div className="">
           <MedicineList />
@@ -7321,22 +7322,22 @@ function Listsection() {
   return (
     <>
       <section className="stocksection pt-1">
-        <div className="container-fluid">
+        <div className="container-fluid mt-2">
           <div className="row gx-3">
             <div className="row m-0 p-0">
-              {menu.map((e, i) => {
-                return (
-                  <div className="col-auto">
-                    <button
-                      className={`btn btn-sm rounded-pill text-${i === menuindex ? "light" : "dark"
-                        } bg-${i === menuindex ? "charcoal" : "seashell"}`}
-                      onClick={(a) => setmenuindex(i)}
-                    >
-                      {e.option}
-                    </button>
-                  </div>
-                );
-              })}
+                  <div class="dropdown">
+                  <button class="button button-seashell border-0 rounded-2 fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                   {menuindex?menuindex:" List "}
+                  </button>
+                  <ul class="dropdown-menu bg-seashell shadow-sm border-0">
+                    {
+                      menu.map((e, i) => (
+                        <li className={`dropdown-item text-${e.option === menuindex ? "light" : "dark"} fw-bold bg-${e.option === menuindex ? "charcoal" : "seashell"}`} onClick={(a) => setmenuindex(e.option)} > {e.option} </li>
+                      )
+                      )
+                    }
+                  </ul>
+                </div>
             </div>
           </div>
         </div>
@@ -7349,7 +7350,234 @@ function Listsection() {
     </>
   );
 }
-function VaccineList() { }
+function VaccineList() { 
+  const url = useContext(URL);
+  const permission = useContext(Permissions);
+  const [pagecount, setpagecount] = useState();
+  const [pages, setpages] = useState();
+  const [vaccines, setvaccines] = useState([]);
+  const [load, setload] = useState(false);
+  const [index, setindex] = useState();
+  const [NewVacc, setNewVacc] = useState("none");
+  const [UptVacc, setUptVacc] = useState("none");
+
+  function GetPages() {
+    try {
+      axios
+        .get(`${url}/vaccine/brand/list?limit=20&offset=0`)
+        .then((response) => {
+          setpagecount(response.data.data.total_count);
+          setpages(Math.round(response.data.data.total_count / 20) + 1);
+          setload(false);
+        })
+        .catch((e) => {
+          Notiflix.Notify.warning(e.message);
+          setload(false);
+        });
+    } catch (e) {
+      Notiflix.Notify.warning(e.message);
+      setload(false);
+    }
+  }
+  const vaccinelist = async (Data) => {
+    if (Data == undefined || Data.selected == undefined) {
+      setload(true);
+      try {
+        await axios
+          .get(`${url}/vaccine/brand/list?limit=20&offset=0`)
+          .then((response) => {
+            setvaccines(response.data.data.vaccine_brand_list);
+            setload(false);
+          });
+      } catch (e) {
+        Notiflix.Notify.failure(e.message);
+        setload(false);
+      }
+    } else {
+      setload(true);
+      try {
+        await axios
+          .get(`${url}/vaccine/brand/list?limit=20&offset=${Data.selected * 20}`)
+          .then((response) => {
+            setvaccines(response.data.data.vaccine_brand_list);
+            setload(false);
+          });
+      } catch (e) {
+        Notiflix.Notify.failure(e.message);
+        setload(false);
+      }
+    }
+  };
+  useEffect(() => {
+    GetPages();
+    vaccinelist();
+  }, [pagecount]);
+  const ToggleNewVaccine = () => {
+    if (NewVacc == "block") {
+      setNewVacc("none");
+    }
+    if (NewVacc == "none") {
+      setNewVacc("block");
+    }
+  };
+  const ToggleUpdateVaccine = () => {
+    if (UptVacc == "none") {
+      setUptVacc("block");
+    }
+    if (UptVacc == "block") {
+      setUptVacc("none");
+      setindex();
+    }
+  };
+  const DeleteVaccine = async (vaccid) => {
+    try {
+      await axios.post(`${url}/vaccine/brand/delete`, { id: vaccid, })
+        .then((response) => {
+          Notiflix.Notify.success(response.data.message);
+          vaccinelist();
+        });
+    } catch (e) {
+      Notiflix.Notify.failure(e.message);
+    }
+  };
+  const confirmmessage = (name, vaccid) => {
+    customconfirm();
+    Notiflix.Confirm.show(
+      `Add Charges and Payments`,
+      `Do you surely want to delete Medicine ${name}`,
+      "Yes",
+      "No",
+      () => {
+        DeleteVaccine(vaccid);
+      },
+      () => {
+        return 0;
+      },
+      {}
+    );
+  }
+  return (
+    <div className="position-relative">
+      <div className="row p-0 m-0 justify-content-between align-items-center align-self-center">
+        <div className="col-auto">
+        <h2 className=" ms-3 text-charcoal fw-bolder" style={{ width: "fit-content" }} > {pagecount} {pagecount > 0 ? "Vaccines" : "Vaccine"}{" "} </h2>
+        </div>
+        <div className="col-auto">
+        <div className={` p-0 m-0 align-self-center ms-1 d-${permission.vaccine_add == 1 ? "" : "none"} `} >
+        <button className="button button-charcoal m-0 p-0 py-1 px-4 me-3" onClick={ToggleNewVaccine} >
+          <img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} className="p-0 m-0 img-fluid" alt="displaying_image"/>
+          Vaccine
+        </button>
+      </div>
+        </div>
+      </div>
+
+      <div className="scroll scroll-y p-0 m-0 overflow-scroll" style={{ height: "68vh", minHeight: "68vh", maxHeight: "68vh" }} >
+        <table className="table datatable text-start">
+          <thead className="position-sticky top-0 bg-pearl">
+            <tr>
+              <th rowSpan="2" className={`text-charcoal75 fw-bold d-${permission.vaccine_edit == 1 ? "" : "none"}`} > Update </th>
+              <th rowSpan="2" className="text-charcoal75 fw-bold"> Name </th>
+              <th rowSpan="2" className="text-charcoal75 fw-bold"> Salt Name </th>
+              <th rowSpan="2" className="text-charcoal75 fw-bold"> HSN Code </th>
+              <th rowSpan="2" className="text-charcoal75 fw-bold"> Manufacturer </th>
+              {/* <th rowSpan="2" className={`text-charcoal75 fw-bold d-${permission.vaccine_delete == 1 ? "" : "none"}`} > Delete </th> */}
+            </tr>
+          </thead>
+          {load ? (
+            <tr className="p-0 m-0">
+              <td className="placeholder-glow">
+                <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div>
+              </td>
+              <td className="placeholder-glow">
+                <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div>
+              </td>
+              <td className="placeholder-glow">
+                <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div>
+              </td>
+              <td className="placeholder-glow">
+                <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div>
+              </td>
+              <td className="placeholder-glow">
+                <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div>
+              </td>
+              {/* <td className="placeholder-glow">
+                <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div>
+              </td> */}
+            </tr>
+          ) : vaccines == undefined || vaccines.length == 0 ? (
+            <tbody className="">
+              <tr>
+                <td className="position-absolute text-charcoal text-center fw-bolder start-0 end-0">
+                  No Vaccines Found
+                </td>
+              </tr>
+            </tbody>
+          ) : (
+            <tbody className="">
+              {vaccines.map((data, i) => (
+                <tr className={` bg-${i % 2 == 0 ? "seashell" : "pearl"} align-middle text-start`} >
+                  <td className={`py-0 bg-${index === i ? "lightyellow" : ""} d-${permission.vaccine_edit == 1 ? "" : "none"}`} >
+                    <button className="btn m-0 p-0" key={i} onClick={(e) => { ToggleUpdateVaccine(); setindex(i); }} >
+                      <img src={process.env.PUBLIC_URL + "/images/confirmed.png"} alt="displaying_image" className="img-fluid" key={i} />
+                    </button>
+                  </td>
+                  <td className=" text-charcoal fw-bold"> {data.name && data.name !== null ? data.name : ""} </td>
+                  <td className=" text-charcoal fw-bold"> {data.salt_name && data.salt_name !== null ? data.salt_name : ""} </td>
+                  <td className=" text-charcoal fw-bold"> {data.hsn_code && data.hsn_code !== null ? data.hsn_code : ""} </td>
+                  <td className=" text-charcoal fw-bold"> {data.manufacturer && data.manufacturer !== null ? data.manufacturer : ""} </td>
+                  {/* <td className={`d-${permission.vaccine_delete == 1 ? "" : "none"}`} >
+                    <button className="btn p-0 m-0" onClick={() => { confirmmessage(data.name, data.id); }} >
+                      <img src={process.env.PUBLIC_URL + "/images/delete.png"} className="img-fluid" />
+                    </button>
+                  </td> */}
+                  {index == i ? (
+                    <>
+                    <div className="backdrop"></div>
+                    <td className={` text-start  d-${index == i ? UptVacc : "none"} border position-absolute rounded-2 start-0 end-0 top-0 mx-auto bg-seashell`} style={{ padding: 0, zIndex: "2",width:'60vh',height:'70vh' }} >
+                      <UpdateVaccine vaccinelist={vaccinelist} ToggleUpdateVaccine={ToggleUpdateVaccine} data={vaccines[i]} />
+                    </td>
+                    </>
+                  ) : (
+                    <></>
+                  )}
+                </tr>
+              ))}
+            </tbody>
+          )}
+        </table>
+      </div>
+      <section className={`position-absolute border-1 shadow start-0 bg-seashell rounded-1 mx-auto end-0 d-${NewVacc}`} style={{ top: "-4rem", zIndex: "2",width:'60vh',height:'70vh' }} >
+        <NewVaccine ToggleNewVaccine={ToggleNewVaccine} vaccinelist={vaccinelist} />
+      </section>  
+      <div className="container-fluid d-flex justify-content-center mt-2">
+        <ReactPaginate
+          previousLabel={"Previous"}
+          nextLabel={"Next"}
+          breakLabel={"."}
+          pageCount={pages}
+          marginPagesDisplayed={3}
+          pageRangeDisplayed={2}
+          onPageChange={vaccinelist}
+          containerClassName={
+            "pagination scroll align-self-center align-items-center"
+          }
+          pageClassName={"page-item text-charcoal"}
+          pageLinkClassName={
+            "page-link text-decoration-none text-charcoal border-charcoal rounded-1 mx-1"
+          }
+          previousClassName={"btn button-charcoal-outline me-2"}
+          previousLinkClassName={"text-decoration-none text-charcoal"}
+          nextClassName={"btn button-charcoal-outline ms-2"}
+          nextLinkClassName={"text-decoration-none text-charcoal"}
+          breakClassName={"d-flex mx-2 text-charcoal fw-bold fs-4"}
+          breakLinkClassName={"text-decoration-none text-charcoal"}
+          activeClassName={"active "}
+        />
+      </div>
+    </div>
+  );
+}
 function MedicineList() {
   const url = useContext(URL);
   const permission = useContext(Permissions);
@@ -7461,17 +7689,14 @@ function MedicineList() {
   };
   return (
     <div className="position-relative">
-      <div className="heading text-start ms-lg-5 ms-md-3 ms-sm-3 ms-1 text-charcoal fw-bold p-2"> Medicines List </div>
+        <h2 className=" ms-3 text-charcoal fw-bolder" style={{ width: "fit-content" }} > {pagecount} {pagecount > 0 ? "Medicines" : "Medicine"}{" "} </h2>
       <div className={` p-0 m-0 align-self-center ms-1 position-absolute top-0 end-0 d-${permission.medicine_add == 1 ? "" : "none"} `} >
-        <button className="button button-charcoal m-0 p-0 py-1 px-4" onClick={ToggleNewMedicine} >
-          <img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} className="p-0 m-0 img-fluid" alt="displaying_image"/>{" "}
+        <button className="button button-charcoal m-0 p-0 py-1 px-4 me-3" onClick={ToggleNewMedicine} >
+          <img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} className="p-0 m-0 img-fluid" alt="displaying_image"/>
           Medicine
         </button>
       </div>
-      <div
-        className="scroll scroll-y p-0 m-0 overflow-scroll"
-        style={{ height: "57vh", minHeight: "57vh", maxHeight: "57vh" }}
-      >
+      <div className="scroll scroll-y p-0 m-0 overflow-scroll" style={{  height: "68vh", minHeight: "68vh", maxHeight: "68vh"  }} >
         <table className="table datatable text-start">
           <thead className="position-sticky top-0 bg-pearl">
             <tr>
@@ -7481,7 +7706,7 @@ function MedicineList() {
               <th rowSpan="2" className="text-charcoal75 fw-bold"> Salt Name </th>
               <th rowSpan="2" className="text-charcoal75 fw-bold"> HSN Code </th>
               <th rowSpan="2" className="text-charcoal75 fw-bold"> Manufacturer </th>
-              <th rowSpan="2" className={`text-charcoal75 fw-bold d-${permission.medicine_delete == 1 ? "" : "none"}`} > Delete </th>
+              {/* <th rowSpan="2" className={`text-charcoal75 fw-bold d-${permission.medicine_delete == 1 ? "" : "none"}`} > Delete </th> */}
             </tr>
           </thead>
           {load ? (
@@ -7501,9 +7726,9 @@ function MedicineList() {
               <td className="placeholder-glow">
                 <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div>
               </td>
-              <td className="placeholder-glow">
+              {/* <td className="placeholder-glow">
                 <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div>
-              </td>
+              </td> */}
             </tr>
           ) : medicines == undefined || medicines.length == 0 ? (
             <tbody className="">
@@ -7527,11 +7752,11 @@ function MedicineList() {
                   <td className=" text-charcoal fw-bold"> {data.salt_name && data.salt_name !== null ? data.salt_name : ""} </td>
                   <td className=" text-charcoal fw-bold"> {data.hsn_code && data.hsn_code !== null ? data.hsn_code : ""} </td>
                   <td className=" text-charcoal fw-bold"> {data.manufacturer && data.manufacturer !== null ? data.manufacturer : ""} </td>
-                  <td className={`d-${permission.medicine_delete == 1 ? "" : "none"}`} >
+                  {/* <td className={`d-${permission.medicine_delete == 1 ? "" : "none"}`} >
                     <button className="btn p-0 m-0" onClick={() => { confirmmessage(data.name, data.id); }} >
                       <img src={process.env.PUBLIC_URL + "/images/delete.png"} className="img-fluid" />
                     </button>
-                  </td>
+                  </td> */}
                   {index == i ? (
                     <td className={` text-start  d-${index == i ? UptMed : "none"} border position-absolute start-0 end-0 top-0 bg-seashell`} style={{ padding: 0, marginTop: "-8.15rem", zIndex: "2" }} >
                       <UpdateMedicine medcinelist={medcinelist} ToggleUpdateMedicine={ToggleUpdateMedicine} data={medicines[i]} />
@@ -7546,7 +7771,7 @@ function MedicineList() {
         </table>
       </div>
       <section className={`position-absolute border-1 shadow start-0 bg-seashell rounded-1 end-0 d-${NewMed}`} style={{ top: "-4rem", zIndex: "2" }} >
-        <NewMedicine ToggleNewMedicine={ToggleNewMedicine} />
+        <NewMedicine ToggleNewMedicine={ToggleNewMedicine}  medcinelist={medcinelist}/>
       </section>  
       <div className="container-fluid d-flex justify-content-center mt-2">
         <ReactPaginate
@@ -9242,7 +9467,6 @@ function Dumpsection(props){
       setupdateload(false)
     }
   }
-  console.log(dumpsarr) 
   return(
     <>
    <div className="row p-0 m-0 mt-2">

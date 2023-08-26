@@ -101,18 +101,18 @@ const SelectedTimeAppointment = (props) => {
             <div className="row p-0 m-0">
                 <div className="col-5">
                     <input type="text" placeholder='Search Patient using Number or Name' className="form-control bg-pearl border-0" value={searchinput ? searchinput : ''} onChange={(e) => { searchpatient(e) }} />
-                    <div className={`col-6 position-absolute d-${displaysearchlist} rounded-1 `} style={{ zIndex: 3 }}>
+                    <div className={`col-6 position-absolute d-${displaysearchlist} bg-pearl rounded-2 shadow mt-1 pb-2 `} style={{ zIndex: 3 }}>
                         {
                             searchload ? (
-                                <option className="btn col-12 text-charcoal75 bg-pearl p-0 m-0 ps-1 mt-1">Loading... </option>
+                                <div className=" col-12 text-charcoal75 p-0 m-0 py-2 fw-bold text-start ps-2 mt-1">Loading... </div>
                             ) : (
                                 searchlist !== undefined && searchlist.length == 0 ? (
-                                    <option className="text-burntumber col-12 p-0 m-0 bg-pearl shadow rounded mt-1 p-2">Patient not found</option>
+                                    <div className="text-burntumber col-12 p-0 m-0 fw-bold mt-1 ps-2 pt-1">Patient not found</div>
                                 ) : (
-                                    <div className='mt-1 searchresult bg-seashell shadow rounded-1 bg-pearl border border-1 col-12  ' >
+                                    <div className='mt-1 searchresult bg-pearl  col-12  ' >
                                         {
                                             searchlist.map((data, i) => (
-                                                <button style={{ cursor: 'pointer' }} className={`col-12 bg-${i % 2 == 0 ? 'seashell' : 'pearl'} btn d-block p-2 fw-bold text-charcoal text-start border-bottom align-self-center`} name={data.id} value={data.full_name} onClick={() => { get_value(data) }}>{data.full_name} {data.phone_number}</button>
+                                                <div style={{ cursor: 'pointer' }} className={`col-12 d-block p-2 fw-bold text-charcoal text-start border-bottom align-self-center`} name={data.id} value={data.full_name} onClick={() => { get_value(data) }}>{data.full_name} <span className='fw-bold text-burntumber'>{data.phone_number}</span></div>
                                             ))
                                         }
                                     </div>

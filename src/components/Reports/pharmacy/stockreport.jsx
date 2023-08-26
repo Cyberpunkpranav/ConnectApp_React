@@ -77,7 +77,7 @@ const StockReport = () => {
             setLoading(true);
             try {
                 axios.get(`${url}/reports/stock/report?location_id=${Location_Id}&limit=10&offset=${Data.selected * 10}&from_date=${fromdate ? fromdate : currentDate}&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`).then((response) => {
-                    ;
+
                     let medicines = []
                     let vaccines = []
                     let dataarr = []

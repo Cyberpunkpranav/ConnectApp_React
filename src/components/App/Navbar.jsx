@@ -256,14 +256,14 @@ function Navbar(props) {
                                     </div>
                                 </div>
                                 {/* col-xl-2 col-md-auto col-sm-auto col-6  */}
-                                <div className={`col-auto p-0 m-0 dropdown text-decoration-none me-sm-1 d-${props.permissions.patient_add == undefined && props.permissions.doctor_add == undefined && props.permissions.appointment_add == undefined ? 'none' : ''}`}>
+                                <div className={`col-auto p-0 m-0 dropdown addbutton text-decoration-none me-sm-1 d-${props.permissions.patient_add == undefined && props.permissions.doctor_add == undefined && props.permissions.appointment_add == undefined ? 'none' : ''}`}>
                                     <button className="button p-0 m-0 px-2 pe-2 py-1 mt-md-1 mt-lg-0 button-burntumber dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         + Add
                                     </button>
                                     <ul className="dropdown-menu">
-                                        <li><button className={`dropdown-item border-bottom d-${props.permissions.patient_add == 1 ? '' : 'none'} fs-6`} onClick={() => { togglepatientform() }}>+ Patient</button></li>
-                                        <li className={`d-${props.permissions.appointment_add == 1 ? '' : 'none'}`}><button className="dropdown-item border-bottom fs-6" onClick={() => { toggleappointmentform() }}>+ Appointment</button></li>
-                                        <li><button className={`dropdown-item fs-6`} onClick={() => { toggledoctorform() }}>+ Doctor</button></li>
+                                        <li className={`dropdown-item text-charcoal border-bottom d-${props.permissions.patient_add == 1 ? '' : 'none'} fs-6`} onClick={() => { togglepatientform() }}>+ Patient</li>
+                                        <li className={`d-${props.permissions.appointment_add == 1 ? '' : 'none'} text-charcoal dropdown-item border-bottom fs-6`} onClick={() => { toggleappointmentform() }}>+ Appointment</li>
+                                        <li className={`dropdown-item fs-6 text-charcoal`} onClick={() => { toggledoctorform() }}>+ Doctor</li>
                                     </ul>
                                 </div>
                             </div>
@@ -272,15 +272,16 @@ function Navbar(props) {
                 </div>
             </div>
 
-            <div className={`col-lg-5 col-md-6 col-sm-12 col-12 rounded-4 p-2 me-lg-2 me-md-2 mt-2 bg-seashell scroll patientinfosection d-${patientform} border position-absolute`} >
+            <div className={`col-lg-5 col-md-6 col-sm-12 col-12 rounded-4 px-2 me-lg-2 me-md-2 mt-2 bg-seashell scroll shadow patientinfosection d-${patientform} border position-absolute`}>
                 <AddPatient togglepatientform={togglepatientform} patientform={patientform} />
             </div>
-            <div className={`col-lg-5 col-md-6 col-sm-12 rounded-4 p-2 me-lg-2 me-md-2 mt-2 col-12 bg-seashell appointmentinfosection d-${appointmentform} border-start border-top border-2 position-absolute`} style={{ zIndex: '4', right: '0' }} >
+
+            <div className={`col-lg-5 col-md-6 col-sm-12 rounded-4 p-2 me-lg-2 me-md-2 mt-2 col-12 bg-seashell shadow appointmentinfosection d-${appointmentform} border position-absolute`} style={{ zIndex: '4', right: '0' }} >
                 <AddAppointment toggleappointmentform={toggleappointmentform} fetchapi={props.fetchapi} />
             </div>
             {
                 Docval == 1 ? (
-                    <div className={`col-lg-5 col-md-6 col-sm-12 col-12 px-2 me-lg-2 me-md-2 mt-lg-2 mt-md-2 mt-1 bg-seashell  rounded-4 doctorinfosection d-${doctorform} shadow-sm border position-absolute`} >
+                    <div className={`col-lg-5 col-md-6 col-sm-12 col-12 px-2 me-lg-2 me-md-2 mt-lg-2 mt-md-2 mt-1 bg-seashell shadow rounded-4 doctorinfosection d-${doctorform} border position-absolute`} >
                         <AddDoctorSlot toggledoctorform={toggledoctorform} staticBackdrop4={'staticBackdrop3'} fetchapi={props.fetchapi} />
                     </div>
                 ) : (

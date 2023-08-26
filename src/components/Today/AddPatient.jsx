@@ -215,10 +215,12 @@ const AddPatient = (props) => {
 //    console.log(data,lat,lng,placeid,pincode)
   
     return (
-        <>
-            <h5 className="text-center position-relative fw-bold pt-2 "> Patient Details </h5>
-            <button type="button" className="btn-close closebtn position-absolute pt-2" aria-label="Close" onClick={props.togglepatientform} ></button>
+        <section>
+            <div className="position-sticky top-0 bg-seashell pt-2">
+            <h5 className="text-center position-relative fw-bold  "> Patient Details </h5>
+            <button type="button" className="btn-close closebtn position-absolute" aria-label="Close" onClick={props.togglepatientform} ></button>
             <hr />
+            </div>
             <div className="col-12 fw-bold">
                 <div className="form-group col-10 m-auto py-3">
                     <label htmlFor="inputEmail4" className="mb-2">Enter Number</label>
@@ -554,14 +556,14 @@ const AddPatient = (props) => {
                                 <button type="button" className="btn done button-charcoal px-5" onClick={confirmmessage} > Done </button>
                             </div>
                             <div className="col-6 pb-2 m-auto text-center">
-                                <button className="btn btn-light px-5" onClick={resetform}>Reset</button>
+                                <button className="button button-pearl px-5" onClick={resetform}>Reset</button>
                             </div>
                         </>
                     )
                 }
 
             </div>
-        </>
+        </section>
 
     )
 }
