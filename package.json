@@ -1,6 +1,7 @@
 {
   "name": "connect_app",
   "version": "0.1.0",
+  "homepage": "https://aartas-connect.azurewebsites.net",
   "private": true,
   "Connection": "upgrade",
   "dependencies": {

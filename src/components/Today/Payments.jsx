@@ -301,7 +301,7 @@ const Payments = (props) => {
                                                     <span className='text-burntumber fw-bolder'>Pending Amount: {Data.pending_amount}</span>
                                                 </div>
                                                 <div className="col-auto">
-                                                    <button className='btn p-0' onClick={() => setpendingpaymentmethods(prevState => [...prevState, pendingpaymentmethoddetails])}><img src={process.env.PUBLIC_URL + '/images/add.png'} className='img-fluid' style={{ width: '2rem' }} /></button>
+                                                    <button className='btn p-0' onClick={() => setpendingpaymentmethods(prevState => [...prevState, pendingpaymentmethoddetails])}><img src={process.env.PUBLIC_URL + '/images/add.png'} className='img-fluid' /></button>
                                                 </div>
                                             </div>
 

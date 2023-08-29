@@ -407,12 +407,6 @@ const Bill = (props) => {
                     <label className="text-charcoal75 fw-bold"> Doctor's Consultation Charge </label>
                     <input className="form-control bg-seashell fw-bold" disabled={true} value={AddConsAmt} />
                   </div>
-                  {/* <div className="col-6">
-                                        <label className='text-charcoal75 fw-bold'>Procedure</label>
-                                        <select className='form-control bg-seashell'>
-                                            <option>Procedures</option>
-                                        </select>
-                                    </div> */}
                 </div>
               </div>
 
@@ -620,7 +614,7 @@ const Bill = (props) => {
                 </div>
               </div>
             ) : (
-              <div className="row p-0 m-0 text-center align-items-center mt-1 ">
+              <div className="row p-0 m-0 text-center align-items-center mt-1 justify-content-between ">
                 <div className="col-4 align-self-end text-start">
                   <label className=" fw-bolder text-charcoal text-wrap text-start">
                     Grand Total
@@ -630,11 +624,11 @@ const Bill = (props) => {
                     value={"₹" + Get_Grand_Total()}
                   />
                 </div>
-                <div className="col-6 d-flex justify-content-end">
+                {/* <div className="col-6 d-flex justify-content-end">
                   <button className="button button-pearl" onClick={AddtoCart}>
                     Add to Cart
                   </button>
-                </div>
+                </div> */}
                 <div className="col-sm-auto col-2 d-flex justify-content-start ps-2">
                   <button className="button button-charcoal " onClick={confirmmessage} > Save </button>
                 </div>
