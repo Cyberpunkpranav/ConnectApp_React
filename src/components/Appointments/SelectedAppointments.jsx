@@ -252,7 +252,7 @@ const SelectedAppointments = (props) => {
                 <td className={`ps-3 d-${permission.appointment_edit == 1 ? '' : 'none'} bg-${tableindex == key ? 'lightyellow' : ''}`}>
                   <img src={process.env.PUBLIC_URL + "/images/confirmed.png"} onClick={(e) => { settableindex(key); openapppointmentform(); }} className="btn p-0 m-0" />
                 </td>
-                <td>
+                <td className='pe-5 pe-lg-0'>
                   <div className="row p-0 m-0 align-items-center">
                     <div className="col-1 p-0 m-0 me-2">
                       <div className={`rounded-circle border-1 button-${props.status_color(data.appointment_status)}`} style={{ height: '12px', width: '12px' }}></div>

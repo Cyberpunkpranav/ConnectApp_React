@@ -118,8 +118,13 @@ const Bill = (props) => {
     paymentmethods.push(paymentobj);
   }
   useEffect(() => {
-    AddExtraCharges();
-    AddPaymentMethods();
+    if(props.appointmentdata.other_charges!=undefined && props.appointmentdata.other_charges.length >0){
+      AddExtraCharges();
+    }
+    if(props.appointmentdata.payment_method_details!=undefined  && props.appointmentdata.payment_method_details.length >0){
+      AddPaymentMethods();
+    }
+
   }, [props.billform]);
   // useEffect(() => {
   //     AddExtraCharges()
@@ -369,6 +374,7 @@ const Bill = (props) => {
     AdvancePayments();
     ConsumableAmount();
   }, []);
+  console.log(props.appointmentdata)
   return (
     <>
   

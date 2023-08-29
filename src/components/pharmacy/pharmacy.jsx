@@ -9311,6 +9311,7 @@ function Dumpsection(props){
   const [pages, setpages] = useState();
   const [pagecount, setpagecount] = useState();
   const [updateload, setupdateload] = useState(false);
+  const [statusindex,setstatusindex] = useState()
   const [fromdate,setfromdate] =useState()
   const [todate,settodate] =useState()
   const [channel,setchannel] =useState()
@@ -9430,7 +9431,7 @@ useEffect(() => {
       setnpef("none");
     }
   };
-  let array = [[0, 'Pending', 'lightred'], [1, 'Accepted', 'lightgreen'], [3, 'Rejected', 'lightred']]
+  let array = [[1, 'Dumped', 'lightgreen'], [2, 'Cancelled', 'lightred']]
   function status(number) {
     let status
     for (let i = 0; i < array.length; i++) {
@@ -9460,9 +9461,9 @@ useEffect(() => {
   const UpdateStatus = async (data,e) => {
     setupdateload(true)
     try {
-      await axios.post(`${url}/transfer/stocks/change/status`, { 
-        transfer_id: data.id, 
-        transfer_status: e.target.value, 
+      await axios.post(`${url}/dump/stocks/change/status`, { 
+        dump_stocks_id: data.id, 
+        dump_status: e.target.value, 
         admin_id: adminid, 
       })
         .then((response) => {
@@ -9475,7 +9476,7 @@ useEffect(() => {
       setupdateload(false)
     }
   }
-  console.log(dumpsarr)
+
   return(
     <>
    <div className="row p-0 m-0 mt-2">
@@ -9487,7 +9488,7 @@ useEffect(() => {
 
                 <ul class="dropdown-menu bg-seashell shadow-sm border-0">
                       <li className={`dropdown-item text-${second === "Pharmacy" ? "light" : "dark"} fw-bold bg-${second === 'Pharmacy' ? "charcoal" : "seashell"}`} onClick={(a) => {setSecond('Pharmacy');setchannel(1)}} > Pharmacy </li>
-                      <li className={`dropdown-item text-${second === "Consumables" ? "light" : "dark"} fw-bold bg-${second === 'Consumables' ? "charcoal" : "seashell"}`} onClick={(a) => {setSecond('Consumables');setchannel(2)}} > Consumables </li>
+                      <li className={`dropdown-item text-${second === "Clinic" ? "light" : "dark"} fw-bold bg-${second === 'Clinic' ? "charcoal" : "seashell"}`} onClick={(a) => {setSecond('Clinic');setchannel(2)}} > Clinic </li>
                 </ul>
               </div>
             </div>
@@ -9561,18 +9562,17 @@ useEffect(() => {
                <td className="text-charcoal fw-bold"> {item.dump_date && item.dump_date ? reversefunction(item.dump_date) : "N/A"} </td>
                <td className="text-charcoal fw-bold"> {item.total_amount && item.total_amount ? "Rs. " + item.total_amount : "N/A"} </td>
                <td className="text-center">
-                {     updateload == true ? (
+                {     updateload == true && statusindex == i ? (
         <div className="col-6 py-2 pb-2 m-auto text-center">
         <div className="spinner-border" role="status">
           <span className="visually-hidden">Loading...</span>
         </div>
-      </div>
+      </div>  
                 ):(
-                  <select className={`bg-${status_color(item.transfer_status)} rounded-2 rounded-pill py-1 px-2 fw-bold text-center border-0 text-wrap `} onChange={(e)=>{UpdateStatus(item,e)}} name={item.transfer_status}>
-                  <option className="button text-center" selected disabled>{status(item.transfer_status)}</option>
-                  <option className="button-lightred" value='0'>Pending</option>
-                  <option className="button-lightblue" value='1'>Accepted</option>
-                  <option className="button-lightred" value='2'>Rejected</option>
+                  <select disabled={item.dump_status==2?true:false} className={`bg-${status_color(item.dump_status)} rounded-2 rounded-pill py-1 px-2 fw-bold text-center border-0 text-wrap `} onChange={(e)=>{UpdateStatus(item,e)}} name={item.dump_status}>
+                  <option className="button text-center" selected disabled>{status(item.dump_status)}</option>
+                  <option className="button-lightgreen" value='1' onClick={()=>{setstatusindex(i)}}>Dumped</option>
+                  <option className="button-lightred" value='2' onClick={()=>{setstatusindex(i)}}>Cancelled</option>
               </select>
                 )}
 
