@@ -8547,23 +8547,23 @@ function TIitemdetailssection(props) {
               {props.transferinarr.medicines.map((item, _key) => (
                 <tr className="border align-middle" key={_key}>
                   <td className="border align-middle"> {item.medicies_stocks_id && item.medicies_stocks_id !== undefined ? "m"+item.medicies_stocks_id : "N/A"} </td>
-                  <td className="border align-middle"> {item.medicine_stock_details && item.medicine_stock_details.medicine.display_name !== undefined ? item.medicine_stock_details.medicine.display_name : "N/A"} </td>
-                  <td className="border align-middle"> {item.medicine_stock_details && item.medicine_stock_details.batch_no !== undefined ? item.medicine_stock_details.batch_no : "N/A"}</td>
-                  <td className="border align-middle"> {item.medicine_stock_details && item.medicine_stock_details.expiry_date !== undefined ? reversefunction(item.medicine_stock_details.expiry_date) : "N/A"} </td>
-                  <td className="border align-middle"> {item.medicine_stock_details && item.medicine_stock_details.mrp !== undefined ? "₹"+item.medicine_stock_details.mrp : "N/A"} </td>
-                  <td className="border align-middle"> {item.medicine_stock_details && item.medicine_stock_details.rate !== undefined ? "₹"+item.medicine_stock_details.rate : "N/A"} </td>
+                  <td className="border align-middle"> {item.medicine_details && item.medicine_details.medicine.display_name !== undefined ? item.medicine_details.medicine.display_name : "N/A"} </td>
+                  <td className="border align-middle"> {item.medicine_details && item.medicine_details.batch_no !== undefined ? item.medicine_details.batch_no : "N/A"}</td>
+                  <td className="border align-middle"> {item.medicine_details && item.medicine_details.expiry_date !== undefined ? reversefunction(item.medicine_details.expiry_date) : "N/A"} </td>
+                  <td className="border align-middle"> {item.medicine_details && item.medicine_details.mrp !== undefined ? "₹"+item.medicine_details.mrp : "N/A"} </td>
+                  <td className="border align-middle"> {item.medicine_details && item.medicine_details.rate !== undefined ? "₹"+item.medicine_details.rate : "N/A"} </td>
                   <td className="border align-middle"> {item.qty ? item.qty : "N/A"} </td>
-                  <td className="border align-middle"> {item.medicine_stock_details && item.medicine_stock_details.discount !== undefined ?  item.medicine_stock_details.discount: "N/A"} </td>
-                  <td className="border align-middle"> {item.medicine_stock_details && item.medicine_stock_details.trade_discount !== undefined ?  item.medicine_stock_details.trade_discount: "N/A"} </td>
-                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.medicine_stock_details && item.medicine_stock_details.SGST_rate ? Number( item.medicine_stock_details.SGST_rate) : ""} </td>
-                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.medicine_stock_details && item.medicine_stock_details.SGST ? (Number(item.medicine_stock_details.SGST) * Number(item.qty)).toFixed(2) : ""} </td>
-                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.medicine_stock_details && item.medicine_stock_details.CGST_rate ? Number(item.medicine_stock_details.CGST_rate ) : ""} </td>
-                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.medicine_stock_details && item.medicine_stock_details.CGST ? (Number(item.medicine_stock_details.CGST) * Number(item.qty)).toFixed(2) : ""} </td>
-                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.medicine_stock_details && item.medicine_stock_details.IGST_rate ? Number(item.medicine_stock_details.IGST_rate ) : ""} </td>
-                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.medicine_stock_details && item.medicine_stock_details.IGST ? (Number(item.medicine_stock_details.IGST) * Number(item.qty)).toFixed(2) : ""} </td>
-                  <td className="border align-middle"> {TotalTaxPercent(item.medicine_stock_details.CGST_rate , item.medicine_stock_details.SGST_rate, item.medicine_stock_details.IGST_rate)} </td>
-                  <td className="border align-middle"> {TotalTaxRate(item.medicine_stock_details.CGST,item.medicine_stock_details.SGST,item.medicine_stock_details.IGST, item.qty)} </td>
-                  <td className="border align-middle"> {item.medicine_stock_details.cost ?"₹"+item.medicine_stock_details.cost  : "N/A"} </td>
+                  <td className="border align-middle"> {item.medicine_details && item.medicine_details.discount !== undefined ?  item.medicine_details.discount: "N/A"} </td>
+                  <td className="border align-middle"> {item.medicine_details && item.medicine_details.trade_discount !== undefined ?  item.medicine_details.trade_discount: "N/A"} </td>
+                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.medicine_details && item.medicine_details.SGST_rate ? Number( item.medicine_details.SGST_rate) : ""} </td>
+                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.medicine_details && item.medicine_details.SGST ? (Number(item.medicine_details.SGST) * Number(item.qty)).toFixed(2) : ""} </td>
+                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.medicine_details && item.medicine_details.CGST_rate ? Number(item.medicine_details.CGST_rate ) : ""} </td>
+                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.medicine_details && item.medicine_details.CGST ? (Number(item.medicine_details.CGST) * Number(item.qty)).toFixed(2) : ""} </td>
+                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.medicine_details && item.medicine_details.IGST_rate ? Number(item.medicine_details.IGST_rate ) : ""} </td>
+                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.medicine_details && item.medicine_details.IGST ? (Number(item.medicine_details.IGST) * Number(item.qty)).toFixed(2) : ""} </td>
+                  <td className="border align-middle"> {TotalTaxPercent(item.medicine_details.CGST_rate , item.medicine_details.SGST_rate, item.medicine_details.IGST_rate)} </td>
+                  <td className="border align-middle"> {TotalTaxRate(item.medicine_details.CGST,item.medicine_details.SGST,item.medicine_details.IGST, item.qty)} </td>
+                  <td className="border align-middle"> {item.medicine_details.cost ?"₹"+item.medicine_stock_details.cost  : "N/A"} </td>
                   <td className="border align-middle"> {item.total_amount ? item.total_amount : "N/A"} </td>
   
                 </tr>
@@ -8612,23 +8612,23 @@ function TIitemdetailssection(props) {
               {props.transferinarr.vaccines.map((item, _key) => (
                 <tr className="border p-0 m-0 align-middle" key={_key}>
                   <td className="border align-middle"> {item.vaccine_stocks_id  && item.vaccine_stocks_id !== undefined ? "v"+item.vaccine_stocks_id : "N/A"} </td>
-                  <td className="border align-middle"> {item.vaccine_stock_details  && item.vaccine_stock_details.vaccine.name !== undefined ? item.vaccine_stock_details.vaccine.name : "N/A"} </td>
-                  <td className="border align-middle"> {item.vaccine_stock_details  && item.vaccine_stock_details.batch_no !== undefined ? item.vaccine_stock_details.batch_no : "N/A"}</td>
-                  <td className="border align-middle"> {item.vaccine_stock_details  && item.vaccine_stock_details.expiry_date !== undefined ? reversefunction(item.vaccine_stock_details.expiry_date) : "N/A"} </td>
-                  <td className="border align-middle"> {item.vaccine_stock_details  && item.vaccine_stock_details.mrp !== undefined ? "₹"+item.vaccine_stock_details.mrp : "N/A"} </td>
-                  <td className="border align-middle"> {item.vaccine_stock_details  && item.vaccine_stock_details.rate !== undefined ? "₹"+item.vaccine_stock_details.rate : "N/A"} </td>
+                  <td className="border align-middle"> {item.vaccine_details  && item.vaccine_details.vaccine.name !== undefined ? item.vaccine_details.vaccine.name : "N/A"} </td>
+                  <td className="border align-middle"> {item.vaccine_details  && item.vaccine_details.batch_no !== undefined ? item.vaccine_details.batch_no : "N/A"}</td>
+                  <td className="border align-middle"> {item.vaccine_details  && item.vaccine_details.expiry_date !== undefined ? reversefunction(item.vaccine_details.expiry_date) : "N/A"} </td>
+                  <td className="border align-middle"> {item.vaccine_details  && item.vaccine_details.mrp !== undefined ? "₹"+item.vaccine_details.mrp : "N/A"} </td>
+                  <td className="border align-middle"> {item.vaccine_details  && item.vaccine_details.rate !== undefined ? "₹"+item.vaccine_details.rate : "N/A"} </td>
                   <td className="border align-middle"> {item.qty ? item.qty : "N/A"} </td>
-                  <td className="border align-middle"> {item.vaccine_stock_details && item.vaccine_stock_details.discount !== undefined ?  item.vaccine_stock_details.discount: "N/A"} </td>
-                  <td className="border align-middle"> {item.vaccine_stock_details && item.vaccine_stock_details.trade_discount !== undefined ?  item.vaccine_stock_details.trade_discount: "N/A"} </td>
-                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.vaccine_stock_details && item.vaccine_stock_details.SGST_rate ? Number( item.vaccine_stock_details.SGST_rate) : ""} </td>
-                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.vaccine_stock_details && item.vaccine_stock_details.SGST ? (Number(item.vaccine_stock_details.SGST) * Number(item.qty)).toFixed(2) : ""} </td>
-                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.vaccine_stock_details && item.vaccine_stock_details.CGST_rate ? Number(item.vaccine_stock_details.CGST_rate ) : ""} </td>
-                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.vaccine_stock_details && item.vaccine_stock_details.CGST ? (Number(item.vaccine_stock_details.CGST) * Number(item.qty)).toFixed(2) : ""} </td>
-                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.vaccine_stock_details && item.vaccine_stock_details.IGST_rate ? Number(item.vaccine_stock_details.IGST_rate ) : ""} </td>
-                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.vaccine_stock_details && item.vaccine_stock_details.IGST ? (Number(item.vaccine_stock_details.IGST) * Number(item.qty)).toFixed(2) : ""} </td>
-                  <td className="border align-middle"> {TotalTaxPercent(item.vaccine_stock_details.CGST_rate , item.vaccine_stock_details.SGST_rate, item.vaccine_stock_details.IGST_rate)} </td>
-                  <td className="border align-middle"> {TotalTaxRate(item.vaccine_stock_details.CGST,item.vaccine_stock_details.SGST,item.vaccine_stock_details.IGST, item.qty)} </td>
-                  <td className="border align-middle"> {item.vaccine_stock_details.cost ?"₹"+item.vaccine_stock_details.cost  : "N/A"} </td>
+                  <td className="border align-middle"> {item.vaccine_details && item.vaccine_details.discount !== undefined ?  item.vaccine_details.discount: "N/A"} </td>
+                  <td className="border align-middle"> {item.vaccine_details && item.vaccine_details.trade_discount !== undefined ?  item.vaccine_details.trade_discount: "N/A"} </td>
+                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.vaccine_details && item.vaccine_details.SGST_rate ? Number( item.vaccine_details.SGST_rate) : ""} </td>
+                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.vaccine_details && item.vaccine_details.SGST ? (Number(item.vaccine_details.SGST) * Number(item.qty)).toFixed(2) : ""} </td>
+                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.vaccine_details && item.vaccine_details.CGST_rate ? Number(item.vaccine_details.CGST_rate ) : ""} </td>
+                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.vaccine_details && item.vaccine_details.CGST ? (Number(item.vaccine_details.CGST) * Number(item.qty)).toFixed(2) : ""} </td>
+                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.vaccine_details && item.vaccine_details.IGST_rate ? Number(item.vaccine_details.IGST_rate ) : ""} </td>
+                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.vaccine_details && item.vaccine_details.IGST ? (Number(item.vaccine_details.IGST) * Number(item.qty)).toFixed(2) : ""} </td>
+                  <td className="border align-middle"> {TotalTaxPercent(item.vaccine_details.CGST_rate , item.vaccine_details.SGST_rate, item.vaccine_details.IGST_rate)} </td>
+                  <td className="border align-middle"> {TotalTaxRate(item.vaccine_details.CGST,item.vaccine_details.SGST,item.vaccine_details.IGST, item.qty)} </td>
+                  <td className="border align-middle"> {item.vaccine_details.cost ?"₹"+item.vaccine_stock_details.cost  : "N/A"} </td>
                   <td className="border align-middle"> {item.total_amount ? item.total_amount : "N/A"} </td>
 
                 </tr>
@@ -9301,6 +9301,7 @@ function Dumpsection(props){
   const ClinicID = localStorage.getItem("ClinicId");
   const permission = useContext(Permissions);
   const url = useContext(URL);
+  const [cliniclist,setcliniclist]=useState('')
   const [peidw, setpeidw] = useState("none");
   const [Loading, setLoading] = useState(false);
   const [dumpsarr, setdumpsarr] = useState([]);
@@ -9315,7 +9316,14 @@ function Dumpsection(props){
   const [channel,setchannel] =useState()
   const [second ,setSecond] =  useState()
 
-
+  function ClinicList() {
+    axios.get(`${url}/clinic/list`).then((response) => {
+        setcliniclist(response.data.data)
+    })
+}
+useEffect(() => {
+    ClinicList()
+}, [])
 
   const toggle_peidw = () => {
     if (peidw === "none") {
@@ -9355,7 +9363,7 @@ function Dumpsection(props){
     if (Data == undefined || Data.selected == undefined) {
       setLoading(true);
       try {
-        axios.get( `${url}/dump/stocks/list?location_id=${ClinicID}&limit=25&offset=0` )
+        axios.get(`${url}/dump/stocks/list?location_id=${ClinicID}&limit=25&offset=0` )
           .then((response) => {
             setpagecount(response.data.data.total_count);
             setdumpsarr(response.data.data.dump_stocks);
@@ -9467,6 +9475,7 @@ function Dumpsection(props){
       setupdateload(false)
     }
   }
+  console.log(dumpsarr)
   return(
     <>
    <div className="row p-0 m-0 mt-2">
@@ -9511,14 +9520,10 @@ function Dumpsection(props){
          <tr>
            <th className="fw-bolder text-charcoal75">  ID </th>
            <th className="fw-bolder text-charcoal75"> Channel </th>
-           <th className="fw-bolder text-charcoal75"> Location From </th>
-           <th className="fw-bolder text-charcoal75"> Location To </th>
+           <th className="fw-bolder text-charcoal75"> Dump From </th>
            <th className="fw-bolder text-charcoal75"> Dump Date </th>
-           <th className="fw-bolder text-charcoal75">Transfer By </th>
-           <th className="fw-bolder text-charcoal75">Transfer To </th>
-           <th className="fw-bolder text-charcoal75"> Total Items</th>
            <th className="fw-bolder text-charcoal75"> Amount </th>
-           <th className="fw-bolder text-charcoal75"> Approval Status </th>
+           <th className="fw-bolder text-charcoal75 text-center"> Status </th>
            <th className="fw-bolder  text-center  text-charcoal75"  > Inventory </th>
            {/* <th className='fw-bolder p-0 m-0  text-charcoal75 text-center' scope='col' style={{ zIndex: '3' }}>more</th> */}
          </tr>
@@ -9545,12 +9550,15 @@ function Dumpsection(props){
              <tr key={i} className={`bg-${i % 2 == 0 ? "seashell" : "pearl" } align-middle`} >
                <td className="py-0 my-0 text-charcoal fw-bold ps-2"> D-{item.id} </td>
                <td className="text-charcoal fw-bold"> {item.channel && item.channel == 1 ? "Pharmacy" : "Clinic"} </td>
-               <td className="text-charcoal fw-bold"> {item.from_location.title ? item.from_location.title : "N/A"} </td>
-               <td className="text-charcoal fw-bold"> {item.to_location.title ? item.to_location.title : "N/A"} </td>
-               <td className="text-charcoal fw-bold"> {item.transfer_date && item.transfer_date ? reversefunction(item.transfer_date) : "N/A"} </td>
-               <td className="text-charcoal fw-bold"> </td>
-               <td className="text-charcoal fw-bold"> </td>
-               <td className="text-charcoal fw-bold"> </td>
+               <td className="text-charcoal fw-bold pe-3"> 
+                    {
+                       cliniclist ? cliniclist.map((data, i) => (
+                            <label className={`d-${ClinicID == data.id ? 'block' : 'none'}`}>{data.title}</label>
+
+                        )):(<></>)
+                    }
+              </td>
+               <td className="text-charcoal fw-bold"> {item.dump_date && item.dump_date ? reversefunction(item.dump_date) : "N/A"} </td>
                <td className="text-charcoal fw-bold"> {item.total_amount && item.total_amount ? "Rs. " + item.total_amount : "N/A"} </td>
                <td className="text-center">
                 {     updateload == true ? (
@@ -9574,7 +9582,7 @@ function Dumpsection(props){
                </td>
                <td className={` position-absolute d-${i == index ? peidw : "none" } border border-1 start-0 mx-auto end-0 bg-seashell rounded-4 p-0 m-0`} style={{zIndex:'10', top: "0",width:'70vh',height: "40vh" }} >
                   {i == index ? 
-                  ( <TIitemdetailssection dumpsarr={dumpsarr[i]} id={"TI-" + item.id} toggle_peidw={toggle_peidw} /> ) : ( <></> )}
+                  ( <DumpItemDetails dumpsarr={dumpsarr[i]} id={"D-" + item.id} toggle_peidw={toggle_peidw} /> ) : ( <></> )}
                </td>
              </tr>
            ))}
@@ -9622,6 +9630,205 @@ function Dumpsection(props){
 }
 export {Dumpsection}
 
+function DumpItemDetails(props){
+  const [medicine, setmedicine] = useState("block");
+  const [vaccine, setvaccine] = useState("none");
+  const [index, setindex] = useState(0);
+  const Items = ["Medicine", "Vaccine"];
+  const [qr, setqr] = useState("none");
+  const reversefunction = (date) => {
+    if (date) {
+      date = date.split("-").reverse().join("-");
+      return date;
+    }
+  };
+
+  if (index == 0) {
+    if (medicine == "none") {
+      setmedicine("block");
+      setvaccine("none");
+    }
+  }
+  if (index == 1) {
+    if (vaccine == "none") {
+      setvaccine("block");
+      setmedicine("none");
+    }
+  }
+  const [Taxon, setTaxon] = useState(false);
+
+  function TotalTaxPercent(cgst, sgst, igst) {
+    if ((cgst && sgst && igst !== null) || undefined) {
+      return Number(cgst) + Number(sgst) + Number(igst);
+    }
+  }
+  function TotalTaxRate(cgst, sgst, igst, qty) {
+    if ((cgst && sgst) || igst !== null || undefined) {
+      let e = Number(Number(cgst) + Number(sgst) + Number(igst)) * Number(qty);
+      e = e.toFixed(2);
+      return e;
+    }
+  }
+
+  return (
+    <div className="container-fluid p-0 m-0 ">
+      <div className="container-fluid p-0 m-0">
+        <h5 className="text-center pt-3 text-charcoal">
+          {props.id} Dump Item Details
+        </h5>
+        <button type="button" className="btn-close closebtn position-absolute end-0 me-2" onClick={props.toggle_peidw} aria-label="Close" ></button>
+
+        <div className="col-2 d-none">
+          <div className=" position-relative searchbutton" style={{ top: "0.25rem", right: "1rem" }} >
+            <input type="text" className=" form-control d-inline PEsearch bg-seashell" placeholder="Search PE" />
+            <button className="btn p-0 m-0 bg-transparent border-0 position-absolute" style={{ width: "2rem", right: "0", left: "0", top: "0.25rem" }} >
+              <img src={process.env.PUBLIC_URL + "/images/search.png"} alt="displaying_image" className="img-fluid p-0 m-0" />
+            </button>
+          </div>
+        </div>
+      </div>
+      <div className="d-flex justify-content-center p-0 m-0 mt-3 mb-1">
+        {Items.map((data, i) => (
+          <button className={`button border-charcoal rounded-0 shadow-0 button-${i == index ? "charcoal" : "seashell" }`} onClick={() => { setindex(i); }} > {data} </button>
+        ))}
+      </div>
+
+      <div className=" d-flex justify-content-end me-5">
+        <input type="checkbox" className="form-check-input" value={Taxon ? Taxon : ""} onChange={() => { Taxon == true ? setTaxon(false) : setTaxon(true); }} />
+        <label>Show Tax Details</label>
+      </div>
+      <div className={`scroll bg-seashell scroll-y d-${medicine}`} style={{ height:"100%" }} >
+        <table className="table datatable table-responsive text-center bg-seashell">
+          <thead>
+            <tr>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Item ID </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Item Name </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Batch No. </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Expiry Date </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> MRP </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Rate </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Qty. </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Disc% </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Trade Disc% </th>
+              <th colspan={Taxon == true ? "8" : "2"} scope="col-group" className="border p-0 m-0 px-1" > Total Tax </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Cost </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Total </th>
+            </tr>
+            <tr>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > CGST% </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > CGST </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > SGST% </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > SGST </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > IGST% </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > IGST </th>
+              <th scope="col" className={`border p-0 m-0 px-1`}> Total% </th>
+              <th scope="col" className={`border p-0 m-0 px-1`}> Total </th>
+            </tr>
+          </thead>
+          {props.dumpsarr.medicines && props.dumpsarr.medicines.length !== 0 ? (
+            <tbody className="border align-items-center p-0 m-0">
+              {props.dumpsarr.medicines.map((item, _key) => (
+                <tr className="border align-middle" key={_key}>
+                  <td className="border align-middle"> {item.medicies_stocks_id && item.medicies_stocks_id !== undefined ? "m"+item.medicies_stocks_id : "N/A"} </td>
+                  <td className="border align-middle"> {item.medicine_details && item.medicine_details.medicine.display_name !== undefined ? item.medicine_details.medicine.display_name : "N/A"} </td>
+                  <td className="border align-middle"> {item.medicine_details && item.medicine_details.batch_no !== undefined ? item.medicine_details.batch_no : "N/A"}</td>
+                  <td className="border align-middle"> {item.medicine_details && item.medicine_details.expiry_date !== undefined ? reversefunction(item.medicine_details.expiry_date) : "N/A"} </td>
+                  <td className="border align-middle"> {item.medicine_details && item.medicine_details.mrp !== undefined ? "₹"+item.medicine_details.mrp : "N/A"} </td>
+                  <td className="border align-middle"> {item.medicine_details && item.medicine_details.rate !== undefined ? "₹"+item.medicine_details.rate : "N/A"} </td>
+                  <td className="border align-middle"> {item.qty ? item.qty : "N/A"} </td>
+                  <td className="border align-middle"> {item.medicine_details && item.medicine_details.discount !== undefined ?  item.medicine_details.discount: "N/A"} </td>
+                  <td className="border align-middle"> {item.medicine_details && item.medicine_details.trade_discount !== undefined ?  item.medicine_details.trade_discount: "N/A"} </td>
+                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.medicine_details && item.medicine_details.SGST_rate ? Number( item.medicine_details.SGST_rate) : ""} </td>
+                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.medicine_details && item.medicine_details.SGST ? (Number(item.medicine_details.SGST) * Number(item.qty)).toFixed(2) : ""} </td>
+                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.medicine_details && item.medicine_details.CGST_rate ? Number(item.medicine_details.CGST_rate ) : ""} </td>
+                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.medicine_details && item.medicine_details.CGST ? (Number(item.medicine_details.CGST) * Number(item.qty)).toFixed(2) : ""} </td>
+                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.medicine_details && item.medicine_details.IGST_rate ? Number(item.medicine_details.IGST_rate ) : ""} </td>
+                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.medicine_details && item.medicine_details.IGST ? (Number(item.medicine_details.IGST) * Number(item.qty)).toFixed(2) : ""} </td>
+                  <td className="border align-middle"> {TotalTaxPercent(item.medicine_details.CGST_rate , item.medicine_details.SGST_rate, item.medicine_details.IGST_rate)} </td>
+                  <td className="border align-middle"> {TotalTaxRate(item.medicine_details.CGST,item.medicine_details.SGST,item.medicine_details.IGST, item.qty)} </td>
+                  <td className="border align-middle"> {item.medicine_details.cost ?"₹"+item.medicine_details.cost  : "N/A"} </td>
+                  <td className="border align-middle"> {item.total_amount ? item.total_amount : "N/A"} </td>
+  
+                </tr>
+              ))}
+            </tbody>
+          ) : (
+            <body className="text-center p-0 m-0 border border-1 ">
+              <div className="position-absolute border-0 start-0 end-0 mx-3 p-2 ">
+                <p className=" text-center fw-bold">No Medicines Found</p>
+              </div>
+            </body>
+          )}
+        </table>
+      </div>
+      <div className={`scroll bg-seashell scroll-y d-${vaccine}`} style={{ height:'100%' }} >
+        <table className="table datatable table-responsive text-center bg-seashell">
+          <thead>
+            <tr>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Item ID </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Item Name </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Batch No. </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Expiry Date </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> MRP{" "} </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Rate{" "} </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Qty. </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Disc% </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Trade Disc% </th>
+              <th colspan={Taxon == true ? "8" : "2"} scope="col-group" className={`border p-0 m-0 px-1`} > Total Tax </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Cost{" "} </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Total{" "} </th>
+            </tr>
+            <tr>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > CGST% </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > CGST </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > SGST% </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > SGST{" "} </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > IGST% </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > IGST{" "} </th>
+              <th scope="col" className={`border p-0 m-0 px-1`}> Total% </th>
+              <th scope="col" className={`border p-0 m-0 px-1`}> Total{" "} </th>
+            </tr>
+          </thead>
+          {props.dumpsarr.vaccines &&
+            props.dumpsarr.vaccines.length !== 0 ? (
+            <tbody className="border align-items-center p-0 m-0">
+              {props.dumpsarr.vaccines.map((item, _key) => (
+                <tr className="border p-0 m-0 align-middle" key={_key}>
+                  <td className="border align-middle"> {item.vaccine_stocks_id  && item.vaccine_stocks_id !== undefined ? "v"+item.vaccine_stocks_id : "N/A"} </td>
+                  <td className="border align-middle"> {item.vaccine_details  && item.vaccine_details.vaccine.name !== undefined ? item.vaccine_details.vaccine.name : "N/A"} </td>
+                  <td className="border align-middle"> {item.vaccine_details  && item.vaccine_details.batch_no !== undefined ? item.vaccine_details.batch_no : "N/A"}</td>
+                  <td className="border align-middle"> {item.vaccine_details  && item.vaccine_details.expiry_date !== undefined ? reversefunction(item.vaccine_details.expiry_date) : "N/A"} </td>
+                  <td className="border align-middle"> {item.vaccine_details  && item.vaccine_details.mrp !== undefined ? "₹"+item.vaccine_details.mrp : "N/A"} </td>
+                  <td className="border align-middle"> {item.vaccine_details  && item.vaccine_details.rate !== undefined ? "₹"+item.vaccine_details.rate : "N/A"} </td>
+                  <td className="border align-middle"> {item.qty ? item.qty : "N/A"} </td>
+                  <td className="border align-middle"> {item.vaccine_details && item.vaccine_details.discount !== undefined ?  item.vaccine_details.discount: "N/A"} </td>
+                  <td className="border align-middle"> {item.vaccine_details && item.vaccine_details.trade_discount !== undefined ?  item.vaccine_details.trade_discount: "N/A"} </td>
+                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.vaccine_details && item.vaccine_details.SGST_rate ? Number( item.vaccine_details.SGST_rate) : ""} </td>
+                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.vaccine_details && item.vaccine_details.SGST ? (Number(item.vaccine_details.SGST) * Number(item.qty)).toFixed(2) : ""} </td>
+                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.vaccine_details && item.vaccine_details.CGST_rate ? Number(item.vaccine_details.CGST_rate ) : ""} </td>
+                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.vaccine_details && item.vaccine_details.CGST ? (Number(item.vaccine_details.CGST) * Number(item.qty)).toFixed(2) : ""} </td>
+                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.vaccine_details && item.vaccine_details.IGST_rate ? Number(item.vaccine_details.IGST_rate ) : ""} </td>
+                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.vaccine_details && item.vaccine_details.IGST ? (Number(item.vaccine_details.IGST) * Number(item.qty)).toFixed(2) : ""} </td>
+                  <td className="border align-middle"> {TotalTaxPercent(item.vaccine_details.CGST_rate , item.vaccine_details.SGST_rate, item.vaccine_details.IGST_rate)} </td>
+                  <td className="border align-middle"> {TotalTaxRate(item.vaccine_details.CGST,item.vaccine_details.SGST,item.vaccine_details.IGST, item.qty)} </td>
+                  <td className="border align-middle"> {item.vaccine_details.cost ?"₹"+item.vaccine_details.cost  : "N/A"} </td>
+                  <td className="border align-middle"> {item.total_amount ? item.total_amount : "N/A"} </td>
+
+                </tr>
+              ))}
+            </tbody>
+          ) : (
+            <body className="text-center p-0 m-0 border border-1 ">
+              <div className="position-absolute border-0 start-0 end-0 mx-3 p-2 ">
+                <p className="fw-bold text-center">No Vaccines Found</p>
+              </div>
+            </body>
+          )}
+        </table>
+      </div>
+    </div>
+  );
+}
 function NewDumpForm(props){
 
   const url = useContext(URL)
