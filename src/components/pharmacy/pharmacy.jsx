@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useState, useEffect, useContext, useRef } from "react";
 import { URL, TodayDate, DoctorsList, Clinic, Permissions } from "../../index";
-import { ExportPurchaseEntry, ExportPurchaseReturn, ExportSaleEntry, ExportSaleReturn,ExportTransferIn,ExportTransferOut } from "../pharmacy/Exports";
+import { ExportPurchaseEntry, ExportPurchaseReturn, ExportSaleEntry, ExportSaleReturn,ExportTransferIn,ExportTransferOut,ExportDump } from "../pharmacy/Exports";
 import { QRcode } from "../features/qrcode";
 import Notiflix from "notiflix";
 import ReactPaginate from "react-paginate";
@@ -325,7 +325,7 @@ function Saleentrysection(props) {
            <div className="col-auto position-absolute p-0 m-0 export align-self-center text-center ">
           <ExportSaleEntry saleentryarr={saleentryarrforExcel} fromdate={reversefunction(fromdate)} todate={reversefunction(todate)} />
         </div>
-      <button className={`button addentrypurchase button-charcoal end-0 me-3   position-absolute d-${permission.sale_entry_add == 1 ? "" : "none"}`} onClick={toggle_nsef} >
+      <button className={`button addentrypurchase button-charcoal end-0 me-3  position-absolute d-${permission.sale_entry_add == 1 ? "" : "none"}`} onClick={toggle_nsef} >
         <img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt="displaying_image" className="img-fluid p-0 m-0" />
         Entry Sale
       </button>
@@ -334,12 +334,12 @@ function Saleentrysection(props) {
         <table className="table text-start table-responsive">
           <thead className=" position-sticky top-0 bg-pearl">
             <tr className=" ">
-              <th className="text-charcoal75 fw-bolder text-center px-3"> ID </th>
+              {/* <th className="text-charcoal75 fw-bolder text-center px-3"> ID </th> */}
               <th className="text-charcoal75 fw-bolder px-3"> Bill ID </th>
               <th className="text-charcoal75 fw-bolder"> Patient Name </th>
               <th className="text-charcoal75 fw-bolder"> Bill Date </th>
               <th className="text-charcoal75 fw-bolder"> Bill Total </th>
-              <th className="text-charcoal75 fw-bolder"> Appointment Date </th>
+              {/* <th className="text-charcoal75 fw-bolder"> Appointment Date </th> */}
               <th className="text-charcoal75 fw-bolder"> Doctor Name </th>
               <th className="text-charcoal75 fw-bolder"> Invoice No. </th>
               <th className="text-charcoal75 fw-bolder text-center"> Status </th>
@@ -366,12 +366,12 @@ function Saleentrysection(props) {
             <tbody>
               {saleentryarr.map((item, i) => (
                 <tr className={` bg-${i % 2 == 0 ? "seashell" : "pearl"} align-middle`} key={i} >
-                  <td className="text-charcoal fw-bold text-center px-3"> {item.id && item.id !== null ? item.id : ""} </td>
+                  {/* <td className="text-charcoal fw-bold text-center px-3"> {item.id && item.id !== null ? item.id : ""} </td> */}
                   <td className="text-charcoal fw-bold px-3"> {item.bill_id && item.bill_id !== null ? "P-" + item.bill_id : ""} </td>
                   <td className="text-charcoal fw-bold"> {item.patient && item.patient && item.patient.full_name != null ? item.patient.full_name : ""} </td>
                   <td className="text-charcoal fw-bold"> {item.bill_date && item.bill_date ? reversefunction(item.bill_date) : ""} </td>
                   <td className="text-charcoal fw-bold"> {item.grand_total && item.grand_total ? "Rs. " + item.grand_total : ""} </td>
-                  <td className="text-charcoal fw-bold"> {item.appointment && item.appointment != null && item.appointment.appointment_date && item.appointment.appointment_date != null ? reversefunction(item.appointment.appointment_date) : ""} </td>
+                  {/* <td className="text-charcoal fw-bold"> {item.appointment && item.appointment != null && item.appointment.appointment_date && item.appointment.appointment_date != null ? reversefunction(item.appointment.appointment_date) : ""} </td> */}
                   <td className="text-charcoal fw-bold"> {item && item.doctor_name != null ? item.doctor_name : ""} </td>
                   <td className="text-charcoal fw-bold"> {item.bill_id && item.bill_id !== null ? "P-" + item.bill_id : ""} </td>
                   <td className="text-charcoal fw-bold text-center">
@@ -801,11 +801,7 @@ function SEitemdetailssection(props) {
             <tbody className="border align-items-center p-0 m-0">
               {props.saleentryarr.sale_medicines.map((item, _key) => (
                 <tr className="border p-0 m-0 align-middle" key={_key}>
-                  <td className="border p-0 m-0 align-middle">
-                    {item.medicine_stocks && item.medicine_stocks.id !== null
-                      ? "m" + item.medicine_stocks.id
-                      : ""}
-                  </td>
+                  <td className="border p-0 m-0 align-middle"> {item.medicine_stocks && item.medicine_stocks.id !== null ? "m" + item.medicine_stocks.id : ""} </td>
                   <td className="border p-0 m-0 align-middle">
                     {item.medicine && item.medicine.name !== null
                       ? item.medicine.name
@@ -893,84 +889,24 @@ function SEitemdetailssection(props) {
         <table className="table datatable table-responsive text-center bg-seashell">
           <thead>
             <tr>
-              <th rowspan="2" className="border p-0 m-0 px-1">
-                Stock ID
-              </th>
-              <th rowspan="2" className="border p-0 m-0 px-1">
-                Vaccine
-              </th>
-              <th rowspan="2" className="border p-0 m-0 px-1">
-                MRP
-              </th>
-              <th rowspan="2" className="border p-0 m-0 px-1">
-                Qty
-              </th>
-              <th rowspan="2" className="border p-0 m-0 px-1">
-                Disc. %
-              </th>
-              <th
-                colspan={Taxon == true ? "8" : "2"}
-                scope="col-group"
-                className="border p-0 m-0 px-1"
-              >
-                Total Tax
-              </th>
-              <th rowspan="2" className="border p-0 m-0 px-1">
-                Amt
-              </th>
-              <th rowspan="2" className="border p-0 m-0 px-1">
-                Grand Total
-              </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Stock ID </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Vaccine </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> MRP </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Qty </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Disc. % </th>
+              <th colspan={Taxon == true ? "8" : "2"} scope="col-group" className="border p-0 m-0 px-1" > Total Tax </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Amt </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Grand Total </th>
             </tr>
             <tr>
-              <th
-                scope="col"
-                className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none"
-                  }`}
-              >
-                CGST%
-              </th>
-              <th
-                scope="col"
-                className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none"
-                  }`}
-              >
-                Total CGST
-              </th>
-              <th
-                scope="col"
-                className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none"
-                  }`}
-              >
-                SGST%
-              </th>
-              <th
-                scope="col"
-                className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none"
-                  }`}
-              >
-                Total SGST
-              </th>
-              <th
-                scope="col"
-                className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none"
-                  }`}
-              >
-                IGST%
-              </th>
-              <th
-                scope="col"
-                className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none"
-                  }`}
-              >
-                Total IGST
-              </th>
-              <th scope="col" className={`border p-0 m-0 px-1`}>
-                Total%
-              </th>
-              <th scope="col" className={`border p-0 m-0 px-1`}>
-                Total Tax
-              </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > CGST% </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > Total CGST </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > SGST% </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > Total SGST </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > IGST% </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > Total IGST </th>
+              <th scope="col" className={`border p-0 m-0 px-1`}> Total% </th>
+              <th scope="col" className={`border p-0 m-0 px-1`}> Total Tax </th>
             </tr>
           </thead>
           {props.saleentryarr.sale_vaccines !== undefined &&
@@ -978,86 +914,28 @@ function SEitemdetailssection(props) {
             <tbody className="border align-items-center p-0 m-0">
               {props.saleentryarr.sale_vaccines.map((item, _key) => (
                 <tr className="border p-0 m-0 align-middle" key={_key}>
-                  <td className="border p-0 m-0 align-middle">
-                    {item.vaccine_stocks && item.vaccine_stocks.id !== null
-                      ? "v" + item.vaccine_stocks.id
-                      : ""}
-                  </td>
-                  <td className="border p-0 m-0 align-middle">
-                    {item.vaccine && item.vaccine.name !== null
-                      ? item.vaccine.name
-                      : ""}
-                  </td>
-                  <td className="border p-0 m-0 align-middle">
-                    {item.main_mrp ? item.main_mrp : ""}
-                  </td>
-                  <td className="border p-0 m-0 align-middle">
-                    {item.qty && item.qty != null ? item.qty : ""}
-                  </td>
-                  <td className="border p-0 m-0 align-middle">
-                    {item.discount != null ? item.discount : ""}
-                  </td>
-                  <td
-                    className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none"
-                      }`}
-                  >
-                    {item.SGST_rate ? Number(item.SGST_rate) : ""}
-                  </td>
-                  <td
-                    className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none"
-                      }`}
-                  >
-                    {item.SGST ? Number(item.SGST) * Number(item.qty) : ""}
-                  </td>
-                  <td
-                    className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none"
-                      }`}
-                  >
-                    {item.CGST_rate ? Number(item.CGST_rate) : ""}
-                  </td>
-                  <td
-                    className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none"
-                      }`}
-                  >
-                    {item.CGST ? Number(item.CGST) * Number(item.qty) : ""}
-                  </td>
-                  <td
-                    className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none"
-                      }`}
-                  >
-                    {item.IGST_rate ? Number(item.IGST_rate) : ""}
-                  </td>
-                  <td
-                    className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none"
-                      }`}
-                  >
-                    {item.IGST ? Number(item.IGST) * Number(item.qty) : ""}
-                  </td>
-                  <td className="border p-0 m-0 align-middle">
-                    {TotalTaxPercent(
-                      item.CGST_rate,
-                      item.SGST_rate,
-                      item.IGST_rate
-                    )}
-                  </td>
-                  <td className="border p-0 m-0 align-middle">
-                    {TotalTaxRate(item.CGST, item.SGST, item.IGST, item.qty)}
-                  </td>
-                  <td className="border p-0 m-0 align-middle">
-                    {item.disc_mrp ? item.disc_mrp : ""}
-                  </td>
-                  <td className="border p-0 m-0 align-middle">
-                    {item.total_amount ? item.total_amount : ""}
-                  </td>
+                  <td className="border p-0 m-0 align-middle"> {item.vaccine_stocks && item.vaccine_stocks.id !== null ? "v" + item.vaccine_stocks.id : ""} </td>
+                  <td className="border p-0 m-0 align-middle"> {item.vaccine && item.vaccine.name !== null ? item.vaccine.name : ""} </td>
+                  <td className="border p-0 m-0 align-middle"> {item.main_mrp ? item.main_mrp : ""} </td>
+                  <td className="border p-0 m-0 align-middle"> {item.qty && item.qty != null ? item.qty : ""} </td>
+                  <td className="border p-0 m-0 align-middle"> {item.discount != null ? item.discount : ""} </td>
+                  <td className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none" }`} > {item.SGST_rate ? Number(item.SGST_rate) : ""} </td>
+                  <td className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none" }`} > {item.SGST ? Number(item.SGST) * Number(item.qty) : ""} </td>
+                  <td className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none" }`} > {item.CGST_rate ? Number(item.CGST_rate) : ""} </td>
+                  <td className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none" }`} > {item.CGST ? Number(item.CGST) * Number(item.qty) : ""} </td>
+                  <td className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none" }`} > {item.IGST_rate ? Number(item.IGST_rate) : ""} </td>
+                  <td className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none" }`} > {item.IGST ? Number(item.IGST) * Number(item.qty) : ""} </td>
+                  <td className="border p-0 m-0 align-middle"> {TotalTaxPercent( item.CGST_rate, item.SGST_rate, item.IGST_rate )} </td>
+                  <td className="border p-0 m-0 align-middle"> {TotalTaxRate(item.CGST, item.SGST, item.IGST, item.qty)} </td>
+                  <td className="border p-0 m-0 align-middle"> {item.disc_mrp ? item.disc_mrp : ""} </td>
+                  <td className="border p-0 m-0 align-middle"> {item.total_amount ? item.total_amount : ""} </td>
                 </tr>
               ))}
             </tbody>
           ) : (
             <body className="text-center p-0 m-0 border border-1 ">
               <div className="position-absolute border-0 start-0 end-0 mx-3 p-2 ">
-                <p className=" text-center fw-bold text-charcoal">
-                  No Vaccines Found
-                </p>
+                <p className=" text-center fw-bold text-charcoal"> No Vaccines Found </p>
               </div>
             </body>
           )}
@@ -1205,10 +1083,10 @@ function SaleReturns(props) {
 
   return (
     <>
-         <div className="col-auto position-absolute p-0 m-0 export align-self-center text-center ">
+         <div className="col-auto position-absolute p-0 m-0 export align-self-center text-center ms-3">
             <ExportSaleReturn salereturnarr={salereturnarrExcel} fromdate={reversefunction(fromdate)} todate={reversefunction(todate)} />
           </div>
-      <button className="button addentrypurchase button-charcoal position-absolute" onClick={toggle_nref} >
+      <button className="button addentrypurchase button-charcoal position-absolute end-0 me-3" onClick={toggle_nref} >
         <img src={process.env.PUBLIC_URL + "/images/addiconwhite.png"} alt="displaying_image" className="img-fluid p-0 m-0"/> Entry Return </button>
       <div classsName="p-0 m-0">
             <h2 className=" p-0 m-0 heading text-charcoal fw-bolder ms-3  " style={{ width: "fit-content" }} > {pagecount} {pagecount > 0 ? "Sale Returns" : "Sale Return"}{" "} </h2>
@@ -1303,7 +1181,9 @@ function SaleReturns(props) {
           />
         </div>
       </div>
-      <section className={`newsalereturnform position-absolute start-0 end-0 border border-1 bg-seashell d-${nref}`} > {<NewSaleReturnentryform toggle_nref={toggle_nref} GETSaleReturns={GETSaleReturns} />} </section>
+      <section className={`rounded-2 position-absolute start-0 top-0 end-0 mx-auto border shadow bg-seashell d-${nref}`} style={{height:'70vh',width:'60vh'}} >
+         {<NewSaleReturnentryform toggle_nref={toggle_nref} GETSaleReturns={GETSaleReturns} />} 
+        </section>
     </>
   );
 }
@@ -2534,46 +2414,20 @@ function NewSaleReturnentryform(props) {
   }
   return (
     <div className="p-0 m-0 ">
-      <div className="container-fluid p-0 m-0 border border-1 ">
-        <h5 className="text-center pt-3" style={{ color: "var(--charcoal)" }}>
-          New Sale Return Entry
-        </h5>
-        <button
-          type="button"
-          className="btn-close closebtn position-absolute end-0 p-2 me-2"
-          onClick={props.toggle_nref}
-          disabled={load ? true : false}
-          aria-label="Close"
-        ></button>
-        <hr />
-        <div className="container-fluid p-0 m-0 w-100 entrydetails bg-seashell">
+      <div className="shadow-sm">
+          <h5 className="text-center fw-bold py-2"> New Sale Return Entry </h5>
+          <button type="button" className="btn-close closebtn position-absolute end-0 me-3" onClick={props.toggle_nref} disabled={load ? true : false} aria-label="Close" ></button>
+        </div>
+        <div className="container-fluid p-0 m-0 w-100 entrydetails bg-seashell mt-4">
           <div className="row p-0 m-0 justify-content-end">
             <div className="col-5">
               <h6 className="p-0 m-0 ms-3 fw-bold">Select Bill</h6>
-              <input
-                className="form-control ms-2 rounded-1 bg-seashell"
-                placeholder="Bill Id (Does not require initials)"
-                value={billid ? billid : ""}
-                onChange={(e) => {
-                  setbillid(e.target.value);
-                  setMedicineentriesArr([]);
-                }}
-              />
+              <input className="form-control ms-2 rounded-1 bg-seashell" placeholder="Bill Id (Does not require initials)" value={billid ? billid : ""} onChange={(e) => { setbillid(e.target.value); setMedicineentriesArr([]); }} />
             </div>
             <div className="col-5">
               <div className="position-relative">
                 <h6 className="p-0 m-0 ms-3 fw-bold">Product ID</h6>
-                <input
-                  className="form-control bg-seashell"
-                  placeholder="Product Id (Require initials)"
-                  value={itemname ? itemname : ""}
-                  onChange={(e) => {
-                    billid
-                      ? setitemname(e.target.value)
-                      : Notiflix.Notify.failure("Please Add Bill id First");
-                    medicinesref.current.style.display = "block";
-                  }}
-                />
+                <input className="form-control bg-seashell" placeholder="Product Id (Require initials)" value={itemname ? itemname : ""} onChange={(e) => { billid ? setitemname(e.target.value) : Notiflix.Notify.failure("Please Add Bill id First"); medicinesref.current.style.display = "block"; }} />
                 <div
                   ref={medicinesref}
                   className="position-absolute rounded-1 bg-pearl col-12"
@@ -2597,19 +2451,7 @@ function NewSaleReturnentryform(props) {
                       </div>
                     ) : (
                       billsearch.map((data, i) => (
-                        <div
-                          style={{ cursor: "pointer" }}
-                          className={`p-0 ps-1 shadow bg-${i % 2 == 0 ? "pearl" : "lightyellow"
-                            } fs-6 `}
-                          name={data.id}
-                          onClick={(e) => {
-                            setitemname(data.item_name);
-                            InsertMedicines(data);
-                            medicinesref.current.style.display = "none";
-                          }}
-                        >
-                          {data.item_name}
-                        </div>
+                        <div style={{ cursor: "pointer" }} className={`p-0 ps-1 shadow bg-${i % 2 == 0 ? "pearl" : "lightyellow" } fs-6 `} name={data.id} onClick={(e) => { setitemname(data.item_name); InsertMedicines(data); medicinesref.current.style.display = "none"; }} > {data.item_name} </div>
                       ))
                     )
                   ) : (
@@ -2620,130 +2462,58 @@ function NewSaleReturnentryform(props) {
             </div>
             <div className="col-2 align-self-center ">
               <p></p>
-              <button className="p-0 m-0 btn" onClick={searchProduct}>
-                <img
-                  src={process.env.PUBLIC_URL + "images/search.png"}
-                    
-                />
-              </button>
+              <button className="p-0 m-0 btn" onClick={searchProduct}> <img src={process.env.PUBLIC_URL + "images/search.png"} /> </button>
             </div>
           </div>
-          <div
-            className=" p-0 m-0 mt-2 scroll scroll-y"
-            style={{ Height: "65vh", zIndex: "2" }}
-          >
-            <p className="text-center fw-bold text-burntumber p-0 m-0  mt-2 mb-1">
-              Items Selected
-            </p>
+          <h6 className="text-start fw-bold text-charcoal p-0 m-0 ms-4 mt-4"> Items To Return </h6>
+          <div className=" p-0 m-0 mt-2 scroll scroll-y" style={{ Height: "65vh", zIndex: "2" }} >
             <table className="table datatable text-center position-relative">
               <thead className="text-charcoal75 fw-bold">
                 <tr>
-                  <th className="p-0 m-0 px-1">Item ID</th>
-                  <th className="p-0 m-0 px-1">Item Name</th>
-                  <th className="p-0 m-0 px-1">batch No.</th>
-                  <th className="p-0 m-0 px-1">Expiry Date</th>
-                  <th className="p-0 m-0 px-1">Sale Qty</th>
-                  <th className="p-0 m-0 px-1">Qty to Return</th>
-                  <th className="p-0 m-0 px-1">Sale Rate/Unit</th>
-                  <th className="p-0 m-0 px-1">Sale Rate</th>
-                  <th className="p-0 m-0 px-1">Delete</th>
+                  <th className="px-2">Stock ID</th>
+                  <th className="px-2">Item Name</th>
+                  <th className="px-2">batch No.</th>
+                  <th className="px-2">Expiry Date</th>
+                  <th className="px-2">Sale Qty</th>
+                  <th className="px-2">Qty to Return</th>
+                  <th className="px-2">Sale Rate/Unit</th>
+                  <th className="px-2">Sale Rate</th>
+                  <th className="px-2">Delete</th>
                 </tr>
               </thead>
-              {MedicineentriesArr ? (
-                <tbody
-                  style={{
-                    maxHeight: "65vh",
-                    minHeight: "65vh",
-                    color: "var(--charcoal)",
-                    fontWeight: "600",
-                  }}
-                >
-                  {MedicineentriesArr.map((item, _key) => (
-                    <tr key={_key} className="">
-                      <td>
-                        {item.Type}
-                        {item.Itemid}
-                      </td>
-                      <td>{item.Item}</td>
-                      <td>{item.batchno}</td>
-                      <td>{reversefunction(item.expirydate)}</td>
-                      <td>{item.saleqty}</td>
-                      <td
-                        className="p-0 m-0"
-                        style={{ width: "0px", height: "0px" }}
-                      >
-                        <input
-                          className="border border-1 rounded-1 w-25 text-center p-0 m-0 bg-seashell  mt-2"
-                          value={item.qtytoReturn ? item.qtytoReturn : ""}
-                          onChange={(e) => {
-                            e.target.value <= item.saleqty
-                              ? (item.qtytoReturn = e.target.value)
-                              : Notiflix.Notify.failure(
-                                "Quantity Cannot be Greater then Current Stock Available"
-                              );
-                            item.totalcost = CalculateCost(
-                              item.cost,
-                              item.saleqty,
-                              e.target.value
-                            );
-                            setMedicineentriesArr((prevState) => [
-                              ...prevState,
-                            ]);
-                          }}
-                        />
-                      </td>
-                      <td>{item.cost}</td>
-                      <td>{item.totalcost}</td>
-                      <td>
-                        <button
-                          onClick={() => {
-                            DeleteMedicine(item.Itemid);
-                          }}
-                          className="btn btn-sm button-burntumber"
-                        >
-                          Delete
-                        </button>
+              {MedicineentriesArr && MedicineentriesArr.length == 0 ? (
+                  <tbody className="position-relative" style={{ height: "65vh", maxHeight: "65vh", color: "var(--charcoal)", fontWeight: "600", }} >
+                    <tr className="">
+                      <td className="position-absolute start-0 end-0 top-0 text-center mx-auto">
+                        No items Added
                       </td>
                     </tr>
-                  ))}
-                </tbody>
-              ) : MedicineentriesArr && MedicineentriesArr.length == 0 ? (
-                <tbody
-                  className="position-relative"
-                  style={{
-                    height: "65vh",
-                    maxHeight: "65vh",
-                    color: "var(--charcoal)",
-                    fontWeight: "600",
-                  }}
-                >
-                  <tr>
-                    <td className="position-absolute start-0 end-0 top-0">
-                      No items Added
-                    </td>
-                  </tr>
-                </tbody>
-              ) : (
-                <tbody
-                  className="position-relative"
-                  style={{
-                    height: "65vh",
-                    maxHeight: "65vh",
-                    color: "var(--charcoal)",
-                    fontWeight: "600",
-                  }}
-                >
-                  <tr className="">
-                    <td className="position-absolute start-0 end-0 top-0">
-                      No items Added
-                    </td>
-                  </tr>
-                </tbody>
-              )}
+                  </tbody>
+                ) : (
+                  <tbody className="align-middle" style={{ maxHeight: "65vh", minHeight: "65vh", color: "var(--charcoal)", fontWeight: "600", }} >
+                    {MedicineentriesArr.map((item, _key) => (
+                      <tr key={_key} className="">
+                        <td> {item.Type} {item.Itemid} </td>
+                        <td>{item.Item}</td>
+                        <td>{item.batchno}</td>
+                        <td>{reversefunction(item.expirydate)}</td>
+                        <td>{item.saleqty}</td>
+                        <td className="p-0 m-0" style={{ width: "0px", height: "0px" }} >
+                          <input className="border border-1 rounded-1 w-25 text-center p-0 m-0 bg-seashell  mt-2" value={item.qtytoReturn ? item.qtytoReturn : ""} onChange={(e) => { e.target.value <= item.saleqty ? (item.qtytoReturn = e.target.value) : Notiflix.Notify.failure( "Quantity Cannot be Greater then Current Stock Available" ); item.totalcost = CalculateCost( item.cost, item.saleqty, e.target.value ); setMedicineentriesArr((prevState) => [ ...prevState, ]); }} />
+                        </td>
+                        <td>{item.cost}</td>
+                        <td>{item.totalcost}</td>
+                        <td>
+                          <button onClick={() => { DeleteMedicine(item.Itemid); }} className="btn p-0 m-0" > <img className="img-fluid" src={process.env.PUBLIC_URL + '/images/delete.png'}/> </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                )
+                }
             </table>
           </div>
         </div>
-      </div>
       <div className="col-12 position-absolute start-0 end-0 bottom-0 text-center bg-pearl  border border-1 py-3">
         <div className="row p-0 m-0">
           <div className="col-6">
@@ -2776,12 +2546,7 @@ function NewSaleReturnentryform(props) {
                 </div>
               </div>
             ) : (
-              <button
-                className="button button-charcoal px-5"
-                onClick={confirmmessage}
-              >
-                Save Entry
-              </button>
+              <button className="button button-charcoal px-5" onClick={confirmmessage} > Proceed Return </button>
             )}
           </div>
         </div>
@@ -2831,73 +2596,33 @@ function SRitemdetailssection(props) {
     <div className="container-fluid p-0 m-0 ">
       <div className="container-fluid p-0 m-0">
         <div className="row p-0 m-0 position-relative">
-          <h5 className="text-center text-charcoal pt-3">
-            {props.itembillid} Sale Return Item Details
-          </h5>
-          <button
-            type="button"
-            className="btn-close closebtn m-auto position-absolute end-0 me-4"
-            onClick={props.toggle_sridw}
-            aria-label="Close"
-          ></button>
+          <h5 className="text-center text-charcoal pt-3"> {props.itembillid} Sale Return Item Details </h5>
+          <button type="button" className="btn-close closebtn m-auto position-absolute end-0 me-4" onClick={props.toggle_sridw} aria-label="Close" ></button>
           <div className="col-2 d-none">
-            <div
-              className=" position-relative searchbutton"
-              style={{ top: "0.25rem", right: "1rem" }}
-            >
-              <input
-                type="text"
-                className=" form-control d-inline PEsearch bg-seashell"
-                placeholder="Search PE"
-              />
-              <button
-                className="btn p-0 m-0 bg-transparent border-0 position-absolute"
-                style={{ width: "2rem", right: "0", left: "0", top: "0.25rem" }}
-              >
-                <img
-                  src={process.env.PUBLIC_URL + "/images/search.png"}
-                  alt="displaying_image"
-                  className="img-fluid p-0 m-0"
-                />
-              </button>
+            <div className=" position-relative searchbutton" style={{ top: "0.25rem", right: "1rem" }} >
+              <input type="text" className=" form-control d-inline PEsearch bg-seashell" placeholder="Search PE" />
+              <button className="btn p-0 m-0 bg-transparent border-0 position-absolute" style={{ width: "2rem", right: "0", left: "0", top: "0.25rem" }} > <img src={process.env.PUBLIC_URL + "/images/search.png"} alt="displaying_image" className="img-fluid p-0 m-0" /> </button>
             </div>
           </div>
         </div>
       </div>
       <div className="d-flex justify-content-center p-0 m-0 mt-3 mb-1">
         {Items.map((data, i) => (
-          <button
-            className={`button border-charcoal rounded-0 shadow-0 button-${i == index ? "charcoal" : "seashell"
-              }`}
-            onClick={() => {
-              setindex(i);
-            }}
-          >
-            {data}
-          </button>
+          <button className={`button border-charcoal rounded-0 shadow-0 button-${i == index ? "charcoal" : "seashell" }`} onClick={() => { setindex(i); }} > {data} </button>
         ))}
       </div>
 
       <div className="row justify-content-end me-5">
         <div className="col-3">
-          <input
-            type="checkbox"
-            className="form-check-input"
-            value={Taxon ? Taxon : ""}
-            onChange={() => {
-              Taxon == true ? setTaxon(false) : setTaxon(true);
-            }}
-          />
+          <input type="checkbox" className="form-check-input" value={Taxon ? Taxon : ""} onChange={() => { Taxon == true ? setTaxon(false) : setTaxon(true); }} />
           <label>Show Tax Details</label>
         </div>
       </div>
-      <div
-        className={`scroll bg-seashell scroll-y d-${medicine}`}
-        style={{ height:'100%' }}
-      >
+      <div className={`scroll bg-seashell scroll-y d-${medicine}`} style={{ height:'100%' }} >
         <table className="table datatable table-responsive text-center bg-seashell">
           <thead>
             <tr>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Stock ID </th>
               <th rowspan="2" className="border p-0 m-0 px-1"> Item Name </th>
               <th rowspan="2" className="border p-0 m-0 px-1"> Batch No. </th>
               <th rowspan="2" className="border p-0 m-0 px-1"> Expiry Date </th>
@@ -2925,84 +2650,23 @@ function SRitemdetailssection(props) {
             <tbody className="border align-items-center p-0 m-0">
               {props.salereturnarr.sale_medicines.map((item, _key) => (
                 <tr className="border p-0 m-0 align-middle" key={_key}>
-                  <td className="border p-0 m-0 align-middle">
-                    {item.medicine && item.medicine.name !== null
-                      ? item.medicine.name
-                      : "N/A"}
-                  </td>
-                  <td className="border p-0 m-0 align-middle">
-                    {item.medicine_stocks.batch_no &&
-                      item.medicine_stocks.batch_no != null
-                      ? item.medicine_stocks.batch_no
-                      : "N/A"}
-                  </td>
-                  <td className="border p-0 m-0 align-middle">
-                    {item.medicine_stocks.expiry_date &&
-                      item.medicine_stocks.expiry_date != null
-                      ? reversefunction(item.medicine_stocks.expiry_date)
-                      : "N/A"}
-                  </td>
-                  <td className="border p-0 m-0 align-middle">
-                    {item.main_mrp ? item.main_mrp : "N/A"}
-                  </td>
-                  <td className="border p-0 m-0 align-middle">
-                    {item.disc_mrp ? item.disc_mrp : "N/A"}
-                  </td>
-                  <td className="border p-0 m-0 align-middle">
-                    {item.discount ? item.discount : "N/A"}
-                  </td>
-                  <td className="border p-0 m-0 align-middle">
-                    {item.qty ? item.qty : "N/A"}
-                  </td>
-                  <td
-                    className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none"
-                      }`}
-                  >
-                    {item.SGST_rate ? item.SGST_rate : "N/A"}
-                  </td>
-                  <td
-                    className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none"
-                      }`}
-                  >
-                    {item.SGST ? Number(item.SGST) * Number(item.qty) : "N/A"}
-                  </td>
-                  <td
-                    className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none"
-                      }`}
-                  >
-                    {item.CGST_rate ? item.CGST_rate : "N/A"}
-                  </td>
-                  <td
-                    className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none"
-                      }`}
-                  >
-                    {item.CGST ? Number(item.CGST) * Number(item.qty) : "N/A"}
-                  </td>
-                  <td
-                    className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none"
-                      }`}
-                  >
-                    {item.IGST_rate ? item.IGST_rate : "N/A"}
-                  </td>
-                  <td
-                    className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none"
-                      }`}
-                  >
-                    {item.IGST ? Number(item.IGST) * Number(item.qty) : "N/A"}
-                  </td>
-                  <td className="border p-0 m-0 align-middle">
-                    {TotalTaxPercent(
-                      item.CGST_rate,
-                      item.SGST_rate,
-                      item.IGST_rate
-                    )}
-                  </td>
-                  <td className="border p-0 m-0 align-middle">
-                    {TotalTaxRate(item.CGST, item.SGST, item.IGST, item.qty)}
-                  </td>
-                  <td className="border p-0 m-0 align-middle">
-                    {item.total_amount ? item.total_amount : "N/A"}
-                  </td>
+                  <td className="border p-0 m-0 align-middle"> {item.medicine_stocks && item.medicine_stocks.id !== null ? "m" + item.medicine_stocks.id : ""} </td>
+                  <td className="border p-0 m-0 align-middle"> {item.medicine && item.medicine.name !== null ? item.medicine.name : "N/A"} </td>
+                  <td className="border p-0 m-0 align-middle"> {item.medicine_stocks.batch_no && item.medicine_stocks.batch_no != null ? item.medicine_stocks.batch_no : "N/A"} </td>
+                  <td className="border p-0 m-0 align-middle"> {item.medicine_stocks.expiry_date && item.medicine_stocks.expiry_date != null ? reversefunction(item.medicine_stocks.expiry_date) : "N/A"} </td>
+                  <td className="border p-0 m-0 align-middle"> {item.main_mrp ? item.main_mrp : "N/A"} </td>
+                  <td className="border p-0 m-0 align-middle"> {item.disc_mrp ? item.disc_mrp : "N/A"} </td>
+                  <td className="border p-0 m-0 align-middle"> {item.discount ? item.discount : "N/A"} </td>
+                  <td className="border p-0 m-0 align-middle"> {item.qty ? item.qty : "N/A"} </td>
+                  <td className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none" }`} > {item.SGST_rate ? item.SGST_rate : "N/A"} </td>
+                  <td className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none" }`} > {item.SGST ? Number(item.SGST) * Number(item.qty) : "N/A"} </td>
+                  <td className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none" }`} > {item.CGST_rate ? item.CGST_rate : "N/A"} </td>
+                  <td className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none" }`} > {item.CGST ? Number(item.CGST) * Number(item.qty) : "N/A"} </td>
+                  <td className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none" }`} > {item.IGST_rate ? item.IGST_rate : "N/A"} </td>
+                  <td className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none" }`} > {item.IGST ? Number(item.IGST) * Number(item.qty) : "N/A"} </td>
+                  <td className="border p-0 m-0 align-middle"> {TotalTaxPercent( item.CGST_rate, item.SGST_rate, item.IGST_rate )} </td>
+                  <td className="border p-0 m-0 align-middle"> {TotalTaxRate(item.CGST, item.SGST, item.IGST, item.qty)} </td>
+                  <td className="border p-0 m-0 align-middle"> {item.total_amount ? item.total_amount : "N/A"} </td>
                   {/* <td className='border p-0 m-0 align-middle'><button className='btn'><img src={process.env.PUBLIC_URL + "/images/qrcode.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1" /></button></td> */}
                 </tr>
               ))}
@@ -3018,106 +2682,33 @@ function SRitemdetailssection(props) {
           )}
         </table>
       </div>
-      <div
-        className={`scroll bg-seashell scroll-y d-${vaccine}`}
-        style={{ height:"100%"}}
-      >
+      <div className={`scroll bg-seashell scroll-y d-${vaccine}`} style={{ height:"100%"}} >
         <table className="table datatable table-responsive text-center bg-seashell">
           <thead>
             <tr>
-              <th rowspan="2" className="border p-0 m-0 px-1">
-                Item ID
-              </th>
-              <th rowspan="2" className="border p-0 m-0 px-1">
-                Item Name
-              </th>
-              <th rowspan="2" className="border p-0 m-0 px-1">
-                Batch No.
-              </th>
-              <th rowspan="2" className="border p-0 m-0 px-1">
-                Expiry Date
-              </th>
-              <th rowspan="2" className="border p-0 m-0 px-1">
-                MRP in Rs.
-              </th>
-              <th rowspan="2" className="border p-0 m-0 px-1">
-                Rate in Rs.
-              </th>
-              <th rowspan="2" className="border p-0 m-0 px-1">
-                Disc%
-              </th>
-              <th rowspan="2" className="border p-0 m-0 px-1">
-                Trade Disc%
-              </th>
-              <th
-                colspan={Taxon == true ? "8" : "2"}
-                scope="col-group"
-                className={`border p-0 m-0 px-1`}
-              >
-                Total Tax
-              </th>
-              <th rowspan="2" className="border p-0 m-0 px-1">
-                Cost in Rs.
-              </th>
-              <th rowspan="2" className="border p-0 m-0 px-1">
-                Qty.
-              </th>
-              <th rowspan="2" className="border p-0 m-0 px-1">
-                Total in Rs.
-              </th>
-              <th rowspan="2" className="border p-0 m-0 px-1">
-                Print QR
-              </th>
+            <th rowspan="2" className="border p-0 m-0 px-1"> Stock ID </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Item Name </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Batch No. </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Expiry Date </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> MRP in Rs. </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Rate in Rs. </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Disc% </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Trade Disc% </th>
+              <th colspan={Taxon == true ? "8" : "2"} scope="col-group" className={`border p-0 m-0 px-1`} > Total Tax </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Cost in Rs. </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Qty. </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Total in Rs. </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Print QR </th>
             </tr>
             <tr>
-              <th
-                scope="col"
-                className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none"
-                  }`}
-              >
-                CGST%
-              </th>
-              <th
-                scope="col"
-                className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none"
-                  }`}
-              >
-                CGST Rs.
-              </th>
-              <th
-                scope="col"
-                className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none"
-                  }`}
-              >
-                SGST%
-              </th>
-              <th
-                scope="col"
-                className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none"
-                  }`}
-              >
-                SGST in Rs.
-              </th>
-              <th
-                scope="col"
-                className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none"
-                  }`}
-              >
-                IGST%
-              </th>
-              <th
-                scope="col"
-                className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none"
-                  }`}
-              >
-                IGST in Rs.
-              </th>
-              <th scope="col" className={`border p-0 m-0 px-1`}>
-                Total%
-              </th>
-              <th scope="col" className={`border p-0 m-0 px-1`}>
-                Total in Rs.
-              </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > CGST% </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > CGST Rs. </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > SGST% </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > SGST in Rs. </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > IGST% </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > IGST in Rs. </th>
+              <th scope="col" className={`border p-0 m-0 px-1`}> Total% </th>
+              <th scope="col" className={`border p-0 m-0 px-1`}> Total in Rs. </th>
             </tr>
           </thead>
           {props.salereturnarr.purchase_vaccines &&
@@ -3125,101 +2716,26 @@ function SRitemdetailssection(props) {
             <tbody className="border align-items-center p-0 m-0">
               {props.salereturnarr.purchase_vaccines.map((item, _key) => (
                 <tr className="border p-0 m-0 align-middle" key={_key}>
-                  <td className="border p-0 m-0 align-middle">
-                    {item && item.id !== null ? item.id : "N/A"}
-                  </td>
-                  <td className="border p-0 m-0 align-middle">
-                    {item.vaccine && item.vaccine.name !== null
-                      ? item.vaccine.name
-                      : "N/A"}
-                  </td>
-                  <td className="border p-0 m-0 align-middle">
-                    {item.batch_no && item.batch_no != null
-                      ? item.batch_no
-                      : "N/A"}
-                  </td>
-                  <td className="border p-0 m-0 align-middle">
-                    {item.expiry_date && item.expiry_date != null
-                      ? reversefunction(item.expiry_date)
-                      : "N/A"}
-                  </td>
-                  <td className="border p-0 m-0 align-middle">
-                    {item.mrp ? item.mrp : "N/A"}
-                  </td>
-                  <td className="border p-0 m-0 align-middle">
-                    {item.rate ? item.rate : "N/A"}
-                  </td>
-                  <td className="border p-0 m-0 align-middle">
-                    {item.discount ? item.discount : "N/A"}
-                  </td>
-                  <td className="border p-0 m-0 align-middle">
-                    {item.trade_discount ? item.trade_discount : "N/A"}
-                  </td>
-                  <td
-                    className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none"
-                      }`}
-                  >
-                    {item.SGST_rate ? item.SGST_rate : "N/A"}
-                  </td>
-                  <td
-                    className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none"
-                      }`}
-                  >
-                    {item.SGST ? item.SGST : "N/A"}
-                  </td>
-                  <td
-                    className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none"
-                      }`}
-                  >
-                    {item.CGST_rate ? item.CGST_rate : "N/A"}
-                  </td>
-                  <td
-                    className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none"
-                      }`}
-                  >
-                    {item.CGST ? item.CGST : "N/A"}
-                  </td>
-                  <td
-                    className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none"
-                      }`}
-                  >
-                    {item.IGST_rate ? item.IGST_rate : "N/A"}
-                  </td>
-                  <td
-                    className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none"
-                      }`}
-                  >
-                    {item.IGST ? item.IGST : "N/A"}
-                  </td>
-                  <td className="border p-0 m-0 align-middle">
-                    {TotalTaxPercent(
-                      item.CGST_rate,
-                      item.SGST_rate,
-                      item.IGST_rate
-                    )}
-                  </td>
-                  <td className="border p-0 m-0 align-middle">
-                    {TotalTaxRate(item.CGST, item.SGST, item.IGST)}
-                  </td>
-                  <td className="border p-0 m-0 align-middle">
-                    {item.cost ? item.cost : "N/A"}
-                  </td>
-                  <td className="border p-0 m-0 align-middle">
-                    {item.qty ? item.qty : "N/A"}
-                  </td>
-                  <td className="border p-0 m-0 align-middle">
-                    {item.total_amount ? item.total_amount : "N/A"}
-                  </td>
-                  <td className="border p-0 m-0 align-middle">
-                    <button className="btn">
-                      <img
-                        src={process.env.PUBLIC_URL + "/images/qrcode.png"}
-                        alt="displaying_image"
-                  
-                        className="me-1"
-                      />
-                    </button>
-                  </td>
+                   <td className="border p-0 m-0 align-middle"> {item.vaccine_stocks && item.vaccine_stocks.id !== null ? "v" + item.vaccine_stocks.id : ""} </td>
+                  <td className="border p-0 m-0 align-middle"> {item.vaccine && item.vaccine.name !== null ? item.vaccine.name : "N/A"} </td>
+                  <td className="border p-0 m-0 align-middle"> {item.batch_no && item.batch_no != null ? item.batch_no : "N/A"} </td>
+                  <td className="border p-0 m-0 align-middle"> {item.expiry_date && item.expiry_date != null ? reversefunction(item.expiry_date) : "N/A"} </td>
+                  <td className="border p-0 m-0 align-middle"> {item.mrp ? item.mrp : "N/A"} </td>
+                  <td className="border p-0 m-0 align-middle"> {item.rate ? item.rate : "N/A"} </td>
+                  <td className="border p-0 m-0 align-middle"> {item.discount ? item.discount : "N/A"} </td>
+                  <td className="border p-0 m-0 align-middle"> {item.trade_discount ? item.trade_discount : "N/A"} </td>
+                  <td className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none" }`} > {item.SGST_rate ? item.SGST_rate : "N/A"} </td>
+                  <td className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none" }`} > {item.SGST ? item.SGST : "N/A"} </td> 
+                  <td className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none" }`} > {item.CGST_rate ? item.CGST_rate : "N/A"} </td>
+                  <td className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none" }`} > {item.CGST ? item.CGST : "N/A"} </td>
+                  <td className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none" }`} > {item.IGST_rate ? item.IGST_rate : "N/A"} </td>
+                  <td className={`border p-0 m-0 align-middle d-${Taxon == true ? "" : "none" }`} > {item.IGST ? item.IGST : "N/A"} </td>
+                  <td className="border p-0 m-0 align-middle"> {TotalTaxPercent( item.CGST_rate, item.SGST_rate, item.IGST_rate )} </td>
+                  <td className="border p-0 m-0 align-middle"> {TotalTaxRate(item.CGST, item.SGST, item.IGST)} </td>
+                  <td className="border p-0 m-0 align-middle"> {item.cost ? item.cost : "N/A"} </td>
+                  <td className="border p-0 m-0 align-middle"> {item.qty ? item.qty : "N/A"} </td>
+                  <td className="border p-0 m-0 align-middle"> {item.total_amount ? item.total_amount : "N/A"} </td>
+                  <td className="border p-0 m-0 align-middle"> <button className="btn"> <img src={process.env.PUBLIC_URL + "/images/qrcode.png"} alt="displaying_image" className="me-1" /> </button> </td>
                 </tr>
               ))}
             </tbody>
@@ -9299,6 +8815,7 @@ function Dumpsection(props){
   const currentDate = useContext(TodayDate);
   const adminid = localStorage.getItem("id");
   const ClinicID = localStorage.getItem("ClinicId");
+  const [cliniclist,setcliniclist]=useState('')
   const permission = useContext(Permissions);
   const url = useContext(URL);
   const [peidw, setpeidw] = useState("none");
@@ -9314,8 +8831,17 @@ function Dumpsection(props){
   const [todate,settodate] =useState()
   const [channel,setchannel] =useState()
   const [second ,setSecond] =  useState()
+  const [statusindex,setstatusindex] = useState()
 
 
+  function ClinicList() {
+    axios.get(`${url}/clinic/list`).then((response) => {
+        setcliniclist(response.data.data)
+    })
+}
+useEffect(() => {
+    ClinicList()
+}, [])
 
   const toggle_peidw = () => {
     if (peidw === "none") {
@@ -9407,12 +8933,12 @@ function Dumpsection(props){
   }
   useEffect(() => {
     GetPages();
-  }, [fromdate, todate,channel]);
+  }, [fromdate, todate,channel])
 
   useEffect(() => {
-    GETDumpList();
-    GETDumpListForExcel();
-  }, [fromdate, todate,channel]);
+    GETDumpList()
+    GETDumpListForExcel()
+  }, [fromdate, todate,channel])
 
   const toggle_npef = () => {
     if (npef === "none") {
@@ -9421,8 +8947,8 @@ function Dumpsection(props){
     if (npef === "block") {
       setnpef("none");
     }
-  };
-  let array = [[0, 'Pending', 'lightred'], [1, 'Accepted', 'lightgreen'], [3, 'Rejected', 'lightred']]
+  }
+  let array = [[1, 'Dumped', 'lightgreen'], [2, 'Cancelled', 'lightred']]
   function status(number) {
     let status
     for (let i = 0; i < array.length; i++) {
@@ -9463,10 +8989,11 @@ function Dumpsection(props){
           setupdateload(false)
         })
     } catch (e) {
-      Notiflix.Notify.failure(e.message);
+      Notiflix.Notify.failure(e.message)
       setupdateload(false)
     }
   }
+  console.log(dumpsarr)
   return(
     <>
    <div className="row p-0 m-0 mt-2">
@@ -9493,7 +9020,7 @@ function Dumpsection(props){
               </div>
             </div>
     <div className="col-auto">
-    <ExportPurchaseEntry dumpsarr={dumpsarrExcel} fromdate={reversefunction(fromdate)} todate={reversefunction(todate)} />
+    <ExportDump dumpsarr={dumpsarrExcel} fromdate={reversefunction(fromdate)} todate={reversefunction(todate)} />
     </div>
    </div>
    <div className="row p-0 m-0 justify-content-between">
@@ -9505,20 +9032,16 @@ function Dumpsection(props){
     </div>
    </div>
  <div>
-   <div className="scroll scroll-y overflow-scroll p-0 m-0 mt-2" style={{ minHeight: "56vh", height: "56vh" }} >
+   <div className="scroll scroll-y overflow-scroll p-0 m-0 mt-2 position-relative" style={{ minHeight: "56vh", height: "56vh" }} >
    <table className="table">
        <thead className=" align-middle position-sticky top-0 bg-pearl">
-         <tr>
+       <tr>
            <th className="fw-bolder text-charcoal75">  ID </th>
            <th className="fw-bolder text-charcoal75"> Channel </th>
-           <th className="fw-bolder text-charcoal75"> Location From </th>
-           <th className="fw-bolder text-charcoal75"> Location To </th>
+           <th className="fw-bolder text-charcoal75"> Dump From </th>
            <th className="fw-bolder text-charcoal75"> Dump Date </th>
-           <th className="fw-bolder text-charcoal75">Transfer By </th>
-           <th className="fw-bolder text-charcoal75">Transfer To </th>
-           <th className="fw-bolder text-charcoal75"> Total Items</th>
            <th className="fw-bolder text-charcoal75"> Amount </th>
-           <th className="fw-bolder text-charcoal75"> Approval Status </th>
+           <th className="fw-bolder text-charcoal75 text-center"> Status </th>
            <th className="fw-bolder  text-center  text-charcoal75"  > Inventory </th>
            {/* <th className='fw-bolder p-0 m-0  text-charcoal75 text-center' scope='col' style={{ zIndex: '3' }}>more</th> */}
          </tr>
@@ -9539,46 +9062,49 @@ function Dumpsection(props){
            </tr>
          </tbody> 
        ) : dumpsarr && dumpsarr.length != 0 ? (
-         <tbody>
-           {
-           dumpsarr.map((item, i) => (
-             <tr key={i} className={`bg-${i % 2 == 0 ? "seashell" : "pearl" } align-middle`} >
-               <td className="py-0 my-0 text-charcoal fw-bold ps-2"> D-{item.id} </td>
-               <td className="text-charcoal fw-bold"> {item.channel && item.channel == 1 ? "Pharmacy" : "Clinic"} </td>
-               <td className="text-charcoal fw-bold"> {item.from_location.title ? item.from_location.title : "N/A"} </td>
-               <td className="text-charcoal fw-bold"> {item.to_location.title ? item.to_location.title : "N/A"} </td>
-               <td className="text-charcoal fw-bold"> {item.transfer_date && item.transfer_date ? reversefunction(item.transfer_date) : "N/A"} </td>
-               <td className="text-charcoal fw-bold"> </td>
-               <td className="text-charcoal fw-bold"> </td>
-               <td className="text-charcoal fw-bold"> </td>
-               <td className="text-charcoal fw-bold"> {item.total_amount && item.total_amount ? "Rs. " + item.total_amount : "N/A"} </td>
-               <td className="text-center">
-                {     updateload == true ? (
-        <div className="col-6 py-2 pb-2 m-auto text-center">
-        <div className="spinner-border" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </div>
-      </div>
-                ):(
-                  <select className={`bg-${status_color(item.transfer_status)} rounded-2 rounded-pill py-1 px-2 fw-bold text-center border-0 text-wrap `} onChange={(e)=>{UpdateStatus(item,e)}} name={item.transfer_status}>
-                  <option className="button text-center" selected disabled>{status(item.transfer_status)}</option>
-                  <option className="button-lightred" value='0'>Pending</option>
-                  <option className="button-lightblue" value='1'>Accepted</option>
-                  <option className="button-lightred" value='2'>Rejected</option>
-              </select>
-                )}
+        <tbody>
+        {
+        dumpsarr.map((item, i) => (
+          <tr key={i} className={`bg-${i % 2 == 0 ? "seashell" : "pearl" } align-middle`} >
+            <td className="py-0 my-0 text-charcoal fw-bold ps-2"> D-{item.id} </td>
+            <td className="text-charcoal fw-bold"> {item.channel && item.channel == 1 ? "Pharmacy" : "Clinic"} </td>
+            <td className="text-charcoal fw-bold pe-3"> 
+                 {
+                    cliniclist ? cliniclist.map((data, i) => (
+                         <label className={`d-${ClinicID == data.id ? 'block' : 'none'}`}>{data.title}</label>
 
-               </td>
-               <td className="text-charcoal fw-bold text-center">
-                 <button className="btn p-0 m-0" onClick={() => { setindex(i); toggle_peidw(); }} > <img src={ process.env.PUBLIC_URL + "/images/archivebox.png" } alt="displaying_image" className="ms-1 img-fluid" /> </button>
-               </td>
-               <td className={` position-absolute d-${i == index ? peidw : "none" } border border-1 start-0 mx-auto end-0 bg-seashell rounded-4 p-0 m-0`} style={{zIndex:'10', top: "0",width:'70vh',height: "40vh" }} >
-                  {i == index ? 
-                  ( <TIitemdetailssection dumpsarr={dumpsarr[i]} id={"TI-" + item.id} toggle_peidw={toggle_peidw} /> ) : ( <></> )}
-               </td>
-             </tr>
-           ))}
-         </tbody>
+                     )):(<></>)
+                 }
+           </td>
+            <td className="text-charcoal fw-bold"> {item.dump_date && item.dump_date ? reversefunction(item.dump_date) : "N/A"} </td>
+            <td className="text-charcoal fw-bold"> {item.total_amount && item.total_amount ? "Rs. " + item.total_amount : "N/A"} </td>
+            <td className="text-center">
+             {     updateload == true && statusindex == i ? (
+     <div className="col-6 py-2 pb-2 m-auto text-center">
+     <div className="spinner-border" role="status">
+       <span className="visually-hidden">Loading...</span>
+     </div>
+   </div>  
+             ):(
+               <select disabled={item.dump_status==2?true:false} className={`bg-${status_color(item.dump_status)} rounded-2 rounded-pill py-1 px-2 fw-bold text-center border-0 text-wrap `} onChange={(e)=>{UpdateStatus(item,e)}} name={item.dump_status}>
+               <option className="button text-center" selected disabled>{status(item.dump_status)}</option>
+               <option className="button-lightgreen" value='1' onClick={()=>{setstatusindex(i)}}>Dumped</option>
+               <option className="button-lightred" value='2' onClick={()=>{setstatusindex(i)}}>Cancelled</option>
+           </select>
+             )}
+
+            </td>
+            <td className="text-charcoal fw-bold text-center">
+              <button className="btn p-0 m-0" onClick={() => { setindex(i); toggle_peidw(); }} > <img src={ process.env.PUBLIC_URL + "/images/archivebox.png" } alt="displaying_image" className="ms-1 img-fluid" /> </button>
+            </td>
+            <td className={` position-absolute d-${i == index ? peidw : "none" } border border-1 start-0 mx-auto end-0 bg-seashell rounded-4 p-0 m-0`} style={{zIndex:'10', top: "0",width:'70vh',height: "40vh" }} >
+               {i == index ? 
+               ( <DumpItemDetails dumpsarr={dumpsarr[i]} id={"D-" + item.id} toggle_peidw={toggle_peidw} /> ) : ( <></> )}
+            </td>
+          </tr>
+        ))}
+      </tbody>
+
        ) : (
          <tbody className="text-center position-relative p-0 m-0 " style={{ minHeight: "55vh" }} >
            <tr className="">
@@ -9621,6 +9147,205 @@ function Dumpsection(props){
   )
 }
 export {Dumpsection}
+function DumpItemDetails(props){
+  const [medicine, setmedicine] = useState("block");
+  const [vaccine, setvaccine] = useState("none");
+  const [index, setindex] = useState(0);
+  const Items = ["Medicine", "Vaccine"];
+  const [qr, setqr] = useState("none");
+  const reversefunction = (date) => {
+    if (date) {
+      date = date.split("-").reverse().join("-");
+      return date;
+    }
+  };
+
+  if (index == 0) {
+    if (medicine == "none") {
+      setmedicine("block");
+      setvaccine("none");
+    }
+  }
+  if (index == 1) {
+    if (vaccine == "none") {
+      setvaccine("block");
+      setmedicine("none");
+    }
+  }
+  const [Taxon, setTaxon] = useState(false);
+
+  function TotalTaxPercent(cgst, sgst, igst) {
+    if ((cgst && sgst && igst !== null) || undefined) {
+      return Number(cgst) + Number(sgst) + Number(igst);
+    }
+  }
+  function TotalTaxRate(cgst, sgst, igst, qty) {
+    if ((cgst && sgst) || igst !== null || undefined) {
+      let e = Number(Number(cgst) + Number(sgst) + Number(igst)) * Number(qty);
+      e = e.toFixed(2);
+      return e;
+    }
+  }
+
+  return (
+    <div className="container-fluid p-0 m-0 ">
+      <div className="container-fluid p-0 m-0">
+        <h5 className="text-center pt-3 text-charcoal">
+          {props.id} Dump Item Details
+        </h5>
+        <button type="button" className="btn-close closebtn position-absolute end-0 me-2" onClick={props.toggle_peidw} aria-label="Close" ></button>
+
+        <div className="col-2 d-none">
+          <div className=" position-relative searchbutton" style={{ top: "0.25rem", right: "1rem" }} >
+            <input type="text" className=" form-control d-inline PEsearch bg-seashell" placeholder="Search PE" />
+            <button className="btn p-0 m-0 bg-transparent border-0 position-absolute" style={{ width: "2rem", right: "0", left: "0", top: "0.25rem" }} >
+              <img src={process.env.PUBLIC_URL + "/images/search.png"} alt="displaying_image" className="img-fluid p-0 m-0" />
+            </button>
+          </div>
+        </div>
+      </div>
+      <div className="d-flex justify-content-center p-0 m-0 mt-3 mb-1">
+        {Items.map((data, i) => (
+          <button className={`button border-charcoal rounded-0 shadow-0 button-${i == index ? "charcoal" : "seashell" }`} onClick={() => { setindex(i); }} > {data} </button>
+        ))}
+      </div>
+
+      <div className=" d-flex justify-content-end me-5">
+        <input type="checkbox" className="form-check-input" value={Taxon ? Taxon : ""} onChange={() => { Taxon == true ? setTaxon(false) : setTaxon(true); }} />
+        <label>Show Tax Details</label>
+      </div>
+      <div className={`scroll bg-seashell scroll-y d-${medicine}`} style={{ height:"100%" }} >
+        <table className="table datatable table-responsive text-center bg-seashell">
+          <thead>
+            <tr>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Item ID </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Item Name </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Batch No. </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Expiry Date </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> MRP </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Rate </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Qty. </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Disc% </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Trade Disc% </th>
+              <th colspan={Taxon == true ? "8" : "2"} scope="col-group" className="border p-0 m-0 px-1" > Total Tax </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Cost </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Total </th>
+            </tr>
+            <tr>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > CGST% </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > CGST </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > SGST% </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > SGST </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > IGST% </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > IGST </th>
+              <th scope="col" className={`border p-0 m-0 px-1`}> Total% </th>
+              <th scope="col" className={`border p-0 m-0 px-1`}> Total </th>
+            </tr>
+          </thead>
+          {props.dumpsarr.medicines && props.dumpsarr.medicines.length !== 0 ? (
+            <tbody className="border align-items-center p-0 m-0">
+              {props.dumpsarr.medicines.map((item, _key) => (
+                <tr className="border align-middle" key={_key}>
+                  <td className="border align-middle"> {item.medicies_stocks_id && item.medicies_stocks_id !== undefined ? "m"+item.medicies_stocks_id : "N/A"} </td>
+                  <td className="border align-middle"> {item.medicine_details && item.medicine_details.medicine.display_name !== undefined ? item.medicine_details.medicine.display_name : "N/A"} </td>
+                  <td className="border align-middle"> {item.medicine_details && item.medicine_details.batch_no !== undefined ? item.medicine_details.batch_no : "N/A"}</td>
+                  <td className="border align-middle"> {item.medicine_details && item.medicine_details.expiry_date !== undefined ? reversefunction(item.medicine_details.expiry_date) : "N/A"} </td>
+                  <td className="border align-middle"> {item.medicine_details && item.medicine_details.mrp !== undefined ? "₹"+item.medicine_details.mrp : "N/A"} </td>
+                  <td className="border align-middle"> {item.medicine_details && item.medicine_details.rate !== undefined ? "₹"+item.medicine_details.rate : "N/A"} </td>
+                  <td className="border align-middle"> {item.qty ? item.qty : "N/A"} </td>
+                  <td className="border align-middle"> {item.medicine_details && item.medicine_details.discount !== undefined ?  item.medicine_details.discount: "N/A"} </td>
+                  <td className="border align-middle"> {item.medicine_details && item.medicine_details.trade_discount !== undefined ?  item.medicine_details.trade_discount: "N/A"} </td>
+                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.medicine_details && item.medicine_details.SGST_rate ? Number( item.medicine_details.SGST_rate) : ""} </td>
+                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.medicine_details && item.medicine_details.SGST ? (Number(item.medicine_details.SGST) * Number(item.qty)).toFixed(2) : ""} </td>
+                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.medicine_details && item.medicine_details.CGST_rate ? Number(item.medicine_details.CGST_rate ) : ""} </td>
+                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.medicine_details && item.medicine_details.CGST ? (Number(item.medicine_details.CGST) * Number(item.qty)).toFixed(2) : ""} </td>
+                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.medicine_details && item.medicine_details.IGST_rate ? Number(item.medicine_details.IGST_rate ) : ""} </td>
+                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.medicine_details && item.medicine_details.IGST ? (Number(item.medicine_details.IGST) * Number(item.qty)).toFixed(2) : ""} </td>
+                  <td className="border align-middle"> {TotalTaxPercent(item.medicine_details.CGST_rate , item.medicine_details.SGST_rate, item.medicine_details.IGST_rate)} </td>
+                  <td className="border align-middle"> {TotalTaxRate(item.medicine_details.CGST,item.medicine_details.SGST,item.medicine_details.IGST, item.qty)} </td>
+                  <td className="border align-middle"> {item.medicine_details.cost ?"₹"+item.medicine_details.cost  : "N/A"} </td>
+                  <td className="border align-middle"> {item.total_amount ? item.total_amount : "N/A"} </td>
+  
+                </tr>
+              ))}
+            </tbody>
+          ) : (
+            <body className="text-center p-0 m-0 border border-1 ">
+              <div className="position-absolute border-0 start-0 end-0 mx-3 p-2 ">
+                <p className=" text-center fw-bold">No Medicines Found</p>
+              </div>
+            </body>
+          )}
+        </table>
+      </div>
+      <div className={`scroll bg-seashell scroll-y d-${vaccine}`} style={{ height:'100%' }} >
+        <table className="table datatable table-responsive text-center bg-seashell">
+          <thead>
+            <tr>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Item ID </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Item Name </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Batch No. </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Expiry Date </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> MRP{" "} </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Rate{" "} </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Qty. </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Disc% </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Trade Disc% </th>
+              <th colspan={Taxon == true ? "8" : "2"} scope="col-group" className={`border p-0 m-0 px-1`} > Total Tax </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Cost{" "} </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Total{" "} </th>
+            </tr>
+            <tr>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > CGST% </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > CGST </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > SGST% </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > SGST{" "} </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > IGST% </th>
+              <th scope="col" className={`border p-0 m-0 px-1 d-${Taxon == true ? "" : "none" }`} > IGST{" "} </th>
+              <th scope="col" className={`border p-0 m-0 px-1`}> Total% </th>
+              <th scope="col" className={`border p-0 m-0 px-1`}> Total{" "} </th>
+            </tr>
+          </thead>
+          {props.dumpsarr.vaccines &&
+            props.dumpsarr.vaccines.length !== 0 ? (
+            <tbody className="border align-items-center p-0 m-0">
+              {props.dumpsarr.vaccines.map((item, _key) => (
+                <tr className="border p-0 m-0 align-middle" key={_key}>
+                  <td className="border align-middle"> {item.vaccine_stocks_id  && item.vaccine_stocks_id !== undefined ? "v"+item.vaccine_stocks_id : "N/A"} </td>
+                  <td className="border align-middle"> {item.vaccine_details  && item.vaccine_details.vaccine.name !== undefined ? item.vaccine_details.vaccine.name : "N/A"} </td>
+                  <td className="border align-middle"> {item.vaccine_details  && item.vaccine_details.batch_no !== undefined ? item.vaccine_details.batch_no : "N/A"}</td>
+                  <td className="border align-middle"> {item.vaccine_details  && item.vaccine_details.expiry_date !== undefined ? reversefunction(item.vaccine_details.expiry_date) : "N/A"} </td>
+                  <td className="border align-middle"> {item.vaccine_details  && item.vaccine_details.mrp !== undefined ? "₹"+item.vaccine_details.mrp : "N/A"} </td>
+                  <td className="border align-middle"> {item.vaccine_details  && item.vaccine_details.rate !== undefined ? "₹"+item.vaccine_details.rate : "N/A"} </td>
+                  <td className="border align-middle"> {item.qty ? item.qty : "N/A"} </td>
+                  <td className="border align-middle"> {item.vaccine_details && item.vaccine_details.discount !== undefined ?  item.vaccine_details.discount: "N/A"} </td>
+                  <td className="border align-middle"> {item.vaccine_details && item.vaccine_details.trade_discount !== undefined ?  item.vaccine_details.trade_discount: "N/A"} </td>
+                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.vaccine_details && item.vaccine_details.SGST_rate ? Number( item.vaccine_details.SGST_rate) : ""} </td>
+                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.vaccine_details && item.vaccine_details.SGST ? (Number(item.vaccine_details.SGST) * Number(item.qty)).toFixed(2) : ""} </td>
+                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.vaccine_details && item.vaccine_details.CGST_rate ? Number(item.vaccine_details.CGST_rate ) : ""} </td>
+                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.vaccine_details && item.vaccine_details.CGST ? (Number(item.vaccine_details.CGST) * Number(item.qty)).toFixed(2) : ""} </td>
+                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.vaccine_details && item.vaccine_details.IGST_rate ? Number(item.vaccine_details.IGST_rate ) : ""} </td>
+                  <td className={`border align-middle d-${Taxon == true ? "" : "none" }`} > {item.vaccine_details && item.vaccine_details.IGST ? (Number(item.vaccine_details.IGST) * Number(item.qty)).toFixed(2) : ""} </td>
+                  <td className="border align-middle"> {TotalTaxPercent(item.vaccine_details.CGST_rate , item.vaccine_details.SGST_rate, item.vaccine_details.IGST_rate)} </td>
+                  <td className="border align-middle"> {TotalTaxRate(item.vaccine_details.CGST,item.vaccine_details.SGST,item.vaccine_details.IGST, item.qty)} </td>
+                  <td className="border align-middle"> {item.vaccine_details.cost ?"₹"+item.vaccine_details.cost  : "N/A"} </td>
+                  <td className="border align-middle"> {item.total_amount ? item.total_amount : "N/A"} </td>
+
+                </tr>
+              ))}
+            </tbody>
+          ) : (
+            <body className="text-center p-0 m-0 border border-1 ">
+              <div className="position-absolute border-0 start-0 end-0 mx-3 p-2 ">
+                <p className="fw-bold text-center">No Vaccines Found</p>
+              </div>
+            </body>
+          )}
+        </table>
+      </div>
+    </div>
+  );
+}
 
 function NewDumpForm(props){
 
