@@ -8993,7 +8993,6 @@ useEffect(() => {
       setupdateload(false)
     }
   }
-  console.log(dumpsarr)
   return(
     <>
    <div className="row p-0 m-0 mt-2">

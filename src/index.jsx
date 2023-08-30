@@ -140,10 +140,9 @@ function Connectapp(props) {
     localStorage.setItem("ClinicId", clinicid);
     setisWelcomeLoading(0);
   }
-  const fromdate = localStorage.getItem('fromdate')
-  const todate = localStorage.getItem('todate')
-  const location = localStorage.getItem('location')
-  const searchname=  localStorage.getItem('searchname')
+  const isProduction = process.env.NODE_ENV === 'production';
+  const basename = isProduction ? 'https://aartas-connect.azurewebsites.net/' : '';
+  
   return isWelcomeLoading == 0 ? (
     <>
       <WelcomeLoader />
@@ -188,7 +187,7 @@ function Connectapp(props) {
                 <TodayDate.Provider value={APIDate}>
                   <TodayDocs.Provider value={todayDoc}>
                     <Vitals.Provider value={vitalslist}>
-                      <Router>
+                      <Router basename={basename}>
                         <Navbar path={path} logout={props.logout} permissions={props.permissions} username={props.username} designation={props.designation} id={props.id} fetchapi={fetchapi} />
                         <Suspense fallback={<div className="text-charcoal75 fs-6 fw-bold text-center"> {" "} loading..{" "} </div>} >
                           <Routes>
