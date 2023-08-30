@@ -2466,7 +2466,7 @@ function NewSaleReturnentryform(props) {
             </div>
           </div>
           <h6 className="text-start fw-bold text-charcoal p-0 m-0 ms-4 mt-4"> Items To Return </h6>
-          <div className=" p-0 m-0 mt-2 scroll scroll-y" style={{ Height: "65vh", zIndex: "2" }} >
+          <div className=" p-0 m-0 mt-2 scroll scroll-y" style={{ height: "40vh", zIndex: "2" }} >
             <table className="table datatable text-center position-relative">
               <thead className="text-charcoal75 fw-bold">
                 <tr>
@@ -2482,7 +2482,7 @@ function NewSaleReturnentryform(props) {
                 </tr>
               </thead>
               {MedicineentriesArr && MedicineentriesArr.length == 0 ? (
-                  <tbody className="position-relative" style={{ height: "65vh", maxHeight: "65vh", color: "var(--charcoal)", fontWeight: "600", }} >
+                  <tbody className="position-relative" style={{ height: "40vh", color: "var(--charcoal)", fontWeight: "600", }} >
                     <tr className="">
                       <td className="position-absolute start-0 end-0 top-0 text-center mx-auto">
                         No items Added
@@ -2490,7 +2490,7 @@ function NewSaleReturnentryform(props) {
                     </tr>
                   </tbody>
                 ) : (
-                  <tbody className="align-middle" style={{ maxHeight: "65vh", minHeight: "65vh", color: "var(--charcoal)", fontWeight: "600", }} >
+                  <tbody className="align-middle" style={{ height: "40vh", color: "var(--charcoal)", fontWeight: "600", }} >
                     {MedicineentriesArr.map((item, _key) => (
                       <tr key={_key} className="">
                         <td> {item.Type} {item.Itemid} </td>
