@@ -452,7 +452,7 @@ function Saleentrysection(props) {
           activeClassName={"active "}
         />
       </div>
-      <section className={`newsaleentryform col-xl-6 col-lg-8 col-md-10 p-0 m-0 position-absolute d-${nsef} border border-1 mx-auto top-0 bottom-0 m-auto start-0 end-0 bg-seashell`} style={{ height: "70vh" }} >
+      <section className={`newsaleentryform col-xl-6 col-lg-8 col-md-10 p-0 m-0 position-absolute d-${nsef} border rounded-2 shadow mx-auto top-0 bottom-0 m-auto start-0 end-0 bg-seashell`} style={{ height: "70vh" }} >
         <SaleEntryForm toggle_nsef={toggle_nsef} GETSalesList={GETSalesList} />
       </section>
     </>
@@ -5912,10 +5912,11 @@ function NewPurchaseReturnentryform(props) {
   );
 }
 
-export { Purchasesection };
+
 // export { Purchaseordersection };
-export { Purchaseentrysection };
 // export { POitemdetailssection };
+export { Purchasesection };
+export { Purchaseentrysection };
 export { PEitemdetailssection };
 
 //-------------------------------------------------------------------------Stock Info---------------------------------------------------------
@@ -6208,19 +6209,19 @@ function Stockvaccinesection() {
             </tr>
           </thead>
           {load ? (
-            <tr className="p-0 m-0">
-              <td className="placeholder-glow"> <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div> </td>
-              <td className="placeholder-glow"> <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div> </td>
-              <td className="placeholder-glow"> <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div> </td>
-              <td className="placeholder-glow"> <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div> </td>
-              <td className="placeholder-glow"> <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div> </td>
-              <td className="placeholder-glow"> <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div> </td>
-              <td className="placeholder-glow"> <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div> </td>
-              <td className="placeholder-glow text-center"> <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div> </td>
-              <td className="placeholder-glow text-center"> <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div> </td>
-              <td className="placeholder-glow text-center"> <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div> </td>
-              <td className="placeholder-glow text-center"> <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div> </td>
-            </tr>
+                     <tbody
+                     className="text-center"
+                     style={{ minHeight: "55vh", height: "55vh" }}
+                   >
+                     <tr className="position-absolute border-0 start-0 end-0 px-5">
+                       <div class="d-flex align-items-center spinner">
+                         <strong className="" style={{ fontSize: "1rem" }}>
+                           Getting Details please be Patient ...
+                         </strong>
+                         <div className="spinner-border ms-auto" role="status" aria-hidden="true" ></div>
+                       </div>
+                     </tr>
+                   </tbody>
           ) : vaccinearr == undefined || vaccinearr.length == 0 ? (
             <tbody className="text-center">
               <tr>
@@ -6521,20 +6522,19 @@ function Stockmedicinesection() {
             </tr>
           </thead>
           {load ? (
-            <tr className="p-0 m-0">
-              <td className="placeholder-glow"> <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div> </td>
-              <td className="placeholder-glow"> <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div> </td>
-              <td className="placeholder-glow"> <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div> </td>
-              <td className="placeholder-glow"> <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div> </td> 
-              <td className="placeholder-glow"> <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div> </td>
-              <td className="placeholder-glow"> <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div> </td>
-              <td className="placeholder-glow"> <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div> </td>
-              <td className="placeholder-glow"> <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div> </td> 
-              <td className="placeholder-glow text-center"> <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div> </td>
-              <td className="placeholder-glow text-center"> <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div> </td>
-              {/* <td className='placeholder-glow text-center'><div className='placeholder col-12 p-0 m-0 w-100 px-1'>Loading..</div></td> */}
-              <td className="placeholder-glow text-center"> <div className="placeholder col-12 p-0 m-0 w-100 px-1"> Loading.. </div> </td>
+            <tbody
+            className="text-center"
+            style={{ minHeight: "55vh", height: "55vh" }}
+          >
+            <tr className="position-absolute border-0 start-0 end-0 px-5">
+              <div class="d-flex align-items-center spinner">
+                <strong className="" style={{ fontSize: "1rem" }}>
+                  Getting Details please be Patient ...
+                </strong>
+                <div className="spinner-border ms-auto" role="status" aria-hidden="true" ></div>
+              </div>
             </tr>
+          </tbody>
           ) : medicinearr == undefined || medicinearr.length == 0 ? (
             <tbody className="">
               <tr>
@@ -7222,7 +7222,6 @@ function MedicineList() {
               <th rowSpan="2" className="text-charcoal75 fw-bold"> Salt Name </th>
               <th rowSpan="2" className="text-charcoal75 fw-bold"> HSN Code </th>
               <th rowSpan="2" className="text-charcoal75 fw-bold"> Manufacturer </th>
-              {/* <th rowSpan="2" className={`text-charcoal75 fw-bold d-${permission.medicine_delete == 1 ? "" : "none"}`} > Delete </th> */}
             </tr>
           </thead>
           {load ? (
@@ -7317,8 +7316,8 @@ function MedicineList() {
     </div>
   );
 }
-export { Stocksection };
-export { Listsection };
+export { Stocksection}
+export { Listsection}
 
 function Transfersection(){
   const currentDate = useContext(TodayDate);
@@ -7955,7 +7954,7 @@ function TransferOut(props){
      />
    </div>
  </div>
- <section className={` position-absolute start-0 top-0 end-0 mx-auto bg-seashell rounded-2 border border-1 d-${npef}`} style={{height:'70vh',width:'60vh'}} >
+ <section className={` position-absolute start-0 top-0 end-0 mx-auto bg-seashell rounded-2 border shadow border-1 d-${npef}`} style={{height:'70vh',width:'60vh'}} >
    {
      <NewTransferOutForm toggle_npef={toggle_npef} GETTransferOutList={GETTransferOutList} />
    }
@@ -8917,7 +8916,7 @@ useEffect(() => {
   function GETDumpListForExcel() {
     setLoading(true);
     try {
-      axios.get(`${url}/dump/stocks/list?location_id=${ClinicID}&limit=${pagecount}&offset=0` )
+      axios.get(`${url}/dump/stocks/list?location_id=${ClinicID}&limit=${pagecount?pagecount:''}&offset=0` )
         .then((response) => {
           setdumpsarrExcel(response.data.data.dump_stocks);
           setLoading(false);
@@ -8982,8 +8981,7 @@ useEffect(() => {
         transfer_id: data.id, 
         transfer_status: e.target.value, 
         admin_id: adminid, 
-      })
-        .then((response) => {
+      }).then((response) => {
           Notiflix.Notify.success(response.data.message);
           GETDumpList();
           setupdateload(false)
@@ -8995,7 +8993,7 @@ useEffect(() => {
   }
   return(
     <>
-   <div className="row p-0 m-0 mt-2">
+   <div className="row p-0 m-0 mt-3">
    <div className="col-auto">
             <div class="dropdown">
                 <button class="button button-seashell border-0 rounded-2 fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -9022,8 +9020,8 @@ useEffect(() => {
     <ExportDump dumpsarr={dumpsarrExcel} fromdate={reversefunction(fromdate)} todate={reversefunction(todate)} />
     </div>
    </div>
-   <div className="row p-0 m-0 justify-content-between">
-    <div className="col-auto">
+   <div className="row p-0 m-0 justify-content-between mt-3">
+    <div className="col-auto ps-0 ms-0">
     <h2 className=" ms-3 text-charcoal fw-bolder" style={{ width: "fit-content" }} > {dumpsarr!=undefined?dumpsarr.length:""} {dumpsarr!=undefined?dumpsarr.length > 1 ? "Dumps" : "Dump":""}{" "} </h2>
     </div>
     <div className="col-auto me-3">
@@ -9137,7 +9135,7 @@ useEffect(() => {
      />
    </div>
  </div>
- <section className={` position-absolute bottom-0 start-0 mx-auto end-0 bg-seashell border border-1 d-${npef}`} style={{height:'70vh',width:'60vh'}} >
+ <section className={` position-absolute bottom-0 start-0 mx-auto end-0 bg-seashell border border-1 shadow rounded-2 d-${npef}`} style={{height:'70vh',width:'60vh'}} >
    {
      <NewDumpForm toggle_npef={toggle_npef} GETDumpList={GETDumpList} />
    }

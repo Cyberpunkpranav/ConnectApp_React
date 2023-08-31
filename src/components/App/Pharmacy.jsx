@@ -62,7 +62,7 @@ function Pharmacy() {
     <>
       <section className={`pharmacy position-relative mt-1`} >
         <div className="pharmacysection p-0 m-0">
-          <div className="container-fluid pharmacytabsection border-bottom">
+          <div className="container-fluid pharmacytabsection shadow-sm rounded-bottom border-bottom pb-1">
             <div className="gap-3 d-flex p-0 m-0 ms-1 p-1 py-1 align-items-center ">
               {
                 menu.map((e, i) => {
