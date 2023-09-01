@@ -23,6 +23,7 @@ function DoctorSchedule(props) {
   const Date = useContext(TodayDate)
   const permission = useContext(Permissions)
   const adminid = localStorage.getItem('id')
+  const ClinicId = localStorage.getItem("ClinicId");
   //Use States
   const [appointmentdata, setappointmentdata] = useState([]);
   const [singleload, setsingleload] = useState(0)
@@ -80,7 +81,7 @@ function DoctorSchedule(props) {
       messageColor: '#96351E',
       messageFontSize: '1.5rem'
     })
-    await axios.get(`${url}/appointment/list?doctor_id=${props.todayDoc[props._selected][0]}&from_date=${Date}&to_date=${Date}`).then((response) => {
+    await axios.get(`${url}/appointment/list?clinic_id=${ClinicId}&doctor_id=${props.todayDoc[props._selected][0]}&from_date=${Date}&to_date=${Date}`).then((response) => {
       setappointmentdata(response.data.data);
     })
     setisLoading(false);
@@ -418,7 +419,7 @@ function DoctorSchedule(props) {
       setsaleindex()
     }
   }
-
+  console.log(appointmentdata)
   return (
     <>
       <section id="doctorscheduledata">
