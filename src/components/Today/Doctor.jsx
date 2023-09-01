@@ -419,7 +419,6 @@ function DoctorSchedule(props) {
       setsaleindex()
     }
   }
-  console.log(appointmentdata)
   return (
     <>
       <section id="doctorscheduledata">
