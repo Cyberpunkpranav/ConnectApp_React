@@ -607,12 +607,20 @@ li:hover {
     transition: all 0.5s;
 }
 
-.d-block,
+
 button {
     animation-name: animateupdate;
     animation-duration: 0.3s;
 }
-
+.d-block{
+    animation-name: animateupdate;
+    animation-duration: 0.5s;
+    
+}
+.bottom_bar{
+    animation-name: animateblock;
+    animation-duration: 0.5s;
+}
 .backdrop {
     position: fixed;
     top: 0;
@@ -668,7 +676,25 @@ button {
         transform: translateX(0%);
     }
 }
+@keyframes animatescae{
+    from {
+        transform: translateX(-100%);
 
+    }
+
+    to {
+        transform: translateX(0%);
+    }
+}
+@keyframes animateblock {
+    from {
+       display:none;
+    }
+
+    to {
+        display:none;
+    }
+}
 @media (max-width:992px) {
     body {
         background-size: contain;

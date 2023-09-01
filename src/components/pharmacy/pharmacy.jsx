@@ -1798,7 +1798,7 @@ function SaleEntryForm(props) {
               {/* <button className="button-sm button-charcoal rounded-1 my-2">Add Doctor</button> */}
             </div>
           </div>
-          <div className="w-100 position-absolute bottom-0 bg-pearl py-2">
+          <div className="w-100 position-absolute bottom-0 bg-pearl py-2 bottom_bar">
             <div className="row p-0 m-0">
               <div className="col-8">
                 <div className="row">
@@ -1984,7 +1984,7 @@ function SaleEntryForm(props) {
               </div>
             </div>
           </div>
-          <div className="w-100 position-absolute bottom-0 bg-pearl py-2">
+          <div className="w-100 position-absolute bottom-0 bg-pearl py-2 bottom_bar">
             <div className="row p-0 m-0">
               <div className="col-8">
                 <div className="row">
@@ -2013,7 +2013,7 @@ function SaleEntryForm(props) {
                 </div>
               </div>
               <div className="col-4 align-self-center d-flex justify-content-end">
-                <button className="button button-charcoal px-5" onMouseDown={() => { toggleStage3(); }} onMouseUp={() => { toggleStage2() }} > Choose Address </button>
+                <button className="button button-charcoal px-5" onMouseDown={() => { toggleStage3(); }} onMouseUp={() => { toggleStage2() }} > + Address </button>
               </div>
             </div>
           </div>
@@ -2079,7 +2079,7 @@ function SaleEntryForm(props) {
               <AddAddress Toggle_Address={Toggle_Address} patientid={patientid} searchinput={searchinput} setpatientdata={setpatientdata} />
             </div>
           </div>
-          <div className="w-100 position-absolute bottom-0 bg-pearl py-2">
+          <div className="w-100 position-absolute bottom-0 bg-pearl py-2 bottom_bar">
             <div className="row p-0 m-0">
               <div className="col-8">
                 <div className="row">
@@ -2105,7 +2105,7 @@ function SaleEntryForm(props) {
                 </div>
               </div>
               <div className="col-4 align-self-center d-flex justify-content-end">
-                <button className="button button-charcoal px-5" onClick={() => { confirmmessage(); }}  > Proceed to Payment </button>
+                <button className="button button-charcoal px-5" onClick={() => { confirmmessage(); }}  > + Payment </button>
 
               </div>
             </div>
@@ -2200,7 +2200,7 @@ function SaleEntryForm(props) {
                 <></>
               )
             }
-            <div className={`container-fluid text-center mt-2 `}>
+            <div className={`container-fluid text-center mt-2  `}>
               {
                 permission.sale_entry_charges_edit == 1 ? (
                   <button className="btn py-0" onClick={AddMethods}>
@@ -2211,7 +2211,7 @@ function SaleEntryForm(props) {
                 )}
             </div>
           </div>
-          <div className="w-100 position-absolute bottom-0 bg-pearl py-2">
+          <div className="w-100 position-absolute bottom-0 bg-pearl py-2 bottom_bar">
             <div className="row p-0 m-0">
               <div className="col-8">
                 <div className="row">
@@ -2514,7 +2514,7 @@ function NewSaleReturnentryform(props) {
             </table>
           </div>
         </div>
-      <div className="col-12 position-absolute start-0 end-0 bottom-0 text-center bg-pearl  border border-1 py-3">
+      <div className="col-12 position-absolute start-0 end-0 bottom-0 text-center bg-pearl  border border-1 py-3 bottom_bar">
         <div className="row p-0 m-0">
           <div className="col-6">
             <div className="row">
@@ -3157,9 +3157,7 @@ function Purchaseentrysection(props) {
             ) : (
               <tbody className="text-center position-relative p-0 m-0 " style={{ minHeight: "55vh" }} >
                 <tr className="">
-                  <td className="fw-bolder text-charcoal text-center position-absolute border-0 start-0 end-0 mx-3 p-2 border-0">
-                    No Purchase Entries
-                  </td>
+                  <td className="fw-bolder text-charcoal text-center position-absolute border-0 start-0 end-0 mx-3 p-2 border-0"> No Purchase Entries </td>
                 </tr>
               </tbody>
             )}
@@ -3187,7 +3185,7 @@ function Purchaseentrysection(props) {
           />
         </div>
       </div>
-      <section className={`newpurchaseentrysection position-absolute start-0 end-0 bg-seashell border border-1 d-${npef}`} >
+      <section className={`newpurchaseentrysection position-absolute start-0 end-0 bg-seashell d-${npef}` } style={{Height:'100vh'}} >
         {
           <Newpurchaseentryform
             toggle_npef={toggle_npef}
@@ -4280,14 +4278,13 @@ function Newpurchaseentryform(props) {
     }
   };
   return (
-    <div className="container-fluid p-0 m-0" style={{ zIndex: "2" }}>
-      <div className="container-fluid bg-seashell border border-2 border-top-0 border-start-0 border-end-0 ">
+    <div className=" p-0 m-0" style={{ zIndex: "2" }}>
         <div className="row p-0 m-0 p-2">
           <div className="col-1">
             <button type="button" className="btn-close closebtn m-auto mt-2" onClick={props.toggle_npef} aria-label="Close" ></button>
           </div>
           <div className="col-8 col-md-7 col-lg-8 col-xl-8">
-            <h5 className="text-center mt-2"> New Purchase Entry </h5>
+            <h5 className="text-center mt-2 fw-bold text-charcoal"> New Purchase Entry </h5>
           </div>
           <div className="col-auto">
             {load ? (
@@ -4301,14 +4298,11 @@ function Newpurchaseentryform(props) {
             )}
           </div>
           <div className="col-auto">
-            <button className="button button-burntumber" onClick={ClearFields}> Clear All </button>
+            <button className="btn btn-sm text-burntumber fw-bold" onClick={ClearFields}> Clear </button>
           </div>
         </div>
-      </div>
-      <div
-        className="container-fluid p-0 m-0 entrydetails bg-pearl"
-        style={{ Height: "90vh" }}
-      >
+
+      <div className="container-fluid p-0 m-0 entrydetails bg-pearl" style={{ Height: "100vh" }} >
         <div className="row p-0 m-0">
           <div className={`col-${vendorid ? "8" : "12"} p-0 m-0`}>
             <div className="row p-0 m-0 align-items-center">
@@ -4333,15 +4327,7 @@ function Newpurchaseentryform(props) {
               <div className="col-auto">
                 <div className="row">
                   <div className="col-auto">
-                    <input
-                      type="checkbox"
-                      className="form-check-input"
-                      checked={channel == 2 ? true : false}
-                      value="2"
-                      onClick={(e) => {
-                        setchannel(e.target.value);
-                      }}
-                    />
+                    <input type="checkbox" className="form-check-input" checked={channel == 2 ? true : false} value="2" onClick={(e) => { setchannel(e.target.value); }} />
                   </div>
                   <div className="col-auto">
                     <span className="ms-0">Clinic</span>
@@ -4353,33 +4339,17 @@ function Newpurchaseentryform(props) {
               <div className="row p-0 m-0 gx-2 gy-1">
                 <div className="col-5">
                   <h6 className="p-0 m-0 ms-3 fw-bold">Select PO</h6>
-                  <input
-                    className="form-control ms-2 rounded-1"
-                    placeholder="Enter PO"
-                    value={po ? po : ""}
-                    onChange={(e) => {
-                      setpo(e.target.value);
-                    }}
-                    style={{ zIndex: "5" }}
-                  />
+                  <input className="form-control ms-2 rounded-1" placeholder="Enter PO" value={po ? po : ""} onChange={(e) => { setpo(e.target.value); }} style={{ zIndex: "5" }} />
                 </div>
                 <div className="col-5">
                   <h6 className="p-0 m-0 ms-3 fw-bold">Select Vendor</h6>
                   <input className="form-control ms-2 rounded-1" placeholder="Search Vendors" value={vendorname ? vendorname : ""} onChange={(e) => { searchvendors(e.target.value); setvendorname(e.target.value); setvendorid(); setvendorcode(); }} />
-                  <div
-                    ref={vendorsref}
-                    className="position-absolute ms-2 rounded-1 bg-pearl col-2"
-                    style={{ zIndex: "5" }}
-                  >
+                  <div ref={vendorsref} className="position-absolute ms-2 rounded-1 bg-pearl col-auto" style={{ zIndex: "5", width: "fit-content" }} >
                     {vendorsearch ? (
                       loadvendors ? (
                         <div className="rounded-1 p-1 bg-pearl mt-1 border shadow" style={{ width: "fit-content" }} >
                           Searching Please wait....
-                          <div
-                            className="spinner-border my-auto"
-                            style={{ width: "1rem", height: "1rem" }}
-                            role="status"
-                          >
+                          <div className="spinner-border my-auto" style={{ width: "1rem", height: "1rem" }} role="status" >
                             <span className="sr-only"></span>
                           </div>
                         </div>
@@ -4388,15 +4358,15 @@ function Newpurchaseentryform(props) {
                           Oops! Not Avaliable
                         </div>
                       ) : (
-                        <div className="bg-pearl border shadow rounded-1 p-1" style={{ zIndex: "40", width: "fit-content" }} >
+                        <div className="bg-pearl border shadow rounded-1 p-1 col-12" style={{ zIndex: "40" }} >
                           {
                           vendorsearch.map((data, i) => (
-                            <div style={{ cursor: "pointer" }} className={`p-0 p-1 d-${vendorsearch == undefined || vendorsearch.length > 0 ? "" : "none" }  bg-${i % 2 == 0 ? "pearl" : "lightblue" } fs-6 `} name={data.id} onClick={(e) => { setvendorname(data.entity_name); setvendorid(data.id); setvendorcode(data.state_code); filterclinic(); vendorsref.current.style.display = "none"; }} > {data.entity_name} </div>
+                            <div style={{ cursor: "pointer" }} className={`p-0 p-1 d-${vendorsearch == undefined || vendorsearch.length > 0 ? "" : "none" }  bg-${i % 2 == 0 ? "pearl" : "seashell" } `} name={data.id} onClick={(e) => { setvendorname(data.entity_name); setvendorid(data.id); setvendorcode(data.state_code); filterclinic(); vendorsref.current.style.display = "none"; }} > {data.entity_name} </div>
                           ))}
                         </div>
                       )
                     ) : (
-                      <></>
+                      <></> 
                     )}
                   </div>
                 </div>
@@ -4419,14 +4389,14 @@ function Newpurchaseentryform(props) {
                       <input ref={Tableref} className="form-control w-100 p-0 m-0 px-2 py-1 rounded-1 bg-pearl" onChange={SubmitExcel} type="file" />
                     </div>
                     <div className="col-5 text-end">
-                      <button className="button button-lightyellow p-0 m-0 px-3 py-1" onClick={ConvertExcel} > Submit </button>
+                      <button className="button button-charcoal" onClick={ConvertExcel} > Submit </button>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div className=" p-0 m-0 scroll scroll-y" style={{ maxHeight: "50vh", Height: "50vh" }} >
-              <table className="table m-0 datatable bg-pearl text-start position-relative">
+            <div className=" p-0 m-0 scroll scroll-y" >
+              <table className="table m-0 datatable bg-pearl text-start position-relative align-middle">
                 <thead className=" bg-pearl position-sticky top-0" style={{ color: "gray", fontWeight: "600" }} >
                   <tr>
                     <th>Edit</th>
@@ -4440,7 +4410,7 @@ function Newpurchaseentryform(props) {
                     <th>Qty.</th>
                     <th>Cost</th>
                     <th>Amount</th>
-                    <th>Delete</th>
+                    <th className="text-center">Delete</th>
                   </tr>
                 </thead>
                 {MedicineentriesArr ? (
@@ -4448,7 +4418,7 @@ function Newpurchaseentryform(props) {
                     {
                     MedicineentriesArr.map((item, _key) => (
                       <tr key={_key} className={`bg-${_key % 2 == 0 ? "seashell" : "pearl"}`} >
-                        <td><input type="checkbox" checked={_key == tableindex ? true : false} onClick={() => { indexing(_key); }} className=" form-check-input" /> </td>
+                        <td><input type="checkbox" checked={_key == tableindex ? true : false} onClick={() => { indexing(_key); }} className=" form-check-input p-1" /> </td>
                         <td>{item.Itemid}</td>
                         <td>{item.Itemname}</td>
                         {/* <td>{reversefunction(item.manufacturingDate)}</td> */}
@@ -4460,7 +4430,7 @@ function Newpurchaseentryform(props) {
                         <td>{item.Qty}</td>
                         <td>{item.costperunit}</td>
                         <td>{item.totalamount}</td>
-                        <td><button onClick={() => { DeleteMedicine(item.Itemid); }} className="btn btn-sm button-burntumber" > Delete </button> </td>
+                        <td><button onClick={() => { DeleteMedicine(item.Itemid); }} className="btn btn-sm text-burntumber fw-bold" > Delete </button> </td>
                       </tr>
                     ))}
                   </tbody>
@@ -4486,7 +4456,7 @@ function Newpurchaseentryform(props) {
             <div className="col-12">
               <input type="checkbox" checked={IsConsumable == 0 ? false : true} className="form-check-input" onChange={() => { IsConsumable == 0 ? setIsConsumable(1) : setIsConsumable(0); }} />
               <label>Is Consumable</label>
-              <div className=" col-10 col-md-11">
+              <div className=" col-lg-10 col-12">
                 <div className="position-relative">
                   <label>Search Items </label>
                   <input className="form-control bg-seashell" placeholder="Items" value={itemname ? itemname : ""} onChange={(e) => { searchmeds(e.target.value); setitemname(e.target.value); setitemtype(); }} />
@@ -4530,7 +4500,7 @@ function Newpurchaseentryform(props) {
                 <label className="pt-3 mb-2">Manufacturing Date</label>
                 <input type="Date" className="form-control bg-seashell reounded-1 manufacturingdate" value={manufdate ? manufdate : ""} onChange={(e) => { setmanufdate(e.target.value); }} required />
               </div>
-              <div className="col-12 form-group col-md-11 col-lg-11">
+              <div className="col-12 form-group col-md-12 col-lg-11">
                 <div className="row p-0 m-0">
                   <div className="col-5">
                     <label className="mb-2">MRP</label>
@@ -4563,27 +4533,27 @@ function Newpurchaseentryform(props) {
                   <hr />
                   <div className={`col-12 ps-2 py-2 d-${vendorcode == clinicstatecode ? "block" : "none" }`} >
                     <div className="row align-items-center p-0 m-0">
-                      <div className="col-2 ">
+                      <div className="col-auto ">
                         <h6>SGST</h6>
                       </div>
                       <div className="col-5">
-                        <input type="number" max="10" className="form-control bg-seashell mrp rounded-1  m-auto" placeholder="00" disabled={true} value={sgst ? sgst : ""} required />
+                        <input type="number" max="10" className=" bg-seashell mrp rounded-1 w-100 border border-seashell m-auto" placeholder="00" disabled={true} value={sgst ? sgst : ""} required />
                       </div>
                       <div className="col-3">
-                        <input type="number" max="10" className="form-control bg-seashell mrp rounded-1  m-auto" placeholder="Rate" value={sgstprcnt ? sgstprcnt : ""} onChange={(e) => { setsgstprcnt(e.target.value); setcgstprcnt(e.target.value); CalculateGst(); }} required />
+                        <input type="number" max="10" className=" bg-seashell mrp rounded-1 w-100 border border-seashell m-auto p-0 m-0" placeholder="Rate" value={sgstprcnt ? sgstprcnt : ""} onChange={(e) => { setsgstprcnt(e.target.value); setcgstprcnt(e.target.value); CalculateGst(); }} required />
                       </div>
                     </div>
                   </div>
                   <div className={`col-12 ps-2 py-2 d-${vendorcode == clinicstatecode ? "block" : "none" }`} >
                     <div className="row p-0 m-0 align-items-center">
-                      <div className="col-2">
+                      <div className="col-auto">
                         <h6>CGST</h6>
                       </div>
                       <div className="col-5">
-                        <input type="number" max="10" className="form-control bg-seashell mrp rounded-1  m-auto" disabled={true} placeholder="00" value={cgst ? cgst : sgst ? sgst : ""} required />
+                        <input type="number" max="10" className=" bg-seashell mrp rounded-1 w-100 border border-seashell  m-auto" disabled={true} placeholder="00" value={cgst ? cgst : sgst ? sgst : ""} required />
                       </div>
                       <div className="col-3">
-                        <input type="number" max="10" className="form-control bg-seashell mrp rounded-1  m-auto" disabled={true} placeholder="Rate" value={ cgstprcnt ? cgstprcnt : sgstprcnt ? sgstprcnt : "" } required />
+                        <input type="number" max="10" className=" bg-seashell mrp rounded-1 w-100 border border-seashell  m-auto" disabled={true} placeholder="Rate" value={ cgstprcnt ? cgstprcnt : sgstprcnt ? sgstprcnt : "" } required />
                       </div>
                     </div>
                   </div>
@@ -9135,7 +9105,7 @@ useEffect(() => {
      />
    </div>
  </div>
- <section className={` position-absolute bottom-0 start-0 mx-auto end-0 bg-seashell border border-1 shadow rounded-2 d-${npef}`} style={{height:'70vh',width:'60vh'}} >
+ <section className={` position-absolute bottom-0 start-0 mx-auto end-0 bg-seashell border border-1 shadow rounded-2 d-${npef}`} style={{minHeight:'70vh',height:'70vh',width:'60vh'}} >
    {
      <NewDumpForm toggle_npef={toggle_npef} GETDumpList={GETDumpList} />
    }
@@ -9215,7 +9185,7 @@ function DumpItemDetails(props){
         <table className="table datatable table-responsive text-center bg-seashell">
           <thead>
             <tr>
-              <th rowspan="2" className="border p-0 m-0 px-1"> Item ID </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Stock ID </th>
               <th rowspan="2" className="border p-0 m-0 px-1"> Item Name </th>
               <th rowspan="2" className="border p-0 m-0 px-1"> Batch No. </th>
               <th rowspan="2" className="border p-0 m-0 px-1"> Expiry Date </th>
@@ -9279,7 +9249,7 @@ function DumpItemDetails(props){
         <table className="table datatable table-responsive text-center bg-seashell">
           <thead>
             <tr>
-              <th rowspan="2" className="border p-0 m-0 px-1"> Item ID </th>
+              <th rowspan="2" className="border p-0 m-0 px-1"> Stock ID </th>
               <th rowspan="2" className="border p-0 m-0 px-1"> Item Name </th>
               <th rowspan="2" className="border p-0 m-0 px-1"> Batch No. </th>
               <th rowspan="2" className="border p-0 m-0 px-1"> Expiry Date </th>
@@ -9603,7 +9573,7 @@ function NewDumpForm(props){
               <input type="date" className="button button-pearl fw-bolder tet-charcoal " onChange={(e)=>{setdumpdate(e.target.value)}} value={dumpdate?dumpdate:currentDate}/>
             </div>
         </div>
-        <div className="container-fluid p-0 m-0 position-absolute bottom-0 bg-pearl">
+        <div className="container-fluid p-0 m-0 position-absolute bottom-0 bg-pearl bottom_bar">
           <div className="row p-0 m-0 py-3 justify-content-end">
             <div className="col-auto">
             <button className="button button-charcoal" onMouseDown={() => { toggleStage2(); }} onMouseUp={() => { toggleStage1() }} >Add Items</button>
@@ -9712,7 +9682,7 @@ function NewDumpForm(props){
                 </table>
                 </div>
                      
-        <div className="container-fluid p-0 m-0 position-absolute bottom-0 bg-pearl">
+        <div className="container-fluid p-0 m-0 position-absolute bottom-0 bg-pearl bottom_bar">
           <div className="row p-0 m-0 py-3 justify-content-between align-items-center align-self-center">
             <div className="col-auto">
               <label className="fw-bolder text-charcoal75" htmlFor="">Grand Total</label>
