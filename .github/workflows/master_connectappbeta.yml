@@ -1,4 +1,4 @@
-name: Node.js CI
+name: Deploy to Azure App Service
 
 on:
   push:
@@ -6,22 +6,24 @@ on:
       - master
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
+      - name: Set up Azure CLI
+        uses: azure/login@v1
         with:
-          node-version: 16
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Install dependencies
-        run: npm install
+      - name: Deploy to Azure App Service
+        env:
+          AZURE_APP_SERVICE_NAME: ConnectAppBeta
+          AZURE_WEBAPP_PACKAGE_PATH: ./build  # Update this path
+        run: |
+          az webapp deployment source config-zip --resource-group ConnectApp-Beta_group --name ConnectAppBeta --src ./build
 
-      - name: Build and test
-        run: npm run build
 
 
