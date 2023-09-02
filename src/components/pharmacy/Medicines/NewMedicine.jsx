@@ -98,13 +98,15 @@ const NewMedicine = (props) => {
     setimg()
   }
   return (
-    <div className='position-relative bg-seashell p-0 m-0 fw-bold'>
-      <h5 className='p-0 m-0 text-center py-2 border-bottom'>Add New Medicine</h5>
+    <div className='position-relative p-0 m-0 fw-bold'>
+      <div className="shadow-sm">
+      <h5 className='p-0 m-0 text-center py-2 fw-bold text-charcoal'>Add New Medicine</h5>
       <button className='btn btn-close position-absolute end-0 top-0 mt-1 me-1' onClick={props.ToggleNewMedicine}></button>
-      <div className='scroll scroll-y' style={{ height: '78vh' }}>
+      </div>
+      <div className='scroll scroll-y' style={{ minHeight: '100%' }}>
         <div className="row p-0 m-0">
-          <div className="row p-0 m-0 justify-content-end">
-            <p className='text-charcoal fw-bold p-0 m-0 py-2 text-center'>Basic Details</p>
+          <div className="row p-0 m-0 ms-3">
+            <p className='text-charcoal fw-bold p-0 m-0 py-2 text-start'>Basic Details</p>
             <div className="col-5">
               <p className='p-0 m-0'>Display Name</p>
               <input className='form-control w-75 bg-seashell p-0 m-0 px-2 py-1' value={displayname ? displayname : ''} onChange={(e) => { setdisplayname(e.target.value) }} />
@@ -125,8 +127,8 @@ const NewMedicine = (props) => {
 
         </div>
         <div className="row p-0 m-0">
-          <div className="row p-0 m-0 justify-content-end mt-3">
-            <p className='text-charcoal fw-bold p-0 m-0 py-2 text-center'>Other Details  </p>
+          <div className="row p-0 m-0 ms-3 mt-3">
+            <p className='text-charcoal fw-bold p-0 m-0 py-2 text-start'>Other Details  </p>
             <div className="col-5">
               <p className='p-0 m-0'>Strength</p>
               <input className='form-control w-75 bg-seashell p-0 m-0 px-2 py-1' value={strength ? strength : ''} onChange={(e) => { setstrength(e.target.value) }} />

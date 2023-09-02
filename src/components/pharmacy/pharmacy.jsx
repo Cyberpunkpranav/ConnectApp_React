@@ -330,8 +330,9 @@ function Saleentrysection(props) {
         Entry Sale
       </button>
           <h2 className=" ms-3 text-charcoal fw-bolder" style={{ width: "fit-content" }} > {pagecount} {pagecount > 0 ? "Sale Entries" : "Sale Entry"}{" "} </h2>
+          <div className="position-relative">
       <div className="scroll scroll-y p-0 m-0 mt-2" style={{ minHeight: "40vh", height: "58vh", maxHeight: "100%" }} >
-        <table className="table text-start table-responsive">
+        <table className="table text-start table-responsive ">
           <thead className=" position-sticky top-0 bg-pearl">
             <tr className=" ">
               {/* <th className="text-charcoal75 fw-bolder text-center px-3"> ID </th> */}
@@ -343,8 +344,7 @@ function Saleentrysection(props) {
               <th className="text-charcoal75 fw-bolder"> Doctor Name </th>
               <th className="text-charcoal75 fw-bolder"> Invoice No. </th>
               <th className="text-charcoal75 fw-bolder text-center"> Status </th>
-              <th className="text-charcoal75 fw-bolder text-center
-              "> Actions </th>
+              <th className="text-charcoal75 fw-bolder text-center "> Actions </th>
               {/* <th className='text-charcoal75 fw-bolder p-0 m-0 px-1' rowspan='2'>more</th> */}
             </tr>
           </thead>
@@ -397,20 +397,29 @@ function Saleentrysection(props) {
                     </div>
                   </td>
 
-                  <td  >
-                    <section className={`position-absolute d-${i == index ? seidw : "none"} start-0 end-0 mx-auto border border-1 bg-seashell rounded-4`} style={{zIndex:'10', top: "0",width:'70vh',height: "40vh" }}>
+                  <td className="p-0 m-0">
                     {i == index ? (
+                      <>
+                      <div className="backdrop"></div>
+                      <section className={`position-absolute d-${i == index ? seidw : "none"} start-0 end-0 mx-auto border border-1 bg-seashell rounded-4`} style={{zIndex:'10', top: "0",width:'70vh',height: "40vh" }}>
                       <SEitemdetailssection saleentryarr={saleentryarr[i]} itembillid={"P-" + item.bill_id} toggle_seidw={toggle_seidw} />
+                      </section>
+                      </>
                     ) : (
                       <></>
                     )}
-                    </section>
+       
 
                   </td>
 
-                  <td className={`col-lg-8 col-xl-6 col-md-8 col-sm-10 start-0 end-0 top-0 mx-auto shadow rounded-4 position-absolute bg-pearl d-${tabindex == i ? paymentsapage : "none"}`} style={{ marginTop: "10rem" }} >
+                  <td className="p-0 m-0">
                     {i == tabindex ? (
+                      <>
+                      <div className="backdrop"></div>
+                      <section className={`col-lg-8 col-xl-6 col-md-8 col-sm-10 start-0 end-0 top-0 mx-auto shadow rounded-4 position-absolute bg-pearl d-${tabindex == i ? paymentsapage : "none"}`}>
                       <SaleEntrypayments GETSalesList={GETSalesList} saleentryarr={saleentryarr[i]} toggle_payments={toggle_payments} itembillid={"P-" + item.bill_id} />
+                      </section>
+                      </>
                     ) : (
                       <></>
                     )}
@@ -426,6 +435,7 @@ function Saleentrysection(props) {
             </tbody>
           )}
         </table>
+      </div>
       </div>
       <div className="container-fluid mt-2 d-flex justify-content-center">
         <ReactPaginate
@@ -462,7 +472,7 @@ function SaleEntrypayments(props) {
   const url = useContext(URL);
   const permission = useContext(Permissions);
   const adminid = localStorage.getItem("id");
-  const [paymentmethods, setpaymentmethods] = useState();
+  const [paymentmethods, setpaymentmethods] = useState([]);
   const [previoustotal, setprevioustotal] = useState(0);
   const [loading, setloading] = useState();
   const paymentmethoddetails = {
@@ -575,12 +585,12 @@ function SaleEntrypayments(props) {
     }
 
   }
-
+// console.log(paymentmethods)
   return (
     <div className="p-0 m-0 text-center">
       <h6 className="text-center mt-2 fw-bold">{props.itembillid} Payments</h6>
       <hr className="p-0 m-0 mt-1" />
-      <button className="btn-close position-absolute top-0 end-0 p-2 m-2 " onClick={() => props.toggle_payments()} ></button>
+      <button className="btn-close position-absolute top-0 end-0 p-2 m-2 " onClick={() => {props.toggle_payments();setpaymentmethods([])}} ></button>
 
       <p className="text-charcoal p-0 m-auto fw-bolder"> Grand Total :{" "} <span className="text-burntumber"> Rs {props.saleentryarr.grand_total} </span> </p>
       <hr className="p-0 m-0 mb-1" />
@@ -668,18 +678,18 @@ function SaleEntrypayments(props) {
         </div>
       </div>
 
-      <div className="mt-2">
+      <div className="mt-2 pb-3">
         {loading ? (
           <div className="container-fliud pt-2">
             <div className="d-flex fs-6 align-items-center justify-content-around">
-              <h6 className="text-burntumber">Updating...</h6>
-              <div className="text-burntumber spinner-border ml-auto" role="status" aria-hidden="true" ></div>
+              <h6 className="text-charcoal">Updating...</h6>
+              <div className="text-charcoal spinner-border ml-auto" role="status" aria-hidden="true" ></div>
             </div>
           </div>
         ) : (
           <div className="row">
             <div className="col-6">
-              <button className="button button-burntumber m-0 p-0 py-1 px-5" disabled={previoustotal == props.saleentryarr.grand_total ? true : false} onClick={confirmmessage} > Save </button>
+              <button className="button button-charcoal m-0 p-0 py-1 px-5" disabled={previoustotal == props.saleentryarr.grand_total ? true : false} onClick={confirmmessage} > Save </button>
             </div>
             <div className="col-6">
               <button className="button button-pearl border-charcoal p-0 m-0 py-1 px-5" onClick={() => { setpaymentmethods(); props.toggle_payments(); }} > Cancel </button>
@@ -2089,7 +2099,6 @@ function SaleEntryForm(props) {
                   </div>
                   <div className="col-4">
                     <p className="text-charcoal75 p-0 m-0 fw-bolder card-title text-start ms-3">
-                      {" "}
                       Discount %
                     </p>
                     <h4 className="text-charcoal  p-0 m-0 fw-bolder card-header text-start ps-3">
@@ -2240,7 +2249,7 @@ function SaleEntryForm(props) {
                 </div>
               </div>
               <div className="col-4 align-self-center d-flex justify-content-end">
-                <button className="button button-charcoal px-5" onClick={() => confirmmessage2()} > Complete Order </button>
+                <button className="button button-charcoal px-5" onClick={() => confirmmessage2()} > Sale </button>
               </div>
             </div>
           </div>
@@ -2833,7 +2842,8 @@ function Purchasesection(props) {
                 </div>
                 <div className="col-auto p-0 m-0">-</div>
                 <div className="col-auto p-0 m-0">
-                  <input type="date" className=" border-0 button button-seashell text-charcoal text-center fw-bold" value={todate ? todate : fromdate ? fromdate : currentDate ? currentDate : ""} onChange={(e) => { settodate(e.target.value); }} />                </div>
+                  <input type="date" className=" border-0 button button-seashell text-charcoal text-center fw-bold" value={todate ? todate : fromdate ? fromdate : currentDate ? currentDate : ""} onChange={(e) => { settodate(e.target.value); }} />                
+                  </div>
               </div>
             </div>
         </div>
@@ -2844,7 +2854,6 @@ function Purchasesection(props) {
         <div className="container-fluid mt-lg-4 mt-md-3 mt-2 p-0 m-0">
           <div className="">{_selectedScreen(pageindex)}</div>
         </div>
-       
       </section>
    
     </>
@@ -3099,14 +3108,8 @@ function Purchaseentrysection(props) {
             ) : purchaseentryarr && purchaseentryarr.length != 0 ? (
               <tbody>
                 {purchaseentryarr.map((item, i) => (
-                  <tr
-                    key={i}
-                    className={`bg-${i % 2 == 0 ? "seashell" : "pearl"
-                      } align-middle`}
-                  >
-                    <td className="py-0 my-0 text-charcoal fw-bold ps-2">
-                      PE-{item.bill_id}
-                    </td>
+                  <tr key={i} className={`bg-${i % 2 == 0 ? "seashell" : "pearl" } align-middle`} >
+                    <td className="py-0 my-0 text-charcoal fw-bold ps-2"> PE-{item.bill_id} </td>
                     <td className="text-charcoal fw-bold"> {item.purchase_order_id && item.purchase_order_id !== null ? item.purchase_order_id : "N/A"} </td>
                     <td className="text-charcoal fw-bold"> {item.channel && item.channel == 1 ? "Pharmacy" : "Clinic"} </td>
                     <td className="text-charcoal fw-bold"> {item.invoice_no ? item.invoice_no : "N/A"} </td>
@@ -3135,9 +3138,15 @@ function Purchaseentrysection(props) {
                     <td className='text-charcoal fw-bold text-center'>
                     <button className="btn p-0 m-0" onClick={() => { setqr(i); }} > <img src={process.env.PUBLIC_URL + "/images/qrcode.png"} alt="displaying_image" className="me-1 img-fluid" /> </button>
                           </td>
-                    <td className={` position-absolute d-${i == index ? peidw : "none" } border border-1 start-0 mx-auto end-0 bg-seashell rounded-4 p-0 m-0`} style={{zIndex:'10', top: "0",width:'70vh',height: "40vh" }} >
-                       {i == index ? 
-                       ( <PEitemdetailssection purchaseentryarr={purchaseentryarr[i]} itembillid={"PE-" + item.bill_id} toggle_peidw={toggle_peidw} /> ) : ( <></> )}
+                    <td>
+                       {i == index ? ( 
+                        <>
+                        {/* <div className="backdrop"></div> */}
+                        <section className={` position-absolute d-${i == index ? peidw : "none" } border border-1 start-0 mx-auto end-0 bg-seashell rounded-4 p-0 m-0`} style={{zIndex:'10', top: "0",width:'70vh',height: "40vh" }}>
+                       <PEitemdetailssection purchaseentryarr={purchaseentryarr[i]} itembillid={"PE-" + item.bill_id} toggle_peidw={toggle_peidw} /> 
+                       </section>
+                       </>
+                       ) : ( <></> )}
                     </td>
                     <td className={`position-absolute start-0 text-start bg-pearl container-fluid d-${qr == i ? "block" : "none" }`} style={{ top: "-8.5rem", zIndex: "5", height: "89vh" }} >
                       {i == qr ? (
@@ -3187,10 +3196,7 @@ function Purchaseentrysection(props) {
       </div>
       <section className={`newpurchaseentrysection position-absolute start-0 end-0 bg-seashell d-${npef}` } style={{Height:'100vh'}} >
         {
-          <Newpurchaseentryform
-            toggle_npef={toggle_npef}
-            GETPurchaseList={GETPurchaseList}
-          />
+          <Newpurchaseentryform toggle_npef={toggle_npef} GETPurchaseList={GETPurchaseList} />
         }
       </section>
     </>
@@ -3693,7 +3699,7 @@ function Newpurchaseentryform(props) {
     for (let i = 0; i < ClinicList.length; i++) {
       if (ClinicList[i].id == ClinicId) {
         setclinicstatecode(ClinicList[i].state_code);
-      }
+      } 
     }
   }
   let MedicineentriesObj = {
@@ -4167,7 +4173,7 @@ function Newpurchaseentryform(props) {
   };
   const ConvertExcel = async () => {
     let e = [];
-    if (vendorid == 3) {
+    if (vendorid == 2) {
       if (Exceldata && Exceldata.length != 0) {
         const Excelfile = XLSX.read(Exceldata, { type: "buffer" });
         const ExcelSheet = Excelfile.SheetNames[0];
@@ -4213,7 +4219,7 @@ function Newpurchaseentryform(props) {
         }
       }
     }
-    if (vendorid == 4 || vendorid == 2) {
+    if (vendorid == 4 || vendorid == 3) {
       if (Exceldata && Exceldata.length != 0) {
         const Excelfile = XLSX.read(Exceldata, { type: "buffer" });
         const ExcelSheet = Excelfile.SheetNames[0];
@@ -4277,6 +4283,7 @@ function Newpurchaseentryform(props) {
       setNewMed("block");
     }
   };
+  console.log(vendorsearch)
   return (
     <div className=" p-0 m-0" style={{ zIndex: "2" }}>
         <div className="row p-0 m-0 p-2">
@@ -4968,11 +4975,7 @@ function PurchaseReturns(props) {
                   <td className={` position-absolute d-${i == index ? pridw : "none" } border border-1 start-0 mx-auto end-0 bg-seashell rounded-4 p-0 m-0`} style={{zIndex:'10', top: "0",width:'70vh',height: "40vh" }} >
                     {
                     i == index ? (
-                      <PRitemdetailssection
-                        purchasereturnarr={purchasereturnarr[i]}
-                        itembillid={"PR-" + item.return_no}
-                        toggle_pridw={toggle_pridw}
-                      />
+                      <PRitemdetailssection purchasereturnarr={purchasereturnarr[i]} itembillid={"PR-" + item.return_no} toggle_pridw={toggle_pridw} />
                     ) : (
                       <></>
                     )}
@@ -5011,7 +5014,7 @@ function PurchaseReturns(props) {
         />
       </div>
 
-      <section className={`newreturnentrysection position-absolute bg-seashell border border-1 start-0 end-0 d-${nref}`} >
+      <section className={`top-0 position-absolute bg-seashell border shaodw rounded-2 start-0 end-0 mx-auto d-${nref}`} style={{height:'70vh',width:'60vh'}}>
         {
           <NewPurchaseReturnentryform toggle_nref={toggle_nref} GETPurchaseReturns={GETPurchaseReturns} />
         }
@@ -5590,48 +5593,23 @@ function NewPurchaseReturnentryform(props) {
   }
   return (
     <div className="newpurchaseentryform p-0 m-0">
-      <div className=" p-0 m-0">
-        <div className="container-fluid p-0 m-0 bg-seashell position-relative  ">
-          <h5 className="text-center mt-3" style={{ color: "var(--charcoal)" }}>
-            New Purchase Return Entry
-          </h5>
-          <button
-            type="button"
-            className="btn-close position-absolute end-0 closebtn me-2"
-            onClick={props.toggle_nref}
-            aria-label="Close"
-          ></button>
+        <div className=" p-0 m-0 shadow-sm  position-relative  ">
+          <h5 className="text-center fw-bold text-charcoal py-2"> New Purchase Return Entry </h5>
+          <button type="button" className="btn-close position-absolute top-0 end-0 closebtn me-2 pt-2" onClick={props.toggle_nref} aria-label="Close" ></button>
         </div>
         <div className="container-fluid p-0 m-0 w-100 entrydetails bg-seashell">
-          <div className="row p-0 m-0 justify-content-center">
+          <div className="row p-0 pt-2 justify-content-center">
             <div className="col-5">
               <h6 className="p-0 m-0 ms-3 fw-bold">Select Distributor</h6>
-              <input
-                className="form-control ms-2 rounded-1 bg-seashell"
-                placeholder="Search Vendors"
-                value={vendorname ? vendorname : ""}
-                onChange={(e) => {
-                  searchvendors(e.target.value);
-                  setvendorname(e.target.value);
-                  setvendorid();
-                  setMedicineentriesArr([]);
-                }}
-              />
-              <div
-                ref={vendorsref}
-                className="position-absolute ms-2 rounded-1 bg-pearl col-2"
-                style={{ display: "none", zIndex: "1" }}
-              >
-                {vendorsearch ? (
+              <input className="form-control ms-2 rounded-1 bg-seashell" placeholder="Search Vendors" value={vendorname ? vendorname : ""} onChange={(e) => { searchvendors(e.target.value); setvendorname(e.target.value); setvendorid(); setMedicineentriesArr([]); }} />
+              <div ref={vendorsref} className="position-absolute ms-2 rounded-1 bg-pearl col-2" style={{ display: "none", zIndex: "1" }} >
+                {
+                vendorsearch ? (
                   loadvendors ? (
                     <div className="rounded-1 p-1">
                       Searching Please wait....
-                      <div
-                        className="spinner-border my-auto"
-                        style={{ width: "1rem", height: "1rem" }}
-                        role="status"
-                      >
-                        <span className="sr-only"> </span>{" "}
+                      <div className="spinner-border my-auto" style={{ width: "1rem", height: "1rem" }} role="status" >
+                        <span className="sr-only"> </span>
                       </div>
                     </div>
                   ) : vendorsearch.length == 0 ? (
@@ -5726,141 +5704,70 @@ function NewPurchaseReturnentryform(props) {
               </button>
             </div>
           </div>
-          <div
-            className=" p-0 m-0 mt-2 scroll scroll-y"
-            style={{ Height: "65vh" }}
-          >
+          <div className=" p-0 m-0 mt-3 scroll scroll-y" style={{ Height: "65vh" }} >
             <table className="table datatable text-center position-relative">
               <thead style={{ color: "gray", fontWeight: "600" }}>
                 <tr>
-                  <th className="p-0 m-0 px-1">Item ID</th>
-                  <th className="p-0 m-0 px-1">Item Name</th>
-                  <th className="p-0 m-0 px-1">batch No.</th>
-                  <th className="p-0 m-0 px-1">Expiry Date</th>
-                  <th className="p-0 m-0 px-1">Avl. Stock</th>
-                  <th className="p-0 m-0 px-1">Qty to Return</th>
-                  <th className="p-0 m-0 px-1">Purchase Rate/Unit</th>
-                  <th className="p-0 m-0 px-1">Purchase Rate</th>
-                  <th className="p-0 m-0 px-1">Delete</th>
+                  <th className="px-2">Item ID</th>
+                  <th className="px-2">Item Name</th>
+                  <th className="px-2">batch No.</th>
+                  <th className="px-2">Expiry Date</th>
+                  <th className="px-2">Avl. Stock</th>
+                  <th className="px-2">Qty to Return</th>
+                  <th className="px-2">Purchase Rate/Unit</th>
+                  <th className="px-2">Purchase Rate</th>
+                  <th className="px-2">Delete</th>
                 </tr>
               </thead>
-              {MedicineentriesArr ? (
-                <tbody
-                  style={{
-                    maxHeight: "65vh",
-                    minHeight: "65vh",
-                    color: "var(--charcoal)",
-                    fontWeight: "600",
-                  }}
-                >
-                  {MedicineentriesArr.map((item, _key) => (
+              {
+              MedicineentriesArr && MedicineentriesArr.length == 0 ? (
+                <tbody style={{ maxHeight: "65vh", minHeight: "65vh", color: "var(--charcoal)", fontWeight: "600", }} >
+                  {
+                  MedicineentriesArr.map((item, _key) => (
                     <tr key={_key} className="">
                       <td>{item.Itemid}</td>
                       <td>{item.Item}</td>
                       <td>{item.batchno}</td>
                       <td>{reversefunction(item.expirydate)}</td>
                       <td>{item.currentstock}</td>
-                      <td
-                        className="p-0 m-0"
-                        style={{ width: "0px", height: "0px" }}
-                      >
-                        <input
-                          className="border border-1 rounded-1 w-25 text-center p-0 m-0 bg-seashell  mt-2"
-                          value={item.qtytoReturn ? item.qtytoReturn : ""}
-                          onChange={(e) => {
-                            e.target.value <= item.currentstock
-                              ? (item.qtytoReturn = e.target.value)
-                              : Notiflix.Notify.failure(
-                                "Quantity Cannot be Greater then Current Stock Available"
-                              );
-                            item.totalcost = CalculateCost(
-                              item.cost,
-                              item.currentstock,
-                              e.target.value
-                            );
-                            setMedicineentriesArr((prevState) => [
-                              ...prevState,
-                            ]);
-                          }}
-                        />
+                      <td className="p-0 m-0" style={{ width: "0px", height: "0px" }} >
+                        <input className="border border-1 rounded-1 w-25 text-center p-0 m-0 bg-seashell  mt-2" value={item.qtytoReturn ? item.qtytoReturn : ""} onChange={(e) => { e.target.value <= item.currentstock ? (item.qtytoReturn = e.target.value) : Notiflix.Notify.failure( "Quantity Cannot be Greater then Current Stock Available" ); item.totalcost = CalculateCost( item.cost, item.currentstock, e.target.value ); setMedicineentriesArr((prevState) => [ ...prevState, ]); }} />
                       </td>
                       <td>{item.cost}</td>
                       <td>{item.totalcost}</td>
-                      <td>
-                        <button
-                          onClick={() => {
-                            DeleteMedicine(item.Itemid);
-                          }}
-                          className="btn btn-sm button-burntumber"
-                        >
-                          Delete
-                        </button>
-                      </td>
+                      <td><button onClick={() => { DeleteMedicine(item.Itemid); }} className="btn btn-sm button-burntumber" > Delete </button> </td>
                     </tr>
                   ))}
                 </tbody>
-              ) : MedicineentriesArr && MedicineentriesArr.length == 0 ? (
-                <tbody
-                  className="position-relative"
-                  style={{
-                    height: "65vh",
-                    maxHeight: "65vh",
-                    color: "var(--charcoal)",
-                    fontWeight: "600",
-                  }}
-                >
+              ) : (
+                <tbody className="position-relative" style={{ height: "65vh", maxHeight: "65vh", color: "var(--charcoal)", fontWeight: "600", }} >
                   <tr>
                     <td className="position-absolute start-0 end-0 top-0">
                       No items Added
                     </td>
                   </tr>
                 </tbody>
-              ) : (
-                <tbody
-                  className="position-relative"
-                  style={{
-                    height: "65vh",
-                    maxHeight: "65vh",
-                    color: "var(--charcoal)",
-                    fontWeight: "600",
-                  }}
-                >
-                  <tr className="">
-                    <td className="position-absolute start-0 end-0 top-0">
-                      No items Added
-                    </td>
-                  </tr>
-                </tbody>
-              )}
+              ) }
             </table>
           </div>
         </div>
-      </div>
       <div className="col-12 position-absolute start-0 end-0 bottom-0 rounded-bottom text-center bg-pearl align-items-center border border-1 py-3">
         <div className="row p-0 m-0">
           <div className="col-auto">
             <div className="row">
               <div className="col-auto">
-                <p className="text-charcoal75 p-0 m-0 fw-bolder card-title text-start ms-3">
-                  {" "}
-                  Order Total{" "}
-                </p>
-                <h4 className="text-charcoal  p-0 m-0 fw-bolder card-header text-start ps-3">
-                  {Grand()}
-                </h4>
+                <p className="text-charcoal75 p-0 m-0 fw-bolder card-title text-start ms-3"> Order Total </p>
+                <h4 className="text-charcoal  p-0 m-0 fw-bolder card-header text-start ps-3"> {Grand()} </h4>
               </div>
               <div className="col-auto">
-                <p className="text-charcoal75 p-0 m-0 fw-bolder card-title text-start ms-3">
-                  {" "}
-                  Total Items
-                </p>
+                <p className="text-charcoal75 p-0 m-0 fw-bolder card-title text-start ms-3"> Total Items </p>
                 <h4 className="text-charcoal  p-0 m-0 fw-bolder card-header text-start ps-3">
                   {MedicineentriesArr ? MedicineentriesArr.length : 0}
                 </h4>
               </div>
             </div>
           </div>
-          <div className="col-4 mx-auto align-self-center text-end">
+          <div className="col-6 mx-auto align-self-center text-end">
             {load ? (
               <div className="col-6 py-2 pb-2 m-auto text-center">
                 <div class="spinner-border" role="status">
@@ -5868,12 +5775,7 @@ function NewPurchaseReturnentryform(props) {
                 </div>
               </div>
             ) : (
-              <button
-                className="button button-charcoal px-5"
-                onClick={confirmmessage}
-              >
-                Save Entry
-              </button>
+              <button className="button button-charcoal px-5" onClick={confirmmessage} > Save Return </button>
             )}
           </div>
         </div>
@@ -7243,9 +7145,12 @@ function MedicineList() {
                     </button>
                   </td> */}
                   {index == i ? (
-                    <td className={` text-start  d-${index == i ? UptMed : "none"} border position-absolute start-0 end-0 top-0 bg-seashell`} style={{ padding: 0, marginTop: "-8.15rem", zIndex: "2" }} >
+                    <>
+                     <div className="backdrop"></div>
+                    <td className={` text-start d-${index == i ? UptMed : "none"} mx-auto rounded-2 p-0 m-0 border position-absolute shadow start-0 top-0 end-0 top-0 bg-seashell`} style={{zIndex: "2", height:'70vh',width:'60vh' }} >
                       <UpdateMedicine medcinelist={medcinelist} ToggleUpdateMedicine={ToggleUpdateMedicine} data={medicines[i]} />
                     </td>
+                    </>
                   ) : (
                     <></>
                   )}
@@ -7255,7 +7160,7 @@ function MedicineList() {
           )}
         </table>
       </div>
-      <section className={`position-absolute border-1 shadow start-0 bg-seashell rounded-1 end-0 d-${NewMed}`} style={{ top: "-4rem", zIndex: "2" }} >
+      <section className={`position-absolute border-1 shadow start-0 bg-seashell rounded-2 mx-auto top-0 end-0 d-${NewMed}`} style={{  zIndex: "2",height:'70vh',width:'60vh' }} >
         <NewMedicine ToggleNewMedicine={ToggleNewMedicine}  medcinelist={medcinelist}/>
       </section>  
       <div className="container-fluid d-flex justify-content-center mt-2">
@@ -8641,7 +8546,7 @@ function NewTransferOutForm(props){
               <input type="date" className="button button-pearl fw-bolder tet-charcoal " onChange={(e)=>{settransferdate(e.target.value)}} value={transferdate?transferdate:currentDate}/>
             </div>
         </div>
-        <div className="container-fluid p-0 m-0 position-absolute bottom-0 bg-pearl">
+        <div className="container-fluid p-0 m-0 position-absolute bottom-0 bg-pearl bottom_bar">
           <div className="row p-0 m-0 py-3 justify-content-end">
             <div className="col-auto">
             <button className="button button-charcoal" onMouseDown={() => { toggleStage2(); }} onMouseUp={() => { toggleStage1() }} >Add Items</button>
@@ -8750,7 +8655,7 @@ function NewTransferOutForm(props){
                 </table>
                 </div>
                      
-        <div className="container-fluid p-0 m-0 position-absolute bottom-0 bg-pearl">
+        <div className="container-fluid p-0 m-0 position-absolute bottom-0 bottom_bar bg-pearl">
           <div className="row p-0 m-0 py-3 justify-content-between align-items-center align-self-center">
             <div className="col-auto">
               <label className="fw-bolder text-charcoal75" htmlFor="">Grand Total</label>
@@ -8987,7 +8892,7 @@ useEffect(() => {
               </div>
             </div>
     <div className="col-auto">
-    <ExportDump dumpsarr={dumpsarrExcel} fromdate={reversefunction(fromdate)} todate={reversefunction(todate)} />
+    <ExportDump dumpsarr={dumpsarrExcel} fromdate={reversefunction(fromdate?fromdate:currentDate)} todate={reversefunction(todate?todate:fromdate?fromdate:currentDate)} />
     </div>
    </div>
    <div className="row p-0 m-0 justify-content-between mt-3">

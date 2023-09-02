@@ -112,13 +112,15 @@ const UpdateMedicine = (props) => {
 
 
   return (
-    <div className='position-relative bg-seashell p-0 m-0 fw-bold'>
-      <h5 className='p-0 m-0 text-center py-2 border-bottom'>Update Medicine</h5>
+    <div className=' p-0 m-0 fw-bold'>
+      <div className="shadow-sm">
+      <h5 className='p-0 m-0 text-center py-2 fw-bold text-charcoal'>Update Medicine</h5>
       <button className='btn btn-close position-absolute end-0 top-0 mt-1 me-1' onClick={props.ToggleUpdateMedicine}></button>
-      <div className='scroll scroll-y' style={{ height: '78vh' }}>
-        <div className="row p-0 m-0">
-          <div className="row p-0 m-0 justify-content-end">
-            <p className='text-charcoal fw-bold p-0 m-0 py-2 text-center'>Basic Details</p>
+      </div>
+      <div className='scroll scroll-y' style={{ minHeight: '100%' }}>
+        <div className="row p-0 m-0 ms-3 mt-3">
+          <div className="row p-0 m-0">
+            <p className='text-charcoal75 fw-bold p-0 m-0 py-2 text-start ps-3'>Basic Details</p>
             <div className="col-5">
               <p className='p-0 m-0'>Display Name</p>
               <input className='form-control w-75 bg-seashell p-0 m-0 px-2 py-1' value={displayname ? displayname : ''} onChange={(e) => { setdisplayname(e.target.value) }} />
@@ -138,9 +140,9 @@ const UpdateMedicine = (props) => {
           </div>
 
         </div>
-        <div className="row p-0 m-0">
-          <div className="row p-0 m-0 justify-content-end mt-3">
-            <p className='text-charcoal fw-bold p-0 m-0 py-2 text-center'>Other Details  </p>
+        <div className="row p-0 m-0 mt-5">
+          <div className="row p-0 m-0 ms-3">
+            <p className='text-charcoal75 fw-bold p-0 m-0 py-2 text-start ps-3'>Other Details  </p>
             <div className="col-5">
               <p className='p-0 m-0'>Strength</p>
               <input className='form-control w-75 bg-seashell p-0 m-0 px-2 py-1' value={strength ? strength : ''} onChange={(e) => { setstrength(e.target.value) }} />
@@ -228,8 +230,8 @@ const UpdateMedicine = (props) => {
             <input type='file' className='form-control bg-seashell p-0 m-0 px-2 py-1' onChange={(e) => { handleimage(e) }} />
           </div>
         </div> */}
-        <div className="row p-0 m-0 justify-content-end mt-3 mb-3">
-          <p className='text-charcoal fw-bold p-0 m-0 py-2 text-center'>HSN Code and Count</p>
+        <div className="row p-0 m-0 ms-3 mt-5 mb-4">
+          <p className='text-charcoal75 fw-bold p-0 m-0 py-2 text-start ps-3'>HSN Code and Count</p>
           <div className="col-3">
             <p className='p-0 m-0'>HSN Code</p>
             <input className='form-control bg-seashell p-0 m-0 px-2 py-1' value={hsn ? hsn : ''} onChange={(e) => { sethsn(e.target.value) }} />
@@ -252,20 +254,22 @@ const UpdateMedicine = (props) => {
           </div>
         </div>
       </div>
-      <div className='bg-pearl border p-2 align-items-center '>
-        <div className="row p-0 m-0 text-center justify-content-between align-items-center align-self-center">
-
-          <div className="col-6">
-            <button className='button button-charcoal ' onClick={confirmmessage}>Update</button>
-          </div>
-          <div className="col-6">
-            <button className='button button-seashell' onClick={FillDetails}>Set Previous</button>
 
 
+          <div className='position-absolute w-100 bottom-0 bottom_bar bg-pearl border p-2 align-items-center '>
+          <div className="row p-0 m-0 text-center justify-content-between align-items-center align-self-center">
+  
+            <div className="col-6">
+              <button className='button button-charcoal ' onClick={confirmmessage}>Update</button>
+            </div>
+            <div className="col-6">
+              <button className='button button-seashell' onClick={FillDetails}>Set Previous</button>
+  
+  
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+        </div>
   )
 }
 export { UpdateMedicine }
