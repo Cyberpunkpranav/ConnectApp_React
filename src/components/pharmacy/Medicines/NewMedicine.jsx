@@ -103,10 +103,11 @@ const NewMedicine = (props) => {
       <h5 className='p-0 m-0 text-center py-2 fw-bold text-charcoal'>Add New Medicine</h5>
       <button className='btn btn-close position-absolute end-0 top-0 mt-1 me-1' onClick={props.ToggleNewMedicine}></button>
       </div>
-      <div className='scroll scroll-y' style={{ minHeight: '100%' }}>
-        <div className="row p-0 m-0">
-          <div className="row p-0 m-0 ms-3">
-            <p className='text-charcoal fw-bold p-0 m-0 py-2 text-start'>Basic Details</p>
+      <div className='scroll scroll-y ps-2' style={{ minHeight: '100%' }}>
+        <div className="row p-0 m-0  ms-3">
+        <p className='text-charcoal fw-bold p-0 m-0 py-2 text-start'>Basic Details</p>
+          <div className="row p-0 m-0">
+
             <div className="col-5">
               <p className='p-0 m-0'>Display Name</p>
               <input className='form-control w-75 bg-seashell p-0 m-0 px-2 py-1' value={displayname ? displayname : ''} onChange={(e) => { setdisplayname(e.target.value) }} />
@@ -126,9 +127,9 @@ const NewMedicine = (props) => {
           </div>
 
         </div>
-        <div className="row p-0 m-0">
-          <div className="row p-0 m-0 ms-3 mt-3">
-            <p className='text-charcoal fw-bold p-0 m-0 py-2 text-start'>Other Details  </p>
+        <div className="row p-0 m-0 ms-3 mt-3">
+        <p className='text-charcoal fw-bold p-0 m-0 py-2 text-start'>Other Details  </p>
+          <div className="row p-0 m-0 ">
             <div className="col-5">
               <p className='p-0 m-0'>Strength</p>
               <input className='form-control w-75 bg-seashell p-0 m-0 px-2 py-1' value={strength ? strength : ''} onChange={(e) => { setstrength(e.target.value) }} />
@@ -146,7 +147,7 @@ const NewMedicine = (props) => {
             </div>
             <div className="col-5">
               <p className='p-0 m-0'>Packaging</p>
-              <input className='form-control w-75 bg-seashell p-0 m-0 px-2 py-1' value={pack ? pack : ''} onChange={(e) => { setpack(e.target.value) }} />
+              <input type='number' className='form-control w-75 bg-seashell p-0 m-0 px-2 py-1' value={pack ? pack : ''} onChange={(e) => { setpack(e.target.value) }} />
             </div>
             <div className="col-5">
               <p className='p-0 m-0'>Packaging Type</p>
@@ -210,14 +211,14 @@ const NewMedicine = (props) => {
             </div>
           </div>
         </div>
-        <div className="row p-0 m-0 justify-content-center mt-3">
-          <p className='text-charcoal fw-bold p-0 m-0 py-2 text-center'>Choose Medicine Photo</p>
-          <div className="col-4 ms-5">
+        <div className="row p-0 m-0 justify-content-start mt-3 ms-3">
+          <p className='text-charcoal fw-bold p-0 m-0 py-2 text-start'>Choose Medicine Photo</p>
+          <div className="col-auto">
             <input type='file' className='form-control bg-seashell p-0 m-0 px-2 py-1' value={img ? img : ''} onChange={(e) => { setimg(e.target.value) }} />
           </div>
         </div>
-        <div className="row p-0 m-0 justify-content-end mt-3 mb-3">
-          <p className='text-charcoal fw-bold p-0 m-0 py-2 text-center'>HSN Code and Count</p>
+        <div className="row p-0 m-0 justify-content-end mt-3 mb-5 ms-3">
+          <p className='text-charcoal fw-bold p-0 m-0 py-2 text-start'>HSN Code and Count</p>
           <div className="col-12">
             <p className='p-0 m-0'>HSN Code</p>
             <input className='form-control bg-seashell p-0 m-0 px-2 py-1' value={hsn ? hsn : ''} onChange={(e) => { sethsn(e.target.value) }} />

@@ -1758,7 +1758,6 @@ function SaleEntryForm(props) {
   }
 
   return (
-    <>
       <div className="saleentry rounded-2">
         <div className="shadow-sm">
           <h5 className="text-center fw-bold py-2">New Sale Entry</h5>
@@ -2255,7 +2254,7 @@ function SaleEntryForm(props) {
           </div>
         </div>
       </div >
-    </>
+  
   )
 }
 function NewSaleReturnentryform(props) {
@@ -2827,7 +2826,7 @@ function Purchasesection(props) {
 
                 <ul class="dropdown-menu bg-seashell shadow-sm border-0">
                       <li className={`dropdown-item text-${second === "Pharmacy" ? "light" : "dark"} fw-bold bg-${second === 'Pharmacy' ? "charcoal" : "seashell"}`} onClick={(a) => {setSecond('Pharmacy');setchannel(1)}} > Pharmacy </li>
-                      <li className={`dropdown-item text-${second === "Consumables" ? "light" : "dark"} fw-bold bg-${second === 'Consumables' ? "charcoal" : "seashell"}`} onClick={(a) => {setSecond('Consumables');setchannel(2)}} > Consumables </li>
+                      <li className={`dropdown-item text-${second === "Clinic" ? "light" : "dark"} fw-bold bg-${second === 'Clinic' ? "charcoal" : "seashell"}`} onClick={(a) => {setSecond('Clinic');setchannel(2)}} > Clinic </li>
                 </ul>
               </div>
                 {/* <select className=" border-0 text-burntumber fw-bolder button-seashell rounded-2 button" value={channel ? channel : ""} onChange={(e) => { setchannel(e.target.value); }} >
@@ -2872,6 +2871,7 @@ function Purchaseentrysection(props) {
     }
     if (peidw === "block") {
       setpeidw("none");
+      setindex()
     }
   };
 
@@ -3141,7 +3141,7 @@ function Purchaseentrysection(props) {
                     <td>
                        {i == index ? ( 
                         <>
-                        {/* <div className="backdrop"></div> */}
+                        <div className="backdrop"></div>
                         <section className={` position-absolute d-${i == index ? peidw : "none" } border border-1 start-0 mx-auto end-0 bg-seashell rounded-4 p-0 m-0`} style={{zIndex:'10', top: "0",width:'70vh',height: "40vh" }}>
                        <PEitemdetailssection purchaseentryarr={purchaseentryarr[i]} itembillid={"PE-" + item.bill_id} toggle_peidw={toggle_peidw} /> 
                        </section>
@@ -4901,6 +4901,7 @@ function PurchaseReturns(props) {
     }
     if (pridw === "block") {
       setpridw("none");
+      setindex()
     }
   };
   const toggle_nref = () => {
@@ -4917,6 +4918,7 @@ function PurchaseReturns(props) {
       return date;
     }
   };
+  console.log(purchasereturnarr)
   return (
     <>
     <div className="col-auto position-absolute p-0 m-0 ms-2  export_2 align-self-center text-center   ">
@@ -4932,14 +4934,14 @@ function PurchaseReturns(props) {
       
       <div className="scroll scroll-y overflow-scroll p-0 m-0" style={{ minHeight: "57vh", height: "57vh" }} >
         <table className="table text-center p-0 m-0">
-          <thead className="p-0 m-0 align-middle">
+          <thead className="p-0 m-0 align-middle text-start">
             <tr>
               <th className="fw-bolder text-charcoal75" scope="col"> PR ID </th>
+              <th className="fw-bolder text-charcoal75" scope="col"> Channel </th>
               <th className="fw-bolder text-charcoal75" scope="col"> Distributor </th>
               <th className="fw-bolder text-charcoal75" scope="col"> Return Date </th>
               <th className="fw-bolder text-charcoal75" scope="col"> Return Amount </th>
               <th className="fw-bolder text-charcoal75" scope="col"> Inventory </th>
-              <th className="fw-bolder text-charcoal75" scope="col"> more </th>
             </tr>
           </thead>
           {
@@ -4959,23 +4961,26 @@ function PurchaseReturns(props) {
               </tr>
             </body>
           ) : purchasereturnarr && purchasereturnarr.length != 0 ? (
-            <tbody>
+            <tbody className="text-start">
               {purchasereturnarr.map((item, i) => (
                 <tr key={i} className={`bg-${i % 2 == 0 ? "seashell" : "pearl" } align-middle`} >
-                  <td className="p-0 m-0 text-charcoal fw-bold"> PR-{item.return_no} </td>
-                  <td className="p-0 m-0 text-charcoal fw-bold"> {item.distributor && item.distributor != null && item.distributor.entity_name && item.distributor.entity_name != null ? item.distributor.entity_name : "N/A"} </td>
-                  <td className="p-0 m-0 text-charcoal fw-bold"> {item.return_date ? reversefunction(item.return_date) : ""} </td>
-                  <td className="p-0 m-0 text-charcoal fw-bold"> {item.grand_total ? item.grand_total : "N/A"} </td>
-                  <td className="p-0 m-0 text-charcoal fw-bold">
-                    <button className="btn" onClick={() => { setindex(i); toggle_pridw(); }} > <img src={process.env.PUBLIC_URL + "/images/archivebox.png"} alt="displaying_image" className="ms-1"/> </button>
+                  <td className="text-charcoal fw-bold"> PR-{item.return_no} </td>
+                  <td className="text-charcoal fw-bold"> {item.channel && item.channel == 1 ? "Pharmacy" : "Clinic"} </td>
+                  <td className="text-charcoal fw-bold"> {item.distributor && item.distributor != null && item.distributor.entity_name && item.distributor.entity_name != null ? item.distributor.entity_name : "N/A"} </td>
+                  <td className="text-charcoal fw-bold"> {item.return_date ? reversefunction(item.return_date) : ""} </td>
+                  <td className="text-charcoal fw-bold"> ₹{item.grand_total ? item.grand_total : "N/A"} </td>
+                  <td className="text-charcoal fw-bold">
+                    <button className="btn p-0 m-0" onClick={() => { setindex(i); toggle_pridw(); }} > <img src={process.env.PUBLIC_URL + "/images/archivebox.png"} alt="displaying_image" className="ms-1"/> </button>
                   </td>
-                  <td className="p-0 m-0 text-charcoal fw-bold">
-                    <button className="btn position-relative cursor-pointer more p-0 m-0"> <img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image"  /> </button>
-                  </td>
-                  <td className={` position-absolute d-${i == index ? pridw : "none" } border border-1 start-0 mx-auto end-0 bg-seashell rounded-4 p-0 m-0`} style={{zIndex:'10', top: "0",width:'70vh',height: "40vh" }} >
+                  <td className="p-0 m-0">
                     {
                     i == index ? (
+                      <>
+                      <div className="backdrop"></div>
+                      <section className={` position-absolute d-${i == index ? pridw : "none" } border border-1 start-0 mx-auto end-0 bg-seashell rounded-4 p-0 m-0`} style={{zIndex:'10', top: "0",width:'70vh',height: "40vh" }}>
                       <PRitemdetailssection purchasereturnarr={purchasereturnarr[i]} itembillid={"PR-" + item.return_no} toggle_pridw={toggle_pridw} />
+                      </section>
+                      </>
                     ) : (
                       <></>
                     )}
@@ -6037,8 +6042,9 @@ function Stockvaccinesection() {
     var date2 = new Date(expirydate);
     const diffTime = Math.abs(date2 - date1);
     let diffDays = Math.ceil(Number(diffTime) / (1000 * 60 * 60 * 24));
-    diffDays = (Number(diffDays) / 30).toFixed(1);
-    return diffDays;
+    let diffMonths = (Number(diffDays) / 30).toFixed(0);
+    let diffremainDays = Number(diffDays)%30
+    return `${diffMonths} ${diffMonths > 1 ?"Months":'Month'} ${diffremainDays} ${diffremainDays > 1 ? 'Days':'Day'}`;
   };
 
   useEffect(() => {
@@ -6113,7 +6119,7 @@ function Stockvaccinesection() {
                   <td className=" text-charcoal fw-bold">{data.cost}</td>
                   <td className=" text-charcoal fw-bold"> {data.current_stock} </td>
                   <td className=" text-charcoal fw-bold"> {CalculateTStock(data.totalstock)} </td>
-                  <td className={`text-${data.Days_to_expire <= 2 ? "burntumber" : "charcoal" } fw-bold text-center`} > {data.Days_to_expire} Months </td>
+                  <td className={`text-${data.Days_to_expire <= 2 ? "burntumber" : "charcoal" } fw-bold text-center`} > {data.Days_to_expire} </td>
                   <td className=" text-charcoal fw-bold text-center"> {GetStatus(data.totalstock, data.alert_stock_count) == 1 ? ( <img src={process.env.PUBLIC_URL + "images/exclamation.png"} /> ) : ( <></> )} </td>
                   <td className="p-0 m-0 text-charcoal fw-bold align-items-center text-center "> <div className="vr rounded-1 align-self-center" style={{ padding: "0.8px" }} ></div> </td>
                   <td className={` bg-${index == i ? "lightyellow" : "" } p-0 m-0 text-charcoal fw-bold text-center`} >
@@ -6177,12 +6183,10 @@ function Stockmedicinesection() {
   function GetPages() {       
     try {
       axios
-        .get(`${url}/stock/list?search=${searchname}&limit=10&offset=0`)
+        .get(`${url}/stock/list?search=${searchname}&limit=25&offset=0`)
         .then((response) => {
           setpagecount(response.data.data.total_count_medicines);
-          setpages(
-            Math.round(response.data.data.total_count_medicines / 10) + 1
-          );
+          setpages( Math.round(response.data.data.total_count_medicines / 25) + 1 );
           setload(false);
         })
         .catch((e) => {
@@ -6199,7 +6203,7 @@ function Stockmedicinesection() {
       setload(true);
       try {
         axios
-          .get(`${url}/stock/list?search=${searchname}&limit=10&offset=0`)
+          .get(`${url}/stock/list?search=${searchname}&limit=25&offset=0`)
           .then((response) => {
             setmedicineslist(response.data.data.medicines);
             setload(false);
@@ -6215,7 +6219,7 @@ function Stockmedicinesection() {
     } else {
       setload(true);
       try {
-        axios.get(`${url}/stock/list?search=${searchname}&limit=10&offset=${Data.selected * 10}`)
+        axios.get(`${url}/stock/list?search=${searchname}&limit=10&offset=${Data.selected * 25}`)
           .then((response) => {
             setmedicineslist(response.data.data.medicines);
             setload(false);
@@ -6325,8 +6329,9 @@ function Stockmedicinesection() {
     var date2 = new Date(expirydate);
     const diffTime = Math.abs(date2 - date1);
     let diffDays = Math.ceil(Number(diffTime) / (1000 * 60 * 60 * 24));
-    diffDays = (Number(diffDays) / 30).toFixed(1);
-    return diffDays;
+    let diffMonths = (Number(diffDays) / 30).toFixed(0);
+    let diffremainDays = Number(diffDays)%30
+    return `${diffMonths} ${diffMonths > 1 ?"Months":'Month'} ${diffremainDays} ${diffremainDays > 1 ? 'Days':'Day'}`;
   };
   const GetStatus = (totalstockarr, alertstockcount) => {
     if (totalstockarr && alertstockcount) {
@@ -6428,7 +6433,7 @@ function Stockmedicinesection() {
                   <td className=" text-charcoal fw-bold">{data.cost}</td>
                   <td className=" text-charcoal fw-bold"> {data.current_stock} </td>
                   <td className=" text-charcoal fw-bold"> {data.totalstock ? CalculateTStock(data.totalstock) : ""} </td>
-                  <td className={`text-${data.Days_to_expire ? data.Days_to_expire : "" <= 2 ? "burntumber" : "charcoal" } fw-bold text-center`} > {data.Days_to_expire ? data.Days_to_expire : ""} Months </td>
+                  <td className={`text-${data.Days_to_expire ? data.Days_to_expire : "" <= 2 ? "burntumber" : "charcoal" } fw-bold text-center`} > {data.Days_to_expire ? data.Days_to_expire : ""} </td>
                   <td className=" text-charcoal fw-bold text-center"> {GetStatus(data.totalstock, data.alert_stock_count) == 1 ? ( <img src={process.env.PUBLIC_URL + "images/exclamation.png"} /> ) : ( <></> )} </td>
                   <td className="p-0 m-0 text-charcoal fw-bold align-items-center text-center "> <div className="vr rounded-1 align-self-center" style={{ padding: "0.8px" }} ></div> </td>
                   <td className={` bg-${index == i ? "lightyellow" : "" } p-0 m-0 text-charcoal fw-bold text-center`} > <button className="btn p-0 m-0" onClick={() => { setindex(i); toggle_detailsform(); }} > <img src={process.env.PUBLIC_URL + "images/info.png"} /> </button> </td>
@@ -7291,6 +7296,7 @@ function TransferIn(props){
     }
     if (peidw === "block") {
       setpeidw("none");
+      setindex()
     }
   }
 
@@ -7522,9 +7528,15 @@ function TransferIn(props){
                <td className="text-charcoal fw-bold text-center">
                  <button className="btn p-0 m-0" onClick={() => { setindex(i); toggle_peidw(); }} > <img src={ process.env.PUBLIC_URL + "/images/archivebox.png" } alt="displaying_image" className="ms-1 img-fluid" /> </button>
                </td>
-               <td className={` position-absolute d-${i == index ? peidw : "none" } border border-1 start-0 mx-auto end-0 bg-seashell rounded-4 p-0 m-0`} style={{zIndex:'10', top: "0",width:'70vh',height: "40vh" }} >
-                  {i == index ? 
-                  ( <TIitemdetailssection transferinarr={transferinarr[i]} id={"TI-" + item.id} toggle_peidw={toggle_peidw} /> ) : ( <></> )}
+               <td className={`p-0 m-0`}  >
+                  {i == index ?  (
+                    <>
+                    <div className="backdrop"></div>
+                    <section className={` position-absolute d-${i == index ? peidw : "none" } border border-1 start-0 mx-auto end-0 bg-seashell rounded-4 p-0 m-0`} style={{zIndex:'10', top: "0",width:'70vh',height: "40vh" }}>
+                    <TIitemdetailssection transferinarr={transferinarr[i]} id={"TI-" + item.id} toggle_peidw={toggle_peidw} /> 
+                    </section>
+                    </>
+                   ) : ( <></> )}
                </td>
              </tr>
            ))}
@@ -7580,6 +7592,7 @@ function TransferOut(props){
     }
     if (peidw === "block") {
       setpeidw("none");
+      setindex()
     }
   }
 
@@ -7615,7 +7628,7 @@ function TransferOut(props){
   async function GETTransferOutList(Data) {
     if (Data == undefined || Data.selected == undefined) {
       setLoading(true);
-      try {
+      try { 
         axios.get(`${url}/transfer/stocks/list?location_id=${ClinicID}&limit=25&offset=0` )
           .then((response) => {
             // setpagecount(response.data.data.total_count);
@@ -7649,7 +7662,7 @@ function TransferOut(props){
       }
     }
   }
- async  function GETTransferOutListForExcel() {
+  async  function GETTransferOutListForExcel() {
     setLoading(true);
     try {
       await axios.get(`${url}/transfer/stocks/list?location_id=${ClinicID}&limit=${pagecount?pagecount:''}&offset=0` ) .then((response) => {
@@ -7789,9 +7802,15 @@ function TransferOut(props){
                <td className="text-charcoal fw-bold text-center">
                  <button className="btn p-0 m-0" onClick={() => { setindex(i); toggle_peidw(); }} > <img src={ process.env.PUBLIC_URL + "/images/archivebox.png" } alt="displaying_image" className="ms-1 img-fluid" /> </button>
                </td>
-               <td className={` position-absolute d-${i == index ? peidw : "none" } border border-1 start-0 mx-auto end-0 bg-seashell rounded-4 p-0 m-0`} style={{zIndex:'10', top: "0",width:'70vh',height: "40vh" }} >
-                  {i == index ? 
-                  ( <TOitemdetailssection transferoutarr={transferoutarr[i]} id={"TO-" + item.id} toggle_peidw={toggle_peidw} /> ) : ( <></> )}
+               <td className={` `} >
+                  {i == index ? ( 
+                  <>
+                  <div className="backdrop"></div>
+                    <section className={`position-absolute d-${i == index ? peidw : "none" } border border-1 start-0 mx-auto end-0 bg-seashell rounded-4 p-0 m-0`}  style={{zIndex:'10', top: "0",width:'70vh',height: "40vh" }}>
+                  <TOitemdetailssection transferoutarr={transferoutarr[i]} id={"TO-" + item.id} toggle_peidw={toggle_peidw} />
+                  </section>
+                  </>
+                   ) : ( <></> )}
                </td>
              </tr>
            ))}
@@ -8723,6 +8742,7 @@ useEffect(() => {
     }
     if (peidw === "block") {
       setpeidw("none");
+      setindex()
     }
   }
   function GetPages() {
@@ -8877,7 +8897,7 @@ useEffect(() => {
 
                 <ul class="dropdown-menu bg-seashell shadow-sm border-0">
                       <li className={`dropdown-item text-${second === "Pharmacy" ? "light" : "dark"} fw-bold bg-${second === 'Pharmacy' ? "charcoal" : "seashell"}`} onClick={(a) => {setSecond('Pharmacy');setchannel(1)}} > Pharmacy </li>
-                      <li className={`dropdown-item text-${second === "Consumables" ? "light" : "dark"} fw-bold bg-${second === 'Consumables' ? "charcoal" : "seashell"}`} onClick={(a) => {setSecond('Consumables');setchannel(2)}} > Consumables </li>
+                      <li className={`dropdown-item text-${second === "Clinic" ? "light" : "dark"} fw-bold bg-${second === 'Clinic' ? "charcoal" : "seashell"}`} onClick={(a) => {setSecond('Clinic');setchannel(2)}} > Clinic </li>
                 </ul>
               </div>
             </div>
@@ -8969,9 +8989,15 @@ useEffect(() => {
             <td className="text-charcoal fw-bold text-center">
               <button className="btn p-0 m-0" onClick={() => { setindex(i); toggle_peidw(); }} > <img src={ process.env.PUBLIC_URL + "/images/archivebox.png" } alt="displaying_image" className="ms-1 img-fluid" /> </button>
             </td>
-            <td className={` position-absolute d-${i == index ? peidw : "none" } border border-1 start-0 mx-auto end-0 bg-seashell rounded-4 p-0 m-0`} style={{zIndex:'10', top: "0",width:'70vh',height: "40vh" }} >
-               {i == index ? 
-               ( <DumpItemDetails dumpsarr={dumpsarr[i]} id={"D-" + item.id} toggle_peidw={toggle_peidw} /> ) : ( <></> )}
+            <td >
+               {i == index ? ( 
+                <>
+                <div className="backdrop"></div>
+                <section className={` position-absolute d-${i == index ? peidw : "none" } border border-1 start-0 mx-auto end-0 bg-seashell rounded-4 p-0 m-0`} style={{zIndex:'10', top: "0",width:'70vh',height: "40vh" }}>
+                <DumpItemDetails dumpsarr={dumpsarr[i]} id={"D-" + item.id} toggle_peidw={toggle_peidw} />
+                </section>
+               </>
+                ) : ( <></> )}
             </td>
           </tr>
         ))}
