@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useMemo, useRef } from 'react'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { URL } from '../../index'
@@ -10,6 +10,7 @@ import '../../css/dashboard.css'
 
 const AddAddress = (props) => {
     const url = useContext(URL)
+    const stateref = useRef(null)
     const [address, setaddress] = useState()
     const [pincode, setpincode] = useState()
     const [place, setplace] = useState()
@@ -59,27 +60,43 @@ const AddAddress = (props) => {
     useEffect(()=>{
         setplace(data && data.label != undefined ? data.label : '')
         setplaceid(data && data.value !=undefined && data.value.place_id !=undefined ?data.value.place_id:'')
-        GetPostal_code()
+
     },[data])
 
     const GetPostal_code = async()=>{
-        setpincode('')
-        await axios.get(`https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeid}&key=AIzaSyC4wk5k8E6jKkpJClZlXZ8oavuPyi0AMVE`).then((response)=>{
-                if(response){
-                    let data = response.data.result !=undefined ? response.data.result.address_components:[]
-                for(let i=0;i<data.length;i++){
-                        if(data[i].types.includes('postal_code')){
-                            setpincode(data[i].short_name?data[i].short_name:'')
-                        }
+        // if(placeid !=undefined){
+        // if(pincode == undefined || state == undefined || country == undefined){
+            try{
+                await axios.get(`https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeid}&key=AIzaSyC4wk5k8E6jKkpJClZlXZ8oavuPyi0AMVE`).then((response)=>{
+                    if(response){
+                        let data = response.data.result !=undefined ? response.data.result.address_components:[]
+                    for(let i=0;i<data.length;i++){
+                            if(data[i].types.includes('postal_code')){
+                              setpincode(data[i].short_name?data[i].short_name:'')
+                            }
+                            if(data[i].types.includes('country')){
+                                setcountry(data[i].long_name?data[i].long_name:'')
+                            }
+                            if(data[i].types.includes('locality')){
+                                setstate(data[i].long_name?data[i].long_name:'')
+                            }
+                    }
+    
                 }
+    
+            })
+            }catch(e){
+                alert(e.message)
             }
 
-        })
-                                       }
+    // }
+    // }
+}
+
        useEffect(()=>{
         GetPostal_code()
        },[placeid])
-       
+
     const Add_Address = async () => {
         await axios.post(`${url}/add/patient/address`, {
             patient_id: props.patientid,
@@ -93,9 +110,15 @@ const AddAddress = (props) => {
         }).then((response) => {
             if (response.data.status == true) {
                 Notiflix.Notify.success(response.data.message)
-                props.setpatientdata(response.data.data)
+                if(props.form3 !==undefined){
+                    props.getAllPatients()
+              
+                }else{
+                    props.setpatientdata(response.data.data)
+                }
+ 
                 clear()
-            }
+            } 
             
         })
     }
@@ -175,6 +198,7 @@ const AddAddress = (props) => {
     useEffect(() => {
         fill_data()
     }, [])
+    // console.log(country,state,pincode,location)
     return (
         <div className='text-center px-2 py-1'>
             <div className="text-start">
@@ -203,19 +227,19 @@ const AddAddress = (props) => {
                         />
                     </div>
                     <div className="col-6 m-auto">
-                        <label htmlFor="inputpincode" className=" fw-bold text-charcoal75">Pin Code</label>
-                        <input type="text" className="form-control " id="inputpincode" value={pincode ? pincode : ''} placeholder="pincode" onChange={(e) => { setpincode(e.target.value) }} required />
-                    </div>
-                    <div className="col-6 m-auto">
-                        <label htmlFor="inputpincode" className=" fw-bold text-charcoal75">State</label>
-                        <input type="text" className="form-control" id="inputpincode" value={state ? state : ''} placeholder="state" onChange={(e) => { setstate(e.target.value) }} required />
-                    </div>
-                    <div className="col-6 m-auto">
-                        <label htmlFor="inputpincode" className=" fw-bold text-charcoal75">Country</label>
-                        <input type="text" className="form-control" id="inputpincode" value={country ? country : ''} placeholder="country" onChange={(e) => { setcountry(e.target.value) }} required />
-                    </div>
+                            <label className=" fw-bold text-charcoal75">Pin Code</label>
+                            <input type="text" className="form-control " value={pincode ? pincode : ''} placeholder="pincode" onChange={(e) => { setpincode(e.target.value) }} required />
+                        </div>
+                        <div className="col-6 m-auto">
+                            <label htmlFor="inputpincode" className=" fw-bold text-charcoal75">State</label>
+                            <input type="text"  className="form-control" value={state?state:''} placeholder="state" onChange={(e) => { setstate(e.target.value) }} required />
+                        </div>
+                        <div className="col-6 m-auto">
+                            <label htmlFor="inputpincode" className=" fw-bold text-charcoal75">Country</label>
+                            <input type="text" className="form-control" value={country ?country: ''} placeholder="country" onChange={(e) => { setcountry(e.target.value) }} required />
+                        </div>
 
-                </div>
+                </div>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
             </div>
             <div className="button button-charcoal my-2 " onClick={() => { props.data ? confirmmessage2() : confirmmessage() }}>Save</div>
         </div>

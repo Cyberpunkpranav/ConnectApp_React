@@ -126,55 +126,13 @@ const AddPatient = (props) => {
         }
     }
 
-    const [data, setData] = useState("");
-    // useEffect(() => {
-
-    //     if (data.value !== undefined && data.value.place_id !== undefined) {
-    //         setpincode()
-
-    //         setplaceid()
-    //         // initialize the map
-    //         const map = new window.google.maps.Map({
-    //             center: { lat: lat, lng: lng },
-    //             zoom: 14
-    //         });
-    //         // initialize the PlacesService object with your API key and map
-    //         const placesService = new window.google.maps.places.PlacesService(map);
-    //         console.log(placesService)
-    //         // send a getDetails request for the place using its Place ID
-    //         placesService.getDetails({
-    //             placeId: data.value.place_id
-   
-    //         }, (placeResult, status) => {
-    //             if (status === 'OK') {
-                    
-    //                 // find the address component with type "postal_code"
-    //                 const postalCodeComponent = placeResult.address_components.find(component => {
-    //                     return component.types.includes('postal_code');
-    //                 })
-    //                 if (postalCodeComponent) {
-    //                     const postalCode = postalCodeComponent.short_name;
-    //                     setpincode(postalCode);
-    //                 } else {
-    //                     Notiflix.Notify.warning('Postal code not found for this place.');
-    //                 }
-    //             } else {
-    //                 Notiflix.Notify.failure(`Failed to get place details: ${status}`);
-    //             }
-    //         });
-    //     }
-
-    //     data === "" ? setData("") : setData(data);
-    //     setplace(data.label)
-    // }, [data])
+    const [data, setData] = useState("");   
     useEffect(()=>{
         setplace(data && data.label != undefined ? data.label : '')
         setplaceid(data && data.value !=undefined && data.value.place_id !=undefined ?data.value.place_id:'')
-        GetPostal_code()
     },[data])
 
        const GetPostal_code = async()=>{
-        setpincode('')
         await axios.get(`https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeid}&key=AIzaSyC4wk5k8E6jKkpJClZlXZ8oavuPyi0AMVE`).then((response)=>{
                 if(response){
                     let data = response.data.result !=undefined ? response.data.result.address_components:[]
@@ -212,7 +170,6 @@ const AddPatient = (props) => {
             },
         );
     }
-//    console.log(data,lat,lng,placeid,pincode)
   
     return (
         <section>

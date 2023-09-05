@@ -74,7 +74,6 @@ const SummaryData = () => {
         let newdate = fromdate[1] + " " + fromdate[0]
         return newdate
     }
-    console.log(fromdate,currentDate)
     return (
         <>
                 <h2 className=" ms-3 text-charcoal fw-bolder mt-2" style={{ width: "fit-content" }}> {pagecount} {pagecount > 1 ? "Summary Data" : "Summary Data"}{" "} </h2>

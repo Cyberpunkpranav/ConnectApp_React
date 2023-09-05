@@ -155,7 +155,6 @@ const BatchDetails = () => {
   useEffect(() => {
     GETBatchDetails();
   }, [pagecount]);
-  console.log(batchdetailsarr,batcharr)
   return (
     <>
     <h2 className=" ms-3 text-charcoal fw-bolder mt-2" style={{ width: "fit-content" }}> {pagecount} {pagecount > 1 ? "Batches Details" : "Batch Details"}{" "}  </h2>

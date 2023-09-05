@@ -585,7 +585,6 @@ function SaleEntrypayments(props) {
     }
 
   }
-// console.log(paymentmethods)
   return (
     <div className="p-0 m-0 text-center">
       <h6 className="text-center mt-2 fw-bold">{props.itembillid} Payments</h6>
@@ -4283,7 +4282,6 @@ function Newpurchaseentryform(props) {
       setNewMed("block");
     }
   };
-  console.log(vendorsearch)
   return (
     <div className=" p-0 m-0" style={{ zIndex: "2" }}>
         <div className="row p-0 m-0 p-2">
@@ -4918,7 +4916,6 @@ function PurchaseReturns(props) {
       return date;
     }
   };
-  console.log(purchasereturnarr)
   return (
     <>
     <div className="col-auto position-absolute p-0 m-0 ms-2  export_2 align-self-center text-center   ">
@@ -7242,7 +7239,7 @@ return(
                 first.map((e, i) => (
                   <li className={`dropdown-item text-${e.option === pageindex ? "light" : "dark"} fw-bold bg-${e.option === pageindex ? "charcoal" : "seashell"}`} onClick={(a) => setpageindex(e.option)} > {e.option} </li>
                 )
-                )
+                )                                                                                                                                                           
               }
             </ul>
           </div>

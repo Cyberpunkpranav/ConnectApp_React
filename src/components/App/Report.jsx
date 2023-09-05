@@ -148,7 +148,6 @@ const Reports = () => {
       )
 
     }
-    console.log(select)
     return <div className="fs-2">Nothing Selected</div>;
   };
   return (

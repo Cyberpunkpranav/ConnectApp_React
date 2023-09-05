@@ -66,7 +66,6 @@ const StockReport_By_Name = () => {
             try {
                 axios.get(`${url}/reports/stock/report/by/item?item_id=${itemid ? itemid : ''}&item_type=${itemtype ? itemtype : ''}&from=${fromdate ? fromdate : currentDate}&to=${todate ? todate : fromdate ? fromdate : currentDate}`)
                     .then((response) => {
-                        console.log(response)
                         let medicines = []
                         let vaccines = []
                         let dataarr = []
@@ -99,7 +98,6 @@ const StockReport_By_Name = () => {
             try {
                 axios.get(`${url}/reports/stock/report/by/item?item_id=${itemid}&item_type=${itemtype}&from=${fromdate ? fromdate : currentDate}&to=${todate ? todate : fromdate ? fromdate : currentDate}`)
                     .then((response) => {
-                        console.log(response)
                         let medicines = []
                         let vaccines = []
                         let dataarr = []
@@ -173,7 +171,6 @@ const StockReport_By_Name = () => {
         id: key,
         ...stockreportarr[key]
     }));
-    console.log(stockreportarr,itemid)
     return (
         <>
                     <h2 className=" ms-3 text-charcoal fw-bolder mt-4" style={{ width: "fit-content" }}> {pagecount} {pagecount > 1 ? ` Stock Reports By Name` : ` Stock Report By Name`}{" "}  </h2>

@@ -6,6 +6,7 @@ import Notiflix from 'notiflix';
 import { customconfirm } from "../features/notiflix/customconfirm"
 import { UpdatePatient } from '../Patients/UpdatePatient'
 import { UpdateAddress } from '../Patients/UpdateAddress'
+import { AddAddress } from '../Patients/AddAddress'
 //css
 import '../../css/patient.css'
 function Patients() {
@@ -101,8 +102,10 @@ function Patients() {
   }
   const [updateaddress, setupdateaddress] = useState('none')
   const [updatepatient, setupdatepatient] = useState('none')
+  const [addresspage, setaddresspage] = useState('none')
   const [form, setform] = useState();
   const [form2, setform2] = useState();
+  const [form3, setform3] = useState();
 
   const OpenUpdatePatient = (i) => {
     if (updatepatient === 'none') {
@@ -113,6 +116,7 @@ function Patients() {
   const CloseUpdatePatient = () => {
     if (updatepatient === 'block') {
       setupdatepatient('none')
+      setform()
     }
   }
   const OpenUpdateAddress = (i) => {
@@ -127,7 +131,16 @@ function Patients() {
       setform2()
     }
   }
-
+  const Toggle_Address = (i)=>{
+    if(addresspage == 'block'){
+      setaddresspage('none')
+      setform3()
+    }
+    if(addresspage == 'none'){
+      setaddresspage('block')
+      setform3(i)
+    }
+  }
   return (
     <section className="patientsection text-center position-relative">
       <div className="conatainer searchbar">
@@ -162,7 +175,7 @@ function Patients() {
 
               </tbody>
             ) : (
-              PatientsList && PatientsList.length == 0 ? (
+              PatientsList !=undefined && PatientsList.length == 0 ? (
                 <tbody className='text-center position-relative p-0 m-0 ' style={{ minHeight: '30vh' }}>
                   <tr className=''>
                     <td className='fw-bolder text-charcoal text-center position-absolute border-0 start-0 end-0 mx-3 p-2 border-0'>No Patients found</td>
@@ -172,29 +185,46 @@ function Patients() {
               ) : (
                 <tbody>
                   {
-                    PatientsList && PatientsList.map((data, i) => (
+                    PatientsList !=undefined && PatientsList.map((data, i) => (
                       <tr className="align-middle">
                         <td className={`d-${permission.patient_edit == 1 ? '' : 'none'}`}>
                           <button className="button p-0 m-0 bg-transparent border-0 fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <img src={process.env.PUBLIC_URL + "/images/confirmed.png"} alt="displaying_image" className="img-fluid"/>
                           </button>
                           <ul className="dropdown-menu shadow-sm p-2 scroll" style={{ '-webkit-appearance': 'none', 'appearance': 'none', width: 'max-content', height: '40vh' }}>
+                            <li className="dropdown-item d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { Toggle_Address(i); }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/confirmed.png"} alt="displaying_image" />Add Address</li>
                             <li className="dropdown-item d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { settabindex(i); OpenUpdatePatient(i) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/confirmed.png"} alt="displaying_image"/> Update Patient</li>
                             <li className="dropdown-item d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { OpenUpdateAddress(i) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/confirmed.png"} alt="displaying_image" />Update Address</li>
                           </ul>
-                          {
+                          { 
                             form == i ? (
+                              <>
+                              <div className="backdrop"></div>
                               <section id={i} className={`updatepatientform text-start position-absolute d-${tabindex == i ? updatepatient : 'none'} bg-seashell top-0 rounded-1 shadow-sm border`}>
                                 <UpdatePatient index={i} getAllPatients={getAllPatients} CloseUpdatePatient={CloseUpdatePatient} patientid={data.id} data={data} phonecountrycode={data.phone_country_code ? data.phone_country_code : 'N/A'} PhoneNo={data.phone_number ? Number(data.phone_number) : ''} dob={data.dob ? data.dob : ''} gender={data.gender ? data.gender : ''} full_name={data.full_name ? data.full_name : ''} email={data.email ? data.email : ''} pincode={data.pin_code ? data.pin_code : ''} location={data.location ? data.location : ''} parent={data.parent} linkid={data.link_id ? data.link_id : ''} relation={data.relation} latitude={data.latitude} longitude={data.longitude} />
                               </section>
+                              </>
                             ) : (<></>)
                           }
                           {
                             form2 == i ? (
+                              <>
+                              <div className="backdrop"></div>
                               <section className={`updatepatientform col-12 text-start position-absolute d-${form2 == i ? updateaddress : 'none'} bg-seashell top-0 rounded-1 shadow-sm border`} style={{ width: '100vh' }}>
                                 <UpdateAddress i={i} data={data} CloseUpdateAddress={CloseUpdateAddress} />
                               </section>
+                              </>
                             ) : (<></>)
+                          }
+                          {
+                            form3 == i ?(
+                              <>
+                              <div className="backdrop"></div>
+                              <section className={` col-12 text-start position-absolute d-${form3 == i ? addresspage : 'none'} bg-seashell mx-auto start-0 end-0 top-0 rounded-1 shadow-sm border`} style={{ width: '60vh' ,height:'50vh'}}>
+                                <AddAddress Toggle_Address={Toggle_Address} patientid={data.id} searchinput={data.full_name ? data.full_name : ''} getAllPatients={getAllPatients} form3={form3}/>
+                              </section>
+                              </>
+                            ):(<></>)
                           }
 
                         </td>

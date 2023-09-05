@@ -739,7 +739,6 @@ const ExportDump = (props)=>{
             setExportTDump(obj2)
         }
     }
-    console.log(props.dumpsarr)
     useEffect(() => {
         async function func() {
             await MakeDumpExport()

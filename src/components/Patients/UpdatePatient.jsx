@@ -197,7 +197,6 @@ const UpdatePatient = (props) => {
     useEffect(()=>{
         ValidatePhone_Number()
     },[phonenumber])
-    console.log(phonenumber)
     return (
         <>
             <h5 className="text-center mt-3 position-relative">Update Patient Details </h5>
