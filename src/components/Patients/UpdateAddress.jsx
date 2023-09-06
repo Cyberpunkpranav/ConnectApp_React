@@ -61,13 +61,14 @@ const UpdateAddress = (props) => {
     
     useEffect(()=>{
         setplace(data && data.label != undefined ? data.label : '')
-        setplaceid(data && data.value !=undefined && data.value.place_id !=undefined ?data.value.place_id:'')
+        setplaceid(data && data.value !=undefined && data.value.place_id !=undefined ?data.value.place_id:'ChIJo2X9SlLiDDkRnZp6DO-GNP0')
         GetPostal_code()
     },[data])
 
     const GetPostal_code = async()=>{
-        setpincode('')
-        await axios.get(`https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeid}&key=AIzaSyC4wk5k8E6jKkpJClZlXZ8oavuPyi0AMVE`).then((response)=>{
+        if(placeid != undefined || placeid !=null){ 
+            console.log('UpdateAddress')
+        await axios.get(`https://maps.googleapis.com/maps/api/place/details/json?key=AIzaSyC4wk5k8E6jKkpJClZlXZ8oavuPyi0AMVE&place_id=${placeid}`).then((response)=>{
                 if(response){
                     let data = response.data.result !=undefined ? response.data.result.address_components:[]
                 for(let i=0;i<data.length;i++){
@@ -78,6 +79,7 @@ const UpdateAddress = (props) => {
             }
 
         })
+        }
        }
        useEffect(()=>{
         GetPostal_code()
@@ -139,7 +141,7 @@ const UpdateAddress = (props) => {
             setaddresspage('block')
         }
     }
-
+    console.log(placeid)
     return (
         <div className=''>
             <h5 className='fw-bold text-charcoal py-2 ms-3'>Update Address of {props.data.full_name}</h5>
@@ -154,7 +156,7 @@ const UpdateAddress = (props) => {
                                         <div className={`button p-0 m-0 bg-${index == i ?'lightyellow':''}`} onClick={() => { setindex(i); Toggle_Address() }}><img src={process.env.PUBLIC_URL + "/images/confirmed.png"} className='img-fluid' style={{width:'1.5rem'}} alt="" /></div>
                                     </div>
                                     <div className="col-8">
-                                        <button className='button button-pearl d-block my-2'>
+                                        <button className='button button-pearl d-block my-2 text-wrap'>
                                             <div className="text-charcoal text-start">{data.address_line1 ? data.address_line1 + ',' : ''}{' '}{data.address_line2 ? data.address_line2 + ',' : ''}{' '}{data.city ? data.city + ',' : ''}{' '}{data.state ? data.state + ',' : ''}{' '}{data.country ? data.country : ''}</div>
                                         </button>
                                     </div>
@@ -165,7 +167,7 @@ const UpdateAddress = (props) => {
                                 <section className={`d-${index == i ? addresspage : 'none'} position-absolute top-0 mx-auto start-0 end-0 bg-pearl shadow rounded-2 border border-1 col-10`} style={{ zIndex: '4' }}>
                                     {
                                         index == i ? (
-                                            <AddAddress data={data} setindex={setindex} Toggle_Address={Toggle_Address} />
+                                            <AddAddress data={data} setindex={setindex} Toggle_Address={Toggle_Address}  getAllPatients={props.getAllPatients}/>
                                         ) : (<></>)
                                     }
                                 </section>

@@ -29,7 +29,7 @@ const AddPatient = (props) => {
     const [linkid, setlinkid] = useState()
     const [lat, setlat] = useState()
     const [lng, setlng] = useState()
-    const [placeid, setplaceid] = useState('')
+    const [placeid, setplaceid] = useState()
     const [mainaccount, setmainaccount] = useState([])
     const [display, setdisplay] = useState("none")
     const [accountinput, setaccountinput] = useState()
@@ -129,12 +129,13 @@ const AddPatient = (props) => {
     const [data, setData] = useState("");   
     useEffect(()=>{
         setplace(data && data.label != undefined ? data.label : '')
-        setplaceid(data && data.value !=undefined && data.value.place_id !=undefined ?data.value.place_id:'')
+        setplaceid(data && data.value !=undefined && data.value.place_id !=undefined ?data.value.place_id:'ChIJo2X9SlLiDDkRnZp6DO-GNP0')
     },[data])
 
        const GetPostal_code = async()=>{
-        await axios.get(`https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeid}&key=AIzaSyC4wk5k8E6jKkpJClZlXZ8oavuPyi0AMVE`).then((response)=>{
-                if(response){
+        if(placeid != undefined){ 
+        await axios.get(`https://maps.googleapis.com/maps/api/place/details/json?key=AIzaSyC4wk5k8E6jKkpJClZlXZ8oavuPyi0AMVE&place_id=${placeid}`).then((response)=>{
+                if(response){ 
                     let data = response.data.result !=undefined ? response.data.result.address_components:[]
                 for(let i=0;i<data.length;i++){
                         if(data[i].types.includes('postal_code')){
@@ -144,6 +145,7 @@ const AddPatient = (props) => {
             }
 
         })
+        }
        }
        useEffect(()=>{
         GetPostal_code()

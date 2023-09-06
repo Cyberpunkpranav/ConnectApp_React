@@ -59,15 +59,20 @@ const AddAddress = (props) => {
     // }, [data]);
     useEffect(()=>{
         setplace(data && data.label != undefined ? data.label : '')
-        setplaceid(data && data.value !=undefined && data.value.place_id !=undefined ?data.value.place_id:'')
+        setplaceid(data && data.value !=undefined && data.value.place_id !=undefined ?data.value.place_id:'ChIJo2X9SlLiDDkRnZp6DO-GNP0')
 
     },[data])
-
+    // const config =  {
+    //     headers:{
+    //        'Access-Control-Allow-Origin': '*',
+    //        'Access-Control-Request-Method':'GET',
+    //     }
+    // }
     const GetPostal_code = async()=>{
-        // if(placeid !=undefined){
+        if(placeid !=undefined){
         // if(pincode == undefined || state == undefined || country == undefined){
             try{
-                await axios.get(`https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeid}&key=AIzaSyC4wk5k8E6jKkpJClZlXZ8oavuPyi0AMVE`).then((response)=>{
+                await axios.get(`https://maps.googleapis.com/maps/api/place/details/json?key=AIzaSyC4wk5k8E6jKkpJClZlXZ8oavuPyi0AMVE&place_id=${placeid}`).then((response)=>{
                     if(response){
                         let data = response.data.result !=undefined ? response.data.result.address_components:[]
                     for(let i=0;i<data.length;i++){
@@ -85,13 +90,13 @@ const AddAddress = (props) => {
                 }
     
             }).catch((response)=>{
-                alert(response)
+               console.log(response)
             })
             }catch(e){
-                alert(e)
+               console.log(e)
             }
 
-    // }
+    }
     // }
 }
 
@@ -112,7 +117,7 @@ const AddAddress = (props) => {
         }).then((response) => {
             if (response.data.status == true) {
                 Notiflix.Notify.success(response.data.message)
-                if(props.form3 !==undefined){
+                if(props.form3 !== undefined){
                     props.getAllPatients()
               
                 }else{
@@ -191,6 +196,7 @@ const AddAddress = (props) => {
             if (response.data.status == true) {
                 Notiflix.Notify.success(response.data.message)
                 props.Toggle_Address()
+                props.getAllPatients()
                 clear()
             }
             
@@ -200,7 +206,6 @@ const AddAddress = (props) => {
     useEffect(() => {
         fill_data()
     }, [])
-    // console.log(country,state,pincode,location)
     return (
         <div className='text-center px-2 py-1'>
             <div className="text-start">

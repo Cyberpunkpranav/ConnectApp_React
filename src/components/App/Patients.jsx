@@ -211,7 +211,7 @@ function Patients() {
                               <>
                               <div className="backdrop"></div>
                               <section className={`updatepatientform col-12 text-start position-absolute d-${form2 == i ? updateaddress : 'none'} bg-seashell top-0 rounded-1 shadow-sm border`} style={{ width: '100vh' }}>
-                                <UpdateAddress i={i} data={data} CloseUpdateAddress={CloseUpdateAddress} />
+                                <UpdateAddress i={i} data={data} CloseUpdateAddress={CloseUpdateAddress} getAllPatients={getAllPatients} />
                               </section>
                               </>
                             ) : (<></>)
