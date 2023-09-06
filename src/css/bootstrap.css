@@ -1,7 +1,7 @@
 /* @import url('https://fonts.googleapis.com/css2?family=Urbanist&display=swap'); */
 /* @import url('https://fonts.googleapis.com/css2?family=Urbanist:wght@500;600&display=swap'); */
-
-@import url('https://fonts.googleapis.com/css2?family=Urbanist:wght@700&display=swap');
+/* 
+@import url('https://fonts.googleapis.com/css2?family=Urbanist:wght@700&display=swap'); */
 
 
 
@@ -25,7 +25,6 @@
     --charcoal50: #22202331;
     --charcoal75: #222023ad;
     --lightred50: #e8ad988a;
-    --public_url: process.env.PUBLIC_URL
 
 }
 

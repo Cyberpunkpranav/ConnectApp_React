@@ -84,9 +84,11 @@ const AddAddress = (props) => {
     
                 }
     
+            }).catch((response)=>{
+                alert(response)
             })
             }catch(e){
-                alert(e.message)
+                alert(e)
             }
 
     // }

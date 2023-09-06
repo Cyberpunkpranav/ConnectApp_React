@@ -12,6 +12,7 @@
 # /build
 # node_modules
 # misc
+# nodemodules/netlify-cli
 .DS_Store
 .env.local
 .env.development.local
@@ -23,3 +24,6 @@ yarn-debug.log*
 yarn-error.log*
 node_modules/.cache/.eslintcache
 node_modules
+
+# Local Netlify folder
+.netlify

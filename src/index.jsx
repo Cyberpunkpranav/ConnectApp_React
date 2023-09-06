@@ -140,8 +140,8 @@ function Connectapp(props) {
     localStorage.setItem("ClinicId", clinicid);
     setisWelcomeLoading(0);
   }
-  const isProduction = process.env.NODE_ENV === 'production';
-  const basename = isProduction ? 'https://aartas-connect.azurewebsites.net/' : '';
+  // const isProduction = process.env.NODE_ENV === 'production';
+  // const basename = isProduction ? 'https://aartas-connect.azurewebsites.net/' : '';
   
   return isWelcomeLoading == 0 ? (
     <>
@@ -186,13 +186,13 @@ function Connectapp(props) {
               <Clinic.Provider value={cliniclist}>
                 <TodayDate.Provider value={APIDate}>
                   <TodayDocs.Provider value={todayDoc}>
-                    <Vitals.Provider value={vitalslist}>
-                      <Router basename={basename}>
+                    <Vitals.Provider value={vitalslist}>  
+                      <Router basename={process.env.PUBLIC_URL}>
                         <Navbar path={path} logout={props.logout} permissions={props.permissions} username={props.username} designation={props.designation} id={props.id} fetchapi={fetchapi} />
                         <Suspense fallback={<div className="text-charcoal75 fs-6 fw-bold text-center"> {" "} loading..{" "} </div>} >
                           <Routes>
                             <Route path="/" onChange={() => setpath("/")} element={<Doctorsection id={props.id} fetchapi={fetchapi} todayDoc={todayDoc} Loading={Loading} docapi={docapi} />} />
-                            <Route path="/Appointments" onChange={() => setpath("/Appointments")} element={<Appointments id={props.id} fetchapi={fetchapi} />} />
+                            <Route path="/Appointments" onChange={() => setpath("Appointments")} element={<Appointments id={props.id} fetchapi={fetchapi} />} />
                             <Route path="/Patients" onChange={() => setpath("/Patients")} element={<Patients id={props.id} />} />
                             <Route path="/Doctors" onChange={() => setpath("/Doctors")} element={<Doctors id={props.id} docapi={docapi} />} />
                             <Route path="/DailySaleReport" onChange={() => setpath("/DailySaleReport")} element={<DailySaleReport id={props.id} cliniclist={cliniclist} docapi={docapi} />} />
