@@ -17,6 +17,7 @@ const SearchField = (props) => {
     const [patientname, setpatientname] = useState()
     const [appointmentform, setappointmentform] = useState("none")
     const [doctorid, setdoctorid] = useState([])
+    
     // async function searchpatient() {
     //     setsearchload(true)
     //     setpatientid()
@@ -39,7 +40,7 @@ const SearchField = (props) => {
             setpatientid()
             setpatientname()
 
-            await axios.get(`http://192.168.3.87:8080/Patient/Doctors/Appointments?search=${props.searchtext}`).then((response) => {
+            await axios.get(`http://192.168.3.210:8080/Patient/Doctors/Appointments?search=${props.searchtext}`).then((response) => {
                 
                 setsearchlist(response.data.data.patient)
                 setsearchload(false)

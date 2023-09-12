@@ -74,11 +74,11 @@ function DailySaleReport(props) {
           <div className="col-auto p-0 m-0 bg-seashell rounded-2">
           <div className="dropdown ">
             <button className=" button button-seashell text-charcoal fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"> {clinicname?clinicname:"Select Clnic"} </button>
-            <ul className="dropdown-menu p-2 bg-seashell border-0 shadow-sm" >
+            <ul className="dropdown-menu bg-seashell border-0 shadow-sm" >
             {
                         props.cliniclist ? (
                           props.cliniclist.map((data) => (
-                            <li className="text-start p-2 text-charcoal fw-bolder border-bottom py-2" onClick={() => { setclinic(data.id);setclinicname(data.title) }}>{data.title} </li>
+                            <li className={`text-start p-2 text-charcoal fw-bolder border-bottom py-2 text-${clinic==data.id ? 'white':'charcoal'} bg-${clinic==data.id?'charcoal':''}`} onClick={() => { setclinic(data.id);setclinicname(data.title) }}>{data.title} </li>
                           ))
                         ) : (
                           <li className="text-start p-2 text-charcoal fw-bolder border-bottom py-2" >Loading...</li>
@@ -94,11 +94,12 @@ function DailySaleReport(props) {
                     <div className="col-auto p-0 m-0 ms-1 bg-seashell rounded-2">
                     <div className="dropdown ">
             <button className=" button button-seashell text-charcoal fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"> {doctorname?doctorname:"Select Doctor"} </button>
-            <ul className="dropdown-menu p-2 bg-seashell border-0 scroll-y scroll" style={{maxHeight:'50vh'}} >
+            <ul className="dropdown-menu bg-seashell border-0 scroll-y scroll" style={{maxHeight:'50vh'}} >
+            <li className={`text-start p-2 text-charcoal fw-bolder border-bottom py-2 text-${doctorid=='' ? 'white':'charcoal'} bg-${doctorid==''?'charcoal':''}`} onClick={() => { setdoctorid('');setdoctorname(`` ) }}>All Doctors </li>
             {
                         Doctors ? (
                           Doctors.map((data) => (
-                            <li className="text-start p-2 text-charcoal fw-bolder border-bottom py-2" onClick={() => { setdoctorid(data[0]);setdoctorname(`Dr.${data[1]}` ) }}>Dr.{data[1]}  </li>
+                            <li className={`text-start p-2 text-charcoal fw-bolder border-bottom py-2 text-${doctorid==data[0] ? 'white':'charcoal'} bg-${doctorid==data[0]?'charcoal':''}`} onClick={() => { setdoctorid(data[0]);setdoctorname(`Dr.${data[1]}` ) }}>Dr.{data[1]}  </li>
                           ))
                         ) : (
                           <li className="text-start p-2 text-charcoal fw-bolder border-bottom py-2" >Loading...</li>

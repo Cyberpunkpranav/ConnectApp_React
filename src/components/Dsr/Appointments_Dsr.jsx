@@ -488,10 +488,10 @@ const Appointments_Dsr = (props) => {
             <button className=" button button-seashell text-charcoal fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
               {pageindex?pageindex:"List type"} <span className='ms-2 text-burntumber fw-bolder'>{pageindex =="Appointments"?Appointments.length:pageindex =='Pendings Paid'?pendingpaid.length:pageindex=='Advance Payments'?advancepaid.length:''}</span>
             </button>
-            <ul className="dropdown-menu p-2 bg-seashell border-0 shadow-sm" >
-              <li className="text-start p-2 text-charcoal fw-bolder border-bottom py-2" onClick={() => { setpageindex("Appointments") }}>Appointments<span class=" p-0 m-0 ms-2 badge text-burntumber fw-bolder">{Appointments.length}</span> </li>
-              <li className="text-start p-2 text-charcoal fw-bolder border-bottom" onClick={() => { setpageindex("Pendings Paid") }}>Pendings Paid<span class=" p-0 m-0 ms-2 badge text-burntumber fw-bolder">{pendingpaid.length}</span> </li>
-              <li className="text-start p-2 text-charcoal fw-bolder"  onClick={() => { setpageindex("Advance Payments") }} >Advance Payments<span class=" p-0 m-0 ms-2 badge text-burntumber fw-bolder">{advancepaid.length}</span> </li>
+            <ul className="dropdown-menu bg-seashell border-0 shadow-sm py-2" >
+              <li className={`text-start p-2 text-charcoal fw-bolder bg-${pageindex=='Appointments'?'charcoal':''} text-${pageindex=='Appointments'?'white':'charcoal'}`} onClick={() => { setpageindex("Appointments") }}>Appointments<span class=" p-0 m-0 ms-2 badge text-warning fw-bolder">{Appointments.length}</span> </li>
+              <li className={`text-start p-2 text-charcoal fw-bolder bg-${pageindex=='Pendings Paid'?'charcoal':''} text-${pageindex=='Pendings Paid'?'white':'charcoal'}`} onClick={() => { setpageindex("Pendings Paid") }}>Pendings Paid<span class=" p-0 m-0 ms-2 badge text-warning fw-bolder">{pendingpaid.length}</span> </li>
+              <li className={`text-start p-2 text-charcoal fw-bolder bg-${pageindex=='Advance Payments'?'charcoal':''} text-${pageindex =='Advance Payments'?'white':'charcoal'}`} onClick={() => { setpageindex("Advance Payments") }} >Advance Payments<span class=" p-0 m-0 ms-2 badge text-warning fw-bolder">{advancepaid.length}</span> </li>
             </ul>
           </div>
           </div>

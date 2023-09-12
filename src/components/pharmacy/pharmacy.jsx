@@ -1717,7 +1717,6 @@ function SaleEntryForm(props) {
     CalPrevTotal();
   }, [props.saleentryarr]);
   
-
   function AddMethods() {
     if (paymentmethods && paymentmethods.length > 0) {
       setpaymentmethods((prevState) => [...prevState, paymentmethoddetails]);
@@ -2761,7 +2760,7 @@ function SRitemdetailssection(props) {
 export { Salesection };
 export { SaleEntryForm };
 
-//  ---------------------------------------------------------------purchase-----------------------------------------------------------------------------------------
+//---------------------------------------------------------------purchase-----------------------------------------------------------------------------------------
 function Purchasesection(props) {
   const currentDate = useContext(TodayDate);
   const ClinicID = localStorage.getItem("ClinicId");
@@ -2912,10 +2911,7 @@ function Purchaseentrysection(props) {
       setLoading(true);
       try {
         axios
-          .get(
-            `${url}/purchase/entry?clinic_id=${ClinicID}&channel=${channel}&limit=25&offset=0&from_date=${fromdate ? fromdate : currentDate
-            }&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`
-          )
+          .get( `${url}/purchase/entry?clinic_id=${ClinicID}&channel=${channel}&limit=25&offset=0&from_date=${fromdate ? fromdate : currentDate }&to_date=${todate ? todate : fromdate ? fromdate : currentDate}` )
           .then((response) => {
             setpagecount(response.data.data.total_count);
             setpurchaseentryarr(response.data.data.purchase_entry);
@@ -3064,7 +3060,6 @@ function Purchaseentrysection(props) {
       </div>
     );
   }
-
   return (
     <>
          <div className="col-auto position-absolute p-0 m-0 ms-2 export_2 align-self-center text-center">
@@ -5794,7 +5789,6 @@ export { Purchaseentrysection };
 export { PEitemdetailssection };
 
 //-------------------------------------------------------------------------Stock Info---------------------------------------------------------
-
 function Stocksection() {
   let menu = ["Vaccines", "Medicines"];
   const [menuindex, setmenuindex] = useState(0);
@@ -7203,8 +7197,8 @@ function Transfersection(){
   const [todate, settodate] = useState();
   const permission = useContext(Permissions);
   const [pageindex,setpageindex] =useState("Transfers In")
-  const [status,setstatus] =useState()
-  const [statusname,setstatusname]=useState()
+  const [status,setstatus] =useState('')
+  const [statusname,setstatusname]=useState('')
   const first = [
     {
       option: "Transfers In",
@@ -7221,7 +7215,7 @@ function Transfersection(){
       return <TransferIn fromdate={fromdate} todate={todate} status={status}/>
     }
     if(_menu == "Transfers Out"){
-      return <TransferOut/>
+      return <TransferOut fromdate={fromdate} todate={todate} status={status}/>
     }
   }
 return(
@@ -7247,13 +7241,13 @@ return(
         <div className="col-auto">
           <div className="dropdown">
           <button class="button button-seashell border-0 rounded-2 fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-              {statusname?statusname:'Status'} 
+              {statusname?statusname:'All'} 
             </button>
             <ul class="dropdown-menu bg-seashell shadow-sm border-0">
-            <li className={`dropdown-item fw-bolder text-charcoal`} onClick={(a) =>{setstatus('');setstatusname('Status')} }>Status</li>
-                  <li className={`dropdown-item fw-bolder text-charcoal`} onClick={(a) =>{setstatus(0);setstatusname('Pending')} }>Pending</li>
-                  <li className={`dropdown-item fw-bolder text-charcoal`} onClick={(a) =>{setstatus(1);setstatusname('Accepted')}}>Accepted</li>
-                  <li className={`dropdown-item fw-bolder text-charcoal`} onClick={(a) =>{setstatus(2);setstatusname('Rejected')}}>Rejected</li>
+                  <li className={`dropdown-item fw-bolder  text-${statusname == ''?'white':'charcoal'} bg-${statusname == ''?'charcoal':'seashell'}`} onClick={(a) =>{setstatus('');setstatusname('')} }>All</li>
+                  <li className={`dropdown-item fw-bolder text-${statusname == 'Pending'?'white':'charcoal'} bg-${statusname == 'Pending'?'charcoal':'seashell'}`} onClick={(a) =>{setstatus(0);setstatusname('Pending')} }>Pending</li>
+                  <li className={`dropdown-item fw-bolder text-${statusname == 'Accepted'?'white':'charcoal'} bg-${statusname == 'Accepted'?'charcoal':'seashell'}`} onClick={(a) =>{setstatus(1);setstatusname('Accepted')}}>Accepted</li>
+                  <li className={`dropdown-item fw-bolder text-${statusname == 'Rejected'?'white':'charcoal'} bg-${statusname == 'Rejected'?'charcoal':'seashell'}`} onClick={(a) =>{setstatus(2);setstatusname('Rejected')}}>Rejected</li>
             </ul>
           </div>
         </div>
@@ -7312,7 +7306,7 @@ function TransferIn(props){
   
   function GetPages() {
     try {
-      axios.get( `${url}/transfer/stocks/list?location_id=${ClinicID}&limit=25&offset=0` )
+      axios.get( `${url}/transfer/stocks/list?location_id=${ClinicID}&limit=25&offset=0&status=${stat}&from_date=${fromdate}&to_date=${todate}` )
         .then((response) => {
           setpagecount(response.data.data.total_count);
           setpages(Math.round(response.data.data.total_count / 25) + 1);
@@ -7336,7 +7330,7 @@ function TransferIn(props){
     if (Data == undefined || Data.selected == undefined) {
       setLoading(true);
       try {
-        axios.get( `${url}/transfer/stocks/list?location_id=${ClinicID}&limit=25&offset=0` )
+        axios.get( `${url}/transfer/stocks/list?location_id=${ClinicID}&limit=25&offset=0&status=${stat}&from_date=${fromdate}&to_date=${todate}` )
           .then((response) => {
             setpagecount(response.data.data.total_count);
             settransferinarr(response.data.data.transfer_stocks_recevied);
@@ -7353,7 +7347,7 @@ function TransferIn(props){
     } else {
       setLoading(true);
       try {
-        axios.get(`${url}/transfer/stocks/list?location_id=${ClinicID}&limit=25&offset=${Data.selected * 25 }` )
+        axios.get(`${url}/transfer/stocks/list?location_id=${ClinicID}&limit=25&offset=${Data.selected * 25 }&status=${stat}&from_date=${fromdate}&to_date=${todate}` )
           .then((response) => {
     
             setpagecount(response.data.data.total_count);
@@ -7373,7 +7367,7 @@ function TransferIn(props){
   function GETTransferInListForExcel() {
     setLoading(true);
     try {
-      axios.get(`${url}/transfer/stocks/list?location_id=${ClinicID}&limit=${pagecount?pagecount:25}&offset=0` )
+      axios.get(`${url}/transfer/stocks/list?location_id=${ClinicID}&limit=${pagecount?pagecount:25}&offset=0&status=${stat}&from_date=${fromdate}&to_date=${todate}` )
         .then((response) => {
           settransferinarrExcel(response.data.data.transfer_stocks_recevied);
           setLoading(false);
@@ -7404,7 +7398,7 @@ function TransferIn(props){
       setnpef("none");
     }
   };
-  let array = [[0, 'Pending', 'lightred'], [1, 'Accepted', 'lightgreen'], [3, 'Rejected', 'lightred']]
+  let array = [[0, 'Pending', 'lightyellow'], [1, 'Accepted', 'lightgreen'], [2, 'Rejected', 'lightred']]
   function status(number) {
     let status
     for (let i = 0; i < array.length; i++) {
@@ -7449,6 +7443,7 @@ function TransferIn(props){
       setupdateload(false)
     }
   }
+  
   return(
     <>
     <div className="col-auto position-absolute p-0 m-0 ms-2 export_2 align-self-center text-center">
@@ -7595,7 +7590,7 @@ function TransferOut(props){
 
   const fromdate = props.fromdate
   const todate = props.todate
-  const channel = props.channel
+  const stat = props.status
   const [Loading, setLoading] = useState(false);
   const [transferoutarr, settransferoutarr] = useState([]);
   const [transferoutarrExcel, settransferoutarrExcel] = useState([]);
@@ -7606,7 +7601,7 @@ function TransferOut(props){
 
   function GetPages() {
     try {
-      axios.get(`${url}/transfer/stocks/list?location_id=${ClinicID}&limit=25&offset=0` )
+      axios.get(`${url}/transfer/stocks/list?location_id=${ClinicID}&limit=25&offset=0&status=${stat}&from_date=${fromdate}&to_date=${todate}` )
         .then((response) => {
           setpagecount(response.data.data.total_count);
           setpages(Math.round(response.data.data.total_count / 25) + 1);
@@ -7626,7 +7621,7 @@ function TransferOut(props){
     if (Data == undefined || Data.selected == undefined) {
       setLoading(true);
       try { 
-        axios.get(`${url}/transfer/stocks/list?location_id=${ClinicID}&limit=25&offset=0` )
+        axios.get(`${url}/transfer/stocks/list?location_id=${ClinicID}&limit=25&offset=0&status=${stat}&from_date=${fromdate}&to_date=${todate}` )
           .then((response) => {
             // setpagecount(response.data.data.total_count);
             settransferoutarr(response.data.data.transfer_stocks_sent);
@@ -7643,7 +7638,7 @@ function TransferOut(props){
     } else {
       setLoading(true);
       try {
-        axios.get(`${url}/transfer/stocks/list?location_id=${ClinicID}&limit=25&offset=${Data.selected * 25 }` )
+        axios.get(`${url}/transfer/stocks/list?location_id=${ClinicID}&limit=25&offset=${Data.selected * 25 }&status=${stat}&from_date=${fromdate}&to_date=${todate}` )
           .then((response) => {
             setpagecount(response.data.data.total_count);
             settransferoutarr(response.data.data.transfer_stocks_sent);
@@ -7662,7 +7657,7 @@ function TransferOut(props){
   async  function GETTransferOutListForExcel() {
     setLoading(true);
     try {
-      await axios.get(`${url}/transfer/stocks/list?location_id=${ClinicID}&limit=${pagecount?pagecount:''}&offset=0` ) .then((response) => {
+      await axios.get(`${url}/transfer/stocks/list?location_id=${ClinicID}&limit=${pagecount?pagecount:''}&offset=0&status=${stat}` ) .then((response) => {
           settransferoutarrExcel(response.data.data.transfer_stocks_sent);
           setLoading(false);
         })
@@ -7677,12 +7672,12 @@ function TransferOut(props){
   }
   useEffect(() => {
     GetPages();
-  }, [fromdate, todate]);
+  }, [fromdate, todate,stat]);
 
   useEffect(() => {
     GETTransferOutList();
     GETTransferOutListForExcel();
-  }, [fromdate, todate]);
+  }, [fromdate, todate,stat]);
 
   const toggle_npef = () => {
     if (npef === "none") {
@@ -7699,7 +7694,7 @@ function TransferOut(props){
     }
   };
 
-  let array = [[0, 'Pending', 'lightred'], [1, 'Accepted', 'lightgreen'], [3, 'Rejected', 'lightred']]
+  let array = [[0, 'Pending', 'lightyellow'], [1, 'Accepted', 'lightgreen'], [2, 'Rejected', 'lightred']]
   function status(number) {
     let status
     for (let i = 0; i < array.length; i++) {
@@ -7790,7 +7785,7 @@ function TransferOut(props){
                <td>
                <select className={`bg-${status_color(item.transfer_status)} rounded-2 rounded-pill py-1 px-2  fw-bold border-0 text-wrap `} onChange={(e)=>{UpdateStatus(item,e)}} name={item.transfer_status}>
                                             <option className="button text-center" selected disabled>{status(item.transfer_status)}</option>
-                                            <option className="button-lightred" value='0'>Pending</option>
+                                            <option className="button-lightred" value='0'>Pending {status_color(item.transfer_status)}</option>
                                             <option className="button-lightblue" value='1'>Accepted</option>
                                             <option className="button-lightred" value='2'>Rejected</option>
                   
@@ -7970,8 +7965,7 @@ function TIitemdetailssection(props) {
                   <td className="border align-middle"> {TotalTaxPercent(item.medicine_stock_details.CGST_rate , item.medicine_stock_details.SGST_rate, item.medicine_stock_details.IGST_rate)} </td>
                   <td className="border align-middle"> {TotalTaxRate(item.medicine_stock_details.CGST,item.medicine_stock_details.SGST,item.medicine_stock_details.IGST, item.qty)} </td>
                   <td className="border align-middle"> {item.medicine_stock_details.cost ?"₹"+item.medicine_stock_details.cost  : "N/A"} </td>
-                  <td className="border align-middle"> {item.total_amount ? item.total_amount : "N/A"} </td>
-  
+                  <td className="border align-middle"> {item.qty && item.medicine_stock_details.cost ?  Number(Number(item.medicine_stock_details.cost)*Number(item.qty)).toFixed(2):''} </td>
                 </tr>
               ))}
             </tbody>
@@ -8035,7 +8029,7 @@ function TIitemdetailssection(props) {
                   <td className="border align-middle"> {TotalTaxPercent(item.vaccine_stock_details.CGST_rate , item.vaccine_stock_details.SGST_rate, item.vaccine_stock_details.IGST_rate)} </td>
                   <td className="border align-middle"> {TotalTaxRate(item.vaccine_stock_details.CGST,item.vaccine_stock_details.SGST,item.vaccine_stock_details.IGST, item.qty)} </td>
                   <td className="border align-middle"> {item.vaccine_stock_details.cost ?"₹"+item.vaccine_stock_details.cost  : "N/A"} </td>
-                  <td className="border align-middle"> {item.total_amount ? item.total_amount : "N/A"} </td>
+                  <td className="border align-middle"> {item.qty && item.vaccine_stock_details.cost ?  Number(Number(item.vaccine_stock_details.cost)*Number(item.qty)).toFixed(2):''} </td>
 
                 </tr>
               ))}
@@ -8368,11 +8362,6 @@ function NewTransferOutForm(props){
     }
   };
 
-  function Emptytableindex() {
-    setitemid();
-    setitemname();
-    setqty();
-  }
 
   useEffect(() => {
     CalGrandttl();
@@ -8384,7 +8373,7 @@ function NewTransferOutForm(props){
       T = "v";
     } else {
       T = "m";
-    }
+    } 
     let ProductDetails = {
       productid: data.id,
       product: data.item_name ? data.item_name : itemname,
@@ -8422,7 +8411,7 @@ function NewTransferOutForm(props){
   const searchmeds = async (search) => {
     setloadsearch(true);
     try {
-      await axios.get(`${url}/stock/list?search=${search}`).then((response) => {
+      await axios.get(`${url}/stock/list?search=${search}&location_id=${clinicid}`).then((response) => {
         let medicines = [];
         let vaccines = [];
         let items = [];
@@ -8443,7 +8432,7 @@ function NewTransferOutForm(props){
         }
       });
     } catch (e) {
-      Notiflix.Notify.warning(e.data.message);
+      Notiflix.Notify.warning(e);
     }
   };
   const reversefunction = (date) => {
@@ -8457,28 +8446,6 @@ function NewTransferOutForm(props){
       if(clinicid == cliniclist[i].id){
         setclinicname(cliniclist[i].title)
       }
-    }
-  }
-  function AddProducts(data) {
-    let T = "";
-    if (data.vaccine_brand_id) {
-      T = "v";
-    } else {
-      T = "m";
-    }
-    let ProductDetails = {
-      productid: data.id,
-      type: data.type ? data.type : T,
-      product: data.item_name ? data.item_name : itemname,
-      avlstock: data.current_stock,
-      qtytoTransfer: '',
-      mrp: data.mrp,
-    };
-
-    if (SelectedProducts && SelectedProducts.length == 0) {
-      setSelectedProducts([ProductDetails]);
-    } else {
-      setSelectedProducts((prevState) => [...prevState, ProductDetails]);
     }
   }
   function CalTotalAmount(qty, mrp) {
@@ -8502,7 +8469,6 @@ function NewTransferOutForm(props){
   useEffect(()=>{
     ClinicName()
   },[])
-
   return(
     <section className="position-relative" style={{minHeight:'100%'}}>
       <h5 className="text-center text-charocal fw-bold pt-2 shadow-sm pb-2">New Transfer Out</h5> 
@@ -8627,7 +8593,7 @@ function NewTransferOutForm(props){
             </div>
           </div>
      
-                <div className="container-fluid p-0 m-0 mt-2">
+                <div className="container-fluid p-0 m-0 mt-2 scroll scroll-y">
                 <table className="table p-0 m-0">
                   <thead className="p-0 m-0">
                     <tr className={`p-0 m-0 `}>
@@ -8746,7 +8712,7 @@ useEffect(() => {
     try {
       axios
         .get(
-          `${url}/dump/stocks/list?clinic_id=${ClinicID}&channel=${channel}&from_date=${fromdate ? fromdate : currentDate
+          `${url}/dump/stocks/list?location_id=${ClinicID}&channel=${channel}&from_date=${fromdate ? fromdate : currentDate
           }&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`
         )
         .then((response) => {
