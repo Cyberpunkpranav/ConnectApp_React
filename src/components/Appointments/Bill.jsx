@@ -179,8 +179,6 @@ const Bill = (props) => {
         } else {
             return Advance
         }
-
-
     }
     async function SaveBill() {
         let GrandTotal = Get_Grand_Total()
@@ -305,8 +303,33 @@ const Bill = (props) => {
             setadvancepayments(response.data.data)
         })
     }
+    const ConsumableAmount = () => {
+        try{
+            let consumables_amount = []
+            let Total = 0;
+            for (let i = 0; i < props.appointmentdata.length; i++) {
+                console.log('cpd')
+              if (props.appointmentid == props.appointmentdata[i].id) {
+                for (let j = 0; j < props.appointmentdata[i].medicine_used.length; j++) {
+                  consumables_amount.push(props.appointmentdata[i].medicine_used[j].total_amount)
+                }
+              }
+            }
+        
+            consumables_amount.forEach((data) => (
+              Total += data
+            ))
+            Total = Total.toFixed(2)
+            return Total
+        }catch(e){
+            console.log(e)
+        }
+
+
+      }
     useEffect(() => {
         AdvancePayments()
+        ConsumableAmount()
     }, [])
     return (
         <div className='bg-seashell p-0 m-0'>
@@ -484,8 +507,14 @@ const Bill = (props) => {
                                     </div>
                                     <div className="col-4 align-self-end text-start">
                                         <label className=' fw-bolder text-charcoal text-start text-wrap'>Consumables Amount</label>
-                                        <input disabled={true} className='form-control text-start rounded-1  border-0 fw-bolder p-0 text-charcoal50' defaultValue='not available' />
+                                        <input disabled={true} className='form-control text-start rounded-1  border-0 fw-bolder p-0 text-charcoal50' value={ConsumableAmount()} />
                                     </div>
+                                    <div className="col-4 p-0 m-0 text-start">
+                  <label className="fw-bolder text-charcoal text-start text-wrap"> Reward Points </label>
+                    <div className="text-success text-start border-0 rounded-1 fw-bolder p-0  bg-seashell">
+                      {props.appointmentdata.patient.reward_points !=undefined  && props.appointmentdata.patient.reward_points.points_total!=undefined && props.appointmentdata.patient.reward_points.points_total !=null ? props.appointmentdata.patient.reward_points.points_total :0}
+                      </div>
+                  </div>
                                 </div>
                             </div>
                             <div className="container-fluid text-start position-relative mt-2">

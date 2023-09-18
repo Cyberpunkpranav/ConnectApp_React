@@ -231,7 +231,7 @@ const AllAppointmentslist = (props) => {
             },
         );
     }
-
+    console.log(props.getAppointments)
     return (
         <>
             {
@@ -280,7 +280,7 @@ const AllAppointmentslist = (props) => {
                             </td>
                             <td className='text-charcoal fw-bold'>
                                 <div className="col-auto">
-                                    {data.patient != null && data.patient.full_name != null ? data.patient.full_name : ''}
+                                    {data.patient != null && data.patient.full_name != null ? data.patient.full_name : ''}{data.patient != null && data.patient.is_profile_verified ==1 ? <img src={process.env.PUBLIC_URL + 'images/verified.png'} style={{scale:'0.8'}}/>:'' }
                                 </div>
                                 <div className="col-auto text-burntumber">
                                     {data.patient != null && data.patient.phone_number != null ? data.patient.phone_number : ""}
@@ -349,7 +349,8 @@ const AllAppointmentslist = (props) => {
                                             patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""}
                                             appointmentdata={props.getAppointments[key]}
                                             appointmentid={data.id}
-                                            doctorfee={data.doctor.consulationFee} /></td>
+                                            doctorfee={data.doctor.consulationFee}
+                                            /></td>
                                              </>
                                 ) : (<></>)
                             }

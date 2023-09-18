@@ -1235,6 +1235,7 @@ function SaleEntryForm(props) {
   const [addressform, setaddressform] = useState("none");
   const [number, setnumber] = useState(props.data ? props.data.patient.phone_number ? props.data.patient.phone_number : '' : "")
   const [Response, setResponse] = useState()
+  const [ask1, setask1] = useState('none')
 
   const searchpatient = (e) => {
     setsearchload(true);
@@ -1610,28 +1611,7 @@ function SaleEntryForm(props) {
     paymentmethod: "",
     amount: 0,
   };
-  // async function AddPaymentMethods() {
-  //   let Payments = []
-  //   let amounts = []
-  //   let allamounts = []
-  //   Payments.push(Object.keys(JSON.parse(props.saleentryarr.payment_method_details)))
-  //   amounts.push(Object.values(JSON.parse(props.saleentryarr.payment_method_details)))
-  //   let paymentobj = []
-  //   let p = {
-  //     paymentmethod: "",
-  //     amount: 0,
-  //   }
-  //   if (Payments[0]) {
-  //     for (let j = 0; j < Payments[0].length; j++) {
-  //       allamounts.push((p = { paymentmethod: Payments[0][j], amount: amounts[0][j] }))
-  //     }
-  //     setpaymentmethods(allamounts)
-  //   }
-  //   paymentmethods.push(paymentobj)
-  // }
-  // useEffect(() => {
-  //   AddPaymentMethods();
-  // }, [])
+
   function DeletePaymentMethods(i) {
     paymentmethods.splice(i, i);
   }
@@ -1715,6 +1695,7 @@ function SaleEntryForm(props) {
   };
   useEffect(() => {
     CalPrevTotal();
+
   }, [props.saleentryarr]);
   
   function AddMethods() {
@@ -1750,11 +1731,22 @@ function SaleEntryForm(props) {
     if (addresspage == 'block') {
       setaddresspage('none')
     }
-    if (addresspage == 'none') {
+    if (addresspage == 'none') {  
       setaddresspage('block')
     }
   }
-
+  function AskForDelivery(i){
+    if(i==true){
+      setask1('block')
+    }else{
+      toggleStage3()
+      toggleStage4()
+      setask1('none')
+    }
+  }
+  useEffect(()=>{
+    setask1('none')
+  },[props.toggle_nsef])
   return (
       <div className="saleentry rounded-2">
         <div className="shadow-sm">
@@ -2040,12 +2032,28 @@ function SaleEntryForm(props) {
             </div>
           </div>
           <hr className="my-1" />
-          <div className="container mt-4 position-relative " >
-            <h6 className="fw-bold text-charcoal75">Select Shipping Address</h6>
+            <div className={`container rounded-2 m-auto w-75 bg-pearl d-${ask1 =='block'?'none':'block'}`} >
+            <div className="row shadow rounded-2 p-2" style={{zIndex:'10'}}>
+       
+       <div className="col-12">
+       <p className="fw-bolder text-charcoal">Deliver to the Address?</p>
+       </div>
+         <div className="col-6">
+         <div className="button button-charcoal fw-bold" onClick={()=>AskForDelivery(true)}>Yes</div>
+         </div>
+           <div className="col-6">
+           <div className="button button-charcoal-outline fw-bold" onClick={()=>AskForDelivery(false)}>No</div>
+           </div>
+
+            </div>
+            </div>
+          <div className={`container mt-4 position-relative d-${ask1} `}>
+          <div className="button button-charcoal" onClick={() => Toggle_Address()}>Add New Address</div>
+            <h6 className="fw-bold text-charcoal75 mt-4">Select Shipping Address</h6>
             {
               props.data != undefined && patientdata != undefined && patientdata.length == 0 ? (
                 props.data && props.data.patient && props.data.patient.address && props.data.patient.address.length !== 0 ? (
-                  <div className="overflow-scroll " style={{ height: '30vh' }}>
+                  <div className="overflow-scroll " style={{ height: '40vh' }}>
                     {
                       props.data.patient.address.map((data, i) => (
                         <>
@@ -2078,10 +2086,6 @@ function SaleEntryForm(props) {
                 )
               ) : (<></>)
             }
-
-
-
-            <div className="button button-charcoal" onClick={() => Toggle_Address()}>Add Address</div>
             <div className={`container position-absolute bg-seashell w-75 border border-1 shadow-sm rounded-2 start-0 end-0 d-${addresspage}`} style={{ top: '-3rem' }}>
               <AddAddress Toggle_Address={Toggle_Address} patientid={patientid} searchinput={searchinput} setpatientdata={setpatientdata} />
             </div>

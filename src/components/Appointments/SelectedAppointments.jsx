@@ -249,7 +249,7 @@ const SelectedAppointments = (props) => {
 
             props.appointmentdata.map((data, key) => (
               <tr id={key} className='text-charcoal fw-bold align-middle text-start'>
-                <td className={`ps-3 d-${permission.appointment_edit == 1 ? '' : 'none'} bg-${tableindex == key ? 'lightyellow' : ''}`}>
+                <td className={`ps-3 text-center d-${permission.appointment_edit == 1 ? '' : 'none'} bg-${tableindex == key ? 'lightyellow' : ''}`}>
                   <img src={process.env.PUBLIC_URL + "/images/confirmed.png"} onClick={(e) => { settableindex(key); openapppointmentform(); }} className="btn p-0 m-0" />
                 </td>
                 <td>
@@ -277,7 +277,7 @@ const SelectedAppointments = (props) => {
                 {/* <td><button className={`btn button-${props.status_color(data.appointment_status)} text-charcoal fw-bold rounded-5`}>{props.status(data.appointment_status)}</button></td> */}
                 <td>
                   <div className="col-auto">
-                    {data.patient != null && data.patient.full_name != null ? data.patient.full_name : ''}
+                    {data.patient != null && data.patient.full_name != null ? data.patient.full_name : ''}{data.patient != null && data.patient.is_profile_verified ==1 ? <img src={process.env.PUBLIC_URL + 'images/verified.png'} style={{scale:'0.8'}}/>:'' }
                   </div>
                   <div className="col-auto text-burntumber">
                     {data.patient != null && data.patient.phone_number != null ? data.patient.phone_number : ""}
@@ -306,17 +306,18 @@ const SelectedAppointments = (props) => {
                 {/* <td><img src={process.env.PUBLIC_URL + "/images/vitals.png"} alt="displaying_image" style={{ width: "1.5rem" }} className='m-0 p-0' /> </td> */}
                 {/* <td>{data.follow_up_date ? data.follow_up_date : ''}</td> */}
                 {/* <td> <img src={process.env.PUBLIC_URL + "/images/cart.png"} alt="displaying_image" style={{ width: "1.5rem" }} className="me-1 m-0 p-0" /> </td> */}
-                <td className='text-center'><div className="dropdown text-decoration-none d-inline-block bg-transparent">
-                  <button className="button p-0 m-0 px-1 py-1 bg-transparent border-0 p-0  fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <td className='text-center'>
+                  <div className="dropdown text-decoration-none d-inline-block bg-transparent">
+                  <button className="button p-0 m-0 bg-transparent border-0 p-0 fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image"  />
                   </button>
                   <ul className="dropdown-menu text-decoration-none bg-white p-2" style={{ '-webkit-appearance': 'none', 'appearance': 'none', width: 'max-content' }}>
-                    <li className='dropdown-item d-flex border-bottom p-0 m-0 align-items-center' onClick={() => { setbillindex(key); toggle_bill() }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + 'images/bill.png'} />Bill</li>
-                    <li className={`dropdown-item  border-bottom p-0 m-0 align-items-center d-${permission.appointment_charges_edit == 1 ? '' : 'none'}`} onClick={() => { setpaymentindex(key); toggle_payments(); }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + 'images/rupee.png'} />Payments</li>
-                    <li className='dropdown-item d-flex border-bottom p-0 m-0 align-items-center' onClick={() => { Generate_Bill(data.id) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" />Generate Bill</li>
-                    <li className="dropdown-item d-flex border-bottom p-0 m-0 align-items-center" onClick={() => { Generate_Prescription(data.id) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image"/> Generate Prescription </li>
-                    <li className="dropdown-item d-flex border-bottom p-0 m-0 align-items-center" onClick={() => { Confirm_For_Prescription(data.id, data.patient.phone_number) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/whatsapp.png"} alt="displaying_image"/> Send on Whats App </li>
-                    <li className="dropdown-item d-flex p-0 m-0 align-items-center" onClick={() => { Confirm_For_Prescription2(data.id, data.patient.phone_number) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/message.png"} alt="displaying_image" />{' '}Send on SMS</li>
+                    <li className='dropdown-item  fw-bold d-flex border-bottom p-0 m-0 align-items-center' onClick={() => { setbillindex(key); toggle_bill() }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + 'images/bill.png'} />Bill</li>
+                    <li className={`dropdown-item fw-bold  border-bottom p-0 m-0 align-items-center d-${permission.appointment_charges_edit == 1 ? '' : 'none'}`} onClick={() => { setpaymentindex(key); toggle_payments(); }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + 'images/rupee.png'} />Payments</li>
+                    <li className='dropdown-item fw-bold d-flex border-bottom p-0 m-0 align-items-center' onClick={() => { Generate_Bill(data.id) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" />Generate Bill</li>
+                    <li className="dropdown-item fw-bold d-flex border-bottom p-0 m-0 align-items-center" onClick={() => { Generate_Prescription(data.id) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image"/> Generate Prescription </li>
+                    <li className="dropdown-item fw-bold d-flex border-bottom p-0 m-0 align-items-center" onClick={() => { Confirm_For_Prescription(data.id, data.patient.phone_number) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/whatsapp.png"} alt="displaying_image"/> Send on Whats App </li>
+                    <li className="dropdown-item fw-bold d-flex p-0 m-0 align-items-center" onClick={() => { Confirm_For_Prescription2(data.id, data.patient.phone_number) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/message.png"} alt="displaying_image" />{' '}Send on SMS</li>
                   </ul>
                 </div></td>
                 {

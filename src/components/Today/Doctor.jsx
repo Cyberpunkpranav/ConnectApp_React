@@ -518,8 +518,8 @@ function DoctorSchedule(props) {
                             <td className="py-0 text-start fw-bold" style={{ letterSpacing: '1px' }}>{tConvert(data.timeslot.time_from)}</td>
                             <td className="py-0 ">
                               <div className="row p-0 m-0" style={{ width: 'fit-content' }}>
-                                <div className="col-12 p-0 m-0 fw-bold">
-                                  {data.patient ? data.patient.full_name !== null ? data.patient.full_name : 'N/A' : 'N/A'}
+                                <div className="col-12 p-0 m-0 fw-bold align-self-end">
+                                  {data.patient ? data.patient.full_name !== null ? data.patient.full_name : 'N/A' : 'N/A'}{data.patient != null && data.patient.is_profile_verified ==1 ? <img className="p-0 m-0 me-4 img-fluid" src={process.env.PUBLIC_URL + 'images/verified.png'} style={{scale:'0.8'}}/>:'' }
                                 </div>
                                 <small className="col-auto p-0 m-0 text-burntumber fw-bold" style={{ letterSpacing: '1px' }}>
                                   {data.patient ? data.patient.phone_number != null ? data.patient.phone_number : 'N/A' : 'N/A'}
@@ -587,13 +587,13 @@ function DoctorSchedule(props) {
                                   <img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" className="img-fluid" />
                                 </button>
                                 <ul className="dropdown-menu shadow-sm p-2 scroll" style={{ '-webkit-appearance': 'none', 'appearance': 'none', width: 'max-content', height: '40vh' }}>
-                                  <li className="dropdown-item d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => confirmmessage(data.patient.full_name, data.id)}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/speaker.png"} alt="displaying_image"/> Call Patient</li>
-                                  <li className="dropdown-item d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { Generate_Bill(data.id) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" /> Generate Bill</li>
-                                  <li className="dropdown-item d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { Generate_Prescription(data.id) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" /> Generate Prescription</li>
-                                  <li className="dropdown-item d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { Confirm_For_Prescription(data.id, data.patient.phone_number) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/whatsapp.png"} alt="displaying_image" /> Send on Whats App</li>
-                                  <li className="dropdown-item d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { Confirm_For_Prescription2(data.id, data.patient.phone_number) }}><img className='m-2 img-fluid ms-2' src={process.env.PUBLIC_URL + "/images/message.png"} alt="displaying_image"  />Send on SMS</li>
-                                  <li className="dropdown-item d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { toggle_nsef(); setsaleindex(i) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/medicine.png"}  alt="displaying_image" />Buy Medicines</li>
-                                  <li className={`dropdown-item p-0 m-0 align-items-center p-2  d-${permission.appointment_charges_edit ? 'flex' : 'none'}`} onClick={() => { setpaymentsindex(i); OpenPaymentsForm(); }}><img src={process.env.PUBLIC_URL + "/images/rupee.png"}  className='me-2 img-fluid' alt="displaying_image" />Payments</li>
+                                  <li className="dropdown-item fw-bold d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => confirmmessage(data.patient.full_name, data.id)}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/speaker.png"} alt="displaying_image"/> Call Patient</li>
+                                  <li className="dropdown-item fw-bold d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { Generate_Bill(data.id) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" /> Generate Bill</li>
+                                  <li className="dropdown-item fw-bold d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { Generate_Prescription(data.id) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" /> Generate Prescription</li>
+                                  <li className="dropdown-item fw-bold d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { Confirm_For_Prescription(data.id, data.patient.phone_number) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/whatsapp.png"} alt="displaying_image" /> Send on Whats App</li>
+                                  <li className="dropdown-item fw-bold d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { Confirm_For_Prescription2(data.id, data.patient.phone_number) }}><img className='m-2 img-fluid ms-2' src={process.env.PUBLIC_URL + "/images/message.png"} alt="displaying_image"  />Send on SMS</li>
+                                  <li className="dropdown-item fw-bold d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { toggle_nsef(); setsaleindex(i) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/medicine.png"}  alt="displaying_image" />Buy Medicines</li>
+                                  <li className={`dropdown-item fw-bold p-0 m-0 align-items-center p-2  d-${permission.appointment_charges_edit ? 'flex' : 'none'}`} onClick={() => { setpaymentsindex(i); OpenPaymentsForm(); }}><img src={process.env.PUBLIC_URL + "/images/rupee.png"}  className='me-2 img-fluid' alt="displaying_image" />Payments</li>
                                 </ul>
                               </div></td>
                             {
@@ -619,8 +619,8 @@ function DoctorSchedule(props) {
                                 <>
                                   <div className='backdrop'>
                                   </div>
-                                  <td className={`bill d-${billindex == i ? billform : 'none'} start-0 end-0 top-0 border-0 position-absolute`} style={{ zIndex: '4' }}>
-                                    <Bill fetchapi={props.fetchapi} CloseBillForm={CloseBillForm} patientid={data.patient && data.patient.id != null ? data.patient.id : ""} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} Appointmentlist={Appointmentlist} setsingleload={setsingleload} isLoading={isLoading} appointmentdata={appointmentdata} appointmentid={data.id} doctorfee={data.doctor.consulationFee} billform={billform} /></td>
+                                  <td className={`bill d-${billindex == i ? billform : 'none'} start-0 end-0 mx-auto top-0 border-0 position-absolute p-0 m-0 col-lg-8 col-md-10 col-sm-11 col-11 mt-2 col-xl-6 `} style={{ zIndex: '4',height:'60vh' }}>
+                                    <Bill fetchapi={props.fetchapi} CloseBillForm={CloseBillForm} patientid={data.patient && data.patient.id != null ? data.patient.id : ""} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} Appointmentlist={Appointmentlist} setsingleload={setsingleload} isLoading={isLoading} Data={data} appointmentdata={appointmentdata} appointmentid={data.id} doctorfee={data.doctor.consulationFee} billform={billform} /></td>
                                 </>
                               ) : (<></>)
                             }
@@ -637,7 +637,7 @@ function DoctorSchedule(props) {
                               consumablesindex == i ? (
                                 <>
                                   <div className="backdrop"></div>
-                                  <td className={`consumables mx-auto position-absolute top-0 start-0 end-0   d-${consumablesindex == i ? consumables : 'none'} `} style={{ zIndex: '4', height: '70vh' }} >
+                                  <td className={`consumables mx-auto  position-absolute top-0 start-0 end-0   d-${consumablesindex == i ? consumables : 'none'} `} style={{ zIndex: '4', height: '70vh' }} >
                                     <AddConsumables appointmentdata={appointmentdata[i]} Appointmentlist={Appointmentlist} existedconsumables={appointmentdata[i].medicine_used.reverse()} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} appointmentid={data.id} toggleConsumables={toggleConsumables} />
                                   </td>
                                 </>
