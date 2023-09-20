@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import { URL } from "../../index";
 import Notiflix from "notiflix";
 import { customconfirm } from "../features/notiflix/customconfirm";
 import "../../css/dashboard.css";
 import axios from "axios";
+import WebcamCapture from '../features/camera'
 const Bill = (props) => {
   const url = useContext(URL);
   const adminid = localStorage.getItem("id");
@@ -212,94 +213,96 @@ const Bill = (props) => {
     }
   }
   async function SaveBill() {
-    let GrandTotal = Get_Grand_Total();
-    GrandTotal = Number(GrandTotal);
-    let Docfee = Number(props.doctorfee);
-    let DoctorDiscount = Number(docdiscount);
-    let AartasDiscount = Number(aartasdiscount);
-    let TotalCGST = Get_total_Seperate_gsts();
-    let TotalSGST = Get_total_Seperate_gsts();
-    let Description = [];
-    let TotalAmount = [];
-    let Discount = [];
-    let Grossamount = [];
-    let DiscountedAmount = [];
-    let ids = [];
-    let gstrate = [];
-    for (let i = 0; i < extrachargecount.length; i++) {
-      Description.push(extrachargecount[i].description);
-      TotalAmount.push(Number(extrachargecount[i].amount));
-      Discount.push(Number(extrachargecount[i].discount));
-      DiscountedAmount.push(
-        Number(extrachargecount[i].amount) -
-        Number(extrachargecount[i].discount)
-      );
-      if (extrachargecount[i].id) {
-        ids.push(Number(extrachargecount[i].id));
-      }
-      if (extrachargecount[i].cgst && extrachargecount[i].sgst) {
-        gstrate.push(
-          Number(extrachargecount[i].cgst + extrachargecount[i].sgst)
-        );
-      } else {
-        gstrate.push(0);
-      }
-      Grossamount.push(extrachargecount[i].gross_amount);
-    }
-    let Paymentmethod = [];
-    let Paymentmethodsvalue = [];
-    for (let j = 0; j < paymentmethods.length; j++) {
-      Paymentmethod.push(paymentmethods[j].paymentmethod);
-      Paymentmethodsvalue.push(Number(paymentmethods[j].amount));
-    }
-    let Data = {
-      appointment_id: props.appointmentid,
-      g_total_main: GrandTotal,
-      cons_fee: Docfee,
-      description: Description,
-      total_amount: TotalAmount,
-      discount: Discount,
-      amount: DiscountedAmount,
-      doc_dis: DoctorDiscount,
-      aartas_discount: AartasDiscount,
-      payment_method: Paymentmethod,
-      payment_method_main: Paymentmethod,
-      payment_method_details: Paymentmethodsvalue,
-      SGST: Number(TotalSGST),
-      CGST: Number(TotalCGST),
-      admin_id: Number(adminid),
-      cons_text: constext,
-      add_to_cart: AtC,
-      show_cons_fee: AddConsAmt == props.doctorfee ? 1 : 0,
-      ot_id: ids,
-      gst_rate: gstrate,
-      final_amount: Grossamount,
-    };
-    async function Payment() {
-      try {
-        setload(true);
-        await axios
-          .post(`${url}/appointment/save/charges`, Data)
-          .then((response) => {
-            props.Appointmentlist();          
-            console.log(response)
-            if(response.data.status ==true){
-              toggleStage3()
-              toggleStage4()
-              Notiflix.Notify.success(response.data.message);  
-            }else{
-              Notiflix.Notify.failure(response.data.message);  
-            }
+    // let GrandTotal = Get_Grand_Total();
+    // GrandTotal = Number(GrandTotal);
+    // let Docfee = Number(props.doctorfee);
+    // let DoctorDiscount = Number(docdiscount);
+    // let AartasDiscount = Number(aartasdiscount);
+    // let TotalCGST = Get_total_Seperate_gsts();
+    // let TotalSGST = Get_total_Seperate_gsts();
+    // let Description = [];
+    // let TotalAmount = [];
+    // let Discount = [];
+    // let Grossamount = [];
+    // let DiscountedAmount = [];
+    // let ids = [];
+    // let gstrate = [];
+    // for (let i = 0; i < extrachargecount.length; i++) {
+    //   Description.push(extrachargecount[i].description);
+    //   TotalAmount.push(Number(extrachargecount[i].amount));
+    //   Discount.push(Number(extrachargecount[i].discount));
+    //   DiscountedAmount.push(
+    //     Number(extrachargecount[i].amount) -
+    //     Number(extrachargecount[i].discount)
+    //   );
+    //   if (extrachargecount[i].id) {
+    //     ids.push(Number(extrachargecount[i].id));
+    //   }
+    //   if (extrachargecount[i].cgst && extrachargecount[i].sgst) {
+    //     gstrate.push(
+    //       Number(extrachargecount[i].cgst + extrachargecount[i].sgst)
+    //     );
+    //   } else {
+    //     gstrate.push(0);
+    //   }
+    //   Grossamount.push(extrachargecount[i].gross_amount);
+    // }
+    // let Paymentmethod = [];
+    // let Paymentmethodsvalue = [];
+    // for (let j = 0; j < paymentmethods.length; j++) {
+    //   Paymentmethod.push(paymentmethods[j].paymentmethod);
+    //   Paymentmethodsvalue.push(Number(paymentmethods[j].amount));
+    // }
+    // let Data = {
+    //   appointment_id: props.appointmentid,
+    //   g_total_main: GrandTotal,
+    //   cons_fee: Docfee,
+    //   description: Description,
+    //   total_amount: TotalAmount,
+    //   discount: Discount,
+    //   amount: DiscountedAmount,
+    //   doc_dis: DoctorDiscount,
+    //   aartas_discount: AartasDiscount,
+    //   payment_method: Paymentmethod,
+    //   payment_method_main: Paymentmethod,
+    //   payment_method_details: Paymentmethodsvalue,
+    //   SGST: Number(TotalSGST),
+    //   CGST: Number(TotalCGST),
+    //   admin_id: Number(adminid),
+    //   cons_text: constext,
+    //   add_to_cart: AtC,
+    //   show_cons_fee: AddConsAmt == props.doctorfee ? 1 : 0,
+    //   ot_id: ids,
+    //   gst_rate: gstrate,
+    //   final_amount: Grossamount,
+    // };
+    // async function Payment() {
+    //   try {
+    //     setload(true);
+    //     await axios
+    //       .post(`${url}/appointment/save/charges`, Data)
+    //       .then((response) => {
+    //         props.Appointmentlist();          
+    //         console.log(response)
+    //         if(response.data.status ==true){
+    //           toggleStage3()
+    //           toggleStage4()
+    //           Notiflix.Notify.success(response.data.message);  
+    //         }else{
+    //           Notiflix.Notify.failure(response.data.message);  
+    //         }
                
-            setload(false);
-            // props.CloseBillForm();
-          });
-      } catch (e) {
-        Notiflix.Notify.failure(e.message);
-        setload(false);
-      }
-    }
-    Payment();
+    //         setload(false);
+    //         // props.CloseBillForm();
+    //       });
+    //   } catch (e) {
+    //     Notiflix.Notify.failure(e.message);
+    //     setload(false);
+    //   }
+    // }
+    // Payment();
+    toggleStage3()
+    toggleStage4()
   }
   const confirmmessage = (e) => {
     customconfirm();
@@ -343,8 +346,14 @@ const Bill = (props) => {
         patient_id: props.patientid,
       })
       .then((response) => {
-        setloadadvancepayments(false);
-        setadvancepayments(response.data.data);
+        if(response.data.status==true){
+          setadvancepayments(response.data.data);
+          setloadadvancepayments(false);
+        }else{
+          Notiflix.Notify.failure(response.data.message)
+          setloadadvancepayments(false);
+        }
+
       });
   }
   const ConsumableAmount = () => {
@@ -448,10 +457,15 @@ const Bill = (props) => {
         appointment_id: id,
         admin_id: adminid
       }).then((response) => {
-        
-        Notiflix.Notify.success(response.data.message)
-        Notiflix.Loading.remove()
-        window.open(response.data.data.bill_url, '_blank', 'noreferrer');
+        if(response.data.status == true){
+          Notiflix.Notify.success(response.data.message)
+          Notiflix.Loading.remove()
+          window.open(response.data.data.bill_url, '_blank', 'noreferrer');
+        }else{
+          Notiflix.Notify.failure(response.data.message)
+          Notiflix.Loading.remove()
+        }    
+
       })
     } catch (e) {
       Notiflix.Notify.failure(e.message)
@@ -469,10 +483,15 @@ const Bill = (props) => {
       axios.post(`${url}/swift/pdf`, {
         appointment_id: id,
       }).then((response) => {
-        
-        Notiflix.Notify.success(response.data.message)
-        Notiflix.Loading.remove()
-        window.open(response.data.data.prescription_pdf, '_blank', 'noreferrer');
+        if(response.data.status == true){
+          Notiflix.Notify.success(response.data.message)
+          Notiflix.Loading.remove()
+          window.open(response.data.data.prescription_pdf, '_blank', 'noreferrer');
+        }else{
+          Notiflix.Notify.failure(response.data.message)
+          Notiflix.Loading.remove()
+        }
+
       })
     } catch (e) {
       Notiflix.Notify.failure(e.message)
@@ -496,9 +515,14 @@ const Bill = (props) => {
           check_pres: checkpres,
           admin_id: adminid
         }).then((response) => {
-          
-          Notiflix.Notify.success(`${response.data.message}${checkpres == 1 ? ' with Prescription' : ' without Prescription'}`)
-          Notiflix.Loading.remove()
+          if(response.data.status == true){
+            Notiflix.Notify.success(`${response.data.message}${checkpres == 1 ? ' with Prescription' : ' without Prescription'}`)
+            Notiflix.Loading.remove()
+          }else{
+            Notiflix.Notify.failure(response.data.message)
+            Notiflix.Loading.remove()
+          }
+
         })
       } catch (e) {
         Notiflix.Notify.failure(e.message)
@@ -525,9 +549,14 @@ const Bill = (props) => {
           check_bill: 1,
           check_pre: checkpres,
         }).then((response) => {
-          
-          Notiflix.Notify.success(`${response.data.message}${checkpres == 1 ? ' with Prescription' : ' without Prescription'}`)
-          Notiflix.Loading.remove()
+          if(response.data.status == true){
+            Notiflix.Notify.success(`${response.data.message}${checkpres == 1 ? ' with Prescription' : ' without Prescription'}`)
+            Notiflix.Loading.remove()
+          }else{
+            Notiflix.Notify.failure(response.data.message)
+            Notiflix.Loading.remove()
+          }
+    
         })
       } catch (e) {
         Notiflix.Notify.failure(e.message)
@@ -536,8 +565,96 @@ const Bill = (props) => {
     }
 
   }
-  console.log(props.appointmentdata)
+
+const [videoconstraint,setvideoconstraint] = useState('none')
+const videoref= useRef(null)
+const [flip,setflip] = useState('user')
+
+const togglecamera = ()=>{
+  if(videoconstraint =='block'){
+    setvideoconstraint('none')
+  }
+  if(videoconstraint =='none'){
+    setvideoconstraint('block')
+  }
+  
+}
+// function getdevices(){
+// if (!navigator.mediaDevices?.enumerateDevices) {
+//   console.log("enumerateDevices() not supported.");
+// } else {
+//   // List cameras and microphones.
+//   navigator.mediaDevices.enumerateDevices()
+//     .then((devices) => {
+//       devices.forEach((device) => {
+//         console.log(`${device.kind}: ${device.label} id = ${device.deviceId}`);
+//         Notiflix.Notify.info(`${device.kind}: ${device.label} id = ${device.deviceId}`)
+//       });
+//     })
+//     .catch((err) => {
+//       console.error(`${err.name}: ${err.message}`);
+//     });
+//   }
+// }
+// const ChangeCamera=()=>{
+//   if(flip == 'user'){
+//     requestCameraPermission()
+//       setflip('environment')
+//   }
+//   if(flip=='environment'){
+//     requestCameraPermission()
+//     setflip('user')
+//   }
+// }
+
+// const requestCameraPermission = async () => {
+//   // 'mediaDevices' in navigator &&
+//   if ( 'getUserMedia' in navigator) {
+//     console.log("Let's get this party started",navigator.mediaDevices.getUserMedia())
+//   }else{
+//     console.log('device incompatible')
+//   }
+//   if(navigator.mediaDevices.getUserMedia){
+//     navigator.mediaDevices.getUserMedia(
+//       { 
+//       audio: false, 
+//       video: {
+//         facingMode: { 
+//           exact:flip
+//           },
+//         width:1280, 
+//         height:720
+//       } 
+//       }).then(function(stream) {
+//           //  ChangeCamera()
+//             videoref.current.srcObject =  stream;
+//             videoref.current.play()
+//         })
+//         .catch(function(err) {
+//           console.log(err);
+//           if(err = 'OverconstrainedError'){
+//             alert(flip + 'camera is not avaliable')
+//           }
+//           alert(err)
+//         });
+//   }else{
+//     console.log('not supported')
+//   }
+// // };
+// }
+
+//  const CloseCamera=()=>{
+//   navigator.mediaDevices.video =null
+//   videoref.current.srcObject = null
+//  }
+//  useEffect(()=>{
+//   console.log(navigator)
+//  },[])
+
+// console.log(isCameraPermissionGranted)
+  // console.log(props.appointmentdata)
   // console.log(props.Data.patient.reward_points.points_total)
+
   return (
     <>
   
@@ -1076,7 +1193,12 @@ const Bill = (props) => {
     <div className={`stage4 d-${stage4} scroll`}>
         <div className="container px-3">
         <h5 className="text-charcoal fw-bold mb-3">Bill & Prescription</h5>
+          <button className="button button-charcoal" onClick={()=>{togglecamera()}}>Scan Prescription</button>
           <div className="row mt-2 p-0 m-0 justify-content-start align-items-center">
+          <div className={`d-${videoconstraint} bg-pearl ps-4 border rounded-2 py-4 position-absolute top-0 start-0`} style={{zIndex:'10'}} >
+            <div className="btn-close position-absolute top-0 end-0 mt-4 me-3" style={{zIndex:'11'}} onClick={()=>{togglecamera()}}></div>
+              <WebcamCapture/>
+            </div>
           <h6 className="fw-bold text-charcoal75 ps-0 ms-0">Generate Bill & Prescription</h6>
             <div className="col-auto ps-0 ms-0">
             <button className="button button-charcoal px-4" onClick={()=>{Generate_Bill(props.appointmentid)}}>Bill</button>

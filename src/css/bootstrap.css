@@ -674,6 +674,22 @@ button {
   .toolTip:hover .tooltiptext {
     visibility: visible;
   }
+  .cameraroll{
+    transition: all 1s;
+    animation-name: bottomtop !important;
+    animation-duration: 0.5s;
+  }
+  
+@keyframes bottomtop {
+    from {
+        transform: translateY(50%);
+
+    }
+
+    to {
+        transform: translateY(0%);
+    }
+}
 @keyframes animatedropdown {
     0% {
         /* transform: translateY(-3vh); */
