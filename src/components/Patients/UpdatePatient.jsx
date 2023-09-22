@@ -32,6 +32,7 @@ const UpdatePatient = (props) => {
     const [display, setdisplay] = useState("none")
     const [accountinput, setaccountinput] = useState()
     const [displaymainaccount, setdisplaymainaccount] = useState('none')
+    const [is_verified,setis_verified]=useState()
     const ismainref = useRef()
 
 
@@ -54,6 +55,7 @@ const UpdatePatient = (props) => {
         props.main ? setmain(props.main) : setmain()
         props.latitude ? setlat(props.latitude) : setlat()
         props.longitude ? setlng(props.longitude) : setlng()
+        props.data.is_profile_verified ?setis_verified(props.data.is_profile_verified):setis_verified()
         if (props.parent === null) {
             ismainref.current.value = '1'
             setmain('1')
@@ -206,6 +208,7 @@ const UpdatePatient = (props) => {
             <hr className='p-0 m-0' />
             <div className="col-12">
                 <div className="form-group col-10 m-auto py-3">
+                <input type='checkbox' checked={is_verified==1?true:false} className='form-check-input' onChange={()=>{is_verified ==0?setis_verified(1):setis_verified(0)}}/><span className='fw-bold ms-2 text-charcoal'>Is Profile Verified</span><br className='p-0 m-0'/><hr className='pt-1 mt-1'/>
                     <label htmlFor="inputEmail4" className="mb-2">Enter Number</label>
                     <div className="row m-0 p-0 justify-content-center">
                         <div className="col-4">

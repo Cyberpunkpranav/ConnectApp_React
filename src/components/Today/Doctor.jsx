@@ -81,7 +81,8 @@ function DoctorSchedule(props) {
       messageFontSize: '1.5rem'
     })
     await axios.get(`${url}/appointment/list?clinic_id=${ClinicId}&doctor_id=${props.todayDoc[props._selected][0]}&from_date=${Date}&to_date=${Date}`).then((response) => {
-      setappointmentdata(response.data.data);
+      setappointmentdata(response.data.data && response.data.data !=undefined ? response.data.data :[]);
+      // setappointmentdata([]);
     })
     setisLoading(false);
     Loading.remove()
@@ -251,7 +252,6 @@ function DoctorSchedule(props) {
       setpaymentsindex()
     }
   }
-
   function ClosePaymentsForm2() {
     if (paymentsform === 'block') {
       setpaymentsform('none')
@@ -502,7 +502,7 @@ function DoctorSchedule(props) {
                 ) : (
                   <tbody>
                     {
-                      appointmentdata.length == 0 ? (
+                      appointmentdata && appointmentdata !==undefined && appointmentdata.length == 0 ? (
                         <tr><button className="text-center position-absolute border-0 text-charcoal fw-bold px-5 start-0 end-0 mx-auto">No Appointments Found</button></tr>
                       ) : (
                         appointmentdata.map((data, i) => (

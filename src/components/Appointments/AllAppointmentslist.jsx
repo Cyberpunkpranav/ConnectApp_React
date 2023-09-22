@@ -231,7 +231,6 @@ const AllAppointmentslist = (props) => {
             },
         );
     }
-    console.log(props.getAppointments)
     return (
         <>
             {

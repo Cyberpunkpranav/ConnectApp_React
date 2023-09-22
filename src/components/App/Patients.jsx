@@ -172,7 +172,6 @@ function Patients() {
                     <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
                   </div>
                 </tr>
-
               </tbody>
             ) : (
               PatientsList !=undefined && PatientsList.length == 0 ? (
@@ -200,7 +199,7 @@ function Patients() {
                             form == i ? (
                               <>
                               <div className="backdrop"></div>
-                              <section id={i} className={`updatepatientform text-start position-absolute d-${tabindex == i ? updatepatient : 'none'} bg-seashell top-0 rounded-1 shadow-sm border`}>
+                              <section id={i} className={`updatepatientform text-start position-absolute d-${tabindex == i ? updatepatient : 'none'} col-md-8 col-10 col-lg-6 bg-seashell top-0 rounded-2 shadow-sm border`}>
                                 <UpdatePatient index={i} getAllPatients={getAllPatients} CloseUpdatePatient={CloseUpdatePatient} patientid={data.id} data={data} phonecountrycode={data.phone_country_code ? data.phone_country_code : 'N/A'} PhoneNo={data.phone_number ? Number(data.phone_number) : ''} dob={data.dob ? data.dob : ''} gender={data.gender ? data.gender : ''} full_name={data.full_name ? data.full_name : ''} email={data.email ? data.email : ''} pincode={data.pin_code ? data.pin_code : ''} location={data.location ? data.location : ''} parent={data.parent} linkid={data.link_id ? data.link_id : ''} relation={data.relation} latitude={data.latitude} longitude={data.longitude} />
                               </section>
                               </>
@@ -228,7 +227,7 @@ function Patients() {
                           }
 
                         </td>
-                        <td>{data.full_name ? data.full_name : 'N/A'}</td>
+                        <td>{data.full_name ? data.full_name : 'N/A'}{ data.is_profile_verified ==1 ? <img src={process.env.PUBLIC_URL + 'images/verified.png'} style={{scale:'0.8'}}/>:'' }</td>
                         <td>{data.gender ? data.gender : 'N/A'}</td>
                         <td>{data.dob ? reversefunction(data.dob) : 'N/A'}</td>
                         <td>{data.email ? data.email : 'N/A'}</td>

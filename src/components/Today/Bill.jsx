@@ -1,10 +1,18 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React, { useState, useEffect, useContext, useRef,useCallback,useDebounceEffect } from "react";
 import { URL } from "../../index";
 import Notiflix from "notiflix";
 import { customconfirm } from "../features/notiflix/customconfirm";
 import "../../css/dashboard.css";
 import axios from "axios";
-import WebcamCapture from '../features/camera'
+import {ReactCrop } from 'react-image-crop'
+import 'react-image-crop/dist/ReactCrop.css'
+import '../../css/bootstrap.css'
+import Webcam from 'react-webcam'
+const videoConstraints = {
+  width: 600,
+  height: 800,
+  facingMode: "user"
+};
 const Bill = (props) => {
   const url = useContext(URL);
   const adminid = localStorage.getItem("id");
@@ -213,94 +221,94 @@ const Bill = (props) => {
     }
   }
   async function SaveBill() {
-    // let GrandTotal = Get_Grand_Total();
-    // GrandTotal = Number(GrandTotal);
-    // let Docfee = Number(props.doctorfee);
-    // let DoctorDiscount = Number(docdiscount);
-    // let AartasDiscount = Number(aartasdiscount);
-    // let TotalCGST = Get_total_Seperate_gsts();
-    // let TotalSGST = Get_total_Seperate_gsts();
-    // let Description = [];
-    // let TotalAmount = [];
-    // let Discount = [];
-    // let Grossamount = [];
-    // let DiscountedAmount = [];
-    // let ids = [];
-    // let gstrate = [];
-    // for (let i = 0; i < extrachargecount.length; i++) {
-    //   Description.push(extrachargecount[i].description);
-    //   TotalAmount.push(Number(extrachargecount[i].amount));
-    //   Discount.push(Number(extrachargecount[i].discount));
-    //   DiscountedAmount.push(
-    //     Number(extrachargecount[i].amount) -
-    //     Number(extrachargecount[i].discount)
-    //   );
-    //   if (extrachargecount[i].id) {
-    //     ids.push(Number(extrachargecount[i].id));
-    //   }
-    //   if (extrachargecount[i].cgst && extrachargecount[i].sgst) {
-    //     gstrate.push(
-    //       Number(extrachargecount[i].cgst + extrachargecount[i].sgst)
-    //     );
-    //   } else {
-    //     gstrate.push(0);
-    //   }
-    //   Grossamount.push(extrachargecount[i].gross_amount);
-    // }
-    // let Paymentmethod = [];
-    // let Paymentmethodsvalue = [];
-    // for (let j = 0; j < paymentmethods.length; j++) {
-    //   Paymentmethod.push(paymentmethods[j].paymentmethod);
-    //   Paymentmethodsvalue.push(Number(paymentmethods[j].amount));
-    // }
-    // let Data = {
-    //   appointment_id: props.appointmentid,
-    //   g_total_main: GrandTotal,
-    //   cons_fee: Docfee,
-    //   description: Description,
-    //   total_amount: TotalAmount,
-    //   discount: Discount,
-    //   amount: DiscountedAmount,
-    //   doc_dis: DoctorDiscount,
-    //   aartas_discount: AartasDiscount,
-    //   payment_method: Paymentmethod,
-    //   payment_method_main: Paymentmethod,
-    //   payment_method_details: Paymentmethodsvalue,
-    //   SGST: Number(TotalSGST),
-    //   CGST: Number(TotalCGST),
-    //   admin_id: Number(adminid),
-    //   cons_text: constext,
-    //   add_to_cart: AtC,
-    //   show_cons_fee: AddConsAmt == props.doctorfee ? 1 : 0,
-    //   ot_id: ids,
-    //   gst_rate: gstrate,
-    //   final_amount: Grossamount,
-    // };
-    // async function Payment() {
-    //   try {
-    //     setload(true);
-    //     await axios
-    //       .post(`${url}/appointment/save/charges`, Data)
-    //       .then((response) => {
-    //         props.Appointmentlist();          
-    //         console.log(response)
-    //         if(response.data.status ==true){
-    //           toggleStage3()
-    //           toggleStage4()
-    //           Notiflix.Notify.success(response.data.message);  
-    //         }else{
-    //           Notiflix.Notify.failure(response.data.message);  
-    //         }
+    let GrandTotal = Get_Grand_Total();
+    GrandTotal = Number(GrandTotal);
+    let Docfee = Number(props.doctorfee);
+    let DoctorDiscount = Number(docdiscount);
+    let AartasDiscount = Number(aartasdiscount);
+    let TotalCGST = Get_total_Seperate_gsts();
+    let TotalSGST = Get_total_Seperate_gsts();
+    let Description = [];
+    let TotalAmount = [];
+    let Discount = [];
+    let Grossamount = [];
+    let DiscountedAmount = [];
+    let ids = [];
+    let gstrate = [];
+    for (let i = 0; i < extrachargecount.length; i++) {
+      Description.push(extrachargecount[i].description);
+      TotalAmount.push(Number(extrachargecount[i].amount));
+      Discount.push(Number(extrachargecount[i].discount));
+      DiscountedAmount.push(
+        Number(extrachargecount[i].amount) -
+        Number(extrachargecount[i].discount)
+      );
+      if (extrachargecount[i].id) {
+        ids.push(Number(extrachargecount[i].id));
+      }
+      if (extrachargecount[i].cgst && extrachargecount[i].sgst) {
+        gstrate.push(
+          Number(extrachargecount[i].cgst + extrachargecount[i].sgst)
+        );
+      } else {
+        gstrate.push(0);
+      }
+      Grossamount.push(extrachargecount[i].gross_amount);
+    }
+    let Paymentmethod = [];
+    let Paymentmethodsvalue = [];
+    for (let j = 0; j < paymentmethods.length; j++) {
+      Paymentmethod.push(paymentmethods[j].paymentmethod);
+      Paymentmethodsvalue.push(Number(paymentmethods[j].amount));
+    }
+    let Data = {
+      appointment_id: props.appointmentid,
+      g_total_main: GrandTotal,
+      cons_fee: Docfee,
+      description: Description,
+      total_amount: TotalAmount,
+      discount: Discount,
+      amount: DiscountedAmount,
+      doc_dis: DoctorDiscount,
+      aartas_discount: AartasDiscount,
+      payment_method: Paymentmethod,
+      payment_method_main: Paymentmethod,
+      payment_method_details: Paymentmethodsvalue,
+      SGST: Number(TotalSGST),
+      CGST: Number(TotalCGST),
+      admin_id: Number(adminid),
+      cons_text: constext,
+      add_to_cart: AtC,
+      show_cons_fee: AddConsAmt == props.doctorfee ? 1 : 0,
+      ot_id: ids,
+      gst_rate: gstrate,
+      final_amount: Grossamount,
+    };
+    async function Payment() {
+      try {
+        setload(true);
+        await axios
+          .post(`${url}/appointment/save/charges`, Data)
+          .then((response) => {
+            props.Appointmentlist();          
+            console.log(response)
+            if(response.data.status ==true){
+              toggleStage3()
+              toggleStage4()
+              Notiflix.Notify.success(response.data.message);  
+            }else{
+              Notiflix.Notify.failure(response.data.message);  
+            }
                
-    //         setload(false);
-    //         // props.CloseBillForm();
-    //       });
-    //   } catch (e) {
-    //     Notiflix.Notify.failure(e.message);
-    //     setload(false);
-    //   }
-    // }
-    // Payment();
+            setload(false);
+            // props.CloseBillForm();
+          });
+      } catch (e) {
+        Notiflix.Notify.failure(e.message);
+        setload(false);
+      }
+    }
+    Payment();
     toggleStage3()
     toggleStage4()
   }
@@ -567,93 +575,130 @@ const Bill = (props) => {
   }
 
 const [videoconstraint,setvideoconstraint] = useState('none')
-const videoref= useRef(null)
-const [flip,setflip] = useState('user')
-
 const togglecamera = ()=>{
   if(videoconstraint =='block'){
     setvideoconstraint('none')
   }
   if(videoconstraint =='none'){
+    setimagearr([])
     setvideoconstraint('block')
   }
   
 }
-// function getdevices(){
-// if (!navigator.mediaDevices?.enumerateDevices) {
-//   console.log("enumerateDevices() not supported.");
-// } else {
-//   // List cameras and microphones.
-//   navigator.mediaDevices.enumerateDevices()
-//     .then((devices) => {
-//       devices.forEach((device) => {
-//         console.log(`${device.kind}: ${device.label} id = ${device.deviceId}`);
-//         Notiflix.Notify.info(`${device.kind}: ${device.label} id = ${device.deviceId}`)
-//       });
-//     })
-//     .catch((err) => {
-//       console.error(`${err.name}: ${err.message}`);
-//     });
-//   }
-// }
-// const ChangeCamera=()=>{
-//   if(flip == 'user'){
-//     requestCameraPermission()
-//       setflip('environment')
-//   }
-//   if(flip=='environment'){
-//     requestCameraPermission()
-//     setflip('user')
-//   }
-// }
+const webcamRef = useRef(null);
+const imgRef = useRef(null);
+const[imgroll,setimgroll]=useState('none')
+const [editor,seteditor] =useState('none')
+const [imagearr,setimagearr] = useState([])
+const [editindex, seteditindex] = useState(0)
+const [image,setimage]=useState()
 
-// const requestCameraPermission = async () => {
-//   // 'mediaDevices' in navigator &&
-//   if ( 'getUserMedia' in navigator) {
-//     console.log("Let's get this party started",navigator.mediaDevices.getUserMedia())
-//   }else{
-//     console.log('device incompatible')
-//   }
-//   if(navigator.mediaDevices.getUserMedia){
-//     navigator.mediaDevices.getUserMedia(
-//       { 
-//       audio: false, 
-//       video: {
-//         facingMode: { 
-//           exact:flip
-//           },
-//         width:1280, 
-//         height:720
-//       } 
-//       }).then(function(stream) {
-//           //  ChangeCamera()
-//             videoref.current.srcObject =  stream;
-//             videoref.current.play()
-//         })
-//         .catch(function(err) {
-//           console.log(err);
-//           if(err = 'OverconstrainedError'){
-//             alert(flip + 'camera is not avaliable')
-//           }
-//           alert(err)
-//         });
-//   }else{
-//     console.log('not supported')
-//   }
-// // };
-// }
+const capture = useCallback(
+  () => {
+    const imageSrc = webcamRef.current.getScreenshot();
+    if(imagearr.length>0){
+        setimagearr(imageSrc)
+    }else{
+        setimagearr((prevState)=>[...prevState,imageSrc])
+    }
+  },
+  [webcamRef]
+);
 
-//  const CloseCamera=()=>{
-//   navigator.mediaDevices.video =null
-//   videoref.current.srcObject = null
-//  }
-//  useEffect(()=>{
-//   console.log(navigator)
-//  },[])
+const toggleGallery = async()=>{
+    if(imgroll=='block'){
+        setimgroll('none')
+      
+    }
+    if(imgroll == 'none'){
 
-// console.log(isCameraPermissionGranted)
-  // console.log(props.appointmentdata)
-  // console.log(props.Data.patient.reward_points.points_total)
+        setimgroll('block')
+    }
+}
+
+const toggleedit=()=>{
+if(editor=='none'){
+  seteditor('')
+}
+if(editor==''){
+  seteditor('none')
+}
+}
+const [src, setSrc] = useState(null);
+// const[croppedimg,setcroppedimg]=useState()
+const [crop, setCrop] = useState({   unit: '%',
+x: 25,
+y: 25,
+width: 100,
+height:100, aspect: 16 / 9 });
+const [completedCrop, setCompletedCrop] = useState(null);
+const imageRef = useRef(null);
+
+const onSelectFile = (e) => {
+  setSrc(imagearr[editindex])
+};
+const createImageRef = (src) => {
+  const img = new Image();
+  img.src = src;
+  img.onload = () => {
+    imageRef.current = img;
+  };
+};
+useEffect(() => {
+  if (src) {
+    createImageRef(src);
+  }
+}, [src]);
+
+const getCroppedImg = (image, crop, fileName) => {
+  const canvas = document.createElement('canvas');
+  const scaleX = image.naturalWidth / image.width;
+  const scaleY = image.naturalHeight / image.height;
+  canvas.width = crop.width;
+  canvas.height = crop.height;
+  const ctx = canvas.getContext('2d');
+
+  ctx.drawImage(
+    image,
+    crop.x * scaleX,
+    crop.y * scaleY,
+    crop.width * scaleX,
+    crop.height * scaleY,
+    0,
+    0,
+    crop.width,
+    crop.height
+  );
+
+  return new Promise((resolve, reject) => {
+    canvas.toBlob((blob) => {
+      if (!blob) {
+        // Reject if the blob is null
+        console.error('Canvas is empty');
+        return;
+      }
+      blob.name = fileName;
+      window.URL.revokeObjectURL(src);
+      const imageUrl = window.URL.createObjectURL(blob);
+      resolve(imageUrl);
+    }, 'image/jpeg');
+  });
+};
+const makeClientCrop = async (crop) => {
+  if ( imageRef.current && crop.width && crop.height) {
+    toggleedit()
+    setCompletedCrop()
+    togglecamera()
+    const croppedImageUrl = await getCroppedImg(
+      imageRef.current,
+      crop,
+      'prescription.jpeg'
+    );
+    // You can do something with the cropped image URL, like displaying it or saving it.
+    // console.log(croppedImageUrl);
+    setimage(croppedImageUrl)
+  }
+};
 
   return (
     <>
@@ -1197,8 +1242,65 @@ const togglecamera = ()=>{
           <div className="row mt-2 p-0 m-0 justify-content-start align-items-center">
           <div className={`d-${videoconstraint} bg-pearl ps-4 border rounded-2 py-4 position-absolute top-0 start-0`} style={{zIndex:'10'}} >
             <div className="btn-close position-absolute top-0 end-0 mt-4 me-3" style={{zIndex:'11'}} onClick={()=>{togglecamera()}}></div>
-              <WebcamCapture/>
+            <div className="position-relative">
+      <Webcam
+          audio={false}
+          height={800}
+          ref={webcamRef}
+          screenshotFormat="image/jpeg"
+          width={600}
+          mirrored={false}
+          videoConstraints={videoConstraints}
+        />
+      <img className="img-fluid position-absolute start-0 end-0 mx-auto bottom-0 mb-5" onClick={()=>{capture()}} style={{width:'4rem'}} src={process.env.PUBLIC_URL + '/images/camera_click.png'}/>
+        <div className="position-absolute bottom-0 justify-content-center " >
+        <button className="border-0 cameraroll bg-transparent p-0 m-0 "onClick={()=>{toggleGallery()}}>
+            {
+                imgroll=='none'?(
+                    <img src={process.env.PUBLIC_URL+'/images/up.png'} className="img-fluid bg-seashell px-2 py-1 rounded-top mb-1"/>
+                ):(
+                    <img src={process.env.PUBLIC_URL+'/images/bottom.png'} className="img-fluid bg-seashell px-2 py-1 rounded-top mb-1"/>
+                )
+            }
+          </button>
+        <div className={`container cameraroll scroll bg-charcoal25 d-${imgroll}`}style={{flexDirection:'horizontal',minHeight:'fit-content'}}> 
+            {
+                imagearr? imagearr.map((data,i)=>(
+                    <img src={data} className="img-fluid mt-5" onClick={()=>{toggleedit();seteditindex(i);onSelectFile()}} style={{width:'5rem'}}/>
+
+                )):''
+            }
             </div>
+             
+
+        </div>
+      </div>
+      <div className={`d-${editor} container position-absolute mx-auto start-0 end-0 bg-pearl rounded-2 shadow-sm p-2`} style={{zIndex:'15',height:'83vh',width:'60vh',left:'0vh',top:'0'}}>
+        <button className="position-absolute end-0 mt-3 me-3 bg-seashell50 p-2 btn-close" style={{zIndex:'15'}} onClick={()=>{toggleedit()}}></button>
+      <div>
+      {/* <input type="file" accept="image/*" onChange={onSelectFile} /> */}
+        <ReactCrop
+          // onImageLoaded={onLoad}
+          crop={crop}
+          onChange={(c) => setCrop(c)}
+          onComplete={(c) => setCompletedCrop(c)}
+        >
+          <img src={src} style={{width:'60vh',height:'70vh'}}/>
+        </ReactCrop>
+
+   
+    </div>    
+           
+    </div>
+
+  </div>
+        {completedCrop && (
+        <div className="position-absolute top-0 mt-4 ms-2" style={{zIndex:'15'}}>
+          <button className="btn text-light border border-light" onClick={() => makeClientCrop(completedCrop)}>Save</button>
+
+        </div>
+      )}
+                <div><img src={image} className="img-fluid" style={{width:'20rem'}}/></div>
           <h6 className="fw-bold text-charcoal75 ps-0 ms-0">Generate Bill & Prescription</h6>
             <div className="col-auto ps-0 ms-0">
             <button className="button button-charcoal px-4" onClick={()=>{Generate_Bill(props.appointmentid)}}>Bill</button>

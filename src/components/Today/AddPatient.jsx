@@ -36,7 +36,7 @@ const AddPatient = (props) => {
     const [displaymainaccount, setdisplaymainaccount] = useState('none')
     const [load, setload] = useState()
     const [warning, setwarning] = useState('none')
-
+    const [is_verified,setis_verified]=useState(0)
     const d = () => {
         if (main == 1) {
             setdisplay('flex')
@@ -76,6 +76,7 @@ const AddPatient = (props) => {
         setplace()
         setpincode()
         setcountrycode()
+        setis_verified()
     }
 
     const CheckAvailability = async (e) => {
@@ -111,7 +112,8 @@ const AddPatient = (props) => {
                 longitude: lng,
                 relation: main == 2 ? relation : '',
                 link_id: main == 2 ? linkid : '',
-                admin_id: adminid
+                admin_id: adminid,
+                is_profile_verified:is_verified
             }).then((response) => {
                 setload(false)
                 Notiflix.Notify.success(response.data.message);
@@ -172,16 +174,16 @@ const AddPatient = (props) => {
             },
         );
     }
-  
     return (
         <section>
             <div className="position-sticky top-0 bg-seashell pt-2">
-            <h5 className="text-center position-relative fw-bold  "> Patient Details </h5>
+            <h5 className="text-center position-relative fw-bold"> Patient Details </h5>
             <button type="button" className="btn-close closebtn position-absolute" aria-label="Close" onClick={props.togglepatientform} ></button>
             <hr />
             </div>
             <div className="col-12 fw-bold">
                 <div className="form-group col-10 m-auto py-3">
+                    <input type='checkbox' className='form-check-input' onChange={()=>{is_verified ==0?setis_verified(1):setis_verified(0)}}/><span className='fw-bold ms-2 text-charcoal'>Is Profile Verified</span><br className='p-0 m-0'/><hr className='pt-1 mt-1'/>
                     <label htmlFor="inputEmail4" className="mb-2">Enter Number</label>
                     <div className="row m-0 p-0 justify-content-center">
                         <div className="col-4 ps-0">

@@ -17,6 +17,7 @@ function Appointments(props) {
     const [doctorid, setdoctorid] = useState()
     const [fromdate, setfromdate] = useState()
     const [todate, settodate] = useState()
+    const [search,setsearch]=useState()
     //Selected Appointments use state
     const [isselectedLoading, setisselectedLoading] = useState()
     const [appointmentdata, setappointmentdata] = useState([])
@@ -33,7 +34,7 @@ function Appointments(props) {
             setgetAppointments([])
             try {
                 setisselectedLoading(true);
-                await axios.get(`${url}/appointment/list?clinic_id=${clinicID}&doctor_id=${doctorid}&from_date=${fromdate ? fromdate : APIDate}&to_date=${todate ? todate : fromdate ? fromdate : APIDate}&status=${type ? type : ''}`).then((response) => {
+                await axios.get(`${url}/appointment/list?clinic_id=${clinicID}&doctor_id=${doctorid}&from_date=${fromdate ? fromdate : APIDate}&to_date=${todate ? todate : fromdate ? fromdate : APIDate}&status=${type ? type : ''}&search=${search}`).then((response) => {
                     setappointmentdata(response.data.data)
                 })
                 setisselectedLoading(false);
@@ -46,7 +47,7 @@ function Appointments(props) {
             try {
                 setvisibles()
                 setisLoading(true)
-                await axios.get(`${url}/appointment/list?clinic_id=${clinicID}&from_date=${fromdate ? fromdate : APIDate}&to_date=${todate ? todate : fromdate ? fromdate : APIDate}&status=${type ? type : ''}`).then((response) => {
+                await axios.get(`${url}/appointment/list?clinic_id=${clinicID}&from_date=${fromdate ? fromdate : APIDate}&to_date=${todate ? todate : fromdate ? fromdate : APIDate}&status=${type ? type : ''}&search=${search}`).then((response) => {
                     setgetAppointments(response.data.data)
                     response.data.data.map((data) => {
                         listdata.push(data.doctor.id)
@@ -67,7 +68,7 @@ function Appointments(props) {
 
     useEffect(() => {
         fetchallAppointmentslist()
-    }, [doctorid, fromdate, todate, type])
+    }, [doctorid, fromdate, todate, type,search])
 
 
     function tConvert(time) {
@@ -173,6 +174,9 @@ function Appointments(props) {
                                         </ul>
                                         </div>
 
+                                    </div>
+                                    <div className="col-2">
+                                        <input type='text' placeholder="name or number" className="form-control bg-seashell border-0 pb-2 " onChange={(e)=>{setsearch(e.target.value)}}/>
                                     </div>
                                     <div className="col-auto bg-seashell rounded-2">
                                         <div className="row p-0 m-0 align-items-center align-self-center">

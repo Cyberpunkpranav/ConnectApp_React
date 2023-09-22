@@ -250,7 +250,7 @@ function Navbar(props) {
                         <div className="col-lg-auto col-xl-2 col-md-2 col-8 col-sm-auto text-center align-self-center position-relative p-0 m-0 order-sm-2 order-md-1 order-1 ">
                             <div className="row p-0 m-0 align-items-center justify-content-md-start justify-content-center">
                                 <div className="col-sm-auto col-xl-8 col-lg-8 col-md-8 me-1 col-7 p-0 m-0 position-relative " style={{ zIndex: '3' }} >
-                                    <input type="text" className="rounded-1 text-charcoal search bg-charcoal25 positon-relative border border-0 text-start py-sm-1 ps-2 py-1 fw-bold" placeholder="search" onChange={(e) => setsearchtext(e.target.value)} />
+                                    <input type="text" disabled={true} className="rounded-1 text-charcoal search bg-charcoal25 positon-relative border border-0 text-start py-sm-1 ps-2 py-1 fw-bold" placeholder="search" onChange={(e) => setsearchtext(e.target.value)} />
                                     <div className="position-absolute bg-pearl rounded-2 end-0 shadow mt-1 " style={{ width: '60vh' }}>
                                         <SearchField searchtext={searchtext} fetchapi={props.fetchapi} />
                                     </div>
