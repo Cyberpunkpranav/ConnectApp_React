@@ -8,11 +8,7 @@ import {ReactCrop } from 'react-image-crop'
 import 'react-image-crop/dist/ReactCrop.css'
 import '../../css/bootstrap.css'
 import Webcam from 'react-webcam'
-const videoConstraints = {
-  width: 600,
-  height: 800,
-  facingMode: "user"
-};
+
 const Bill = (props) => {
   const url = useContext(URL);
   const adminid = localStorage.getItem("id");
@@ -292,15 +288,17 @@ const Bill = (props) => {
           .then((response) => {
             props.Appointmentlist();          
             console.log(response)
-            if(response.data.status ==true){
+            if(response.data.status == true){
+              setload(false);
               toggleStage3()
               toggleStage4()
               Notiflix.Notify.success(response.data.message);  
             }else{
+              setload(false);
               Notiflix.Notify.failure(response.data.message);  
             }
                
-            setload(false);
+            
             // props.CloseBillForm();
           });
       } catch (e) {
@@ -592,20 +590,29 @@ const [editor,seteditor] =useState('none')
 const [imagearr,setimagearr] = useState([])
 const [editindex, seteditindex] = useState(0)
 const [image,setimage]=useState()
-
-const capture = useCallback(
+const [flip,setflip] =useState('environment')
+const videoConstraints = {
+  // width: 600,
+  // height: 800,
+  facingMode: flip
+};
+const capture = useCallback(  
   () => {
     const imageSrc = webcamRef.current.getScreenshot();
     if(imagearr.length>0){
         setimagearr(imageSrc)
+        Notiflix.Notify.info('Photo Captured')
+        toggleGallery()
     }else{
         setimagearr((prevState)=>[...prevState,imageSrc])
+        Notiflix.Notify.info('Photo Captured')
+        toggleGallery()
     }
   },
   [webcamRef]
 );
 
-const toggleGallery = async()=>{
+const toggleGallery = ()=>{
     if(imgroll=='block'){
         setimgroll('none')
       
@@ -630,7 +637,7 @@ const [crop, setCrop] = useState({   unit: '%',
 x: 25,
 y: 25,
 width: 100,
-height:100, aspect: 16 / 9 });
+height:100 });
 const [completedCrop, setCompletedCrop] = useState(null);
 const imageRef = useRef(null);
 
@@ -700,245 +707,8 @@ const makeClientCrop = async (crop) => {
   }
 };
 
-  return (
+return (
     <>
-  
-      <div className="container-fluid position-relative bg-seashell p-0 m-0 rounded-2 pt-2 pb-0 col-lg-8 p-0 m-0 d-none mx-auto">
-        <h5 className="text-charcoal mt-2 fw-bold text-start ps-3">
-          {props.patientname} Bill
-        </h5>
-        <button className="btn btn-close position-absolute top-0 end-0 me-2 mt-1 pt-3 " onClick={() => { props.CloseBillForm(); }} ></button>
-        <hr className="p-0 m-0" />
-        <div className="scroll">
-          {props.isLoading ? (
-            <div className="col-6 py-2 pb-2 m-auto text-center">
-              <div class="spinner-border spinner-border-sm" role="status">
-                <span class="visually-hidden">Loading...</span>
-              </div>
-            </div>
-          ) : (
-            <>
-              <div className="container-fluid text-start px-3 py-2 position-relative">
-                <h6 className="fw-bold text-charcoal">Consultation</h6>
-                <label className="position-absolute end-0 top-0 mt-2 me-4 text-cahrcoal fw-bolder">
-                  <input className="form-check-input me-1 " type="checkbox" checked={AddConsAmt} onClick={AddConsAmt == props.doctorfee ? () => setAddConsAmt(0) : () => setAddConsAmt(props.doctorfee)} />
-                  Add Consultation Amount
-                </label>
-                <div className="row p-0 m-0 justify-content-between">
-                  <div className="col-8 ps-0 ">
-                    <label className="text-charcoal75 fw-bold"> Consultation text </label>
-                    <input className="form-control bg-seashell fw-bold" value={constext ? constext : ""} onChange={(e) => setconstext(e.target.value)} />
-                  </div>
-                  <div className="col-4 pe-0 ">
-                    <label className="text-charcoal75 fw-bold"> Doctor's Consultation Charge </label>
-                    <input className="form-control bg-seashell fw-bold" disabled={true} value={AddConsAmt} />
-                  </div>
-                </div>
-              </div>
-
-              <div className="container-fluid text-start p-2 ps-3">
-                <h6 className="fw-bolder text-charcoal">Discounts</h6>
-                <div className="row p-0 m-0">
-                  <div className="col-4 ps-0">
-                    <label className="text-charcoal75 fw-bold">Coupon</label>
-                    <input className="form-control fw-bold text-charcoal text-start" disabled={true} value={coupondiscount ? coupondiscount : ""} onChange={(e) => setcoupondiscount(e.target.value)} />
-                  </div>
-                  <div className="col-4">
-                    <label className="text-charcoal75 fw-bold">Doctor</label>
-                    <input className="form-control bg-seashell fw-bold text-charcoal text-start" value={docdiscount ? docdiscount : ""} onChange={(e) => setdocdiscount(e.target.value)} />
-                  </div>
-                  <div className="col-4">
-                    <label className="text-charcoal75 fw-bold">Aartas</label>
-                    <input className="form-control bg-seashell fw-bold text-charcoal text-start" value={aartasdiscount ? aartasdiscount : ""} onChange={(e) => setaartasdiscount(e.target.value)} />
-                  </div>
-                </div>
-              </div>
-
-              <div className="container-fluid text-start p-2">
-                <div className="bg-seashell position-relative">
-                  <div className="row p-0 m-0 align-items-center mb-2">
-                    <div className="col-auto p-0 m-0 ps-2 pe-1">
-                      <h6 className=" p-0 m-0 text-charcoal fw-bolder"> Extra Charges </h6>
-                    </div>
-                    <div className="col-auto p-0 m-0">
-                      <button className="btn p-0 m-0 py-0" onClick={() => setextrachargecount((prevState) => [...prevState, Charges,])} >
-                        <img src={process.env.PUBLIC_URL + "/images/add.png"} className="img-fluid" />
-                      </button>
-                    </div>
-                  </div>
-                  {props.isLoading ? (
-                    <div className="col-6 py-2 pb-2 m-auto text-center">
-                      <div class="spinner-border spinner-border-sm" role="status">
-                        <span class="visually-hidden">Loading...</span>
-                      </div>
-                    </div>
-                  ) : (
-                    extrachargecount.map((data, i) => (
-                      <div className="container-fluid p-0 m-0">
-                        <div className="row p-0 m-0">
-                          <div className="col-3">
-                            <label className="fw-bold text-charcoal75 text-start ps-1"> Description </label>
-                            <input className="form-control bg-seashell m-0 text-start fw-bold " value={data.description ? data.description : ""} onChange={(e) => { data.description = e.target.value; Calculate_gst(data.amount, data.discount, data.cgst, data.sgst); }} />
-                          </div>
-                          <div className="col-2">
-                            <label className="fw-bold text-charcoal75 text-start ps-1">
-                              Amount
-                            </label>
-                            <input type="number" className="form-control text-start bg-seashell m-0 fw-bold " value={data.amount ? data.amount : ""} onChange={(e) => { data.amount = e.target.value; data.gross_amount = Calculate_gst(data.amount, data.discount, data.cgst, data.sgst); }} />
-                          </div>
-                          <div className="col-2 ">
-                            <label className="fw-bold text-charcoal75 text-start ps-1">
-                              Discount
-                            </label>
-                            <input type="number" className="form-control text-start bg-seashell m-0 fw-bold " value={data.discount ? data.discount : ""} onChange={(e) => { data.discount = e.target.value; data.gross_amount = Calculate_gst(data.amount, data.discount, data.cgst, data.sgst); }} />
-                          </div>
-
-                          <div className="col-2">
-                            <label className="fw-bold text-charcoal75 text-start ps-1"> GST % </label>
-                            <input type="number" className="form-control text-start bg-seashell m-0 fw-bold " value={data.cgst && data.sgst ? data.cgst + data.sgst : ""} onChange={(e) => { data.cgst = e.target.value / 2; data.sgst = e.target.value / 2; data.gross_amount = Calculate_gst(data.amount, data.discount, data.cgst, data.sgst); }} />
-                          </div>
-                          <div className="col-2 p-0 align-self-end ">
-                            <div className="row p-0 m-0 ">
-                              <div className="col-6 p-0 m-0 fw-bold text-charcoal75 text-end"> Amount: </div>
-                              <input type="number" className="col-6 p-0 border-0 text-start bg-seashell m-0 ps-1 fw-bold text-burntumber" style={{ letterSpacing: "1px" }} value={data.amount && data.discount ? data.amount - data.discount : ""} onChange={(e) => { data.gross_amount = Calculate_gst(data.amount, data.discount, data.cgst, data.sgst); }} />
-                            </div>
-                            <div className="row p-0 m-0">
-                              <div className="col-6 p-0 m-0 fw-bold text-charcoal75 text-end"> incl. gst: </div>
-                              <input className="col-6 p-0 border-0 m-0 text-start bg-seashell ps-1 fw-bold text-burntumber" style={{ letterSpacing: "1px" }} value={data.gross_amount ? data.gross_amount : ""} />
-                            </div>
-                          </div>
-                          <div className="col-1 align-self-end">
-                            <button className="btn btn-sm p-0 m-0" onClick={() => { DeleteExtraCharges(i); setpaymentmethods((prevState) => [...prevState]); }} >
-                              <img src={process.env.PUBLIC_URL + "/images/delete.png"} className="img-fluid" style={{ width: "1.5rem" }} />
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    ))
-                  )}
-                </div>
-              </div>
-              <div className="container-fluid p-1 mt-2">
-             
-             <div className="row text-center p-0 m-0 p-0 m-0">
-               <div className="col-4 text-start">
-                 <label className=" fw-bolder text-charcoal text-wrap text-start"> Advance Amount Balance </label>
-                 {
-                   loadadvancepayments ? (
-                     <div className=" py-2 pb-2 m-auto text-center">
-                       <div class="spinner-border spinner-border-sm" role="status" >
-                         <span class="visually-hidden">Loading...</span>
-                       </div>
-                     </div>
-                   ) : advancepayments ? (
-                     <div className="text-success text-start border-0 rounded-1 fw-bolder p-0  bg-seashell">
-                       {"₹" + advancepayments.advnace_total}
-                     </div>
-                   ) : (
-                     // <input className='form-control text-success text-start border-0 rounded-1 fw-bolder p-0  bg-seashell' value= />
-                     <div className="bg-lightred text-center fw-bold rounded-1 p-2"> No Advance Payments Found </div>
-                   )}
-               </div>
-               <div className="col-4 p-0 m-0 text-start">
-                 <label className="fw-bolder text-charcoal text-start text-wrap"> Consumables Amount </label>
-                 {/* defaultValue=" not available" */}
-                 <input className="form-control bg-seashell text-success text-start rounded-1  border-0 fw-bolder p-0 text-charcoal50" value={"₹" + ConsumableAmount()} />
-               </div>
-               <div className="col-4 p-0 m-0 text-start">
-               <label className="fw-bolder text-charcoal text-start text-wrap"> Reward Points </label>
-                 <div className="text-success text-start border-0 rounded-1 fw-bolder p-0  bg-seashell">
-                   {props.Data.patient.reward_points !=undefined  && props.Data.patient.reward_points.points_total!=undefined && props.Data.patient.reward_points.points_total !=null ? props.Data.patient.reward_points.points_total :0}
-                   </div>
-               </div>
-             </div>
-           </div>
-
-              <hr/>
-              <div className="container-fluid text-start position-relative mt-2">
-                <div className="row p-0 m-0 align-items-center">
-                  <div className="col-auto p-0 m-0 ps-1">
-                    <h6 className="text-charcoal p-0 m-0 fw-bolder">Payments</h6>
-                  </div>
-           
-                  <div className="col-auto p-0 m-0">
-                    <button className="btn p-0 ms-1" onClick={() => setpaymentmethods((prevState) => [...prevState, paymentmethoddetails,])} >
-                      <img src={process.env.PUBLIC_URL + "/images/add.png"} className="img-fluid" />
-                    </button>
-                  </div>
-                </div>
-
-                <div className=" justify-content-start p-0 m-0 mt-2 me-3">
-                  <div className="col-5 text-start p-0 m-0">
-                    <span className=" text-end p-0 m-0 text-charcoal fw-bold ps-1"> Amount Recieved:{" "} </span>
-                    <span className="text-success fw-bolder"> {" "} {paymentmethods && paymentmethods.length > 0 ? "₹" + Total_Amount() : "₹" + 0} </span>
-                  </div>
-                  <div className="col-5 text-start m-0 p-0">
-                    {/* <span className="text-wrap text-center p-0 m-0 fw-bold ps-1"> Return Amount: </span> */}
-                    <span className="text-start align-self-end p-0 m-0 ms-1 text-burntumber fw-bolder"> {" "} {Return_Amount() > 0 ? `Amount Exceeded by ${Return_Amount()}` : ""}{" "} </span>
-                  </div>
-                </div>
-
-                {paymentmethods.map((data, i) => (
-                  <div className="row p-0 m-0 justify-content-start mt-3 mb-3">
-                    <div className="col-4 p-0 me-2 ms-1">
-                      <select className="form-control bg-seashell fw-bold" value={data.paymentmethod} onChange={(e) => { data.paymentmethod = e.target.value; setpaymentmethods((prevState) => [...prevState]); }} >
-                        <option className="text-charcoal75 fw-bolder"> Payment Method </option>
-                        <option value="Cash">Cash</option>
-                        <option value="Card">Card</option>
-                        <option value="Paytm">Paytm</option>
-                        <option value="Phonepe">Phone Pe</option>
-                        <option value="Wire-Transfer">Wire Transfer</option>
-                        <option value="Razorpay">Razorpay</option>
-                        <option value="Points">Points</option>
-                        <option value="Adjust-Advance">Adjust-Advance</option>
-                      </select>
-                    </div>
-                    <div className="col-4 p-0 m-0">
-                      <input className="form-control bg-seashell fw-bold border-0" value={data.amount} onChange={(e) => { data.amount = e.target.value; setpaymentmethods((prevState) => [...prevState]); }} />
-                    </div>
-                    <div className="col-2">
-                      <button className="btn btn-sm p-0 m-0" onClick={() => { DeletePaymentMethods(i); setpaymentmethods((prevState) => [...prevState]); }} >
-                        <img src={process.env.PUBLIC_URL + "/images/delete.png"} className="img-fluid"/>
-                      </button>
-                    </div>
-                    <hr/>
-                  </div>
-                ))}
-              </div>
-            </>
-          )}
-          <div className="container-fluid pb-2 position-sticky bottom-0 bg-seashell border border-1 " style={{ marginTop: '20vh' }}>
-            {load ? (
-              <div className="col-6 py-2 pb-2 m-auto text-center">
-                <div class="spinner-border" role="status">
-                  <span class="visually-hidden">Loading...</span>
-                </div>
-              </div>
-            ) : (
-              <div className="row p-0 m-0 text-center align-items-center mt-1 justify-content-between ">
-                <div className="col-4 align-self-end text-start">
-                  <label className=" fw-bolder text-charcoal text-wrap text-start">
-                    Grand Total
-                  </label>
-                  <input
-                    className="form-control rounded-1 fs-6 text-burntumber text-start border-0 fw-bolder p-0  bg-seashell"
-                    value={"₹" + Get_Grand_Total()}
-                  />
-                </div>
-                {/* <div className="col-6 d-flex justify-content-end">
-                  <button className="button button-pearl" onClick={AddtoCart}>
-                    Add to Cart
-                  </button>
-                </div> */}
-                <div className="col-sm-auto col-2 d-flex justify-content-start ps-2">
-                  <button className="button button-charcoal " onClick={confirmmessage} > Save </button>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-
     <div className=" position-relative rounded-2 bg-seashell" style={{minHeight:'100%'}}>
     <div className="shadow-sm">
       <h5 className="text-center fw-bold py-2">{props.patientname} Bill</h5>
@@ -1240,67 +1010,63 @@ const makeClientCrop = async (crop) => {
         <h5 className="text-charcoal fw-bold mb-3">Bill & Prescription</h5>
           <button className="button button-charcoal" onClick={()=>{togglecamera()}}>Scan Prescription</button>
           <div className="row mt-2 p-0 m-0 justify-content-start align-items-center">
-          <div className={`d-${videoconstraint} bg-pearl ps-4 border rounded-2 py-4 position-absolute top-0 start-0`} style={{zIndex:'10'}} >
-            <div className="btn-close position-absolute top-0 end-0 mt-4 me-3" style={{zIndex:'11'}} onClick={()=>{togglecamera()}}></div>
+          <div className={`d-${videoconstraint} p-0 position-absolute top-0 start-0`} style={{zIndex:'10'}} >
+            <div className="btn-close position-absolute top-0 end-0 " style={{zIndex:'11'}} onClick={()=>{togglecamera()}}></div>
             <div className="position-relative">
-      <Webcam
-          audio={false}
-          height={800}
-          ref={webcamRef}
-          screenshotFormat="image/jpeg"
-          width={600}
-          mirrored={false}
-          videoConstraints={videoConstraints}
-        />
-      <img className="img-fluid position-absolute start-0 end-0 mx-auto bottom-0 mb-5" onClick={()=>{capture()}} style={{width:'4rem'}} src={process.env.PUBLIC_URL + '/images/camera_click.png'}/>
-        <div className="position-absolute bottom-0 justify-content-center " >
+            <Webcam audio={false} ref={webcamRef} screenshotFormat="image/jpeg" mirrored={false} videoConstraints={videoConstraints} />
+            <img className="img-fluid position-absolute start-0 end-0 mx-auto bottom-0 mb-5" onClick={()=>{capture()}} style={{width:'4rem'}} src={process.env.PUBLIC_URL + '/images/camera_click.png'}/>
+            <div className="position-absolute bottom-0 justify-content-center " >
         <button className="border-0 cameraroll bg-transparent p-0 m-0 "onClick={()=>{toggleGallery()}}>
             {
                 imgroll=='none'?(
-                    <img src={process.env.PUBLIC_URL+'/images/up.png'} className="img-fluid bg-seashell px-2 py-1 rounded-top mb-1"/>
+                    <img src={process.env.PUBLIC_URL+'/images/gallery.png'} className="img-fluid bg-charcoal75 px-2 py-1 rounded-top mb-1" style={{width:'2rem'}}/>
                 ):(
                     <img src={process.env.PUBLIC_URL+'/images/bottom.png'} className="img-fluid bg-seashell px-2 py-1 rounded-top mb-1"/>
                 )
             }
           </button>
-        <div className={`container cameraroll scroll bg-charcoal25 d-${imgroll}`}style={{flexDirection:'horizontal',minHeight:'fit-content'}}> 
+        <div className={`container cameraroll scroll bg-charcoal25 ms-2 mb-2 d-${imgroll}`}style={{flexDirection:'horizontal',minHeight:'fit-content'}}> 
             {
                 imagearr? imagearr.map((data,i)=>(
-                    <img src={data} className="img-fluid mt-5" onClick={()=>{toggleedit();seteditindex(i);onSelectFile()}} style={{width:'5rem'}}/>
+                    <img src={data} className="img-fluid" onClick={()=>{toggleedit();seteditindex(i);onSelectFile()}} style={{width:'5rem'}}/>
 
                 )):''
             }
             </div>
-             
-
         </div>
+        <button className=" border-0 cameraroll bg-transparent p-0 m-0 position-absolute bottom-0 end-0" onClick={()=>{flip=='user'?setflip('environment'):setflip('user')}}><img src={process.env.PUBLIC_URL+'/images/flip.png'} className="img-fluid bg-charcoal75 px-2 py-1 rounded-top mb-1" style={{width:'1.8rem'}}/></button>
       </div>
-      <div className={`d-${editor} container position-absolute mx-auto start-0 end-0 bg-pearl rounded-2 shadow-sm p-2`} style={{zIndex:'15',height:'83vh',width:'60vh',left:'0vh',top:'0'}}>
-        <button className="position-absolute end-0 mt-3 me-3 bg-seashell50 p-2 btn-close" style={{zIndex:'15'}} onClick={()=>{toggleedit()}}></button>
-      <div>
-      {/* <input type="file" accept="image/*" onChange={onSelectFile} /> */}
-        <ReactCrop
-          // onImageLoaded={onLoad}
-          crop={crop}
-          onChange={(c) => setCrop(c)}
-          onComplete={(c) => setCompletedCrop(c)}
-        >
-          <img src={src} style={{width:'60vh',height:'70vh'}}/>
-        </ReactCrop>
+      {/* cropper */}
+      {
+        webcamRef.current ? (
+          <div className={`d-${editor} container position-absolute bg-pearl mx-auto start-0 top-0 end-0 rounded-2 shadow-sm`} style={{zIndex:'15',left:'0vh',top:'0'}}>
+          <button className="position-absolute end-0 bg-seashell50 p-2 btn-close" style={{zIndex:'18'}} onClick={()=>{toggleedit()}}></button>
+        <div className="mt-0 position-absolute start-0 end-0 mx-auto">
+          <ReactCrop crop={crop} onChange={(c) => setCrop(c)} onComplete={(c) => setCompletedCrop(c)} >
+            <img src={src} className="img-fluid" style={{height:`${webcamRef.current.video.videoHeight}px`,width:`${webcamRef.current.video.videoWidth}px`}}/>
+          </ReactCrop>
+      </div>    
+             
+      </div>
+        ):(
+          <></>
+        )
+      }
 
-   
-    </div>    
-           
-    </div>
-
+      {/* cropper */}
   </div>
         {completedCrop && (
         <div className="position-absolute top-0 mt-4 ms-2" style={{zIndex:'15'}}>
           <button className="btn text-light border border-light" onClick={() => makeClientCrop(completedCrop)}>Save</button>
-
         </div>
       )}
-                <div><img src={image} className="img-fluid" style={{width:'20rem'}}/></div>
+      {
+      image ?(
+        <div><img src={image} className="img-fluid" style={{width:crop.width,height:crop.height}}/></div>
+      ):(<></>)
+      }
+
+         
           <h6 className="fw-bold text-charcoal75 ps-0 ms-0">Generate Bill & Prescription</h6>
             <div className="col-auto ps-0 ms-0">
             <button className="button button-charcoal px-4" onClick={()=>{Generate_Bill(props.appointmentid)}}>Bill</button>
@@ -1317,7 +1083,7 @@ const makeClientCrop = async (crop) => {
             <div className="row ps-0 ms-0">
               <div className="col-12 ms-0 ps-0 mt-2">
                 <div className="row ps-0 ms-0">
-                <h6 className="ms-0 ps-0 text-charcoal fw-bold">On WhatsApp</h6>
+                <h6 className="ms-0 ps-0 text-charcoal fw-bold">On WhatsApp <span className="ms-2 text-success">{props.Data.whatsapp_sent==1?'(Already Sent on Whats App)':''}</span></h6>
                   <div className="col-6 ms-0 ps-0">
                   <button className="btn border-0 p-0 m-0 fw-bold" onClick={()=>{Send_On_WhatsApp(props.appointmentid, props.Data.patient.phone_number, 0)}}><img src={process.env.PUBLIC_URL+'/images/whatsapp.png'} className="img-fluid" style={{width:'1.5rem'}}/>Bill</button>
                   </div>

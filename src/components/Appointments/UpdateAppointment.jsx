@@ -249,7 +249,7 @@ const UpdateAppointment = (props) => {
                 </div>
 
                 <p className="m-0 p-0 mb-md-2 mt-2 ps-2 fw-bold" style={{ letterSpacing: '1px' }}>Select new Time Slot</p>
-                <div className="scroll align-items-center justify-content-around col-12 ms-2">
+                <div className="scroll align-items-center justify-content-around col-12 ps-2">
                     {ApiDocTimefrom && ApiDocTimefrom.length !== 0 ? (
                         <>
                             {

@@ -191,9 +191,9 @@ function Patients() {
                             <img src={process.env.PUBLIC_URL + "/images/confirmed.png"} alt="displaying_image" className="img-fluid"/>
                           </button>
                           <ul className="dropdown-menu shadow-sm p-2 scroll" style={{ '-webkit-appearance': 'none', 'appearance': 'none', width: 'max-content', height: '40vh' }}>
-                            <li className="dropdown-item d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { Toggle_Address(i); }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/confirmed.png"} alt="displaying_image" />Add Address</li>
-                            <li className="dropdown-item d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { settabindex(i); OpenUpdatePatient(i) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/confirmed.png"} alt="displaying_image"/> Update Patient</li>
-                            <li className="dropdown-item d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { OpenUpdateAddress(i) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/confirmed.png"} alt="displaying_image" />Update Address</li>
+                            <li className="dropdown-item fw-bold d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { Toggle_Address(i); }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/confirmed.png"} alt="displaying_image" />Add Address</li>
+                            <li className="dropdown-item fw-bold d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { settabindex(i); OpenUpdatePatient(i) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/confirmed.png"} alt="displaying_image"/> Update Patient</li>
+                            <li className="dropdown-item fw-bold d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { OpenUpdateAddress(i) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/confirmed.png"} alt="displaying_image" />Update Address</li>
                           </ul>
                           { 
                             form == i ? (

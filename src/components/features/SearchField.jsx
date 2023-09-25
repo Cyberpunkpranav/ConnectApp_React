@@ -34,31 +34,31 @@ const SearchField = (props) => {
     //     }
     // }
 
-    async function searchpatient() {
-        try {
-            setsearchload(true)
-            setpatientid()
-            setpatientname()
+    // async function searchpatient() {
+    //     try {
+    //         setsearchload(true)
+    //         setpatientid()
+    //         setpatientname()
 
-            await axios.get(`http://192.168.3.210:8080/Patient/Doctors/Appointments?search=${props.searchtext}`).then((response) => {
+    //         await axios.get(`http://192.168.3.210:8080/Patient/Doctors/Appointments?search=${props.searchtext}`).then((response) => {
                 
-                setsearchlist(response.data.data.patient)
-                setsearchload(false)
-            })
-            if (props.searchtext && props.searchtext.length > 1) {
-                setdisplaysearchlist('block')
-            } else {
-                setdisplaysearchlist('none')
-            }
-        } catch (e) {
-            //    Notiflix.Notify.failure(e.message)
-            alert(e)
-        }
+    //             setsearchlist(response.data.data.patient)
+    //             setsearchload(false)
+    //         })
+    //         if (props.searchtext && props.searchtext.length > 1) {
+    //             setdisplaysearchlist('block')
+    //         } else {
+    //             setdisplaysearchlist('none')
+    //         }
+    //     } catch (e) {
+    //         //    Notiflix.Notify.failure(e.message)
+    //         alert(e)
+    //     }
 
-    }
-    useEffect(() => {
-        searchpatient()
-    }, [props.searchtext])
+    // }
+    // useEffect(() => {
+    //     searchpatient()
+    // }, [props.searchtext])
     const get_value = (e) => {
         setpatientid(e.target.name)
         setpatientname(e.target.value)
