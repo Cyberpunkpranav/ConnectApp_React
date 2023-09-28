@@ -212,6 +212,7 @@ const Doctors_Dsr = (props) => {
     let b = GetTotalMins % 60
     return GetTotalHours + a + " Hours " + " and " + b + " Minutes "
   }
+  console.log(DocTimetyp1)
   return (
     <div className="container-fluid Doctors_Dsrsection">
       <div className='row p-0 m-0 align-items-center align-self-center'>

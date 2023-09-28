@@ -11,6 +11,7 @@ import Webcam from 'react-webcam'
 
 const Bill = (props) => {
   const url = useContext(URL);
+  localStorage.setItem('appointmentid',props.appointmentid)
   const adminid = localStorage.getItem("id");
   const Charges = {
     description: "",
@@ -578,134 +579,146 @@ const togglecamera = ()=>{
     setvideoconstraint('none')
   }
   if(videoconstraint =='none'){
-    setimagearr([])
+    // setimagearr([])
     setvideoconstraint('block')
+    window.open('/scan/prescription','_blank')
   }
-  
 }
-const webcamRef = useRef(null);
-const imgRef = useRef(null);
-const[imgroll,setimgroll]=useState('none')
-const [editor,seteditor] =useState('none')
-const [imagearr,setimagearr] = useState([])
-const [editindex, seteditindex] = useState(0)
-const [image,setimage]=useState()
-const [flip,setflip] =useState('environment')
-const videoConstraints = {
-  // width: 600,
-  // height: 800,
-  facingMode: flip
-};
-const capture = useCallback(  
-  () => {
-    const imageSrc = webcamRef.current.getScreenshot();
-    if(imagearr.length>0){
-        setimagearr(imageSrc)
-        Notiflix.Notify.info('Photo Captured')
-        toggleGallery()
-    }else{
-        setimagearr((prevState)=>[...prevState,imageSrc])
-        Notiflix.Notify.info('Photo Captured')
-        toggleGallery()
-    }
-  },
-  [webcamRef]
-);
+const Get_Document=()=>{
+  try{
+    axios.get(`${url}/all/document?appointment_id=${props.appointmentid}`).then((response)=>{
+      console.log(response)
+    })
+  }catch(e){
+    Notiflix.Notify.failure(e.message)
+  }
+}
+useEffect(()=>{
+  Get_Document()
+},[])
+// const webcamRef = useRef(null);
+// const imgRef = useRef(null);
+// const[imgroll,setimgroll]=useState('none')
+// const [editor,seteditor] =useState('none')
+// const [imagearr,setimagearr] = useState([])
+// const [editindex, seteditindex] = useState(0)
+// const [image,setimage]=useState()
+// const [flip,setflip] =useState('environment')
+// const videoConstraints = {
+//   // width: 600,
+//   // height: 800,
+//   facingMode: flip
+// };
+// const capture = useCallback(  
+//   () => {
+//     const imageSrc = webcamRef.current.getScreenshot();
+//     if(imagearr.length>0){
+//         setimagearr(imageSrc)
+//         Notiflix.Notify.info('Photo Captured')
+//         toggleGallery()
+//     }else{
+//         setimagearr((prevState)=>[...prevState,imageSrc])
+//         Notiflix.Notify.info('Photo Captured')
+//         toggleGallery()
+//     }
+//   },
+//   [webcamRef]
+// );
 
-const toggleGallery = ()=>{
-    if(imgroll=='block'){
-        setimgroll('none')
+// const toggleGallery = ()=>{
+//     if(imgroll=='block'){
+//         setimgroll('none')
       
-    }
-    if(imgroll == 'none'){
+//     }
+//     if(imgroll == 'none'){
 
-        setimgroll('block')
-    }
-}
+//         setimgroll('block')
+//     }
+// }
 
-const toggleedit=()=>{
-if(editor=='none'){
-  seteditor('')
-}
-if(editor==''){
-  seteditor('none')
-}
-}
-const [src, setSrc] = useState(null);
-// const[croppedimg,setcroppedimg]=useState()
-const [crop, setCrop] = useState({   unit: '%',
-x: 25,
-y: 25,
-width: 100,
-height:100 });
-const [completedCrop, setCompletedCrop] = useState(null);
-const imageRef = useRef(null);
+// const toggleedit=()=>{
+// if(editor=='none'){
+//   seteditor('')
+// }
+// if(editor==''){
+//   seteditor('none')
+// }
+// }
+// const [src, setSrc] = useState(null);
+// // const[croppedimg,setcroppedimg]=useState()
+// const [crop, setCrop] = useState({   unit: '%',
+// x: 25,
+// y: 25,
+// width: 100,
+// height:100 });
+// const [completedCrop, setCompletedCrop] = useState(null);
+// const imageRef = useRef(null);
 
-const onSelectFile = (e) => {
-  setSrc(imagearr[editindex])
-};
-const createImageRef = (src) => {
-  const img = new Image();
-  img.src = src;
-  img.onload = () => {
-    imageRef.current = img;
-  };
-};
-useEffect(() => {
-  if (src) {
-    createImageRef(src);
-  }
-}, [src]);
+// const onSelectFile = (e) => {
+//   setSrc(imagearr[editindex])
+// };
+// const createImageRef = (src) => {
+//   const img = new Image();
+//   img.src = src;
+//   img.onload = () => {
+//     imageRef.current = img;
+//   };
+// };
+// useEffect(() => {
+//   if (src) {
+//     createImageRef(src);
+//   }
+// }, [src]);
 
-const getCroppedImg = (image, crop, fileName) => {
-  const canvas = document.createElement('canvas');
-  const scaleX = image.naturalWidth / image.width;
-  const scaleY = image.naturalHeight / image.height;
-  canvas.width = crop.width;
-  canvas.height = crop.height;
-  const ctx = canvas.getContext('2d');
+// const getCroppedImg = (image, crop, fileName) => {
+//   const canvas = document.createElement('canvas');
+//   const scaleX = image.naturalWidth / image.width;
+//   const scaleY = image.naturalHeight / image.height;
+//   canvas.width = crop.width;
+//   canvas.height = crop.height;
+//   const ctx = canvas.getContext('2d');
 
-  ctx.drawImage(
-    image,
-    crop.x * scaleX,
-    crop.y * scaleY,
-    crop.width * scaleX,
-    crop.height * scaleY,
-    0,
-    0,
-    crop.width,
-    crop.height
-  );
+//   ctx.drawImage(
+//     image,
+//     crop.x * scaleX,
+//     crop.y * scaleY,
+//     crop.width * scaleX,
+//     crop.height * scaleY,
+//     0,
+//     0,
+//     crop.width,
+//     crop.height
+//   );
 
-  return new Promise((resolve, reject) => {
-    canvas.toBlob((blob) => {
-      if (!blob) {
-        // Reject if the blob is null
-        console.error('Canvas is empty');
-        return;
-      }
-      blob.name = fileName;
-      window.URL.revokeObjectURL(src);
-      const imageUrl = window.URL.createObjectURL(blob);
-      resolve(imageUrl);
-    }, 'image/jpeg');
-  });
-};
-const makeClientCrop = async (crop) => {
-  if ( imageRef.current && crop.width && crop.height) {
-    toggleedit()
-    setCompletedCrop()
-    togglecamera()
-    const croppedImageUrl = await getCroppedImg(
-      imageRef.current,
-      crop,
-      'prescription.jpeg'
-    );
-    // You can do something with the cropped image URL, like displaying it or saving it.
-    // console.log(croppedImageUrl);
-    setimage(croppedImageUrl)
-  }
-};
+//   return new Promise((resolve, reject) => {
+//     canvas.toBlob((blob) => {
+//       if (!blob) {
+//         // Reject if the blob is null
+//         console.error('Canvas is empty');
+//         return;
+//       }
+//       blob.name = fileName;
+//       window.URL.revokeObjectURL(src);
+//       const imageUrl = window.URL.createObjectURL(blob);
+//       resolve(imageUrl);
+//     }, 'image/jpeg');
+//   });
+// };
+// const makeClientCrop = async (crop) => {
+//   if ( imageRef.current && crop.width && crop.height) {
+//     toggleedit()
+//     setCompletedCrop()
+//     togglecamera()
+//     const croppedImageUrl = await getCroppedImg(
+//       imageRef.current,
+//       crop,
+//       'prescription.jpeg'
+//     );
+//     // You can do something with the cropped image URL, like displaying it or saving it.
+//     // console.log(croppedImageUrl);
+//     setimage(croppedImageUrl)
+//   }
+// };
 
 return (
     <>
@@ -1009,16 +1022,16 @@ return (
         <div className="container px-3">
         <h5 className="text-charcoal fw-bold mb-3">Bill & Prescription</h5>
           <button className="button button-charcoal" onClick={()=>{togglecamera()}}>Scan Prescription</button>
-          <div className="row mt-2 p-0 m-0 justify-content-start align-items-center">
+          {/* <div className="row d-none mt-2 p-0 m-0 justify-content-start align-items-center">
           <div className={`d-${videoconstraint} p-0 position-absolute top-0 start-0`} style={{zIndex:'10'}} >
             <div className="btn-close position-absolute top-0 end-0 " style={{zIndex:'11'}} onClick={()=>{togglecamera()}}></div>
-            <div className="position-relative">
+            <div className="position-relative bg-pearl d-flex justify-content-center">
             <Webcam audio={false} ref={webcamRef} screenshotFormat="image/jpeg" mirrored={false} videoConstraints={videoConstraints} />
             <img className="img-fluid position-absolute start-0 end-0 mx-auto bottom-0 mb-5" onClick={()=>{capture()}} style={{width:'4rem'}} src={process.env.PUBLIC_URL + '/images/camera_click.png'}/>
             <div className="position-absolute bottom-0 justify-content-center " >
-        <button className="border-0 cameraroll bg-transparent p-0 m-0 "onClick={()=>{toggleGallery()}}>
+        <button className="border-0 justify-content-start cameraroll bg-transparent p-0 m-0 "onClick={()=>{toggleGallery()}}>
             {
-                imgroll=='none'?(
+                imgroll=='none'?(   
                     <img src={process.env.PUBLIC_URL+'/images/gallery.png'} className="img-fluid bg-charcoal75 px-2 py-1 rounded-top mb-1" style={{width:'2rem'}}/>
                 ):(
                     <img src={process.env.PUBLIC_URL+'/images/bottom.png'} className="img-fluid bg-seashell px-2 py-1 rounded-top mb-1"/>
@@ -1036,7 +1049,7 @@ return (
         </div>
         <button className=" border-0 cameraroll bg-transparent p-0 m-0 position-absolute bottom-0 end-0" onClick={()=>{flip=='user'?setflip('environment'):setflip('user')}}><img src={process.env.PUBLIC_URL+'/images/flip.png'} className="img-fluid bg-charcoal75 px-2 py-1 rounded-top mb-1" style={{width:'1.8rem'}}/></button>
       </div>
-      {/* cropper */}
+
       {
         webcamRef.current ? (
           <div className={`d-${editor} container position-absolute bg-pearl mx-auto start-0 top-0 end-0 rounded-2 shadow-sm`} style={{zIndex:'15',left:'0vh',top:'0'}}>
@@ -1053,7 +1066,7 @@ return (
         )
       }
 
-      {/* cropper */}
+
   </div>
         {completedCrop && (
         <div className="position-absolute top-0 mt-4 ms-2" style={{zIndex:'15'}}>
@@ -1077,7 +1090,17 @@ return (
             <div className="col-6">
             <button className="button button-charcoal" onClick={()=>{Generate_Prescription(props.appointmentid)}}>Prescription</button>
             </div>
-          </div>
+          </div> */}
+                    <h6 className="fw-bold text-charcoal75 ps-0 ms-0">Generate Bill & Prescription</h6>
+            <div className="col-auto ps-0 ms-0">
+            <button className="button button-charcoal px-4" onClick={()=>{Generate_Bill(props.appointmentid)}}>Bill</button>
+            </div>
+            <div className="col-auto">
+            <div className='vr rounded-1 align-self-center' style={{ padding: '0.8px' }}></div>
+            </div>
+            <div className="col-6">
+            <button className="button button-charcoal" onClick={()=>{Generate_Prescription(props.appointmentid)}}>Prescription</button>
+            </div>
           <div className="row p-0 m-0 mt-4">
             <h6 className="fw-bold text-charcoal75 ms-0 ps-0">Send Bill and Prescription</h6>
             <div className="row ps-0 ms-0">

@@ -28,6 +28,7 @@ const Doctors = lazy(() => import("./components/App/Doctors"));
 const DailySaleReport = lazy(() => import("./components/App/DSR"));
 const Pharmacy = lazy(() => import("./components/App/Pharmacy"));
 const Reports = lazy(() => import("./components/App/Report"));
+const Camera = lazy(()=>import("./components/features/camera"))
 // import Appointments from './components/App/Clinic'
 
 //Context Apis
@@ -202,7 +203,7 @@ function Connectapp(props) {
                             <Route path="/Reports/stock_report_by_name" element={<StockReport_By_Name id={props.id}/>}/>
                             <Route path="/Reports/stock_valuation" element={<StockValuation id={props.id}/>}/>
                             <Route path ="/Reports/opening_stock" element={<OpeningStock id={props.id}/>}/>
-
+                            <Route path ='/scan/prescription' element = {<Camera/>}/>
                             {/* <Route path='/Files' element={<Exports id={props.id} />} /> */}
                           </Routes>
                         </Suspense>

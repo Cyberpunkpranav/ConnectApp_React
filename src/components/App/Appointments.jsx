@@ -35,7 +35,7 @@ function Appointments(props) {
             try {
                 setisselectedLoading(true);
                 await axios.get(`${url}/appointment/list?clinic_id=${clinicID}&doctor_id=${doctorid}&from_date=${fromdate ? fromdate : APIDate}&to_date=${todate ? todate : fromdate ? fromdate : APIDate}&status=${type ? type : ''}&search=${search}`).then((response) => {
-                    setappointmentdata(response.data.data)
+                    setappointmentdata(response.data.data)  
                 })
                 setisselectedLoading(false);
             } catch (e) {
