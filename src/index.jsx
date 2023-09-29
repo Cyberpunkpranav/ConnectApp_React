@@ -257,43 +257,43 @@ function Switchpage() {
   const localemail = localStorage.getItem("email");
 
   async function Submit() {
-    setroleId();
-    setload(true);
-    await axios
-      .post(
-        `https://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/api/connect/login`,
-        {
-          email: localemail || logininput.email,
-          password: logininput.password,
-        }
-      )
-      .then((response) => {
-        setload(false);
-        
-        if (response.data.status === true) {
-          localStorage.setItem("email", logininput.email);
-          localStorage.setItem("name", response.data.data.name);
-          localStorage.setItem("designation", response.data.data.roles.title);
-          localStorage.setItem("id", response.data.data.id);
-          localStorage.setItem("ClinicId", response.data.data.clinic_id);
-          localStorage.setItem("roleId", response.data.data.roles.id);
-          setroleId();
-          Changepage();
-        } else {
-          Notiflix.Report.failure(
-            "Invalid Credentials",
-            "Check your username password and try again",
-            "Retry"
-          );
+    try{
+      setroleId();
+      setload(true);
+      await axios.post(`https://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/api/connect/login`, { email: localemail || logininput.email, password: logininput.password, } )
+        .then((response) => {
           setload(false);
-        }
-      });
+          if (response.data.status === true) {
+            localStorage.setItem("email", logininput.email);
+            localStorage.setItem("name", response.data.data.name);
+            localStorage.setItem("designation", response.data.data.roles.title);
+            localStorage.setItem("id", response.data.data.id);
+            localStorage.setItem("ClinicId", response.data.data.clinic_id);
+            localStorage.setItem("roleId", response.data.data.roles.id);
+            setroleId();
+            Changepage();
+          } else {
+            Notiflix.Report.failure(
+              "Invalid Credentials",
+              "Check your username password and try again",
+              "Retry"
+            );
+            setload(false);
+          }
+        })
+    }catch(e){
+      setload(false)
+      Notiflix.Report.failure(
+       `${e.message}`,
+        "Check Internet Connection and try again",
+        "Retry"
+      );
+    }
+
   }
   let role = localStorage.getItem("roleId");
   async function Permissions() {
-    await axios.post(`https://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/api/connect/role/permissions/list`, { role_id: role ? role : 1, })
-      .then((response) => {
-        ;
+    await axios.post(`https://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/api/connect/role/permissions/list`, { role_id: role ? role : 1, }).then((response) => {
         if (response.data.status === true) {
           setpermissions(response.data.data.permissions);
           Changepage();

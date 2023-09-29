@@ -11,7 +11,7 @@ import axios from "axios";
   const Camera = (props) => {
     const url = useContext(URL);
     const [imagestate,setimagestate]=useState('')
-
+    const[ImageData,setImageData]=useState()
     const webcamRef = useRef(null);
     const imgRef = useRef(null);
     const[imgroll,setimgroll]=useState('none')
@@ -106,13 +106,9 @@ import axios from "axios";
         crop.width,
         crop.height
       );
-    
-      // Convert the canvas content to a JPEG image (data URI)
       const jpegImageDataUri = canvas.toDataURL('image/jpeg');
-    
       return jpegImageDataUri;
     };
-
 
     const makeClientCrop = async (crop) => {
       if ( imageRef.current && crop.width && crop.height) {
@@ -126,22 +122,54 @@ import axios from "axios";
 
     const appointmentId=localStorage.getItem('appointmentid');
 
-    const Save_scan_prescription = ()=>{
-      try{
-        axios.post(`${url}/save/document`,{
-          image:JSON.stringify(image),
-          appointment_id:appointmentId
-        }).then((response)=>{
-          if(response.status == true){
-            window.close()
-          }
-          console.log(response)
-        })
-      }catch(e){
-        Notiflix.Notify.failure(e.message)
-      }
 
+  function Close_window() {
+    window.close()
+  }
+  
+
+  function dataURItoFile(dataURI) {
+    const splitDataURI = dataURI.split(',');
+    const mime = splitDataURI[0].match(/:(.*?);/)[1];
+    const byteString = atob(splitDataURI[1]);
+    const arrayBuffer = new ArrayBuffer(byteString.length);
+    const uint8Array = new Uint8Array(arrayBuffer);
+  
+    for (let i = 0; i < byteString.length; i++) {
+      uint8Array[i] = byteString.charCodeAt(i);
     }
+  
+    const blob = new Blob([uint8Array], { type: mime });
+    const file = new File([blob], 'like.jpeg', { type: mime });
+    return file;
+  }
+  const handleFileUpload = async () => {
+    const file =  dataURItoFile(image);
+    const formData = new FormData();
+    formData.append('image', file,'prescription.jpeg');
+    formData.append('appointment_id', appointmentId);
+
+    axios
+      .post(`${url}/save/document`, formData, {headers: {
+        'Content-Type': 'multipart/form-data', 
+      }})
+      .then((response) => {
+        console.log('File uploaded successfully:', response.data);
+        if(response.data.status==true){
+          Notiflix.Notify.success('Prescription Uploaded Successfully')
+          setTimeout(Close_window, 2000);
+        }
+      })
+      .catch((error) => {
+        // Handle errors
+        console.error('Error uploading file:', error);
+      });
+  }
+
+
+
+
+
     return (
       <>
 
@@ -209,7 +237,8 @@ import axios from "axios";
           <div className="position-relative d-flex mt-5 justify-content-center">
           <img src={image} className="img-fluid" style={{width:crop.width,height:crop.height}}/>  
           </div>
-          <button className=" mx-auto d-flex justify-content-center button button-pearl" onClick={()=>{Save_scan_prescription()}}>Save Prescription</button>
+          <button className=" mx-auto d-flex justify-content-center button button-pearl" onClick={(e)=>{handleFileUpload(e)}}>Save Prescription</button>
+          {/* <input type='file' onChange={handleChange}/> */}
         </div>
       ):(<></>)
       } 

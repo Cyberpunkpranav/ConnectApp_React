@@ -280,10 +280,11 @@ const Bill = (props) => {
       ot_id: ids,
       gst_rate: gstrate,
       final_amount: Grossamount,
+      status:props.Data.appointment_status
     };
     async function Payment() {
       try {
-        setload(true);
+        setload(true);  
         await axios
           .post(`${url}/appointment/save/charges`, Data)
           .then((response) => {
@@ -596,6 +597,7 @@ const Get_Document=()=>{
 useEffect(()=>{
   Get_Document()
 },[])
+console.log(props.Data.appointment_status)
 // const webcamRef = useRef(null);
 // const imgRef = useRef(null);
 // const[imgroll,setimgroll]=useState('none')
@@ -1091,7 +1093,8 @@ return (
             <button className="button button-charcoal" onClick={()=>{Generate_Prescription(props.appointmentid)}}>Prescription</button>
             </div>
           </div> */}
-                    <h6 className="fw-bold text-charcoal75 ps-0 ms-0">Generate Bill & Prescription</h6>
+            <div className="row p-0 m-0 mt-4">
+              <h6 className="fw-bold text-charcoal75 ps-0 ms-0">Generate Bill & Prescription</h6>
             <div className="col-auto ps-0 ms-0">
             <button className="button button-charcoal px-4" onClick={()=>{Generate_Bill(props.appointmentid)}}>Bill</button>
             </div>
@@ -1100,6 +1103,7 @@ return (
             </div>
             <div className="col-6">
             <button className="button button-charcoal" onClick={()=>{Generate_Prescription(props.appointmentid)}}>Prescription</button>
+            </div>
             </div>
           <div className="row p-0 m-0 mt-4">
             <h6 className="fw-bold text-charcoal75 ms-0 ps-0">Send Bill and Prescription</h6>
