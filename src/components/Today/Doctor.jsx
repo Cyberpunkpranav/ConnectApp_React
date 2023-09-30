@@ -647,7 +647,7 @@ function DoctorSchedule(props) {
                                   <div className='backdrop'>
                                   </div>
                                   <td className={`bill d-${billindex == i ? billform : 'none'} start-0 end-0 mx-auto top-0 border-0 position-absolute p-0 m-0 col-lg-8 col-md-10 col-sm-11 col-11 mt-2 col-xl-6 `} style={{ zIndex: '4',height:'60vh' }}>
-                                    <Bill fetchapi={props.fetchapi} CloseBillForm={CloseBillForm} patientid={data.patient && data.patient.id != null ? data.patient.id : ""} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} Appointmentlist={Appointmentlist} setsingleload={setsingleload} isLoading={isLoading} Data={data} appointmentdata={appointmentdata} appointmentid={data.id} doctorfee={data.doctor.consulationFee} billform={billform} /></td>
+                                    <Bill fetchapi={props.fetchapi} CloseBillForm={CloseBillForm} patientid={data.patient && data.patient.id != null ? data.patient.id : ""} phone_number = {data.patient != null && data.patient.phone_number != null ? data.patient.phone_number : ""} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} Appointmentlist={Appointmentlist} setsingleload={setsingleload} isLoading={isLoading} Data={data} appointmentdata={appointmentdata} appointmentid={data.id} doctorfee={data.doctor.consulationFee} billform={billform} /></td>
                                 </>
                               ) : (<></>)
                             }

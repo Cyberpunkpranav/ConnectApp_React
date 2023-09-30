@@ -573,7 +573,20 @@ const Bill = (props) => {
     }
 
   }
-
+  const [OnWhatsapp,setOnWhatsapp] = useState()
+  const On_Whatsapp = ()=>{
+    console.log(props.phone_number)
+    try{
+      axios.post(`${url}/check/contact/on/whatsapp`,{
+        phone_number:props.phone_number
+      }).then((response)=>{
+        console.log(response)
+        setOnWhatsapp(response.data.data)
+      })
+    }catch(e){
+      Notiflix.Notify.failure(e.message)
+    }
+  }
 const [videoconstraint,setvideoconstraint] = useState('none')
 const togglecamera = ()=>{
   window.open('/scan/prescription','_blank')
@@ -591,6 +604,7 @@ const Get_Document=()=>{
 }
 useEffect(()=>{
   Get_Document()
+  On_Whatsapp()
 },[])
 // const webcamRef = useRef(null);
 // const imgRef = useRef(null);
@@ -1021,7 +1035,7 @@ return (
             <div className="row scroll p-0 m-0 bg-pearl">
               {
                 prescriptions && prescriptions.map((Data,i)=>(
-                  <div className="col bg-charcoal"key={i}><img src={`https://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/assets/scanned_documents/${Data.file}`} className="img-fluid" style={{width:'8rem'}}/></div>
+                  <div className="col "key={i}><img src={`https://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/assets/scanned_documents/${Data.file}`} className="img-fluid" style={{width:'8rem'}}/></div>
                 ))
               }
           
@@ -1112,7 +1126,7 @@ return (
           <div className="row p-0 m-0 mt-4">
             <h6 className="fw-bold text-charcoal75 ms-0 ps-0">Send Bill and Prescription</h6>
             <div className="row ps-0 ms-0">
-              <div className="col-12 ms-0 ps-0 mt-2">
+              <div className={`col-12 ms-0 ps-0 mt-2 d-${OnWhatsapp==1?'block':'none'}`}>
                 <div className="row ps-0 ms-0">
                 <h6 className="ms-0 ps-0 text-charcoal fw-bold">On WhatsApp <span className="ms-2 text-success">{props.Data.whatsapp_sent==1?'(Already Sent on Whats App)':''}</span></h6>
                   <div className="col-6 ms-0 ps-0">
