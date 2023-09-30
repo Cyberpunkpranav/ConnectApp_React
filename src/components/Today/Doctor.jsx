@@ -15,7 +15,7 @@ import { Payments } from "./Payments";
 import { Bill } from "./Bill";
 import { AddConsumables } from "./AddConsumables";
 import { SaleEntryForm } from '../pharmacy/pharmacy';
-
+import {Prescription} from './prescription';
 
 function DoctorSchedule(props) { 
   //Global Variables
@@ -48,6 +48,7 @@ function DoctorSchedule(props) {
   const [paymentsform, setpaymentsform] = useState('none')
   const [d_form, setd_form] = useState()
   const [nsef, setnsef] = useState("none");
+  const[pindex,setpindex]=useState()
   // for UpdateAppointment
   const closeappointmentform = () => {
     if (appointmentform === "block") {
@@ -281,13 +282,13 @@ function DoctorSchedule(props) {
     }
   }
   const Generate_Prescription = async (id) => {
+    try {
     Notiflix.Loading.circle('Generating Prescription', {
       backgroundColor: 'rgb(242, 242, 242,0.5)',
       svgColor: '#96351E',
       messageColor: '#96351E',
       messageFontSize: '1.5rem'
     })
-    try {
       axios.post(`${url}/swift/pdf`, {
         appointment_id: id,
       }).then((response) => {
@@ -416,7 +417,33 @@ function DoctorSchedule(props) {
       setsaleindex()
     }
   }
+  const togglecamera = (id)=>{
+    localStorage.setItem('appointmentid',id)
+    window.open('/scan/prescription','_blank')
+  }
+  const [prescriptions,setprescriptions] =useState([])
+  const[pload,setpload]=useState('none')
+  const Get_Document=(id,i)=>{
+    setpindex(i)
+    try{
+      setpload(true)
+      axios.get(`${url}/all/document?appointment_id=${id}`).then((response)=>{
+        setprescriptions(response.data.data)
+        setpload(false)
+      })
+    }catch(e){
+      setpload(false)
+      Notiflix.Notify.failure(e.message)
+    }
+  }
 
+  useEffect(()=>{
+    Get_Document()
+  },[])
+
+ const toggle_ScannedPres = ()=>{
+  setpindex()
+  }
   return (
     <>
       <section id="doctorscheduledata">
@@ -586,6 +613,8 @@ function DoctorSchedule(props) {
                                 </button>
                                 <ul className="dropdown-menu shadow-sm p-2 scroll" style={{ '-webkit-appearance': 'none', 'appearance': 'none', width: 'max-content', height: '40vh' }}>
                                   <li className="dropdown-item fw-bold d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => confirmmessage(data.patient.full_name, data.id)}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/speaker.png"} alt="displaying_image"/> Call Patient</li>
+                                  <li className="dropdown-item fw-bold d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() =>Get_Document(data.id,i)}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/new_tab.png"} alt="displaying_image"/>View Scanned Prescription</li>
+                                  <li className="dropdown-item fw-bold d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() =>togglecamera(data.id)}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/new_tab.png"} alt="displaying_image"/>Scan Prescription</li>
                                   <li className="dropdown-item fw-bold d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { Generate_Bill(data.id) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" /> Generate Bill</li>
                                   <li className="dropdown-item fw-bold d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { Generate_Prescription(data.id) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" /> Generate Prescription</li>
                                   <li className="dropdown-item fw-bold d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { Confirm_For_Prescription(data.id, data.patient.phone_number) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/whatsapp.png"} alt="displaying_image" /> Send on Whats App</li>
@@ -651,6 +680,16 @@ function DoctorSchedule(props) {
                                 </>
                               ) : (<></>)
 
+                            }
+                            {
+                              pindex == i ? (
+                                <>
+                                <div className="backdrop"></div>
+                                <td className={`saleentryform mx-auto col-xl-6 col-lg-8 col-md-10 p-0 m-0 position-absolute bg-seashell shadow-sm top-0 border border-1 rounded-1 start-0 end-0  d-${pindex == i ? pindex : 'none'}`} style={{ zIndex: '4', height: "70vh" }}  >
+                                <Prescription prescriptions={prescriptions} toggle_ScannedPres={toggle_ScannedPres} load={pload}/>
+                                </td>
+                                </>
+                              ):(<></>)
                             }
                           </tr>
 

@@ -576,19 +576,14 @@ const Bill = (props) => {
 
 const [videoconstraint,setvideoconstraint] = useState('none')
 const togglecamera = ()=>{
-  if(videoconstraint =='block'){
-    setvideoconstraint('none')
-  }
-  if(videoconstraint =='none'){
-    // setimagearr([])
-    setvideoconstraint('block')
-    window.open('/scan/prescription','_blank')
-  }
+  window.open('/scan/prescription','_blank')
 }
+const [prescriptions,setprescriptions] =useState([])
 const Get_Document=()=>{
   try{
     axios.get(`${url}/all/document?appointment_id=${props.appointmentid}`).then((response)=>{
       console.log(response)
+      setprescriptions(response.data.data)
     })
   }catch(e){
     Notiflix.Notify.failure(e.message)
@@ -597,7 +592,6 @@ const Get_Document=()=>{
 useEffect(()=>{
   Get_Document()
 },[])
-console.log(props.Data.appointment_status)
 // const webcamRef = useRef(null);
 // const imgRef = useRef(null);
 // const[imgroll,setimgroll]=useState('none')
@@ -1023,6 +1017,16 @@ return (
     <div className={`stage4 d-${stage4} scroll`}>
         <div className="container px-3">
         <h5 className="text-charcoal fw-bold mb-3">Bill & Prescription</h5>
+        <div className="container p-0 m-0 mb-3">
+            <div className="row scroll p-0 m-0 bg-pearl">
+              {
+                prescriptions && prescriptions.map((Data,i)=>(
+                  <div className="col bg-charcoal"key={i}><img src={`https://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/assets/scanned_documents/${Data.file}`} className="img-fluid" style={{width:'8rem'}}/></div>
+                ))
+              }
+          
+            </div>
+        </div>
           <button className="button button-charcoal" onClick={()=>{togglecamera()}}>Scan Prescription</button>
           {/* <div className="row d-none mt-2 p-0 m-0 justify-content-start align-items-center">
           <div className={`d-${videoconstraint} p-0 position-absolute top-0 start-0`} style={{zIndex:'10'}} >

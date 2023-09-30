@@ -169,12 +169,12 @@ import axios from "axios";
 
 
 
-
+console.log(editor)
     return (
       <>
 
           <div className={`p-0 m-0 position-absolute top-0 start-0 ebd-0 mx-auto`} style={{zIndex:'10'}} >
-              <div className="col-12 p-0 m-0">
+              <div className={`d-${editor ==''?'none':'block'} col-12 p-0 m-0`}>
               <Webcam audio={false} ref={webcamRef} screenshotFormat="image/jpeg" mirrored={false} videoConstraints={videoConstraints} />
               </div>
               <div className={`col-12 bg-charcoal d-${imagestate =='block'?'none':'block'}`}>
@@ -189,7 +189,7 @@ import axios from "axios";
                 )
             }
           </button>
-            <div className={`container position-absolute cameraroll scroll bg-charcoal25 ms-2 d-${imgroll}`}style={{flexDirection:'horizontal',minHeight:'fit-content',zIndex:'10',top:'-5rem'}}> 
+            <div className={`container position-absolute cameraroll scroll bg-charcoal25 ms-2 d-${imgroll}`}style={{flexDirection:'horizontal',minHeight:'fit-content',zIndex:'10',top:'-10rem'}}> 
             {
                 imagearr? imagearr.map((data,i)=>(
                     <img src={data} className="img-fluid" onClick={()=>{toggleedit();seteditindex(i);onSelectFile()}} style={{width:'5rem'}}/>
@@ -209,9 +209,9 @@ import axios from "axios";
       {/* cropper */}
       {
         webcamRef.current ? (
-          <div className={`d-${editor} container position-absolute top-0 start-0 mx-auto end-0 bg-charcoal shadow-sm`} style={{zIndex:'15',height:100,width:width}}>
-          <button className="position-absolute end-0 bg-seashell50 p-2 btn-close" style={{zIndex:'18'}} onClick={()=>{toggleedit()}}></button>
-        <div className="mt-0 position-absolute start-0 end-0 mx-auto">
+          <div className={`d-${editor} position-absolute p-0 m-0 top-0 bg-pearl shadow-sm`} style={{zIndex:'15',height:height,width:width}}>
+          <button className="position-absolute end-0 bg-seashell50 p-2 mt-3 btn-close" style={{zIndex:'18'}} onClick={()=>{toggleedit()}}></button>
+        <div className="p-0 m-0 position-absolute start-0 end-0 mx-auto">
           <ReactCrop crop={crop} onChange={(c) => setCrop(c)} onComplete={(c) => setCompletedCrop(c)} >
             <img src={src} className="img-fluid" style={{width:`${webcamRef.current.video.videoWidth}px`,height:`${webcamRef.current.video.videoHeight}px`}}/>
           </ReactCrop>
