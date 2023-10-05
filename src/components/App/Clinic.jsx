@@ -21,6 +21,7 @@ function Doctorsection(props) {
   const [DocClinic, setDocClinic] = useState()
   const [doctorindex, setdoctorindex] = useState([0])
   const [doctorform, setdoctorform] = useState("none");
+
   const toggledoctorform = () => {
     if (doctorform === "none") {
       setDocval(1)
@@ -42,7 +43,17 @@ function Doctorsection(props) {
     }
   }
   getindexes()
-
+  const doctor_wise_appointment_count= (doc_id)=>{
+    let appointments = []
+    if(props.appointment_data !=undefined){
+      for(let j=0;j<props.appointment_data.length;j++){
+        if(doc_id== props.appointment_data[j].doctor_id){
+          appointments.push( props.appointment_data[j])
+        }
+  }
+}
+  return appointments.length
+}
   return (
     <>
       <div className="container-fluid doctorsection p-0 m-0 mt-1 ps-1 scroll">
@@ -62,7 +73,7 @@ function Doctorsection(props) {
                       style={{ fontSize: '0.9rem' }}
                       autoFocus={i === Doctor ? true : false}
                       onFocus={() => { setDoctorID(data[0]); setDoctorName(data[1]); setDocClinic(data[2]) }}
-                      value={`${data[0]}.${data[1]}`} onClick={(a) => { setDoctor(i); setDoctorID(data[0]); setDoctorName(data[1]); }}>{`Dr. ${data[1]}`} </button>
+                      value={`${data[0]}.${data[1]}`} onClick={(a) => { setDoctor(i); setDoctorID(data[0]); setDoctorName(data[1]); }}>{`Dr. ${data[1]}`}<span className='ms-2 px-1 text-lightyellow '>{doctor_wise_appointment_count(data[0])}</span> </button>
                   </div>
                   <div className='vr rounded-1 h-75 align-self-center' style={{ padding: '0.8px' }}></div>
                 </>
@@ -100,7 +111,7 @@ function Doctorsection(props) {
 
                       <DOCTORNAME.Provider value={DoctorName}>
                         <DOCTORID.Provider value={DoctorID}>
-                          <DoctorSchedule todayDoc={props.todayDoc} DoctorID={DoctorID} DoctorName={DoctorName}  _selected={Doctor} fetchapi={props.fetchapi} DocClinic={DocClinic}  />
+                      <DoctorSchedule todayDoc={props.todayDoc} DoctorID={DoctorID} DoctorName={DoctorName}  _selected={Doctor} fetchapi={props.fetchapi} DocClinic={DocClinic} get_appointment_data={props.get_appointment_data}   />
                         </DOCTORID.Provider>    
                       </DOCTORNAME.Provider>
                     </div>

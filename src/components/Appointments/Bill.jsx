@@ -163,23 +163,6 @@ const Bill = (props) => {
         }
 
     }
-    function Return_Amount() {
-        let totalarr = []
-        let total = 0
-        let Advance = 0
-        for (let i = 0; i < paymentmethods.length; i++) {
-            totalarr.push(Number(paymentmethods[i].amount))
-        }
-        totalarr.forEach(item => {
-            total += item
-        })
-        if (total > Get_Grand_Total()) {
-            Advance = total - Get_Grand_Total()
-            return Advance
-        } else {
-            return Advance
-        }
-    }
     async function SaveBill() {
         let GrandTotal = Get_Grand_Total()
         GrandTotal = Number(GrandTotal)
@@ -326,7 +309,7 @@ const Bill = (props) => {
         }
 
 
-      }
+    }
     useEffect(() => {
         AdvancePayments()
         ConsumableAmount()
@@ -498,7 +481,7 @@ const Bill = (props) => {
                                                 advancepayments ? (
                                                     <input className='form-control text-lightgreen text-start border-0 rounded-1 fw-bolder p-0  bg-seashell' disabled={true} value={advancepayments.advnace_total} />
                                                 ) : (
-                                                    <div className='bg-lightred text-center fw-bolder rounded-1 p-2'>No Advance Payments Found</div>
+                                                    <div className='bg-lightred text-center text-wrap fw-bolder rounded-1 p-2'>No Advance Payments</div>
                                                 )
 
                                             )

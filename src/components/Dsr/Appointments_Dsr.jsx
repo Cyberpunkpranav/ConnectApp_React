@@ -580,7 +580,7 @@ const Appointments_Dsr = (props) => {
                   <th className=' text-charcoal75 fw-bold'>Payment Mode</th>
                   <th className=' text-charcoal75 fw-bold'>Amt. Recieved</th>
                   <th className=' text-charcoal75 fw-bold'>Consult Amt.</th>
-                  <th className=' text-charcoal75 fw-bold'>Procedure Amt.</th>
+                  {/* <th className=' text-charcoal75 fw-bold'>Procedure Amt.</th> */}
                   <th className=' text-charcoal75 fw-bold'>Extra Charges</th>
                   <th className=' text-charcoal75 fw-bold'>Disc.</th>
                   <th className=' text-charcoal75 fw-bold'>CGST</th>
@@ -623,7 +623,7 @@ const Appointments_Dsr = (props) => {
                             <td className='fw-bold text-charcoal px-0 px-2'>{data.payment_method_details && data.payment_method_details != null ? Object.keys(JSON.parse(data.payment_method_details)) + '' : ''}</td>
                             <td className='fw-bold text-charcoal px-0 px-2'>{data.payment_method_details && data.payment_method_details != null ? Object.values(JSON.parse(data.payment_method_details)) + '' : ''}</td>
                             <td className='fw-bold text-charcoal px-0 px-2'>₹{data.doctor && data.doctor.consulationFee !== null ? data.doctor.consulationFee : ''}</td>
-                            <td className='fw-bold text-charcoal px-0 px-2'>₹{data.procedure_cost && data.procedure_cost != null ? data.procedure_cost : ''}</td>
+                            {/* <td className='fw-bold text-charcoal px-0 px-2'>₹{data.procedure_cost && data.procedure_cost != null ? data.procedure_cost : ''}</td> */}
                             <td className='fw-bold text-charcoal px-0 px-2'>₹{SumExtraCharges(i)}</td>
                             <td className='fw-bold text-charcoal px-0 px-2'>{data.discount && data.discount != null ? data.discount : ''}</td>
                             <td className='fw-bold text-charcoal px-0 px-2'>₹{data.CGST}</td>
@@ -658,7 +658,7 @@ const Appointments_Dsr = (props) => {
                   <th className='py-0' rowspan='2'>Time</th>
                   <th className='py-0' colspan='7' scope='colgroup'>Payment Method</th>
                   <th className='py-0' rowspan='2'>Consultation Amount</th>
-                  <th className='py-0' rowspan='2'>Procedure Amount</th>
+                  {/* <th className='py-0' rowspan='2'>Procedure Amount</th> */}
                   <th className='py-0' rowspan='2'>Extra Charges</th>
                   <th className='py-0' rowspan='2'>Discount</th>
                   <th className='py-0' rowspan='2'>CGST</th>
@@ -710,7 +710,7 @@ const Appointments_Dsr = (props) => {
                             <td className='fw-bold text-charcoal py-0 px-0 px-2'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details)['Wire-Transfer'] : 'N/A'}</td>
                             <td className='fw-bold text-charcoal py-0 px-0 px-2'>{data.payment_method_details && data.payment_method_details != null ? JSON.parse(data.payment_method_details).Points : 'N/A'}</td>
                             <td className='fw-bold text-charcoal py-0 px-0 px-2'>{data.doctor && data.doctor.consulationFee !== null ? data.doctor.consulationFee : 'N/A'}</td>
-                            <td className='fw-bold text-charcoal py-0 px-0 px-2'>{data.procedure_cost && data.procedure_cost != null ? data.procedure_cost : 'N/A'}</td>
+                            {/* <td className='fw-bold text-charcoal py-0 px-0 px-2'>{data.procedure_cost && data.procedure_cost != null ? data.procedure_cost : 'N/A'}</td> */}
                             <td className='fw-bold text-charcoal py-0 px-0 px-2'>{SumExtraCharges(i)}</td>
                             <td className='fw-bold text-charcoal py-0 px-0 px-2'>{data.discount && data.discount != null ? data.discount : 'N/A'}</td>
                             <td className='fw-bold text-charcoal py-0 px-0 px-2'>{data.CGST}</td>
@@ -921,7 +921,7 @@ const Appointments_Dsr = (props) => {
                 <tr>
                   <th className='text-charcoal75 fw-bold'>Credit ID</th>
                   <th className='text-charcoal75 fw-bold'>Patient Name</th>
-                  <th className='text-charcoal75 fw-bold'>Doctor Name</th>
+                  {/* <th className='text-charcoal75 fw-bold'>Doctor Name</th> */}
                   <th className='text-charcoal75 fw-bold'>Mobile No.</th>
                   <th className='text-charcoal75 fw-bold'>Description</th>
                   <th className='text-charcoal75 fw-bold'>Date Recieved</th>
@@ -938,7 +938,7 @@ const Appointments_Dsr = (props) => {
                     <tr key={i} className=''>
                       <td className='fw-bold text-charcoal px-0 px-2'>{data.id ? data.id : 'N/A'}</td>
                       <td className='fw-bold text-charcoal px-0 px-2'>{data.patient && data.patient.full_name != null ? data.patient.full_name : 'N/A'}</td>
-                      <td className='fw-bold text-charcoal px-0 px-2'>{data.doctor && data.doctor.full_name != null ? data.doctor.full_name : 'N/A'}</td>
+                      {/* <td className='fw-bold text-charcoal px-0 px-2'>{data.doctor && data.doctor.full_name != null ? data.doctor.full_name : 'N/A'}</td> */}
                       <td className='fw-bold text-charcoal px-0 px-2'>{data.patient && data.patient.phone_number !== null ? data.patient.phone_number : 'N/A'}</td>
                       <td className='fw-bold text-charcoal px-0 px-2'>{data.description && data.description != null ? data.description : 'N/A'}</td>
                       <td className='fw-bold text-charcoal px-0 px-2'>{reversefunction(data.date)}</td>

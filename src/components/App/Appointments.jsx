@@ -34,7 +34,7 @@ function Appointments(props) {
             setgetAppointments([])
             try {
                 setisselectedLoading(true);
-                await axios.get(`${url}/appointment/list?clinic_id=${clinicID}&doctor_id=${doctorid}&from_date=${fromdate ? fromdate : APIDate}&to_date=${todate ? todate : fromdate ? fromdate : APIDate}&status=${type ? type : ''}&search=${search}`).then((response) => {
+                await axios.get(`${url}/appointment/list?clinic_id=${clinicID}&doctor_id=${doctorid}&from_date=${fromdate ? fromdate : APIDate}&to_date=${todate ? todate : fromdate ? fromdate : APIDate}&status=${type ? type : ''}`).then((response) => {
                     setappointmentdata(response.data.data)  
                 })
                 setisselectedLoading(false);
@@ -47,7 +47,7 @@ function Appointments(props) {
             try {
                 setvisibles()
                 setisLoading(true)
-                await axios.get(`${url}/appointment/list?clinic_id=${clinicID}&from_date=${fromdate ? fromdate : APIDate}&to_date=${todate ? todate : fromdate ? fromdate : APIDate}&status=${type ? type : ''}&search=${search}`).then((response) => {
+                await axios.get(`${url}/appointment/list?clinic_id=${clinicID}&from_date=${fromdate ? fromdate : APIDate}&to_date=${todate ? todate : fromdate ? fromdate : APIDate}&status=${type ? type : ''}`).then((response) => {
                     setgetAppointments(response.data.data)
                     response.data.data.map((data) => {
                         listdata.push(data.doctor.id)
@@ -175,9 +175,9 @@ function Appointments(props) {
                                         </div>
 
                                     </div>
-                                    <div className="col-2">
+                                    {/* <div className="col-2">
                                         <input type='text' placeholder="name or number" className="form-control bg-seashell border-0 pb-2 " onChange={(e)=>{setsearch(e.target.value)}}/>
-                                    </div>
+                                    </div> */}
                                     <div className="col-auto bg-seashell rounded-2">
                                         <div className="row p-0 m-0 align-items-center align-self-center">
                                             <div className="col-auto p-0 m-0 bg-seashell">
@@ -224,7 +224,8 @@ function Appointments(props) {
                         </div> */}  
                     </div>
                 </div>
-                <section className="container-fluid scroll scroll-y mt-2 " >
+                <div className="position-relative">
+                <section className="container-fluid scroll scroll-y mt-2" >
                     <table className="table text-start">
                         <thead className="text-charcoal75 fw-bold">
                             <tr className=" bg-pearl position-sticky top-0">
@@ -250,7 +251,7 @@ function Appointments(props) {
                         </tbody>
                     </table>
                 </section>
-
+                </div>
             </section>
 
 

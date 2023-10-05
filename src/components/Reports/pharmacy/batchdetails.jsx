@@ -30,7 +30,7 @@ const BatchDetails = () => {
 
   function GetPages() {
     try {
-      axios.get(`${url}/stock/list?search=${searchname}&limit=25&offset=0`)
+      axios.get(`${url}/stock/list?search=${searchname}&location=${ClinicID}&limit=25&offset=0`)
         .then((response) => {
           setpagecount(Number(response.data.data.total_count_medicines + response.data.data.total_count_vaccines));
           setpages(Math.round(Number(response.data.data.total_count_medicines + response.data.data.total_count_vaccines) / 25) + 1);
@@ -49,7 +49,7 @@ const BatchDetails = () => {
     if (Data == undefined || Data.selected == undefined) {
       setLoading(true);
       try {
-        axios.get(`${url}/stock/list?search=${searchname}&limit=25&offset=0`)
+        axios.get(`${url}/stock/list?search=${searchname}&location=${ClinicID}&limit=25&offset=0`)
           .then((response) => {
             ;
             let arr = response.data.data.vaccines.concat(response.data.data.medicines)
@@ -67,7 +67,7 @@ const BatchDetails = () => {
     } else {
       setLoading(true);
       try {
-        axios.get(`${url}/stock/list?search=${searchname}&limit=25&offset=${Data.selected * 25}`)
+        axios.get(`${url}/stock/list?search=${searchname}&location=${ClinicID}&limit=25&offset=${Data.selected * 25}`)
           .then((response) => {
             ;
             let arr = response.data.data.vaccines.concat(response.data.data.medicines)

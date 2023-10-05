@@ -324,7 +324,8 @@ const Bill = (props) => {
         SaveBill();
       },
       () => {
-        return 0;
+        toggleStage3()
+        toggleStage4()
       },
       {}
     );
@@ -354,14 +355,9 @@ const Bill = (props) => {
         patient_id: props.patientid,
       })
       .then((response) => {
-        if(response.data.status==true){
+        console.log(response)
           setadvancepayments(response.data.data);
           setloadadvancepayments(false);
-        }else{
-          Notiflix.Notify.failure(response.data.message)
-          setloadadvancepayments(false);
-        }
-
       });
   }
   const ConsumableAmount = () => {
@@ -467,6 +463,7 @@ const Bill = (props) => {
       }).then((response) => {
         if(response.data.status == true){
           Notiflix.Notify.success(response.data.message)
+          props.Appointmentlist();  
           Notiflix.Loading.remove()
           window.open(response.data.data.bill_url, '_blank', 'noreferrer');
         }else{
@@ -493,6 +490,7 @@ const Bill = (props) => {
       }).then((response) => {
         if(response.data.status == true){
           Notiflix.Notify.success(response.data.message)
+          props.Appointmentlist();  
           Notiflix.Loading.remove()
           window.open(response.data.data.prescription_pdf, '_blank', 'noreferrer');
         }else{
@@ -538,8 +536,7 @@ const Bill = (props) => {
       }
     }
 
-  }
-
+  } 
   const Send_On_SMS = async (id, phone, check) => {
     let checkpres = check
     if (phone == undefined || phone == null) {
@@ -575,19 +572,17 @@ const Bill = (props) => {
   }
   const [OnWhatsapp,setOnWhatsapp] = useState()
   const On_Whatsapp = ()=>{
-    console.log(props.phone_number)
     try{
       axios.post(`${url}/check/contact/on/whatsapp`,{
         phone_number:props.phone_number
       }).then((response)=>{
-        console.log(response)
         setOnWhatsapp(response.data.data)
       })
     }catch(e){
       Notiflix.Notify.failure(e.message)
     }
   }
-const [videoconstraint,setvideoconstraint] = useState('none')
+
 const togglecamera = ()=>{
   window.open('/scan/prescription','_blank')
 }
@@ -595,7 +590,6 @@ const [prescriptions,setprescriptions] =useState([])
 const Get_Document=()=>{
   try{
     axios.get(`${url}/all/document?appointment_id=${props.appointmentid}`).then((response)=>{
-      console.log(response)
       setprescriptions(response.data.data)
     })
   }catch(e){
@@ -606,6 +600,7 @@ useEffect(()=>{
   Get_Document()
   On_Whatsapp()
 },[])
+console.log(advancepayments)
 // const webcamRef = useRef(null);
 // const imgRef = useRef(null);
 // const[imgroll,setimgroll]=useState('none')
@@ -1028,89 +1023,24 @@ return (
       </div>
     </div>
 
-    <div className={`stage4 d-${stage4} scroll`}>
+    <div className={`stage4 d-${stage4} scroll`} style={{minHeight:'57vh'}}>
         <div className="container px-3">
         <h5 className="text-charcoal fw-bold mb-3">Bill & Prescription</h5>
         <div className="container p-0 m-0 mb-3">
-            <div className="row scroll p-0 m-0 bg-pearl">
+            <div className="row p-0 m-0 bg-pearl rounded-2">
               {
-                prescriptions && prescriptions.map((Data,i)=>(
-                  <div className="col "key={i}><img src={`https://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/assets/scanned_documents/${Data.file}`} className="img-fluid" style={{width:'8rem'}}/></div>
-                ))
+                prescriptions?(
+                  prescriptions && prescriptions.map((Data,i)=>(
+                    <div className="col "key={i}><img src={`https://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/assets/scanned_documents/${Data.file}`} className="img-fluid" style={{width:'8rem'}}/></div>
+                  ))
+                ):(
+                  <div className="text-center text-charcoal75 py-4 fw-bold d-flex align-items-center justify-content-center">No prescriptions Scanned</div>
+                )
+            
               }
-          
             </div>
         </div>
           <button className="button button-charcoal" onClick={()=>{togglecamera()}}>Scan Prescription</button>
-          {/* <div className="row d-none mt-2 p-0 m-0 justify-content-start align-items-center">
-          <div className={`d-${videoconstraint} p-0 position-absolute top-0 start-0`} style={{zIndex:'10'}} >
-            <div className="btn-close position-absolute top-0 end-0 " style={{zIndex:'11'}} onClick={()=>{togglecamera()}}></div>
-            <div className="position-relative bg-pearl d-flex justify-content-center">
-            <Webcam audio={false} ref={webcamRef} screenshotFormat="image/jpeg" mirrored={false} videoConstraints={videoConstraints} />
-            <img className="img-fluid position-absolute start-0 end-0 mx-auto bottom-0 mb-5" onClick={()=>{capture()}} style={{width:'4rem'}} src={process.env.PUBLIC_URL + '/images/camera_click.png'}/>
-            <div className="position-absolute bottom-0 justify-content-center " >
-        <button className="border-0 justify-content-start cameraroll bg-transparent p-0 m-0 "onClick={()=>{toggleGallery()}}>
-            {
-                imgroll=='none'?(   
-                    <img src={process.env.PUBLIC_URL+'/images/gallery.png'} className="img-fluid bg-charcoal75 px-2 py-1 rounded-top mb-1" style={{width:'2rem'}}/>
-                ):(
-                    <img src={process.env.PUBLIC_URL+'/images/bottom.png'} className="img-fluid bg-seashell px-2 py-1 rounded-top mb-1"/>
-                )
-            }
-          </button>
-        <div className={`container cameraroll scroll bg-charcoal25 ms-2 mb-2 d-${imgroll}`}style={{flexDirection:'horizontal',minHeight:'fit-content'}}> 
-            {
-                imagearr? imagearr.map((data,i)=>(
-                    <img src={data} className="img-fluid" onClick={()=>{toggleedit();seteditindex(i);onSelectFile()}} style={{width:'5rem'}}/>
-
-                )):''
-            }
-            </div>
-        </div>
-        <button className=" border-0 cameraroll bg-transparent p-0 m-0 position-absolute bottom-0 end-0" onClick={()=>{flip=='user'?setflip('environment'):setflip('user')}}><img src={process.env.PUBLIC_URL+'/images/flip.png'} className="img-fluid bg-charcoal75 px-2 py-1 rounded-top mb-1" style={{width:'1.8rem'}}/></button>
-      </div>
-
-      {
-        webcamRef.current ? (
-          <div className={`d-${editor} container position-absolute bg-pearl mx-auto start-0 top-0 end-0 rounded-2 shadow-sm`} style={{zIndex:'15',left:'0vh',top:'0'}}>
-          <button className="position-absolute end-0 bg-seashell50 p-2 btn-close" style={{zIndex:'18'}} onClick={()=>{toggleedit()}}></button>
-        <div className="mt-0 position-absolute start-0 end-0 mx-auto">
-          <ReactCrop crop={crop} onChange={(c) => setCrop(c)} onComplete={(c) => setCompletedCrop(c)} >
-            <img src={src} className="img-fluid" style={{height:`${webcamRef.current.video.videoHeight}px`,width:`${webcamRef.current.video.videoWidth}px`}}/>
-          </ReactCrop>
-      </div>    
-             
-      </div>
-        ):(
-          <></>
-        )
-      }
-
-
-  </div>
-        {completedCrop && (
-        <div className="position-absolute top-0 mt-4 ms-2" style={{zIndex:'15'}}>
-          <button className="btn text-light border border-light" onClick={() => makeClientCrop(completedCrop)}>Save</button>
-        </div>
-      )}
-      {
-      image ?(
-        <div><img src={image} className="img-fluid" style={{width:crop.width,height:crop.height}}/></div>
-      ):(<></>)
-      }
-
-         
-          <h6 className="fw-bold text-charcoal75 ps-0 ms-0">Generate Bill & Prescription</h6>
-            <div className="col-auto ps-0 ms-0">
-            <button className="button button-charcoal px-4" onClick={()=>{Generate_Bill(props.appointmentid)}}>Bill</button>
-            </div>
-            <div className="col-auto">
-            <div className='vr rounded-1 align-self-center' style={{ padding: '0.8px' }}></div>
-            </div>
-            <div className="col-6">
-            <button className="button button-charcoal" onClick={()=>{Generate_Prescription(props.appointmentid)}}>Prescription</button>
-            </div>
-          </div> */}
             <div className="row p-0 m-0 mt-4">
               <h6 className="fw-bold text-charcoal75 ps-0 ms-0">Generate Bill & Prescription</h6>
             <div className="col-auto ps-0 ms-0">
@@ -1126,7 +1056,7 @@ return (
           <div className="row p-0 m-0 mt-4">
             <h6 className="fw-bold text-charcoal75 ms-0 ps-0">Send Bill and Prescription</h6>
             <div className="row ps-0 ms-0">
-              <div className={`col-12 ms-0 ps-0 mt-2 d-${OnWhatsapp==1?'block':'none'}`}>
+              <div className={`col-12 ms-0 ps-0 mt-2 `}>
                 <div className="row ps-0 ms-0">
                 <h6 className="ms-0 ps-0 text-charcoal fw-bold">On WhatsApp <span className="ms-2 text-success">{props.Data.whatsapp_sent==1?'(Already Sent on Whats App)':''}</span></h6>
                   <div className="col-6 ms-0 ps-0">

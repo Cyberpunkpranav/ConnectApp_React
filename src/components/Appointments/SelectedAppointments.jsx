@@ -3,12 +3,14 @@ import { useState, useEffect, useContext } from "react"
 import axios from "axios"
 import { UpdateAppointment } from './UpdateAppointment'
 import { Payments } from './Payments.jsx'
+import { Prescription } from '../Today/prescription'
 import AmountPaid from '../Today/AmountPaid'
 import Notiflix from 'notiflix';
 import { URL, Permissions } from '../../index'
 import '../../css/appointment.css'
 import { Bill } from './Bill'
 import { customconfirm } from '../features/notiflix/customconfirm'
+import { Generated_bill } from '../Today/generated_bill'
 const SelectedAppointments = (props) => {
   const url = useContext(URL);
   const permission = useContext(Permissions)
@@ -19,7 +21,7 @@ const SelectedAppointments = (props) => {
   const [billindex, setbillindex] = useState()
   const [billform, setbillform] = useState('none')
   const [tableindex, settableindex] = useState()
-
+  const[bindex,setbindex]=useState()
   const reversefunction = (date) => {
     if (date) {
       date = date.split("-").reverse().join("-")
@@ -228,6 +230,31 @@ const SelectedAppointments = (props) => {
       },
     );
   }
+  const[pindex,setpindex]=useState()
+  const [prescriptions,setprescriptions] =useState([])
+  const[pload,setpload]=useState('none')
+  const Get_Document=(id,i)=>{
+    setpindex(i)
+    try{
+      setpload(true)
+      axios.get(`${url}/all/document?appointment_id=${id}`).then((response)=>{
+        setprescriptions(response.data.data)
+        setpload(false)
+      })
+    }catch(e){
+      setpload(false)
+      Notiflix.Notify.failure(e.message)
+    }
+  }
+  const toggle_ScannedPres = ()=>{
+      setpindex()
+      }
+      const toggle_Scannedbill = ()=>{
+        setbindex()
+        }
+  useEffect(()=>{
+    Get_Document()
+  },[])
   return (
     <>
       {
@@ -315,6 +342,7 @@ const SelectedAppointments = (props) => {
                     <li className='dropdown-item  fw-bold d-flex border-bottom p-0 m-0 align-items-center' onClick={() => { setbillindex(key); toggle_bill() }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + 'images/bill.png'} />Bill</li>
                     <li className={`dropdown-item fw-bold  border-bottom p-0 m-0 align-items-center d-${permission.appointment_charges_edit == 1 ? '' : 'none'}`} onClick={() => { setpaymentindex(key); toggle_payments(); }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + 'images/rupee.png'} />Payments</li>
                     <li className='dropdown-item fw-bold d-flex border-bottom p-0 m-0 align-items-center' onClick={() => { Generate_Bill(data.id) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" />Generate Bill</li>
+                    <li className="dropdown-item fw-bold d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() =>Get_Document(data.id,key)}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/new_tab.png"} alt="displaying_image"/>View Prescription</li>
                     <li className="dropdown-item fw-bold d-flex border-bottom p-0 m-0 align-items-center" onClick={() => { Generate_Prescription(data.id) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image"/> Generate Prescription </li>
                     <li className="dropdown-item fw-bold d-flex border-bottom p-0 m-0 align-items-center" onClick={() => { Confirm_For_Prescription(data.id, data.patient.phone_number) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/whatsapp.png"} alt="displaying_image"/> Send on Whats App </li>
                     <li className="dropdown-item fw-bold d-flex p-0 m-0 align-items-center" onClick={() => { Confirm_For_Prescription2(data.id, data.patient.phone_number) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/message.png"} alt="displaying_image" />{' '}Send on SMS</li>
@@ -367,7 +395,26 @@ const SelectedAppointments = (props) => {
                     </>
                   ) : (<></>)
                 }
-
+                 {
+                              pindex == key ? (
+                                <>
+                                <div className="backdrop"></div>
+                                <td className={`saleentryform mx-auto col-xl-6 col-lg-8 col-md-10 p-0 m-0 position-absolute bg-seashell shadow-sm top-0 border border-1 rounded-1 start-0 end-0  d-${pindex == key ? pindex : 'none'}`} style={{ zIndex: '4', height: "70vh" }}  >
+                                <Prescription prescriptions={prescriptions} toggle_ScannedPres={toggle_ScannedPres} load={pload}/>
+                                </td>
+                                </>
+                              ):(<></>)
+                  }
+                                         {
+                              bindex == key ? (
+                                <>
+                                <div className="backdrop"></div>
+                                <td className={`saleentryform mx-auto col-xl-6 col-lg-8 col-md-10 p-0 m-0 position-absolute bg-seashell shadow-sm top-0 border border-1 rounded-1 start-0 end-0  d-${bindex == key ? bindex : 'none'}`} style={{ zIndex: '4', height: "70vh" }}  >
+                                <Generated_bill bill={data.bill_file} toggle_Scannedbill={toggle_Scannedbill}/>
+                                </td>
+                                </>
+                              ):(<></>) 
+                            }
               </tr>
             ))
           )

@@ -31,10 +31,8 @@ const Payments = (props) => {
     }
     async function AdvancePayments() {
         setloadadvancepayments(true)
-        axios.post(`${url}/advance/balance`, {
-            patient_id: props.patientid
-        }).then((response) => {
-            setadvancepaid(response.data.data)
+        axios.get(`${url}/get/balance/list?patient_id=${props.patientid?props.patientid:""}`).then((response) => {
+            setadvancepaid([response.data.data])
             setloadadvancepayments(false)
         })
     }
@@ -138,12 +136,15 @@ const Payments = (props) => {
             return date
         }
     }
+    console.log(advancepaid)
     return (
 
-        <div className='container-fluid'>
-            <h5 className='text-start fw-bold'>{props.patientname} Payments Section</h5>
+        <div className='container-fluid p-0 m-0'>
+            <div className="shadow-sm pt-2 pb-1">
+            <h5 className='text-center fw-bold'>{props.patientname} Payments Section</h5>
             <button className='btn-close position-absolute end-0 p-2 top-0' onClick={props.ClosePaymentsForm}></button>
-            <div className="d-flex justify-content-start p-0 m-0 gx-2 mt-3">
+            </div>
+            <div className="d-flex justify-content-start p-0 m-0 gx-2 mt-3 ms-3">
                 {
                     blocks.map((Data, i) => (
 
@@ -153,8 +154,8 @@ const Payments = (props) => {
                 }
 
             </div>
-            <div className={`container-fluid p-0 m-0  d-${blocksindex === 0 ? 'block' : 'none'}`}>
-                <h6 className='text-charcoal75 fw-bolder mt-2 mb-1'>Advance Payments from {props.patientname}</h6>
+            <div className={`container-fluid p-0 m-0 ps-3 mt-4  d-${blocksindex === 0 ? 'block' : 'none'}`}>
+                <h6 className='text-charcoal75 fw-bolder mt-2 mb-2'>Advance Payments from {props.patientname}</h6>
                 {
                     loadadvancepayments || props.isLoading ? (
                         <div className="col-6 py-2 pb-2 m-auto ">
@@ -163,18 +164,23 @@ const Payments = (props) => {
                             </div>
                         </div>
                     ) : (
-                        advancepaid && advancepaid.advnace_total !== 0 ? (
+                        advancepaid ? (
 
-                            <table className='bg-pearl table rounded-1'>
+                            <table className='border table rounded-1'>
                                 <thead className=''>
-                                    <th className='ps-2'>Description</th>
-                                    <th className='ps-2'>Amount</th>
+                                    <th className='ps-2 text-charcoal75'>Description</th>
+                                    <th className='ps-2 text-charcoal75'>Amount</th>
                                 </thead>
                                 <tbody className='align-middle'>
-                                    <tr >
-                                        <td></td>
-                                        <td>{advancepaid.advnace_total}</td>
-                                    </tr>
+                                    {
+                                       advancepaid&& advancepaid.map((data)=>(
+                                            <tr>
+                                            <td className='text-charcoal fw-bold'>{data.description}</td>
+                                            <td className='text-charcoal fw-bold'>{data.credit_amount}</td>
+                                        </tr>
+                                        ))
+                                    }
+                    
                                 </tbody>
 
                             </table>
@@ -191,7 +197,6 @@ const Payments = (props) => {
 
                     )
                 }
-                <hr />
                 <h6 className='text-charcoal75 fw-bolder mb-2 mt-3'>Add Advance Payment</h6>
                 <div className="row p-0 m-0 align-items-center">
                     <div className="col-3 ps-0">
@@ -241,7 +246,7 @@ const Payments = (props) => {
                 </div>
             </div>
 
-            <div className={`container-fluid p-0 m-0 d-${blocksindex === 1 ? 'block' : 'none'} `}>
+            <div className={`container-fluid p-0 m-0 ps-3 d-${blocksindex === 1 ? 'block' : 'none'} `}>
                 {
                     pendingpayments && pendingpayments != null && pendingpayments.length != 0 ? (
                         loadappoint ? (

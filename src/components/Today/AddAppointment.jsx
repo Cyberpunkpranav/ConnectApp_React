@@ -155,12 +155,12 @@ const AddAppointment = (props) => {
     }
 
     function BookAppointment(e) {
-        if (patientid && doctorid && clinicid && time && adminid) {
+        if (patientid && doctorid && clinicID && time && adminid) {
             setload(true)
             axios.post(`${url}/add/appointment`, {
                 patient_id: patientid,
                 doctor_id: doctorid,
-                clinic_id: clinicid,
+                clinic_id: clinicID,
                 timeslot_id: time,
                 admin_id: adminid
             }).then((response) => {
@@ -210,6 +210,7 @@ const AddAppointment = (props) => {
         }
 
     }
+
     return (
         <div className='fw-bold text-start'>
             <h5 className="text-center fw-bold mt-2">New Appointment</h5>

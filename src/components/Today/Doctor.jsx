@@ -16,6 +16,7 @@ import { Bill } from "./Bill";
 import { AddConsumables } from "./AddConsumables";
 import { SaleEntryForm } from '../pharmacy/pharmacy';
 import {Prescription} from './prescription';
+import { Generated_bill } from "./generated_bill";
 
 function DoctorSchedule(props) { 
   //Global Variables
@@ -49,6 +50,8 @@ function DoctorSchedule(props) {
   const [d_form, setd_form] = useState()
   const [nsef, setnsef] = useState("none");
   const[pindex,setpindex]=useState()
+  const[bindex,setbindex]=useState()
+
   // for UpdateAppointment
   const closeappointmentform = () => {
     if (appointmentform === "block") {
@@ -89,6 +92,25 @@ function DoctorSchedule(props) {
     Loading.remove()
     setsingleload(1)
   }
+  async function AllAppointments(){
+    setisLoading(true);
+    Loading.dots('Getting Details', {
+      backgroundColor: 'rgb(242, 242, 242,0.5)',
+      svgColor: '#96351E',
+      messageColor: '#96351E',
+      messageFontSize: '1.5rem'
+    })
+    await axios.get(`${url}/appointment/list?clinic_id=${ClinicId}&from_date=${Date}&to_date=${Date}`).then((response) => {
+      props.get_appointment_data(response.data.data && response.data.data !=undefined ? response.data.data :[])
+      // setappointmentdata([]);
+    })
+    setisLoading(false);
+    Loading.remove()
+    setsingleload(1)
+  }
+  useEffect(()=>{
+    AllAppointments()
+  },[])
   useEffect(() => {
     Appointmentlist();
   }, [props._selected]);
@@ -271,14 +293,15 @@ function DoctorSchedule(props) {
         appointment_id: id,
         admin_id: adminid
       }).then((response) => {
-        
-        Notiflix.Notify.success(response.data.message)
         Notiflix.Loading.remove()
+        Notiflix.Notify.success(response.data.message)
+        Appointmentlist()
         window.open(response.data.data.bill_url, '_blank', 'noreferrer');
       })
     } catch (e) {
-      Notiflix.Notify.failure(e.message)
       Notiflix.Loading.remove()
+      Notiflix.Notify.failure(e.message)
+
     }
   }
   const Generate_Prescription = async (id) => {
@@ -292,14 +315,16 @@ function DoctorSchedule(props) {
       axios.post(`${url}/swift/pdf`, {
         appointment_id: id,
       }).then((response) => {
-        
-        Notiflix.Notify.success(response.data.message)
         Notiflix.Loading.remove()
+        Appointmentlist()
+        Notiflix.Notify.success(response.data.message)
+
         window.open(response.data.data.prescription_pdf, '_blank', 'noreferrer');
       })
     } catch (e) {
-      Notiflix.Notify.failure(e.message)
       Notiflix.Loading.remove()
+      Notiflix.Notify.failure(e.message)
+
     }
   }
   const Send_On_WhatsApp = async (id, phone, check) => {
@@ -421,29 +446,13 @@ function DoctorSchedule(props) {
     localStorage.setItem('appointmentid',id)
     window.open('/scan/prescription','_blank')
   }
-  const [prescriptions,setprescriptions] =useState([])
-  const[pload,setpload]=useState('none')
-  const Get_Document=(id,i)=>{
-    setpindex(i)
-    try{
-      setpload(true)
-      axios.get(`${url}/all/document?appointment_id=${id}`).then((response)=>{
-        setprescriptions(response.data.data)
-        setpload(false)
-      })
-    }catch(e){
-      setpload(false)
-      Notiflix.Notify.failure(e.message)
-    }
-  }
-
-  useEffect(()=>{
-    Get_Document()
-  },[])
-
  const toggle_ScannedPres = ()=>{
   setpindex()
   }
+  const toggle_Scannedbill = ()=>{
+    setbindex()
+    }
+
   return (
     <>
       <section id="doctorscheduledata">
@@ -491,7 +500,6 @@ function DoctorSchedule(props) {
                   ) : (
                     <button disabled className=" button-sm button-charcoal50-outline m-1 px-3 py-2 rounded-1 fw-bold" key={i} style={{ letterSpacing: '1px' }}>{tConvert(data[0])}</button>
                   )
-
                 ))
 
               }
@@ -503,7 +511,7 @@ function DoctorSchedule(props) {
           <div className="col-auto m-0 p-0 align-items-center">
             <h6 className="p-0 ms-1 text-charcoal fw-bolder mt-3 mb-2">Appointments</h6>
           </div>
-          <div className=" scroll scroll-y align-content-center align-items-center" style={{ minHeight: '50vh', maxHeight: '50vh', Height: '50h' }}>
+          <div className=" scroll scroll-y align-content-center align-items-center" style={{ minHeight: '70vh', maxHeight: '70vh', Height: '70h' }}>
             <table className="table text-start">
               <thead className="p-0 m-0 px-2 bg-pearl">
                 <tr className="p-0 m-0 position-sticky text-charcoal75 top-0" style={{ fontSize: '0.75rem' }}>
@@ -611,16 +619,17 @@ function DoctorSchedule(props) {
                                 <button className="button p-0 m-0 bg-transparent border-0 fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                   <img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" className="img-fluid" />
                                 </button>
-                                <ul className="dropdown-menu shadow-sm p-2 scroll" style={{ '-webkit-appearance': 'none', 'appearance': 'none', width: 'max-content', height: '40vh' }}>
-                                  <li className="dropdown-item fw-bold d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => confirmmessage(data.patient.full_name, data.id)}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/speaker.png"} alt="displaying_image"/> Call Patient</li>
-                                  <li className="dropdown-item fw-bold d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() =>Get_Document(data.id,i)}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/new_tab.png"} alt="displaying_image"/>View Scanned Prescription</li>
+                                <ul className="dropdown-menu shadow-sm p-2" style={{ '-webkit-appearance': 'none', 'appearance': 'none', width: 'max-content', height: 'fit-content' }}>
                                   <li className="dropdown-item fw-bold d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() =>togglecamera(data.id)}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/new_tab.png"} alt="displaying_image"/>Scan Prescription</li>
-                                  <li className="dropdown-item fw-bold d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { Generate_Bill(data.id) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" /> Generate Bill</li>
                                   <li className="dropdown-item fw-bold d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { Generate_Prescription(data.id) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" /> Generate Prescription</li>
+                                  <li className={`d-${data.prescription_file==null?'none':''} dropdown-item fw-bold d-flex border-1 border-bottom p-0 m-0 align-items-center`} onClick={() =>{setpindex(i)}}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/confirmed.png"} alt="displaying_image"/>View Prescription</li>
+                                  <li className="dropdown-item fw-bold d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { Generate_Bill(data.id) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" /> Generate Bill</li>
+                                  <li className={`d-${data.bill_file==null?'none':''} dropdown-item fw-bold d-flex border-1 border-bottom p-0 m-0 align-items-center`} onClick={() => { setbindex(i) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/confirmed.png"} alt="displaying_image" /> View Bill</li>
                                   <li className="dropdown-item fw-bold d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { Confirm_For_Prescription(data.id, data.patient.phone_number) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/whatsapp.png"} alt="displaying_image" /> Send on Whats App</li>
                                   <li className="dropdown-item fw-bold d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { Confirm_For_Prescription2(data.id, data.patient.phone_number) }}><img className='m-2 img-fluid ms-2' src={process.env.PUBLIC_URL + "/images/message.png"} alt="displaying_image"  />Send on SMS</li>
                                   <li className="dropdown-item fw-bold d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() => { toggle_nsef(); setsaleindex(i) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/medicine.png"}  alt="displaying_image" />Buy Medicines</li>
-                                  <li className={`dropdown-item fw-bold p-0 m-0 align-items-center p-2  d-${permission.appointment_charges_edit ? 'flex' : 'none'}`} onClick={() => { setpaymentsindex(i); OpenPaymentsForm(); }}><img src={process.env.PUBLIC_URL + "/images/rupee.png"}  className='me-2 img-fluid' alt="displaying_image" />Payments</li>
+                                  <li className={`dropdown-item fw-bold border-bottom p-0 m-0 align-items-center p-2  d-${permission.appointment_charges_edit ? 'flex' : 'none'}`} onClick={() => { setpaymentsindex(i); OpenPaymentsForm(); }}><img src={process.env.PUBLIC_URL + "/images/rupee.png"}  className='me-2 img-fluid' alt="displaying_image" />Payments</li>
+                                  <li className="dropdown-item fw-bold d-flex border-1 p-0 m-0 align-items-center" onClick={() => confirmmessage(data.patient.full_name, data.id)}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/speaker.png"} alt="displaying_image"/> Call Patient</li>
                                 </ul>
                               </div></td>
                             {
@@ -637,7 +646,7 @@ function DoctorSchedule(props) {
                                 <>
                                   <div className="backdrop"></div>
                                   <td className={`vitals position-absolute border-0 d-${vitalindex == i ? vitalsform : 'none'}`} style={{ zIndex: '4' }}>
-                                    <Vitalsoperation GetAppointmentVitals={GetAppointmentVitals} CloseVitals={CloseVitals} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} appointmentid={data.id} appointmentvitalslist={appointmentvitalslist} loadvitals={loadvitals} patientid={data.patient && data.patient.id != null ? data.patient.id : ""} /></td>
+                                    <Vitalsoperation GetAppointmentVitals={GetAppointmentVitals} Appointmentlist={Appointmentlist} CloseVitals={CloseVitals} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} appointmentid={data.id} appointmentvitalslist={appointmentvitalslist} loadvitals={loadvitals} patientid={data.patient && data.patient.id != null ? data.patient.id : ""} /></td>
                                 </>
                               ) : (<></>)
                             }
@@ -646,7 +655,7 @@ function DoctorSchedule(props) {
                                 <>
                                   <div className='backdrop'>
                                   </div>
-                                  <td className={`bill d-${billindex == i ? billform : 'none'} start-0 end-0 mx-auto top-0 border-0 position-absolute p-0 m-0 col-lg-8 col-md-10 col-sm-11 col-11 mt-2 col-xl-6 `} style={{ zIndex: '4',height:'60vh' }}>
+                                  <td className={`bill d-${billindex == i ? billform : 'none'} start-0 end-0 mx-auto top-0 border-0 position-absolute p-0 m-0 col-lg-10 col-md-10 col-sm-11 col-11 mt-2 col-xl-6 `} style={{ zIndex: '4',height:'70vh' }}>
                                     <Bill fetchapi={props.fetchapi} CloseBillForm={CloseBillForm} patientid={data.patient && data.patient.id != null ? data.patient.id : ""} phone_number = {data.patient != null && data.patient.phone_number != null ? data.patient.phone_number : ""} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} Appointmentlist={Appointmentlist} setsingleload={setsingleload} isLoading={isLoading} Data={data} appointmentdata={appointmentdata} appointmentid={data.id} doctorfee={data.doctor.consulationFee} billform={billform} /></td>
                                 </>
                               ) : (<></>)
@@ -655,7 +664,7 @@ function DoctorSchedule(props) {
                               paymentsindex === i ? (
                                 <>
                                   <div className="backdrop"></div>
-                                  <td className={`payments start-0 end-0 top-0 position-absolute bg-seashell mx-auto rounded-2 pt-2 px-2 p-0 m-0 col-lg-8 col-md-10 col-sm-11 col-11 mt-2 col-xl-6 d-${paymentsindex == i ? paymentsform : 'none'}`} style={{ zIndex: '4' }}>
+                                  <td className={`payments start-0 end-0 top-0 position-absolute bg-seashell mx-auto rounded-2 p-0 m-0 col-lg-8 col-md-10 col-sm-11 col-11 mt-2 col-xl-6 d-${paymentsindex == i ? paymentsform : 'none'}`} style={{ zIndex: '4' }}>
                                     <Payments ClosePaymentsForm={ClosePaymentsForm} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} appointmentid={data.id} patientid={data.patient && data.patient.id != null ? data.patient.id : ""} Appointmentlist={Appointmentlist} setsingleload={setsingleload} isLoading={isLoading} appointmentdata={appointmentdata} /></td>
                                 </>
                               ) : (<></>)
@@ -685,11 +694,21 @@ function DoctorSchedule(props) {
                               pindex == i ? (
                                 <>
                                 <div className="backdrop"></div>
-                                <td className={`saleentryform mx-auto col-xl-6 col-lg-8 col-md-10 p-0 m-0 position-absolute bg-seashell shadow-sm top-0 border border-1 rounded-1 start-0 end-0  d-${pindex == i ? pindex : 'none'}`} style={{ zIndex: '4', height: "70vh" }}  >
-                                <Prescription prescriptions={prescriptions} toggle_ScannedPres={toggle_ScannedPres} load={pload}/>
+                                <td className={`saleentryform mx-auto col-xl-8 col-lg-10 col-md-11 p-0 m-0 position-absolute bg-seashell shadow-sm top-0 border border-1 rounded-1 start-0 end-0  d-${pindex == i ? pindex : 'none'}`} style={{ zIndex: '4', height: "80vh" }}  >
+                                <Prescription prescriptions={data.prescription_file} toggle_ScannedPres={toggle_ScannedPres}/>
                                 </td>
                                 </>
                               ):(<></>)
+                            }
+                                     {
+                              bindex == i ? (
+                                <>
+                                <div className="backdrop"></div>
+                                <td className={`saleentryform mx-auto col-xl-6 col-lg-8 col-md-10 p-0 m-0 position-absolute bg-seashell shadow-sm top-0 border border-1 rounded-1 start-0 end-0  d-${bindex == i ? bindex : 'none'}`} style={{ zIndex: '4', height: "70vh" }}  >
+                                <Generated_bill bill={data.bill_file} toggle_Scannedbill={toggle_Scannedbill}/>
+                                </td>
+                                </>
+                              ):(<></>) 
                             }
                           </tr>
 

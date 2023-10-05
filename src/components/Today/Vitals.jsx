@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { URL, Vitals } from '../../index'
-
+import { Loading } from 'notiflix/build/notiflix-loading-aio';
 import '../../css/dashboard.css'
 import axios from 'axios'
 import Notiflix from 'notiflix'
@@ -8,6 +8,7 @@ import Notiflix from 'notiflix'
 
 const Vitalsoperation = (props) => {
   const url = useContext(URL)
+  const adminid = localStorage.getItem('id')
   const vitals = useContext(Vitals)
   const [vitalid, setvitalid] = useState()
   const [vitalvalue, setvitalvalue] = useState()
@@ -41,6 +42,7 @@ const Vitalsoperation = (props) => {
           appointment_id: props.appointmentid,
           patient_id: props.patientid,
         }).then((response) => {
+          UpadteStatus()
           props.GetAppointmentVitals(props.appointmentid)
           Notiflix.Notify.success(response.data.message)
           resetfields()
@@ -113,11 +115,34 @@ const Vitalsoperation = (props) => {
       setvitalindex()
     }
   }
+  async function UpadteStatus() {
+      try {
+        Loading.circle('Upadating Appointment Status', {
+          backgroundColor: 'rgb(242, 242, 242,0.5)',
+          svgColor: '#96351E',
+          messageColor: '#96351E',
+          messageFontSize: '1.5rem'
+        })
+        await axios.post(`${url}/appointment/change/status`, {
+          appointment_id: props.appointmentid,
+          status: 6,
+          admin_id: adminid
+        }).then((response) => {
+          props.Appointmentlist()
+          Loading.remove()
+        })
+      } catch (e) {
+        Notiflix.Notify.failure(e.message)
+      }
+
+  }
   return (
-    <div className='container-fluid col-lg-10 col-md-11 col-sm-12 col-12 col-xl-10 bg-seashell rounded-2 position-relative pb-4 pt-2'>
-      <h5 className='p-1 text-center'>{props.patientname} Vitals</h5>
+    <div className='container-fluid col-lg-10 col-md-11 px-0 col-sm-12 col-12 col-xl-10 bg-seashell rounded-2 position-relative pb-4 pt-0'>
+      <div className="shadow-sm pt-2 pb-2">
+      <h5 className='text-center p-0 m-0 fw-bold'>{props.patientname} Vitals</h5>
       <button className=' btn-close position-absolute top-0 end-0 m-1 me-2 pt-3' disabled={props.loadvitals ? true : false} onClick={props.CloseVitals}></button>
       <button className='btn p-0 m-0 position-absolute top-0 start-0 ms-2 mt-1' onClick={refresh}><img src={process.env.PUBLIC_URL + '/images/refresh.png'} className='img-fluid' style={{ width: '1.2rem' }} /></button>
+      </div>
       {
         props.loadvitals ? (
           <div className="col-6 py-2 pb-2 m-auto text-center">

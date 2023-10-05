@@ -141,7 +141,15 @@ function Connectapp(props) {
     localStorage.setItem("ClinicId", clinicid);
     setisWelcomeLoading(0);
   }
-  // const isProduction = process.env.NODE_ENV === 'production';
+  const [appointment_data,setappointment_data] = useState([])
+
+  const get_appointment_data  = (data)=>{
+    setappointment_data(data)
+  }
+  useEffect(()=>{
+    get_appointment_data()
+  },[])
+// const isProduction = process.env.NODE_ENV === 'production';
   // const basename = isProduction ? 'https://aartas-connect.azurewebsites.net/' : '';
   
   return isWelcomeLoading == 0 ? (
@@ -192,7 +200,7 @@ function Connectapp(props) {
                         <Navbar path={path} logout={props.logout} permissions={props.permissions} username={props.username} designation={props.designation} id={props.id} fetchapi={fetchapi} />
                         <Suspense fallback={<div className="text-charcoal75 fs-6 fw-bold text-center"> {" "} loading..{" "} </div>} >
                           <Routes>
-                            <Route path="/" onChange={() => setpath("/")} element={<Doctorsection id={props.id} fetchapi={fetchapi} todayDoc={todayDoc} Loading={Loading} docapi={docapi} />} />
+                            <Route path="/" onChange={() => setpath("/")} element={<Doctorsection id={props.id} fetchapi={fetchapi} todayDoc={todayDoc} get_appointment_data={get_appointment_data} appointment_data={appointment_data} Loading={Loading} docapi={docapi} />} />
                             <Route path="/Appointments" onChange={() => setpath("Appointments")} element={<Appointments id={props.id} fetchapi={fetchapi} />} />
                             <Route path="/Patients" onChange={() => setpath("/Patients")} element={<Patients id={props.id} />} />
                             <Route path="/Doctors" onChange={() => setpath("/Doctors")} element={<Doctors id={props.id} docapi={docapi} />} />

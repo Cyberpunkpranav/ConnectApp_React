@@ -146,7 +146,7 @@ function Saleentrysection(props) {
           setLoading(false);
         })
         .catch((e) => {
-          Notiflix.Notify.warning(e);
+          Notiflix.Notify.warning(e.message);
           setLoading(false);
         });
     } catch (e) {
@@ -165,7 +165,7 @@ function Saleentrysection(props) {
             setLoading(false);
           })
           .catch((e) => {
-            Notiflix.Notify.warning(e);
+            Notiflix.Notify.warning(e.message);
             setLoading(false);
           });
       } catch (e) {
@@ -182,7 +182,7 @@ function Saleentrysection(props) {
             setLoading(false);
           })
           .catch((e) => {
-            Notiflix.Notify.warning(e);
+            Notiflix.Notify.warning(e.message);
             setLoading(false);
           });
       } catch (e) {
@@ -195,16 +195,13 @@ function Saleentrysection(props) {
     try {
       axios
         .get(
-          `${url}/sale/entry?clinic_id=${ClinicID}&limit=${pagecount}&offset=0&from_date=${fromdate ? fromdate : currentDate
-          }&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`
-        )
-        .then((response) => {
-          ;
+          `${url}/sale/entry?clinic_id=${ClinicID}&limit=${pagecount}&offset=0&from_date=${fromdate ? fromdate : currentDate }&to_date=${todate ? todate : fromdate ? fromdate : currentDate}`
+        ).then((response) => {
           setsaleentryarrforExcel(response.data.data.sale_entry);
           setLoading(false);
         })
         .catch((e) => {
-          Notiflix.Notify.warning(e);
+          Notiflix.Notify.warning(e.message);
           setLoading(false);
         });
     } catch (e) {
@@ -233,7 +230,7 @@ function Saleentrysection(props) {
     [2, "Payment done", "success"],
     [3, "Completed", "lightyellow"],
     [4, "Cancelled", "lightred"],
-  ];
+  ]
   function status(number) {
     let status;
     for (let i = 0; i < array.length; i++) {
@@ -281,15 +278,24 @@ function Saleentrysection(props) {
           admin_id: adminid,
         })
         .then((response) => {
-          ;
-          Notiflix.Notify.success(response.data.message);
+            if(response.data.status==true){
+              Notiflix.Notify.success(response.data.message);
+              Notiflix.Loading.remove();
+            }else{
+              Notiflix.Notify.failure(response.data.message);
+              Notiflix.Loading.remove();
+            }
           window.open(response.data.data.bill_url, "_blank", "noreferrer");
           Notiflix.Loading.remove();
-        });
+        }).catch((e)=>{
+          Notiflix.Loading.remove();
+          Notiflix.Notify.failure(e.message);     
+        })
     } catch (e) {
-      Notiflix.Notify.failure(e.message);
       Notiflix.Loading.remove();
+      Notiflix.Notify.failure(e.message);
     }
+
   };
   const Send_On_WhatsApp = async (id, phone) => {
     if (phone == undefined || phone == null) {
@@ -1290,7 +1296,7 @@ function SaleEntryForm(props) {
   const searchmeds = async (search) => {
     setloadsearch(true);
     try {
-      await axios.get(`${url}/stock/list?search=${search}`).then((response) => {
+      await axios.get(`${url}/stock/list?search=${search}&location_id=${clinicID}`).then((response) => {
         let medicines = [];
         let vaccines = [];
         let items = [];
@@ -5848,6 +5854,7 @@ function Stocksection() {
   );
 }
 function Stockvaccinesection() {
+  const clinicID = localStorage.getItem("ClinicId");
   const url = useContext(URL);
   const Todaydate = useContext(TodayDate);
   const [pagecount, setpagecount] = useState();
@@ -5862,7 +5869,7 @@ function Stockvaccinesection() {
   function GetPages() {
     try {
       axios
-        .get(`${url}/stock/list?search=${searchname}&limit=10&offset=0`)
+        .get(`${url}/stock/list?search=${searchname}&location_id=${clinicID}&limit=10&offset=0`)
         .then((response) => {
           setpagecount(response.data.data.total_count_vaccines);
           setpages(
@@ -5884,7 +5891,7 @@ function Stockvaccinesection() {
       setload(true);
       try {
         axios
-          .get(`${url}/stock/list?search=${searchname}&limit=10&offset=0`)
+          .get(`${url}/stock/list?search=${searchname}&location_id=${clinicID}&limit=10&offset=0`)
           .then((response) => {
             setvaccineslist(response.data.data.vaccines);
             setload(false);
@@ -5900,7 +5907,7 @@ function Stockvaccinesection() {
     } else {
       setload(true);
       try {
-        axios.get( `${url}/stock/list?search=${searchname}&limit=10&offset=${Data.selected * 10 }` )
+        axios.get( `${url}/stock/list?search=${searchname}&location_id=${clinicID}&limit=10&offset=${Data.selected * 10 }` )
           .then((response) => {
             setvaccineslist(response.data.data.vaccines);
             setload(false);
@@ -6165,6 +6172,7 @@ function Stockvaccinesection() {
   );
 }
 function Stockmedicinesection() {
+  const clinicID = localStorage.getItem("ClinicId");
   const url = useContext(URL);
   const [pagecount, setpagecount] = useState();
   const [pages, setpages] = useState();
@@ -6178,7 +6186,7 @@ function Stockmedicinesection() {
   function GetPages() {       
     try {
       axios
-        .get(`${url}/stock/list?search=${searchname}&limit=25&offset=0`)
+        .get(`${url}/stock/list?search=${searchname}&location_id=${clinicID}&limit=25&offset=0`)
         .then((response) => {
           setpagecount(response.data.data.total_count_medicines);
           setpages( Math.round(response.data.data.total_count_medicines / 25) + 1 );
@@ -6198,7 +6206,7 @@ function Stockmedicinesection() {
       setload(true);
       try {
         axios
-          .get(`${url}/stock/list?search=${searchname}&limit=25&offset=0`)
+          .get(`${url}/stock/list?search=${searchname}&location_id=${clinicID}&limit=25&offset=0`)
           .then((response) => {
             setmedicineslist(response.data.data.medicines);
             setload(false);
@@ -6214,7 +6222,7 @@ function Stockmedicinesection() {
     } else {
       setload(true);
       try {
-        axios.get(`${url}/stock/list?search=${searchname}&limit=10&offset=${Data.selected * 25}`)
+        axios.get(`${url}/stock/list?search=${searchname}&location_id=${clinicID}&limit=10&offset=${Data.selected * 25}`)
           .then((response) => {
             setmedicineslist(response.data.data.medicines);
             setload(false);
@@ -9359,7 +9367,7 @@ function NewDumpForm(props){
   const searchmeds = async (search) => {
     setloadsearch(true);
     try {
-      await axios.get(`${url}/stock/list?search=${search}`).then((response) => {
+      await axios.get(`${url}/stock/list?&location_id=${clinicid}&search=${search}`).then((response) => {
         let medicines = [];
         let vaccines = [];
         let items = [];

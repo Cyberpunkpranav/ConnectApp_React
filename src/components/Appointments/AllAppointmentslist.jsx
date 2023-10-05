@@ -1,13 +1,15 @@
 import React from 'react'
-import { useState, useContext } from "react"
+import { useState, useContext,useEffect } from "react"
 import axios from "axios"
 import AmountPaid from '../Today/AmountPaid'
 import { UpdateAppointment } from './UpdateAppointment'
+import { Prescription } from '../Today/prescription'
 import { Bill } from './Bill'
 import '../../css/appointment.css'
 import { Payments } from './Payments.jsx'
 import Notiflix from 'notiflix';
 import { customconfirm } from '../features/notiflix/customconfirm'
+import { Generated_bill } from '../Today/generated_bill'
 //COntext APIs
 import { URL, Permissions } from '../../index'
 
@@ -21,7 +23,7 @@ const AllAppointmentslist = (props) => {
     const [tableindex, settableindex] = useState()
     const [billindex, setbillindex] = useState()
     const [billform, setbillform] = useState('none')
-
+    const[bindex,setbindex]=useState()
     const closeappointmentform = () => {
         if (appointmentform === "block") {
             setappointmentform("none");
@@ -108,14 +110,15 @@ const AllAppointmentslist = (props) => {
                 appointment_id: id,
                 admin_id: adminid
             }).then((response) => {
-                
+                Notiflix.Loading.remove()
                 Notiflix.Notify.success(response.data.message)
                 window.open(response.data.data.bill_url, '_blank', 'noreferrer');
-                Notiflix.Loading.remove()
+  
             })
         } catch (e) {
-            Notiflix.Notify.failure(e.message)
             Notiflix.Loading.remove()
+            Notiflix.Notify.failure(e.message)
+     
         }
     }
     const Generate_Prescription = async (id) => {
@@ -129,14 +132,14 @@ const AllAppointmentslist = (props) => {
             axios.post(`${url}/swift/pdf`, {
                 appointment_id: id,
             }).then((response) => {
-                
-                Notiflix.Notify.success(response.data.message)
                 Notiflix.Loading.remove()
+                Notiflix.Notify.success(response.data.message)
                 window.open(response.data.data.prescription_pdf, '_blank', 'noreferrer');
             })
         } catch (e) {
-            Notiflix.Notify.failure(e.message)
             Notiflix.Loading.remove()
+            Notiflix.Notify.failure(e.message)
+          
         }
     }
     const Send_On_WhatsApp = async (id, phone, check) => {
@@ -231,6 +234,31 @@ const AllAppointmentslist = (props) => {
             },
         );
     }
+    const[pindex,setpindex]=useState()
+    const [prescriptions,setprescriptions] =useState([])
+    const[pload,setpload]=useState('none')
+    const Get_Document=(id,i)=>{
+      setpindex(i)
+      try{
+        setpload(true)
+        axios.get(`${url}/all/document?appointment_id=${id}`).then((response)=>{
+          setprescriptions(response.data.data)
+          setpload(false)
+        })
+      }catch(e){
+        setpload(false)
+        Notiflix.Notify.failure(e.message)
+      }
+    }
+    const toggle_ScannedPres = ()=>{
+        setpindex()
+        }
+    useEffect(()=>{
+      Get_Document()
+    },[])
+    const toggle_Scannedbill = ()=>{
+        setbindex()
+        }
     return (
         <>
             {
@@ -319,8 +347,10 @@ const AllAppointmentslist = (props) => {
                                     <ul className="dropdown-menu shadow-sm text-decoration-none p-0 m-0 p-2" style={{ '-webkit-appearance': 'none', width: 'max-content' }}>
                                         <li className='dropdown-item fw-bold border-bottom p-0 m-0 align-items-center' onClick={() => { setbillindex(key); toggle_bill() }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + 'images/bill.png'} />Bill</li>
                                         <li className={`dropdown-item fw-bold border-bottom p-0 m-0 align-items-center d-${permission.appointment_charges_edit == 1 ? '' : 'none'}`} onClick={() => { setpaymentindex(key); toggle_payments(); }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + 'images/rupee.png'} />Payments</li>
-                                        <li className='dropdown-item fw-bold border-bottom p-0 m-0 align-items-center' onClick={() => { Generate_Bill(data.id) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" />Generate Bill</li>
-                                        <li className="dropdown-item fw-bold border-bottom p-0 m-0 align-items-center" onClick={() => { Generate_Prescription(data.id) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" /> Generate Prescription </li>
+                                        <li className={`d-${data.prescription_file==null?'none':''} dropdown-item fw-bold d-flex border-1 border-bottom p-0 m-0 align-items-center`} onClick={() =>Get_Document(data.id,key)}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/new_tab.png"} alt="displaying_image"/>View Prescription</li>
+                                        <li className={`d-${data.bill_file==null?'none':''} dropdown-item fw-bold d-flex border-1 border-bottom p-0 m-0 align-items-center`} onClick={() => { setbindex(key) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/confirmed.png"} alt="displaying_image" /> View Bill</li>
+                                        {/* <li className='dropdown-item fw-bold border-bottom p-0 m-0 align-items-center' onClick={() => { Generate_Bill(data.id) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" />Generate Bill</li>
+                                        <li className="dropdown-item fw-bold border-bottom p-0 m-0 align-items-center" onClick={() => { Generate_Prescription(data.id) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" /> Generate Prescription </li> */}
                                         <li className="dropdown-item fw-bold border-bottom p-0 m-0 align-items-center" onClick={() => { Confirm_For_Prescription(data.id, data.patient.phone_number) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/whatsapp.png"} alt="displaying_image" /> Send on Whats App </li>
                                         <li className="dropdown-item fw-bold p-0 m-0 align-items-center" onClick={() => { Confirm_For_Prescription2(data.id, data.patient.phone_number) }}><img className='m-2 img-fluid ms-2' src={process.env.PUBLIC_URL + "/images/message.png"} alt="displaying_image"/>{' '}Send on SMS</li>
                                     </ul>
@@ -368,7 +398,26 @@ const AllAppointmentslist = (props) => {
                                     </>
                                 ) : (<></>)
                             }
-
+                            {
+                              pindex == key ? (
+                                <>
+                                <div className="backdrop"></div>
+                                <td className={`saleentryform mx-auto col-xl-6 col-lg-8 col-md-10 p-0 m-0 position-absolute bg-seashell shadow-sm top-0 border border-1 rounded-1 start-0 end-0  d-${pindex == key ? pindex : 'none'}`} style={{ zIndex: '4', height: "70vh" }}  >
+                                <Prescription prescriptions={data.prescription_file} toggle_ScannedPres={toggle_ScannedPres} load={pload}/>
+                                </td>
+                                </>
+                              ):(<></>)
+                            }
+                            {
+                              bindex == key ? (
+                                <>
+                                <div className="backdrop"></div>
+                                <td className={`saleentryform mx-auto col-xl-6 col-lg-8 col-md-10 p-0 m-0 position-absolute bg-seashell shadow-sm top-0 border border-1 rounded-1 start-0 end-0  d-${bindex == key ? bindex : 'none'}`} style={{ zIndex: '4', height: "70vh" }}  >
+                                <Generated_bill bill={data.bill_file} toggle_Scannedbill={toggle_Scannedbill}/>
+                                </td>
+                                </>
+                              ):(<></>) 
+                            }
                         </tr>
                     ))
                 )

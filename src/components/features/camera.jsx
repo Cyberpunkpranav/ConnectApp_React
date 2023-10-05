@@ -19,7 +19,8 @@ import axios from "axios";
     const [imagearr,setimagearr] = useState([])
     const [editindex, seteditindex] = useState(0)
     const [image,setimage]=useState()
-    const [flip,setflip] =useState('environment')
+    const [flip,setflip] =useState('user')
+    const [load,setload]=useState(false)
     const width = window.innerWidth;
     const height = window.innerHeight;
     const videoConstraints = {
@@ -148,28 +149,23 @@ import axios from "axios";
     const formData = new FormData();
     formData.append('image', file,'prescription.jpeg');
     formData.append('appointment_id', appointmentId);
-
-    axios
-      .post(`${url}/save/document`, formData, {headers: {
-        'Content-Type': 'multipart/form-data', 
-      }})
+    setload(true)
+    axios.post(`${url}/save/document`, formData, {headers: { 'Content-Type': 'multipart/form-data', }})
       .then((response) => {
         console.log('File uploaded successfully:', response.data);
         if(response.data.status==true){
           Notiflix.Notify.success('Prescription Uploaded Successfully')
           setTimeout(Close_window, 2000);
+          setload(false)
         }
       })
       .catch((error) => {
         // Handle errors
         console.error('Error uploading file:', error);
+        setload(false)
       });
   }
-
-
-
-
-console.log(editor)
+  console.log(editor)
     return (
       <>
 
@@ -237,7 +233,18 @@ console.log(editor)
           <div className="position-relative d-flex mt-5 justify-content-center">
           <img src={image} className="img-fluid" style={{width:crop.width,height:crop.height}}/>  
           </div>
-          <button className=" mx-auto d-flex justify-content-center button button-pearl" onClick={(e)=>{handleFileUpload(e)}}>Save Prescription</button>
+          {
+            load ?(
+              <div className="col-6 py-2 pb-2 m-auto text-center">
+              <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </div>
+            ):(
+              <button className=" mx-auto d-flex justify-content-center button button-pearl" onClick={(e)=>{handleFileUpload(e)}}>Save Prescription</button>
+            )
+          }
+
           {/* <input type='file' onChange={handleChange}/> */}
         </div>
       ):(<></>)

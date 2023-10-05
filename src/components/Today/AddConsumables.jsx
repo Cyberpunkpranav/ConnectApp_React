@@ -51,7 +51,7 @@ const AddConsumables = (props) => {
     const searchmeds = async (search) => {
         setloadsearch(true)
         try {
-            await axios.get(`${url}/stock/list?search=${search}`).then((response) => {
+            await axios.get(`${url}/stock/list?search=${search}&location_id=${clinicID}`).then((response) => {
                 let medicines = []
                 let vaccines = []
                 let items = []
@@ -314,9 +314,9 @@ const AddConsumables = (props) => {
         }
     }
     return (
-        <div className="container-fluid bg-seashell rounded-2 position-relative mx-auto col-lg-11 col-md-11 col-sm-11 col-11 col-xl-9" style-={{ height: '70vh' }}>
-            <div className='position-relative mb-3 pt-2'>
-                <h5 className='text-start text-charcoal fw-bold '>{props.patientname} Consumables</h5>
+        <div className="container-fluid bg-seashell rounded-2 px-0 position-relative mx-auto col-lg-11 col-md-11 col-sm-11 col-11 col-xl-9" style-={{ height: '70vh' }}>
+            <div className='position-relative mb-3 text-center shadow-sm'>
+                <h5 className='text-start text-charcoal text-center fw-bold py-2 '>{props.patientname} Consumables</h5>
                 <button className='btn btn-close position-absolute p-1 m-0 end-0 top-0 me-2 pt-4' disabled={load ? true : false} onClick={props.toggleConsumables}></button>
             </div>
 
