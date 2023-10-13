@@ -1,6 +1,6 @@
 import { URL, TodayDate, DoctorsList, Clinic, Permissions } from '../../index';
 import { customconfirm } from '../features/notiflix/customconfirm';
-import React, { useState, useRef, useContext, useEffect } from 'react'
+import React, { useState, useRef, useContext, useEffect, useMemo } from 'react'
 import Notiflix from 'notiflix'
 import axios from 'axios'
 
@@ -48,7 +48,7 @@ const AddConsumables = (props) => {
         }
 
     }
-    let arr = []
+  
     let obj={
          display_name:'',
          CGST:'',
@@ -74,18 +74,38 @@ const AddConsumables = (props) => {
          total_amount:''
 
     }
+
+
     const searchmeds = async (search) => {
-        setloadsearch(true)
+    return new Promise(async(resolve,reject)=>{
         try {
+            setitemid()
+            setproducts()
+            let medicines = []
+            setloadsearch(true)
             await axios.get(`${url}/stock/list?search=${search}&location_id=${clinicID}`).then((response) => {
-                let medicines = []
-                let vaccines = []
-                let items = []
                 medicines = response.data.data.medicines ? response.data.data.medicines : []
-                // vaccines.push(response.data.data.vaccines ? response.data.data.vaccines : [])
-                // items = medicines.concat(vaccines)
-                // items = items.flat()
-            
+
+                if (itemname != undefined && itemname.length > 0) {
+                    medicinesref.current.style.display = 'block';
+                } else {
+                    medicinesref.current.style.display = 'none';
+                }
+            //  filter(medicines) 
+            resolve(medicines)
+            })
+        } catch (e) {
+            Notiflix.Notify.warning(e.message)
+            reject(e)
+        } finally{
+            setloadsearch(false)
+        }
+    })
+}
+    async function filter(medicines){
+        return new Promise((resolve, reject) => {
+            let arr = []
+            try{
                 for(let i=0;i<medicines.length;i++){
                     for(let j=0;j<medicines[i].stock_info.length;j++){
                         if(medicines[i].stock_info[j].is_consumable == 1){
@@ -117,18 +137,27 @@ const AddConsumables = (props) => {
                         }
                     }
                 }
+                resolve(arr)
+            }catch(e){
+                Notiflix.Notify.failure(e.message)
+                reject(e)
+            }finally{
                 setitemsearch(arr)
-                setloadsearch(false)
-                if (search.length > 0) {
-                    medicinesref.current.style.display = 'block';
-                } else {
-                    medicinesref.current.style.display = 'none';
-                }
-            })
-        } catch (e) {
-            Notiflix.Notify.warning(e.data.message)
-        }
+        
+            }
+        })
     }
+    async function main(search) {
+        try {
+          const data = await searchmeds(search);
+            filter(data).then((manipulatedData)=>{
+                setitemsearch(manipulatedData);
+            }) 
+        } catch (e) {
+            Notiflix.Notify.failure(e.message)
+        }
+      }
+      
     const searchmedbyId = async (search) => {
         if (search.length > 0) {
             setloadbyId(true)
@@ -148,7 +177,7 @@ const AddConsumables = (props) => {
             data[0] == doctorid ? setdoctorname(data[1]) : ''
         ))
     }, [doctorid])
-    
+
     function CalSellingCost(mrp, disc) {
         let cost = mrp
         if (!disc) {
@@ -209,9 +238,8 @@ const AddConsumables = (props) => {
     useEffect(() => {
         CalGrandttl2()
     }, [props.existedconsumables])
-    // useEffect(() => {
-    //     setnursenotes()
-    // }, [])
+
+
     function AddProducts(data) {
         let ProductDetails = {
             productid: data.id,
@@ -367,7 +395,8 @@ const AddConsumables = (props) => {
         }
     }
 
-    console.log(itemsearch);
+
+    console.log(itemsearch)
     return (
         <div className="container-fluid bg-seashell rounded-2 px-0 position-relative mx-auto col-lg-11 col-md-11 col-sm-11 col-11 col-xl-9" style-={{ height: '70vh' }}>
             <div className='position-relative mb-3 text-center shadow-sm'>
@@ -379,15 +408,13 @@ const AddConsumables = (props) => {
                 <div className="col-12 justify-content-center">
                     <div className="row p-0 m-0 my-2 justify-content-start">
                         <div className="col-4 position-relative">
-                            <input className='form-control bg-seashell fw-bold p-2 border-charcoal' placeholder='Search by Name'
+                            <input className='form-control bg-seashell fw-bold p-2 border-charcoal' disabled={loadsearch} placeholder='Search by Name'
                                 value={itemname ? itemname : ''}
-                                onChange={(e) => {
-                                    searchmeds(e.target.value);
-                                    setitemname(e.target.value);
-                                    setitemid();
-                                    setproducts();
-                                    // stockref.current.style.display = 'none'
-                                }} />
+                                onChange={(e)=>{
+                                    setitemname(e.target.value)
+                                    main(e.target.value)
+                                }}
+                                 />
                             <div className="position-absolute mt-1 bg-raffia">
                                 <div className="position-relative " style={{ width: '30vh' }}>
                                     <div ref={medicinesref} className='position-absolute scroll scroll-y rounded-1 ' style={{ Width: 'max-content', zIndex: '1', maxHeight: '40vh' }} >
@@ -424,7 +451,8 @@ const AddConsumables = (props) => {
                         </div>
                         <div className='col-auto text-burntumber text-center fw-bold align-self-center'> OR </div>
                         <div className="col-4 ">
-                            <input className='form-control bg-seashell border border-1 rounded-2 text-charcoal p-2 fw-bold border-charcoal' value={itemid ? itemid : ''} placeholder='Search by ID' onChange={(e) => { searchmedbyId(e.target.value); setitemid(e.target.value); medbyidref.current.style.display = 'block' }} />
+                        <input className='form-control bg-seashell border border-1 rounded-2 text-charcoal p-2 fw-bold border-charcoal' value={itemid ? itemid : ''} placeholder='Search by ID' 
+                        onChange={(e) => { searchmedbyId(e.target.value); setitemid(e.target.value); medbyidref.current.style.display = 'block' }} />
                             <div ref={medbyidref} className='position-absolute rounded-1 mt-1' style={{ Width: 'max-content', zIndex: '2' }} >
                                 {
                                     itembyid ? (

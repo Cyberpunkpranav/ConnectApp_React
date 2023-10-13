@@ -590,10 +590,12 @@ const togglecamera = ()=>{
   window.open('/scan/prescription','_blank')
 }
 const [prescriptions,setprescriptions] =useState([])
-
+const [presload,setpresload] =useState(false)
  async function get_docs(){
+  setpresload(true)
   const data = await Get_Document(props.appointmentid)
   setprescriptions(data)
+  setpresload(false)
   }
 useEffect(()=>{
   get_docs()
@@ -897,20 +899,30 @@ return (
     <div className={`stage4 d-${stage4} scroll`} style={{minHeight:'57vh'}}>
         <div className="container px-3">
         <h5 className="text-charcoal fw-bold mb-3">Bill & Prescription</h5>
-        {/* <div className="container p-0 m-0 mb-3">
+        <div className="container p-0 m-0 mb-3">
+          <button className="btn p-0 m-0 justify-content-end fw-bold" onClick={()=>get_docs()}><img className='img-fluid' src={process.env.PUBLIC_URL+'/images/refresh.png'}/>Referesh Prescriptions</button>
             <div className="row p-0 m-0 bg-pearl rounded-2">
               {
                 prescriptions?(
-                  prescriptions && prescriptions.map((Data,i)=>(
-                    <div className="col "key={i}><img src={`https://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/assets/scanned_documents/${Data.file}`} className="img-fluid" style={{width:'8rem'}}/></div>
-                  ))
+                  presload ?(
+                    <div className="col-6 py-2 pb-2 m-auto text-center">
+                    <div class="spinner-border" role="status">
+                      <span class="visually-hidden">Loading...</span>
+                    </div>
+                  </div>
+                  ):(
+                    prescriptions && prescriptions.map((Data,i)=>(
+                      <div className="col "key={i}><img src={`https://aartas-qaapp-as.azurewebsites.net/aartas_uat/public/assets/scanned_documents/${Data.file}`} className="img-fluid" style={{width:'8rem'}}/></div>
+                    ))
+                  )
+           
                 ):(
                   <div className="text-center text-charcoal75 py-4 fw-bold d-flex align-items-center justify-content-center">No prescriptions Scanned</div>
                 )
             
               }
             </div>
-        </div> */}
+        </div>
 
             <button className="button button-charcoal" onClick={()=>{togglecamera()}}>Scan Prescription</button>
 
