@@ -6,7 +6,7 @@ import 'react-image-crop/dist/ReactCrop.css'
 import '../../css/bootstrap.css'
 import Webcam from 'react-webcam'
 import axios from "axios";
-
+import { Get_Document } from "../Today/fetch_apis";
   
   const Camera = (props) => {
     const url = useContext(URL);
@@ -152,20 +152,19 @@ import axios from "axios";
     setload(true)
     axios.post(`${url}/save/document`, formData, {headers: { 'Content-Type': 'multipart/form-data', }})
       .then((response) => {
-        console.log('File uploaded successfully:', response.data);
         if(response.data.status==true){
           Notiflix.Notify.success('Prescription Uploaded Successfully')
           setTimeout(Close_window, 2000);
+          Get_Document(appointmentId)
           setload(false)
         }
       })
       .catch((error) => {
         // Handle errors
-        console.error('Error uploading file:', error);
+        Notiflix.Notify.failure('Error uploading file:');
         setload(false)
       });
   }
-  console.log(editor)
     return (
       <>
 

@@ -3,9 +3,11 @@ import { Link } from "react-router-dom"
 import { useState, useEffect, useContext, createContext } from "react";
 // import { w3cwebsocket as websocket } from 'websocket'
 import { Timecard, DoctorSchedule } from '../Today/Doctor'
+import { timer_notify } from '../features/timer_notify';
 //Context APIs
-import { Permissions } from '../../index'
+import { Permissions,URL } from '../../index'
 //Components
+import '../features/timeout_notifications';
 import { AddDoctorSlot } from '../Today/AddDoctorSlot'
 //css
 import '../../css/dashboard.css'
@@ -13,6 +15,7 @@ import '../../css/dashboard.css'
 const DOCTORNAME = createContext()
 const DOCTORID = createContext()
 function Doctorsection(props) {
+  const url = useContext(URL)
   const permission = useContext(Permissions)
   const [Docval, setDocval] = useState(0)
   const [Doctor, setDoctor] = useState(0)
@@ -31,7 +34,7 @@ function Doctorsection(props) {
       setDocval(0)
       setdoctorform("none");
     }
-  };
+  }
 
   function getindexes() {
     for (let j = 0; j < doctorindex.length; j++) {
@@ -43,17 +46,20 @@ function Doctorsection(props) {
     }
   }
   getindexes()
+
   const doctor_wise_appointment_count= (doc_id)=>{
     let appointments = []
     if(props.appointment_data !=undefined){
       for(let j=0;j<props.appointment_data.length;j++){
         if(doc_id== props.appointment_data[j].doctor_id){
-          appointments.push( props.appointment_data[j])
+          appointments.push(props.appointment_data[j])
         }
   }
 }
   return appointments.length
 }
+
+
   return (
     <>
       <div className="container-fluid doctorsection p-0 m-0 mt-1 ps-1 scroll">
@@ -73,7 +79,7 @@ function Doctorsection(props) {
                       style={{ fontSize: '0.9rem' }}
                       autoFocus={i === Doctor ? true : false}
                       onFocus={() => { setDoctorID(data[0]); setDoctorName(data[1]); setDocClinic(data[2]) }}
-                      value={`${data[0]}.${data[1]}`} onClick={(a) => { setDoctor(i); setDoctorID(data[0]); setDoctorName(data[1]); }}>{`Dr. ${data[1]}`}<span className='ms-2 px-1 text-lightyellow '>{doctor_wise_appointment_count(data[0])}</span> </button>
+                      value={`${data[0]}.${data[1]}`} onClick={(a) => { setDoctor(i); setDoctorID(data[0]); setDoctorName(data[1]); }}>{`Dr. ${data[1]}`}<span className='ms-2 px-1 text-lightyellow '>{doctor_wise_appointment_count(data[0])} {timer_notify(data[0])==1?<span className='m-0 p-0 ms-2'><img src={process.env.PUBLIC_URL+'/images/time_on.png'} className='img-fluid p-0 m-0' style={{width:'0.8rem'}}/></span>:<span></span>}</span> </button>
                   </div>
                   <div className='vr rounded-1 h-75 align-self-center' style={{ padding: '0.8px' }}></div>
                 </>

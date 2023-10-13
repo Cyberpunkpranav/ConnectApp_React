@@ -8,7 +8,7 @@ import {ReactCrop } from 'react-image-crop'
 import 'react-image-crop/dist/ReactCrop.css'
 import '../../css/bootstrap.css'
 import Webcam from 'react-webcam'
-
+import { Get_Document } from "./fetch_apis";
 const Bill = (props) => {
   const url = useContext(URL);
   localStorage.setItem('appointmentid',props.appointmentid)
@@ -289,7 +289,6 @@ const Bill = (props) => {
           .post(`${url}/appointment/save/charges`, Data)
           .then((response) => {
             props.Appointmentlist();          
-            console.log(response)
             if(response.data.status == true){
               setload(false);
               toggleStage3()
@@ -350,15 +349,15 @@ const Bill = (props) => {
   };
   async function AdvancePayments() {
     setloadadvancepayments(true);
-    axios
-      .post(`${url}/advance/balance`, {
+    axios.post(`${url}/advance/balance`, {
         patient_id: props.patientid,
       })
       .then((response) => {
-        console.log(response)
           setadvancepayments(response.data.data);
           setloadadvancepayments(false);
-      });
+      }).catch((e)=>{
+        Notiflix.Notify.failure(e.message)
+      })
   }
   const ConsumableAmount = () => {
     let consumables_amount = []
@@ -462,21 +461,24 @@ const Bill = (props) => {
         admin_id: adminid
       }).then((response) => {
         if(response.data.status == true){
+          Notiflix.Loading.remove()
           Notiflix.Notify.success(response.data.message)
           props.Appointmentlist();  
-          Notiflix.Loading.remove()
           window.open(response.data.data.bill_url, '_blank', 'noreferrer');
         }else{
-          Notiflix.Notify.failure(response.data.message)
           Notiflix.Loading.remove()
+          Notiflix.Notify.failure(response.data.message)
+
         }    
 
       })
     } catch (e) {
-      Notiflix.Notify.failure(e.message)
       Notiflix.Loading.remove()
+      Notiflix.Notify.failure(e.message)
+  
     }
   }
+
   const Generate_Prescription = async (id) => {
     Notiflix.Loading.circle('Generating Prescription', {
       backgroundColor: 'rgb(242, 242, 242,0.5)',
@@ -491,19 +493,20 @@ const Bill = (props) => {
         if(response.data.status == true){
           Notiflix.Notify.success(response.data.message)
           props.Appointmentlist();  
-          Notiflix.Loading.remove()
           window.open(response.data.data.prescription_pdf, '_blank', 'noreferrer');
         }else{
           Notiflix.Notify.failure(response.data.message)
-          Notiflix.Loading.remove()
         }
-
+      }).catch((e)=>{
+        Notiflix.Loading.remove()
+        Notiflix.Notify.failure(e.message)
       })
     } catch (e) {
-      Notiflix.Notify.failure(e.message)
       Notiflix.Loading.remove()
+      Notiflix.Notify.failure(e.message)
     }
   }
+
   const Send_On_WhatsApp = async (id, phone, check) => {
     let checkpres = check
     if (phone == undefined || phone == null) {
@@ -570,160 +573,33 @@ const Bill = (props) => {
     }
 
   }
-  const [OnWhatsapp,setOnWhatsapp] = useState()
-  const On_Whatsapp = ()=>{
-    try{
-      axios.post(`${url}/check/contact/on/whatsapp`,{
-        phone_number:props.phone_number
-      }).then((response)=>{
-        setOnWhatsapp(response.data.data)
-      })
-    }catch(e){
-      Notiflix.Notify.failure(e.message)
-    }
-  }
+  // const [OnWhatsapp,setOnWhatsapp] = useState()
+  // const On_Whatsapp = ()=>{
+  //   try{
+  //     axios.post(`${url}/check/contact/on/whatsapp`,{
+  //       phone_number:props.phone_number
+  //     }).then((response)=>{
+  //       setOnWhatsapp(response.data.data)
+  //     })
+  //   }catch(e){
+  //     Notiflix.Notify.failure(e.message)
+  //   }
+  // }
 
 const togglecamera = ()=>{
   window.open('/scan/prescription','_blank')
 }
 const [prescriptions,setprescriptions] =useState([])
-const Get_Document=()=>{
-  try{
-    axios.get(`${url}/all/document?appointment_id=${props.appointmentid}`).then((response)=>{
-      setprescriptions(response.data.data)
-    })
-  }catch(e){
-    Notiflix.Notify.failure(e.message)
+
+ async function get_docs(){
+  const data = await Get_Document(props.appointmentid)
+  setprescriptions(data)
   }
-}
 useEffect(()=>{
-  Get_Document()
-  On_Whatsapp()
+  get_docs()
+  // On_Whatsapp()
 },[])
-console.log(advancepayments)
-// const webcamRef = useRef(null);
-// const imgRef = useRef(null);
-// const[imgroll,setimgroll]=useState('none')
-// const [editor,seteditor] =useState('none')
-// const [imagearr,setimagearr] = useState([])
-// const [editindex, seteditindex] = useState(0)
-// const [image,setimage]=useState()
-// const [flip,setflip] =useState('environment')
-// const videoConstraints = {
-//   // width: 600,
-//   // height: 800,
-//   facingMode: flip
-// };
-// const capture = useCallback(  
-//   () => {
-//     const imageSrc = webcamRef.current.getScreenshot();
-//     if(imagearr.length>0){
-//         setimagearr(imageSrc)
-//         Notiflix.Notify.info('Photo Captured')
-//         toggleGallery()
-//     }else{
-//         setimagearr((prevState)=>[...prevState,imageSrc])
-//         Notiflix.Notify.info('Photo Captured')
-//         toggleGallery()
-//     }
-//   },
-//   [webcamRef]
-// );
 
-// const toggleGallery = ()=>{
-//     if(imgroll=='block'){
-//         setimgroll('none')
-      
-//     }
-//     if(imgroll == 'none'){
-
-//         setimgroll('block')
-//     }
-// }
-
-// const toggleedit=()=>{
-// if(editor=='none'){
-//   seteditor('')
-// }
-// if(editor==''){
-//   seteditor('none')
-// }
-// }
-// const [src, setSrc] = useState(null);
-// // const[croppedimg,setcroppedimg]=useState()
-// const [crop, setCrop] = useState({   unit: '%',
-// x: 25,
-// y: 25,
-// width: 100,
-// height:100 });
-// const [completedCrop, setCompletedCrop] = useState(null);
-// const imageRef = useRef(null);
-
-// const onSelectFile = (e) => {
-//   setSrc(imagearr[editindex])
-// };
-// const createImageRef = (src) => {
-//   const img = new Image();
-//   img.src = src;
-//   img.onload = () => {
-//     imageRef.current = img;
-//   };
-// };
-// useEffect(() => {
-//   if (src) {
-//     createImageRef(src);
-//   }
-// }, [src]);
-
-// const getCroppedImg = (image, crop, fileName) => {
-//   const canvas = document.createElement('canvas');
-//   const scaleX = image.naturalWidth / image.width;
-//   const scaleY = image.naturalHeight / image.height;
-//   canvas.width = crop.width;
-//   canvas.height = crop.height;
-//   const ctx = canvas.getContext('2d');
-
-//   ctx.drawImage(
-//     image,
-//     crop.x * scaleX,
-//     crop.y * scaleY,
-//     crop.width * scaleX,
-//     crop.height * scaleY,
-//     0,
-//     0,
-//     crop.width,
-//     crop.height
-//   );
-
-//   return new Promise((resolve, reject) => {
-//     canvas.toBlob((blob) => {
-//       if (!blob) {
-//         // Reject if the blob is null
-//         console.error('Canvas is empty');
-//         return;
-//       }
-//       blob.name = fileName;
-//       window.URL.revokeObjectURL(src);
-//       const imageUrl = window.URL.createObjectURL(blob);
-//       resolve(imageUrl);
-//     }, 'image/jpeg');
-//   });
-// };
-// const makeClientCrop = async (crop) => {
-//   if ( imageRef.current && crop.width && crop.height) {
-//     toggleedit()
-//     setCompletedCrop()
-//     togglecamera()
-//     const croppedImageUrl = await getCroppedImg(
-//       imageRef.current,
-//       crop,
-//       'prescription.jpeg'
-//     );
-//     // You can do something with the cropped image URL, like displaying it or saving it.
-//     // console.log(croppedImageUrl);
-//     setimage(croppedImageUrl)
-//   }
-// };
 
 return (
     <>
@@ -809,11 +685,6 @@ return (
                     <div className="col-auto p-0 m-0 ps-2 pe-1">
                       <h5 className=" p-0 m-0 text-charcoal fw-bolder"> Extra Charges </h5>
                     </div>
-                    {/* <div className="col-auto p-0 m-0">
-                      <button className="btn p-0 m-0 py-0" onClick={() =>AddCharges()} >
-                        <img src={process.env.PUBLIC_URL + "/images/add.png"} className="img-fluid" />
-                      </button>
-                    </div> */}
                   </div>
                   {props.isLoading ? (
                     <div className="col-6 py-2 pb-2 m-auto text-center">
@@ -1026,7 +897,7 @@ return (
     <div className={`stage4 d-${stage4} scroll`} style={{minHeight:'57vh'}}>
         <div className="container px-3">
         <h5 className="text-charcoal fw-bold mb-3">Bill & Prescription</h5>
-        <div className="container p-0 m-0 mb-3">
+        {/* <div className="container p-0 m-0 mb-3">
             <div className="row p-0 m-0 bg-pearl rounded-2">
               {
                 prescriptions?(
@@ -1039,8 +910,10 @@ return (
             
               }
             </div>
-        </div>
-          <button className="button button-charcoal" onClick={()=>{togglecamera()}}>Scan Prescription</button>
+        </div> */}
+
+            <button className="button button-charcoal" onClick={()=>{togglecamera()}}>Scan Prescription</button>
+
             <div className="row p-0 m-0 mt-4">
               <h6 className="fw-bold text-charcoal75 ps-0 ms-0">Generate Bill & Prescription</h6>
             <div className="col-auto ps-0 ms-0">
@@ -1050,7 +923,7 @@ return (
             <div className='vr rounded-1 align-self-center' style={{ padding: '0.8px' }}></div>
             </div>
             <div className="col-6">
-            <button className="button button-charcoal" onClick={()=>{Generate_Prescription(props.appointmentid)}}>Prescription</button>
+            <button className="button button-charcoal" onClick={()=>{Generate_Prescription(props.appointmentid)}}>Prescription</button> 
             </div>
             </div>
           <div className="row p-0 m-0 mt-4">

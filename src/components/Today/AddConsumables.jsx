@@ -48,6 +48,32 @@ const AddConsumables = (props) => {
         }
 
     }
+    let arr = []
+    let obj={
+         display_name:'',
+         CGST:'',
+         CGST_rate:'',
+         IGST:'',
+         IGST_rate:'',
+         SGST:'',
+         SGST_rate:'',
+         batch_no:'',
+         channel:'',
+         cost:'',
+         current_stock:'',
+         discount:"",
+         expiry_date : "",
+         free_qty:'',
+         id:'',
+         is_consumable:'',
+         medicine_id:'',
+         mfd_date:'',
+         mrp:'',
+         qty:'',
+         rate:'',
+         total_amount:''
+
+    }
     const searchmeds = async (search) => {
         setloadsearch(true)
         try {
@@ -55,13 +81,45 @@ const AddConsumables = (props) => {
                 let medicines = []
                 let vaccines = []
                 let items = []
-                medicines.push(response.data.data.medicines ? response.data.data.medicines : [])
-                vaccines.push(response.data.data.vaccines ? response.data.data.vaccines : [])
-                items = medicines.concat(vaccines)
-                items = items.flat()
-                setitemsearch(items)
+                medicines = response.data.data.medicines ? response.data.data.medicines : []
+                // vaccines.push(response.data.data.vaccines ? response.data.data.vaccines : [])
+                // items = medicines.concat(vaccines)
+                // items = items.flat()
+            
+                for(let i=0;i<medicines.length;i++){
+                    for(let j=0;j<medicines[i].stock_info.length;j++){
+                        if(medicines[i].stock_info[j].is_consumable == 1){
+                            obj={
+                                display_name:medicines[i].display_name,
+                                CGST:medicines[i].stock_info[j].CGST,
+                                CGST_rate:medicines[i].stock_info[j].CGST_rate,
+                                IGST:medicines[i].stock_info[j].IGST,
+                                IGST_rate:medicines[i].stock_info[j].IGST_rate,
+                                SGST:medicines[i].stock_info[j].SGST,
+                                SGST_rate:medicines[i].stock_info[j].SGST_rate,
+                                batch_no:medicines[i].stock_info[j].batch_no,
+                                channel:medicines[i].stock_info[j].channel,
+                                cost:medicines[i].stock_info[j].cost,
+                                current_stock:medicines[i].stock_info[j].current_stock,
+                                discount:medicines[i].stock_info[j].discount,
+                                expiry_date : medicines[i].stock_info[j].expiry_date,
+                                free_qty:medicines[i].stock_info[j].free_qty,
+                                id:medicines[i].stock_info[j].id,
+                                is_consumable:medicines[i].stock_info[j].is_consumable,
+                                medicine_id:medicines[i].id,
+                                mfd_date:medicines[i].stock_info[j].mfd_date,
+                                mrp:medicines[i].stock_info[j].mrp,
+                                qty:medicines[i].stock_info[j].qty,
+                                rate:medicines[i].stock_info[j].rate,
+                                total_amount:medicines[i].stock_info[j].total_amount
+                           }
+                            arr.push(obj)
+                        }
+                    }
+                }
+                setitemsearch(arr)
                 setloadsearch(false)
-                if (search.length > 1) {
+                if (search.length > 0) {
                     medicinesref.current.style.display = 'block';
                 } else {
                     medicinesref.current.style.display = 'none';
@@ -90,6 +148,7 @@ const AddConsumables = (props) => {
             data[0] == doctorid ? setdoctorname(data[1]) : ''
         ))
     }, [doctorid])
+    
     function CalSellingCost(mrp, disc) {
         let cost = mrp
         if (!disc) {
@@ -154,16 +213,10 @@ const AddConsumables = (props) => {
     //     setnursenotes()
     // }, [])
     function AddProducts(data) {
-        let T = ''
-        if (data.vaccine_brand_id) {
-            T = 'v'
-        } else {
-            T = 'm'
-        }
         let ProductDetails = {
             productid: data.id,
-            type: data.type ? data.type : T,
-            product: data.item_name ? data.item_name : itemname,
+            type: 'm',
+            product: data.display_name ? data.display_name : '',
             batch: data.batch_no,
             expiry: data.expiry_date,
             quantity: data.current_stock,
@@ -313,6 +366,8 @@ const AddConsumables = (props) => {
             Notiflix.Notify.warning(e.data.message)
         }
     }
+
+    console.log(itemsearch);
     return (
         <div className="container-fluid bg-seashell rounded-2 px-0 position-relative mx-auto col-lg-11 col-md-11 col-sm-11 col-11 col-xl-9" style-={{ height: '70vh' }}>
             <div className='position-relative mb-3 text-center shadow-sm'>
@@ -331,7 +386,7 @@ const AddConsumables = (props) => {
                                     setitemname(e.target.value);
                                     setitemid();
                                     setproducts();
-                                    stockref.current.style.dispzzzlay = 'none'
+                                    // stockref.current.style.display = 'none'
                                 }} />
                             <div className="position-absolute mt-1 bg-raffia">
                                 <div className="position-relative " style={{ width: '30vh' }}>
@@ -352,45 +407,15 @@ const AddConsumables = (props) => {
                                                             <p className={`text-start m-1 fw-bold text-charcoal75 ms-1`} style={{ fontSize: '0.8rem' }}>{itemsearch.length} Search Results</p>
                                                             {
                                                                 itemsearch.map((data, i) => (
-                                                                    <div style={{ cursor: 'pointer', Width: '10rem' }} className={`bg-${((i % 2) == 0) ? 'pearl' : 'seashell'} p-1 py-3 fw-bold border-bottom text-charcoal `}
-                                                                        onClick={(e) => { setproducts(data); setitemname(data.display_name ? data.display_name : data.name); setitemid(data.id); stockref.current.style.display = 'block' }}>{data.display_name ? data.display_name : data.name}<span className='text-burntumber fw-bold rounded-2 px-1'>{data && data.stock_info !== undefined ? data.stock_info.length : ""} stocks</span></div>
+            <div style={{ cursor: 'pointer', Width: '10rem' }} className={`bg-${((i % 2) == 0) ? 'pearl' : 'seashell'} p-1 py-3 fw-bold border-bottom text-charcoal `} 
+            onClick={(e) => { setproducts(data); AddProducts(data); setitemname(); setitemid();medicinesref.current.style.display='none'}}>
+                    {data.display_name ? data.display_name : data.display_name} | <span className='text-burntumber mx-2'>{data.batch_no?data.batch_no:''}</span>|<span className='ms-2'>{data.current_stock?data.current_stock+' current stocks':''}</span></div>
                                                                 ))
                                                             }
                                                         </div>
                                                     )
                                                 )
                                             ) : (<div className='bg-seashell'></div>)
-                                        }
-                                    </div>
-                                    <div ref={stockref} className={`position-absolute start-100 bg-pearl px-3 scroll scroll-y align-self-center rounded-1 border border-1 p-1 d-${products && products.stock_info && products.stock_info !== undefined ? 'block' : 'none'}`} style={{ marginTop: '0rem', zIndex: '2', 'width': '22vh', 'min-width': '30vh', 'height': '40vh' }}>
-                                        <p className={`text-start m-1 fw-bold text-charcoal75`} style={{ fontSize: '0.8rem' }}>{products && products.stock_info !== undefined ? products.stock_info.length : ''} Batch Stocks</p>
-                                        {
-                                            products && products.length !== 0 ? (
-                                                products && products.stock_info.length == 0 ? (
-                                                    <div className='text-white bg-burntumber p-2'>Oops ! Not Available</div>
-                                                ) : (
-                                                    products.stock_info.map((data, i) => (
-                                                        <div style={{ cursor: 'pointer', marginTop: '2%' }} className={`bg-${((i % 2) == 0) ? 'pearl' : 'seashell'} border-bottom p-2`}
-                                                            onClick={
-                                                                () => {
-                                                                    AddProducts(data);
-                                                                    setitemname();
-                                                                    setitemid();
-                                                                    setproducts();
-                                                                    setitemsearch()
-                                                                }}>
-                                                            <h6 className='text-start m-0 p-0 fw-bold text-wrap'>{itemname}</h6>
-                                                            <p className='p-0 m-0 px-1'>BatchNo. - <span className='fw-bold'>{data.batch_no && data.batch_no !== null ? data.batch_no : ''}</span></p>
-                                                            <p className='p-0 m-0 px-1'>Stock - <span className='fw-bold'>{data.current_stock && data.current_stock ? data.current_stock : ''}</span></p>
-                                                            <p className='p-0 m-0 px-1'>Expiry Date - <span className='fw-bold'>{data.expiry_date ? reversefunction(data.expiry_date) : ''}</span></p>
-                                                        </div>
-                                                    ))
-                                                )
-
-
-                                            ) : (
-                                                <div className="bg-seashell p-2">Not Avaliable</div>
-                                            )
                                         }
                                     </div>
                                 </div>

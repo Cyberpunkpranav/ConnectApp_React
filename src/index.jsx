@@ -6,6 +6,8 @@ import { createContext } from "react";
 import { lazy } from "react";
 import axios from "axios";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { timer_notify } from "./components/features/timer_notify";
+import { timeout_notification } from "./components/features/timeout_notifications";
 //css
 import "./css/dashboard.css";
 import "./css/appointment.css";
@@ -40,6 +42,9 @@ const TodayDocs = createContext();
 const Vitals = createContext();
 const Clinic = createContext();
 const Permissions = createContext();
+const Fetch_function = createContext()
+
+setInterval(timeout_notification,60000)
 
 function Connectapp(props) {
   const d = new Date();
@@ -83,7 +88,7 @@ function Connectapp(props) {
   async function fetchapi() {
     try {
       setLoading(true);
-      await axios.get(`${url}/doctor/list?clinic_id=${ClinicId}&limit=30&offset=0`).then(function (response) {
+      await axios.get(`${url}/doctor/list?clinic_id=${ClinicId}&limit=100&offset=0`).then(function (response) {
         let tempArray = response.data.data.doctor_list;
         setConnectDoctorapi(tempArray);
         for (let i = 0; i < tempArray.length; i++) {
@@ -126,6 +131,23 @@ function Connectapp(props) {
       setisWelcomeLoading(1);
       Notiflix.Report.failure(
         `${e.message}`,
+        "Please Check your Internet Connection and retry",
+        "Retry",
+        () => {
+          window.location.reload();
+        }
+      );
+    }
+  }
+  async function fetch_Doc_data() {
+    try {
+      await axios.get(`${url}/doctor/list?clinic_id=${ClinicId}&limit=100&offset=0`).then(function (response) {
+        let tempArray = response.data.data.doctor_list;
+        setConnectDoctorapi(tempArray);
+      });
+    } catch (e) {
+      Notiflix.Report.failure(
+        `${e.message}`, 
         "Please Check your Internet Connection and retry",
         "Retry",
         () => {
@@ -188,6 +210,7 @@ function Connectapp(props) {
     </div>
   ) : (
     <>
+    <Fetch_function.Provider value={fetch_Doc_data}>
       <Permissions.Provider value={props.permissions}>
         <Doctorapi.Provider value={ConnectDoctorapi}>
           <DoctorsList.Provider value={docapi}>
@@ -224,6 +247,7 @@ function Connectapp(props) {
           </DoctorsList.Provider>
         </Doctorapi.Provider>
       </Permissions.Provider>
+      </Fetch_function.Provider>
     </>
   );
 }
@@ -423,4 +447,4 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(<Switchpage />);
 // ReactDOM.render(<Switchpage />, document.getElementById("root"));
 
-export { TodayDate, URL, DoctorsList, Doctorapi, TodayDocs, Vitals, Clinic, Permissions };
+export { TodayDate, URL, DoctorsList, Doctorapi, TodayDocs, Vitals, Clinic, Permissions,Fetch_function };

@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import '../../css/dashboard.css'
 import '../../css/bootstrap.css'
+import { UpadteStatus } from './fetch_apis'
 import { Payments } from './Payments'
 const AmountPaid = (props) => {
+  const adminid = localStorage.getItem('id')
   const [openpayments, setopenpayments] = useState('none')
   const [totalAmount, setTotalAmount] = useState(0)
   const [paidpendingtotal, setpaidpending] = useState(0)
+  
   const calculate = () => {
     var data = props.appointmentData;
     if (data.payment_method != null) {
@@ -18,6 +21,7 @@ const AmountPaid = (props) => {
       }
     }
   }
+
   const CalculatePaidPendings = () => {
     let totalpaidpendings = []
     let pendingtotal = 0
@@ -34,16 +38,26 @@ const AmountPaid = (props) => {
     })
     setpaidpending(pendingtotal)
   }
+
+  const Change_status = async ()=>{
+    if(totalAmount != null && totalAmount !=undefined){
+      if(totalAmount + paidpendingtotal == props.appointmentData.total_amount && props.appointmentData.appointment_status < 7){
+         await UpadteStatus(props.appointmentData.id,8,adminid)
+          props.Appointmentlist()
+      }
+    }
+  }
+  useEffect(()=>{
+    Change_status()
+  },[totalAmount + paidpendingtotal == props.appointmentData.total_amount])
   useEffect(() => {
     calculate()
     CalculatePaidPendings()
   }, [])
-
+  
   return (
     totalAmount != null ? (
       totalAmount + paidpendingtotal == props.appointmentData.total_amount ? (
-
-
         <div className='text-white bg-lightgreen d-inline-block px-2 fw-normal rounded-2' style={{ letterSpacing: '1px' }}>Paid ₹{Number(totalAmount) + Number(paidpendingtotal)}</div>
         // <div className="ms-1 btn button-sm rounded-1 button-lightgreen fw-bold" style={{ fontSize: '0.75rem', letterSpacing: '0.5px', padding: '0.12rem' }}>{Number(totalAmount) + Number(paidpendingtotal)} Done</div>
       ) : (

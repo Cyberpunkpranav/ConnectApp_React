@@ -163,120 +163,7 @@ const Bill = (props) => {
         }
 
     }
-    async function SaveBill() {
-        let GrandTotal = Get_Grand_Total()
-        GrandTotal = Number(GrandTotal)
-        let Docfee = Number(props.doctorfee)
-        let DoctorDiscount = Number(docdiscount)
-        let AartasDiscount = Number(aartasdiscount)
-        let TotalCGST = Get_total_Seperate_gsts();
-        let TotalSGST = Get_total_Seperate_gsts()
-        let Description = []
-        let TotalAmount = []
-        let Discount = []
-        let Grossamount = []
-        let DiscountedAmount = []
-        let ids = []
-        let gstrate = [];
-            for (let i = 0; i < extrachargecount.length; i++) {
-            Description.push(extrachargecount[i].description)
-            TotalAmount.push(Number(extrachargecount[i].amount))
-            Discount.push(Number(extrachargecount[i].discount))
-            DiscountedAmount.push(Number(extrachargecount[i].amount) - Number(extrachargecount[i].discount))
-            if (extrachargecount[i].id) {
-                ids.push(Number(extrachargecount[i].id))
-            }
-            if (extrachargecount[i].cgst && extrachargecount[i].sgst) {
-                gstrate.push(Number(extrachargecount[i].cgst + extrachargecount[i].sgst))
-            } else {
-                gstrate.push(0)
-            }
-            Grossamount.push(extrachargecount[i].gross_amount)
-        }
-        let Paymentmethod = [];
-        let Paymentmethodsvalue = []
-        for (let j = 0; j < paymentmethods.length; j++) {
-            Paymentmethod.push(paymentmethods[j].paymentmethod)
-            Paymentmethodsvalue.push(Number(paymentmethods[j].amount))
-        }
-        let Data = {
-            appointment_id: props.appointmentid,
-            g_total_main: GrandTotal,
-            cons_fee: Docfee,
-            description: Description,
-            total_amount: TotalAmount,
-            discount: Discount,
-            amount: DiscountedAmount,
-            doc_dis: DoctorDiscount,
-            aartas_discount: AartasDiscount,
-            payment_method: Paymentmethod,
-            payment_method_main: Paymentmethod,
-            payment_method_details: Paymentmethodsvalue,
-            SGST: Number(TotalSGST),
-            CGST: Number(TotalCGST),
-            admin_id: Number(adminid),
-            cons_text: constext,
-            add_to_cart: AtC,
-            show_cons_fee: AddConsAmt == props.doctorfee ? 1 : 0,
-            ot_id: ids,
-            gst_rate: gstrate,
-            final_amount: Grossamount
-        }
-        async function Payment() {
-            try {
-                setload(true)
-                await axios.post(`${url}/appointment/save/charges`, Data).then((response) => {
-                    props.Appointmentlist()
-                    props.setsingleload(0);
-                    setextrachargecount([])
-                    Notiflix.Notify.success(response.data.message)
-                    setload(false)
-                })
-            } catch (e) {
-                Notiflix.Notify.failure(e.message)
-                setload(false)
-            }
 
-        }
-        Payment()
-    }
-    const confirmmessage = (e) => {
-        customconfirm()
-        Notiflix.Confirm.show(
-            `Add Charges and Payments`,
-            `Do you surely want to add the following Charges and Payments with Grand Total ${Get_Grand_Total()}`,
-            'Yes',
-            'No',
-            () => {
-                setAtC(0)
-                SaveBill()
-
-            },
-            () => {
-                return 0
-            },
-            {
-            },
-        );
-    }
-    const AddtoCart = () => {
-        customconfirm()
-        Notiflix.Confirm.show(
-            `Add Charges and Payments in Cart`,
-            `Do you surely want to add the following Charges and Payments with Grand Total ${Get_Grand_Total()} in Cart`,
-            'Yes',
-            'No',
-            () => {
-                setAtC(1)
-            },
-            () => {
-                setAtC(0)
-
-            },
-            {
-            },
-        );
-    }
     async function AdvancePayments() {
         setloadadvancepayments(true)
         axios.post(`${url}/advance/balance`, {
@@ -315,11 +202,13 @@ const Bill = (props) => {
         ConsumableAmount()
     }, [])
     return (
-        <div className='bg-seashell p-0 m-0'>
-            <h5 className='text-charcoal mt-2 fw-bold text-start ps-3'>{props.patientname} Bill</h5>
+        <div className='bg-seashell p-0 m-0 position-relative' style={{minHeight:'100%'}}>
+            <div className="shadow-sm pt-2 pb-1">
+            <h5 className='text-charcoal fw-bold text-center ps-3'>{props.patientname} Bill</h5>
             <button className='btn btn-close position-absolute top-0 end-0 me-2 mt-1 ' onClick={() => { props.toggle_bill() }}></button>
-            <hr className='p-0 m-0' />
-            <div className='scroll'>
+            </div>
+
+            <div className='scroll' style={{minHeight:'60vh',maxHeight:'40vh'}}>
                 {
                     props.isLoading ? (
                         <div className="col-6 py-2 pb-2 m-auto text-center">
@@ -387,6 +276,7 @@ const Bill = (props) => {
                                                 </div>
                                             </div>
                                         ) : (
+                                            extrachargecount && extrachargecount.length>0 ? (
                                             extrachargecount.map((data, i) => (
                                                 <div className="container-fluid p-0 m-0">
                                                     <div className="row p-0 m-0">
@@ -425,6 +315,9 @@ const Bill = (props) => {
                                                     </div>
                                                 </div>
                                             ))
+                                            ):(
+                                                <p className='text-center text-charcoal75 fw-bold'>No extra charges added</p>
+                                            )
                                         )
 
                                     }
@@ -539,7 +432,6 @@ const Bill = (props) => {
                                                 <input className='form-control bg-seashell py-1 fw-bold border-0' disabled={true} value={data.amount} onChange={(e) => { data.amount = e.target.value; setpaymentmethods(prevState => [...prevState]) }} />
                                             </div>
                                             <div className="col-2">
-                                                <button className='btn d-none btn-sm p-0 m-0' onClick={() => { DeletePaymentMethods(i); setpaymentmethods(prevState => [...prevState]) }}><img src={process.env.PUBLIC_URL + '/images/delete.png'} className='img-fluid' style={{ width: '1rem' }} /></button>
                                             </div>
                                         </div>
                                     ))
@@ -551,7 +443,9 @@ const Bill = (props) => {
                 }
 
                 <hr />
-                <div className="container-fluid p-0 m-0 bg-seashell position-sticky bottom-0  pb-2" style={{ marginTop: '2vh' }}>
+
+            </div>
+            <div className="container-fluid position-absolute bottom-0 p-0 m-0 bg-seashell" style={{ marginTop: '2vh' }}>
                     {
                         load ? (
                             <div className="col-6 py-2 pb-2 m-auto text-center">
@@ -560,23 +454,22 @@ const Bill = (props) => {
                                 </div>
                             </div>
                         ) : (
-                            <div className="row p-0 m-0 text-center">
+                            <div className="row bg-pearl  p-0 m-0 py-2 align-items-center text-center justify-content-between">
                                 <div className='col-4 align-self-end text-start'>
                                     <label className=' fw-bolder text-charcoal text-wrap text-start'>Grand Total</label>
-                                    <div className='form-control rounded-1 text-burntumber fs-6 text-start border-0 fw-bolder p-0 bg-seashell'  >{Get_Grand_Total()}</div>
+                                    <div className='form-control rounded-1 text-burntumber fs-6 text-start border-0 fw-bolder p-0 bg-pearl'  >{Get_Grand_Total()}</div>
                                 </div>
-                                <div className="col-4 justify-content-center">
-                                    <button className='button button-charcoal' onClick={confirmmessage}>Save</button>
+                                <div className="col-auto justify-content-center">
+                                    <button className='button button-charcoal' onClick={()=>props.toggle_bill()}>Close</button>
                                 </div>
-                                <div className="col-4 justify-content-center">
+                                {/* <div className="col-4 justify-content-center">
                                     <button className='button button-pearl' onClick={AddtoCart}>Add to Cart</button>
-                                </div>
+                                </div> */}
                             </div>
                         )
                     }
 
                 </div>
-            </div>
         </div>
     )
 }

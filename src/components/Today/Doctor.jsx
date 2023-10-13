@@ -2,7 +2,7 @@ import React, { createContext } from "react";
 import axios from "axios";
 import { useState, useEffect, useContext } from "react";
 import AmountPaid from './AmountPaid';
-import { URL, TodayDate, Clinic, Permissions } from '../../index'
+import { URL, TodayDate, Clinic, Permissions,Fetch_function } from '../../index'
 import Notiflix from 'notiflix';
 import { customconfirm } from "../features/notiflix/customconfirm";
 import { Loading } from 'notiflix/build/notiflix-loading-aio';
@@ -11,17 +11,19 @@ import '../../css/dashboard.css'
 import { SelectedTimeAppointment } from '../Appointments/SelectedTimeAppointment'
 import { AddSelectedDoctorSlot } from './SelectedDoctorSlot'
 import { Vitalsoperation } from "./Vitals";
-import { Payments } from "./Payments";
+import { Payments } from "./Payments";  
 import { Bill } from "./Bill";
 import { AddConsumables } from "./AddConsumables";
 import { SaleEntryForm } from '../pharmacy/pharmacy';
 import {Prescription} from './prescription';
 import { Generated_bill } from "./generated_bill";
+import { appointment_status } from "./fetch_apis";
+
 
 function DoctorSchedule(props) { 
   //Global Variables
   const url = useContext(URL)
-  const Date = useContext(TodayDate)
+  const todayDate = useContext(TodayDate)
   const permission = useContext(Permissions)
   const adminid = localStorage.getItem('id')
   const ClinicId = localStorage.getItem("ClinicId");
@@ -51,7 +53,7 @@ function DoctorSchedule(props) {
   const [nsef, setnsef] = useState("none");
   const[pindex,setpindex]=useState()
   const[bindex,setbindex]=useState()
-
+  const [status_appointment,setstatus_appointment] = useState([])
   // for UpdateAppointment
   const closeappointmentform = () => {
     if (appointmentform === "block") {
@@ -84,7 +86,7 @@ function DoctorSchedule(props) {
       messageColor: '#96351E',
       messageFontSize: '1.5rem'
     })
-    await axios.get(`${url}/appointment/list?clinic_id=${ClinicId}&doctor_id=${props.todayDoc[props._selected][0]}&from_date=${Date}&to_date=${Date}`).then((response) => {
+    await axios.get(`${url}/appointment/list?clinic_id=${ClinicId}&doctor_id=${props.todayDoc[props._selected][0]}&from_date=${todayDate}&to_date=${todayDate}`).then((response) => {
       setappointmentdata(response.data.data && response.data.data !=undefined ? response.data.data :[]);
       // setappointmentdata([]);
     })
@@ -100,7 +102,7 @@ function DoctorSchedule(props) {
       messageColor: '#96351E',
       messageFontSize: '1.5rem'
     })
-    await axios.get(`${url}/appointment/list?clinic_id=${ClinicId}&from_date=${Date}&to_date=${Date}`).then((response) => {
+    await axios.get(`${url}/appointment/list?clinic_id=${ClinicId}&from_date=${todayDate}&to_date=${todayDate}`).then((response) => {
       props.get_appointment_data(response.data.data && response.data.data !=undefined ? response.data.data :[])
       // setappointmentdata([]);
     })
@@ -121,25 +123,29 @@ function DoctorSchedule(props) {
       time = time.slice(1);
       time[3] = +time[0] < 12 ? ' AM ' : ' PM ';
       time[0] = +time[0] % 12 || 12;
-    }
+    } 
     return time.join('');
   }
-  let array = [[1, 'Pending', 'lightred'], [2, 'Booked', 'lightblue'], [3, 'Cancelled', 'lightred'], [4, 'QR Generated', 'light'], [5, 'Checked_in', 'brandy'], [6, 'Vitals Done', 'lightred'], [7, 'In_apppointment', 'lightyellow'], [8, 'Payment done', 'lightgreen'], [9, 'Unattained', 'lightyellow'], [10, 'Completed', 'lightgreen']]
+  let array = [[1, 'lightred'], [2, 'lightblue'], [3, 'lightred'], [4, 'light'], [5, 'brandy'], [6,'lightred'], [7, 'lightyellow'], [8, 'lightgreen'], [9, 'lightyellow'], [10, 'lightgreen']]
+
   function status(number) {
     let status
-    for (let i = 0; i < array.length; i++) {
-      if (number == array[i][0]) {
-        status = array[i][1]
-        break;
+    if(status_appointment!=undefined && status_appointment.length>0){
+      for (let i = 0; i < status_appointment.length; i++) {
+        if (number == status_appointment[i].id) {
+          status = status_appointment[i].title
+          break;
+        }
       }
     }
+
     return status
   }
   function status_color(number) {
     let status_color;
     for (let j = 0; j < array.length; j++) {
       if (number == array[j][0]) {
-        status_color = array[j][2]
+        status_color = array[j][1]
         break;
       }
     }
@@ -163,6 +169,9 @@ function DoctorSchedule(props) {
           Loading.remove()
           props.fetchapi()
           Notiflix.Notify.success(response.data.message)
+        }).catch((e)=>{
+          Loading.remove()
+          Notiflix.Notify.failure(e.message)
         })
       } catch (e) {
         Notiflix.Notify.failure(e.message)
@@ -231,8 +240,8 @@ function DoctorSchedule(props) {
       Notiflix.Loading.remove()
       Notiflix.Notify.warning(e.message)
     }
-
   }
+
   const confirmmessage = (name, id) => {
     customconfirm()
     Notiflix.Confirm.show(
@@ -297,6 +306,9 @@ function DoctorSchedule(props) {
         Notiflix.Notify.success(response.data.message)
         Appointmentlist()
         window.open(response.data.data.bill_url, '_blank', 'noreferrer');
+      }).catch((e)=>{
+        Notiflix.Loading.remove()
+        Notiflix.Notify.failure(e.message)
       })
     } catch (e) {
       Notiflix.Loading.remove()
@@ -312,14 +324,16 @@ function DoctorSchedule(props) {
       messageColor: '#96351E',
       messageFontSize: '1.5rem'
     })
-      axios.post(`${url}/swift/pdf`, {
+      await axios.post(`${url}/swift/pdf`, {
         appointment_id: id,
       }).then((response) => {
         Notiflix.Loading.remove()
-        Appointmentlist()
         Notiflix.Notify.success(response.data.message)
-
         window.open(response.data.data.prescription_pdf, '_blank', 'noreferrer');
+          Appointmentlist()
+      }).catch((e)=>{
+        Notiflix.Loading.remove()
+        Notiflix.Notify.failure(e.message)
       })
     } catch (e) {
       Notiflix.Loading.remove()
@@ -327,6 +341,7 @@ function DoctorSchedule(props) {
 
     }
   }
+
   const Send_On_WhatsApp = async (id, phone, check) => {
     let checkpres = check
     if (phone == undefined || phone == null) {
@@ -451,7 +466,16 @@ function DoctorSchedule(props) {
   }
   const toggle_Scannedbill = ()=>{
     setbindex()
+  }
+    async function getdata (){
+      if(status_appointment!=undefined && status_appointment.length==0){
+        const data = await appointment_status()
+        setstatus_appointment(data)
+       }
     }
+    useEffect(()=>{
+      getdata()
+    })
 
   return (
     <>
@@ -515,15 +539,16 @@ function DoctorSchedule(props) {
             <table className="table text-start">
               <thead className="p-0 m-0 px-2 bg-pearl">
                 <tr className="p-0 m-0 position-sticky text-charcoal75 top-0" style={{ fontSize: '0.75rem' }}>
-                  <th className="border-0 bg-pearl text-center" key={0}>Update</th>
-                  <th className="border-0 bg-pearl text-start" key={3}>Time</th>
-                  <th className="border-0 bg-pearl" key={2}>Patient</th>
-                  <th className="border-0 bg-pearl text-start px-3" key={1}>Status</th>
-                  <th className="border-0 bg-pearl" key={4}> Amount</th>
-                  <th className="text-center border-0 bg-pearl" key={6}>Vitals</th>
-                  <th className={`text-center border-0 bg-pearl d-${permission.appointment_charges_edit ? '' : 'none'}`} key={7}>Bill</th>
-                  <th className="border-0 bg-pearl text-center" key={9}>Consumables</th>
-                  <th className="border-0 bg-pearl text-center" key={9}>more</th>
+                  <th className="border-0 bg-pearl text-center">Update</th>
+                  <th className="border-0 bg-pearl text-center">Bill no.</th>
+                  <th className="border-0 bg-pearl text-start">Time</th>
+                  <th className="border-0 bg-pearl">Patient</th>
+                  <th className="border-0 bg-pearl text-start px-3">Status</th>
+                  <th className="border-0 bg-pearl"> Amount</th>
+                  <th className="text-center border-0 bg-pearl">Vitals</th>
+                  <th className={`text-center border-0 bg-pearl d-${permission.appointment_charges_edit ? '' : 'none'}`}>Bill</th>
+                  <th className="border-0 bg-pearl text-center">Consumables</th>
+                  <th className="border-0 bg-pearl text-center">more</th>
                 </tr>
               </thead>
               {
@@ -548,6 +573,7 @@ function DoctorSchedule(props) {
                                 <img src={process.env.PUBLIC_URL + "/images/confirmed.png"} alt="displaying_image" className="img-fluid" key={i} />
                               </button>
                             </td>
+                            <td className="py-0 text-start fw-bold" style={{ letterSpacing: '1px' }}>{data.bill_id ? 'C-'+data.bill_id:''}</td>
                             <td className="py-0 text-start fw-bold" style={{ letterSpacing: '1px' }}>{tConvert(data.timeslot.time_from)}</td>
                             <td className="py-0 ">
                               <div className="row p-0 m-0" style={{ width: 'fit-content' }}>
@@ -568,16 +594,11 @@ function DoctorSchedule(props) {
                                 <div className="col-5 p-0 m-0">
                                   <select disabled={permission.appointment_edit == 1 ? false : true} className={`bg-transparent border-0 text-start fw-bold `} name={data.id} onChange={(e) => { UpadteStatus(e) }}>
                                     <option className="fw-bold" selected disabled>{status(data.appointment_status)}</option>
-                                    <option key={0} className="button-lightred" value='1'>Pending</option>
-                                    <option key={1} className="button-lightblue" value='2'>Booked</option>
-                                    <option key={2} className="button-lightred" value='3'>Cancelled</option>
-                                    <option key={3} className="button-pearl" value='4'>QR Generated</option>
-                                    <option key={4} className="button-brandy" value='5'>Checked_in</option>
-                                    <option key={5} className="button-lightred" value='6'>Vitals Done</option>
-                                    <option key={6} className="button-lightyellow" value='7'>In_apppointment</option>
-                                    <option key={7} className="button-lightgreen" value='8'>Payment done</option>
-                                    <option key={8} className="button-lightyellow" value='9'>Unattained</option>
-                                    <option key={9} className="button-lightgreen" value='10'>Completed</option>
+                                    {
+                                      status_appointment && status_appointment.length > 0 && status_appointment.map((data)=>(
+                                        <option className="fw-bold" value={data.id}>{data.title}</option>
+                                      ))
+                                    }
                                   </select>
                                 </div>
                               </div>
@@ -596,7 +617,7 @@ function DoctorSchedule(props) {
                                   paymentsi == i ? (
                                     <>
                                       <div className="backdrop"></div>
-                                      <td className={`payments bg-seashell shadow-sm start-0 end-0 top-0 mx-auto border border-1 rounded-1 col-lg-6 col-md-10 col-sm-12 col-12 mt-2 col-xl-6 position-absolute px-5 py-2 d-${paymentsi == i ? paymentsform : 'none'}`} >
+                                      <td className={`payments bg-seashell shadow-sm start-0 end-0 top-0 p-0 m-0 mx-auto border border-1 rounded-1 col-lg-6 col-md-10 col-sm-12 col-12 mt-2 col-xl-6 position-absolute d-${paymentsi == i ? paymentsform : 'none'}`} >
                                         <Payments ClosePaymentsForm={ClosePaymentsForm2} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} appointmentid={data.id} patientid={data.patient && data.patient.id != null ? data.patient.id : ""} Appointmentlist={Appointmentlist} setsingleload={setsingleload} isLoading={isLoading} appointmentdata={appointmentdata} paymentsi={paymentsi} /></td>
                                     </>
 
@@ -728,6 +749,7 @@ export { DoctorSchedule };
 
 function Timecard(props) {
   const url = useContext(URL);
+  const fetch_func = useContext(Fetch_function)
   const clinics = useContext(Clinic)
   const [cardindex, setcardindex] = useState()
   const [rooms, setrooms] = useState([])
@@ -792,6 +814,8 @@ function Timecard(props) {
         }).then((response) => {
           setstartload(false)
           Notiflix.Notify.success(response.data.message)
+          fetch_func()
+          // timer_notify(props.docid)
         })
         await fetchapi();
 
@@ -817,9 +841,12 @@ function Timecard(props) {
         log_id: log_id
       }).then((response) => {
         Notiflix.Notify.success(response.data.message)
+        // timer_notify(props.docid)
+        fetch_func()
       })
       await fetchapi();
       setrefreshtimeslot(false)
+
     } catch (e) {
       Notiflix.Notify.failure(e.message)
       setrefreshtimeslot(false);

@@ -4,17 +4,20 @@ import axios from "axios"
 import AmountPaid from '../Today/AmountPaid'
 import { UpdateAppointment } from './UpdateAppointment'
 import { Prescription } from '../Today/prescription'
+import { Bill as TodayBill } from '../Today/Bill'
 import { Bill } from './Bill'
 import '../../css/appointment.css'
 import { Payments } from './Payments.jsx'
 import Notiflix from 'notiflix';
 import { customconfirm } from '../features/notiflix/customconfirm'
 import { Generated_bill } from '../Today/generated_bill'
+import { appointment_status } from '../Today/fetch_apis'
 //COntext APIs
-import { URL, Permissions } from '../../index'
+import { URL, Permissions,TodayDate } from '../../index'
 
 const AllAppointmentslist = (props) => {
     const url = useContext(URL);
+    const todaydate = useContext(TodayDate)
     const permission = useContext(Permissions);
     let adminid = localStorage.getItem('id')
     const [appointmentform, setappointmentform] = useState("none");
@@ -24,6 +27,8 @@ const AllAppointmentslist = (props) => {
     const [billindex, setbillindex] = useState()
     const [billform, setbillform] = useState('none')
     const[bindex,setbindex]=useState()
+    const [status_appointment,setstatus_appointment] = useState([])
+
     const closeappointmentform = () => {
         if (appointmentform === "block") {
             setappointmentform("none");
@@ -75,13 +80,15 @@ const AllAppointmentslist = (props) => {
                     status: e.target.value,
                     admin_id: adminid
                 }).then((response) => {
-                    props.fetchallAppointmentslist()
                     Notiflix.Loading.remove()
+                    props.fetchallAppointmentslist()
+          
                     Notiflix.Notify.success(response.data.message)
                 })
             } catch (e) {
-                alert(e)
                 Notiflix.Loading.remove()
+                alert(e)
+
             }
         } else {
             Notiflix.Notify.alert('Please try Again')
@@ -112,8 +119,13 @@ const AllAppointmentslist = (props) => {
             }).then((response) => {
                 Notiflix.Loading.remove()
                 Notiflix.Notify.success(response.data.message)
+                props.fetchallAppointmentslist()
+                props.setsingleload(0)
                 window.open(response.data.data.bill_url, '_blank', 'noreferrer');
   
+            }).catch((e)=>{
+                Notiflix.Loading.remove()
+                Notiflix.Notify.failure(e.message)
             })
         } catch (e) {
             Notiflix.Loading.remove()
@@ -129,18 +141,29 @@ const AllAppointmentslist = (props) => {
             messageFontSize: '1.5rem'
         })
         try {
-            axios.post(`${url}/swift/pdf`, {
+           await axios.post(`${url}/swift/pdf`, {
                 appointment_id: id,
             }).then((response) => {
                 Notiflix.Loading.remove()
                 Notiflix.Notify.success(response.data.message)
-                window.open(response.data.data.prescription_pdf, '_blank', 'noreferrer');
+                if(response.data.data.prescription_pdf){
+                    props.fetchallAppointmentslist()
+                    props.setsingleload(0)
+                    window.open(response.data.data.prescription_pdf, '_blank', 'noreferrer');
+                }
+   
+        
+             
+            }).catch((e)=>{
+                Notiflix.Loading.remove()
+                Notiflix.Notify.failure(e.message)
             })
         } catch (e) {
             Notiflix.Loading.remove()
             Notiflix.Notify.failure(e.message)
           
         }
+         
     }
     const Send_On_WhatsApp = async (id, phone, check) => {
         let checkpres = check
@@ -159,13 +182,13 @@ const AllAppointmentslist = (props) => {
                     check_pres: checkpres,
                     admin_id: adminid
                 }).then((response) => {
-                    
-                    Notiflix.Notify.success(`${response.data.message}${checkpres == 1 ? ' with Prescription' : ' without Prescription'}`)
                     Notiflix.Loading.remove()
+                    Notiflix.Notify.success(`${response.data.message}${checkpres == 1 ? ' with Prescription' : ' without Prescription'}`)
+                
                 })
             } catch (e) {
-                Notiflix.Notify.failure(e.message)
                 Notiflix.Loading.remove()
+                Notiflix.Notify.failure(e.message)
             }
         }
 
@@ -205,13 +228,14 @@ const AllAppointmentslist = (props) => {
                     check_bill: 1,
                     check_pre: checkpres,
                 }).then((response) => {
-                    
-                    Notiflix.Notify.success(`${response.data.message}${checkpres == 1 ? ' with Prescription' : ' without Prescription'}`)
                     Notiflix.Loading.remove()
+                    Notiflix.Notify.success(`${response.data.message}${checkpres == 1 ? ' with Prescription' : ' without Prescription'}`)
+        
                 })
             } catch (e) {
-                Notiflix.Notify.failure(e.message)
                 Notiflix.Loading.remove()
+                Notiflix.Notify.failure(e.message)
+  
             }
         }
 
@@ -237,6 +261,7 @@ const AllAppointmentslist = (props) => {
     const[pindex,setpindex]=useState()
     const [prescriptions,setprescriptions] =useState([])
     const[pload,setpload]=useState('none')
+
     const Get_Document=(id,i)=>{
       setpindex(i)
       try{
@@ -259,10 +284,24 @@ const AllAppointmentslist = (props) => {
     const toggle_Scannedbill = ()=>{
         setbindex()
         }
+        const togglecamera = (id)=>{
+            localStorage.setItem('appointmentid',id)
+            window.open('/scan/prescription','_blank')
+          }
+          async function getdata (){
+            if(status_appointment!=undefined && status_appointment.length==0){
+              const data = await appointment_status()
+              setstatus_appointment(data)
+             }
+          }
+          useEffect(()=>{
+            getdata()
+          },[])
+      
     return (
         <>
             {
-                props.isLoading == true ? (
+                props.singleload == 0 ? (
 
                     <div className='container text-center position-absolute start-0 end-0' >
                         <h4>Hold on its Loading</h4>
@@ -283,6 +322,7 @@ const AllAppointmentslist = (props) => {
                             <td className={`d-${permission.appointment_edit == 1 ? '' : 'none'} bg-${tableindex == key ? 'lightyellow' : ''} text-center ps-3`}>
                                 <img src={process.env.PUBLIC_URL + "/images/confirmed.png"}  onClick={(e) => { openapppointmentform(); settableindex(key) }} className="btn img-fluid p-0 m-0" />
                             </td>
+                            <td className='fw-bold text-charcoal'>{data.bill_id ? 'C-'+data.bill_id:""}</td>
                             <td className='text-start pe-5 pe-lg-0 '>
                                 <div className="row p-0 m-0 align-items-center text-wrap">
                                     <div className="col-1 p-0 m-0 me-2">
@@ -291,16 +331,11 @@ const AllAppointmentslist = (props) => {
                                     <div className="col-5 p-0 m-0 text-wrap ">
                                         <select disabled={permission.appointment_edit == 1 ? false : true} className={`bg-transparent fw-bold border-0 text-wrap `} name={data.id} onChange={(e) => { UpadteStatus(e) }}>
                                             <option className="button text-start" selected disabled>{props.status(data.appointment_status)}</option>
-                                            <option className="button-lightred" value='1'>Pending</option>
-                                            <option className="button-lightblue" value='2'>Booked</option>
-                                            <option className="button-lightred" value='3'>Cancelled</option>
-                                            <option className="button-pearl" value='4'>QR Generated</option>
-                                            <option className="button-brandy" value='5'>Checked_in</option>
-                                            <option className="button-lightred" value='6'>Vitals Done</option>
-                                            <option className="button-lightyellow" value='7'>In_apppointment</option>
-                                            <option className="button-lightgreen" value='8'>Payment done</option>
-                                            <option className="button-lightyellow" value='9'>Unattained</option>
-                                            <option className="button-lightgreen" value='10'>Completed</option>
+                                            {
+                                      status_appointment && status_appointment.length > 0 && status_appointment.map((data)=>(
+                                        <option className="fw-bold" value={data.id}>{data.title}</option>
+                                      ))
+                                    }
                                         </select>
                                     </div>
                                 </div>
@@ -322,7 +357,6 @@ const AllAppointmentslist = (props) => {
                                 <div className="col-auto text-burntumber">
                                     {data.follow_up_date ? 'F/U- ' + reversefunction(data.follow_up_date ? data.follow_up_date : '') : ''}
                                 </div>
-
                             </td>
                             <td className='text-charcoal fw-bold'>{data.timeslot && data.timeslot.time_from !== null ? props.tConvert(data.timeslot.time_from) : ''}</td>
                             <td className='text-charcoal fw-bold text-start' style={{ width: 'min-content' }}>
@@ -345,14 +379,32 @@ const AllAppointmentslist = (props) => {
                                         <img src={process.env.PUBLIC_URL + "/images/more.png"} alt="displaying_image" />
                                     </button>
                                     <ul className="dropdown-menu shadow-sm text-decoration-none p-0 m-0 p-2" style={{ '-webkit-appearance': 'none', width: 'max-content' }}>
-                                        <li className='dropdown-item fw-bold border-bottom p-0 m-0 align-items-center' onClick={() => { setbillindex(key); toggle_bill() }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + 'images/bill.png'} />Bill</li>
-                                        <li className={`dropdown-item fw-bold border-bottom p-0 m-0 align-items-center d-${permission.appointment_charges_edit == 1 ? '' : 'none'}`} onClick={() => { setpaymentindex(key); toggle_payments(); }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + 'images/rupee.png'} />Payments</li>
-                                        <li className={`d-${data.prescription_file==null?'none':''} dropdown-item fw-bold d-flex border-1 border-bottom p-0 m-0 align-items-center`} onClick={() =>Get_Document(data.id,key)}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/new_tab.png"} alt="displaying_image"/>View Prescription</li>
-                                        <li className={`d-${data.bill_file==null?'none':''} dropdown-item fw-bold d-flex border-1 border-bottom p-0 m-0 align-items-center`} onClick={() => { setbindex(key) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/confirmed.png"} alt="displaying_image" /> View Bill</li>
-                                        {/* <li className='dropdown-item fw-bold border-bottom p-0 m-0 align-items-center' onClick={() => { Generate_Bill(data.id) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" />Generate Bill</li>
-                                        <li className="dropdown-item fw-bold border-bottom p-0 m-0 align-items-center" onClick={() => { Generate_Prescription(data.id) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" /> Generate Prescription </li> */}
-                                        <li className="dropdown-item fw-bold border-bottom p-0 m-0 align-items-center" onClick={() => { Confirm_For_Prescription(data.id, data.patient.phone_number) }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/whatsapp.png"} alt="displaying_image" /> Send on Whats App </li>
-                                        <li className="dropdown-item fw-bold p-0 m-0 align-items-center" onClick={() => { Confirm_For_Prescription2(data.id, data.patient.phone_number) }}><img className='m-2 img-fluid ms-2' src={process.env.PUBLIC_URL + "/images/message.png"} alt="displaying_image"/>{' '}Send on SMS</li>
+                                <li className='dropdown-item fw-bold border-bottom p-0 m-0 align-items-center' onClick={() => { setbillindex(key); toggle_bill() }}><img className='m-2 img-fluid' src={process.env.PUBLIC_URL + 'images/bill.png'} />Bill</li> 
+
+
+                                    <li className={`d-${ todaydate == data.timeslot.date ? '':'none'} dropdown-item fw-bold border-bottom p-0 m-0 align-items-center`} onClick={() => { Generate_Bill(data.id) }}>
+                                    <img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" />Generate Bill</li>
+
+                                <li className={`d-${data.bill_file==null?'none':''} dropdown-item fw-bold d-flex border-1 border-bottom p-0 m-0 align-items-center`} onClick={() => { setbindex(key) }}>
+                                    <img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/confirmed.png"} alt="displaying_image" /> View Bill</li>
+
+
+                                    <li className="dropdown-item fw-bold d-flex border-1 border-bottom p-0 m-0 align-items-center" onClick={() =>togglecamera(data.id)}>
+                                        <img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/new_tab.png"} alt="displaying_image"/>Scan Prescription</li>
+
+                                <li className={`d-${ todaydate == data.timeslot.date ?'':'none'} dropdown-item fw-bold border-bottom p-0 m-0 align-items-center`} onClick={() => { Generate_Prescription(data.id) }}>
+                                    <img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/pdf.png"} alt="displaying_image" /> Generate Prescription </li>
+
+                                 <li className={`d-${data.prescription_file==null?'none':''} dropdown-item fw-bold d-flex border-1 border-bottom p-0 m-0 align-items-center`} onClick={() =>Get_Document(data.id,key)}>
+                                    <img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/new_tab.png"} alt="displaying_image"/>View Prescription</li>
+
+                                    <li className={`dropdown-item fw-bold border-bottom p-0 m-0 align-items-center d-${permission.appointment_charges_edit == 1 ? '' : 'none'}`} onClick={() => { setpaymentindex(key); toggle_payments(); }}>
+                                    <img className='m-2 img-fluid' src={process.env.PUBLIC_URL + 'images/rupee.png'} />Payments</li> 
+                                <li className="dropdown-item fw-bold border-bottom p-0 m-0 align-items-center" onClick={() => { Confirm_For_Prescription(data.id, data.patient.phone_number) }}>
+                                    <img className='m-2 img-fluid' src={process.env.PUBLIC_URL + "/images/whatsapp.png"} alt="displaying_image" /> Send on Whats App </li>
+
+                                <li className="dropdown-item fw-bold p-0 m-0 align-items-center" onClick={() => { Confirm_For_Prescription2(data.id, data.patient.phone_number) }}>
+                                    <img className='m-2 img-fluid ms-2' src={process.env.PUBLIC_URL + "/images/message.png"} alt="displaying_image"/>{' '}Send on SMS</li>
                                     </ul>
                                 </div></td>
                             {
@@ -371,15 +423,33 @@ const AllAppointmentslist = (props) => {
                                     <>
                                               <div className="backdrop"></div>
                                    
-                                    <td className={`bill d-${billindex == key ? billform : 'none'} bg-seashell col-lg-8 col-md-10 start-0 mx-auto end-0 top-0 col-sm-12 col-12 col-xl-6 border border-2 rounded-1 shadow-sm position-absolute`} style={{ zIndex: '3', marginTop: '6rem' }}>
-                                        <Bill fetchallAppointmentslist={props.fetchallAppointmentslist}
-                                            toggle_bill={toggle_bill}
+                                    <td className={`bill d-${billindex == key ? billform : 'none'} bg-seashell p-0 m-0 col-lg-8 col-md-10 start-0 top-0 mx-auto end-0 top-0 col-sm-12 col-12 col-xl-6 border border-2 rounded-1 shadow-sm position-absolute`} style={{ zIndex: '3', height:'70vh' }}>
+                            {
+                                todaydate == data.timeslot.date ? (
+                                    <>
+                                    <TodayBill fetchapi={props.fetchapi} 
+                            CloseBillForm={toggle_bill} 
+                            patientid={data.patient && data.patient.id != null ? data.patient.id : ""} 
+        phone_number = {data.patient != null && data.patient.phone_number != null ? data.patient.phone_number : ""} patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""} Appointmentlist={props.fetchallAppointmentslist} 
+        setsingleload={props.setsingleload} 
+        Data={data} 
+        appointmentdata={props.getAppointments} 
+        appointmentid={data.id} doctorfee={data.doctor.consulationFee} billform={billform}/>
+                                                </>
+                            ):(
+                                <>
+                            <Bill fetchallAppointmentslist={props.fetchallAppointmentslist}
+                                    toggle_bill={toggle_bill}
                                             patientid={data.patient && data.patient.id != null ? data.patient.id : ""}
                                             patientname={data.patient != null && data.patient.full_name != null ? data.patient.full_name : ""}
                                             appointmentdata={props.getAppointments[key]}
                                             appointmentid={data.id}
                                             doctorfee={data.doctor.consulationFee}
-                                            /></td>
+                                            />
+                                                </>
+                                            )
+                                        }
+                                   </td>
                                              </>
                                 ) : (<></>)
                             }

@@ -17,48 +17,8 @@ const SearchField = (props) => {
     const [patientname, setpatientname] = useState()
     const [appointmentform, setappointmentform] = useState("none")
     const [doctorid, setdoctorid] = useState([])
-    
-    // async function searchpatient() {
-    //     setsearchload(true)
-    //     setpatientid()
-    //     setpatientname()
-    //     await axios.get(`${url}/patient/list?search=${props.searchtext}&limit=5&offset=0`).then((response) => {
-    //         setsearchlist(response.data.data.patients_list)
-    //         setsearchload(false)
-    //     })
 
-    //     if (props.searchtext && props.searchtext.length > 1) {
-    //         setdisplaysearchlist('block')
-    //     } else {
-    //         setdisplaysearchlist('none')
-    //     }
-    // }
 
-    // async function searchpatient() {
-    //     try {
-    //         setsearchload(true)
-    //         setpatientid()
-    //         setpatientname()
-
-    //         await axios.get(`http://192.168.3.210:8080/Patient/Doctors/Appointments?search=${props.searchtext}`).then((response) => {
-                
-    //             setsearchlist(response.data.data.patient)
-    //             setsearchload(false)
-    //         })
-    //         if (props.searchtext && props.searchtext.length > 1) {
-    //             setdisplaysearchlist('block')
-    //         } else {
-    //             setdisplaysearchlist('none')
-    //         }
-    //     } catch (e) {
-    //         //    Notiflix.Notify.failure(e.message)
-    //         alert(e)
-    //     }
-
-    // }
-    // useEffect(() => {
-    //     searchpatient()
-    // }, [props.searchtext])
     const get_value = (e) => {
         setpatientid(e.target.name)
         setpatientname(e.target.value)

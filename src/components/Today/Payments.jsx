@@ -32,7 +32,7 @@ const Payments = (props) => {
     async function AdvancePayments() {
         setloadadvancepayments(true)
         axios.get(`${url}/get/balance/list?patient_id=${props.patientid?props.patientid:""}`).then((response) => {
-            setadvancepaid([response.data.data])
+            setadvancepaid(response.data.data['Advanve Balance'])
             setloadadvancepayments(false)
         })
     }
@@ -136,7 +136,6 @@ const Payments = (props) => {
             return date
         }
     }
-    console.log(advancepaid)
     return (
 
         <div className='container-fluid p-0 m-0'>
@@ -152,9 +151,8 @@ const Payments = (props) => {
 
                     ))
                 }
-
             </div>
-            <div className={`container-fluid p-0 m-0 ps-3 mt-4  d-${blocksindex === 0 ? 'block' : 'none'}`}>
+            <div className={`container-fluid  p-0 m-0 ps-3 mt-4  d-${blocksindex === 0 ? 'block' : 'none'}`}>
                 <h6 className='text-charcoal75 fw-bolder mt-2 mb-2'>Advance Payments from {props.patientname}</h6>
                 {
                     loadadvancepayments || props.isLoading ? (
@@ -164,23 +162,32 @@ const Payments = (props) => {
                             </div>
                         </div>
                     ) : (
-                        advancepaid ? (
-
+                        <div className="scroll scroll-y" style={{maxHeight:'25vh'}}>
+                            {
+                        advancepaid!==undefined && advancepaid ? (
+                            
                             <table className='border table rounded-1'>
-                                <thead className=''>
+                                <thead className='bg-seashell position-sticky top-0'>
                                     <th className='ps-2 text-charcoal75'>Description</th>
-                                    <th className='ps-2 text-charcoal75'>Amount</th>
+                                    <th className='ps-2 text-charcoal75'>date recieved</th>
+                                    <th className='ps-2 text-charcoal75'>Amount recieved</th>
                                 </thead>
                                 <tbody className='align-middle'>
                                     {
                                        advancepaid&& advancepaid.map((data)=>(
                                             <tr>
                                             <td className='text-charcoal fw-bold'>{data.description}</td>
-                                            <td className='text-charcoal fw-bold'>{data.credit_amount}</td>
+                                            <td className='text-charcoal fw-bold'>{reversefunction(data.date)}</td>
+                                            <td className='text-charcoal fw-bold'>₹{data.credit_amount}</td>
                                         </tr>
                                         ))
                                     }
-                    
+                                    <tr className='bg-pearl position-sticky bottom-0'>
+                                        <td className='fw-bold'>Total amount</td>
+                                        <td></td>
+                                        <td className='fw-bold text-success'>₹{advancepaid !=undefined && advancepaid[0] !=undefined ?advancepaid[0].balance:''}</td>
+                                    
+                                    </tr>
                                 </tbody>
 
                             </table>
@@ -194,7 +201,8 @@ const Payments = (props) => {
                         ) : (
                             <div className='bg-lightyellow fw-bolder rounded-1 p-2 m-1 mt-2 text-center'>No Advance Payments Found</div>
                         )
-
+}
+                        </div>
                     )
                 }
                 <h6 className='text-charcoal75 fw-bolder mb-2 mt-3'>Add Advance Payment</h6>

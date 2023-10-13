@@ -15,8 +15,8 @@ function Appointments(props) {
     const docnames = useContext(DoctorsList)
     //Appointments use state
     const [doctorid, setdoctorid] = useState()
-    const [fromdate, setfromdate] = useState()
-    const [todate, settodate] = useState()
+    const [fromdate, setfromdate] = useState(APIDate)
+    const [todate, settodate] = useState(APIDate)
     const [search,setsearch]=useState()
     //Selected Appointments use state
     const [isselectedLoading, setisselectedLoading] = useState()
@@ -26,27 +26,28 @@ function Appointments(props) {
     const [getAppointments, setgetAppointments] = useState([])
     const [isLoading, setisLoading] = useState()
     const [visibles, setvisibles] = useState([])
-
     const [pageindex,setpageindex] = useState("All")
     const[doctorname,setdoctorname]=useState('')
+    const [singleload,setsingleload] = useState(0)
+
     async function fetchallAppointmentslist() {
+        
         if (doctorid) {
             setgetAppointments([])
             try {
-                setisselectedLoading(true);
                 await axios.get(`${url}/appointment/list?clinic_id=${clinicID}&doctor_id=${doctorid}&from_date=${fromdate ? fromdate : APIDate}&to_date=${todate ? todate : fromdate ? fromdate : APIDate}&status=${type ? type : ''}`).then((response) => {
                     setappointmentdata(response.data.data)  
                 })
-                setisselectedLoading(false);
             } catch (e) {
                 alert(e)
             }
+            setsingleload(1)
         } else {
             setappointmentdata([])
             let listdata = []
             try {
                 setvisibles()
-                setisLoading(true)
+        
                 await axios.get(`${url}/appointment/list?clinic_id=${clinicID}&from_date=${fromdate ? fromdate : APIDate}&to_date=${todate ? todate : fromdate ? fromdate : APIDate}&status=${type ? type : ''}`).then((response) => {
                     setgetAppointments(response.data.data)
                     response.data.data.map((data) => {
@@ -54,20 +55,25 @@ function Appointments(props) {
                     })
                     setvisibles(listdata, [])
                 })
-                setisLoading(false)
+          
             } catch (e) {
                 alert(e)
             }
+            setsingleload(1)
         }
 
     }
-
+   async function fetchdata(){
+    setisLoading(true)
+    await fetchallAppointmentslist()
+    setisLoading(false)
+    }
     useEffect(() => {
-        fetchallAppointmentslist()
+        fetchdata()
     }, [])
 
     useEffect(() => {
-        fetchallAppointmentslist()
+        fetchdata()
     }, [doctorid, fromdate, todate, type,search])
 
 
@@ -113,7 +119,7 @@ function Appointments(props) {
 
     const clearfields = () => {
         setdoctorid()
-        setfromdate()
+        setfromdate(APIDate)
         setdoctorname()
         settodate()
     }
@@ -195,33 +201,6 @@ function Appointments(props) {
                                 </div>
                             </div>
                         </div>
-                        {/* <div className="col-12 col-sm-12 col-md-5 col-lg-6 col-xl-6 daterange">
-                            <div className="col-12 mt-3 mb-2">
-                                <img src={process.env.PUBLIC_URL + "/images/today.png"} className="img-fluid" alt="displaying_image" />
-                                <span className="text-burntumber fw-bold">Select Date Range</span>
-                                <button className="float-end button-sm button-burntumber mt-2" onClick={clearfields}>Clear</button>
-                            </div>
-                            <div className="d-flex g-md-3">
-                                <input placeholder="Start Date" className="form-control" value={fromdate ? fromdate : APIDate ? APIDate : ''} onFocus={() => { settodate(); setdoctorid();setdoctorname(); }} type="date" onChange={(e) => { setfromdate(e.target.value) }} />
-                                <div className="text-center">_</div>
-                                <input disabled={fromdate == null} value={todate ? todate : fromdate ? fromdate : APIDate ? APIDate : ''} placeholder="End Date" className="form-control" type="date" onChange={(e) => { settodate(e.target.value) }} />
-                            </div>
-                            <div className="col-12 mt-2">
-                                <h6 className="text-burntumber fw-bold">Select Doctor to see their appointments</h6>
-                                <select className="form-control" value={doctorid ? doctorid : ''} onChange={(e) => { setdoctorid(e.target.value) }}>
-                                    <option selected value="Select Doctor">Select Doctor</option>
-                                    {
-                                        visibles ? (
-                                            docnames.map((response, i) => (
-                                                <option className={`form-control text-charcoal`} key={i} value={response[0]} >Dr. {response[1]}{' '}{' '}{CountAppointments(response[0])}</option>
-                                            ))
-
-                                        ) : (<option>Loading..</option>)
-                                    }
-
-                                </select>
-                            </div>
-                        </div> */}  
                     </div>
                 </div>
                 <div className="position-relative">
@@ -230,6 +209,7 @@ function Appointments(props) {
                         <thead className="text-charcoal75 fw-bold">
                             <tr className=" bg-pearl position-sticky top-0">
                                 <th className={`text-center d-${permission.appointment_edit == 1 ? '' : 'none'}`}>Update</th>
+                                <th className="">Bill no.</th>
                                 <th className="">Status</th>
                                 <th>Patient</th>
                                 <th>Doctor Name</th>
@@ -241,12 +221,22 @@ function Appointments(props) {
                         </thead>
                         <tbody className="text-charcoal appointments ">
                             {
-                                doctorid ? (
-                                    <SelectedAppointments appointmentdata={appointmentdata} isselectedLoading={isselectedLoading} type={type} doctorid={doctorid} fromdate={fromdate} todate={todate} fetchallAppointmentslist={fetchallAppointmentslist} status={status} status_color={status_color} tConvert={tConvert} fetchapi={props.fetchapi} />
-                                ) : (
-
-                                    <AllAppointmentslist isLoading={isLoading} getAppointments={getAppointments} type={type} fromdate={fromdate} todate={todate} doctorid={doctorid} fetchallAppointmentslist={fetchallAppointmentslist} status={status} status_color={status_color} tConvert={tConvert} fetchapi={props.fetchapi} />
+                                isLoading ? (
+                                    <div className='container text-center position-absolute start-0 end-0' >
+                                    <h6 className="fw-bold text-charcoal75">Hold on its Loading</h6>
+                                    <div className="spinner-grow bg-secondary col-2" role="status">
+                                        <span className="visually-hidden">Loading...</span>
+                                    </div>
+                                </div>
+                                ):(
+                                    doctorid ? (
+                                        <SelectedAppointments appointmentdata={appointmentdata.reverse()} type={type} doctorid={doctorid} singleload={singleload} setsingleload={setsingleload} fromdate={fromdate} todate={todate} fetchallAppointmentslist={fetchallAppointmentslist} status={status} status_color={status_color} tConvert={tConvert} fetchapi={props.fetchapi} />
+                                    ) : (
+    
+                                        <AllAppointmentslist getAppointments={getAppointments.reverse()} singleload = {singleload} setsingleload={setsingleload} type={type} fromdate={fromdate} todate={todate} doctorid={doctorid} fetchallAppointmentslist={fetchallAppointmentslist} status={status} status_color={status_color} tConvert={tConvert} fetchapi={props.fetchapi} />
+                                    )
                                 )
+                          
                             }
                         </tbody>
                     </table>

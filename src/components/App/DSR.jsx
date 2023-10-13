@@ -4,7 +4,7 @@ import { Appointments_Dsr } from '../Dsr/Appointments_Dsr'
 import { Doctors_Dsr } from '../Dsr/Doctors_Dsr'
 import { Pharmacy_Dsr } from '../Dsr/Pharmacy_Dsr'
 import { URL, TodayDate, DoctorsList, Permissions } from '../../index'
-import { Livetime } from "../features/livetime"
+
 
 function DailySaleReport(props) {
   const permission = useContext(Permissions)
