@@ -165,8 +165,8 @@ function DoctorSchedule(props) {
           status: e.target.value,
           admin_id: adminid
         }).then((response) => {
-          Appointmentlist()
           Loading.remove()
+          Appointmentlist()
           props.fetchapi()
           Notiflix.Notify.success(response.data.message)
         }).catch((e)=>{
@@ -174,6 +174,7 @@ function DoctorSchedule(props) {
           Notiflix.Notify.failure(e.message)
         })
       } catch (e) {
+        Loading.remove()
         Notiflix.Notify.failure(e.message)
       }
     } else {
@@ -476,7 +477,7 @@ function DoctorSchedule(props) {
     useEffect(()=>{
       getdata()
     })
-
+  console.log(props.todayDoc);
   return (
     <>
       <section id="doctorscheduledata">

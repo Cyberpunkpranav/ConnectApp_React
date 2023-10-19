@@ -82,8 +82,10 @@ const AllAppointmentslist = (props) => {
                 }).then((response) => {
                     Notiflix.Loading.remove()
                     props.fetchallAppointmentslist()
-          
                     Notiflix.Notify.success(response.data.message)
+                }).catch((e)=>{
+                    Notiflix.Loading.remove()
+                    Notiflix.Notify.failure(e.message)
                 })
             } catch (e) {
                 Notiflix.Loading.remove()
@@ -364,9 +366,9 @@ const AllAppointmentslist = (props) => {
                                     ₹{data.total_amount && data.total_amount !== null ? data.total_amount : data.total_amount}
                                 </div>
                                 <div className="col-auto">
-                                    <AmountPaid appointmentData={data} />
+                                    <AmountPaid appointmentData={data} Appointmentlist = {props.fetchallAppointmentslist} />
                                 </div>
-                            </td>
+                            </td>   
 
                             {/* <td><img src={process.env.PUBLIC_URL + "/images/vitals.png"} alt="displaying_image" style={{ width: "1.5rem" }} className='m-0 p-0' /> </td> */}
                             {/* <td>

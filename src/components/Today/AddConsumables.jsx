@@ -395,8 +395,6 @@ const AddConsumables = (props) => {
         }
     }
 
-
-    console.log(itemsearch)
     return (
         <div className="container-fluid bg-seashell rounded-2 px-0 position-relative mx-auto col-lg-11 col-md-11 col-sm-11 col-11 col-xl-9" style-={{ height: '70vh' }}>
             <div className='position-relative mb-3 text-center shadow-sm'>
@@ -436,7 +434,7 @@ const AddConsumables = (props) => {
                                                                 itemsearch.map((data, i) => (
             <div style={{ cursor: 'pointer', Width: '10rem' }} className={`bg-${((i % 2) == 0) ? 'pearl' : 'seashell'} p-1 py-3 fw-bold border-bottom text-charcoal `} 
             onClick={(e) => { setproducts(data); AddProducts(data); setitemname(); setitemid();medicinesref.current.style.display='none'}}>
-                    {data.display_name ? data.display_name : data.display_name} | <span className='text-burntumber mx-2'>{data.batch_no?data.batch_no:''}</span>|<span className='ms-2'>{data.current_stock?data.current_stock+' current stocks':''}</span></div>
+                    {data.display_name ? data.display_name : data.display_name} | <span className='text-burntumber mx-2'>{data.batch_no?data.batch_no:''}</span>|<span className='ms-2'>{data.current_stock?data.current_stock+' stocks avaliable':''}</span></div>
                                                                 ))
                                                             }
                                                         </div>

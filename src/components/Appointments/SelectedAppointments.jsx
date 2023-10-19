@@ -442,7 +442,7 @@ const SelectedAppointments = (props) => {
                                 <>
                                 <div className="backdrop"></div>
                                 <td className={`saleentryform mx-auto col-xl-6 col-lg-8 col-md-10 p-0 m-0 position-absolute bg-seashell shadow-sm top-0 border border-1 rounded-1 start-0 end-0  d-${pindex == key ? pindex : 'none'}`} style={{ zIndex: '4', height: "70vh" }}  >
-                                <Prescription prescriptions={prescriptions} toggle_ScannedPres={toggle_ScannedPres} load={pload}/>
+                                <Prescription prescriptions={data.prescription_file} toggle_ScannedPres={toggle_ScannedPres} load={pload}/>
                                 </td>
                                 </>
                               ):(<></>)

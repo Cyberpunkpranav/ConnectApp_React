@@ -4103,25 +4103,7 @@ function Newpurchaseentryform(props) {
     IgsT = parseFloat(IgsT).toFixed(2);
     return IgsT;
   }
-
-  useEffect(() => {
-    CalculateGst();
-    setsgst(CalculateGst());
-    setcgst(CalculateGst());
-  }, [sgstprcnt]);
-
-  useEffect(() => {
-    CalculateIGst();
-    setigst(CalculateIGst());
-  }, [igstprcnt]);
-  useEffect(() => {
-    settotalamt(Calculate());
-  }, [Calculate()]);
-
-  useEffect(() => {
-    setcpu(CalculateCPU());
-  }, [CalculateCPU(), Calculate()]);
-
+  
   const searchmedAuto = async (search) => {
     await axios.get(`${url}/item/search?search=${search}`).then((response) => {
       let medicines = [];
@@ -4142,7 +4124,7 @@ function Newpurchaseentryform(props) {
         return "Please Select ID";
       }
     });
-  };
+  }
   const CalGST = (rate, cgst) => {
     let gst = 0;
     if (cgst && rate) {
@@ -4153,7 +4135,7 @@ function Newpurchaseentryform(props) {
     } else {
       return 0;
     }
-  };
+  }
   const Disc = (rate, dis) => {
     let disrate = 0;
     if (rate && dis) {
@@ -4162,7 +4144,7 @@ function Newpurchaseentryform(props) {
     } else {
       return 0;
     }
-  };
+  }
   const SubmitExcel = () => {
     if (Tableref.current.files[0].type == "application/vnd.ms-excel") {
       let SelectedFile = Tableref.current.files[0];
@@ -4174,7 +4156,7 @@ function Newpurchaseentryform(props) {
     } else {
       Notiflix.Notify.failure("Choose Only Excel File to Upload");
     }
-  };
+  }
   const ConvertExcel = async () => {
     let e = [];
     if (vendorid == 2) {
@@ -4278,7 +4260,7 @@ function Newpurchaseentryform(props) {
     } else {
       setMedicineentriesArr((prevState) => [...prevState, e]);
     }
-  };
+  }
   const ToggleNewMedicine = () => {
     if (NewMed == "block") {
       setNewMed("none");
@@ -4286,7 +4268,24 @@ function Newpurchaseentryform(props) {
     if (NewMed == "none") {
       setNewMed("block");
     }
-  };
+  }
+  useEffect(() => {
+    CalculateGst();
+    setsgst(CalculateGst());
+    setcgst(CalculateGst());
+  }, [sgstprcnt]);
+
+  useEffect(() => {
+    CalculateIGst();
+    setigst(CalculateIGst());
+  }, [igstprcnt]);
+  useEffect(() => {
+    settotalamt(Calculate());
+  }, [Calculate()]);
+
+  useEffect(() => {
+    setcpu(CalculateCPU());
+  }, [CalculateCPU(), Calculate()]);
   return (
     <div className=" p-0 m-0" style={{ zIndex: "2" }}>
         <div className="row p-0 m-0 p-2">
@@ -4606,7 +4605,7 @@ function Newpurchaseentryform(props) {
           </div>
         </div>
       </div>
-      <section className={`position-absolute top-0 start-0 end-0 d-${NewMed}`}>
+      <section className={`position-absolute bg-seashell top-0 start-0 end-0 d-${NewMed}`}>
         <NewMedicine ToggleNewMedicine={ToggleNewMedicine} />
       </section>
     </div>
@@ -5792,11 +5791,6 @@ function NewPurchaseReturnentryform(props) {
 }
 
 
-// export { Purchaseordersection };
-// export { POitemdetailssection };
-export { Purchasesection };
-export { Purchaseentrysection };
-export { PEitemdetailssection };
 
 //-------------------------------------------------------------------------Stock Info---------------------------------------------------------
 function Stocksection() {
@@ -7199,8 +7193,7 @@ function MedicineList() {
     </div>
   );
 }
-export { Stocksection}
-export { Listsection}
+
 
 function Transfersection(){
   const currentDate = useContext(TodayDate);
@@ -8677,7 +8670,7 @@ function NewTransferOutForm(props){
   )
 }
 
-export{Transfersection}
+
 
 function Dumpsection(props){
   const currentDate = useContext(TodayDate);
@@ -9019,7 +9012,7 @@ useEffect(() => {
 </>
   )
 }
-export {Dumpsection}
+
 function DumpItemDetails(props){
   const [medicine, setmedicine] = useState("block");
   const [vaccine, setvaccine] = useState("none");
@@ -9615,3 +9608,10 @@ function NewDumpForm(props){
     </section>
   )
 }
+export { Purchasesection }
+export { Purchaseentrysection }
+export { PEitemdetailssection }
+export { Stocksection}
+export { Listsection}
+export{Transfersection}
+export {Dumpsection}

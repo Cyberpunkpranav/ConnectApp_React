@@ -43,7 +43,10 @@ const AmountPaid = (props) => {
     if(totalAmount != null && totalAmount !=undefined){
       if(totalAmount + paidpendingtotal == props.appointmentData.total_amount && props.appointmentData.appointment_status < 7){
          await UpadteStatus(props.appointmentData.id,8,adminid)
+        //  if (props.Appointmentlist && typeof props.Appointmentlist === 'function') {
           props.Appointmentlist()
+        // }
+        
       }
     }
   }

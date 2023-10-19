@@ -98,7 +98,7 @@ const NewMedicine = (props) => {
     setimg()
   }
   return (
-    <div className='position-relative p-0 m-0 fw-bold'>
+    <div className='position-relative p-0 m-0 fw-bold bg-seashell'>
       <div className="shadow-sm">
       <h5 className='p-0 m-0 text-center py-2 fw-bold text-charcoal'>Add New Medicine</h5>
       <button className='btn btn-close position-absolute end-0 top-0 mt-1 me-1' onClick={props.ToggleNewMedicine}></button>

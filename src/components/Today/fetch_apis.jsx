@@ -35,9 +35,11 @@ export const Get_Document=async(appointment_id)=>{
         Notiflix.Loading.remove()
         res = response
       }).catch((e)=>{
+        Notiflix.Loading.remove()
         Notiflix.Notify.failure(e.message)
       })
     } catch (e) {
+      Notiflix.Loading.remove()
       Notiflix.Notify.failure(e.message)
     }
 

@@ -290,18 +290,15 @@ const Bill = (props) => {
           .then((response) => {
             props.Appointmentlist();          
             if(response.data.status == true){
-              setload(false);
+              Notiflix.Notify.success(response.data.message);  
               toggleStage3()
               toggleStage4()
-              Notiflix.Notify.success(response.data.message);  
+              setload(false);
             }else{
               setload(false);
               Notiflix.Notify.failure(response.data.message);  
             }
-               
-            
-            // props.CloseBillForm();
-          });
+          })
       } catch (e) {
         Notiflix.Notify.failure(e.message);
         setload(false);
@@ -440,6 +437,7 @@ const Bill = (props) => {
       setpaymentmethods([paymentmethoddetails]);
     }
   }
+
   function AddCharges() {
     if (extrachargecount && extrachargecount.length > 0) {
       setextrachargecount((prevState) => [...prevState, Charges]);
@@ -468,9 +466,9 @@ const Bill = (props) => {
         }else{
           Notiflix.Loading.remove()
           Notiflix.Notify.failure(response.data.message)
-
         }    
-
+      }).catch(()=>{
+        Notiflix.Loading.remove()
       })
     } catch (e) {
       Notiflix.Loading.remove()
@@ -525,17 +523,20 @@ const Bill = (props) => {
           admin_id: adminid
         }).then((response) => {
           if(response.data.status == true){
+            Notiflix.Loading.remove()
             Notiflix.Notify.success(`${response.data.message}${checkpres == 1 ? ' with Prescription' : ' without Prescription'}`)
-            Notiflix.Loading.remove()
+         
           }else{
-            Notiflix.Notify.failure(response.data.message)
             Notiflix.Loading.remove()
+            Notiflix.Notify.failure(response.data.message)
           }
 
+        }).catch(()=>{
+          Notiflix.Loading.remove()
         })
       } catch (e) {
-        Notiflix.Notify.failure(e.message)
         Notiflix.Loading.remove()
+        Notiflix.Notify.failure(e.message)
       }
     }
 
@@ -558,17 +559,21 @@ const Bill = (props) => {
           check_pre: checkpres,
         }).then((response) => {
           if(response.data.status == true){
+            Notiflix.Loading.remove()
             Notiflix.Notify.success(`${response.data.message}${checkpres == 1 ? ' with Prescription' : ' without Prescription'}`)
-            Notiflix.Loading.remove()
-          }else{
-            Notiflix.Notify.failure(response.data.message)
-            Notiflix.Loading.remove()
-          }
     
+          }else{
+            Notiflix.Loading.remove()
+            Notiflix.Notify.failure(response.data.message)
+     
+          }
+        }).catch(()=>{
+          Notiflix.Loading.remove()
         })
       } catch (e) {
-        Notiflix.Notify.failure(e.message)
         Notiflix.Loading.remove()
+        Notiflix.Notify.failure(e.message)
+
       }
     }
 
@@ -901,7 +906,8 @@ return (
         <h5 className="text-charcoal fw-bold mb-3">Bill & Prescription</h5>
         <div className="container p-0 m-0 mb-3">
           <button className="btn p-0 m-0 justify-content-end fw-bold" onClick={()=>get_docs()}><img className='img-fluid' src={process.env.PUBLIC_URL+'/images/refresh.png'}/>Referesh Prescriptions</button>
-            <div className="row p-0 m-0 bg-pearl rounded-2">
+            <div className="row p-0 m-0 bg-pearl rounded-2
+            ">
               {
                 prescriptions?(
                   presload ?(
