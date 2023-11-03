@@ -69,7 +69,7 @@ function Connectapp(props) {
 
   async function Clinics() {
     await axios.get(`${url}/clinic/list`).then((response) => {
-      setcliniclist(response.data.data);
+      setcliniclist(response.data.data);  
     });
   }
   useEffect(() => {
@@ -99,12 +99,12 @@ function Connectapp(props) {
             [],
           ]);
           for (var j = 0; j < tempArray[i].month_timeslots.length; j++) {
-            if (tempArray[i].month_timeslots[j].date === APIDate) {
+            if (tempArray[i].month_timeslots[j].date === APIDate && tempArray[i].month_timeslots[j].clinic_id==ClinicId) {
               Doctorarray[i][3].push([
                 [tempArray[i].month_timeslots[j].time_from],
                 [tempArray[i].month_timeslots[j].booking_status],
                 [tempArray[i].month_timeslots[j].id],
-              ]);
+              ])
             }
           }
         }
@@ -157,7 +157,7 @@ function Connectapp(props) {
     }
   }
   useEffect(() => {
-    fetchapi();
+   fetchapi();
   }, [ClinicId]);
   async function Gomain() {
     localStorage.setItem("ClinicId", clinicid);
@@ -173,7 +173,7 @@ function Connectapp(props) {
   },[])
 // const isProduction = process.env.NODE_ENV === 'production';
   // const basename = isProduction ? 'https://aartas-connect.azurewebsites.net/' : '';
-  
+
   return isWelcomeLoading == 0 ? (
     <>
       <WelcomeLoader />
@@ -197,7 +197,8 @@ function Connectapp(props) {
                       <input type="checkbox" className="radio form-check-input me-1" checked={ischecked === i ? true : false} name={data.id} onClick={(e) => { setclinicid(e.target.name); setischecked(i); }} />{" "} {data.title} {data.address} </label>
                     <br />
                   </div>
-                ))}
+                ))
+                }
             </div>
             <div className="col-lg-2 col-12 mt-lg-0 mt-md-3 mt-sm-0 mt-2 ">
               <button className="btn button-seashell" disabled={clinicid == undefined ? true : false} onClick={Gomain} >

@@ -54,6 +54,7 @@ function DoctorSchedule(props) {
   const[pindex,setpindex]=useState()
   const[bindex,setbindex]=useState()
   const [status_appointment,setstatus_appointment] = useState([])
+  const [timeslots_id,settimeslot_id]=useState('')
   // for UpdateAppointment
   const closeappointmentform = () => {
     if (appointmentform === "block") {
@@ -111,10 +112,12 @@ function DoctorSchedule(props) {
     setsingleload(1)
   }
   useEffect(()=>{
-    AllAppointments()
+   return ()=> AllAppointments()
   },[])
   useEffect(() => {
+  //  return()=>{
     Appointmentlist();
+  //  } 
   }, [props._selected]);
 
   function tConvert(time) {
@@ -475,9 +478,72 @@ function DoctorSchedule(props) {
        }
     }
     useEffect(()=>{
-      getdata()
-    })
-  console.log(props.todayDoc);
+    getdata()
+    },[])
+    const confirm_block = ()=>{
+    customconfirm()
+    Notiflix.Confirm.show(
+      `Block timeslots`,
+      `Do you want to block the choosed timeslots`,
+      'yes',
+      'cancel',
+      () => {
+        block_timeslots()
+      },
+      () => {
+        settimeslot_id('')
+      },
+      {
+      },
+    );
+    }
+    const block_timeslots = async()=>{
+      await axios.post(`${url}/block/doctor/timeslots`,{
+        total_ids:timeslots_id
+      }).then((response)=>{
+        if(response.data.status==true){
+          props.fetchapi()
+          Notiflix.Notify.success(response.data.message)
+        }else{
+          Notiflix.Notify.failure(response.data.message)
+        }
+        console.log(response.data);
+      })
+    }
+    const Add_timeslot = (id)=>{
+      if(timeslots_id.match(id)){
+        if(timeslots_id.includes(',')){
+          settimeslot_id(timeslots_id.replace(`,${id}`,""))
+        }else{
+          settimeslot_id('')
+        }
+
+      }else{
+        if(timeslots_id.length>0){
+          settimeslot_id(timeslots_id+','+id)
+        }else{
+          settimeslot_id(`${id}`)
+        }
+      }
+ 
+    }
+    const [slots,setslots]=useState('none')
+    const toggle_blocks = ()=>{
+      if(slots=='none'){
+        setslots('block')
+      }
+      if(slots=='block'){
+        settimeslot_id('')
+        setslots('none')
+      }
+    }
+    const match = (timeslot_id)=>{
+      if(timeslots_id.match(timeslot_id)){
+        return true
+      }
+      return false
+    }
+    console.log(props.todayDoc[props._selected][3]);
   return (
     <>
       <section id="doctorscheduledata">
@@ -489,7 +555,7 @@ function DoctorSchedule(props) {
                   <div className="col-auto p-0 m-0">
                     <h6 className="p-0 m-0 text-charcoal fw-bolder text-start">Time Slots Avaliable</h6>
                   </div>
-                  <div className="col-2 ps-1">
+                  <div className="col-auto ps-1 p-0 m-0">
                     <button className="btn m-0 p-0">
                       <img src={process.env.PUBLIC_URL + "/images/addicon.png"} alt="displaying_image" onClick={OpenAddQuickSlots} />
                     </button>
@@ -497,15 +563,38 @@ function DoctorSchedule(props) {
                       <AddSelectedDoctorSlot CloseAddQuickSlots={CloseAddQuickSlots} fetchapi={props.fetchapi} DocClinic={props.DocClinic} DoctorID={props.DoctorID} DoctorName={props.DoctorName} />
                     </div>
                   </div>
+                  <div className="col-auto p-0 m-0 justify-self-end">
+                    {
+                      slots=='none'?(
+                       <img src={process.env.PUBLIC_URL+'/images/minus.png'} className="img-fluid" onClick={()=>toggle_blocks()} />
+                      ):(
+                        <>                        
+                        <button className="button border-0 fw-semibold text-burntumber p-0 m-0 me-2"  onClick={()=>{confirm_block()}}>proceed</button>
+                        <button className="button border-0 fw-semibold text-charcoal p-0 m-0 " onClick={()=>toggle_blocks()}>cancel</button>
+                        </>
+                      )
+                    }
+                  </div>
                 </div>
               </div>
             </div>
-            <div className="scroll timeslots col-12 justify-content-around">
+            <div className="scroll timeslots col-12 justify-content-around pt-2">
               {
                 props.todayDoc[props._selected][3].map((data, i) => (
                   data[1] == 0 ? (
                     <>
-                      <button className={`button-sm button-${timeindex == i ? 'charcoal' : 'charcoal-outline'} m-1 px-3 py-2 fw-bold rounded-1`} style={{ letterSpacing: '1px' }} onClick={(e) => { openAddApppointmentform(); settimeindex(i) }} key={i}>{tConvert(data[0])}</button>
+                    <div className="d-inline-block position-relative mt-1 m-1 me-2">
+                      <button className={`button-sm position-relative button-${timeindex == i ? 'charcoal' : 'charcoal-outline'}  px-3 py-2 fw-bold rounded-1`} style={{ letterSpacing: '1px' }} onClick={(e) => { openAddApppointmentform(); settimeindex(i) }} key={i}>{tConvert(data[0])}
+                      </button>
+                      {
+                        match(data[2]) ? (
+                          <img className={`img-fluid d-${slots} position-absolute start-100 top-0 translate-middle bg-lightyellow p-0 m-0 rounded-circle`} style={{zIndex:20}} src={process.env.PUBLIC_URL+'/images/checkmark.png'} onClick={()=>{Add_timeslot(data[2])}}/>
+                        ):(
+                          <img className={`img-fluid d-${slots} position-absolute start-100 top-0 translate-middle bg-lightyellow p-0 m-0 rounded-circle`} style={{zIndex:20}} src={process.env.PUBLIC_URL+'/images/minus.png'} onClick={()=>{Add_timeslot(data[2])}}/>
+                        )
+                      }
+                  
+                      </div>
                       {
                         timeindex == i ? (
                           <>
@@ -523,7 +612,12 @@ function DoctorSchedule(props) {
 
                     </>
                   ) : (
-                    <button disabled className=" button-sm button-charcoal50-outline m-1 px-3 py-2 rounded-1 fw-bold" key={i} style={{ letterSpacing: '1px' }}>{tConvert(data[0])}</button>
+                    data[1]==2?(
+                      <button disabled className=" button-sm button-charcoal50 m-1 px-3 py-2 rounded-1 fw-bold" key={i} style={{ letterSpacing: '1px' }}>{tConvert(data[0])}</button>
+                    ):(
+                      <button disabled className=" button-sm button-charcoal50-outline m-1 px-3 py-2 rounded-1 fw-bold" key={i} style={{ letterSpacing: '1px' }}>{tConvert(data[0])}</button>
+                    )
+
                   )
                 ))
 
@@ -557,7 +651,6 @@ function DoctorSchedule(props) {
                   <tbody className="scroll scroll-y"  >
                     <tr className=' position-relative text-burntumber fs-3 mt-1 text-center m-auto'>
                       <td className=' position-absolute start-0 end-0 text-burntumber fs-3 mt-1 text-center'>
-
                       </td>
                     </tr>
                   </tbody>
@@ -797,7 +890,7 @@ function Timecard(props) {
         setdoctime(response.data.data.reverse());
         setisLoading(false);
       }
-    })
+    })  
   }
   const [refreshtimeslots, setrefreshtimeslot] = useState(false);
   const [roomnumber, setroomnumber] = useState('1');
@@ -866,6 +959,7 @@ function Timecard(props) {
     }
 
   }, [clinicid])
+
   return (
     <div className="scroll room_timecards align-items-center align-content-center my-auto mb-2 ms-2">
       <div id="cardslot" className={`d-${isLoading ? 'none' : 'inline-flex'}`}>
@@ -875,12 +969,9 @@ function Timecard(props) {
               <p className=" m-0 p-0 text-charcoal fw-bold me-2">Room</p>
               <select onChange={(e) => { setroomnumber(e.target.value) }} className="form-control bg-charcoal25 text-charcoal my-1 mx-2 p-0 py-2 px-3 w-auto text-center border-0" id="clinicroom1">
                 {
-
                   rooms.map((data) => (
                     <option value={data.id}>{data.room_number}</option>
                   ))
-
-
                 }
               </select>
               {
@@ -913,7 +1004,7 @@ function Timecard(props) {
                   <div className="d-flex text-start align-items-center p-0 m-0 ">
                     <p className=" p-0 m-0  ms-2 text-charcoal75 fw-bold me-1 ps-2 " style={{ fontSize: '0.75rem' }}>Room</p>
                     <h5 className="text-burntumber fw-semibold my-1 me-2 border-0" id="clinicroom">
-                      {data.room_id}
+                      {data.room!=undefined?data.room.room_number:""}
                     </h5>
                     {
                       refreshtimeslots && i === cardindex ? (

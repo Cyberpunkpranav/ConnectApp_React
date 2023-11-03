@@ -7,15 +7,16 @@ import { timer_notify } from '../features/timer_notify';
 //Context APIs
 import { Permissions,URL } from '../../index'
 //Components
-import '../features/timeout_notifications';
 import { AddDoctorSlot } from '../Today/AddDoctorSlot'
 //css
 import '../../css/dashboard.css'
 
 const DOCTORNAME = createContext()
 const DOCTORID = createContext()
+
 function Doctorsection(props) {
   const url = useContext(URL)
+  const ClinicId = localStorage.getItem("ClinicId");
   const permission = useContext(Permissions)
   const [Docval, setDocval] = useState(0)
   const [Doctor, setDoctor] = useState(0)
@@ -58,7 +59,6 @@ function Doctorsection(props) {
 }
   return appointments.length
 }
-
 
   return (
     <>

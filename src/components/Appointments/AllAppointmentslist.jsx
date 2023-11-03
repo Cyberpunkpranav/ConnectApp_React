@@ -344,7 +344,7 @@ const AllAppointmentslist = (props) => {
                             </td>
                             <td className='text-charcoal fw-bold'>
                                 <div className="col-auto">
-                                    {data.patient != null && data.patient.full_name != null ? data.patient.full_name : ''}{data.patient != null && data.patient.is_profile_verified ==1 ? <img src={process.env.PUBLIC_URL + 'images/verified.png'} style={{scale:'0.8'}}/>:'' }
+                                    {data.patient != null && data.patient.full_name != null ? data.patient.full_name : ''}{data.patient != null && data.patient.is_profile_verified ==1 ? <img className='p-0 m-0' src={process.env.PUBLIC_URL + 'images/verified.png'} style={{scale:'0.8'}}/>:'' }
                                 </div>
                                 <div className="col-auto text-burntumber">
                                     {data.patient != null && data.patient.phone_number != null ? data.patient.phone_number : ""}

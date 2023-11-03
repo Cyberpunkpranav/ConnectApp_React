@@ -1,8 +1,7 @@
-import React ,{useState,useContext} from 'react'
-import { Doctorapi,TodayDate } from '../../index.jsx';
 import Notiflix from 'notiflix';
 import axios from 'axios';
 let doctor_data = ''
+
  function fetch_Doc_data() {
     let ClinicId = localStorage.getItem("ClinicId");
     try {
@@ -26,17 +25,15 @@ let doctor_data = ''
 
   const timeout_notification = () => {
     let sent = 0
+    const d = new Date();
+    const date = d.getDate() < 10 ? "0" + d.getDate() : d.getDate();
+    const monthcount = d.getMonth() + 1 < 10 ? `0${d.getMonth() + 1}` : d.getMonth() + 1;
+    const yearcount = d.getFullYear();
+    var todayDate = `${yearcount}-${monthcount}-${date}`;
+    const clinicId = localStorage.getItem('ClinicId')
     if(doctor_data.length==0){
         doctor_data = fetch_Doc_data()
     }
-
-    const d = new Date();
-  const date = d.getDate() < 10 ? "0" + d.getDate() : d.getDate();
-  const monthcount = d.getMonth() + 1 < 10 ? `0${d.getMonth() + 1}` : d.getMonth() + 1;
-  const yearcount = d.getFullYear();
-  var APIDate = `${yearcount}-${monthcount}-${date}`;
-  var todayDate = APIDate
-
     let DocTimeouts = []
     let reminder = ''
     let docobj = {
@@ -74,15 +71,18 @@ let doctor_data = ''
     if(doctor_data !=undefined){
     for(let i=0;i<doctor_data.length;i++){
       let Endtime = ''
+      let clinic_id = ''
         for(let j=0;j<doctor_data[i].month_timeslots.length;j++){
-            if(doctor_data[i].month_timeslots[j].date == todayDate){
+            if(doctor_data[i].month_timeslots[j].date == todayDate && doctor_data[i].month_timeslots[j].clinic_id ==clinicId){
               Endtime = doctor_data[i].month_timeslots[j].time_from 
+              clinic_id = doctor_data[i].month_timeslots[j].clinic_id
             }
         }
         DocTimeouts.push(
           docobj = {
             doc_id:doctor_data[i].id,
             doc_name:doctor_data[i].doctor_name,
+            clinic_id:clinic_id,
             end_time:Endtime,
           }
         )
@@ -92,7 +92,7 @@ let doctor_data = ''
     for(let i=0;i<DocTimeouts.length;i++){
       if(DocTimeouts[i].end_time){
         let endtime = tConvert(DocTimeouts[i].end_time)
-        if(String(currentTime12Hr) == String(endtime)){
+        if(String(currentTime12Hr) == String(endtime) && DocTimeouts[i].clinic_id == clinicId){
           reminder = `Dr. ${DocTimeouts[i].doc_name} timeslots ends on ${endtime} `
           if(sent == 0){
             Notiflix.Report.info(

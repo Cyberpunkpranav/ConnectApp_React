@@ -76,9 +76,11 @@ const SelectedTimeAppointment = (props) => {
                 admin_id: adminid
             }).then((response) => {
                 Notiflix.Notify.success(response.data.message)
-                setload(false)
+          
                 props.closeAddAppointmentform()
                 props.fetchapi()
+            }).catch((e)=>{
+                setload(false)
             })
         } else {
             Notiflix.Notify.warning('Please Fill all Detais')

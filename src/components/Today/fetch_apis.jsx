@@ -42,7 +42,6 @@ export const Get_Document=async(appointment_id)=>{
       Notiflix.Loading.remove()
       Notiflix.Notify.failure(e.message)
     }
-
 }
 export const appointment_status = async()=>{
   let data ;
@@ -56,4 +55,12 @@ export const appointment_status = async()=>{
     Notiflix.Notify.failure(error.message)
   }
   return data
+}
+
+export const AllAppointments=async(clinic_id,from_date,to_date)=>{
+  let res;
+  await axios.get(`${url}/appointment/list?clinic_id=${clinic_id}&from_date=${from_date}&to_date=${to_date}`).then((response) => {
+    res = response.data.data
+  })
+  return res
 }

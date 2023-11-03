@@ -1,6 +1,6 @@
 import { URL, TodayDate, DoctorsList, Clinic, Permissions } from '../../index';
 import { customconfirm } from '../features/notiflix/customconfirm';
-import React, { useState, useRef, useContext, useEffect, useMemo } from 'react'
+import React, { useState, useRef, useContext, useEffect, useMemo, useDeferredValue } from 'react'
 import Notiflix from 'notiflix'
 import axios from 'axios'
 
@@ -40,7 +40,7 @@ const AddConsumables = (props) => {
     const [deleteload, setdeleteload] = useState(false)
     const [loadnotes, setloadnotes] = useState(false)
     const [i, seti] = useState()
-
+    const deferredsearch = useDeferredValue(itemname)
     const reversefunction = (date) => {
         if (date) {
             date = date.split("-").reverse().join("-")
@@ -147,9 +147,9 @@ const AddConsumables = (props) => {
             }
         })
     }
-    async function main(search) {
+    async function main() {
         try {
-          const data = await searchmeds(search);
+          const data = await searchmeds(deferredsearch);
             filter(data).then((manipulatedData)=>{
                 setitemsearch(manipulatedData);
             }) 
@@ -157,6 +157,9 @@ const AddConsumables = (props) => {
             Notiflix.Notify.failure(e.message)
         }
       }
+      useEffect(()=>{
+        main()
+      },[deferredsearch])
       
     const searchmedbyId = async (search) => {
         if (search.length > 0) {
@@ -394,7 +397,6 @@ const AddConsumables = (props) => {
             Notiflix.Notify.warning(e.data.message)
         }
     }
-
     return (
         <div className="container-fluid bg-seashell rounded-2 px-0 position-relative mx-auto col-lg-11 col-md-11 col-sm-11 col-11 col-xl-9" style-={{ height: '70vh' }}>
             <div className='position-relative mb-3 text-center shadow-sm'>
@@ -406,11 +408,10 @@ const AddConsumables = (props) => {
                 <div className="col-12 justify-content-center">
                     <div className="row p-0 m-0 my-2 justify-content-start">
                         <div className="col-4 position-relative">
-                            <input className='form-control bg-seashell fw-bold p-2 border-charcoal' disabled={loadsearch} placeholder='Search by Name'
+                            <input className='form-control bg-seashell fw-bold p-2 border-charcoal' placeholder='Search by Name'
                                 value={itemname ? itemname : ''}
                                 onChange={(e)=>{
                                     setitemname(e.target.value)
-                                    main(e.target.value)
                                 }}
                                  />
                             <div className="position-absolute mt-1 bg-raffia">
