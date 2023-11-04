@@ -1,7 +1,6 @@
 import React from 'react'
 
 const Generated_bill = (props) => {
-    console.log(props.bill);
     return (
       <div className="container p-0 m-0 mb-3 bg-seashell" style={{height:'70vh'}}>
         <button className='btn-close position-absolute top-0 end-0 mt-2 me-2' onClick={()=>props.toggle_Scannedbill()}></button>
