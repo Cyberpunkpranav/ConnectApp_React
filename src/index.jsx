@@ -8,6 +8,7 @@ import axios from "axios";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { timer_notify } from "./components/features/timer_notify";
 import { timeout_notification } from "./components/features/timeout_notifications";
+import { QueryClientProvider,QueryClient, useQuery } from "react-query";
 //css
 import "./css/dashboard.css";
 import "./css/appointment.css";
@@ -32,6 +33,7 @@ const Pharmacy = lazy(() => import("./components/App/Pharmacy"));
 const Reports = lazy(() => import("./components/App/Report"));
 const Camera = lazy(()=>import("./components/features/camera"))
 // import Appointments from './components/App/Clinic'
+setInterval(timeout_notification,60000)
 
 //Context Apis
 const TodayDate = createContext();
@@ -44,9 +46,11 @@ const Clinic = createContext();
 const Permissions = createContext();
 const Fetch_function = createContext()
 
-setInterval(timeout_notification,60000)
+
+const queryClient = new QueryClient()
 
 function Connectapp(props) {
+
   const d = new Date();
   const date = d.getDate() < 10 ? "0" + d.getDate() : d.getDate();
   const monthcount = d.getMonth() + 1 < 10 ? `0${d.getMonth() + 1}` : d.getMonth() + 1;
@@ -83,7 +87,7 @@ function Connectapp(props) {
   }
   useEffect(() => {
     VitalsList();
-  }, []);
+  }, [])
 
   async function fetchapi() {
     try {
@@ -138,6 +142,7 @@ function Connectapp(props) {
         }
       );
     }
+    return Doctorarray
   }
   async function fetch_Doc_data() {
     try {
@@ -158,7 +163,8 @@ function Connectapp(props) {
   }
   useEffect(() => {
    fetchapi();
-  }, [ClinicId]);
+  }, [ClinicId])
+
   async function Gomain() {
     localStorage.setItem("ClinicId", clinicid);
     setisWelcomeLoading(0);
@@ -173,7 +179,7 @@ function Connectapp(props) {
   },[])
 // const isProduction = process.env.NODE_ENV === 'production';
   // const basename = isProduction ? 'https://aartas-connect.azurewebsites.net/' : '';
-
+  
   return isWelcomeLoading == 0 ? (
     <>
       <WelcomeLoader />
@@ -195,7 +201,7 @@ function Connectapp(props) {
                   <div div className="text-start mx-auto">
                     <label className="">
                       <input type="checkbox" className="radio form-check-input me-1" checked={ischecked === i ? true : false} name={data.id} onClick={(e) => { setclinicid(e.target.name); setischecked(i); }} />{" "} {data.title} {data.address} </label>
-                    <br />
+                    <br/>
                   </div>
                 ))
                 }
@@ -211,6 +217,7 @@ function Connectapp(props) {
     </div>
   ) : (
     <>
+
     <Fetch_function.Provider value={fetch_Doc_data}>
       <Permissions.Provider value={props.permissions}>
         <Doctorapi.Provider value={ConnectDoctorapi}>
@@ -382,7 +389,9 @@ function Switchpage() {
       const Designation = localStorage.getItem("designation");
       const Id = localStorage.getItem("id");
       return (
+        <QueryClientProvider client={queryClient}>
         <Connectapp logout={logout} username={Username} designation={Designation} id={Id} permissions={permissions} />
+        </QueryClientProvider>
       );
     } else {
       return (
