@@ -80,7 +80,7 @@ const AddPatient = (props) => {
     }
 
     const CheckAvailability = async (e) => {
-        setphonenumber(e.target.value)
+ 
         await axios.get(`${url}/patient/list?search=${e.target.value ? e.target.value : ''}&limit=10&offset=0`).then((response) => {
 
             for (let i = 0; i < response.data.data.patients_list.length; i++) {
@@ -406,7 +406,7 @@ const AddPatient = (props) => {
                             </select>
                         </div>
                         <div className="col-8 pe-0">
-                            <input type="number" disabled={countrycode ? false : true} className="form-control patientnumber m-auto" id="inputEmail4" value={phonenumber ? phonenumber : ''} onChange={(e) => { CheckAvailability(e); }} placeholder="Phone Number" required />
+                            <input type="number" disabled={countrycode ? false : true} className="form-control patientnumber m-auto" id="inputEmail4" value={phonenumber ? phonenumber : ''} onChange={(e)=>{setphonenumber(e.target.value)}} onBlur={(e) => { CheckAvailability(e); }} placeholder="Phone Number" required />
                         </div>
                     </div>
                     <p className={`text-burntumber fw-bold p-0 m-0 d-${warning}`}>Number already exists</p>
