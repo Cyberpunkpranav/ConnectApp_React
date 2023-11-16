@@ -148,7 +148,7 @@ const AddPatient = (props) => {
 
         })
         }
-       }
+       }    
        useEffect(()=>{
         GetPostal_code()
        },[placeid])
