@@ -60,6 +60,7 @@ const UpdateAppointment = (props) => {
         setApiDocTimefrom()
       
         let timefrom = []
+        if(ApikeyDocTimeslots!=undefined){        
         for (let j = 0; j < ApikeyDocTimeslots.length; j++) {
             if (ApikeyDocTimeslots[j].date === props.appointmentdate && ApikeyDocTimeslots[j].clinic_id ==clinicID ) {
                 let obj = {
@@ -72,6 +73,7 @@ const UpdateAppointment = (props) => {
         }
         setApiDocTimefrom(timefrom)
         settrigger(false)
+    }
     }
 
 

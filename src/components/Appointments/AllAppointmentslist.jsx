@@ -265,17 +265,20 @@ const AllAppointmentslist = (props) => {
     const[pload,setpload]=useState('none')
 
     const Get_Document=(id,i)=>{
-      setpindex(i)
-      try{
-        setpload(true)
-        axios.get(`${url}/all/document?appointment_id=${id}`).then((response)=>{
-          setprescriptions(response.data.data)
-          setpload(false)
-        })
-      }catch(e){
-        setpload(false)
-        Notiflix.Notify.failure(e.message)
-      }
+        if(id!==undefined){
+            setpindex(i)
+            try{
+              setpload(true)
+              axios.get(`${url}/all/document?appointment_id=${id}`).then((response)=>{
+                setprescriptions(response.data.data)
+                setpload(false)
+              })
+            }catch(e){
+              setpload(false)
+              Notiflix.Notify.failure(e.message)
+            }
+        }
+ 
     }
     const toggle_ScannedPres = ()=>{
         setpindex()
