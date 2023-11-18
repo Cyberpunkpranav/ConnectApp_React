@@ -162,8 +162,8 @@ function Connectapp(props) {
     }
   }
   useEffect(() => {
-   fetchapi();
-  }, [ClinicId])
+      fetchapi();
+  }, [])
 
   async function Gomain() {
     localStorage.setItem("ClinicId", clinicid);

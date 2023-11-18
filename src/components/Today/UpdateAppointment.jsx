@@ -1,20 +1,20 @@
 import React, { useState, useEffect, useRef, useContext } from 'react'
 import axios from 'axios'
 
-import { DoctorsList, URL, Doctorapi, TodayDocs } from '../../index'
+import { DoctorsList, URL, Doctorapi, TodayDocs,Clinic } from '../../index'
 import Notiflix from 'notiflix';
 import '../../css/appointment.css';
 import { customconfirm } from '../features/notiflix/customconfirm'
 
 const UpdateAppointment = (props) => {
     const colorref = useRef(null)
+    const cliniclist  = useContext(Clinic)
     const clinicID = localStorage.getItem('ClinicId')
     let adminid = localStorage.getItem('id')
     const url = useContext(URL);
     const DocApi = useContext(Doctorapi)
     const Doclist = useContext(DoctorsList)
     const TodayDoctors = useContext(TodayDocs)
-    const [cliniclist, setcliniclist] = useState([])
     const [doctorid, setdoctorid] = useState()
     const [clinicid, setclinicid] = useState(clinicID)
     const [time, settime] = useState()
@@ -25,16 +25,6 @@ const UpdateAppointment = (props) => {
 
     const [ApikeyDocTimeslots, setApikeyDocTimeslots] = useState()
     const [ApiDocTimefrom, setApiDocTimefrom] = useState();
-
-
-    function ClinicList() {
-        axios.get(`${url}/clinic/list`).then((response) => {
-            setcliniclist(response.data.data)
-        })
-    }
-    useEffect(() => {
-        ClinicList()
-    }, [])
 
     function tConvert(time) {
 
@@ -63,15 +53,21 @@ const UpdateAppointment = (props) => {
                 Timeslots.push(DocApi[i].month_timeslots)
             }
         }
-        setApikeyDocTimeslots(Timeslots)
+        setApikeyDocTimeslots(Timeslots.flat())
         settrigger(true)
     }
     async function getCurrentTimefrom() {
         setApiDocTimefrom()
+      
         let timefrom = []
-        for (let j = 0; j < ApikeyDocTimeslots[0].length; j++) {
-            if (ApikeyDocTimeslots[0][j].date === props.appointmentdate) {
-                timefrom.push([ApikeyDocTimeslots[0][j].id, ApikeyDocTimeslots[0][j].time_from, ApikeyDocTimeslots[0][j].booking_status])
+        for (let j = 0; j < ApikeyDocTimeslots.length; j++) {
+            if (ApikeyDocTimeslots[j].date === props.appointmentdate && ApikeyDocTimeslots[j].clinic_id ==clinicID ) {
+                let obj = {
+                    timeslot_id :ApikeyDocTimeslots[j].id,
+                    time_from:ApikeyDocTimeslots[j].time_from,
+                    booking_status:ApikeyDocTimeslots[j].booking_status
+                }
+                timefrom.push(obj)
             }
         }
         setApiDocTimefrom(timefrom)
@@ -111,9 +107,9 @@ const UpdateAppointment = (props) => {
     async function getTimefrom(e) {
         setApiDocTimefrom([])
         let timefrom = []
-        for (let j = 0; j < ApikeyDocTimeslots[0].length; j++) {
-            if (ApikeyDocTimeslots[0][j].date === e.target.value) {
-                timefrom.push([ApikeyDocTimeslots[0][j].id, ApikeyDocTimeslots[0][j].time_from, ApikeyDocTimeslots[0][j].booking_status])
+        for (let j = 0; j < ApikeyDocTimeslots.length; j++) {
+            if (ApikeyDocTimeslots[j].date === e.target.value && ApikeyDocTimeslots[j].clinic_id==clinicID) {
+                timefrom.push([ApikeyDocTimeslots[j].id, ApikeyDocTimeslots[j].time_from, ApikeyDocTimeslots[j].booking_status])
             }
         }
         setApiDocTimefrom(timefrom)
@@ -237,6 +233,7 @@ const UpdateAppointment = (props) => {
         }
 
     }
+
     return (
         <div className='p-0 m-0 text-start'>
             <h5 className="text-center p-2">Update {props.patientname} Appointment Details</h5>
@@ -300,10 +297,10 @@ const UpdateAppointment = (props) => {
                         <>
                             {
                                 ApiDocTimefrom.map((data, key) => (
-                                    data[2] == 0 ? (
-                                        <button className={`button-sm button-${timeindex == key ? 'charcoal' : 'charcoal-outline'} px-3 py-2 rounded-1 fw-bold m-1`} style={{ letterSpacing: '1px' }} id={key} value={data[0]} onClick={(e) => { gettime_value(e); settimeindex(key) }}>{tConvert(data[1])}</button>
+                                    data.booking_status == 0 ? (
+                                        <button className={`button-sm button-${timeindex == key ? 'charcoal' : 'charcoal-outline'} px-3 py-2 rounded-1 fw-bold m-1`} style={{ letterSpacing: '1px' }} id={key} value={data.timeslot_id} onClick={(e) => { gettime_value(e); settimeindex(key) }}>{tConvert(data.time_from)}</button>
                                     ) : (
-                                        <button disabled className="button-sm button-charcoal50-outline rounded-1 px-3 py-2 m-1 fw-bold" style={{ letterSpacing: '1px' }} id={key} value={data[0]}>{tConvert(data[1])}</button>
+                                        <button disabled className="button-sm button-charcoal50-outline rounded-1 px-3 py-2 m-1 fw-bold" style={{ letterSpacing: '1px' }} id={key} value={data.timeslot_id}>{tConvert(data.time_from)}</button>
                                     )
                                 ))
                             }

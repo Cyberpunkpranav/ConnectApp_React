@@ -51,6 +51,7 @@ const UpdateAppointment = (props) => {
     const dateref = useRef()
     const docref = useRef()
     const [trigger, settrigger] = useState(false)
+
     async function getCurrentTimeslots() {
         setdoctorid(props.appointmentdoctorid)
         dateref.current.value = ''
@@ -62,24 +63,26 @@ const UpdateAppointment = (props) => {
                 Timeslots.push(DocApi[i].month_timeslots)
             }
         }
-        setApikeyDocTimeslots(Timeslots)
+        setApikeyDocTimeslots(Timeslots.flat())
         settrigger(true)
     }
     async function getCurrentTimefrom() {
         setApiDocTimefrom()
+      
         let timefrom = []
-        if (ApikeyDocTimeslots) {
-            for (let j = 0; j < ApikeyDocTimeslots[0].length; j++) {
-                if (ApikeyDocTimeslots[0][j].date === props.appointmentdate) {
-                    timefrom.push([ApikeyDocTimeslots[0][j].id, ApikeyDocTimeslots[0][j].time_from, ApikeyDocTimeslots[0][j].booking_status])
+        for (let j = 0; j < ApikeyDocTimeslots.length; j++) {
+            if (ApikeyDocTimeslots[j].date === props.appointmentdate && ApikeyDocTimeslots[j].clinic_id ==clinicID ) {
+                let obj = {
+                    timeslot_id :ApikeyDocTimeslots[j].id,
+                    time_from:ApikeyDocTimeslots[j].time_from,
+                    booking_status:ApikeyDocTimeslots[j].booking_status
                 }
+                timefrom.push(obj)
             }
-            setApiDocTimefrom(timefrom)
-            settrigger(false)
         }
-
+        setApiDocTimefrom(timefrom)
+        settrigger(false)
     }
-
 
     useEffect(() => {
         getCurrentTimeslots()
@@ -109,9 +112,9 @@ const UpdateAppointment = (props) => {
     async function getTimefrom(e) {
         setApiDocTimefrom([])
         let timefrom = []
-        for (let j = 0; j < ApikeyDocTimeslots[0].length; j++) {
-            if (ApikeyDocTimeslots[0][j].date === e.target.value) {
-                timefrom.push([ApikeyDocTimeslots[0][j].id, ApikeyDocTimeslots[0][j].time_from, ApikeyDocTimeslots[0][j].booking_status])
+        for (let j = 0; j < ApikeyDocTimeslots.length; j++) {
+            if (ApikeyDocTimeslots[j].date === e.target.value && ApikeyDocTimeslots[j].clinic_id==clinicID) {
+                timefrom.push([ApikeyDocTimeslots[j].id, ApikeyDocTimeslots[j].time_from, ApikeyDocTimeslots[j].booking_status])
             }
         }
         setApiDocTimefrom(timefrom)
@@ -254,10 +257,10 @@ const UpdateAppointment = (props) => {
                         <>
                             {
                                 ApiDocTimefrom.map((data, key) => (
-                                    data[2] == 0 ? (
-                                        <button style={{ letterSpacing: '1px' }} className={`button-sm button-${timeindex == key ? 'charcoal' : 'charcoal-outline'} rounded-1 px-3 py-2 fw-bold  m-1`} id={key} value={data[0]} onClick={(e) => { gettime_value(e); settimeindex(key) }}>{tConvert(data[1])}</button>
+                                    data.booking_status == 0 ? (
+                                        <button style={{ letterSpacing: '1px' }} className={`button-sm button-${timeindex == key ? 'charcoal' : 'charcoal-outline'} rounded-1 px-3 py-2 fw-bold  m-1`} id={key} value={data.timeslot_id} onClick={(e) => { gettime_value(e); settimeindex(key) }}>{tConvert(data.time_from)}</button>
                                     ) : (
-                                        <button style={{ letterSpacing: '1px' }} disabled className="button-sm button-charcoa50 px-3 py-2 fw-bold m-1 rounded-1" id={key} value={data[0]}>{tConvert(data[1])}</button>
+                                        <button style={{ letterSpacing: '1px' }} disabled className="button-sm button-charcoa50 px-3 py-2 fw-bold m-1 rounded-1" id={key} value={data.timeslot_id}>{tConvert(data.time_from)}</button>
                                     )
                                 ))
                             }
