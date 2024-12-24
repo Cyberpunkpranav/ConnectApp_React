@@ -628,7 +628,7 @@ function DoctorSchedule(props) {
           <div className="col-auto m-0 p-0 align-items-center">
             <h6 className="p-0 ms-1 text-charcoal fw-bolder mt-3 mb-2">Appointments</h6>
           </div>
-          <div className=" scroll scroll-y align-content-center align-items-center" style={{ minHeight: '70vh', maxHeight: '70vh', Height: '70h' }}>
+          <div className=" scroll scroll-y align-items-center" style={{ minHeight: '70vh', maxHeight: '70vh', Height: '70h' }}>
             <table className="table text-start">
               <thead className="p-0 m-0 px-2 bg-pearl">
                 <tr className="p-0 m-0 position-sticky text-charcoal75 top-0" style={{ fontSize: '0.75rem' }}>
